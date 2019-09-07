@@ -240,3 +240,16 @@ TSWLatexianTemp*
 
 # generated if using elsarticle.cls
 *.spl
+
+# MAC OS File System
+*.DS_Store
+
+# Office Temporary Files
+~$*.doc*
+~$*.xls*
+*.xlk
+~$*.ppt*
+*.~vsd*
+
+# MATLAB
+*.m~
