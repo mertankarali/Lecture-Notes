@@ -1,0 +1,448 @@
+%
+% This is a borrowed LaTeX template file for lecture notes for CS267,
+% Applications of Parallel Computing, UCBerkeley EECS Department.
+% Now being used for CMU's 10725 Fall 2012 Optimization course
+% taught by Geoff Gordon and Ryan Tibshirani.  When preparing 
+% LaTeX notes for this class, please use this template.
+%
+% To familiarize yourself with this template, the body contains
+% some examples of its use.  Look them over.  Then you can
+% run LaTeX on this file.  After you have LaTeXed this file then
+% you can look over the result either by printing it out with
+% dvips or using xdvi. "pdflatex template.tex" should also work.
+%
+
+\documentclass[twoside]{article}
+\setlength{\oddsidemargin}{0.25 in}
+\setlength{\evensidemargin}{-0.25 in}
+\setlength{\topmargin}{-0.6 in}
+\setlength{\textwidth}{6.5 in}
+\setlength{\textheight}{8.5 in}
+\setlength{\headsep}{0.75 in}
+\setlength{\parindent}{0 in}
+\setlength{\parskip}{0.1 in}
+
+%
+% ADD PACKAGES here:
+%
+
+\usepackage{amsmath,amsfonts,graphicx}
+
+%
+% The following commands set up the lecnum (lecture number)
+% counter and make various numbering schemes work relative
+% to the lecture number.
+%
+\newcounter{lecnum}
+\renewcommand{\thepage}{\thelecnum-\arabic{page}}
+\renewcommand{\thesection}{\thelecnum.\arabic{section}}
+\renewcommand{\theequation}{\thelecnum.\arabic{equation}}
+\renewcommand{\thefigure}{\thelecnum.\arabic{figure}}
+\renewcommand{\thetable}{\thelecnum.\arabic{table}}
+
+%
+% The following macro is used to generate the header.
+%
+\newcommand{\lecture}[4]{
+   \pagestyle{myheadings}
+   \thispagestyle{plain}
+   \newpage
+   \setcounter{lecnum}{#1}
+   \setcounter{page}{1}
+   \noindent
+   \begin{center}
+   \framebox{
+      \vbox{\vspace{2mm}
+    \hbox to 6.28in { {\bf EE402 - Discrete Time Systems
+	\hfill Spring 2018} }
+       \vspace{4mm}
+       \hbox to 6.28in { {\Large \hfill Lecture #1 \hfill} }
+       \vspace{2mm}
+       \hbox to 6.28in { {\it Lecturer: #2 \hfill } }
+      \vspace{2mm}}
+   }
+   \end{center}
+   \markboth{Lecture #1}{Lecture #1}
+
+   \vspace*{4mm}
+}
+%
+% Convention for citations is authors' initials followed by the year.
+% For example, to cite a paper by Leighton and Maggs you would type
+% \cite{LM89}, and to cite a paper by Strassen you would type \cite{S69}.
+% (To avoid bibliography problems, for now we redefine the \cite command.)
+% Also commands that create a suitable format for the reference list.
+\renewcommand{\cite}[1]{[#1]}
+\def\beginrefs{\begin{list}%
+        {[\arabic{equation}]}{\usecounter{equation}
+         \setlength{\leftmargin}{2.0truecm}\setlength{\labelsep}{0.4truecm}%
+         \setlength{\labelwidth}{1.6truecm}}}
+\def\endrefs{\end{list}}
+\def\bibentry#1{\item[\hbox{[#1]}]}
+
+%Use this command for a figure; it puts a figure in wherever you want it.
+%usage: \fig{NUMBER}{SPACE-IN-INCHES}{CAPTION}
+\newcommand{\fig}[3]{
+			\vspace{#2}
+			\begin{center}
+			Figure \thelecnum.#1:~#3
+			\end{center}
+	}
+% Use these for theorems, lemmas, proofs, etc.
+\newtheorem{theorem}{Theorem}[lecnum]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{claim}[theorem]{Claim}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\newenvironment{proof}{{\bf Proof:}}{\hfill\rule{2mm}{2mm}}
+
+% **** IF YOU WANT TO DEFINE ADDITIONAL MACROS FOR YOURSELF, PUT THEM HERE:
+
+\begin{document}
+
+% Lecture Details
+\lecture{3}{Asst. Prof. M. Mert Ankarali}
+
+\par
+
+\section*{Difference Equations}
+
+In discrete-time domain, we have difference equations that replaces
+differential equations. We are mainly interested in LTI systems, that
+are represented by linear constant coefficient 
+difference equations. Let $x[k]$ and $y[k]$ be the input and output
+respectively, then an LTI difference equation can be expressed as 
+%
+\begin{align*}
+a_0  y[k] + a_{1}  y[k-1] + ... + a_N y[k-N] &= b_{0}  x[k] + ... +
+                                               b_M x[k-M] \\
+\sum\limits_{n=1}^{N} a_n y[k - n] &= \sum\limits_{n=1}^{M} b_n x[k - n]
+\end{align*}
+%
+Unlike ODEs difference equations are very easy to solve
+computationally or simulate in computer environment. 
+Let's consider the following first-order difference equation
+%
+\begin{align*}
+y[k] &= \frac{1}{2} y[k-1] + x[k] \ \ , x[k] = 0 \ \& \ y[k] = 0 , \
+       \mathrm{for} k < 0 
+\end{align*}
+%
+Let's ``simulate'' the difference equation for $x[k] = \delta[k]$.
+%
+\begin{align*}
+y[0] &= \frac{1}{2} y[-1] + x[0] = 0 + 1 = 1\\
+y[1] &= \frac{1}{2} y[0] + x[1] = \frac{1}{2} + 0 = \frac{1}{2} \\
+y[2] &= \frac{1}{2} \frac{1}{2} = \frac{1}{4}  \\
+y[3] &= \frac{1}{2} \frac{1}{4} = \frac{1}{8} \\
+\vdots \\
+y[k] &= \left( \frac{1}{2} \right)^k
+\end{align*}
+%
+Now let's simulate for $x[k] = u[k]$
+%
+\begin{align*}
+y[0] &=  0 + 1 = 1\\
+y[1] &= \frac{1}{2} + 1 \\
+y[2] &= \frac{1}{4} + \frac{1}{2} + 1 \\
+y[3] &= \frac{1}{8} + \frac{1}{4} + \frac{1}{2}  + 1 \\
+\vdots \\
+y[k] &= \frac{1}{2^k} + \cdots + \frac{1}{2}  + 1 = 2 -  \left( \frac{1}{2} \right)^k
+\end{align*}
+%
+This is a great method for ``simulating'' using a computational
+approach, but in general it may be very hard to get a closed 
+from expression.
+%
+The most basic solution method is solving the difference equation
+directly in time domain by trying to find a ``basis'' for the solution
+space similar to the operation in ODEs. We try sequences/signals
+of the form $\lambda^k \ , \ k >0$ to find a solution form for the
+homogeneous equation. Let's apply this method for the first-order
+difference equation above
+%
+\begin{align*}
+y[k] = \lambda^k \ \rightarrow y[k] - \frac{1}{2} y[k-1] = 0 \\
+\lambda^k - \frac{\lambda^{k-1}}{2} = 0 \\
+\lambda^{k-1} \left( \lambda - \frac{1}{2}  \right) = 0 \\
+\lambda - \frac{1}{2} = 0
+\end{align*}
+%
+Where the last equation is the characteristic equation of the difference
+equation. Since the characteristic equation has one root only, we
+obtain a solution of the form
+%
+\begin{align*}
+y[k] = y_h[k] + y_p[k] = C \left( \frac{1}{2} \right)^k + y_p[k]
+\end{align*}
+%
+Let's assume that for $x[k] = u[k]$ particular solution has the 
+form $y_p[k] = A \ \mathrm{for} \ k > 0$ then
+%
+\begin{align*}
+A &= \frac{1}{2} A + 1 \ \rightarrow A = 2
+\end{align*}
+%
+Now let's find $C$ using the fact that $y[k] = 0$ for $k<0$
+%
+\begin{align*}
+y[0] &= \frac{1}{2} y[-1] + x[0] \ \rightarrow \  y[0] = 1
+\\
+1 &= C \left( \frac{1}{2} \right)^0 + 2 \rightarrow  C = -1
+\end{align*}
+%
+Then the solution can be written as
+%
+\begin{align*}
+  y[k] &= -\left( \frac{1}{2} \right)^k + 2
+\end{align*}
+%
+\textbf{Example 1.1} Find the general form of the homogeneous solution
+for the following difference equation
+%
+\begin{align*}
+  y[k] - 3 y[k-1] + 2 y[k-2] &= x[k]
+\end{align*}
+
+\textbf{Solution:}
+%
+\begin{align*}
+&\lambda^2 - 3 \lambda + 2 = 0
+\\
+&\lambda_1 = 1 \ \& \ \lambda_2 = 2 
+\\
+&y[k] = C_1 + C_2 2^k \ , k > 0 
+\end{align*}
+%
+\textbf{Example 1.2} Now let's assume that $y[k] = 0$ for $k<0$
+and $x[k] = 3^k$, then find $y[k]$ for $k \geq 0$.
+
+\textbf{Solution:} First let's find a particular solution. 
+Let's assume that $y_p[k] = A 3^k$, then
+%
+\begin{align*}
+A 3^k - 3 A 3^{k-1} + 2 A 3^{k-2} &= 3^k \ \rightarrow \ A = 9/2
+\\
+y_p[k] &= 4.5 \ 3^k
+\end{align*}
+%
+Now let's try to find $C_1$ and $C_2$
+%
+\begin{align*}
+&y[k] - 3 y[k-1] + 2 y[k-2] = x[k]
+\\
+&y[0] = x[0] \ \rightarrow \ C_1 + C_2 = -3.5 \\
+&y[1] - 3 y[0] = x[1] \ \rightarrow \ C_1 + C_2 2 = -7.5
+\\
+&C_1 = 0.5 \ \& \ C_2 = -4
+\\
+&y[k] = 0.5 - 4 \, 2^k + 4.5 \, 3^k \ , k > 0 
+\end{align*}
+
+\textbf{What about repeated roots?} Possible mini project question
+
+
+\textbf{Example 2} Find the general form of the homogeneous solution
+for the following difference equation
+%
+\begin{align*}
+  y[k] + 4 y[k-2] &= x[k]
+\end{align*}
+
+\textbf{Solution:}
+%
+\begin{align*}
+&\lambda^2 + 4 = 0 \ \rightarrow \ \lambda_{1,2} = \pm 2 j
+\\
+&y[k] = C_1 (2j)^k + C_2 (-2j)^k = C_1 2^k e^{j k \pi/2 } + C_2 2^k e^{-j
+k  \pi/2 }  
+\\
+&y[k] = \bar{C}_1 2^k \frac{ e^{j k \pi/2} + e^{j k \pi / 2} }{2} +
+  \bar{C}_2 2^k \frac{ e^{j k \pi / 2} - e^{j k \pi / 2} }{2 j}
+\\
+&y[k] = \bar{C}_1 2^k \cos(k \pi /2) + \bar{C}_2 2^k \sin(k \pi /2)
+\end{align*}
+
+\textbf{How we can generalize this to arbitrary complex conjugate
+  roots?} Possible mini project question
+
+\textbf{What is the home message?} Similar to ODEs time domain
+solution of difference equations is generally ``messy''.
+
+\section*{Z-transform \& Difference Equations}
+
+\subsection*{Difference Equations to Z-transform}
+
+Let's consider the following difference equation with $y[n]$
+and $x[n]$ be the strictly causal input--output pair.
+%
+\begin{align*}
+a_0  y[k] + a_{1}  y[k-1] + ... + a_N y[k-N] &= b_{0}  x[k] + ... +
+                                               b_M x[k-M] 
+\end{align*}
+%
+Now let's assume that $\mathcal{Z}\lbrace x[k] \rbrace = X(z)$ and
+$\mathcal{Z}\lbrace y[k] \rbrace = Y(z)$. If we take the Z-transform
+fo the both sides of the equation by applying the shifting theorem 
+we obtain
+%
+\begin{align*}
+a_0 Y(z) + a_{1} z^{-1}  Y(z) + ... + a_N z^{-N} Y(z) &= 
+b_{0}  X(z) + ... + b_M z^{-M} X(z)
+\\
+( a_0 + a_{1} z^{-1} + ... + a_N z^{-N} ) Y(z) &= 
+( b_0 + b_{1} z^{-1} + ... + b_M z^{-M} ) X(z)
+\\
+\frac{Y(z)}{X(z)} = G(z) &= 
+\frac{b_0 + b_{1} z^{-1} + ... + b_M z^{-M}}{a_0 + a_{1} z^{-1} + ... + a_N z^{-N}}
+\\ &= 
+z^{N-M} 
+\frac{b_0 z^{M} + b_{1} z^{M-1} + ... + b_M}{a_0 z^{N} + a_{1} z^{N-1} + ... + a_N}
+\end{align*}
+%
+Under ``zero initial conditions'' if we can find $X(z)$ then simply
+$Y(z) = G(z) X(z)$. After that we can take the inverse z-transform 
+and compute $y[k]$.
+
+\textbf{Example 3.1} Compute $y[k]$ using the Z-transform method
+%
+\begin{align*}
+y[k] &= \frac{1}{2} y[k-1] + x[k]  \\
+y[k] &= 0 , \ \mathrm{for} \ k < 0  \ \& \ x[k] = \delta[k]
+\end{align*}
+%
+\textbf{Solution:}
+
+\begin{align*}
+Y(z) &= \frac{1}{2} Y(z)z^{-1} + X(z) \  \rightarrow \
+       \frac{Y(z)}{X(z)} = G(z) = \frac{z}{z - 1/2}  \\
+Y(z) &= \frac{z}{z - 1/2} \ \rightarrow \ y[k] = \left( \frac{1}{2} \right)^k
+\end{align*}
+
+\textbf{Example 3.2} Now let's compute $y[k]$ for $x[k] = u[k]$
+%
+\begin{align*}
+Y(z) &= G(z)  X(z) \  \rightarrow \ Y(z) = \frac{z^2}{(z - 1/2)(z-1)}
+\\
+Y(z) &= - \frac{z}{z - 1/2} + 2\frac{z}{z - 1}
+\\
+y[k] &= 2 - \left( \frac{1}{2} \right)^k
+\end{align*}
+
+\textbf{Example 4} For the following difference equation, compute
+$y[k]$ for $x[k] = x[k] = 3^k u[k]$
+%
+\begin{align*}
+  y[k] - 3 y[k-1] + 2 y[k-2] &= x[k]
+\end{align*}
+
+\textbf{Solution:}
+%
+\begin{align*}
+ Y(z) (1 - 3 z^{-1} + 2 z^{-2}) &= X(z) \ \rightarrow \ G(z) =
+  \frac{z^2}{z^2 - 3 z + 2 } = \frac{z^2}{(z-1)(z-2)}
+\\
+Y(z) &= \frac{z^3}{(z-1)(z-2)(z-3)} = 0.5 \frac{z}{z-1} - 4 \frac{z}{z-2} +
+     4.5  \frac{z}{z-3}   
+\\
+y[k] &= \left( 0.5 - 4 \ 2^k + 4.5 \ 3^k \right) u[k]
+\end{align*}
+
+\subsection*{Z-transform to Difference Equations}
+
+Sometimes the Z-domain transfer function of a system is given, and 
+we may be supposed to find the difference equation representation. 
+Let's assume that we have a general transfer function that can be
+represented in terms of ratio of two polynomials in $z$ or $z^{-1}$
+as given below
+%
+\begin{align*}
+\frac{Y(z)}{X(z)} = G(z) &= 
+\frac{b_0 + b_{1} z^{-1} + ... + b_M z^{-M}}{a_0 + a_{1} z^{-1} + ... + a_N z^{-N}} = 
+z^{N-M} 
+\frac{b_0 z^{M} + b_{1} z^{M-1} + ... + b_M}{a_0 z^{N} + a_{1} z^{N-1} + ... + a_N}
+\end{align*}
+%
+In his case, I prefer to work with the polynomials that are written in
+terms of $z^{-1}$. Let's manipulate the Z-domain equation to obtain
+%
+\begin{align*}
+Y(z) ( a_0 + a_{1} z^{-1} + ... + a_N z^{-N} ) &= X(z) ( b_0 + b_{1}
+  z^{-1} + ... + b_M z^{-M} )
+\\
+a_0 Y(z) + a_{1} z^{-1} Y(z) + ... + a_N z^{-N} Y(z) &= b_0 X(z) + b_{1}
+  z^{-1} X(z) + ... + b_M z^{-M} X(z)
+\end{align*}
+%
+Let's assume that $\mathcal{Z}^{-1} \lbrace Y(z) \rbrace = y[k]$ 
+and $\mathcal{Z}^{-1} \lbrace X(z) \rbrace = x[k]$. If we take the 
+inverse Z-transform of both sides by applying the shifting theorem
+we obtain
+%
+\begin{align*}
+a_0 y[k] + a_{1} y[k-1] + ... + a_N z^{-N} y[k-N] &= b_0 x[k] + b_{1}
+x[k-1] + ... + b_M x[k-M]
+\end{align*}
+%
+We can use this conversion to ``simulate'' a given discrete time transfer
+function or realizing the given system (it may be a filter or
+controller) to implement on an embedded platform.  
+
+It can also be used for computationally finding the
+inverse Z-transform of a given z-domain rational function. 
+The next example will illustrate this feature. 
+
+\textbf{Example 5} Find a computational solution for the inverse Z-transform of $H(z) =
+\frac{z^{-1}}{1 - 2 z^{-1} + z^{-2}}$ by using the conversion from
+Z-domain transfer function to difference equation concept. 
+
+\textbf{Solution:} Let's assume that $H(z)$ is a ``transfer function''
+not an arbitrary z-domain function. Then $\mathcal{Z}^{-1} \lbrace
+H(z) \rbrace = h(t)$ becomes the impulse response of the ``system''. 
+Thus we can assume some imaginary input-output pair $y[n]$ and
+$x[n]$ where 
+%
+\begin{align*}
+  \frac{Y(z)}{X(z)} = H(z) 
+\end{align*}
+%
+If we can find a difference equation realization for $H(z)$
+then we can simulate the difference equation by assuming
+$x[k] = \delta[k]$ (i.e. unit impulse input). So let's find a
+realization for the given $H(z)$ as
+%
+\begin{align*}
+  \frac{Y(z)}{X(z)} &= \frac{z^{-1}}{1 - 2 z^{-1} + z^{-2}}
+\\
+Y(z) - 2 z^{-1} Y(z) + z^{-2} Y(z) &= z^{-1} X(z)
+\\
+y[k] - 2 y[k-1] + y[k-2] &= x[k-1]
+\end{align*}
+%
+Now let's simulate the above equation for $x[k] = \delta[k]$
+%
+\begin{align*}
+y[k] &= 2 y[k-1] - y[k-2]  + x[k-1]
+\\
+y[0] &= 2 y[-1] - y[-2]  + x[-1] = 0
+\\
+y[1] &= 2 y[0] - y[-1]  + x[0] = 1
+\\
+y[2] &= 2 y[1] - y[0]  + x[1] = 2
+\\
+y[3] &= 2 y[2] - y[1]  + x[2] = 3
+\\
+y[4] &= 4
+\\
+\cdots 
+\\
+y[k] &= k
+\end{align*}
+%
+
+
+
+
+% **** This ENDS THE EXAMPLES. DON'T DELETE THE FOLLOWING LINE:
+\end{document}

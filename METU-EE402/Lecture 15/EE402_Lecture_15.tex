@@ -1,0 +1,578 @@
+% 
+
+
+\documentclass[twoside]{article}
+\setlength{\oddsidemargin}{0.25 in}
+\setlength{\evensidemargin}{-0.25 in}
+\setlength{\topmargin}{-0.6 in}
+\setlength{\textwidth}{6.5 in}
+\setlength{\textheight}{8.5 in}
+\setlength{\headsep}{0.75 in}
+\setlength{\parindent}{0 in}
+\setlength{\parskip}{0.1 in}
+
+%
+% ADD PACKAGES here:
+%
+
+\usepackage{amsmath,amsfonts,graphicx}
+
+
+\newcounter{lecnum}
+\renewcommand{\thepage}{\thelecnum-\arabic{page}}
+\renewcommand{\thesection}{\thelecnum.\arabic{section}}
+\renewcommand{\theequation}{\thelecnum.\arabic{equation}}
+\renewcommand{\thefigure}{\thelecnum.\arabic{figure}}
+\renewcommand{\thetable}{\thelecnum.\arabic{table}}
+
+%
+% The following macro is used to generate the header.
+%
+\newcommand{\lecture}[4]{
+   \pagestyle{myheadings}
+   \thispagestyle{plain}
+   \newpage
+   \setcounter{lecnum}{#1}
+   \setcounter{page}{1}
+   \noindent
+   \begin{center}
+   \framebox{
+      \vbox{\vspace{2mm}
+    \hbox to 6.28in { {\bf EE402 - Discrete Time Systems
+	\hfill Spring 2018} }
+       \vspace{4mm}
+       \hbox to 6.28in { {\Large \hfill Lecture #1 \hfill} }
+       \vspace{2mm}
+       \hbox to 6.28in { {\it Lecturer: #2 \hfill } }
+      \vspace{2mm}}
+   }
+   \end{center}
+   \markboth{Lecture #1}{Lecture #1}
+
+   \vspace*{4mm}
+}
+
+\renewcommand{\cite}[1]{[#1]}
+\def\beginrefs{\begin{list}%
+        {[\arabic{equation}]}{\usecounter{equation}
+         \setlength{\leftmargin}{2.0truecm}\setlength{\labelsep}{0.4truecm}%
+         \setlength{\labelwidth}{1.6truecm}}}
+\def\endrefs{\end{list}}
+\def\bibentry#1{\item[\hbox{[#1]}]}
+
+
+\newcommand{\fig}[3]{
+			\vspace{#2}
+			\begin{center}
+			Figure \thelecnum.#1:~#3
+			\end{center}
+	}
+
+% Use these for theorems, lemmas, proofs, etc.
+\newtheorem{theorem}{Theorem}[lecnum]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{claim}[theorem]{Claim}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\newenvironment{proof}{{\bf Proof:}}{\hfill\rule{2mm}{2mm}}
+
+% **** IF YOU WANT TO DEFINE ADDITIONAL MACROS FOR YOURSELF, PUT THEM HERE:
+
+\begin{document}
+
+% Lecture Details
+\lecture{15}{Asst. Prof. M. Mert Ankarali}
+
+\par
+
+\section*{Reachability \& Controllability, \& Observability}
+
+\subsection*{Reachability \& Controllability of CT Systems}
+
+For LTI a continuous time state-space representation
+%
+\begin{align*}
+  \dot{x}(t) &= A x(t) + B u(t)
+\\
+  y(t) &= C x(t) + D u(t)
+\end{align*}
+%
+\begin{itemize}
+  \item A state $x_d$ is said to be \textbf{reachable}
+  if there exist a finite time interval $t \in [0 ,t_f]$ and
+  an input signal defined on this interval, $u(t)$, that transfers the state vector 
+  $x(t)$ from the origin (i.e. $x(0) = 0$) to the state $x_d$ within
+  this time interval, i.e. $x(t_f) = x_d$.
+ 
+  \item A state $x_d$ is said ti be \textbf{controllable}
+  if there exist a finite time interval $t \in [0 ,t_f]$ and
+  an input signal defined on this interval, $u(t)$, that transfers the state vector 
+  $x(t)$ from the initial state $x_d$ (i.e. $x(0) = x_d$) to the origin
+  this time interval, i.e. $x(t_f) = 0$.  
+\end{itemize}
+
+\begin{itemize}
+  \item The set $\mathcal{R}$ of all reachable states is a linear
+(sub)space: $\mathcal{R} \subset \mathbb{R}^n$
+  \item The set $\mathcal{C}$ of all controllable states is a linear
+(sub)space: $\mathcal{C} \subset \mathbb{R}^n$
+\end{itemize}
+
+For CT systems $x_d \in \mathcal{R}$ if and only if  $x_d \in
+\mathcal{C}$, the Reachability and Controllability conditions are 
+equivalent. 
+
+\begin{itemize}
+  \item If the reachable (or controllable) set is the entire state
+    space, i.e., if $\mathcal{R} = \mathbb{R}^n$, then the system is
+    called reachable (or controllable).
+\end{itemize}
+
+One way of testing reachability/controllability is checking the rank
+(or the range space) the of reachability/controllability matrix
+%
+\begin{align*}
+  \mathbf{M} = \left[ \begin{array}{cccc} B & A B & \cdots & A^{n-1} B \end{array} \right]
+\end{align*} 
+%
+
+A CT system is reachable/controllable if and only of
+%
+\begin{align*}
+  \mathrm{rank} ( \mathbf{M} ) &= n
+\end{align*} 
+%
+or equivalently 
+%
+\begin{align*}
+ \mathrm{Ra} ( \mathbf{M} ) = \mathbb{R}^n
+\end{align*} 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection*{Reachability \& Controllability of DT Systems}
+
+For LTI a discrete time state-space representation
+%
+\begin{align*}
+  x[k+1] &= A x[k] + B u[k]
+\\
+  y[k] &= C x[k] + D u[k]
+\end{align*}
+%
+\begin{itemize}
+  \item A state $x_d$ is said to be \textbf{reachable}, if there exist
+  an input sequence, $u[k]$, that transfers the state vector 
+  $x[k]$ from the origin (i.e. $x[0] = 0$) to the state $x_d$ in finite
+  number of steps, i.e. $x[k] = x_d$ for some $k \in \mathbb{Z}^+$.
+ 
+  \item A state $x_d$ is said ti be \textbf{controllable},
+  if there exist an input sequence, $u[k]$, that transfers the state vector 
+  $x[k]$ from the initial state $x_d$ (i.e. $x[0] = x_d$) to the origin
+  in finite number of steps, i.e. $x[k] = 0$ for some $k \in \mathbb{Z}^+$ 
+\end{itemize}
+
+\begin{itemize}
+  \item The set $\mathcal{R}$ of all reachable states is a linear
+(sub)space: $\mathcal{R} \subset \mathbb{R}^n$
+  \item The set $\mathcal{C}$ of all controllable states is a linear
+(sub)space: $\mathcal{C} \subset \mathbb{R}^n$
+\end{itemize}
+
+Unlike from CT systems the Reachability and Controllability conditions 
+are not equivalent. 
+
+\begin{itemize}
+  \item $x_d \in \mathcal{R} \Rightarrow x_d \in \mathcal{C}$
+  \item $x_d \in \mathcal{C} \not\Rightarrow  x_d \in \mathcal{R}$
+  \item $\mathcal{R} \subset \mathcal{C}$
+\end{itemize}
+
+Thus Reachability implies Controllability but Controllability does not
+necessarily implies Reachability. For this reason, the term of Reachability 
+is generally preferred for DT systems.
+
+\begin{itemize}
+  \item If the reachable set is the entire state
+    space, i.e., if $\mathcal{R} = \mathbb{R}^n$, then the system is
+    called Reachable (and automatically Controllable).
+  \item If the controllable set is the entire state
+    space, i.e., if $\mathcal{C} = \mathbb{R}^n$, then the system is
+    called Controllable. But there is no guarantee for Reachability.  
+\end{itemize}
+
+\textbf{Example:} Consider the following autonomous system
+%
+\begin{align*}
+  x[k+1] &= \left[ \begin{array}{cc} 0 & 1 \\ 0 & 0 \end{array} \right] x[k] 
+\end{align*}
+%
+What can we infer about the Reachability and Controllability of this
+system.
+
+\textbf{Solution:} Since this is an autonomous system, obviously 
+%
+\begin{align*}
+ B &= \left[ \begin{array}{c} 0 \\ 0 \end{array} \right] 
+\end{align*}
+%
+Thus input has no affect on the states. If $x[0] = 0$, then
+$x[k] = 0 , \ \forall k > 0$. Thus the system is obviously 
+NOT Reachable. 
+
+Now let's compute $x[2]$ for a general $x[0] = x_0$,
+ %
+\begin{align*}
+ x[2] &= \left[ \begin{array}{cc} 0 & 1 \\ 0 & 0 \end{array} \right]^2 x_0
+= \left[ \begin{array}{cc} 0 & 0 \\ 0 & 0 \end{array} \right] x_0
+= \left[ \begin{array}{c} 0 \\ 0 \end{array} \right]  
+\end{align*}
+%
+Obviously $\forall x_0 \in \mathbb{R}^n \, x[2] = 0$, thus all
+state-space is Controllable. 
+
+\subsubsection*{Test of Reachability on DT Systems}
+
+When $x[0] = 0$, the solution of $x[k]$ is given by
+
+\begin{align*}
+  x[k] &= \sum\limits_{j = 0}^{k-1} G^{k-j-1} H u[j]
+         \\
+&=
+         \left[ \begin{array}{c|c|c|c|c} G^{k-1} H & G^{k-2} H &
+         \cdots & G H & H \end{array} \right]
+         \left[ \begin{array}{c}
+                  u[0] \\ u[1] \\ \vdots \\ u[k-2] \\ u[k-1]
+         \end{array} \right]
+\end{align*}
+
+Let 
+\begin{align*}
+ \mathbf{M}_k &= 
+         \left[ \begin{array}{c|c|c|c|c} G^{k-1} H & G^{k-2} H &
+         \cdots & G H & H \end{array} \right]
+\\
+ \mathbf{U}_k &=
+         \left[ \begin{array}{c}
+                  u[0] \\ u[1] \\ \vdots \\ u[k-2] \\ u[k-1]
+         \end{array} \right]
+\end{align*}
+%
+then if a state $x_d$ is reachable at $k$ steps, it should 
+satisfy the following equation for some $\mathbf{U}_k$.
+%
+\begin{align*}
+ \mathbf{M}_k \mathbf{U}_k &= x_d
+\end{align*}
+%
+In order this matrix equation to have a solution $x_d$
+should be in the range space of $\mathbf{M}_k$.
+%
+\begin{align*}
+  x_d \in \mathrm{Ra} ( \mathbf{M}_k ) 
+\end{align*}
+%
+It is fairly easy to see that 
+%
+\begin{align*}
+  \mathrm{Ra} ( \mathbf{M}_k ) \subset \mathrm{Ra} ( \mathbf{M}_{k+1} )
+\end{align*}
+%
+Thus increasing $k$ increases the chance of $x_d$ being in the
+reachable subset. 
+
+\textbf{Theorem:} For $k < n < l$
+%
+\begin{align*}
+  \mathrm{Ra} ( \mathbf{M}_k ) \subset \mathrm{Ra} ( \mathbf{M}_{n} )
+= \mathrm{Ra} ( \mathbf{M}_{l} )
+\end{align*}
+%
+\textbf{Proof:} In order to prove this Theorem, we need to use a
+different well-known theorem. 
+
+\textbf{Cayley-Hamilton Theorem} states that every square matrix
+satisfies its own characteristic equation. In other words, Let 
+$A \in \mathbb{R}^{n \times n}$, and let $p(\lambda)$ be the
+characteristic equation defined as
+%
+\begin{align*}
+ p(\lambda) &= \mathrm{det} \left( \lambda I - A \right) 
+\\
+&= \lambda^n + a_1 \lambda^{n-1} + \cdots + a_{n-1} \lambda + a_n \lambda
+\end{align*}
+%
+Then by Cayley-Hamilton theorem we conclude that
+%
+\begin{align*}
+ p(G) &= G^n + a_1 G^{n-1} + \cdots + a_{n-1} G + a_n I = 0
+\end{align*}
+%
+Using this we can see easily that 
+%
+\begin{align*}
+ G^n B = -a_1 G^{n-1} B - \cdots - a_{n-1} G B - a_n I
+\end{align*}
+%
+Now lets observe $M_{n+1}$
+%
+\begin{align*}
+\mathbf{M}_{n+1} &= 
+         \left[ \begin{array}{c|c|c|c|c} G^{n} H & G^{n-1} H &
+         \cdots & G H & H \end{array} \right]
+\end{align*}
+% 
+If we follow the Cayley-Hamilton theorem and associated derivations,
+we can see that the first column $G^{n} H$ is a linear combination of
+other columns, thus it can not increase the rank of the matrix. 
+
+This the reachability matrix is defined as
+%
+\begin{align*}
+ \mathbf{M} &= 
+         \left[ \begin{array}{c|c|c|c|c} G^{n-1} H & G^{n-2} H &
+         \cdots & G H & H \end{array} \right]
+\end{align*}
+%
+where $n$ is the dimension of the state-space.
+
+The DT system is called reachable if 
+\begin{align*}
+ \mathrm{rank} (\mathbf{M}) &= n 
+\end{align*}
+or equivalently
+\begin{align*}
+ \mathrm{Ra} (\mathbf{M}) &= \mathbb{R}^n
+\end{align*}
+
+\section*{Observability}
+
+It turns out that it is more natural to think in terms of
+``un-observability'' as reflected in the following definitions.
+
+\begin{itemize}
+  \item For CT systems, a state $x_o$ of a finite dimensional linear dynamical
+    system is said to be unobservable, if with $x(0) = x_o$ and
+    for every $u(t)$ we get the same $y(t)$ as we would with $x(0) =
+    0$. 
+
+  \item For DT systems, a state $x_o$ of a finite dimensional linear dynamical
+    system is said to be unobservable, if with $x[0] = x_o$ and
+    for every $u[k]$ we get the same $y[k]$ as we would with $x[0] =
+    0$. 
+\end{itemize}
+
+    In other words, for both CT and DT systems an unobservable initial condition cannot be
+    distinguished from the zero initial condition.
+
+  The set $\bar{\mathcal{O}}$ of all unobservable states is a linear
+  (sub)space: $\bar{\mathcal{O}} \subset \mathbb{R}^n$
+
+\begin{itemize}
+%
+ \item If the unobservable set only contains the origin, 
+   i.e., if $\bar{\mathcal{O}} = \lbrace 0 \rbrace$, 
+%
+ \item If the dimension of unobservable subspace is equal to 0,
+   $\mathrm{dim} = \left( \bar{\mathcal{O}} \right) = 0$,
+  %
+ \item If any initial condition, $x(0)$ or $x[0]$, can be uniquely 
+ determined from input-output measurement,
+%
+\end{itemize} 
+then the system is called Observable. 
+
+\subsubsection*{Test of Observability on CT Systems}
+
+One way of testing Observability of CT systems is checking the rank
+(or the range space, or null space) the of the Observability matrix
+%
+\begin{align*}
+  \mathbf{O} =
+\left[ \begin{array}{c}
+C 
+\\
+C A
+\\
+C A^2 
+\\
+  \vdots
+\\
+C A^{n-1}
+\end{array}
+\right] 
+\end{align*} 
+%
+
+A CT system is Observable if and only of
+%
+\begin{align*}
+  \mathrm{rank} ( \mathbf{O} ) &= n
+\end{align*} 
+%
+or equivalently 
+%
+\begin{align*}
+ \mathrm{Ra} ( \mathbf{O} ) = \mathbb{R}^n
+\end{align*} 
+%
+or equivalently 
+%
+\begin{align*}
+ \mathrm{dim} \left ( \mathcal{N} ( \mathbf{O} ) \right) = 0
+\end{align*} 
+
+\subsubsection*{Test of Observability on DT Systems}
+
+Without loss of generality, let's assume that $u[k] =0$.
+Under this assumption, we know that 
+%
+\begin{align*}
+  y[k] &= C G^k x_0
+\end{align*}
+%
+Based on this solution we can write
+%
+\begin{align*}
+  y[0] &= C x_0
+\\
+  y[1] &= C G x_0
+\\
+  y[2] &= C G^2 x_0
+\\
+  \vdots
+\\
+ y[k] &= C G^k x_0
+\end{align*}
+%
+If we combine these equations matrix form we obtain
+%
+\begin{align*}
+\left[ \begin{array}{c}
+  y[0] 
+\\
+  y[1] 
+\\
+  y[2] 
+\\
+  \vdots
+\\
+ y[k] 
+\end{array}
+\right]
+=
+\left[ \begin{array}{c}
+C 
+\\
+C G 
+\\
+C G^2 
+\\
+  \vdots
+\\
+C G^k
+\end{array}
+\right]
+x_0
+\end{align*}
+%
+Let 
+%
+\begin{align*}
+\mathbf{Y}_k =
+\left[ \begin{array}{c}
+  y[0] 
+\\
+  y[1] 
+\\
+  y[2] 
+\\
+  \vdots
+\\
+ y[k] 
+\end{array}
+\right]
+\quad , \quad
+\mathbf{O}_k =
+\left[ \begin{array}{c}
+C 
+\\
+C G 
+\\
+C G^2 
+\\
+  \vdots
+\\
+C G^k
+\end{array}
+\right]
+\end{align*}
+%
+Then the equation takes the simple form $\mathbf{Y}_k = \mathbf{O}_k
+x_0$. If $x_0$ is an unobservable state, then for-all $k$ we should have
+$\mathbf{O}_k x_0 = 0$, or equivalently $x_0 \in \mathcal{N} \left(
+  \mathbf{O}_k \right)$ (Null-space). 
+
+From this point, we can conclude that, the DT system is observable if
+and only if, 
+%
+\begin{align*}
+  \forall k \in \mathbb{Z}, \mathrm{dim} \left( \mathcal{N} \left(
+  \mathbf{O}_k \right) \right) = 0
+\end{align*}
+%
+However we don't need to test all $k \in \mathbb{Z}$. First of all
+it should be obvious that we should take $k$ as large as possible
+to guarantee weather $x_0$ is unobservable ot not. Formally speaking,
+%
+\begin{align*}
+ \mathcal{N} \left( \mathbf{O}_{k+1} \right) \subset \mathcal{N} \left( \mathbf{O}_{k} \right)
+\end{align*}
+%
+However from Cayley-Hamilton theorem, we know that $C A^n$ can be
+written as a linear combination of $\lbrace C A^{n-1} , \ C A^{n-2} ,
+\ \cdots , C A , \ C\rbrace$, thus we have 
+%
+%
+\begin{align*}
+ \mathcal{N} \left( \mathbf{O}_{n} \right) = \mathcal{N} \left( \mathbf{O}_{n-1} \right)
+\end{align*}
+%
+For this reason it is necessary and sufficient to test $\mathbf{O}_{n-1}$
+for observability. In conclusion, observability matrix is defined as
+%
+\begin{align*}
+  \mathbf{O} =
+\left[ \begin{array}{c}
+C 
+\\
+C G 
+\\
+C G^2 
+\\
+  \vdots
+\\
+C G^{n-1}
+\end{array}
+\right] 
+\end{align*}
+
+The DT system is called Observable if
+%
+\begin{align*}
+  \mathrm{rank} \left( \mathbf{O} \right) = n
+\end{align*}
+%
+or equivalently 
+%
+\begin{align*}
+  \mathrm{Ra} \left( \mathbf{O} \right) = \mathbb{R}^n
+\end{align*}
+%
+\begin{align*}
+ \mathrm{dim} \left ( \mathcal{N} ( \mathbf{O} ) \right) = 0
+\end{align*} 
+
+% **** This ENDS THE EXAMPLES. DON'T DELETE THE FOLLOWING LINE:
+\end{document}

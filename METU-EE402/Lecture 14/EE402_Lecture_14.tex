@@ -1,0 +1,347 @@
+%
+
+
+\documentclass[twoside]{article}
+\setlength{\oddsidemargin}{0.25 in}
+\setlength{\evensidemargin}{-0.25 in}
+\setlength{\topmargin}{-0.6 in}
+\setlength{\textwidth}{6.5 in}
+\setlength{\textheight}{8.5 in}
+\setlength{\headsep}{0.75 in}
+\setlength{\parindent}{0 in}
+\setlength{\parskip}{0.1 in}
+
+%
+% ADD PACKAGES here:
+%
+
+\usepackage{amsmath,amsfonts,graphicx}
+
+
+\newcounter{lecnum}
+\renewcommand{\thepage}{\thelecnum-\arabic{page}}
+\renewcommand{\thesection}{\thelecnum.\arabic{section}}
+\renewcommand{\theequation}{\thelecnum.\arabic{equation}}
+\renewcommand{\thefigure}{\thelecnum.\arabic{figure}}
+\renewcommand{\thetable}{\thelecnum.\arabic{table}}
+
+%
+% The following macro is used to generate the header.
+%
+\newcommand{\lecture}[4]{
+   \pagestyle{myheadings}
+   \thispagestyle{plain}
+   \newpage
+   \setcounter{lecnum}{#1}
+   \setcounter{page}{1}
+   \noindent
+   \begin{center}
+   \framebox{
+      \vbox{\vspace{2mm}
+    \hbox to 6.28in { {\bf EE402 - Discrete Time Systems
+	\hfill Spring 2018} }
+       \vspace{4mm}
+       \hbox to 6.28in { {\Large \hfill Lecture #1 \hfill} }
+       \vspace{2mm}
+       \hbox to 6.28in { {\it Lecturer: #2 \hfill } }
+      \vspace{2mm}}
+   }
+   \end{center}
+   \markboth{Lecture #1}{Lecture #1}
+
+   \vspace*{4mm}
+}
+
+\renewcommand{\cite}[1]{[#1]}
+\def\beginrefs{\begin{list}%
+        {[\arabic{equation}]}{\usecounter{equation}
+         \setlength{\leftmargin}{2.0truecm}\setlength{\labelsep}{0.4truecm}%
+         \setlength{\labelwidth}{1.6truecm}}}
+\def\endrefs{\end{list}}
+\def\bibentry#1{\item[\hbox{[#1]}]}
+
+
+\newcommand{\fig}[3]{
+			\vspace{#2}
+			\begin{center}
+			Figure \thelecnum.#1:~#3
+			\end{center}
+	}
+
+% Use these for theorems, lemmas, proofs, etc.
+\newtheorem{theorem}{Theorem}[lecnum]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{claim}[theorem]{Claim}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\newenvironment{proof}{{\bf Proof:}}{\hfill\rule{2mm}{2mm}}
+
+% **** IF YOU WANT TO DEFINE ADDITIONAL MACROS FOR YOURSELF, PUT THEM HERE:
+
+\begin{document}
+
+% Lecture Details
+\lecture{14}{Asst. Prof. M. Mert Ankarali}
+
+\par
+
+\section*{Asymptotic Stability of LTI Systems}
+
+\subsection*{Asymptotic Stability of CT-LTI Systems}
+
+Let's consider the state-representation of an CT LTI system 
+%
+\begin{align*}
+  \dot{x}(t) &= A x(t) + B u(t)
+\\
+  y(t) &= C x(t) + D u(t)
+\end{align*}
+%
+
+Given CT-LTI system is called \textit{asymptotically stable} if,
+with $u(t) = 0$ and $\forall x(0) \in \mathbb{R}^n$, we have
+%
+\begin{align*}
+  \lim_{t \to \infty} || x(t) || = 0
+\end{align*}
+
+\textbf{Example:} Let's assume that system matrix $A$ is
+diagonalizable and all eigenvalues are real. Find a
+necessary and sufficient condition such that the state-space
+representation is asymptotically stable. 
+
+\textbf{Solution:} When $u(t) = 0$, we have
+%
+\begin{align*}
+\dot{x}(t) &= A x(t)
+\\
+x(t) &= e^{A t} x_0
+\end{align*}
+%
+Since $A$ is diagonalizable, we know that
+%
+\begin{align*}
+  A &= P \left[ \begin{array}{cccc} \lambda_1 & 0 & \cdots & 0 
+\\
+0 & \lambda_2 &  \cdots & 0 
+\\
+\vdots &  &  \ddots &  
+\\
+0 &  &  &  \lambda_n
+\end{array} \right] P^{-1}
+\\
+e^{A t} &= P \left[ \begin{array}{cccc} e^{\lambda_1 t} & 0 & \cdots & 0 
+\\
+0 & e^{\lambda_2 t} &  \cdots & 0 
+\\
+\vdots &  &  \ddots &  
+\\
+0 &  &  &  e^{\lambda_n t}
+\end{array} \right] P^{-1}
+\end{align*}
+
+Let $P x_0 = [e_1 \ e_2 \ \cdots \ e_n ]^T, e_i \in \mathbb{R}$, then 
+$x(t)$ can be expressed as
+
+\begin{align*}
+x(t) &= P \left[ \begin{array}{cccc} e^{\lambda_1 t} & 0 & \cdots & 0 
+\\
+0 & e^{\lambda_2 t} &  \cdots & 0 
+\\
+\vdots &  &  \ddots &  
+\\
+0 &  &  &  e^{\lambda_n t}
+\end{array} \right] 
+\left[ \begin{array}{c} e_1 \\ e_2 \\ \vdots \\ e_n \end{array}
+  \right] 
+\\
+x(t) &= P \left(
+\left[ \begin{array}{c} e_1 e^{\lambda_1 t} \\ 0 \\ \vdots \\
+         0 \end{array} \right]
++
+\left[ \begin{array}{c} 0 \\ e_2 e^{\lambda_2 t} \\ \vdots \\
+         0 \end{array} \right]
++ \cdots
+\left[ \begin{array}{c} 0 \\ 0 \\ \vdots \\
+         e_n e^{\lambda_n t}  \end{array} \right]
+\right)
+\end{align*}
+
+Then it is easy to see that
+\begin{align*}
+    \forall x_0 \in \mathbb{R}^n, \lim_{t \to \infty} || x(t) || = 0
+    \iff \forall i \in \lbrace 1 , \ \cdots ,  \ n \rbrace, \lambda_i < 0
+\end{align*}
+
+\subsection*{Asymptotic Stability of DT-LTI Systems}
+
+Now, let's consider the state-representation of an DT LTI system 
+%
+\begin{align*}
+  x[k+1] &= G x[k] + H u[k]
+\\
+  y[k] &= C x[k] + D u[k]
+\end{align*}
+%
+
+Given DT-LTI system is called \textit{asymptotically stable} if,
+with $u[k] = 0]$ and $\forall x(0) \in \mathbb{R}^n$, we have
+%
+\begin{align*}
+  \lim_{k \to \infty} || x[k] || = 0
+\end{align*}
+
+\textbf{Example:} Let's assume that system matrix $G$ is
+diagonalizable
+and all eigenvalues are real. Find a
+necessary and sufficient condition such that the state-space
+representation is asymptotically stable. 
+
+\textbf{Solution:} When $u[k] = 0$, we have
+%
+\begin{align*}
+x[k+1] &= G x[k]
+\\
+x(t) &= G^k x_0
+\end{align*}
+%
+Since $G$ is diagonalizable, we know that
+%
+\begin{align*}
+  G &= P \left[ \begin{array}{cccc} \lambda_1 & 0 & \cdots & 0 
+\\
+0 & \lambda_2 &  \cdots & 0 
+\\
+\vdots &  &  \ddots &  
+\\
+0 &  &  &  \lambda_n
+\end{array} \right] P^{-1}
+\\
+G^k &= P \left[ \begin{array}{cccc} \lambda_1^k & 0 & \cdots & 0 
+\\
+0 & \lambda_2^l &  \cdots & 0 
+\\
+\vdots &  &  \ddots &  
+\\
+0 &  &  &  \lambda_n^k
+\end{array} \right] P^{-1}
+\end{align*}
+
+Let $P x_0 = [e_1 \ e_2 \ \cdots \ e_n ]^T, e_i \in \mathbb{R}$, then 
+$x[k]$ can be expressed as
+
+\begin{align*}
+x[k] &= P \left(
+\left[ \begin{array}{c} e_1 \lambda_1^k\\ 0 \\ \vdots \\
+         0 \end{array} \right]
++
+\left[ \begin{array}{c} 0 \\ e_2 \lambda_2^k \\ \vdots \\
+         0 \end{array} \right]
++ \cdots
+\left[ \begin{array}{c} 0 \\ 0 \\ \vdots \\
+         e_n \lambda_n^k \end{array} \right]
+\right)
+\end{align*}
+
+Then it is easy to see that
+\begin{align*}
+    \forall x_0 \in \mathbb{R}^n, \lim_{k \to \infty} || x[k] || = 0
+    \iff \forall i \in \lbrace 1 , \ \cdots ,  \ n \rbrace, |
+  \lambda_i | < 1
+\end{align*}
+
+\section*{BIBO Stability of LTI Systems}
+
+A CT-system written in state-space form 
+is stable if and only if the poles of $H(s) = C \left[ s I -
+  A\right]^{-1} B + D$ are located strictly in the open left
+half plane. 
+
+A DT-system written in state-space form 
+is stable if and only if the poles of $H(z) = C \left[ z I -
+  G\right]^{-1} H + D$ are located strictly inside the
+unit circle.
+
+We did not mention weather the system is SISO or MIMO. 
+%
+\begin{itemize}
+  \item Do you think that BIBO notion is valid for MIMO systems? 
+  \item Do you think that checking ``poles'' of $H(s)$ or $H(z)$ is
+    a valid method for checking stability?
+    \item What are the poles of $H(s)$ and $H(z)$?
+\end{itemize}
+
+\textbf{Example:} Consider the following state-space form of a
+CT system 
+%
+\begin{align*}
+\dot{x}(t) &= 
+\left[ \begin{array}{cc} 0 & 1 \\ 1 & 0 \end{array} \right]
+x(t)
++
+\left[ \begin{array}{c} 0 \\ 1 \end{array} \right] u(t)
+\\
+y(t) &= \left[ \begin{array}{cc} 1 & -1 \end{array} \right] x(t)
+\end{align*}
+
+Is this system asymptotically stable? 
+
+\textbf{Solution:} Let's compute the eigenvalues of $A$
+
+\begin{align*}
+\mathrm{det} \left( \left[ \begin{array}{cc} \lambda & -1 \\ -1 &
+                                                                  \lambda \end{array}
+                                                                  \right]
+                                                                  \right)
+                                                                  =
+                                                                  \lambda^2
+                                                                  - 1
+\\
+\lambda_{1,2} = \pm 1
+\end{align*}
+
+Thus the system is NOT Asymptotically Stable.
+
+Is this system BIBO stable? 
+
+\textbf{Solution:} Let's compute the $H(s)$
+
+\begin{align*}
+  H(s) &= \left[ \begin{array}{cc} 1 & -1 \end{array} \right]
+\left[ \begin{array}{cc} s & -1 \\ -1 & s\end{array}
+                                                                  \right]^{-1}
+\left[ \begin{array}{c} 0 \\ 1 \end{array} \right]
+\\
+&=
+\left[ \begin{array}{cc} 1 & -1 \end{array} \right]
+\left[ \begin{array}{cc} s & 1 \\ 1 & s\end{array}
+                                                                  \right]
+\left[ \begin{array}{c} 0 \\ 1 \end{array} \right] \frac{1}{s^2 - 1}
+\\
+&=
+\left[ \begin{array}{cc} 1 & -1 \end{array} \right]
+\left[ \begin{array}{cc} s & 1 \\ 1 & s\end{array}
+                                                                  \right]
+\left[ \begin{array}{c} 0 \\ 1 \end{array} \right] \frac{1}{s^2 - 1}
+\\
+&=
+\left[ \begin{array}{cc} 1 & -1 \end{array} \right]
+\left[ \begin{array}{c} 1 \\ s \end{array} \right] \frac{1}{s^2 - 1}
+\\
+&= \frac{-(s-1)}{s^2 - 1} 
+\\
+&= \frac{-1}{s + 1} 
+\end{align*}
+
+Indeed, the system is BIBO Stable.
+
+In conclusion
+
+\begin{itemize}
+  \item Asymptotic Stability $\rightarrow$ BIBO Stability 
+  \item BIBO Stability $\not\rightarrow$ Asymptotic Stability
+\end{itemize} 
+
+% **** This ENDS THE EXAMPLES. DON'T DELETE THE FOLLOWING LINE:
+\end{document}

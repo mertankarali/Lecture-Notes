@@ -1,0 +1,415 @@
+% 
+
+
+\documentclass[twoside]{article}
+\setlength{\oddsidemargin}{0.25 in}
+\setlength{\evensidemargin}{-0.25 in}
+\setlength{\topmargin}{-0.6 in}
+\setlength{\textwidth}{6.5 in}
+\setlength{\textheight}{8.5 in}
+\setlength{\headsep}{0.75 in}
+\setlength{\parindent}{0 in}
+\setlength{\parskip}{0.1 in}
+
+%
+% ADD PACKAGES here:
+%
+
+\usepackage{amsmath,amsfonts,graphicx,mathdots}
+
+
+\newcounter{lecnum}
+\renewcommand{\thepage}{\thelecnum-\arabic{page}}
+\renewcommand{\thesection}{\thelecnum.\arabic{section}}
+\renewcommand{\theequation}{\thelecnum.\arabic{equation}}
+\renewcommand{\thefigure}{\thelecnum.\arabic{figure}}
+\renewcommand{\thetable}{\thelecnum.\arabic{table}}
+
+%
+% The following macro is used to generate the header.
+%
+\newcommand{\lecture}[4]{
+   \pagestyle{myheadings}
+   \thispagestyle{plain}
+   \newpage
+   \setcounter{lecnum}{#1}
+   \setcounter{page}{1}
+   \noindent
+   \begin{center}
+   \framebox{
+      \vbox{\vspace{2mm}
+    \hbox to 6.28in { {\bf EE402 - Discrete Time Systems
+	\hfill Spring 2018} }
+       \vspace{4mm}
+       \hbox to 6.28in { {\Large \hfill Lecture #1 \hfill} }
+       \vspace{2mm}
+       \hbox to 6.28in { {\it Lecturer: #2 \hfill } }
+      \vspace{2mm}}
+   }
+   \end{center}
+   \markboth{Lecture #1}{Lecture #1}
+
+   \vspace*{4mm}
+}
+
+\renewcommand{\cite}[1]{[#1]}
+\def\beginrefs{\begin{list}%
+        {[\arabic{equation}]}{\usecounter{equation}
+         \setlength{\leftmargin}{2.0truecm}\setlength{\labelsep}{0.4truecm}%
+         \setlength{\labelwidth}{1.6truecm}}}
+\def\endrefs{\end{list}}
+\def\bibentry#1{\item[\hbox{[#1]}]}
+
+
+\newcommand{\fig}[3]{
+			\vspace{#2}
+			\begin{center}
+			Figure \thelecnum.#1:~#3
+			\end{center}
+	}
+
+% Use these for theorems, lemmas, proofs, etc.
+\newtheorem{theorem}{Theorem}[lecnum]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{claim}[theorem]{Claim}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\newenvironment{proof}{{\bf Proof:}}{\hfill\rule{2mm}{2mm}}
+
+% **** IF YOU WANT TO DEFINE ADDITIONAL MACROS FOR YOURSELF, PUT THEM HERE:
+
+\begin{document}
+
+% Lecture Details
+\lecture{16}{Asst. Prof. M. Mert Ankarali}
+
+\par
+
+\section*{State-Feedback \& Pole Placement}
+
+Given a discrete-time state-evolution equation
+%
+\begin{align*}
+  x[k+1] = G x[k] + H u[k]
+\end{align*}
+%
+If direct measurements of all of the states of the
+system (e.g. $y[k] = x[k]$) are available, the most
+popular control method is the linear state feedback
+control,
+%
+\begin{align*}
+ u[k] = - K x[k]
+\end{align*}
+%
+which can be thought as a generalization of P controller
+to the vector form. Under this control law, without any
+reference signal, the system becomes an autonomous 
+system
+%
+%
+\begin{align*}
+ x[k+1] = G x[k] + H (-K x[k])
+  \\
+ x[k+1] = \left(  G - H K \right) x[k] 
+\end{align*}
+%
+The system matrix of this new autonomous system is
+$\hat{G} = G - H K$. Important questions is how to choose $K$. 
+Note that 
+%
+\begin{align*}
+  K &\in \mathbb{R}^n \quad \mathrm{Single-Input} \\
+  K &\in \mathbb{R}^{n \times p} \quad \mathrm{Multi-Input}
+\end{align*}
+%
+As in all of the control desgn techniques, the most critical criterion
+is stability, thus we want all of the eigenvalues to be strictly
+inside the unit-circle. However, we know that there could be 
+different requirements on the poles/eigenvalues of the system.
+
+The fundamental principle of ``pole-placement'' design is that
+we first define a desired closed-loop eigenvalue set 
+$\mathcal{E}^* = \lbrace \lambda_1^* , \ \cdots, \  \lambda_1^* \rbrace$, and
+then if possible we choose $K^*$ such that the closed-loop
+eigenvalues match the desired ones.
+
+The necessary and sufficient condition on arbitrary pole-placement
+is that the system should be Reachable.
+
+In Pole-Placement, first step is computing the desired 
+characteristic polynomial. 
+%
+\begin{align*}
+ \mathcal{E}^* &= \lbrace \lambda_1^* , \ \cdots, \  \lambda_n^*
+                 \rbrace
+  \\
+  p^*(z) &= \left( z - \lambda_1^* \right) \cdots \left( z - \lambda_n^*
+         \right)                         
+  \\
+  &= z^n + a_1^* z^{n-1} + \cdots + a_{n-1}^* z + a_n^*
+\end{align*}
+%
+Then we tune $K$ such that 
+\begin{align*}
+  \mathrm{det} \left( z I - ( G - H K ) \right) = p^*(z)
+\end{align*}
+
+\subsection*{Direct Design of State-Feedback Gain}
+
+If $n$ is small, the most efficient method could be the direct
+design. 
+
+\textbf{Example:} Consider the following DT system
+%
+\begin{align*}
+ x[k+1] &= \left[ \begin{array}{cc} 1 & 0 \\ 0 & 2 \end{array} \right] x[k]
+    + \left[ \begin{array}{c} 1 \\ 1 \end{array} \right] u[k]
+\end{align*}
+% 
+Design a state-feedback rule such that poles are located at 
+$\lambda_{1,2} = 0$ (Dead-beat gain)
+
+\textbf{Solution:} Desired characteristic equation can be computed as
+%
+\begin{align*}
+  p^*(z) = z^2
+\end{align*}
+%
+Let $K = \left[ \begin{array}{cc} k_1 & k_2 \end{array} \right]$, then
+the characteristic equation of $\hat{G}$ can be computed as
+%
+\begin{align*}
+  \mathrm{det} \left( z I - ( G - H K ) \right) &= 
+  \mathrm{det} \left(
+  \left[ \begin{array}{cc} z - 1 + k_1 & k_1 \\ k_2 & z - 2 + k_2 \end{array} \right]
+  \right)
+\\
+&= z^2 + z (k_1 + k_2 - 3) + (2 -2 k_1 - k_2)
+\end{align*}
+%
+If we match the equations
+%
+\begin{align*}
+z^2 + z (k_1 + k_2 - 3) + (2 -2 k_1 - k_2) &= z^2
+\\
+k_1 + k_2 &= 3
+\\
+2k_1 + k_2 &= 2
+\\
+k_1 &= -1
+\\
+k_2 &= 4
+\end{align*}
+%
+Thus $K = \left[ \begin{array}{cc} -1 & 4 \end{array} \right]$.
+Now let's compute $\hat{G}^k$ 
+%
+\begin{align*}
+\hat{G} &= \left[ \begin{array}{cc} 2 & -4 \\ 1 & -2 \end{array} \right] 
+\\
+\hat{G}^2 &= \left[ \begin{array}{cc} 2 & -4 \\ 1 & -2 \end{array} \right] 
+\left[ \begin{array}{cc} 2 & -4 \\ 1 & -2 \end{array} \right] = 
+\left[ \begin{array}{cc} 0 & 0 \\ 0 & 0 \end{array} \right]
+\\
+&\vdots
+\end{align*}
+%
+It can be seen that closed-loop system rejects all initial condition
+perturbations in 2 steps. 
+
+\subsection*{Design of State-Feedback Gain Using Reachable Canonical
+Form}
+
+Let's assume that the state-space representation is in controllable
+canonical form and we have access to the all states of this form
+%
+\begin{align*}
+x[k+1] &= \left[ \begin{array}{ccccc} 0 & 1 & 0 & \cdots & 0 \\ 0 & 0 & 1 &
+                                                                      \cdots & 0
+\\ \vdots & \vdots & \vdots & & \vdots
+\\ 0 & 0 & 0 & \cdots & 1
+    \\ -a_n & -a_{n-1} & -a_{n-2} & \cdots & -a_1 \end{array} \right] x[k] +
+\left[ \begin{array}{c} 0\\ 0 \\ \vdots \\ 0
+    \\ 1 \end{array} \right] u[k]
+\end{align*}
+%
+Let $K = \left[ \begin{array}{ccc} k_n & \cdots & k_1 \end{array} \right]$, then
+autonomous system takes the form
+%
+%
+\begin{align*}
+x[k+1] &= \left[ \begin{array}{ccccc} 0 & 1 & 0 & \cdots & 0 \\ 0 & 0 & 1 &
+                                                                      \cdots & 0
+\\ \vdots & \vdots & \vdots & & \vdots
+\\ 0 & 0 & 0 & \cdots & 1
+    \\ -a_n & -a_{n-1} & -a_{n-2} & \cdots & -a_1 \end{array} \right] x[k] -
+\left[ \begin{array}{c} 0\\ 0 \\ \vdots \\ 0
+    \\ 1 \end{array} \right] 
+\left[ \begin{array}{ccc} k_n & \cdots & k_1 \end{array} \right]
+x[k]
+\\
+x[k+1] &= \left[ \begin{array}{ccccc} 0 & 1 & 0 & \cdots & 0 \\ 0 & 0 & 1 &
+                                                                      \cdots & 0
+\\ \vdots & \vdots & \vdots & & \vdots
+\\ 0 & 0 & 0 & \cdots & 1
+    \\ -(a_n+k_n) & -(a_{n-1} + k_{n-1}) & -(a_{n-2} + k_{n-2}) &
+                                                                  \cdots
+                                                         & -(a_1 + k_1) \end{array} \right] x[k]
+\end{align*}
+%
+Let $p^*(z) = z^2 + a_1^* z + \cdots + a_{n-1}^* z + a_n^*$, then $K$
+can be computed as
+%
+\begin{align*}
+  K = \left[ \begin{array}{ccc} (a^*_n - a_n) & \cdots & (a^*_1 - a_1) \end{array} \right]
+\end{align*}
+
+However, what if the system is not in Reachable canonical form. We can
+find a transformation which finds the Reachable canonical
+representation. 
+
+The reachability matrix of a state-space representation is given as
+%
+\begin{align*}
+  M = \left[ \begin{array}{c|c|c|c} H & G H & \cdots & G^{n-1} H\end{array} \right]
+\end{align*}
+%
+Let's define a transformation matrix $T$ as follows:
+%
+\begin{align*}
+  T &= M W \quad , \quad x[k] = T \hat{x}[k]
+\\
+ \hat{x}[k+1] &= \left[ T^{-1} G T \right] \hat{x}[k] + T^{-1} H u[k]
+\end{align*}
+%
+where
+%
+\begin{align*}
+  W = \left[ \begin{array}{ccccc} a_{n-1} & a_{n-2} & \cdots & a_1 & 1
+               \\ 
+a_{n-2} & a_{n-3} & \cdots & 1 & 0
+\\ \vdots & \vdots & \iddots & & \vdots
+\\ a_1 & 1 &  & & 
+    \\ 1 & 0 & \cdots &  & 0 \end{array} \right] 
+\end{align*}
+%
+Then it is given that
+%
+\begin{align*}
+  T^{-1} G T &= \hat{G} =  \left[ \begin{array}{ccccc} 0 & 1 & 0 & \cdots & 0 \\ 0 & 0 & 1 &
+                                                                      \cdots & 0
+\\ \vdots & \vdots & \vdots & & \vdots
+\\ 0 & 0 & 0 & \cdots & 1
+    \\ -a_n & -a_{n-1} & -a_{n-2} & \cdots & -a_1 \end{array} \right]
+\\
+  T^{-1} H &= \hat{H} = \left[ \begin{array}{c} 0\\ 0 \\ \vdots \\ 0
+    \\ 1 \end{array} \right]
+\end{align*}
+%
+Let's compute $T \hat{H}$
+%
+\begin{align*}
+T \hat{H} &= M W \hat{H} = M 
+\left[ \begin{array}{ccccc} a_{n-1} & a_{n-2} & \cdots & a_1 & 1
+               \\ 
+a_{n-2} & a_{n-3} & \cdots & 1 & 0
+\\ \vdots & \vdots & \iddots & & \vdots
+\\ a_1 & 1 &  & & 
+    \\ 1 & 0 & \cdots &  & 0 \end{array} \right] 
+\left[ \begin{array}{c} 0\\ 0 \\ \vdots \\ 0
+    \\ 1 \end{array} \right]
+\\
+&= \left[ \begin{array}{c|c|c|c} H & G H & \cdots & G^{n-1}
+                                                    H\end{array}
+                                                    \right]
+\left[ \begin{array}{c} 1\\ 0 \\ \vdots \\ 0
+    \\ 0 \end{array} \right]
+\\
+&= H
+\end{align*}
+%
+A similar approach (but longer) can be used to show 
+that $T^{-1} G T = \hat{G}$. We know how to design a
+state-feedback gain $\hat{K}$ for the Reachable
+canonical form. Given $\hat{K}$ 
+$u[k]$ is given as
+%
+\begin{align*}
+  u[k] &= -\hat{K} \hat{x}[k]
+\\ 
+&= - \hat{K} T^{-1} \hat{x}[k]
+\\
+K &= \hat{K} T^{-1}
+\end{align*}
+
+\textbf{Example 2:} Consider the following DT system
+%
+\begin{align*}
+ x[k+1] &= \left[ \begin{array}{cc} 1 & 0 \\ 0 & 2 \end{array} \right] x[k]
+    + \left[ \begin{array}{c} 1 \\ 1 \end{array} \right] u[k]
+\end{align*}
+% 
+Design a state-feedback rule using the Reachable canonical form
+approach, such that poles are located at 
+$\lambda_{1,2} = 0$ (Dead-beat gain)
+
+\textbf{Solution:} Characteristic equation of $G$ can be derived as
+%
+\begin{align*}
+ \mathrm{det} \left(  \left[ \begin{array}{cc} z-1 & 0 \\ 0 &
+                                                              z-2 \end{array} \right]  \right)
+ = z^2 - 3 z + 2
+\end{align*}
+%
+The Reachability matrix can be computed as
+%
+\begin{align*}
+  M = \left[ \begin{array}{c|c} H & G H \end{array} \right] = \left[ \begin{array}{cc} 1 & 1 \\ 1 & 2 \end{array} \right]
+\end{align*}
+%
+The matrix $W$ can be computed as
+%
+\begin{align*}
+  W =  \left[ \begin{array}{cc} -3 & 1 \\ 1 & 0 \end{array} \right]
+\end{align*}
+%
+Transformation matrix, $T$ and its inverse $T^{-1}$ can be computed 
+as
+\begin{align*}
+  T &= M W =  
+\left[ \begin{array}{cc} 1 & 1 \\ 1 & 2 \end{array} \right]
+\left[ \begin{array}{cc} -3 & 1 \\ 1 & 0 \end{array} \right]
+= \left[ \begin{array}{cc} -2 & 1 \\ -1 & 1 \end{array} \right]
+\\
+T^{-1} &= \left[ \begin{array}{cc} -1 & 1 \\ -1 & 2 \end{array} \right]
+\end{align*}
+%
+Given that desired characteristic polynomial is $p^*(z) = z^2$,
+$\hat{K}$ of reachable canonical from can be computed as
+%
+\begin{align*}
+  \hat{K} &= \left[ \begin{array}{cc} - a_2 & -
+                                                       a_1 \end{array}
+                                                       \right]
+\\
+&= \left[ \begin{array}{ccc} -2 & 3 \end{array}
+                                                       \right]
+\end{align*}
+%
+Finally $K$ can be computed as
+%
+\begin{align*}
+  K &= \hat{K} T^{-1} = \left[ \begin{array}{ccc} -2 & 3 \end{array}
+                                                       \right]
+\left[ \begin{array}{cc} -1 & 1 \\ -1 & 2 \end{array} \right]
+\\
+&= \left[ \begin{array}{ccc} -1 & 4 \end{array}
+                                                       \right]
+\end{align*}
+%
+As expected this is the same result with the one found in Example 1 (Direct-Method).
+
+% **** This ENDS THE EXAMPLES. DON'T DELETE THE FOLLOWING LINE:
+\end{document}

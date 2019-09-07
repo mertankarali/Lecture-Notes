@@ -1,0 +1,247 @@
+% Miscellaneous in text commands
+\newcommand{\etal}{{\em et.\ al.\ }}
+\newcommand{\ie}{{\em i.e.}}
+\newcommand{\eg}{{\em e.g.}}
+\newcommand{\eref}[1]{(\ref{eq:#1})}
+\newcommand{\fref}[1]{Figure~\ref{fig:#1}}
+\newcommand{\sref}[1]{Section~\ref{sec:#1}}
+\newcommand{\aref}[1]{Appendix~\ref{app:#1}}
+\newcommand{\cref}[1]{Section~\ref{sec:#1}}
+
+% Theorem definitions, etc
+
+% \newtheorem{theorem}{Theorem}
+%\newtheorem{prop}{Proposition}
+%\newtheorem{claim}{Claim}[prop]
+% \newtheorem{conjecture}{Conjecture}
+% \newtheorem{corollary}[theorem]{Corollary}
+% \newtheorem{definition}{Definition}
+% \newtheorem{lemma}{Lemma}[proposition]
+% \newtheorem{fact}[theorem]{Fact}
+% \newtheorem{example}{Example}
+
+
+
+
+% Useful Math Stuff
+\newcommand{\bvec}[1]{\mathbf{#1}}
+%\newcommand{\bvec}[1]{\mathchoice{\mbox{\boldmath$\displaystyle#1$}}
+\newcommand{\modulo}{{\,\mathrm{mod}}\,}
+% Spaces, groups and manifolds
+
+
+\newcommand{\Real}{\ensuremath{\mathbb R}}
+\newcommand{\Nat}{\ensuremath{\mathbb N}}
+\newcommand{\VS}[1]{\ensuremath{V^{#1}}}
+\newcommand{\EU}[1]{\ensuremath{{\mathbb E}^{#1}}}
+\newcommand{\Affine}[1]{\ensuremath{ {\mathbb A}^{#1}}}
+\newcommand{\Aff}[1]{\ensuremath{ {\mathbb A}^{#1}}}
+\newcommand{\Imag}{\ensuremath{{\mathbb C}}}
+% Projective space
+\newcommand{\Prj}[1]{\ensuremath{{\mathbb P}^{#1}}}
+\newcommand{\RP}[1]{\ensuremath{{\mathbb{RP}}^{#1}}}
+%General Linear Group
+\newcommand{\GL}[1]{\ensuremath{{\mathrm{GL}(#1)}}}
+% Affine group
+\newcommand{\AF}[1]{\ensuremath{{\mathrm{A}(#1)}}}
+% Group of R.T.:
+\newcommand{\SE}[1]{\ensuremath{{\mathrm{SE}(#1)}}}
+\newcommand{\se}[1]{\ensuremath{\mathfrak{se}(#1)}}
+% Projective linear group
+\newcommand{\PL}[1]{\ensuremath{{\mathrm{PL}(#1)}}}
+% Skew
+\newcommand{\Skew}[1]{\ensuremath{{\mathrm{Skew}(#1)}}}
+% Group of Rot:
+\newcommand{\SO}[1]{\ensuremath{{\mathrm{SO}(#1)}}}
+\newcommand{\so}[1]{\ensuremath{\mathfrak{so}(#1)}}
+% Sphere
+\newcommand{\Sphr}[1]{\ensuremath{{\mathrm S}^{#1}}}
+% Torus:
+\newcommand{\Torus}[1]{\ensuremath{{\mathrm{T}^{#1}}}}
+% Disk
+\newcommand{\Disk}[1]{\ensuremath{{\mathbf{D}^{#1}}}}
+% Interval
+\newcommand{\Interval}[1]{\ensuremath{{\mathbf{I}^{#1}}}}
+
+%\newcommand{\implies}{\Longrightarrow}
+\newcommand{\goesto}{\rightarrow}
+
+% group symbols
+\newcommand{\stimes}{\,\circledS\,}
+
+% Some useful functions:
+\newcommand{ \diag }[1] { {\mathrm{diag}} \crl{#1} }
+\newcommand{ \diagn }[2] { \diag{ #1, ..., #2 } }
+\newcommand{\driv}[2]{ \frac{d{#1}}{d{#2} }  }
+\newcommand{\dtworiv}[2]{ \frac{d^2{#1}}{d{#2}^2 }  }
+\newcommand{\dtee}[1]{ \frac{d#1}{dt}  }
+\newcommand{\dtwotee}[1]{ \frac{d^2#1}{dt^2}  }
+\newcommand{\absvl}[1]{ \left| #1 \right| }
+\newcommand{\inner}[2]{\left<#1\,,#2\right>}
+\newcommand{\norm}[1]{ \left\| #1 \right\| }
+\newcommand{\scr}[1]{ { \mathcal{ #1} } }
+%    \newcommand{\frm}[1]{ {\sl #1} }
+\newcommand{\dt}[1]{ \stackrel{\cdot}{#1} }
+\newcommand{\ddt}[1]{ \frac{d}{dt} #1}
+\newcommand{\str}[1]{ #1^{\ast}  }
+\newcommand{\vcr}[1]{ \overline{#1}^{\! \succ}  }
+\newcommand{\mexp}[1]{ \exp \crl{ #1 }  }
+
+\newcommand{ \lmps }[3]{ #2 \stackrel{  #1} { \longleftarrow }  #3}
+\newcommand{ \mathrmps }[3]{ #2 \stackrel{   #1} { \longrightarrow }  #3}
+\newcommand{ \mps }[3]{ #1 \st #2 \rightarrow #3}
+\newcommand{ \mpsdiffeo }[3]{ #1 \st #2 \approx #3}
+\newcommand{ \mpst }[3]{ #1 \st #2 \mapsto #3}
+
+\newcommand{ \sspan }[1]{  { \mathrm{span} } \crl{ #1 } }
+\newcommand{ \innr }[2]{ \langle \: #1 \mid #2 \: \rangle }
+\newcommand{ \altinnr }[2]{ \prl{ \: #1 \mid #2 \: } }
+
+\newcommand{ \choicetwo }[5] {
+  #1 \df
+  \left\{ \begin{array}{c  l }
+      #2  & \st #3     \\
+      #4  & \st #5
+    \end{array} \right.  }
+
+
+%\newcommand{ \altjac }[2] { \frac{ \partial #2 }{ \partial #1} \:}
+\newcommand{ \jac }[2] { D_{#1} #2 }
+\newcommand{ \prjac }[2] { \prl{ D_{#1} #2 } \:}
+\newcommand{ \brjac }[2] { \brl{ D_{#1} #2 } \:}
+%    \newcommand{ \jacat }[3] { \brl{D_{#1} #2 \mid_{#3} } }
+%    \newcommand{ \jacat }[3] { \brl{D_{#1} #2 \prl{#3}} }
+\newcommand{ \jacat }[3] { D_{#1} #2 \prl{#3} }
+\newcommand{ \tjac }[2] { \widetilde { D_{#1} #2 } \:}
+\newcommand{ \tjacat }[3] { \widetilde{ [D_{#1} #2] \: }(#3)  }
+\newcommand{ \hess }[2] { D^{2}_{#1} #2 }
+\newcommand{ \hessat }[3] { \brl{ D^{2}_{#1} #2 } \prl{#3} }
+
+
+\newcommand{ \prl } [1] {  \left( #1 \right) }
+\newcommand{ \brl } [1] {  \left[ #1 \right] }
+\newcommand{ \crl } [1] { \left\{ #1 \right\} }
+
+% Covariant Derivatives
+%\newcommand{ \covdtee }[1] { \frac{ D #1 }{ d t}  }
+%\newcommand{ \covd }[2] { \nabla_{#1} \: #2 \:}
+\newcommand{ \grad }{\nabla}
+%    \newcommand{ \grad }{ \mathit{\mathrm{grad}}}
+\newcommand{ \diff }[1] { \mathrm{d} #1 }
+\newcommand{ \push }[1] {  {#1}_{\ast} }
+\newcommand{ \pull }[1] {  #1^{\ast} }
+
+\newcommand{ \prme } [1] { #1^{\mathtt '} }
+\newcommand{ \dprme } [1] { #1^{\mathtt ''} }
+\newcommand{ \tprme } [1] { #1^{\mathtt '''} }
+\newcommand{ \Sqrt} [1] { \sqrt{} \overline{ #1 } }
+
+\newcommand{ \detr} [1] {  \left| #1 \right| }
+%\newcommand{ \detr} [1] {  \left| #1 \right| }
+
+\newcommand{ \sgn} [1] {  { \mathrm sgn } \prl{#1} }
+
+\newcommand{ \stk } [1] { #1^{  \mathtt S}}
+
+\newcommand{ \tld } [1] { \widetilde{#1} }
+\newcommand{ \prtld } [1] { \tld{ \prl{#1} } }
+\newcommand{ \brtld } [1] { \tld{ \brl{#1} } }
+\newcommand{ \crtld } [1] { \tld{ \crl{#1} } }
+
+\newcommand{ \bdry } [1] { \partial { #1} }
+\newcommand{ \prbdry } [1] { \bdry{ \prl{#1} } }
+\newcommand{ \brbdry } [1] { \bdry{ \brl{#1} } }
+\newcommand{ \crbdry } [1] { \bdry{ \crl{#1} } }
+
+%    \newcommand{ \intr } [1] {
+%\settowidth{\wid}{#1} #1 \hspace{-.5 \wid } ^{\circ} \hspace{.5 \wid}
+%                             }
+%    \newcommand{ \intr } [1] { { \mathrm int }(#1) }
+%    \newcommand{ \hintr } [1] { ^{ ^{^\circ} } \!#1 }
+\def\intr{\mathring}
+%\newcommand{ \intr } [1] {\stackrel{\circ}{#1}}
+\newcommand{ \printr } [1] { \intr{ \prl{#1} } }
+\newcommand{ \brintr } [1] { \intr{ \brl{#1} } }
+\newcommand{ \crintr } [1] { \intr{ \crl{#1} } }
+
+\newcommand{ \cl } [1] { \rline{#1} }
+\newcommand{ \prcl } [1] { \cl{ \prl{#1} } }
+\newcommand{ \brcl } [1] { \cl{ \brl{#1} } }
+\newcommand{ \crcl } [1] { \cl{ \crl{#1} } }
+
+\newcommand{ \inv } [1] { #1^{ -1} }
+\newcommand{ \prinv } [1] { \inv{ \left( #1 \right) } }
+\newcommand{ \brinv } [1] { \inv{ \left[ #1 \right]} }
+\newcommand{ \crlinv } [1] { \inv{ \crl{#1} } }
+
+\newcommand{ \tinv } [1] { #1^{ - \mathtt T} }
+\newcommand{ \prtinv } [1] { \tinv{ \left( #1 \right)} }
+\newcommand{ \brtinv } [1] { \tinv{ \left[ #1 \right]} }
+\newcommand{ \crltinv } [1] { \tinv{ \crl{#1} } }
+
+\newcommand{ \asymm}[1] {\mathrm{skew}(#1)}
+\newcommand{ \sym } [1] { #1_{s} }
+\newcommand{ \prsym } [1] { \sym{ \left( #1 \right)} }
+\newcommand{ \brsym } [1] { \sym{\left[ #1 \right]} }
+\newcommand{ \crlsym } [1] { \sym{ \crl{#1} } }
+
+
+% Miscellaneous Useful Stuff
+\newcommand{\prescript}[2]{\ensuremath\mbox{}^{#1}#2}
+% From James Kinsey:
+%\newcommand{\preind}[3]{\;{{\small{#1}}\atop{\small{#2}}}#3}
+
+
+\newcommand{\trace}{ \mathit{\mathrm{trace}\,}}
+
+\def \st { \; { \mathbf :} \; }
+\def \ratio { \; { \mathbf :} \; }
+
+%\def \ws{ {\cal W} }
+
+\newcommand{\bfm}{\boldmath}
+\newcommand{\ball}{{\mathcal{B}}}
+%\newcommand{\Real}{\mbox{$\mathrm{I\!R}$}}
+%\newcommand{\Imag}{\mbox{$\mathrm{I\!C}$}}
+\newcommand{\onevector}{\mathbf{1}}
+\newcommand{\zerovector}{{\mathbf{0}}}
+\newcommand{\ol}{\overline}
+\newcommand{\proofover}{\hfill \rule{2mm}{2mm}}
+\newcommand{\npar}{\vspace{3mm}}
+\newcommand{\dotol}[1]{\dot {\ol #1}}
+\newcommand{\bfv}[1]{\mbox {\bfm $#1$}}
+\newcommand{\twovec}[2]{\left[\begin{array}{c}
+      #1\\ #2\\
+    \end{array}
+  \right]}
+\newcommand{\skwthree}[3]{\begin{bmatrix}
+    0 & - #3 & #2 \\ #3 & 0 & -#1 \\ -#2 & #1 & 0
+    \end{bmatrix}}
+
+ \newcommand{\threevec}[3]{\begin{bmatrix}
+      #1\\ #2\\ #3 \\
+    \end{bmatrix} }
+
+\newcommand{\fourvec}[4]{\left[\begin{array}{c}
+      #1\\ #2\\ #3 \\ #4\\
+    \end{array}
+  \right]}
+\newcommand{\twovect}[2]{[\;#1,\;#2\;]^T}
+\newcommand{\threevect}[3]{[\;#1,\;#2,\;#3\;]^T}
+\newcommand{\threevecr}[3]{[\;#1,\;#2,\;#3\;]}
+\newcommand{\fourvect}[4]{[\;#1,\;#2,\;#3,\;#4\;]^T}
+\newcommand{\fourvecr}[4]{[\;#1,\;#2,\;#3,\;#4\;]}
+\newcommand{\twomatrix}[4]{ \left[\begin{array}{cc}
+      #1 & #2\\
+      #3 & #4\\
+    \end{array}
+  \right]}
+\newcommand{\threematrix}[9]{ \left[\begin{array}{ccc}
+      #1 & #2 & #3\\
+      #4 & #5 & #6\\
+      #7 & #8 & #9\\
+    \end{array}
+  \right]}
+\newcommand{\rlb}[1]{{\rm I \! R }^{ #1 }}
+
+\newcommand{\hinf}{\mbox{ \bf ${\cal H}_\infty  \; $}}
