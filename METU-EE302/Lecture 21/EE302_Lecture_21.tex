@@ -1,0 +1,606 @@
+% 
+
+
+\documentclass[twoside]{article}
+\setlength{\oddsidemargin}{0.25 in}
+\setlength{\evensidemargin}{-0.25 in}
+\setlength{\topmargin}{-0.6 in}
+\setlength{\textwidth}{6.5 in}
+\setlength{\textheight}{8.5 in}
+\setlength{\headsep}{0.75 in}
+\setlength{\parindent}{0 in}
+\setlength{\parskip}{0.1 in}
+
+%
+% ADD PACKAGES here:
+%
+
+\usepackage{amsmath,amsfonts,graphicx,mathdots}
+
+
+\newcounter{lecnum}
+\renewcommand{\thepage}{\thelecnum-\arabic{page}}
+\renewcommand{\thesection}{\thelecnum.\arabic{section}}
+\renewcommand{\theequation}{\thelecnum.\arabic{equation}}
+\renewcommand{\thefigure}{\thelecnum.\arabic{figure}}
+\renewcommand{\thetable}{\thelecnum.\arabic{table}}
+
+%
+% The following macro is used to generate the header.
+%
+\newcommand{\lecture}[4]{
+   \pagestyle{myheadings}
+   \thispagestyle{plain}
+   \newpage
+   \setcounter{lecnum}{#1}
+   \setcounter{page}{1}
+   \noindent
+   \begin{center}
+   \framebox{
+      \vbox{\vspace{2mm}
+    \hbox to 6.28in { {\bf EE302 - Discrete Time Systems
+	\hfill Spring 2019} }
+       \vspace{4mm}
+       \hbox to 6.28in { {\Large \hfill Lecture #1 \hfill} }
+       \vspace{2mm}
+       \hbox to 6.28in { {\it Lecturer: #2 \hfill } }
+      \vspace{2mm}}
+   }
+   \end{center}
+   \markboth{Lecture #1}{Lecture #1}
+
+   \vspace*{4mm}
+}
+
+\renewcommand{\cite}[1]{[#1]}
+\def\beginrefs{\begin{list}%
+        {[\arabic{equation}]}{\usecounter{equation}
+         \setlength{\leftmargin}{2.0truecm}\setlength{\labelsep}{0.4truecm}%
+         \setlength{\labelwidth}{1.6truecm}}}
+\def\endrefs{\end{list}}
+\def\bibentry#1{\item[\hbox{[#1]}]}
+
+
+\newcommand{\fig}[3]{
+			\vspace{#2}
+			\begin{center}
+			Figure \thelecnum.#1:~#3
+			\end{center}
+	}
+
+% Use these for theorems, lemmas, proofs, etc.
+\newtheorem{theorem}{Theorem}[lecnum]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{claim}[theorem]{Claim}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\newenvironment{proof}{{\bf Proof:}}{\hfill\rule{2mm}{2mm}}
+
+% **** IF YOU WANT TO DEFINE ADDITIONAL MACROS FOR YOURSELF, PUT THEM HERE:
+
+\begin{document}
+
+% Lecture Details
+\lecture{21}{Asst. Prof. M. Mert Ankarali}
+
+\par
+
+\section{Reachability/Controllability}
+
+For a LTI continuous time state-space representation
+%
+\begin{align*}
+  \dot{x}(t) &= A x(t) + B u(t)
+\\
+  y(t) &= C x(t) + D u(t)
+\end{align*}
+%
+\begin{itemize}
+  \item A state $x_d$ is said to be \textbf{reachable}
+  if there exist a finite time interval $t \in [0 ,t_f]$ and
+  an input signal defined on this interval, $u(t)$, that transfers the state vector 
+  $x(t)$ from the origin (i.e. $x(0) = 0$) to the state $x_d$ within
+  this time interval, i.e. $x(t_f) = x_d$.
+ 
+  \item A state $x_d$ is said ti be \textbf{controllable}
+  if there exist a finite time interval $t \in [0 ,t_f]$ and
+  an input signal defined on this interval, $u(t)$, that transfers the state vector 
+  $x(t)$ from the initial state $x_d$ (i.e. $x(0) = x_d$) to the origin
+  this time interval, i.e. $x(t_f) = 0$.  
+\end{itemize}
+
+\begin{itemize}
+  \item The set $\mathcal{R}$ of all reachable states is a linear
+(sub)space: $\mathcal{R} \subset \mathbb{R}^n$
+  \item The set $\mathcal{C}$ of all controllable states is a linear
+(sub)space: $\mathcal{C} \subset \mathbb{R}^n$
+\end{itemize}
+
+For CT systems $x_d \in \mathcal{R}$ if and only if  $x_d \in
+\mathcal{C}$, the Reachability and Controllability conditions are 
+equivalent. 
+
+\begin{itemize}
+  \item If the reachable (or controllable) set is the entire state
+    space, i.e., if $\mathcal{R} = \mathbb{R}^n$, then the system is
+    called fully reachable/controllable.
+\end{itemize}
+
+One way of testing reachability/controllability is checking the rank
+(or the range space) the of reachability/controllability matrix
+%
+\begin{align*}
+  Q = \left[ \begin{array}{cccc} B & A B & \cdots & A^{n-1} B \end{array} \right]
+\end{align*} 
+%
+
+A CT system is reachable/controllable if and only of
+%
+\begin{align*}
+  \mathrm{rank} ( Q ) &= n
+\end{align*} 
+%
+or equivalently 
+%
+\begin{align*}
+ \mathrm{Ra} ( \mathbf{M} ) = \mathbb{R}^n
+\end{align*} 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\textbf{Example:} Consider the following system
+%
+\begin{align*}
+  \dot{x} &= \left[ \begin{array}{cc} 0 & 1 \\ 0 & 0 \end{array}
+                                                   \right] x + B u 
+\end{align*}
+%
+Analyze the controllability for two different input, $B$,
+matrices
+%
+\begin{align*}
+ B_1 &= \left[ \begin{array}{c} 1 \\ 0 \end{array} \right] 
+  \\
+ B_2 &= \left[ \begin{array}{c} 0 \\ 1 \end{array} \right] 
+\end{align*}
+%
+
+\textbf{Solution:}
+
+Let's start with $B_1$ and derive the controllability matrix
+%
+\begin{align*}
+ Q_1 &= \left[ \begin{array}{cc} B_1 & A B_1 \end{array}
+                                               \right]
+= \left[ \begin{array}{cc} 1 & 0 \\ 0 & 0 \end{array} \right]
+\\
+\mathrm{det} ( Q_1) &= 0 
+\end{align*}
+% 
+Thus the system is not fully controllable. Now let's get some
+intuition by writing the ODEs for individual states $x_1$ and $x_2$,
+where $x = \left[ \begin{array}{c} x_1 \\ x_2 \end{array} \right] $.
+%
+\begin{align*}
+  \dot{x_1} &= x_2 + u
+              \\
+  \dot{x_2} &= 0
+\end{align*}
+%
+Let's go with reachability definition, which is based on starting
+from zero initial conditions and going to a desired state,
+we can derive the following relations
+%
+\begin{align*}
+  x_1(T) &= \int\limits_{0}^T u(t) d t
+              \\
+  x_2(T) &= 0
+\end{align*}
+%
+Neither the input nor the first state has an affect on
+the second state, so $x_2 = \alpha$ for $\alpha \neq 0$
+is not controllable (or reachable). However it is also easy to 
+see that we can always find $u(t)$ that will drive the $x_1$ to a
+desired state, $x_1^*(T)$.
+
+Now let's analyze the case with $B_2$ 
+%
+\begin{align*}
+ Q_2 &= \left[ \begin{array}{cc} B_2 & A B_2 \end{array}
+                                               \right]
+= \left[ \begin{array}{cc} 0 & 1 \\ 1 & 0 \end{array} \right]
+\\
+\mathrm{det} ( Q_2) &= -1 \neq 0
+\end{align*}
+% 
+Now the system is fully controllable. 
+
+\vspace{6pt}
+
+\textbf{Remark:} A state-space representation that is
+in controllable canonical form is always fully controllable.
+
+\newpage
+
+\section{State-Feedback \& Pole Placement}
+
+Given a continuous-time state-evolution equation
+%
+\begin{align*}
+  \dot{x}(t) = A x(t) + B u(t)
+\end{align*}
+%
+If direct measurements of all of the states of the
+system (e.g. $y(t) = x(t)$) are available, one of the most
+popular and powerful control method is the linear state feedback
+control,
+%
+\begin{align*}
+ u(t) = - K x(t)
+\end{align*}
+%
+or when there is a reference input 
+%
+\begin{align*}
+ u(t) = r(t) - K x(t)
+\end{align*}
+%
+which can be thought as a generalization of P controller
+to the vector form. Under this control law, state-equations
+for the closed-loop system takes the form
+%
+\begin{align*}
+  \dot{x}(t) &= A x(t) + B \left( r(t) - K x(t) \right)
+  \\
+  \dot{x}(t) &= \left( A - B K \right) x(t) + B r(t) 
+\end{align*}
+%
+The system matrix of this autonomous system is
+$\hat{A} = A - B K$. 
+%
+Important questions is how to choose $K$. Note that 
+%
+\begin{align*}
+  K &\in \mathbb{R}^n \quad \mathrm{Single-Input} 
+\end{align*}
+%
+As in all of the control design techniques, the most critical criterion
+is stability, thus we want all of the eigenvalues to be in the
+open-left-half s-plane. However, we know that there could be 
+different requirements on the poles/eigenvalues of the system.
+
+The fundamental principle of ``pole-placement'' design is that
+we first define a desired closed-loop eigenvalue set 
+$\mathcal{E}^* = \lbrace \lambda_1^* , \ \cdots, \  \lambda_1^* \rbrace$, and
+then if possible we choose $K^*$ such that the closed-loop
+eigenvalues match the desired ones.
+
+The necessary and sufficient condition on arbitrary pole-placement
+is that the system should be fully Controllable/Reachable.
+
+In Pole-Placement, first step is computing the desired 
+characteristic polynomial. 
+%
+\begin{align*}
+ \mathcal{E}^* &= \lbrace \lambda_1^* , \ \cdots, \  \lambda_n^*
+                 \rbrace
+  \\
+  p^*(s) &= \left( s - \lambda_1^* \right) \cdots \left( s - \lambda_n^*
+         \right)                         
+  \\
+  &= s^n + a_1^* s^{n-1} + \cdots + a_{n-1}^* s + a_n^*
+\end{align*}
+%
+Then we tune $K$ such that 
+\begin{align*}
+  \mathrm{det} \left( s I - ( A - B K ) \right) = p^*(s)
+\end{align*}
+
+\subsection{Direct Design of State-Feedback Gain}
+
+If $n$ is small, the most efficient method could be the direct
+design. 
+
+\textbf{Example:} Consider the following system
+%
+\begin{align*}
+ \dot{x} &= \left[ \begin{array}{cc} 1 & 0 \\ 0 & 2 \end{array} \right] x
+    + \left[ \begin{array}{c} 1 \\ 1 \end{array} \right] u
+\end{align*}
+% 
+Design a state-feedback rule such that poles are located at 
+$\lambda_{1,2} = -1$ 
+
+\textbf{Solution:} Desired characteristic equation can be computed as
+%
+\begin{align*}
+  p^*(s) = s^2 + 2 s + 1
+\end{align*}
+%
+Let $K = \left[ \begin{array}{cc} k_1 & k_2 \end{array} \right]$, then
+the characteristic equation of $\hat{A}$ can be computed as
+%
+\begin{align*}
+  \mathrm{det} \left( s I - ( A - B K ) \right) &= 
+  \mathrm{det} \left(
+  \left[ \begin{array}{cc} s - 1 + k_1 & k_1 \\ k_2 & s - 2 + k_2 \end{array} \right]
+  \right)
+\\
+&= s^2 + s (k_1 + k_2 - 3) + (2 -2 k_1 - k_2)
+\end{align*}
+%
+If we match the equations
+%
+\begin{align*}
+s^2 + s (k_1 + k_2 - 3) + (2 -2 k_1 - k_2) &= s^2 + 2 s + 1
+\\
+k_1 + k_2 &= 5
+\\
+2k_1 + k_2 &= 1
+\\
+k_1 &= -4
+\\
+k_2 &= 9
+\end{align*}
+%
+Thus $K = \left[ \begin{array}{cc} -4 & 9 \end{array} \right]$.
+
+\subsection{Design of State-Feedback Gain Using Controllable Canonical
+Form}
+
+Let's assume that the state-space representation is in controllable
+canonical form and we have access to the all states of this form
+%
+\begin{align*}
+\dot{x} &= \left[ \begin{array}{ccccc} 0 & 1 & 0 & \cdots & 0 \\ 0 & 0 & 1 &
+                                                                      \cdots & 0
+\\ \vdots & \vdots & \vdots & & \vdots
+\\ 0 & 0 & 0 & \cdots & 1
+    \\ -a_n & -a_{n-1} & -a_{n-2} & \cdots & -a_1 \end{array} \right] x +
+\left[ \begin{array}{c} 0\\ 0 \\ \vdots \\ 0
+    \\ 1 \end{array} \right] u
+\end{align*}
+%
+Let $K = \left[ \begin{array}{ccc} k_n & \cdots & k_1 \end{array} \right]$, then
+closed-loop system takes the form
+%
+\begin{align*}
+\dot{x} &= \left[ \begin{array}{ccccc} 0 & 1 & 0 & \cdots & 0 \\ 0 & 0 & 1 &
+                                                                      \cdots & 0
+\\ \vdots & \vdots & \vdots & & \vdots
+\\ 0 & 0 & 0 & \cdots & 1
+    \\ -a_n & -a_{n-1} & -a_{n-2} & \cdots & -a_1 \end{array} \right] x 
++ \left[ \begin{array}{c} 0\\ 0 \\ \vdots \\ 0 \\ 1 \end{array}
+  \right] 
+ \left( r - 
+\left[ \begin{array}{ccc} k_n & \cdots & k_1 \end{array} \right]
+x \right)
+\\
+\dot{x} &= \left[ \begin{array}{ccccc} 0 & 1 & 0 & \cdots & 0 \\ 0 & 0 & 1 &
+                                                                      \cdots & 0
+\\ \vdots & \vdots & \vdots & & \vdots
+\\ 0 & 0 & 0 & \cdots & 1
+    \\ -(a_n+k_n) & -(a_{n-1} + k_{n-1}) & -(a_{n-2} + k_{n-2}) &
+                                                                  \cdots
+                                                         & -(a_1 +
+                                                           k_1) \end{array}
+                                                           \right] x
++ \left[ \begin{array}{c} 0\\ 0 \\ \vdots \\ 0 \\ 1 \end{array}
+  \right] r
+\end{align*}
+%
+Let $p^*(s) = s^2 + a_1^* s + \cdots + a_{n-1}^* s + a_n^*$, then
+computation of $K$ is super straight-forward
+%
+\begin{align*}
+  K = \left[ \begin{array}{ccc} (a^*_n - a_n) & \cdots & (a^*_1 - a_1) \end{array} \right]
+\end{align*}
+
+However, what if the system is not in controllable canonical form. We can
+find a transformation which finds the controllable canonical
+representation. 
+
+The controllability matrix of a state-space representation is given as
+%
+\begin{align*}
+  Q = \left[ \begin{array}{c|c|c|c} B & A B & \cdots & A^{n-1} B\end{array} \right]
+\end{align*}
+%
+Let's define a transformation matrix $T$ as follows:
+%
+\begin{align*}
+  T &= Q W \quad , \quad x(t) = T \hat{x}(t)
+\\
+ \dot{\hat{x}} &= \left[ T^{-1} A T \right] \hat{x} + T^{-1} B u
+\end{align*}
+%
+where
+%
+\begin{align*}
+  W = \left[ \begin{array}{ccccc} a_{n-1} & a_{n-2} & \cdots & a_1 & 1
+               \\ 
+a_{n-2} & a_{n-3} & \cdots & 1 & 0
+\\ \vdots & \vdots & \iddots & & \vdots
+\\ a_1 & 1 &  & & 
+    \\ 1 & 0 & \cdots &  & 0 \end{array} \right] 
+\end{align*}
+%
+Then it is given that
+%
+\begin{align*}
+  T^{-1} A T &= \hat{A} =  \left[ \begin{array}{ccccc} 0 & 1 & 0 & \cdots & 0 \\ 0 & 0 & 1 &
+                                                                      \cdots & 0
+\\ \vdots & \vdots & \vdots & & \vdots
+\\ 0 & 0 & 0 & \cdots & 1
+    \\ -a_n & -a_{n-1} & -a_{n-2} & \cdots & -a_1 \end{array} \right]
+\\
+  T^{-1} B &= \hat{B} = \left[ \begin{array}{c} 0\\ 0 \\ \vdots \\ 0
+    \\ 1 \end{array} \right]
+\end{align*}
+%
+We know how to design a
+state-feedback gain $\hat{K}$ for the controllable
+canonical form. Given $\hat{K}$ 
+$u(t)$ is given as
+%
+\begin{align*}
+  u(t) &= r(t) -\hat{K} \hat{x}(t)
+\\ 
+&= r(t) - \hat{K} T^{-1} \hat{x}(t)
+\\
+K &= \hat{K} T^{-1}
+\end{align*}
+
+\textbf{Example 2:} Consider the following system
+%
+\begin{align*}
+ \dot{x} &= \left[ \begin{array}{cc} 1 & 0 \\ 0 & 2 \end{array} \right] x
+    + \left[ \begin{array}{c} 1 \\ 1 \end{array} \right] u
+\end{align*}
+% 
+Design a state-feedback rule using the controllable canonical form
+approach, such that poles are located at 
+$\lambda_{1,2} = -1$ 
+
+\textbf{Solution:} Characteristic equation of $A$ can be derived as
+%
+\begin{align*}
+ \mathrm{det} \left(  \left[ \begin{array}{cc} s-1 & 0 \\ 0 &
+                                                              s-2 \end{array} \right]  \right)
+ = s^2 - 3 s + 2
+\end{align*}
+%
+The controllability matrix can be computed as
+%
+\begin{align*}
+  Q = \left[ \begin{array}{c|c} B & A B \end{array} \right] = \left[ \begin{array}{cc} 1 & 1 \\ 1 & 2 \end{array} \right]
+\end{align*}
+%
+The matrix $W$ can be computed as
+%
+\begin{align*}
+  W =  \left[ \begin{array}{cc} -3 & 1 \\ 1 & 0 \end{array} \right]
+\end{align*}
+%
+Transformation matrix, $T$ and its inverse $T^{-1}$ can be computed 
+as
+\begin{align*}
+  T &= Q W =  
+\left[ \begin{array}{cc} 1 & 1 \\ 1 & 2 \end{array} \right]
+\left[ \begin{array}{cc} -3 & 1 \\ 1 & 0 \end{array} \right]
+= \left[ \begin{array}{cc} -2 & 1 \\ -1 & 1 \end{array} \right]
+\\
+T^{-1} &= \left[ \begin{array}{cc} -1 & 1 \\ -1 & 2 \end{array} \right]
+\end{align*}
+%
+Given that desired characteristic polynomial is $p^*(s) = s^2 + 2 s + 1$,
+$\hat{K}$ of controllable canonical from can be computed as
+%
+\begin{align*}
+  \hat{K} &= \left[ \begin{array}{cc} - a_2 & -
+                                                       a_1 \end{array}
+                                                       \right]
+\\
+&= \left[ \begin{array}{ccc} 1-2 & 2-(-3) \end{array}
+                                                       \right]
+= \left[ \begin{array}{ccc} -1 & 5 \end{array}
+                                                       \right]
+\end{align*}
+%
+Finally $K$ can be computed as
+%
+\begin{align*}
+  K &= \hat{K} T^{-1} = \left[ \begin{array}{ccc} -1 & 5 \end{array}
+                                                       \right]
+\left[ \begin{array}{cc} -1 & 1 \\ -1 & 2 \end{array} \right]
+\\
+&= \left[ \begin{array}{ccc} -4 & 9 \end{array}
+                                                       \right]
+\end{align*}
+%
+As expected this is the same result with the one found with Direct-Method.
+
+\newpage
+
+\section{Observability}
+
+It turns out that it is more natural to think in terms of
+``un-observability'' as reflected in the following definitions.
+
+\begin{itemize}
+  \item A state $x_o$ of a finite dimensional CT linear dynamical
+    system is said to be unobservable, if with $x(0) = x_o$ and
+    for every $u(t)$ we get the same $y(t)$ as we would with $x(0) =
+    0$. 
+\end{itemize}
+
+  The set $\bar{\mathcal{O}}$ of all unobservable states is a linear
+  (sub)space: $\bar{\mathcal{O}} \subset \mathbb{R}^n$
+
+\begin{itemize}
+%
+ \item If the unobservable set only contains the origin, 
+   i.e., if $\bar{\mathcal{O}} = \lbrace 0 \rbrace$, 
+%
+ \item If the dimension of unobservable subspace is equal to 0,
+   $\mathrm{dim} = \left( \bar{\mathcal{O}} \right) = 0$,
+  %
+ \item If any initial condition, $x(0)$ or $x[0]$, can be uniquely 
+ determined from input-output measurement,
+%
+\end{itemize} 
+then the system is called Observable. 
+
+\subsubsection{Test of Observability on CT Systems}
+
+One way of testing Observability of CT systems is checking the rank
+(or the range space, or null space) the of the Observability matrix
+%
+\begin{align*}
+  \mathbf{O} =
+\left[ \begin{array}{c}
+C 
+\\
+C A
+\\
+C A^2 
+\\
+  \vdots
+\\
+C A^{n-1}
+\end{array}
+\right] 
+\end{align*} 
+%
+
+A CT system is Observable if and only of
+%
+\begin{align*}
+  \mathrm{rank} ( \mathbf{O} ) &= n
+\end{align*} 
+%
+or equivalently 
+%
+\begin{align*}
+ \mathrm{Ra} ( \mathbf{O} ) = \mathbb{R}^n
+\end{align*} 
+%
+or equivalently 
+%
+\begin{align*}
+ \mathrm{dim} \left ( \mathcal{N} ( \mathbf{O} ) \right) = 0
+\end{align*} 
+
+\vspace{6pt}
+
+\textbf{Remark:} A state-space representation that is
+in observable canonical form is always fully Observable
+
+\vspace{6pt}
+
+\textbf{Remark:} A state-space representation is called minimal 
+if it is both fully Controllable and Observable. 
+
+% **** This ENDS THE EXAMPLES. DON'T DELETE THE FOLLOWING LINE:
+\end{document}

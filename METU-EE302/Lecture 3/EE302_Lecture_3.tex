@@ -1,0 +1,520 @@
+%
+% This is a borrowed LaTeX template file for lecture notes for CS267,
+% Applications of Parallel Computing, UCBerkeley EECS Department.
+% Now being used for CMU's 10725 Fall 2012 Optimization course
+% taught by Geoff Gordon and Ryan Tibshirani.  When preparing 
+% LaTeX notes for this class, please use this template.
+%
+% To familiarize yourself with this template, the body contains
+% some examples of its use.  Look them over.  Then you can
+% run LaTeX on this file.  After you have LaTeXed this file then
+% you can look over the result either by printing it out with
+% dvips or using xdvi. "pdflatex template.tex" should also work.
+%
+
+\documentclass[twoside]{article}
+\setlength{\oddsidemargin}{0.25 in}
+\setlength{\evensidemargin}{-0.25 in}
+\setlength{\topmargin}{-0.6 in}
+\setlength{\textwidth}{6.5 in}
+\setlength{\textheight}{8.5 in}
+\setlength{\headsep}{0.75 in}
+\setlength{\parindent}{0 in}
+\setlength{\parskip}{0.1 in}
+
+%
+% ADD PACKAGES here:
+%
+
+\usepackage{amsmath,amsfonts,graphicx}
+
+%
+% The following commands set up the lecnum (lecture number)
+% counter and make various numbering schemes work relative
+% to the lecture number.
+%
+\newcounter{lecnum}
+\renewcommand{\thepage}{\thelecnum-\arabic{page}}
+\renewcommand{\thesection}{\thelecnum.\arabic{section}}
+\renewcommand{\theequation}{\thelecnum.\arabic{equation}}
+\renewcommand{\thefigure}{\thelecnum.\arabic{figure}}
+\renewcommand{\thetable}{\thelecnum.\arabic{table}}
+
+%
+% The following macro is used to generate the header.
+%
+\newcommand{\lecture}[4]{
+   \pagestyle{myheadings}
+   \thispagestyle{plain}
+   \newpage
+   \setcounter{lecnum}{#1}
+   \setcounter{page}{1}
+   \noindent
+   \begin{center}
+   \framebox{
+      \vbox{\vspace{2mm}
+    \hbox to 6.28in { {\bf EE302 - Feedback Systems
+	\hfill Spring 2019} }
+       \vspace{4mm}
+       \hbox to 6.28in { {\Large \hfill Lecture #1 \hfill} }
+       \vspace{2mm}
+       \hbox to 6.28in { {\it Lecturer: #2 \hfill } }
+      \vspace{2mm}}
+   }
+   \end{center}
+   \markboth{Lecture #1}{Lecture #1}
+
+   \vspace*{4mm}
+}
+%
+% Convention for citations is authors' initials followed by the year.
+% For example, to cite a paper by Leighton and Maggs you would type
+% \cite{LM89}, and to cite a paper by Strassen you would type \cite{S69}.
+% (To avoid bibliography problems, for now we redefine the \cite command.)
+% Also commands that create a suitable format for the reference list.
+\renewcommand{\cite}[1]{[#1]}
+\def\beginrefs{\begin{list}%
+        {[\arabic{equation}]}{\usecounter{equation}
+         \setlength{\leftmargin}{2.0truecm}\setlength{\labelsep}{0.4truecm}%
+         \setlength{\labelwidth}{1.6truecm}}}
+\def\endrefs{\end{list}}
+\def\bibentry#1{\item[\hbox{[#1]}]}
+
+%Use this command for a figure; it puts a figure in wherever you want it.
+%usage: \fig{NUMBER}{SPACE-IN-INCHES}{CAPTION}
+\newcommand{\fig}[3]{
+			\vspace{#2}
+			\begin{center}
+			Figure \thelecnum.#1:~#3
+			\end{center}
+	}
+% Use these for theorems, lemmas, proofs, etc.
+\newtheorem{theorem}{Theorem}[lecnum]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{claim}[theorem]{Claim}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\newenvironment{proof}{{\bf Proof:}}{\hfill\rule{2mm}{2mm}}
+
+% **** IF YOU WANT TO DEFINE ADDITIONAL MACROS FOR YOURSELF, PUT THEM HERE:
+
+\begin{document}
+
+% Lecture Details
+\lecture{3}{Asst. Prof. M. Mert Ankarali}
+
+\par 
+
+\section{Modeling of Mechanical Systems and Their Electrical Analogy}
+
+We use Kirchhoff's Current and Voltage laws to derive the 
+dynamical (and static) relationships in Electrical Circuits. Similarly,
+we utilize Newton's laws of motion to derive equations of motion
+in (rigid body) mechanical dynamical systems. 
+
+\subsection{Mechanical vs. Electrical Analogy Between Dependent Variables}
+
+There exist two different analogies that we can construct between electrical and
+mechanical systems. Mathematically, there is no difference between the two approaches. In 
+this lecture, we will learn one of these analogies. 
+
+In electrical circuits, the core variables are Voltage, $V$, and current, $I$, where as
+in translational mechanical systems core variables are translational velocity, $\nu$, and force, $f$.
+Similarly, in rotational mechanical systems the core variables are angular velocity, $\omega$n and torque $\tau$.
+
+\textbf{Voltage, $V$ $\Longleftrightarrow$ Velocity, $\nu$
+  $\Longleftrightarrow$ Angular Velocity, $\omega$}
+
+In electrical systems, Voltage, also called electric potential
+difference, accounts for the difference in electric potential between
+two points. When we refer to the voltage of a node/point, we 
+always measure it with respect to a reference point, e.g. \textit{ground}.
+In mechanical systems, we measure the velocity either between two
+points in space, or (which is more general) with respect to an inertial
+reference frame, e.g. \textit{ground} or \textit{earth} in general. The
+analogy is similar with angular velocity. For this reason we say that
+Voltage, linear velocity, and angular velocity are the analog variables.
+
+\textbf{Current, $I$ $\Longleftrightarrow$ force, $f$
+  $\Longleftrightarrow$Torque, $\tau$}
+
+In electrical systems, current is the flow (or rate of change of) of
+electric charge and carried by electrons in motion. Roughly speaking, 
+baed on Newton's second law, the force acting upon a (rigid) body, is 
+equal to the rate of change of momentum related with this specific
+force component. Momentum can be considered as analog of the
+electrical charge in this case. A similar analogy can also be
+constructed using Torque and Angular Momentum, For this reason we say that
+Current, Force, and Torque are the analog variables.
+
+\subsection{Capacitor $C$, 1-DOF Translating Body with Mass
+  $m$, and 1-DOF Rotating Body with Inertia $J$}
+
+If we follow the analogs between the variables, we can see that ideal
+capacitor for which one end is connected to the ground, 1-DOF translating body with a mass
+of $m$, and 1-DOF rotating body with an inertia of  $J$ analogs of each other. 
+These are all ideal energy storage elements in their modeling
+domains and they are illustrated in the figure below. 
+
+  \begin{minipage}[h]{0.95\linewidth}
+    \begin{center}
+      \includegraphics[width=1\textwidth]{cap}
+    \end{center}
+  \end{minipage}
+
+The ODEs that govern the dynamics of these elements are provided below
+%
+\begin{align*}
+\mathrm{Capacitor:}& \quad C \dot{V}(t) = I(t) \\
+\mathrm{Mass:}& \quad  m \dot{\nu} = f(t) \ (\mathrm{or} \ m \ddot{x} =
+                f(t) ) \\
+\mathrm{Inertia:}& \quad J \dot{\omega} = \tau (t) \ (\mathrm{or} \ J \ddot{\theta} = \tau (t) )
+\end{align*}
+%
+Based on these equations we can reach the following (system) parameter
+analogy as
+%
+\begin{align*}
+ C \equiv m \equiv J
+\end{align*}
+%
+
+\subsection{Inductor $L$, Translational Spring $k$, and Torsional Spring $\kappa$}
+
+If we follow the analogs between the variables we can see that Ideal
+inductor ($L$), linear translational spring ($k$), and linear
+torsional spring ($\kappa$) are analogs of each other. 
+These are also ideal energy storage elements in their modeling
+domains and they are illustrated in the figure below. 
+
+  \begin{minipage}[h]{1\linewidth}
+    \begin{center}
+      \includegraphics[width=1\textwidth]{ind}
+    \end{center}
+  \end{minipage}
+
+The ODEs that govern the dynamics of these elements are provided below
+%
+\begin{align*}
+\mathrm{Induction:}& \quad L \dot{I}(t) = V(t) \\
+\mathrm{Translational Spring:}& \quad  f(t) = k x(t) \ \rightarrow \
+                                \frac{1}{k} \dot{f}(t) = \nu(t)
+\\
+\mathrm{Torsional Spring:}& \quad  tau (t) = \kappa \theta(t) \
+                            \rightarrow \ \frac{1}{\kappa} \dot{\tau}(t) = \omega(t)
+\end{align*}
+%
+Based on these equations we can reach the following (system) parameter
+analogy as
+%
+\begin{align*}
+ L \equiv \frac{1}{k} \equiv \frac{1}{\kappa}
+\end{align*}
+% 
+
+\subsection{Resistor $R$, Damper (Viscous Friction) $b$, and
+Torsional Damper $\beta$}
+
+If we follow the analogs between the variables we can see that Ideal
+resistor ($R$), linear translational damper ($k$), and linear
+torsional damper ($\kappa$) are analogs of each other. 
+These elements are ideal fully passive dissipative elements.
+Thus, these are memoryless (static) components as opposed to the
+previous elements. These elements are illustrated in the figure below. 
+
+  \begin{minipage}[h]{1\linewidth}
+    \begin{center}
+      \includegraphics[width=1\textwidth]{res}
+    \end{center}
+  \end{minipage}
+
+The algebraic equations that govern the statics of these elements are provided below
+%
+\begin{align*}
+\mathrm{Resistor:}& \quad V(t) = R I(t)   \\
+\mathrm{Translational} \ \mathrm{Damper:}& \quad  f(t) = b \dot{x}(t) \ \mathrm{or} \
+                                \frac{1}{b} f(t) = \nu(t) 
+\\
+\mathrm{Torsional} \ \mathrm{Damper:}& \quad  \tau (t) = \beta \dot{\theta}(t) \
+                            \rightarrow \ \frac{1}{\beta} \tau(t) = \omega(t)
+\end{align*}
+%
+Based on these equations we can reach the following (system) parameter
+analogy as
+%
+\begin{align*}
+ R \equiv \frac{1}{b} \equiv \frac{1}{\beta}
+\end{align*}
+% 
+
+\subsection{Ideal Transformer, Linearized Lever, and
+Gear Pair}
+
+In both electrical and mechanical systems, we have transmission
+elements. In their ideal form, they conserve the energy after the transformation. In electrical
+systems, transformer is the component that achieves the transmission.
+In translational mechanical systems a linearized lever can achieve this
+under the assumption of small movements, where as for rotational
+systems a gear pair is one of the many solutions for mechanical
+transmission. These components are illustrated in the figure below. 
+
+  \begin{minipage}[h]{1\linewidth}
+    \begin{center}
+      \includegraphics[width=1\textwidth]{trans}
+    \end{center}
+  \end{minipage}
+
+The algebraic equations that govern the statics of these elements are provided below
+%
+%
+\begin{align*}
+\mathrm{Electrical} \ \mathrm{Transformer:}& \begin{array}{c} \frac{V_1}{N_1} =
+                                    \frac{V_2}{N_2} \\ \\ I_1 N_1 = I_2 N_2 \end{array} 
+\\
+\mathrm{Lever:}& \quad  \begin{array}{c} \frac{\nu_1}{l_1} =
+                                    \frac{\nu_2}{l_2} \\ \\ f_1 l_1 = f_2 l_2 \end{array} 
+\\
+\mathrm{Gear-Pair:}& \quad  \begin{array}{c} \frac{\omega_1}{r_2} =
+                                    \frac{\omega_2}{r_1} \\ \\ \tau_1 r_2 = \tau_2 r_1 \end{array} 
+\end{align*}
+%
+Based on these equations, it is to see that following (system) parameter
+analogy as
+%
+\begin{align*}
+\frac{N_1}{N_2} \equiv \frac{l_1}{l_2} \equiv \frac{r_2}{r_1} 
+\end{align*}
+%
+
+\newpage
+
+\section{Examples}
+
+\textbf{Ex 1:} Let's consider the following translational mechanical system. It is given that when the lever is in vertical position, 
+$\left[ x_0 \ x_1 \ x_2 \right] = 0$ and springs are at their rest length positions. 
+
+\begin{enumerate}
+
+\item Given that $u(t) = x_0(t)$ and $y(t) = x_2(t)$,
+find the ODE of the system dynamics.
+
+  \begin{minipage}[h]{0.6\linewidth}
+    \begin{center}
+      \includegraphics[width=1\textwidth]{ex1}
+    \end{center}
+  \end{minipage}
+  \begin{minipage}[h]{0.4\linewidth}
+    \begin{center}
+ 	\begin{align*}
+	&m \ddot{x_2} = - b \dot{x}_2 - k_2 x_2 + k_1 (x_1 - x_2)
+	\\
+	&x_1  = x_0 \frac{l_2}{l_1} 
+	\\
+	&m \ddot{x_2} + b \dot{x}_2 + (k_1 + k_2) x_2  =  k_1 \frac{l_2}{l_1} x_0
+	\\
+	&\ddot{y} + \frac{b}{m} \dot{y} + \frac{k_1 + k_2}{m} y  = 
+	\frac{k_1}{m} \frac{l_2}{l_1} u
+		\end{align*}
+    \end{center}
+  \end{minipage}
+  
+  \vspace{6pt}
+  
+  \item Find the transfer function for same input-output pair.
+{\large  
+\begin{align*}
+G(s) = \frac{Y(s)}{U(s)} = \frac{\frac{k_1}{m} \frac{l_2}{l_1}}{s^2 + \frac{b}{m} s + \frac{k_1 + k_2}{m}}  
+\end{align*}
+}
+
+\item Now, let's construct an electrical circuit analog of the mechanical system.
+
+Let 
+%
+\begin{align*}
+	V_i \equiv \dot{x}_i
+	\\
+	I_i \equiv f_i
+\end{align*}
+%
+then we can build the circuit analog as in the illustration below. 
+
+  \begin{minipage}[h]{0.75\linewidth}
+    \begin{center}
+      \includegraphics[width=1\textwidth]{ex_elec}
+    \end{center}
+  \end{minipage}
+  
+  Let's also compute 
+$\frac{\mathcal{V}_2(s)}{\mathcal{V_0}(s)}$ using node voltage analysis in impedance domain.
+
+\begin{align*}
+	\frac{\mathcal{V}_2(s) - \mathcal{V}_1(s) }{ \frac{s}{k_1} } + 
+	\frac{\mathcal{V}_2(s)}{ \frac{1}{m s} } + 	\frac{\mathcal{V}_2(s)}{ \frac{s}{k_2} } +
+	\frac{\mathcal{V}_2(s)}{ \frac{1}{b} } 
+	= 0 
+	\\
+	\mathcal{V}_2(s) \left[ m s + b + \frac{k_1+k_2}{s} \right] = V_1(s) \left[  \frac{k_1}{s} \right]
+	\\
+	\mathcal{V}_2(s) \left[ m s^2 + b s + ( k_1 + k_2) \right] = V_1(s) \left[  k_1 \right]
+\end{align*}
+
+Since ideal transformer has the following relation, $\mathcal{V}_1(s) = \frac{l_2}{l_1} \mathcal{V}_0(s)$, 
+we have the following transfer function between $\mathcal{V}_0(s)$ and $\mathcal{V}_2(s)$
+
+\begin{align*}
+\frac{\mathcal{V}_2(s)}{\mathcal{V}_0(s)} = \frac{\frac{k_1}{m} \frac{l_2}{l_1}}{s^2 + \frac{b}{m} s + \frac{k_1 + k_2}{m}}  
+\end{align*}
+
+Obviously this transfer function is equal to $G(s)$ computed from directly mechanical system and considering positional variables.
+
+\item Convert the derived ODE into a state-space form
+%
+
+We will solve the problem using a different approach. First let's
+integrate the ODE twice
+
+\begin{align*}
+  y =  \int \left[ - \frac{b}{m} y + \int \left\lbrace - \frac{k_1 + k_2}{m} y  +
+	\frac{k_1}{m} \frac{l_2}{l_1} u \right\rbrace dt \right] dt
+\end{align*}
+
+Then let the stat variable definitions be
+%
+\begin{align*}
+  x_1 &= y = \int \left[ - \frac{b}{m} y + \int \left\lbrace - \frac{k_1 + k_2}{m} y  +
+	\frac{k_1}{m} \frac{l_2}{l_1} u \right\rbrace dt \right] dt \\
+  x_2 &= \int \left\lbrace - \frac{k_1 + k_2}{m} y  +
+	\frac{k_1}{m} \frac{l_2}{l_1} u \right\rbrace dt
+\end{align*}
+%
+Then state-equations take the form
+%
+\begin{align*}
+  \dot{x}_1 &= \left[ - \frac{b}{m} y + \int \left\lbrace - \frac{k_1 + k_2}{m} y  +
+	\frac{k_1}{m} \frac{l_2}{l_1} u \right\rbrace dt \right] \\
+  &= - \frac{b}{m} x_1 + x_2 \\
+  \dot{x}_2 &= \left\lbrace - \frac{k_1 + k_2}{m} y  +
+	\frac{k_1}{m} \frac{l_2}{l_1} u \right\rbrace
+\\ 
+&= - \frac{k_1 + k_2}{m} x_1  +
+	\frac{k_1}{m} \frac{l_2}{l_1} u 
+\end{align*}
+%
+If we gather the obtained state-equations in matrix form we obtain the
+following state-space representation
+%
+\begin{align*}
+  \dot{x} &= \left[ \begin{array}{cc} - \frac{b}{m} & 1 \\ - \frac{k_1
+                     + k_2}{m} & 0 \end{array} \right] x +
+  \left[ \begin{array}{c} 0 \\ \frac{k_1}{m}
+           \frac{l_2}{l_1}  \end{array} \right] u 
+\\
+y &= \left[ \begin{array}{cc} 1 & 0 \end{array} \right] x
+\end{align*}
+
+\end{enumerate}
+
+\vspace{12pt}
+
+\textbf{Ex 2:} Let's consider the following gear system. Unlike ideal gear pair case, now each gear has its own inertia, $J_1$ and
+$J_2$, as well as both gears are affected by viscous friction, $\beta_1$ and $\beta_2$ , due to mechanical contact with the environment. 
+
+    \begin{center}
+  \begin{minipage}[h]{0.75\linewidth}
+    \begin{center}
+      \includegraphics[width=1\textwidth]{ex2}
+    \end{center}
+  \end{minipage}
+    \end{center}
+
+\begin{enumerate}
+
+\item Given that there is an external torque, $\tau_i$, acting on the first gear is the input of the system, and the rotational speed of the
+second gear, $\omega_2$, is the output of the system, find the ODE of the gear-box dynamics. 
+
+First let's draw the free-body diagrams of both gears separately and then write the equations of motion for each body. 
+
+
+  \begin{minipage}[h]{0.35\linewidth}
+    \begin{center}
+      \includegraphics[width=0.95\textwidth]{ex2_sol}
+    \end{center}
+  \end{minipage}
+\begin{minipage}[h]{0.65\linewidth}
+
+ 	\begin{align*}
+	J_1 \dot{\omega_1} &= \tau_i - \tau_{\beta_1} - \tau_{2-1}
+	\\
+	&= \tau_i - \beta_1 \omega_1 - \tau_{2-1}
+	\\
+	J_2 \dot{\omega_2} &= -\tau_{\beta_2} + \tau_{1-2}
+			\\
+		&= -\beta_2 \omega_2 + \tau_{1-2}
+	\end{align*}
+    %
+    Based on the gear kinematics we know that 
+    %
+    \begin{align*}
+    	\omega_1 &= \frac{N_2}{N_1} \omega_2
+	\\
+	\tau_{1-2}  &= \frac{N_2}{N_1}  \tau_{2-1} 
+    \end{align*}
+    %
+    Thus we have the following derivations
+    %
+     	\begin{align*}
+	\tau_{2-1} &=  \tau_i  - J_1  \frac{N_2}{N_1} \dot{\omega_2} - \beta_1 \frac{N_2}{N_1} \omega_2 
+	\\
+	\tau_{1-2} &=   \frac{N_2}{N_1}  \tau_i  - J_1  \left(\frac{N_2}{N_1}\right)^2 \dot{\omega_2} - \beta_1 \left(\frac{N_2}{N_1}\right)^2 \omega_2 
+	\end{align*}
+	%
+	Hence the ODE governing the dynamics can be formed as
+	%
+	\begin{align*}
+	\left[ J_2 + J_1  \left(\frac{N_2}{N_1}\right)^2  \right] \dot{y}
+	+ \left[ \beta_2 + \beta_1 \left(\frac{N_2}{N_1}\right)^2  \right]  y
+	= \frac{N_2}{N_1}  u
+	\end{align*}
+    
+  \end{minipage}
+
+It can be seen that the resultant ODE is a first order ODE. Ee can also consider the whole system as a
+single rotating body with an effective total inertia of $J_T = \left[ J_2 + J_1  \left(\frac{N_2}{N_1}\right)^2  \right]$
+and effective total viscous friction of $\beta_T  = \left[ \beta_2 + \beta_1 \left(\frac{N_2}{N_1}\right)^2 \right]$.  
+
+\vspace{12pt}
+  
+ \textbf{Take Home Problem:} Now let's assume that output is $y(t) = \omega_1(t)$, and govern the ODE and re-compute
+ the new effective inertia and viscous friction.  
+
+\item Compute the transfer function
+
+\begin{align*}
+	G(s) &= \frac{Y(s)}{U(s)} = 
+	\frac{ \frac{N_2}{N_1}  }{ \left[ J_2 + J_1  \left(\frac{N_2}{N_1}\right)^2  \right] s +  \left[ \beta_2 + \beta_1 \left(\frac{N_2}{N_1}\right)^2 \right]}
+	\\
+	&= 
+	\frac{ \frac{N_2}{N_1}  }{ J_T s + \beta_T } = \frac{ \frac{N_2}{N_1} \frac{1}{J_T}  }{ s + \frac{\beta_T}{J_T} } 
+\end{align*}
+  
+  \item Now, build the electrical circuit analog of the gear-box system
+  
+  \par
+  
+  The circuit diagram is given below
+  
+    \begin{minipage}[h]{0.75\linewidth}
+    \begin{center}
+      \includegraphics[width=1\textwidth]{ex2_elec}
+    \end{center}
+  \end{minipage}
+
+\textbf{Take Home Problem:} Solve the electrical circuit and compute the transfer function $G(s)$   
+  
+\end{enumerate}
+
+
+% **** This ENDS THE EXAMPLES. DON'T DELETE THE FOLLOWING LINE:
+\end{document}
