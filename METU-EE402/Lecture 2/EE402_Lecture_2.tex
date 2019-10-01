@@ -104,6 +104,8 @@
 % Lecture Details
 \lecture{2}{Asst. Prof. M. Mert Ankarali}
 
+\par
+
 \section*{Big Picture of EE402}
 
 In this course, the main focus will be on continuous-time systems that
@@ -113,10 +115,10 @@ parts as illustrated in Fig.~\ref{fig:introblock},
  
 \begin{enumerate}
   \item \textit{The plant} is a continuous-time dynamical system 
-  \item The Analog-to-Digital Converter (ADC)
-  \item The Controller ($\mu P$), a microprocessor/microcontroller
+  \item Analog-to-Digital Converter (ADC)
+  \item Controller ($\mu P$), a microprocessor/microcontroller
     with a ``real-time'' OS 
- \item The Digital-to-Analog Converter (DAC) 
+ \item Digital-to-Analog Converter (DAC) 
 \end{enumerate}
 
 \begin{figure}[h]
@@ -126,20 +128,20 @@ parts as illustrated in Fig.~\ref{fig:introblock},
     \label{fig:introblock}
 \end{figure}
 
-Most of the time the plant is modeled as a ``smooth'' continuous dynamical
-system. In this course our focus is LTI systems thus, we will assume
-that (unless otherwise is given) that the plant is a continuous LTI
+Most of the time, the plant is modeled as a ``smooth'' continuous dynamical
+system. In this course, we will focus on LTI systems. Rhus, we will assume
+that (unless otherwise is given), the plant is a continuous LTI
 plant model with a transfer function of $G_c(s)$ for which both the
 input and output are continuous time signals. 
 
-The ``digital'' blocks of the closed-loop block diagram structure are 
-ADC, The Controller, and DAC. It is generally assumed (design
-preference) that all blocks shares a common ``hard real time'' clock.
+The ``digital'' blocks inside the closed-loop block diagram structure are 
+ADC, the Controller, and DAC. It is generally assumed (design
+requirement) that all blocks shares a common ``hard real time'' clock.
 
 A general ADC is a device that converts an analog signal to a digital
-signal. In this course we will model the ADC block as an \textit{ideal sampler}
-for which the input is a continious-time signal, $e(t)$ and the output 
-is a discrete-time signal, $e[k]$, where the relating between the
+signal. In this course, we will model the ADC block as an \textit{ideal sampler}
+for which the input is a continious-time signal, $e(t)$, and the output 
+is a discrete-time signal, $e[k]$, where the relation between the
 continuous- and discrete-time signals are given as
 %
 \begin{align*}
@@ -148,11 +150,11 @@ continuous- and discrete-time signals are given as
 %
 where constant $T$ is the \textit{sampling time}. 
 
-The microcontoller/microprocessor processes some set of digital input signals
+The microcontroller/microprocessor processes some set of digital input signals
 to produce some set of digital output signals. The outputs are defined
-at only certain instances defined by the real-time clock. In this
+at only some specified instances defined by the real-time clock. In this
 course, we will model the $\mu P$ block as an ideal discrete-time LTI
-system for which the both the input and output are discrete-time
+system for which both the input and output are discrete-time
 signals, with a transfer function of $G_c(z)$.
 
 The DAC is a device that converts a digital signal to an analog
