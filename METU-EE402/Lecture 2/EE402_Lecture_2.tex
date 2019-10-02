@@ -299,7 +299,7 @@ Exponential sequence $x[k] = a^k$
 \frac{1}{1 - a z^{-1}} = \frac{z}{z - a}
 \end{align*}
 %
-Exponential function $x(t) = e^{b t}$ and thus $x(k T) = x(k) = e^{b T
+Exponential function $x(t) = e^{b t}$ and thus $x(k T) = x[k] = e^{b T
   k}$
 %
 \begin{align*}
@@ -343,8 +343,8 @@ Cosine function $x(t) = \cos (\omega t)$, and thus $x(k T) = x(k) =
 \end{align*}
 
 \textbf{Complex translation theorem}
-%
-Let $y(t) = e^{-a t} x(t)$ and $X(z) = \mathcal{z} \lbrace x(k T)
+
+Let $y(t) = e^{-a t} x(t)$ and $X(z) = \mathcal{Z} \lbrace x(k T)
 \rbrace$, then
 %
 \begin{align*}
@@ -353,9 +353,9 @@ Let $y(t) = e^{-a t} x(t)$ and $X(z) = \mathcal{z} \lbrace x(k T)
 \end{align*}
 
 \textbf{Shifting theorem}
-%
+
 Let $x(t)$ be a causal CT signal, thus we have $x(t) = 0$ for 
-$t < 0$. Similarly sampled DT signal has the property $x[nk] = 0$ for $k <
+$t < 0$. Similarly, associated sampled DT signal has the property of $x[nk] = 0$ for $k <
 0$. For the sake of simplicity lets work on the sampled (i.e. DT)
 signal. Let
 %
@@ -513,6 +513,22 @@ In general
 \textbf{Example 3.} Find the Z-transform of the unit ramp function,
 $r[k] = k \ , k \in \mathbb{Z}^+$ by applying the Complex Differentiation Theorem to the
 Z-transform of the unit step function. 
+
+\vspace{6pt}
+
+\textbf{Solution:}
+%
+\begin{align*}
+\mathcal{Z} \lbrace r[k] \rbrace &= \mathcal{Z} \lbrace k u[k] \rbrace  
+\\
+R(z) &= (- z) \frac{d}{dz} U(z) = (- z) \frac{d}{dz} U(z) =  (- z)
+       \frac{d}{dz} \left( \frac{z}{z-1} \right)
+       =  (- z) \left( \frac{1}{z-1} - \frac{z}{(z-1)^2} \right)
+\\
+&= \frac{z^2}{(z-1)^2} - \frac{z}{z-1} = \frac{z^2 - z(z-1)}{(z-1)^2}
+\\
+R(z) &= \frac{z}{(z-1)^2}
+\end{align*}
 
 
 \textbf{Real Convolution Theorem}
