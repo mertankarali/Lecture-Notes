@@ -1,4 +1,4 @@
-%
+% denemek icin commit ediyorum
 % This is a borrowed LaTeX template file for lecture notes for CS267,
 % Applications of Parallel Computing, UCBerkeley EECS Department.
 % Now being used for CMU's 10725 Fall 2012 Optimization course
@@ -42,7 +42,7 @@
 
 %
 % The following macro is used to generate the header.
-%
+% deneme
 \newcommand{\lecture}[4]{
    \pagestyle{myheadings}
    \thispagestyle{plain}
@@ -678,8 +678,7 @@ we can conclude that $D(s)$ has 2 poles with positive real parts.
 
 \paragraph{Case II:}
 
-\paragraph{Ex:} Analyze the stability of $D(s) = s^4 + 2 s^3 + 2 s^2 +
-2 s + 1$ using Routh table
+\paragraph{Ex:} Analyze the stability of $D(s) = s^4 + 2 s^3 + 2 s^2 + 2 s + 1$ using Routh table
 
 \begin{minipage}[h]{1\linewidth}
 \begin{center}
@@ -704,7 +703,7 @@ Thus we know that system is indeed BIBO stable. However,
 what we can do in order to find number of unstable poles. 
 This happens when there exists roots of equal magnitude
 located radially opposite in $s-$plane, i.e. symmetric
-w.r.t origin. These cases are illustrated in the figrue below.
+w.r.t. origin. These cases are illustrated in the figure below.
 
 \vspace{6pt}
 
@@ -733,7 +732,7 @@ $s^3$ & 2 & 2 & 0 &
 \\ \hline
 $s^2$ & 1 & 1 & 0 & $\rightarrow A(s) = s^2 + 1$
 \\ \hline
-$s^1$ & \textbf{2} & \textbf{0} &   & $\leftarrow A'(s) = 2$
+$s^1$ & \textbf{2} & \textbf{0} &   & $\leftarrow A'(s) = 2s$
 \\ \hline
 $s^0$ & 1 & 0 & &
 \\ \hline
@@ -746,7 +745,7 @@ $\#$ sign changes in the Routh array of $D(s)$ with Auxiliary polynomial
 is equal to 0, so we can conclude that $D(s)$ has 0 poles with
 positive real parts. This means that all unstable poles are located on
 the imaginary axis. If we compute the poles numerically we find that
-$p_{1,2} = -1$ and $p_{2,3} = - j$ which verifies our finding. Indeed,
+$p_{1,2} = -1$ and $p_{3,4} = \pm j$ which verifies our finding. Indeed,
 we can see that problematic roots are the roots of $A(s)$.
 
 \vspace{6pt}
@@ -761,7 +760,7 @@ $s^3$ & 1 & -1 &
 \\ \hline
 $s^2$ & 2 & -2 & $\rightarrow A(s) = 2 s^2 - 2$
 \\ \hline
-$s^1$ & \textbf{2} & \textbf{0} & $\leftarrow A'(s) = 2 s^2 - 2$
+$s^1$ & \textbf{4} & \textbf{0} & $\leftarrow A'(s) = 4 s$
 \\ \hline
 $s^0$ & -2 & 0 & 
 \\ \hline
@@ -856,7 +855,7 @@ $s^3$ & 1 & -1 &
 \\ \hline
 $s^2$ & 2 & -2 & $\rightarrow A(z) = 2 z^2 - 2$
 \\ \hline
-$s^1$ & 4 & 0 & $\leftarrow A'(z) = 4 $
+$s^1$ & 4 & 0 & $\leftarrow A'(z) = 4 z $
 \\ \hline
 $s^0$ & -2 & 0 &
 \\ \hline
