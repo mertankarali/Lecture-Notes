@@ -6,8 +6,10 @@ Tested in Ubuntu.
 
 From this directory `Lecture-Notes/METU-EE402`:
 
-```sudo apt-get install make qpdf
-make```
+```
+sudo apt-get install make qpdf
+make
+```
 
 Resulting pdf will be in this directory:
 
