@@ -250,17 +250,17 @@ Now using this relation let's solve the state-space equations
   e^{-A t} x(t) &= x(0) + \int\limits_{0}^{t} e^{-A \tau} B u(\tau) d
                   \tau
 \\
-x(t) &= e^{-A t} x_0 + \int\limits_{0}^{t} e^{A ( t - \tau ) } B u(\tau) d
+x(t) &= e^{A t} x_0 + \int\limits_{0}^{t} e^{A ( t - \tau ) } B u(\tau) d
                   \tau
 \end{align*}
 %
 Thus the solution of a system in state-space form can be written as
 %
 \begin{align*}
-  x(t) &= e^{-A t} x_0 + \int\limits_{0}^{t} e^{A ( t - \tau ) } B u(\tau) d
+  x(t) &= e^{A t} x_0 + \int\limits_{0}^{t} e^{A ( t - \tau ) } B u(\tau) d
                   \tau
 \\
-  y(t) &= C e^{-A t} x_0 + \int\limits_{0}^{t} C e^{A ( t - \tau ) } B u(\tau) d
+  y(t) &= C e^{A t} x_0 + \int\limits_{0}^{t} C e^{A ( t - \tau ) } B u(\tau) d
                   \tau + D u(t)
 \end{align*}
 %
@@ -332,8 +332,8 @@ Let's start with the state evolution equation
          u(\tau) d \tau
 \end{align*}
 %
-It is obvious that due to time-invariant the initial time of the 
-equation above can be generalized as
+Due to time-invariant nature of the dynamics, we can 
+generalize the initial time of the equation as
 %
 \begin{align*}
   x(t) &= e^{A (t - t_0)} x(t_0) + \int\limits_{t_0}^{t} e^{A ( t - \tau ) } B
