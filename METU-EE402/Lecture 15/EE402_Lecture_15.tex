@@ -574,5 +574,87 @@ or equivalently
  \mathrm{dim} \left ( \mathcal{N} ( \mathbf{O} ) \right) = 0
 \end{align*} 
 
+\newpage
+
+\textbf{Example:} Consider the following state-space form of a
+DT system 
+%
+\begin{align*}
+x[k+1] &= 
+\left[ \begin{array}{cc} 0 & 1 \\ 1 & 0 \end{array} \right]
+x[k]
++
+\left[ \begin{array}{c} 0 \\ 1 \end{array} \right] u[k]
+\\
+y[k] &= \left[ \begin{array}{cc} 1 & -1 \end{array} \right] x(t)
+\end{align*}
+
+Is this system fully reachable and observable ?
+
+\textbf{Solution:} Let's compute the reachability matrix 
+
+\begin{align*}
+  \mathbf{M} = \left[ \begin{array}{cc} 1 & 0 \\ 0 & 1 \end{array} \right]
+\end{align*}
+
+$\mathrm{rank}( \mathbf{M} ) = 2$, thus the state-space representation
+is fully reachable. Now, let's compute the observability matrix
+
+\begin{align*}
+  \mathbf{O} = \left[ \begin{array}{cc} 1 & -1 \\ -1 & 1 \end{array} \right]
+\end{align*} 
+
+$\mathrm{rank}( \mathbf{M} ) = 1$, thus the state-space representation
+is not fully observable.
+
+In order to gain some insight regarding the reason of the lack of
+observability, let's find the eigenvalues, as well as, closed-loop
+transfer function
+
+\begin{align*}
+\mathrm{det} \left( \left[ \begin{array}{cc} \lambda & -1 \\ -1 &
+                                                                  \lambda \end{array}
+                                                                  \right]
+                                                                  \right)
+                                                                  &=
+                                                                  \lambda^2
+                                                                  - 1
+\quad \rightarrow \quad \lambda_{1,2} = \pm 1
+\end{align*}
+%
+\begin{align*}
+  H(z) &= \left[ \begin{array}{cc} 1 & -1 \end{array} \right]
+\left[ \begin{array}{cc} z & -1 \\ -1 & z\end{array}
+                                                                  \right]^{-1}
+\left[ \begin{array}{c} 0 \\ 1 \end{array} \right]
+\\
+&=
+\left[ \begin{array}{cc} 1 & -1 \end{array} \right]
+\left[ \begin{array}{cc} z & 1 \\ 1 & z\end{array}
+                                                                  \right]
+\left[ \begin{array}{c} 0 \\ 1 \end{array} \right] \frac{1}{z^2 - 1}
+\\
+&=
+\left[ \begin{array}{cc} 1 & -1 \end{array} \right]
+\left[ \begin{array}{cc} z & 1 \\ 1 & z\end{array}
+                                                                  \right]
+\left[ \begin{array}{c} 0 \\ 1 \end{array} \right] \frac{1}{z^2 - 1}
+\\
+&=
+\left[ \begin{array}{cc} 1 & -1 \end{array} \right]
+\left[ \begin{array}{c} 1 \\ z \end{array} \right] \frac{1}{z^2 - 1}
+\\
+&= \frac{-(z-1)}{z^2 - 1} 
+\\
+&= \frac{-1}{z + 1} 
+\end{align*}
+
+We can see that even if $\lambda = 1$ is an eigenvalue of the
+state-space representation, it is not a pole of the transfer
+function. This implies that the mode of the system associated 
+with $\lambda = 1$ is reachable bot not observable. For this
+reason original state-space representation is not a minimal
+state-space representation. 
+
 % **** This ENDS THE EXAMPLES. DON'T DELETE THE FOLLOWING LINE:
 \end{document}
