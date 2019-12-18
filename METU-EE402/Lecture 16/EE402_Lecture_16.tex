@@ -95,8 +95,8 @@ Given a discrete-time state-evolution equation
 \end{align*}
 %
 If direct measurements of all of the states of the
-system (e.g. $y[k] = x[k]$) are available, the most
-popular control method is the linear state feedback
+system (e.g. $y[k] = x[k]$) are available, one of the most
+popular control methods is the linear state feedback
 control,
 %
 \begin{align*}
@@ -116,7 +116,7 @@ system
 \end{align*}
 %
 The system matrix of this new autonomous system is
-$\hat{G} = G - H K$. Important questions is how to choose $K$. 
+$\hat{G} = G - H K$. The important question is how we need to choose K?. 
 Note that 
 %
 \begin{align*}
@@ -124,10 +124,7 @@ Note that
   K &\in \mathbb{R}^{n \times p} \quad \mathrm{Multi-Input}
 \end{align*}
 %
-As in all of the control desgn techniques, the most critical criterion
-is stability, thus we want all of the eigenvalues to be strictly
-inside the unit-circle. However, we know that there could be 
-different requirements on the poles/eigenvalues of the system.
+As in all of the control design techniques, the most critical criterion is stability, thus we want all of the eigenvalues to be strictly inside the unit circle. However, we know that there could be different requirements on the poles/eigenvalues of the system.
 
 The fundamental principle of ``pole-placement'' design is that
 we first define a desired closed-loop eigenvalue set 
@@ -135,11 +132,9 @@ $\mathcal{E}^* = \lbrace \lambda_1^* , \ \cdots, \  \lambda_1^* \rbrace$, and
 then if possible we choose $K^*$ such that the closed-loop
 eigenvalues match the desired ones.
 
-The necessary and sufficient condition on arbitrary pole-placement
-is that the system should be Reachable.
+The necessary and sufficient condition on arbitrary pole-placement is that the system should be fully reachable.
 
-In Pole-Placement, first step is computing the desired 
-characteristic polynomial. 
+In Pole-Placement, the first step is computing the desired characteristic polynomial. 
 %
 \begin{align*}
  \mathcal{E}^* &= \lbrace \lambda_1^* , \ \cdots, \  \lambda_n^*
@@ -222,8 +217,7 @@ perturbations in 2 steps.
 \subsection*{Design of State-Feedback Gain Using Reachable Canonical
 Form}
 
-Let's assume that the state-space representation is in controllable
-canonical form and we have access to the all states of this form
+Let's assume that the state-space representation is in reachable canonical form and we have access to all states of this form
 %
 \begin{align*}
 x[k+1] &= \left[ \begin{array}{ccccc} 0 & 1 & 0 & \cdots & 0 \\ 0 & 0 & 1 &
@@ -333,7 +327,7 @@ a_{n-2} & a_{n-3} & \cdots & 1 & 0
 A similar approach (but longer) can be used to show 
 that $T^{-1} G T = \hat{G}$. We know how to design a
 state-feedback gain $\hat{K}$ for the Reachable
-canonical form. Given $\hat{K}$ 
+canonical form. Given $\hat{K}$,
 $u[k]$ is given as
 %
 \begin{align*}
