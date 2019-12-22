@@ -88,7 +88,7 @@
 
 \section*{Discrete-time Luenberger Observer}
 
-In general the state, $x[k]$ of a system
+In general the state, $x[k]$, of a system
 is not accessible and \textit{observers, estimators, filters})
 have to be used to extract this information.
 The output, $y[k]$, represents the measurements
@@ -105,8 +105,8 @@ system and the errors caused by the mismatched initial conditions
 $x_0 \neq \hat{x}_0$ (or other types of perturbations)
 are reduced by introducing output error feedback.
 
-Let's assume that the states of the simulated system
-is $\hat{x}[k]$, then the state space equation of this
+Let's assume that the state vector of the simulated system
+is$\hat{x}[k]$, then the state space equation of this
 synthetic system takes the form
 %
 \begin{align*}
@@ -115,15 +115,15 @@ synthetic system takes the form
   \hat{y}[k] &= \hat{C} x[k] + \hat{D} u[k]
 \end{align*}
 %
-Note that since $u[k]$ is the input that is controlled
-it is assumed to be known. If $x[0] = \hat{x}[0]$ and
+Note that since $u[k]$ is the input that is supplied by the 
+controller, we assume that it is known apriori. If $x[0] = \hat{x}[0]$ and
 when there is no model mismatch or uncertainty in the system
 then we expect that $x[k] = \hat{x}[k]$ and $y[k] = \hat{y}[k]$ 
-for all $k$. When $x[0] = \hat{x}[0]$, then we observe a 
+for all $k$. When $x[0] \neq \hat{x}[0]$, then we should observe a 
 difference between the measured and predicted output
-$y[k] \neq \hat{y}[k]$. The core idea in Luenberger observers
+$y[k] \neq \hat{y}[k]$. The core idea in Luenberger observer
 is feeding the error in the output prediction 
-$y[k] - \hat{y}[k]$ to the system via a linear feedback gain.
+$y[k] - \hat{y}[k]$ to the simulated system via a linear feedback gain.
 %
 \begin{align*}
   \hat{x}[k+1] &= G \hat{x}[k] + H u[k] + L \left( y[k] - \hat{y}[k] \right) 
@@ -132,7 +132,7 @@ $y[k] - \hat{y}[k]$ to the system via a linear feedback gain.
 \end{align*}
 %
 In order to understand how a Luenberger observer works and
-ot choose a proper observer gain $L$, we define an error signal
+to choose a proper observer gain $L$, we define an error signal
 $e[k] = x[k] - \hat{x}[k]$. The dynamics w.r.t $e[k]$ can be derived
 as
 %
@@ -149,17 +149,19 @@ as
 where $e[0] = x[0] - \hat{x}[0]$ denotes the error in the initial
 condition. 
 
-If the matrix $\left( G - L C \right)$ is stable then the errors
+If the matrix $\left( G - L C \right)$ is stable then the errors in
 initial condition will diminish eventually. Moreover, in order
 to have a good observer/estimator performance the observer
 convergence should be sufficiently fast. 
+
+\newpage
 
 \section*{Observer Gain \& Pole Placement}
 
 Similar to the state-feedback gain design,
 the fundamental principle of ``pole-placement'' Observer design is that
 we first define a desired closed-loop eigenvalue set and 
-compute associated desired characteristic polynomial. 
+compute the associated desired characteristic polynomial. 
 %
 \begin{align*}
  \mathcal{E}^* &= \lbrace \lambda_1^* , \ \cdots, \  \lambda_n^*
@@ -172,7 +174,7 @@ compute associated desired characteristic polynomial.
 \end{align*}
 %
 The necessary and sufficient condition on arbitrary observer pole-placement
-is that the system should be fully Observable. Then we tune $L$ such
+is that the system should be fully Observable. Then, we tune $L$ such
 that 
 %
 \begin{align*}
@@ -228,7 +230,7 @@ If we match the equations
 %
 Thus $L = \left[ \begin{array}{c} -1 \\ -4 \end{array} \right]$
 
-\subsection*{Design of Observer Gain Using Reachable Canonical
+\subsection*{Design of Observer Gain Using Observable Canonical
 Form}
 
 Let's assume that the state-space representation is in observable 
