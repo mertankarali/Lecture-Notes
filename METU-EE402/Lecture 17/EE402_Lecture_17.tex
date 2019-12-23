@@ -110,9 +110,9 @@ is$\hat{x}[k]$, then the state space equation of this
 synthetic system takes the form
 %
 \begin{align*}
-  \hat{x}[k+1] &= \hat{G} x[k] + \hat{H} u[k]
+  \hat{x}[k+1] &= G \hat{x}[k] + H u[k]
   \\
-  \hat{y}[k] &= \hat{C} x[k] + \hat{D} u[k]
+  \hat{y}[k] &= C \hat{x}[k] + D u[k]
 \end{align*}
 %
 Note that since $u[k]$ is the input that is supplied by the 
@@ -128,7 +128,7 @@ $y[k] - \hat{y}[k]$ to the simulated system via a linear feedback gain.
 \begin{align*}
   \hat{x}[k+1] &= G \hat{x}[k] + H u[k] + L \left( y[k] - \hat{y}[k] \right) 
   \\
-  \hat{y}[k] &= C x[k] + D u[k]
+  \hat{y}[k] &= C \hat{x}[k] + D u[k]
 \end{align*}
 %
 In order to understand how a Luenberger observer works and
