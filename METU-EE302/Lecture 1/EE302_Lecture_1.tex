@@ -188,24 +188,15 @@ and time-invariant and time-varying systems using state-space representations.
 
 \subsection*{Feedback Systems}
 
-The \textit{feedback} terms constitutes to the case, where 
-dynamical systems are connected in a way that output of each 
-system influences the its own driving input (directly or indirectly)
+The \textit{feedback} terms constitute to the case, where 
+dynamical systems are connected in a way that the output of each 
+the system influences its own driving input (directly or indirectly)
 and dynamic relations between different sub-systems are 
 tightly coupled. 
 
-Simple causal reasoning about a feedback system is difficult (if not possible). 
-For example, in the feedback system illustrated in Fig. \ref{fig:closed_open}(B), 
-the first system influences the second and the second system influences the first,
-leading to a circular argument. As a result, in order to understand the behavior of 
-feedback systems formal methods are necessary. 
+Simple causal reasoning about a feedback system is difficult (if not possible). For example, if we observe the feedback system illustrated in Fig. \ref{fig:closed_open}(B), we see that the first system influences the second, and the second system influences the first, leading to a circular argument. We can conclude that formal methods are necessary to understand the behavior of feedback systems. 
 
-Fig.~\ref{fig:closed_open} illustrates the the idea of feedforward vs. feedback 
-in block diagram topology. Open-loop and closed-loop terms are also commonly
-used to refer feedforward and feedback structures respectively.  
-If the systems are interconnected in a cyclic topology, it is referred as a 
-closed-loop system. If one cuts an interconnection such that cyclic 
-structure is broken, the system becomes an open-loop system.
+Fig.~\ref{fig:closed_open} illustrates the idea of feedforward vs. feedback in block diagram topology. Open-loop and closed-loop terms are also commonly used to refer to feedforward and feedback structures, respectively.  When systems connect each other in a cyclic topology, we refer to the topolgy as a closed-loop system. If one cuts an interconnection such that the cyclic structure is broken, the system becomes an open-loop system.
 
 \begin{figure}[h]
 	\centering
@@ -214,10 +205,9 @@ structure is broken, the system becomes an open-loop system.
 	\label{fig:closed_open}
 \end{figure}
 
-Feedback based control may not be mandatory for some control 
-applications, yet a feedforward based control policy can be more
-advantageous then a feedback based control policy in some cases. 
-The core benefit of a feedback in a control system is that Feedback
+Feedback based control may not be mandatory for some control applications, yet a feedforward based control policy can be more
+advantageous than a feedback-based control policy in some cases. 
+The core benefit of feedback in a control system is that feedback
 reduces uncertainties in systems and improves the robustness. 
 Since uncertainties are unavoidable in real life, feedback
 control systems are ubiquitous in both synthetic and biological
