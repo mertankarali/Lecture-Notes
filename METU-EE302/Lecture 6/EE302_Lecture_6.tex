@@ -175,12 +175,7 @@ signals; $r(t)$ (reference input), $d(t)$ (``disturbance'' input), and $n(t)$ (`
 	  \end{align*}
   \end{itemize}
   
-  It seems that requirements on $C(s)$ and $H(s)$, when we consider both tracking performance, 
-  disturbance rejection, and noise rejection. This is the most well known limitation of feedback 
-  control systems. The basic idea is it is not possible to only design a controller $C(s)$ such that 
-  we reach good closed-loop performance when the system suffers from uncertainties and noises.
-  Somehow we need to design systems such that $G(s)$, $H(s)$, and even $N(s)$ and $D(s)$
-  together with the designed controller achieves a good closed-loop behavior. 
+It seems that requirements on $C(s)$ and $H(s)$ start conflicting when we consider both tracking performance, disturbance rejection, and noise rejection. This paradox is the most well-known limitation of feedback control systems. The basic idea is that one can not only concentrate on designing a controller $C(s)$ such that we reach excellent closed-loop tracking performance when the system suffers from uncertainties and noises. Somehow we need to design $G(s)$, $H(s)$, and even $N(s)$ and $D(s)$ together such that the whole system achieves a ``good'' closed-loop behavior. 
   
   
 % **** This ENDS THE EXAMPLES. DON'T DELETE THE FOLLOWING LINE:
