@@ -170,11 +170,11 @@ won't be LTI. In order to have an LTI representation, there are two options
 \subsection{Armature Controlled DC Motor}
 
 Majority of ``DC'' Motors are controlled (and indeed manufactured) with this approach. Either
-there is a permanent magnet which satisfies the constant $Phi$ or a constant current is supplied
-through the coils that generates magnetic field.
+there is a permanent magnet which satisfies the constant $\Phi$ or a constant current is supplied
+through the coils that generates the magnetic field.
 
 Let's model the following electro-mechanical system where the DC motor is armature controlled 
-and given that $y(t) = \omega_(t)$ and $u(t) = V_a(t)$.
+and given that $y(t) = \omega(t)$ and $u(t) = V_a(t)$.
 
   \begin{minipage}[h]{1\linewidth}
     \begin{center}
@@ -211,7 +211,8 @@ where $K_a \equiv K_{\tau}^a$. Now let's build a block-diagram topology
    \begin{align*}
    	G(s) &= \frac{\Omega(s)}{V_a(s)} = \frac{\frac{K_a}{(L_a s + R_a) (J s + \beta)} }{1 + \frac{K_a K_b}{(L_a s + R_a) (J s + \beta)}}
 	\\
-	&= \frac{K_a}{L_a J s^2 + ( L_a \beta + R_a J ) s + R_a \beta}
+	&= \frac{K_a}{L_a J s^2 + ( L_a \beta + R_a J ) s + R_a \beta
+          + K_a K_b}
    \end{align*}
    %
    \textbf{Example 1:} Given that $V_a$ is the input and $\theta$ is the output, construct a block-diagram for the following electro mechanical system and then compute the transfer function.
@@ -230,7 +231,7 @@ where $K_a \equiv K_{\tau}^a$. Now let's build a block-diagram topology
     \end{center}
   \end{minipage} 
   
-  Then the transfer function cab ne derived using block-diagram simplification methods as given in the next page
+  Then the transfer function can ne derived using block-diagram simplification methods as given in the next page
   
       \begin{minipage}[h]{1\linewidth}
     \begin{center}
