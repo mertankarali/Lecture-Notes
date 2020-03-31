@@ -397,5 +397,319 @@ If we follow the procedure, we obtain the following Nyquist plot.
     \end{center}
   \end{minipage}
 
+\section*{3. Nyquist Stability Criterion for Feedback Systems}
+
+In control theory and applications Nyqist plot and Nyquist stability test are majorly used for
+analyzing feedback topologies. The figure below illustrates the fundamental feedback system topology for a SISO system
+
+\vspace{6 pt}
+
+  \begin{minipage}[h]{1\linewidth}
+    \begin{center}
+      \includegraphics[width=0.5\textwidth]{unityfeedback}
+    \end{center}
+  \end{minipage}
+
+\vspace{6 pt}
+
+We know that the closed-loop transfer function, $T(s)$, for this
+system has the following form
+%
+\begin{align*}
+  T(s) = \frac{G(s)}{1 + G(s) H(s)} = \frac{G(s)}{1 + G_{OL}(s)}  
+\end{align*}
+%
+where $G_{OL}(s)$ is the open-loop transfer function for the given
+topology. We know that poles of $T(s)$ are the roots that satisfy 
+$1 + G_{OL}(s) = 0$. 
+
+In order to characterize and ``quantify'' the stability of the whole
+closed system, we will utilize the Nyquist plot of the open-loop 
+transfer function, $G_{OL}(s)$. 
+
+In this part (frequency response analysis) of the course, we will
+limit to a specific (but very important and general) class of systems 
+and assume that 
+%
+\begin{itemize}
+  \item Open-loop transfer function of the feedback system is a
+    \textit{minimum-phase} system, i.e.
+    \begin{itemize}
+      \item No poles/zeros in the Open Right Half Plane
+      \item $\lim_{\omega \to \infty} [ \frac{G_{OL}(s)}{s} ]_{s = \j \omega} = 0 $
+    \end{itemize}    
+  \item The feed-back system is Type $0-2$ (i.e. no integrator of
+    order larger than 3 in the open-loop transfer function). 
+    \item Polar plot of $G(j \omega)$ crosses the negative real-axis
+      at most once. 
+\end{itemize}
+%
+
+Under this assumption, Nyquist stability criterion is reduced to the
+following 
+
+\textbf{Def:} A closed-loop system is BIBO stable, if the Nyquist plot
+of the open-loop transfer function neither encircle not intersect $(-1
++ 0 j )$ point on the complex plane. 
+
+Indeed, it very easy to understand why the system becomes BIBO
+unstable, when the Nyquist plot intersect the $(-1 + 0 j )$. If
+Nyquist plot intersects $(-1 + 0 j )$, it means that $\exists \;
+\omega$ such that $G(j \omega) = -1$ and $1 + G(j \omega) = 0$, 
+which further implies that the closed-loop system has at least one 
+pole on the imaginary axis. 
+
+\vspace{6 pt}
+
+\textbf{Ex:} Analyze the stability of the following feedback system
+using Nyquist plot.
+
+\vspace{6 pt}
+
+  \begin{minipage}[h]{1\linewidth}
+    \begin{center}
+      \includegraphics[width=0.5\textwidth]{ex1block}
+    \end{center}
+  \end{minipage}
+
+\vspace{6 pt}
+
+\textbf{Solution:} For this given system $G_{OL}(s) = \frac{1}{s+1}$.
+In the previous lecture we already derived the Nyquist plot for $\frac{1}{s+1}$
+which is illustrated below
+
+\vspace{6 pt}
+
+  \begin{minipage}[h]{1\linewidth}
+    \begin{center}
+      \includegraphics[width=0.9\textwidth]{ex2}
+    \end{center}
+  \end{minipage}
+
+\vspace{3 pt}
+
+It is clear that Nyquist plot of $G_{OL}(s)$ neither encircles not
+intersect the $(-1 + 0 j)$ point, thus the closed-loop system is 
+BIBO stable. 
+
+\vspace{6 pt}
+
+\textbf{Ex:} Find the range of positive $K$ values that makes the following
+closed-loop system stable.
+
+\vspace{6 pt}
+
+  \begin{minipage}[h]{1\linewidth}
+    \begin{center}
+      \includegraphics[width=0.45\textwidth]{ex2block}
+    \end{center}
+  \end{minipage}
+
+\vspace{6 pt}
+
+\textbf{Soln:} We would like to test the stability of the closed-loop system
+for different values of $K$, moreover we would like to derive 
+the range of $K > 0$ values that makes the closed-loop system 
+stable. Indeed, we don't need to re-draw the Nyquist plot
+for each $K$ that we want to test. Instead, we will simply analyze the
+effect of a positive gain $K$, on the Nyquist plot. Let 
+$\Gamma_1$ be the Nyquist plot of $G_{OL}(s)$ when $K = 1$. Since $K$
+is a simple postive gain it only radially scales the Nyquist plot
+without affecting the phase, i.e. Nyquist plot for an arbitrary gain
+$K$ will be $\Gamma_K = K \Gamma_1$. Since we are intersted in only
+the encirclement or intersection of $(-1 + j)$ point, it can be
+enough to concentrate of the intersection of Nyquist plot with the
+negative real axis. 
+
+We already derived the Nyquist plot for $\frac{1}{(s+1)^2}$. 
+We can easily obtain the Nyquist plot of $\frac{K}{(s+1)^2}$
+by scaling. Both Nyquist plots are illustrated below. 
+
+\vspace{6 pt}
+
+  \begin{minipage}[h]{1\linewidth}
+    \begin{center}
+      \includegraphics[width=0.6\textwidth]{exK}
+    \end{center}
+  \end{minipage}
+
+\vspace{6 pt}
+
+We can see from the derived Nyquist plots that the closed-system
+would be stable for all values of $K$.
+
+\vspace{6 pt}
+
+\textbf{Ex:} Find the range of $K$ values that makes the
+following closed-loop system stable. Also, for the $K$ values that 
+makes the closed-loop system unstable find the number of unstable poles.
+
+\vspace{6 pt}
+
+  \begin{minipage}[h]{1\linewidth}
+    \begin{center}
+      \includegraphics[width=0.6\textwidth]{ex3block}
+    \end{center}
+  \end{minipage}
+
+\vspace{6 pt}
+
+\textbf{Solution:} In the previous lecture we already derived the
+Nyquist plot for $\frac{1}{(s+1)^2}$. Now let's illustrate the Nyquist
+plots of both $\frac{1}{(s+1)^2}$ and $\frac{K}{(s+1)^2}$
+
+\vspace{6 pt}
+
+  \begin{minipage}[h]{1\linewidth}
+    \begin{center}
+      \includegraphics[width=0.8\textwidth]{exK2}
+    \end{center}
+  \end{minipage}
+
+\vspace{6 pt}
+
+As we can see from the Nyquist plot pf $\frac{K}{(s+1)^3}$, 
+intersects the negative real axis at the point of $(-K/4 + 0 j)$.
+We can easily see that when $K = 4$, Nyquist plot intersects 
+the $(-1 + 0 j)$ point, and when $K > 4$, Nyquist plot encircles 
+the $(-1 + 0 j)$. As a results, the closed loop system is BIBO
+stable for $K \in (0 , 4)$.
+ 
+\subsection{Nyquist Plot and Stability Test with  Open-Loop Poles/Zeros on the Imaginary Axis}
+
+If you remember, when we introduced Nyquist contour and Nyquist stability
+test we assumed that there is no pole/zero on the imaginary axis. 
+However, it is especially very common to have poles at the origin
+since it corresponds to simple integrator. In this course, we will
+explicitly cover the case when there exist a pole or zero at the
+origin. 
+
+Let's assume that $G_{OL}(s)$ has a pole (or zero, or multiple poles)
+at the origin. We simply modify the Nyquist contour by adding an
+infinitesimal notch at the origin to the original Nyquist contour. 
+
+The figure below illustrates this modified Nyquist contour and 
+an illustrative Nyquist plot. 
+
+\vspace{12 pt}
+
+  \begin{minipage}[h]{1\linewidth}
+    \begin{center}
+      \includegraphics[width=0.8\textwidth]{originnyq}
+    \end{center}
+  \end{minipage}
+
+\vspace{6 pt}
+
+\newpage
+
+\textbf{Ex:} Find the range of $K$ values that makes the
+following closed-loop system stable. 
+
+\vspace{12 pt}
+
+  \begin{minipage}[h]{1\linewidth}
+    \begin{center}
+      \includegraphics[width=0.65\textwidth]{ex5block}
+    \end{center}
+  \end{minipage}
+
+\vspace{12 pt}
+
+\textbf{Solution:} For this given system, $\frac{N(s)}{D(s)} =
+\frac{1}{s (s+1) }$. Note, there exist a pole at the origin, thus 
+we need to utilize the modified Nyquist Contour. 
+In the modified Nyquist contour there exist 4 major paths, 
+and we need to draw the Nyquist plot based on these 4 paths. 
+
+\begin{enumerate}
+  \item This is the polar plot, where we need to plot $G(j \omega)$, where $\omega : 0 \to
+    \infty$. 
+    % 
+    \begin{align*}
+      G(j \omega) = \frac{1}{j \omega (j \omega +1)} = \frac{ -j  - \omega }{\omega
+      (\omega^2 + 1) } = \frac{-1}{\omega^2 + 1} + \frac{-1/\omega}{
+      \omega^2 + 1} j
+    \end{align*}
+%
+   Some observations about polar plot
+    \begin{align*}
+       Re \lbrace G(j \omega) \rbrace < 0 \quad & \&  \quad  Im \lbrace G(j
+                                                \omega) \rbrace < 0 \quad , \ \forall  \omega > 0 
+      \\
+        \lim_{\omega \to 0} Re \lbrace G(j \omega) \rbrace = - 1
+       \quad & \& \quad
+       \lim_{\omega \to 0} Re \lbrace G(j \omega) \rbrace = - \infty
+        \\
+       \lim_{\omega \to \infty} | G(j \omega) | = 0
+        \quad & \& \quad
+      \lim_{\omega \to \infty} \angle [ G(j \omega) ] = -\pi
+      \end{align*}
+ %
+  \item Note that since we are now only interested in the circulation around
+    $-1/K$. The origin in the Nyquist plot corresponds to $| K | \to
+    \infty$, so that it is really not critical to correctly draw this
+    detail for feedback systems. 
+     However, let's draw this detail for this example for practice. 
+     $s = R e^{j \theta}$ and $\theta : \pi/2 \to -\pi/2$.  Then 
+   we can derive that  
+   \begin{align*}
+     & G \left( R e^{j \theta} \right) \approx \frac{1}{R^2 e^{j
+       2 \theta}} = \frac{e^{j (-2 \theta)}}{R^2}
+       \\
+    &\Rightarrow | G \left( R e^{j \theta} \right) | \approx
+      \epsilon^2 \ll 1
+   \quad , \quad \angle [ G \left( R e^{j \theta} \right) ] \approx -2
+      \theta
+   \end{align*}
+   % 
+   Note that when $\theta : \pi/2 \to -\pi/$, the infinite-small 
+   contour around origin rotates in CCW direction. 
+   %
+   \item This part is simply the conjugate of polar plot with reverse
+     direction. 
+  \item Now this part is new, since we are dealing with this path
+    since there is a pole at the origin. 
+     $s = \epsilon e^{j \phi}$, where $\epsilon \to 0$ and $\phi :
+     -\pi/2 \to \pi/2$ (CCW direction).  Then  we can derive that  
+   \begin{align*}
+     & G \left( \epsilon e^{j \phi} \right) \approx \frac{1}{\epsilon e^{j
+        \phi}} = R e^{j (-\phi)}
+       \\
+    &\Rightarrow | G \left(\epsilon e^{j \phi} \right) | \approx
+     R \ll 1
+   \quad , \quad \angle [ G \left( \epsilon e^{j \phi} \right) ] \approx -\phi
+   \end{align*}
+\end{enumerate}
+
+As a result, we obtain the following Nyquist plot for
+$\frac{N(s)}{D(s)} = \frac{1}{s (s+1)}$
+
+\vspace{6 pt}
+
+  \begin{minipage}[h]{1\linewidth}
+    \begin{center}
+      \includegraphics[width=0.85\textwidth]{ex5}
+    \end{center}
+  \end{minipage}
+
+\vspace{6 pt}
+
+Note that the open-loop transfer function has no unstable poles,
+i.e. $P_{OL} = 0$. 
+We can see from the Nyquist plot divides the real axis in
+two different parts. If we analyze  these regions separately, we can 
+then find a range of K values that makes the closed loop-system stable
+%
+\begin{enumerate}
+  \item $\frac{-1}{K} \in (-\infty , 0) \ \rightarrow \ K \in (0 , \infty) 
+    \Rightarrow N = 0 \rightarrow P_{CL} = 0 $. System is stable 
+  \item $\frac{-1}{K} \in (0, \infty) \rightarrow K \in (-\infty , 0)    
+    \Rightarrow N = 1 \rightarrow P_{CL} = 1 $. Unstable system with 1
+    unstable pole
+\end{enumerate}
+%
+As a result, $K \in (0 , \infty) \Leftrightarrow $ BIBO-Stable
+ 
  
 \end{document}
