@@ -31,7 +31,7 @@
 \begin{document}
 \thispagestyle{empty}
 \begin{center}
-\fbox{\large\bf Frequency Response Techniques in Control Systems}
+\fbox{\large\bf Frequency Response Techniques in Feedback Control Systems}
 \end{center}
 \bigskip
 
@@ -47,42 +47,7 @@ the test signal is
 \end{align*}
 %
 which is an artificial complex periodic signal with a 
-frequency of $\omega$. The Laplace transform of $u(t)$ takes the
-form
-%
-\begin{align*}
- U(s) = \mathcal{L} \lbrace e^{j \omega t} \rbrace = \frac{1}{s - j \omega}
-\end{align*}
-%
-Response of the system in s-domain is given by
-%
-%
-\begin{align*}
- Y(s) = G(s) U(s) = G(s) \frac{1}{s - j \omega}
-\end{align*}
-%
-Assuming that $G(s)$ is a rational transfer function
-we can perform a partial fraction expansion
-%
-\begin{align*}
-     Y(s) &= \frac{a}{s -  j \omega} + \left[ \mathrm{terms \ due \
-  to \ the \ poles \ of} \  G(s) \right] 
-\\
-a &= \lim_{s \to j \omega} \left[ (s - j \omega) Y(s)
-  \right]  = G(j \omega)
-\\
-Y(s) &=  \frac{G(j \omega)}{s -  j \omega} + \left[ \mathrm{terms \ due \
-  to \ the \ poles \ of} \  G(s) \right]  
-\end{align*}
-%
-Taking the inverse Laplace transform yields
-%
-\begin{align*}
-  y(t) = G(j \omega) e^{j \omega t} + \mathcal{L}^{-1} \left[ \mathrm{terms \ due \
-  to \ the \ poles \ of} \  G(s) \right]  
-\end{align*}
-%
-If we assume that the system is ``stable'' or system is a part of
+frequency of $\omega$. If we assume that the system is ``stable'' or system is a part of
 closed loop system and closed loop behavior is stable then
 at steady state we have
 %
@@ -108,19 +73,16 @@ is computed via
 \begin{align*}
   y_{ss}(t) = M \sin(\omega t + \phi + \theta)
 \end{align*}
-%
-
-\newpage
 
 \section*{2. Plotting Frequency Response: Polar Plot}
 
 We can consider the frequency response function $G(j \omega)$
 as a mapping from positive $j \omega$ axis to a curve in 
-the complex plane. In polar plot, we draw the frequency response
+the complex plane. In polar plot, we simply draw the frequency response
 function starting from $\omega = 0$ (or $\omega \to 0^+$) to $\omega
-\to \infty$.
+\to \infty$ on the complex plane.
 
-Let's draw the polar plots of 
+\textbf{Ex:} Let's draw the polar plots of 
 %
 \begin{align*}
  G_1(s) &= s
@@ -134,15 +96,13 @@ Let's draw the polar plots of
  G_5(s) = 2 + s +  \frac{1}{s}
 \end{align*}
 
-\vspace{6 pt}
-
   \begin{minipage}[h]{1\linewidth}
     \begin{center}
       \includegraphics[width=0.99\textwidth]{polar}
     \end{center}
   \end{minipage}
 
-\vspace{6 pt}
+\newpage
 
 \textbf{Ex:} Draw the polar plots of 
 %
@@ -240,7 +200,7 @@ Resultant polar plot is illustrated below
 
   \begin{minipage}[h]{1\linewidth}
     \begin{center}
-      \includegraphics[width=0.5\textwidth]{polar5}
+      \includegraphics[width=0.6\textwidth]{polar5}
     \end{center}
   \end{minipage}
 
@@ -271,10 +231,12 @@ in this example.
   
 \vspace{6 pt}
 
-Let's consider an LTI transfer function $G(s) = \frac{N(s)}{D(s)}$ that 
-has no zeros or poles on the imaginary axis. Nyquist contour/path, 
+Let's consider an LTI transfer function $G(s)$ that 
+has \textit{no zeros or poles on the imaginary axis}. Nyquist contour/path, 
 $\Gamma_s$, is defined in a way that it covers the
-whole open-right half plane. As illustrated in the Figure below, 
+whole open-right half plane (i.e. whole unstable region). 
+
+As illustrated in the Figure below, 
 Nyquist contour is technically a half-circle for which the radius, $R
 \to \infty$. After that, one can draw the Nyquist plot, which is the
 mapped contour $\Gamma_{G(s)}$. Figure below illustrates a Nyquist
@@ -288,16 +250,16 @@ contour and associated Nyquist plot.
     \end{center}
   \end{minipage}
 
-\vspace{12 pt}
+\newpage
 
 \textbf{Ex:} Let's draw the Nyquist plot of $G(s) = \frac{1}{s+1}$ 
 
 \textbf{Solution:}  Based on the Nyquist contour we have three major
-paths. Now let's analyze the Nyquist paths
+paths. 
 %
 \begin{enumerate}
-  \item This part corresponds to the polar plot that we covered in the previously, We already 
-  plotted $G(j \omega)$, where $\omega : 0 \to \infty$. 
+  \item This part corresponds to the polar plot that we already solved previously. We previously 
+  plotted $G(j \omega)$, where $\omega : 0 \to \infty$ on the complex plane.
 %
   \item This is the mapping of the infinite radius circular path on
     Nyquist contour. In this case if we write $s$ in polar form, we get 
@@ -306,8 +268,7 @@ paths. Now let's analyze the Nyquist paths
    \begin{align*}
      & G \left( R e^{j \theta} \right)  \approx \frac{1}{R e^{j
        \theta}} = \frac{e^{j (-\theta)}}{R}
-       \\
-    &\Rightarrow | G \left( R e^{j \theta} \right) | \approx 0
+       \quad  \Rightarrow \quad | G \left( R e^{j \theta} \right) | \approx 0
    \end{align*}
    %
    \item Last path (mapping of negative imaginary axis) is simply 
@@ -320,11 +281,11 @@ If we follow the procedure, we obtain the following Nyquist plot.
 
   \begin{minipage}[h]{1\linewidth}
     \begin{center}
-      \includegraphics[width=0.75\textwidth]{ex2}
+      \includegraphics[width=0.7\textwidth]{ex2}
     \end{center}
   \end{minipage}
 
-\vspace{12 pt}
+\vspace{6 pt}
 
 \textbf{Ex:} Let's draw the Nyquist plot of 
 $G(s) = \frac{1}{(s+1)^2}$ 
@@ -332,17 +293,15 @@ $G(s) = \frac{1}{(s+1)^2}$
 \textbf{Solution:} Let's analyze the Nyquist paths
 %
 \begin{enumerate}
-  \item Mapping of first path corresponds to the polar plot that we covered in the previously. We plot $G(j \omega)$, where $\omega : 0 \to
-    \infty$. 
+  \item Mapping of first path corresponds to the polar plot that we covered in the previously. 
 %
-  \item This is the infinite radius circular path. In this case if we write $s$ in polar form, we get 
-   $s = R e^{j \theta}$ where $\theta : \pi/2 \to -\pi/2$.  Then 
+  \item Mapping of the infinite radius circular path. Let  $s = R e^{j \theta}$ where $\theta : \pi/2 \to -\pi/2$.  Then 
    we can derive that  
    \begin{align*}
-     & G \left( R e^{j \theta} \right) = \approx \frac{1}{R^2 e^{j
+     & G \left( R e^{j \theta} \right)  \approx \frac{1}{R^2 e^{j
        2 \theta}} = \frac{e^{j (-2 \theta)}}{R^2}
-       \\
-    &\Rightarrow | G \left( R e^{j \theta} \right) | \approx 0
+       \quad \quad
+    \Rightarrow | G \left( R e^{j \theta} \right) | \approx 0
    \end{align*}
    %
    \item Last path (mapping of negative imaginaty axis) is again
@@ -355,7 +314,7 @@ If we follow the procedure, we obtain the following Nyquist plot.
 
   \begin{minipage}[h]{1\linewidth}
     \begin{center}
-      \includegraphics[width=0.75\textwidth]{ex3}
+      \includegraphics[width=0.65\textwidth]{ex3}
     \end{center}
   \end{minipage}
 
@@ -364,26 +323,23 @@ If we follow the procedure, we obtain the following Nyquist plot.
 \textbf{Ex:} Draw the Nyquist plot of $G(s) =
 \frac{1}{(s+1)^3}$ 
 
-\textbf{Solution:} Firs let's analyze the Nyquist paths
+\textbf{Solution:} First let's analyze the Nyquist paths
 %
 \begin{enumerate}
 
-  \item This is the polar plot that we have covered in the previous
-    lecture. We plotted $G(j \omega)$, where $\omega : 0 \to
-    \infty$. 
+  \item This is the polar plot that we have solved previously. 
     % 
-  \item This is the mapping of the infinite radius circular path on
-    Nyquist contour. In this case if we write $s$ in polar form, we
-    get $s = R e^{j \theta}$ and $\theta : \pi/2 \to -\pi/2$.  Then 
+  \item Mapping of the infinite radius circular path on
+    Nyquist contour. Let $s = R e^{j \theta}$ and $\theta : \pi/2 \to -\pi/2$.  Then 
    we can derive that  
    \begin{align*}
      & G \left( R e^{j \theta} \right) \approx \frac{1}{R^3 e^{j
        3 \theta}} = \frac{e^{j (-3 \theta)}}{R^3}
-       \\
-    &\Rightarrow | G \left( R e^{j \theta} \right) | \approx 0
+	\quad
+    \Rightarrow  \quad | G \left( R e^{j \theta} \right) | \approx 0
    \end{align*}
    %
-   \item Last path (mapping of negative imaginaty axis) is again
+   \item Last path (mapping of negative imaginary axis) is again
    the conjugate of polar plot with reverse direction. 
 \end{enumerate}
 
@@ -399,7 +355,7 @@ If we follow the procedure, we obtain the following Nyquist plot.
 
 \section*{3. Nyquist Stability Criterion for Feedback Systems}
 
-In control theory and applications Nyqist plot and Nyquist stability test are majorly used for
+In control theory and its applications Nyqist plot and Nyquist stability test are dominantly used for
 analyzing feedback topologies. The figure below illustrates the fundamental feedback system topology for a SISO system
 
 \vspace{6 pt}
@@ -445,21 +401,25 @@ and assume that
 \end{itemize}
 %
 
-Under this assumption, Nyquist stability criterion is reduced to the
-following 
+Under these assumptions, Nyquist stability criterion is reduced to the
+following definition 
+
+\vspace{3pt}
 
 \textbf{Def:} A closed-loop system is BIBO stable, if the Nyquist plot
-of the open-loop transfer function neither encircle not intersect $(-1
+of the open-loop transfer function neither encircle nor intersect $(-1
 + 0 j )$ point on the complex plane. 
 
+\vspace{3pt}
+
 Indeed, it very easy to understand why the system becomes BIBO
-unstable, when the Nyquist plot intersect the $(-1 + 0 j )$. If
+unstable, when the Nyquist plot intersect the $(-1 + 0 j )$ point. If
 Nyquist plot intersects $(-1 + 0 j )$, it means that $\exists \;
-\omega$ such that $G(j \omega) = -1$ and $1 + G(j \omega) = 0$, 
+\omega \in \mathbb{R}$ such that $G(j \omega) = -1$ and $1 + G(j \omega) = 0$, 
 which further implies that the closed-loop system has at least one 
 pole on the imaginary axis. 
 
-\vspace{6 pt}
+\newpage
 
 \textbf{Ex:} Analyze the stability of the following feedback system
 using Nyquist plot.
@@ -482,13 +442,13 @@ which is illustrated below
 
   \begin{minipage}[h]{1\linewidth}
     \begin{center}
-      \includegraphics[width=0.9\textwidth]{ex2}
+      \includegraphics[width=0.7\textwidth]{ex2}
     \end{center}
   \end{minipage}
 
 \vspace{3 pt}
 
-It is clear that Nyquist plot of $G_{OL}(s)$ neither encircles not
+It is clear that Nyquist plot of $G_{OL}(s)$ neither encircles nor
 intersect the $(-1 + 0 j)$ point, thus the closed-loop system is 
 BIBO stable. 
 
@@ -511,15 +471,16 @@ closed-loop system stable.
 for different values of $K$, moreover we would like to derive 
 the range of $K > 0$ values that makes the closed-loop system 
 stable. Indeed, we don't need to re-draw the Nyquist plot
-for each $K$ that we want to test. Instead, we will simply analyze the
+for each $K$ that we want to test. 
+
+Instead, we will simply analyze the
 effect of a positive gain $K$, on the Nyquist plot. Let 
 $\Gamma_1$ be the Nyquist plot of $G_{OL}(s)$ when $K = 1$. Since $K$
-is a simple postive gain it only radially scales the Nyquist plot
+is a simple positive gain it only radially scales the Nyquist plot
 without affecting the phase, i.e. Nyquist plot for an arbitrary gain
-$K$ will be $\Gamma_K = K \Gamma_1$. Since we are intersted in only
-the encirclement or intersection of $(-1 + j)$ point, it can be
-enough to concentrate of the intersection of Nyquist plot with the
-negative real axis. 
+$K$ will be $\Gamma_K = K \Gamma_1$. Since we are interested in only
+the encirclement  of $(-1 + j)$, it would be sufficient to concentrate of the 
+intersection of Nyquist plot with the negative real axis. 
 
 We already derived the Nyquist plot for $\frac{1}{(s+1)^2}$. 
 We can easily obtain the Nyquist plot of $\frac{K}{(s+1)^2}$
@@ -541,8 +502,7 @@ would be stable for all values of $K$.
 \vspace{6 pt}
 
 \textbf{Ex:} Find the range of $K$ values that makes the
-following closed-loop system stable. Also, for the $K$ values that 
-makes the closed-loop system unstable find the number of unstable poles.
+following closed-loop system stable. 
 
 \vspace{6 pt}
 
@@ -575,16 +535,11 @@ the $(-1 + 0 j)$ point, and when $K > 4$, Nyquist plot encircles
 the $(-1 + 0 j)$. As a results, the closed loop system is BIBO
 stable for $K \in (0 , 4)$.
  
-\subsection{Nyquist Plot and Stability Test with  Open-Loop Poles/Zeros on the Imaginary Axis}
+\section*{Nyquist Plot and Stability Test with  Open-Loop Poles/Zeros on the Imaginary Axis}
 
-If you remember, when we introduced Nyquist contour and Nyquist stability
-test we assumed that there is no pole/zero on the imaginary axis. 
-However, it is especially very common to have poles at the origin
-since it corresponds to simple integrator. In this course, we will
-explicitly cover the case when there exist a pole or zero at the
-origin. 
+If you remember, when we introduced Nyquist contour and Nyquist stability test, we assumed that there is no pole/zero on the imaginary axis (in addition to other assumptions). However, it is especially common to have poles at the origin since it corresponds to the simple integrator. In this course, we will explicitly cover the case when there exists a pole or zero at the origin.
 
-Let's assume that $G_{OL}(s)$ has a pole (or zero, or multiple poles)
+Let's assume that $G_{OL}(s)$ has a pole (or zero, or double pole)
 at the origin. We simply modify the Nyquist contour by adding an
 infinitesimal notch at the origin to the original Nyquist contour. 
 
@@ -603,7 +558,7 @@ an illustrative Nyquist plot.
 
 \newpage
 
-\textbf{Ex:} Find the range of $K$ values that makes the
+\textbf{Ex:} Find the range of positive $K$ values that makes the
 following closed-loop system stable. 
 
 \vspace{12 pt}
@@ -616,10 +571,10 @@ following closed-loop system stable.
 
 \vspace{12 pt}
 
-\textbf{Solution:} For this given system, $\frac{N(s)}{D(s)} =
-\frac{1}{s (s+1) }$. Note, there exist a pole at the origin, thus 
+\textbf{Solution:} For this given system, when $K = 1$ open-loop
+transfer function takes the form $ G_{OL}(s) = \frac{1}{s (s+1) }$. Note, there exist a pole at the origin, thus 
 we need to utilize the modified Nyquist Contour. 
-In the modified Nyquist contour there exist 4 major paths, 
+In the modified Nyquist contour there exist 4 major paths (as opposed to three paths in classical Nyquist contour), 
 and we need to draw the Nyquist plot based on these 4 paths. 
 
 \begin{enumerate}
@@ -646,21 +601,14 @@ and we need to draw the Nyquist plot based on these 4 paths.
       \lim_{\omega \to \infty} \angle [ G(j \omega) ] = -\pi
       \end{align*}
  %
-  \item Note that since we are now only interested in the circulation around
-    $-1/K$. The origin in the Nyquist plot corresponds to $| K | \to
-    \infty$, so that it is really not critical to correctly draw this
-    detail for feedback systems. 
-     However, let's draw this detail for this example for practice. 
-     $s = R e^{j \theta}$ and $\theta : \pi/2 \to -\pi/2$.  Then 
+  \item This part is the mapping of in the infinite radius half-circle part of the Nyquist contour.
+    Let $s = R e^{j \theta}$ and $\theta : \pi/2 \to -\pi/2$.  Then 
    we can derive that  
    \begin{align*}
      & G \left( R e^{j \theta} \right) \approx \frac{1}{R^2 e^{j
        2 \theta}} = \frac{e^{j (-2 \theta)}}{R^2}
        \\
-    &\Rightarrow | G \left( R e^{j \theta} \right) | \approx
-      \epsilon^2 \ll 1
-   \quad , \quad \angle [ G \left( R e^{j \theta} \right) ] \approx -2
-      \theta
+    &\Rightarrow | G \left( R e^{j \theta} \right) | \approx 0
    \end{align*}
    % 
    Note that when $\theta : \pi/2 \to -\pi/$, the infinite-small 
@@ -668,8 +616,8 @@ and we need to draw the Nyquist plot based on these 4 paths.
    %
    \item This part is simply the conjugate of polar plot with reverse
      direction. 
-  \item Now this part is new, since we are dealing with this path
-    since there is a pole at the origin. 
+  \item This part is new. We need to deal with this path   since there is a pole at the origin. 
+  	Let's write $s$ in polar coordinates
      $s = \epsilon e^{j \phi}$, where $\epsilon \to 0$ and $\phi :
      -\pi/2 \to \pi/2$ (CCW direction).  Then  we can derive that  
    \begin{align*}
@@ -683,7 +631,7 @@ and we need to draw the Nyquist plot based on these 4 paths.
 \end{enumerate}
 
 As a result, we obtain the following Nyquist plot for
-$\frac{N(s)}{D(s)} = \frac{1}{s (s+1)}$
+$ \frac{1}{s (s+1)}$
 
 \vspace{6 pt}
 
@@ -695,21 +643,8 @@ $\frac{N(s)}{D(s)} = \frac{1}{s (s+1)}$
 
 \vspace{6 pt}
 
-Note that the open-loop transfer function has no unstable poles,
-i.e. $P_{OL} = 0$. 
-We can see from the Nyquist plot divides the real axis in
-two different parts. If we analyze  these regions separately, we can 
-then find a range of K values that makes the closed loop-system stable
-%
-\begin{enumerate}
-  \item $\frac{-1}{K} \in (-\infty , 0) \ \rightarrow \ K \in (0 , \infty) 
-    \Rightarrow N = 0 \rightarrow P_{CL} = 0 $. System is stable 
-  \item $\frac{-1}{K} \in (0, \infty) \rightarrow K \in (-\infty , 0)    
-    \Rightarrow N = 1 \rightarrow P_{CL} = 1 $. Unstable system with 1
-    unstable pole
-\end{enumerate}
-%
-As a result, $K \in (0 , \infty) \Leftrightarrow $ BIBO-Stable
- 
+Since gain $K$ only scales the Nyquist plot, we can clearly see that 
+Nyquist plot never circulates $\mathbf{-1}$ point for all possible values of $K > 0$.
+Thus, the system is stable $\forall \; K > 0$.
  
 \end{document}
