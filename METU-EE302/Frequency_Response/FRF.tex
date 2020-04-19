@@ -390,15 +390,13 @@ limit to a specific (but very important and general) class of systems
 and assume that 
 %
 \begin{itemize}
-  \item Open-loop transfer function of the feedback system is a
-    \textit{minimum-phase} system, i.e.
+  \item $G_{OL}(s)$ is a \textit{minimum-phase} system, i.e.
     \begin{itemize}
       \item No poles/zeros in the Open Right Half Plane
       \item $\lim_{\omega \to \infty} [ \frac{G_{OL}(s)}{s} ]_{s = \j \omega} = 0 $
     \end{itemize}    
-  \item The feed-back system is Type $0-2$ (i.e. no integrator of
-    order larger than 3 in the open-loop transfer function). 
-    \item Polar plot of $G(j \omega)$ crosses the negative real-axis
+  \item The feed-back system is Type $0-2$ (i.e. no integrator of order larger than 3 in the open-loop transfer function). 
+    \item Polar plot of $G_{OL}(j \omega)$ crosses the negative real-axis
       at most once. 
 \end{itemize}
 %
@@ -409,8 +407,14 @@ following definition
 \vspace{3pt}
 
 \textbf{Def:} A closed-loop system is BIBO stable, if the Nyquist plot
-of the open-loop transfer function neither encircle nor intersect $(-1
+of the open-loop transfer function neither encircle nor intersect the point $(-1
 + 0 j )$ point on the complex plane. 
+
+\vspace{6pt}
+
+\textbf{Def:} T(s) is BIBO stable, if the Nyquist plot of $G_{OL}(s)$ does not encircle $\mathbf{(-1 + 0 j )}$
+
+\vspace{6pt}
 
 \vspace{3pt}
 
