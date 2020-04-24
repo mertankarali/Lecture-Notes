@@ -643,7 +643,7 @@ $ \frac{1}{s (s+1)}$
 
   \begin{minipage}[h]{1\linewidth}
     \begin{center}
-      \includegraphics[width=0.85\textwidth]{figs/ex5}
+      \includegraphics[width=0.75\textwidth]{figs/ex5}
     \end{center}
   \end{minipage}
 
@@ -652,5 +652,118 @@ $ \frac{1}{s (s+1)}$
 Since gain $K$ only scales the Nyquist plot, we can clearly see that 
 Nyquist plot never circulates $\mathbf{-1}$ point for all possible values of $K > 0$.
 Thus, the system is stable $\forall \; K > 0$.
+
+\vspace{12 pt}
+
+\textbf{Ex:} Draw the Nyquist plot of the open-loop transfer function 
+for the following feedback topology and apply Nyquist stability test 
+
+\vspace{12 pt}
+
+  \begin{minipage}[h]{1\linewidth}
+    \begin{center}
+      \includegraphics[width=0.5\textwidth]{figs/block_doubleint}
+    \end{center}
+  \end{minipage}
+
+\vspace{12 pt}
+
+\textbf{Solution:} For this given system, open-loop
+transfer function has the form $ G_{OL}(s) = \frac{s+1}{s^2}$. Note, there exist a repeated pole at the origin, thus 
+we need to utilize the modified Nyquist Contour. 
+In the modified Nyquist contour there exist 4 major paths, 
+and we need to draw the Nyquist plot based on these 4 paths. 
+
+\begin{enumerate}
+  \item This is the polar plot, where we need to plot $G(j \omega)$, where $\omega : 0 \to
+    \infty$. 
+    % 
+    \begin{align*}
+      G(j \omega) = \frac{j \omega + 1}{ (j \omega)^2} =  -\frac{1}{ \omega^2} - \frac{1}{ \omega} j
+    \end{align*}
+%
+   One can easily see that 
+   %
+    \begin{align*}
+       Re \lbrace G(j \omega) \rbrace < 0 \quad & \&  \quad  Im \lbrace G(j
+                                                \omega) \rbrace < 0 \quad , \ \forall  \omega > 0 
+     \end{align*}
+   %
+   This implies that polar plot is only located in the third quadrant of the complex plane. Now let's analyze the behavior of the 
+   polar plot for infinitely small $\omega$, i.e. $\omega = \frac{1}{R}$, where $R \to \infty$
+   %
+    \begin{align*}
+    	Re \lbrace G(j \omega) \rbrace = -R^2  \quad & \Rightarrow \quad  \lim_{R \to \infty} Re \lbrace G(j \omega) \rbrace = -\infty
+	\\
+	Im \lbrace G(j \omega) \rbrace = -R  \quad & \Rightarrow \quad  \lim_{R \to \infty} Im \lbrace G(j \omega) \rbrace = -\infty
+      \end{align*}
+      %
+      As once can see both Real and Imaginary parts goes to $-\infty$ when $\omega \to 0$. However real part goes faster due to 
+      square term. Thus the phase of the polar when $\omega \to 0$ can be find as 
+      %
+	\begin{align*}  
+      		\lim_{\omega \to 0} \frac{Im \lbrace G(j \omega) \rbrace}{Re \lbrace G(j \omega) \rbrace} = 0 
+		\quad & \Rightarrow \quad  \lim_{\omega \to 0}  \angle [ G(j \omega) ] = \arctan( 0 ) -\pi = -\pi
+	\end{align*}
+ %
+   Now let's analyze the behavior of the polar plot for infinitely large $\omega$, i.e. $\omega = R$, where $R \to \infty$
+   %
+    \begin{align*}
+    	Re \lbrace G(j \omega) \rbrace = -\frac{1}{R^2}  \quad & \Rightarrow \quad  \lim_{R \to \infty} Re \lbrace G(j \omega) \rbrace = -0
+	\\
+	Im \lbrace G(j \omega) \rbrace = -\frac{1}{R}   \quad & \Rightarrow \quad  \lim_{R \to \infty} Im \lbrace G(j \omega) \rbrace = -0
+      \end{align*}
+      %
+         As once can see both the Real and Imaginary parts goes to $0$ when $\omega \to \infty$. However real part goes faster due to 
+      square term. Thus the phase of the polar when $\omega \to \infty$ can be find as 
+     %
+	\begin{align*}  
+      		\lim_{\omega \to 0} \frac{Im \lbrace G(j \omega) \rbrace}{Re \lbrace G(j \omega) \rbrace} = \infty 
+		\quad & \Rightarrow \quad  \lim_{\omega \to 0}  \angle [ G(j \omega) ] = \arctan( \infty ) -\pi = -\frac{\pi}{2}
+	\end{align*}
+    %
+ 
+  \item This part is the mapping of in the infinite radius half-circle part of the Nyquist contour.
+    Let $s = R e^{j \theta}$ and $\theta : \pi/2 \to -\pi/2$.  Then 
+   we can derive that  
+   \begin{align*}
+     & G \left( R e^{j \theta} \right) \approx \frac{R e^{j \theta}}{R^2 e^{j 2 \theta}} = \frac{e^{j (-2 \theta)}}{R^2}
+    \quad 
+    \Rightarrow \quad | G \left( R e^{j \theta} \right) | \approx 0
+   \end{align*}
+   % 
+   Note that whole path is mapped to a single ``point'' at the origin. 
+   %
+   \item This part is simply the conjugate of polar plot with reverse
+     direction. 
+  \item Let's write $s$ in polar coordinates
+     $s = \epsilon e^{j \phi}$, where $\epsilon \to 0$ and $\phi :
+     -\pi/2 \to \pi/2$ (CCW direction).  Then  we can derive that  
+   \begin{align*}
+     & G \left( \epsilon e^{j \phi} \right) \approx \frac{1}{\epsilon^2 e^{j 2 \phi}} = R^2 e^{j (-2 \phi)}
+       \\
+    &\Rightarrow | G \left(\epsilon e^{j \phi} \right) | \approx
+     R \to \infty 
+   \quad , \quad \angle [ G \left( \epsilon e^{j \phi} \right) ] \approx -2 \phi
+   \end{align*}
+\end{enumerate}
+
+As a result, the mapping of this contour is an infinitely large almost full circle in CW direction. 
+
+If we combine all four paths the Nyquist plot of $ \frac{s+1}{s^2}$ takes the following form
+
+\vspace{6 pt}
+
+  \begin{minipage}[h]{1\linewidth}
+    \begin{center}
+      \includegraphics[width=0.95\textwidth]{figs/doubleint}
+    \end{center}
+  \end{minipage}
+
+\vspace{6 pt}
+
+We can see that Nyquist plot never circulates $\mathbf{-1}$ point.
+Thus, the closed-loop system is BIBO stable.
+
  
 \end{document}
