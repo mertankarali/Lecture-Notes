@@ -373,10 +373,11 @@ $\zeta = 2$. Indeed, best match between the actual and approximate bode plots in
 
 We already know that for a feedback system, phase and 
 gain margins can be computed based on the Frequency Response
-function of the open-loop transfer function, $G_{OL}(j \omega)$ (under
+characteristics of the open-loop transfer function, $G_{OL}(j \omega)$ (under
 some assumption regarding the system properties).
-Specifically, the phase crossover frequency, $\omega_{pc}$ and the gain margin, 
-$g_m$ (linear scale) and $G_m$ (dB scale), can be computed as
+
+Specifically, we can compute the phase crossover frequency, $\omega_{pc}$ and the gain margin, 
+$g_m$ (linear scale) and $G_m$ (dB scale), as
 %
 \begin{align*}
   \angle [ G_{OL}(j \omega_{p}) ] &= \pm -180^0
@@ -396,7 +397,7 @@ phase margin can be computed as
 \end{align*}
 % 
 Indeed it is generally easier to derive the phase and gain margin of
-a system from the bode plots compared to the Nyquist plot.
+a system from the bode plots compared to the Nyquist \& polar plots.
 
 \textbf{Ex:} Compute the phase margin 
 for the following closed-loop system for $K = 2$ and $K = 4$,
@@ -454,7 +455,7 @@ on the approximate bode plots we obtain that
   K &= 4 \Rightarrow \phi_m \approx 63^o 
 \end{align*}
 
-\newpage
+\vspace{12pt}
 
 \textbf{Ex:} Compute the gain margin and phase margin 
 for the following closed-loop system for $K = 1$ and $K = 8$
@@ -522,13 +523,7 @@ and estimate these margins we obtain
 	&\phi_m = 2^o
 \end{align*}
 %
-As we can see, from the approximate, we compute positive
-phase and gain margin and thus assume the system is stable.
-But, these margins are very low. This indicates that if one 
-analyzes the stability of a system using approximate
-bode plots, in order to comment on stability he/she should
-observe significant phase and gain margins.
-
+If we consider the bode plots that we draw based on asymptotic approximations and compute the phase and gain margins, we can assume that system is indeed stable. However, these margins are rather low. In this respect, we can conclude that if one analyzes the absolute stability of a system using approximately bode plots, in order to comment on stability, he/she should observe significant phase and gain margins.
 
 \textbf{Ex:} Compute  phase margin for the following closed-loop system 
 using the actual and approximate bode plots
