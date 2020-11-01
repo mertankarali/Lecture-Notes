@@ -258,7 +258,7 @@ for the following difference equation
 &y[k] = C_1 (2j)^k + C_2 (-2j)^k = C_1 2^k e^{j k \pi/2 } + C_2 2^k e^{-j
 k  \pi/2 }  
 \\
-&y[k] = \bar{C}_1 2^k \frac{ e^{j k \pi/2} + e^{j k \pi / 2} }{2} +
+&y[k] = \bar{C}_1 2^k \frac{ e^{j k \pi/2} + e^{-j k \pi / 2} }{2} +
   \bar{C}_2 2^k \frac{ e^{j k \pi / 2} - e^{j k \pi / 2} }{2 j}
 \\
 &y[k] = \bar{C}_1 2^k \cos(k \pi /2) + \bar{C}_2 2^k \sin(k \pi /2)
@@ -301,8 +301,8 @@ z^{N-M}
 \frac{b_0 z^{M} + b_{1} z^{M-1} + ... + b_M}{a_0 z^{N} + a_{1} z^{N-1} + ... + a_N}
 \end{align*}
 %
-Under ``zero initial conditions'' if we can find $X(z)$ then simply
-$Y(z) = G(z) X(z)$. After that we can take the inverse z-transform 
+Under ``zero initial conditions'' if we can find $X(z)$, then we can
+compute $Y(z)$ using $Y(z) = G(z) X(z)$. After that we can take the inverse z-transform 
 and compute $y[k]$.
 
 \textbf{Example 3.1} Compute $y[k]$ using the Z-transform method
@@ -399,7 +399,7 @@ Z-domain transfer function to difference equation concept.
 
 \textbf{Solution:} Let's assume that $H(z)$ is a ``transfer function''
 not an arbitrary z-domain function. Then $\mathcal{Z}^{-1} \lbrace
-H(z) \rbrace = h(t)$ becomes the impulse response of the ``system''. 
+H(z) \rbrace = h[]$ becomes the impulse response of the ``system''. 
 Thus we can assume some imaginary input-output pair $y[n]$ and
 $x[n]$ where 
 %
