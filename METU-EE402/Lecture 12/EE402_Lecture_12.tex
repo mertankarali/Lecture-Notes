@@ -151,7 +151,8 @@ y[k] &=  -a_1 y[k-1] - a_2 y[k-2] - a_3 y[k-3]
 Y(z) &= \frac{b_0 + b_1 z^{-1} + b_2 z^{-2} + b_3 z^{-3}}{1+ a_1 z^{-1} + a_2 z^{-2} + a_3 z^{-3}} X(z)
 \end{align*}
 
-We know that following block diagram realizes this system structure
+We know that following block 
+ram realizes this system structure
 with minimum number of delay elements and it is a canonical
 realization. Delay operation is directly
 related with state and state evolution concept.
@@ -342,8 +343,8 @@ using partial fraction expansion
 Y(z) &= \frac{b_0 + b_1 z^{-1} + b_2 z^{-2} + b_3 z^{-3}}{1+ a_1
        z^{-1} + a_2 z^{-2} + a_3 z^{-3}} X(z)
 \\
-&= b_0 + \frac{c_1}{z - p_1} + \frac{c_2}{z - p_2}
-\frac{c_3}{z - p_3} 
+&= \left( b_0 + \frac{c_1}{z - p_1} + \frac{c_2}{z - p_2}
++ \frac{c_3}{z - p_3} \right) X(z)
 \end{align*}
 %
 It is possible to realize this expanded form in block diagram 
@@ -450,8 +451,8 @@ expansion
 Y(z) &= \frac{b_0 + b_1 z^{-1} + b_2 z^{-2} + b_3 z^{-3}}{1+ a_1
        z^{-1} + a_2 z^{-2} + a_3 z^{-3}} X(z)
 \\
-&= b_0 + \frac{c_1}{(z - p)^3} + \frac{c_2}{(z - p)^2}
-+ \frac{c_3}{z - p} 
+&= \left( b_0 + \frac{c_1}{(z - p)^3} + \frac{c_2}{(z - p)^2}
++ \frac{c_3}{z - p} \right) X(z)
 \end{align*}
 %
 It is possible to realize this expanded form in block diagram 
