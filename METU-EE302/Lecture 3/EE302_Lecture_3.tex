@@ -238,6 +238,8 @@ analogy as
 \end{align*}
 % 
 
+
+
 \subsection{Ideal Transformer, Linearized Lever, and
 Gear Pair}
 
@@ -281,13 +283,91 @@ analogy as
 
 \section{Examples}
 
-\textbf{Ex 1:} Let's consider the following translational mechanical system. It is given that when the lever is in vertical position, 
+\textbf{Ex 1:} Let's consider the following translational mechanical system. The input of the system is $v_i(t)$ which is the velocity of the one side of
+the first damper. The output of the system is $v_m(t)$, i.e. the velocity of the mass. 
+
+  \begin{minipage}[h]{0.5\linewidth}
+    \begin{center}
+      \includegraphics[width=1\textwidth]{example}
+    \end{center}
+  \end{minipage}
+
+  \vspace{6pt}
+
+\begin{enumerate}
+
+\item Given that $u(t) = v_i(t)$ and $y(t) = v_m(t)$, find the transfer
+function $G(s) = \frac{Y(s)}{U(s)}$
+
+\vspace{6pt}
+
+Let's first draw the FBD and then derive the equations
+of motion
+
+  \begin{minipage}[h]{0.5\linewidth}
+    \begin{center}
+      \includegraphics[width=1\textwidth]{example_sol}
+    \end{center}
+  \end{minipage}
+  \begin{minipage}[h]{0.5\linewidth}
+    \begin{center}
+ 	\begin{align*}
+	&m \dot{v}_m = -F_1 - F_2 = b v_i - 2 b v_m 
+	\\
+        &m \dot{y}  + 2 b y = b u
+         \\
+         &G(s) =  \frac{Y(s)}{U(s)} = \frac{b}{m s + 2 b} =
+           \frac{b/m}{s + (2 b)/m} 
+		\end{align*}
+    \end{center}
+   \end{minipage}
+
+\item Now, let's construct an electrical circuit analog of the mechanical system.
+
+Let 
+%
+\begin{align*}
+	V_i \equiv v_i
+	\quad 
+	I_i \equiv f_i
+\end{align*}
+%
+then we can build the circuit analog as in the illustration below. 
+
+  \begin{minipage}[h]{0.4\linewidth}
+    \begin{center}
+      \includegraphics[width=1\textwidth]{example_elec}
+    \end{center}
+  \end{minipage}
+
+\item Finally, compute $G(s)$ by analyzing the
+  electrical analog circuit.
+
+We simply apply KCL
+
+\begin{align*}
+  \frac{v_i - v_m}{1/b} &= I_m + \frac{v_m}{1/b} \quad \Rightarrow
+                          \quad I_m = m \dot{v}_m
+\\
+    b v_i &= m \dot{v}_m + 2 b v_m \quad \Rightarrow
+                          \quad     b u = m \dot{y} + 2 b y
+\\
+G(s) &= \frac{Y(s)}{U(s)} = \frac{b/m}{s + (2b)/m}
+\end{align*}
+
+\end{enumerate}
+
+\vspace{6pt}
+
+\textbf{Ex 2:} Let's consider the following translational mechanical system. It is given that when the lever is in vertical position, 
 $\left[ x_0 \ x_1 \ x_2 \right] = 0$ and springs are at their rest length positions. 
 
 \begin{enumerate}
 
 \item Given that $u(t) = x_0(t)$ and $y(t) = x_2(t)$,
 find the ODE of the system dynamics.
+ 
+\vspace{6pt}
 
   \begin{minipage}[h]{0.6\linewidth}
     \begin{center}
@@ -408,7 +488,7 @@ y &= \left[ \begin{array}{cc} 1 & 0 \end{array} \right] x
 
 \vspace{12pt}
 
-\textbf{Ex 2:} Let's consider the following gear system. Unlike ideal gear pair case, now each gear has its own inertia, $J_1$ and
+\textbf{Ex 3:} Let's consider the following gear system. Unlike ideal gear pair case, now each gear has its own inertia, $J_1$ and
 $J_2$, as well as both gears are affected by viscous friction, $\beta_1$ and $\beta_2$ , due to mechanical contact with the environment. 
 
     \begin{center}
