@@ -110,7 +110,7 @@
 Fundamental concept that we need to perform
 stead-state response analysis of a control
 system is the final value theorem. Given a continuous time signal 
-$x(t)$ and its Laplace transform $X(s)$, if $x(s)$ is convergent signal,
+$x(t)$ and its Laplace transform $X(s)$, if $x(t)$ is convergent signal,
 final value theorem states that
 %
 \begin{align*}
@@ -157,7 +157,7 @@ Note that $G(s) H(s)$ is the  transfer function from the error
 signal $E(s)$ to the signal which is fed to the negative terminal of 
 the main difference operator, i.e. $F(s)$. This transfer function is
 called the feed-forward or open-loop  pulse transfer function of the 
-closed-loop dcontrol system. For this system, 
+closed-loop control system. For this system, 
 %
 \begin{align*}
 \frac{F(s)}{E(s)} = G_{OL} = G(s) H(s)
@@ -268,7 +268,7 @@ condition of the system
 \item Type $N > 1$: $e_{ss} = 0$
 \end{itemize}
 %
-where $K_v$ is called the static velocity error constant.
+where $K_v$ is called the velocity error constant.
  
 \subsection*{Unit-Quadratic (Acceleration) Input}
 %
@@ -296,7 +296,7 @@ condition of the system
 \item Type $N > 2$: $e_{ss} = 0$
 \end{itemize}
 %
-where $K_v$ is called the static acceleration error constant.
+where $K_a$ is called the acceleration (parabolic) error constant.
 
 \paragraph{Example 1:} Compute the $G_{OL}(s)$ for the following closed-loop
 system and define its \textbf{Type}. After that, compute the steady-state errors to unit-step, unit-ramp, a
