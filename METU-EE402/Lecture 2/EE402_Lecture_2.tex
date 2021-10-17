@@ -108,10 +108,7 @@
 
 \section*{Big Picture of EE402}
 
-In this course, the main focus will be on continuous-time systems that
-are controlled (sampled and actuated) by a digital computer
-interface. Such a discrete-time control system consists of four major
-parts as illustrated in Fig.~\ref{fig:introblock},
+In this course, the main focus will be on continuous-time systems (plants) that are controlled (sampled and actuated) by a digital computer interface. Such a discrete-time control system consists of four major parts as illustrated in Fig.~\ref{fig:introblock},
  
 \begin{enumerate}
   \item \textit{The plant} is a continuous-time dynamical system 
@@ -128,20 +125,12 @@ parts as illustrated in Fig.~\ref{fig:introblock},
     \label{fig:introblock}
 \end{figure}
 
-Most of the time, the plant is modeled as a ``smooth'' continuous dynamical
-system. In this course, we will focus on LTI systems. Rhus, we will assume
-that (unless otherwise is given), the plant is a continuous LTI
-plant model with a transfer function of $G_c(s)$ for which both the
-input and output are continuous time signals. 
+Most of the time, the plant is modeled as a ``smooth'' continuous dynamical system. In this course, we will cover only LTI systems. Thus, we will assume that (unless otherwise is given) the plant is a continuous LTI plant model with a transfer function of $G_p(s)$ for which both the input and output are continuous-time signals. 
 
-The ``digital'' blocks inside the closed-loop block diagram structure are 
-ADC, the Controller, and DAC. It is generally assumed (design
-requirement) that all blocks shares a common ``hard real time'' clock.
+The ``digital'' blocks inside the closed-loop block diagram structure are ADC, the Controller, and DAC. It is generally assumed (design requirement) that all blocks share a common ``hard real-time'' clock.
 
 A general ADC is a device that converts an analog signal to a digital
-signal. In this course, we will model the ADC block as an \textit{ideal sampler}
-for which the input is a continious-time signal, $e(t)$, and the output 
-is a discrete-time signal, $e[k]$, where the relation between the
+signal. In this course, we will model the ADC block as an \textit{ideal sampler} for which the input is a continuous-time signal, $e(t)$, and the output is a discrete-time signal, $e[k]$, where the relation between the
 continuous- and discrete-time signals are given as
 %
 \begin{align*}
@@ -150,25 +139,15 @@ continuous- and discrete-time signals are given as
 %
 where constant $T$ is the \textit{sampling time}. 
 
-The microcontroller/microprocessor processes some set of digital input signals
-to produce some set of digital output signals. The outputs are defined
-at only some specified instances defined by the real-time clock. In this
-course, we will model the $\mu P$ block as an ideal discrete-time LTI
-system for which both the input and output are discrete-time
-signals, with a transfer function of $G_c(z)$.
+The microcontroller/microprocessor processes some set of digital input signals to produce some set of digital output signals. The outputs are defined at only some specified instances determined by the real-time clock. In this course, we will model the $\mu P$ block as an ideal discrete-time LTI system for which both the input and output are discrete-time signals, with a transfer function of $G_c(z)$.
 
-The DAC is a device that converts a digital signal to an analog
-signal. In this course we assume that it is an ideal \textit{Hold}
-element for which the input signal is a discrete-time signal, where as
-output is a continuous-time signal. The most commonly used
-\textit{Hold} system is ZOH (Zero-Order-Hold) which is a mapping 
-defined by the following relation
+The DAC is a device that converts a digital signal to an analog signal. In this course, we assume that it is an ideal \textit{Hold} element for which the input signal is a discrete-time signal, whereas the output is a continuous-time signal. The most commonly used \textit{Hold} system is ZOH (Zero-Order-Hold) which is a mapping  defined by the following relation
 %
 \begin{align*}
   u(t) = u[k] , \ \mathrm{for} t \in [kT , (k+1)T )
 \end{align*}
 %
-Higher-order holds available but seldom used.
+Higher-order hold operators exist, but they are extremely rarely used in practice. 
 
 The idealized and simplified block-diagram structure is given in Fig.
 
