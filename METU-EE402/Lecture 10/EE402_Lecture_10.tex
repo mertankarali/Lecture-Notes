@@ -477,8 +477,8 @@ for unit ramp response.
 \end{align*}
 %
 This can give an illusion that they have the same performance. However
-we evaluated response to the discrete time unit step input which is 
-$r[k] = k [uk]$. However, in order to compare fairly, we need to compute the
+we evaluated response to the discrete time unit ramp input which is 
+$r[k] = k u[k]$. However, in order to compare fairly, we need to compute the
 steady state error to sampled continuous time unit ramp function. 
 $r(t) = t$ \& $r(kT) = kT$, thus we have
 %
@@ -488,7 +488,7 @@ $r(t) = t$ \& $r(kT) = kT$, thus we have
   r_{2}[k] &= 2 k
 \end{align*}
 %
-If we re-evaluate the stead-state errors, we obtain
+If we re-evaluate the steady-state errors, we obtain
 %
 %
 \begin{align*}
@@ -503,7 +503,7 @@ also increases.
 
 Now let's compare different cases, where each response
 show a critically damped
-behavior. Critically dampled locations are obtained for
+behavior. Critically damped locations are obtained for
 the following $K$ values. 
 %
 \begin{align*}
@@ -523,7 +523,7 @@ Now let's compare responses using different specifications
 \end{align*}
     which implies that settling time performance is similar.
 
-   \item Since all systems are Type 1, the stead-state errors to unit
+   \item Since all systems are Type 1, the steady-state errors to unit
      step is zero for all cases.
 
    \item If we compute the steady-state errors to sampled CT 
@@ -540,7 +540,7 @@ approximately similar.
 %
 This shows that for the specific location where all
 systems show a critically damped behavior
-the response performance (stability, overshoot, stead-state error) 
+the response performance (stability, overshoot, steady-state error) 
 is quite similar and almost independent on $T$. 
 
 However if one needs to improve the steady-state
