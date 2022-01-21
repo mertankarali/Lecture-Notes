@@ -427,15 +427,15 @@ where $w\k \sim \N(w\k;0,Q) $, $v\k \sim \N(v\k;0,0.4) $, and $x_{0\mid 0}\sim\N
 	\end{array}\right]\left[ \begin{array}{c}
 	1 \\ 1
 	\end{array}\right] + 0.4\\
-	 =& 2.5\\
+	 =& 2.6\\
 	 K_1 =& P_{1\mid0}C\t S^{-1}_{1\mid0}\\
-	 =&\frac{1}{2.5}\left[ \begin{array}{cc}
+	 =&\frac{1}{2.6}\left[ \begin{array}{cc}
 	 	1.1 & 0 \\ 0 & 1.1
 	 \end{array}\right]\left[ \begin{array}{c}
 	 1 \\ 1
 	 \end{array}\right]\\
 	=& \left[ \begin{array}{c}
-		0.44 \\ 0.44
+		0.42 \\ 0.42
 	\end{array}\right]\\
 	\hat y_1 =& C x_{1\mid0}\\
 	=& \left[\begin{array}{cc}
@@ -450,21 +450,21 @@ where $w\k \sim \N(w\k;0,Q) $, $v\k \sim \N(v\k;0,0.4) $, and $x_{0\mid 0}\sim\N
 	=& \left[ \begin{array}{c}
 		0 \\ 0
 	\end{array}\right] + \left[ \begin{array}{c}
-	0.44 \\ 0.44
+	0.42 \\ 0.42
 	\end{array}\right] (1-0)\\
 	 =&\left[ \begin{array}{c}
-		0.44 \\ 0.44
+		0.42 \\ 0.42
 	\end{array}\right]\\
 	P_{1\mid 1} =& P_{1\mid 0} - K_1 S_{1\mid 0}K_1\t\\
 	 =& \left[ \begin{array}{cc}
 	 	1.1 & 0 \\ 0 & 1.1
 	 \end{array}\right]-2.5\left[ \begin{array}{c}
-	 0.44 \\ 0.44
+	 0.42 \\ 0.42
 	 \end{array}\right]\left[ \begin{array}{cc}
-	 0.44 & 0.44
+	 0.42 & 0.42
 	\end{array}\right]\\
 	=&	\left[ \begin{array}{cc}
-		0.62 & -0.48 \\ -0.48 & 0.62
+		0.63 & -0.47 \\ -0.47 & 0.63
 	\end{array}\right]
 	\end{align*}
 \item When $k = 2$:
@@ -475,23 +475,23 @@ Prediction Update:
 	=& \left[ \begin{array}{cc}
 		1 & 0 \\ 0 & 1
 	\end{array}\right] \left[ \begin{array}{c}
-		0.44 \\ 0.44
+		0.42 \\ 0.42
 	\end{array}\right] \\
 	=&\left[ \begin{array}{c}
-		0.44 \\ 0.44
+		0.42 \\ 0.42
 	\end{array}\right] \\
 	P_{2\mid 1} =& G P_{1\mid 1} G\t + Q\\
 	=& \left[ \begin{array}{cc}
 		1 & 0 \\ 0 & 1
 	\end{array}\right]\left[ \begin{array}{cc}
-		0.62 & -0.48 \\ -0.48 & 0.62
+		0.63 & -0.47 \\ -0.47 & 0.63
 	\end{array}\right]\left[ \begin{array}{cc}
 		1 & 0 \\ 0 & 1
 	\end{array}\right]+\left[ \begin{array}{cc}
 		0.1 & 0 \\ 0 & 0.1
 	\end{array}\right]\\
 	=& \left[ \begin{array}{cc}
-		0.72 & -0.48 \\ -0.48 & 0.72
+		0.73 & -0.47 \\ -0.47 & 0.73
 	\end{array}\right]
 \end{align*}
 
@@ -501,45 +501,45 @@ Prediction Update:
 	=& \left[\begin{array}{cc}
 		1 & 1
 	\end{array} \right] \left[ \begin{array}{cc}
-		0.72 & -0.48 \\ -0.48 & 0.72
+		0.73 & -0.47 \\ -0.47 & 0.73
 	\end{array}\right]\left[ \begin{array}{c}
 		1 \\ 1
 	\end{array}\right] + 0.4\\
-	=& 0.88\\
+	=& 0.94\\
 	K_2 =& P_{2\mid1}C\t S^{-1}_{2\mid1}\\
-	=&\frac{1}{0.88}\left[ \begin{array}{cc}
-		0.72 & -0.48 \\ -0.48 & 0.72
+	=&\frac{1}{0.94}\left[ \begin{array}{cc}
+		0.73 & -0.47 \\ -0.47 & 0.73
 	\end{array}\right]\left[ \begin{array}{c}
 		1 \\ 1
 	\end{array}\right]\\
 	=& \left[ \begin{array}{c}
-		0.27 \\ 0.27
+		0.29 \\ 0.29
 	\end{array}\right]\\
 	\hat y_2 =& C x_{2\mid1}\\
 	=& \left[\begin{array}{cc}
 		1 & 1
 	\end{array} \right] \left[ \begin{array}{c}
-		0.44 \\ 0.44
+		0.42 \\ 0.42
 	\end{array}\right] \\
-	=& 0.88
+	=& 0.84
 \end{align*}
 \begin{align*}
 	x_{2\mid2} =& x_{2\mid1}+K_2(y_2-\hat y_2)\\
 	=& \left[ \begin{array}{c}
-		0.44 \\ 0.44
+		0.42 \\ 0.42
 	\end{array}\right] + \left[ \begin{array}{c}
-		0.27 \\ 0.27
-	\end{array}\right] (-1.5-0.88)\\
+		0.29 \\ 0.29
+	\end{array}\right] (-1.5-0.84)\\
 	=&\left[ \begin{array}{c}
-		0.2 \\ 0.2
+		-0.25 \\ -0.25
 	\end{array}\right]\\
 	P_{2\mid 2} =& P_{2\mid 1} - K_2 S_{2\mid 1}K_2\t\\
 	=& \left[ \begin{array}{cc}
-		0.72 & -0.48 \\ -0.48 & 0.72
-	\end{array}\right]-0.88\left[ \begin{array}{c}
-		0.27 \\ 0.27
+		0.73 & -0.47 \\ -0.47 & 0.73
+	\end{array}\right]-0.84\left[ \begin{array}{c}
+		0.29 \\ 0.29
 	\end{array}\right]\left[ \begin{array}{cc}
-		0.27 & 0.27
+		0.29 & 0.29
 	\end{array}\right]\\
 	=&	\left[ \begin{array}{cc}
 		0.66 & -0.54 \\ -0.54 & 0.66
