@@ -551,7 +551,7 @@ c_1 & c_2 & \cdots &  c_{n-1} & c_n & \cdots\end{array} \right]
 \end{align*}
 %
 
-\subsection*{Similarity Transformations}
+\section{Similarity Transformations}
 
 Consider the state-space representation of a 
 given DT system
@@ -698,7 +698,7 @@ Consider the two different state-space representations
 \begin{align*}
   x[k+1] = G x[k] + H u[k]  \quad & \quad \quad \hat{x}[k+1] = \hat{G} \hat{x}[k] + \hat{H} u[k] 
 \\
-  y[k] = C x[k] \quad & \quad \quad  y[k] = \hat{C} x[k] + \hat{D} u[k]
+  y[k] = C x[k] \quad & \quad \quad  y[k] = \hat{C} x[k] 
 \end{align*}
 %
 where they are related with the following similarity transformation
@@ -726,9 +726,9 @@ Let's compute the transfer function for the second representation
 \hat{T}(z) &= T(z)
 \end{align*}
 
-\newpage
 
-\section*{Solution of Discrete-Time State-Space Equations}
+
+\section{Solution of Discrete-Time State-Space Equations}
 
 Let's first assume that $u[k] = 0$, and find un-driven (homogeneous)
 response.
