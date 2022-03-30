@@ -303,28 +303,32 @@ groupings.
 &Y(z) \left( z^3+ a_1 z^2 + a_2 z + a_3 z \right) = \left( b_1 z^2 + b_2 z + b_3 \right) U(z)
 \\
 &Y(z) z^3 = z^2 \left( b_1 U(z) - a_1 Y(z) \right) 
-+  z \left( b_2 U(z) - a_2 Y(z) \right) +  \left( b_3 U(z) - a_3 Y(z) \right) 
-\end{align*}
-
-%
-\begin{align*}
-X_1(z) = \left( b_3 U(z) - a_3 \left( U(z) b_0 + X_3(z) \right) \right) z^{-1}
-\quad &\rightarrow \quad x_1[k+1] = b_3 u[k] - a_3 \left( u[k] b_0 +
-        x_3[k] \right)
++  z \left( b_2 U(z) - a_2 Y(z) \right) +  \left( b_3 U(z) - a_3 Y(z)
+  \right) 
 \\
-X_2(z) = \left( b_2 U(z) + X_1(z) - a_2 \left( U(z) b_0 + X_3(z) \right) \right) z^{-1}
-\quad &\rightarrow \quad x_2[k+1] = b_2 u[k] + x_1[k] - a_2 \left( u[k] b_0 +
-        x_3[k] \right)
+&Y(z) = z^{-1} \left( b_1 U(z) - a_1 Y(z) \right) 
++  z^{-2} \left( b_2 U(z) - a_2 Y(z) \right) + z^{-3} \left( b_3 U(z)
+  - a_3 Y(z) \right) 
 \\
-X_3(z) = \left( b_1 U(z) + X_2(z) - a_1 \left( U(z) b_0 + X_3(z) \right) \right) z^{-1}
-\quad &\rightarrow \quad x_3[k+1] = b_1 u[k] + x_2[k] - a_1 \left( u[k] b_0 +
-        x_3[k] \right)
+&Y(z) = z^{-1} \left[ \left( b_1 U(z) - a_1 Y(z) \right) 
++  z^{-1} \left\lbrace \left( b_2 U(z) - a_2 Y(z) \right) + z^{-1} \left( b_3 U(z)
+  - a_3 Y(z) \right) \right\rbrace \right]
 \end{align*}
 %
-where as output equation can be derived as
+Let $X_3(z) = Y(z)$ (i.e. $x_3[k] = y[k]$. We can choose state
+variables and equations as
 %
 \begin{align*}
-y[k] &= b_0 u[k] + x_3[k]
+X_1(z) = \left( b_3 U(z) - a_3 X_3(z) \right) z^{-1}
+\quad &\rightarrow \quad x_1[k+1] = b_3 u[k] - a_3  x_3[k] 
+\\
+X_2(z) = \left( b_2 U(z) + X_1(z) - X_3(z) \right) z^{-1}
+\quad &\rightarrow \quad x_2[k+1] = b_2 u[k] + x_1[k] - a_2 
+        x_3[k] 
+\\
+X_3(z) = \left( b_1 U(z) + X_2(z) - a_1 X_3(z) \right) z^{-1}
+\quad &\rightarrow \quad x_3[k+1] = b_1 u[k] + x_2[k] - a_1 
+        x_3[k] 
 \end{align*}
 %
 If we combine the state and output equations, we
@@ -335,27 +339,24 @@ can obtain the state space form as
   \mathbf{x}[k+1] &= \left[ \begin{array}{ccc} 0 & 0 & -a_3 \\ 1 & 0 & -a_2
     \\ 0 & 1 & -a_1 \end{array} \right] \mathbf{x}[k]
    + 
-  \left[ \begin{array}{c} b_3 - b_0 a_3 \\ b_2 - b_0 a_2
-    \\ b_1 - b_0 a_1 \end{array} \right] u[k]
+  \left[ \begin{array}{c} b_3 \\ b_2 
+    \\ b_1 \end{array} \right] u[k]
 \\
 y[k] &= \left[ \begin{array}{ccc} 0 & 0 & 1 \end{array} \right]
-+ b_0 u[k]
 \end{align*}
 %
 where 
 %
 \begin{align*}
 \mathbf{x} = \left[ \begin{array}{c} x_1[k] \\ x_2[k] \\
-x_1[k] \end{array} \right] \quad , \quad
+x_3[k] \end{array} \right] \quad , \quad
 A = \left[ \begin{array}{ccc} 0 & 0 & -a_3 \\ 1 & 0 & -a_2
     \\ 0 & 1 & -a_1 \end{array} \right]
 \quad , \quad 
-B = \left[ \begin{array}{c} b_3 - b_0 a_3 \\ b_2 - b_0 a_2
-    \\ b_1 - b_0 a_1 \end{array} \right]
+B = \left[ \begin{array}{c} b_3 \\ b_2 
+    \\ b_1  \end{array} \right]
 \quad , \quad
 C = \left[ \begin{array}{ccc} 0 & 0 & 1 \end{array} \right]
-\quad , \quad
-D = b_0
 \end{align*}
 %
 
@@ -373,42 +374,24 @@ A &= \left[ \begin{array}{ccccc} 0 & 0 & \cdots & 0 & -a_{n}
 \\ 0 & 0 & \cdots & 0 & -a_2
     \\ 0 & 0 & \cdots & 1 & -a_1 \end{array} \right]
 \quad , \quad 
-B = \left[ \begin{array}{c} (b_n - b_0 a_n)  \\ (b_{n-1} - b_0
-             a_{n-1}) \\ \vdots \\ (b_2 - b_0 a_2) \\   (b_1 - b_0
-             a_1) 
-\end{array} \right]
-\\ C &= \left[ \begin{array}{ccccc} 0 & 0 & \cdots &  0 & 1 \end{array} \right]
-\quad , \quad
-D = b_0
+B = \left[ \begin{array}{c} b_n  \\ b_{n-1} \\ \vdots \\ b_2 \\   b_1 
+\end{array} \right] \quad , \quad 
+C = \left[ \begin{array}{ccccc} 0 & 0 & \cdots &  0 & 1 \end{array} \right]
 \end{align*}
 %
 \subsubsection*{Diagonal Canonical Form}
 
-If the pulse transfer function of the system 
+If the transfer function of the system 
 has distinct poles, we can expand it 
 using partial fraction expansion 
 %
 \begin{align*}
-Y(z) &= \frac{b_0 + b_1 z^{-1} + b_2 z^{-2} + b_3 z^{-3}}{1+ a_1
-       z^{-1} + a_2 z^{-2} + a_3 z^{-3}} X(z)
-\\
-&= \left( b_0 + \frac{c_1}{z - p_1} + \frac{c_2}{z - p_2}
-+ \frac{c_3}{z - p_3} \right) X(z)
+Y(z) &= \left( \frac{c_1}{z - p_1} + \frac{c_2}{z - p_2}
++ \frac{c_3}{z - p_3} \right) U(z)
 \end{align*}
 %
-It is possible to realize this expanded form in block diagram 
-form as given in the Figure below.
-%
-     \begin{center}
- \begin{minipage}[h]{0.5\linewidth}
-     \begin{center}
-       \includegraphics[width=\textwidth]{diagonal}
-     \end{center}
- \end{minipage}
-     \end{center}
-%
-Now let's concentrate on the candidate ``state variables''
-and try to write state evaluation equations
+If we choose the ``state-variables'' from the individual 
+first-order components and try to write state-evaluation and output equations
 %
 \begin{align*}
 X_1(z) &= \frac{1}{z - p_1} U(z) \quad \rightarrow \quad x_1[k+1] = p_1
@@ -419,17 +402,12 @@ X_2(z) &= \frac{1}{z - p_2} U(z) \quad \rightarrow \quad x_2[k+1] = p_2
 \\
 X_3(z) &= \frac{1}{z - p_3} U(z) \quad \rightarrow \quad x_3[k+1] = p_3
   x_3[k] + u[k]
-\end{align*}
-%
-where as output equation can be derived as
-%
-\begin{align*}
+\\
 y[k] &= b_0 u[k] + c_1 x_1[k] + c_2 x_2[k] + c_3 x_3[k]
 \end{align*}
 %
 If we combine the state and output equations, we
 can obtain the state space form as
-%
 %
 \begin{align*}
   \mathbf{x}[k+1] &= \left[ \begin{array}{ccc} p_1 & 0 & 0\\ 0 & p_2 & 0
@@ -439,7 +417,6 @@ can obtain the state space form as
     \\ 1 \end{array} \right] u[k]
 \\
 y[k] &= \left[ \begin{array}{ccc} c_1 & c_2 & c_3 \end{array} \right]
-+ b_0 u[k]
 \end{align*}
 %
 where 
@@ -454,8 +431,6 @@ B = \left[ \begin{array}{c} 1 \\ 1
     \\ 1 \end{array} \right]
 \quad , \quad
 C = \left[ \begin{array}{ccc} c_1 & c_2 & c_3 \end{array} \right]
-\quad , \quad
-D = b_0
 \end{align*}
 %
 
@@ -477,8 +452,6 @@ A &= \left[ \begin{array}{ccccc} p_1 & 0 & \cdots & 0 & 0
 B = \left[ \begin{array}{c} 1 \\ 1 \\ \vdots \\ 1 \\  1
 \end{array} \right]
 \\ C &= \left[ \begin{array}{ccccc} c_1 & c_2 & \cdots &  c_{n-1} & c_n \end{array} \right]
-\quad , \quad
-D = b_0
 \end{align*}
 %
 
@@ -497,26 +470,12 @@ we can expand it using partial fraction
 expansion 
 %
 \begin{align*}
-Y(z) &= \frac{b_0 + b_1 z^{-1} + b_2 z^{-2} + b_3 z^{-3}}{1+ a_1
-       z^{-1} + a_2 z^{-2} + a_3 z^{-3}} X(z)
-\\
-&= \left( b_0 + \frac{c_1}{(z - p)^3} + \frac{c_2}{(z - p)^2}
-+ \frac{c_3}{z - p} \right) X(z)
+Y(z) &= \left( \frac{c_1}{(z - p)^3} + \frac{c_2}{(z - p)^2}
++ \frac{c_3}{z - p} \right) U(z)
 \end{align*}
 %
-It is possible to realize this expanded form in block diagram 
-form as given in the Figure below.
-%
-     \begin{center}
- \begin{minipage}[h]{0.5\linewidth}
-     \begin{center}
-       \includegraphics[width=\textwidth]{jordan}
-     \end{center}
- \end{minipage}
-     \end{center}
-%
-Now let's concentrate on the candidate ``state variables''
-and try to write state evaluation equations
+If we focus on the Z-domain expression, we can determine
+state-variables and state equations as
 %
 \begin{align*}
 X_1(z) &= \frac{1}{z - p} X_2(z) \quad \rightarrow \quad x_1[k+1] = p \
@@ -533,7 +492,7 @@ X_3(z) &= \frac{1}{z - p} U(z) \quad \rightarrow \quad x_3[k+1] = p \
 where as output equation can be derived as
 %
 \begin{align*}
-y[k] &= b_0 u[k] + c_1 x_1[k] + c_2 x_2[k] + c_3 x_3[k]
+y[k] &= c_1 x_1[k] + c_2 x_2[k] + c_3 x_3[k]
 \end{align*}
 %
 If we combine the state and output equations, we
@@ -547,7 +506,6 @@ can obtain the state space form as
     \\ 1 \end{array} \right] u[k]
 \\
 y[k] &= \left[ \begin{array}{ccc} c_1 & c_2 & c_3 \end{array} \right]
-+ b_0 u[k]
 \end{align*}
 %
 where 
@@ -562,8 +520,6 @@ B = \left[ \begin{array}{c} 0 \\ 0
     \\ 1 \end{array} \right]
 \quad , \quad
 C = \left[ \begin{array}{ccc} c_1 & c_2 & c_3 \end{array} \right]
-\quad , \quad
-D = b_0
 \end{align*}
 %
 $A, \ B, \ \& \ C$ forms a Jordan block. 
@@ -603,7 +559,7 @@ given DT system
 \begin{align*}
   x[k+1] = G x[k] + H u[k]
 \\
-  y[k] = C x[k] + D u[k]
+  y[k] = C x[k] 
 \end{align*}
 %
 Let's define a new ``state-vector'' $\hat{x}$ such that
@@ -619,10 +575,10 @@ as
 %
 \begin{align*}
   P^{-1} \hat{x}[k+1] = G P^{-1} \hat{x}[k] + H u[k] 
-\quad &, \quad y[k] = C P^{-1} \hat{x}[k] + D u[k]
+\quad &, \quad y[k] = C P^{-1} \hat{x}[k] 
 \\
   \hat{x}[k+1] = P G P^{-1} \hat{x}[k] + P H u[k] 
-\quad &, \quad y[k] = C P^{-1} \hat{x}[k] + D u[k]
+\quad &, \quad y[k] = C P^{-1} \hat{x}[k] 
 \end{align*}
 %
 The ``new'' state-space representation is obtained as
@@ -630,10 +586,9 @@ The ``new'' state-space representation is obtained as
 \begin{align*}
   \hat{x}[k+1] &= \hat{G} \hat{x}[k] + \hat{H} u[k] 
     \\
-  y[k] &= \hat{C} x[k] + \hat{D} u[k]
+  y[k] &= \hat{C} x[k] 
 \\
-\hat{G} &= P  G P^{-1} \ , \ \hat{H} = P  H \ , \ \hat{C} = C P^{-1} \ ,
-  \ \hat{D} = D
+\hat{G} &= P  G P^{-1} \ , \ \hat{H} = P  H \ , \ \hat{C} = C P^{-1} 
 \end{align*}
 %
 Since there exist infinitely many non-singular $n \times n$
@@ -671,7 +626,7 @@ Let's consider the following general state-space form
 \begin{align*}
   x[k+1] = G x[k] + H u[k]
 \\
-  y[k] = C x[k] + D u[k]
+  y[k] = C x[k] 
 \end{align*}
 %
 In order to obtain transfer function form,
@@ -682,17 +637,17 @@ of both equations
 \begin{align*}
   z X(z) &= G X(z) + H U(z) 
 \quad , \quad
-  Y(z) = C X(z) + D U(z)
+  Y(z) = C X(z) 
 \\
 \left(z I - G \right) X(z) &= H U(z) 
 \\
 X(z) &= \left(z I - G \right)^{-1} H U(z)
 \\
-Y(z) &= C \left(z I - G \right)^{-1} H U(z) + D U(z) 
+Y(z) &= C \left(z I - G \right)^{-1} H U(z) 
 \\
-Y(z) &= \left[ C \left(z I - G \right)^{-1} H + D \right] U(z)
+Y(z) &= \left[ C \left(z I - G \right)^{-1} H  \right] U(z)
 \\
-T(z) & = \left[ C \left(z I - G \right)^{-1} H + D \right]
+T(z) & = \left[ C \left(z I - G \right)^{-1} H  \right]
 \end{align*}
 %
 If the system is a SISO system, then $T(z)$ is a transfer function,
@@ -715,7 +670,7 @@ If $p$ is a pole of $T(z)$, then $d(z)|_{p} = 0$. Now let's analyze
 the dependence of $T(z)$ to the state-space form. 
 %
 \begin{align*}
-  T(z) &= \left[ C \left(z I - G \right)^{-1} H + D \right]
+  T(z) &= \left[ C \left(z I - G \right)^{-1} H  \right]
 \\
   \left(z I - G \right)^{-1} &= 
 \frac{\mathrm{Adj} \left(z I - G \right) }{\mathrm{det} \left(z I - G
@@ -743,15 +698,14 @@ Consider the two different state-space representations
 \begin{align*}
   x[k+1] = G x[k] + H u[k]  \quad & \quad \quad \hat{x}[k+1] = \hat{G} \hat{x}[k] + \hat{H} u[k] 
 \\
-  y[k] = C x[k] + D u[k] \quad & \quad \quad  y[k] = \hat{C} x[k] + \hat{D} u[k]
+  y[k] = C x[k] \quad & \quad \quad  y[k] = \hat{C} x[k] + \hat{D} u[k]
 \end{align*}
 %
 where they are related with the following similarity transformation
 %
 \begin{align*}
 P x[k] = \hat{x}[k] \ , \
-\hat{G} &= P  G P^{-1} \ , \ \hat{H} = P  H \ , \ \hat{C} = C P^{-1} \ ,
-  \ \hat{D} = D
+\hat{G} &= P  G P^{-1} \ , \ \hat{H} = P  H \ , \ \hat{C} = C P^{-1} 
 \end{align*}
 %
 Let's compute the transfer function for the second representation
@@ -760,16 +714,14 @@ Let's compute the transfer function for the second representation
   \hat{T}(z) &= \left[ \hat{C} \left(z I - \hat{G} \right)^{-1} \hat{H}
   + \hat{D} \right]
 \\
-&= \left[ C P^{-1} \left(z I - P  G P^{-1} \right)^{-1} P H
-  + D \right]
+&= \left[ C P^{-1} \left(z I - P  G P^{-1} \right)^{-1} P H \right]
 \\
-&= \left[ C P^{-1} \left( P \left( z I -   G \right) P^{-1} \right)^{-1} P H
-  + D \right]
+&= \left[ C P^{-1} \left( P \left( z I -   G \right) P^{-1}
+  \right)^{-1} P H \right]
 \\
-&= \left[ C P^{-1} P \left( z I -   G \right)^{-1} P^{-1} P H
-  + D \right]
+&= \left[ C P^{-1} P \left( z I -   G \right)^{-1} P^{-1} P H \right]
 \\
-&= \left[ C \left( z I -   G \right)^{-1} H + D \right]
+&= \left[ C \left( z I -   G \right)^{-1} H \right]
 \\
 \hat{T}(z) &= T(z)
 \end{align*}
@@ -874,10 +826,10 @@ whereas output at time $k$ has the form
 %
 \begin{align*}
     y[k] &= C \Psi[k] x[0] + C \left( \sum\limits_{j = 0}^{k-1}
-           \Psi[k-j-1] H u[j] \right) + D u[k]
+           \Psi[k-j-1] H u[j] \right) 
 \\
 &= C \Psi[k] x[0] + C \left( \sum\limits_{j = 0}^{k-1} \Psi[j] H
-  u[k-j-1] \right) +  D u[k]
+  u[k-j-1] \right) 
 \end{align*}
 % 
 
@@ -887,7 +839,7 @@ We already computed the transfer function under zero initial
 conditions.
 %
 \begin{align*}
-  Y(z) =  \left[ C \left(z I - G \right)^{-1} H + D \right] U(z)
+  Y(z) =  \left[ C \left(z I - G \right)^{-1} H  \right] U(z)
 \end{align*}
 %
 Now let's compute the response to initial condition in Z-domain.
