@@ -291,22 +291,21 @@ B = \left[ \begin{array}{c} 0\\ 0 \\ \vdots \\ 0
 
 \subsubsection*{Observable Canonical Form}
 
+Derivation of Observable Canonical Form follows a quite
+different process, however Observable Canonical Form is called the
+dual of the Reachable Canonical form, and it will be clear when you 
+see the final general form. 
 
+We first re-organize the Z domain expression and perform some
+groupings. 
+%
+\begin{align*}
+&Y(z) \left( z^3+ a_1 z^2 + a_2 z + a_3 z \right) = \left( b_1 z^2 + b_2 z + b_3 \right) U(z)
+\\
+&Y(z) z^3 = z^2 \left( b_1 U(z) - a_1 Y(z) \right) 
++  z \left( b_2 U(z) - a_2 Y(z) \right) +  \left( b_3 U(z) - a_3 Y(z) \right) 
+\end{align*}
 
-We also learnt a different type of canonical 
-minimal realization which is illustrated 
-in the Figure below
-%
-     \begin{center}
- \begin{minipage}[h]{0.6\linewidth}
-     \begin{center}
-       \includegraphics[width=\textwidth]{observable}
-     \end{center}
- \end{minipage}
-     \end{center}
-%
-If we label the signals as given in the Figure,
-state evolution equations can be derived as
 %
 \begin{align*}
 X_1(z) = \left( b_3 U(z) - a_3 \left( U(z) b_0 + X_3(z) \right) \right) z^{-1}
