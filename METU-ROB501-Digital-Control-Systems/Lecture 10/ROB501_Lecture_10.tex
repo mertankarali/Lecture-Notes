@@ -1,5 +1,16 @@
-% 
-
+%
+% This is a borrowed LaTeX template file for lecture notes for CS267,
+% Applications of Parallel Computing, UCBerkeley EECS Department.
+% Now being used for CMU's 10725 Fall 2012 Optimization course
+% taught by Geoff Gordon and Ryan Tibshirani.  When preparing 
+% LaTeX notes for this class, please use this template.
+%
+% To familiarize yourself with this template, the body contains
+% some examples of its use.  Look them over.  Then you can
+% run LaTeX on this file.  After you have LaTeXed this file then
+% you can look over the result either by printing it out with
+% dvips or using xdvi. "pdflatex template.tex" should also work.
+%
 
 \documentclass[twoside]{article}
 \setlength{\oddsidemargin}{0.25 in}
@@ -17,7 +28,11 @@
 
 \usepackage{amsmath,amsfonts,graphicx}
 
-
+%
+% The following commands set up the lecnum (lecture number)
+% counter and make various numbering schemes work relative
+% to the lecture number.
+%
 \newcounter{lecnum}
 \renewcommand{\thepage}{\thelecnum-\arabic{page}}
 \renewcommand{\thesection}{\thelecnum.\arabic{section}}
@@ -38,8 +53,7 @@
    \begin{center}
    \framebox{
       \vbox{\vspace{2mm}
-    \hbox to 6.28in { {\bf EE402 - Discrete Time Systems
-	\hfill Spring 2018} }
+    \hbox to 6.28in { {\bf ROB501 - Fundamentals \& Emerging Topics in Robotics - Digital Control Systems } }
        \vspace{4mm}
        \hbox to 6.28in { {\Large \hfill Lecture #1 \hfill} }
        \vspace{2mm}
@@ -51,7 +65,12 @@
 
    \vspace*{4mm}
 }
-
+%
+% Convention for citations is authors' initials followed by the year.
+% For example, to cite a paper by Leighton and Maggs you would type
+% \cite{LM89}, and to cite a paper by Strassen you would type \cite{S69}.
+% (To avoid bibliography problems, for now we redefine the \cite command.)
+% Also commands that create a suitable format for the reference list.
 \renewcommand{\cite}[1]{[#1]}
 \def\beginrefs{\begin{list}%
         {[\arabic{equation}]}{\usecounter{equation}
@@ -60,14 +79,14 @@
 \def\endrefs{\end{list}}
 \def\bibentry#1{\item[\hbox{[#1]}]}
 
-
+%Use this command for a figure; it puts a figure in wherever you want it.
+%usage: \fig{NUMBER}{SPACE-IN-INCHES}{CAPTION}
 \newcommand{\fig}[3]{
 			\vspace{#2}
 			\begin{center}
 			Figure \thelecnum.#1:~#3
 			\end{center}
 	}
-
 % Use these for theorems, lemmas, proofs, etc.
 \newtheorem{theorem}{Theorem}[lecnum]
 \newtheorem{lemma}[theorem]{Lemma}
@@ -82,13 +101,13 @@
 \begin{document}
 
 % Lecture Details
-\lecture{15}{Asst. Prof. M. Mert Ankarali}
+\lecture{10}{Asst. Prof. M. Mert Ankarali}
 
-\par
 
-\section*{Reachability/Controllability, \& Observability}
 
-\subsection*{Reachability \& Controllability of CT Systems}
+\section{Reachability/Controllability, \& Observability}
+
+\subsection{Reachability \& Controllability of CT Systems}
 
 For an LTI continuous time state-space representation
 %
@@ -151,7 +170,7 @@ or equivalently
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsection*{Reachability \& Controllability of DT Systems}
+\subsection{Reachability \& Controllability of DT Systems}
 
 For LTI a discrete time state-space representation
 %
@@ -346,7 +365,7 @@ or equivalently
  \mathrm{Ra} (\mathbf{M}) &= \mathbb{R}^n
 \end{align*}
 
-\section*{Observability}
+\section{Observability}
 
 It turns out that it is more natural to think in terms of
 ``un-observability'' as reflected in the following definitions.
