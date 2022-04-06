@@ -1,0 +1,238 @@
+%
+% This is a borrowed LaTeX template file for lecture notes for CS267,
+% Applications of Parallel Computing, UCBerkeley EECS Department.
+% Now being used for CMU's 10725 Fall 2012 Optimization course
+% taught by Geoff Gordon and Ryan Tibshirani.  When preparing 
+% LaTeX notes for this class, please use this template.
+%
+% To familiarize yourself with this template, the body contains
+% some examples of its use.  Look them over.  Then you can
+% run LaTeX on this file.  After you have LaTeXed this file then
+% you can look over the result either by printing it out with
+% dvips or using xdvi. "pdflatex template.tex" should also work.
+%
+
+\documentclass[twoside]{article}
+\setlength{\oddsidemargin}{0.25 in}
+\setlength{\evensidemargin}{-0.25 in}
+\setlength{\topmargin}{-0.6 in}
+\setlength{\textwidth}{6.5 in}
+\setlength{\textheight}{8.5 in}
+\setlength{\headsep}{0.75 in}
+\setlength{\parindent}{0 in}
+\setlength{\parskip}{0.1 in}
+
+%
+% ADD PACKAGES here:
+%
+
+\usepackage{amsmath,amsfonts,graphicx}
+
+%
+% The following commands set up the lecnum (lecture number)
+% counter and make various numbering schemes work relative
+% to the lecture number.
+%
+\newcounter{lecnum}
+\renewcommand{\thepage}{\thelecnum-\arabic{page}}
+\renewcommand{\thesection}{\thelecnum.\arabic{section}}
+\renewcommand{\theequation}{\thelecnum.\arabic{equation}}
+\renewcommand{\thefigure}{\thelecnum.\arabic{figure}}
+\renewcommand{\thetable}{\thelecnum.\arabic{table}}
+
+%
+% The following macro is used to generate the header.
+%
+\newcommand{\lecture}[4]{
+   \pagestyle{myheadings}
+   \thispagestyle{plain}
+   \newpage
+   \setcounter{lecnum}{#1}
+   \setcounter{page}{1}
+   \noindent
+   \begin{center}
+   \framebox{
+      \vbox{\vspace{2mm}
+    \hbox to 6.28in { {\bf ROB501 - Fundamentals \& Emerging Topics in Robotics - Digital Control Systems } }
+       \vspace{4mm}
+       \hbox to 6.28in { {\Large \hfill Lecture #1 \hfill} }
+       \vspace{2mm}
+       \hbox to 6.28in { {\it Lecturer: #2 \hfill } }
+      \vspace{2mm}}
+   }
+   \end{center}
+   \markboth{Lecture #1}{Lecture #1}
+
+   \vspace*{4mm}
+}
+%
+% Convention for citations is authors' initials followed by the year.
+% For example, to cite a paper by Leighton and Maggs you would type
+% \cite{LM89}, and to cite a paper by Strassen you would type \cite{S69}.
+% (To avoid bibliography problems, for now we redefine the \cite command.)
+% Also commands that create a suitable format for the reference list.
+\renewcommand{\cite}[1]{[#1]}
+\def\beginrefs{\begin{list}%
+        {[\arabic{equation}]}{\usecounter{equation}
+         \setlength{\leftmargin}{2.0truecm}\setlength{\labelsep}{0.4truecm}%
+         \setlength{\labelwidth}{1.6truecm}}}
+\def\endrefs{\end{list}}
+\def\bibentry#1{\item[\hbox{[#1]}]}
+
+%Use this command for a figure; it puts a figure in wherever you want it.
+%usage: \fig{NUMBER}{SPACE-IN-INCHES}{CAPTION}
+\newcommand{\fig}[3]{
+			\vspace{#2}
+			\begin{center}
+			Figure \thelecnum.#1:~#3
+			\end{center}
+	}
+% Use these for theorems, lemmas, proofs, etc.
+\newtheorem{theorem}{Theorem}[lecnum]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{claim}[theorem]{Claim}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\newenvironment{proof}{{\bf Proof:}}{\hfill\rule{2mm}{2mm}}
+
+% **** IF YOU WANT TO DEFINE ADDITIONAL MACROS FOR YOURSELF, PUT THEM HERE:
+
+\begin{document}
+
+% Lecture Details
+\lecture{11}{Asst. Prof. M. Mert Ankarali}
+
+
+\section{State-Feedback \& Pole Placement}
+
+Given a discrete-time state-evolution equation
+%
+\begin{align*}
+  x[k+1] = G x[k] + H u[k]
+\end{align*}
+%
+If direct measurements of all of the states of the
+system (e.g. $y[k] = x[k]$) are available, one of the most
+popular control methods is the linear state feedback
+control,
+%
+\begin{align*}
+ u[k] = - K x[k]
+\end{align*}
+%
+which can be thought as a generalization of P controller
+to the vector form. Under this control law, without any
+reference signal, the system becomes an autonomous 
+system
+%
+%
+\begin{align*}
+ x[k+1] = G x[k] + H (-K x[k])
+  \\
+ x[k+1] = \left(  G - H K \right) x[k] 
+\end{align*}
+%
+The system matrix of this new autonomous system is
+$\hat{G} = G - H K$. The important question is how we need to choose K?. 
+Note that 
+%
+\begin{align*}
+  K &\in \mathbb{R}^n \quad \mathrm{Single-Input} \\
+  K &\in \mathbb{R}^{n \times p} \quad \mathrm{Multi-Input}
+\end{align*}
+%
+As in all of the control design techniques, the most critical criterion is stability, thus we want all of the eigenvalues to be strictly inside the unit circle. However, we know that there could be different requirements on the poles/eigenvalues of the system.
+
+The fundamental principle of ``pole-placement'' design is that
+we first define a desired closed-loop eigenvalue set 
+$\mathcal{E}^* = \lbrace \lambda_1^* , \ \cdots, \  \lambda_1^* \rbrace$, and
+then if possible we choose $K^*$ such that the closed-loop
+eigenvalues match the desired ones.
+
+The necessary and sufficient condition on arbitrary pole-placement is that the system should be fully reachable.
+
+In Pole-Placement, the first step is computing the desired characteristic polynomial. 
+%
+\begin{align*}
+ \mathcal{E}^* &= \lbrace \lambda_1^* , \ \cdots, \  \lambda_n^*
+                 \rbrace
+  \\
+  p^*(z) &= \left( z - \lambda_1^* \right) \cdots \left( z - \lambda_n^*
+         \right)                         
+  \\
+  &= z^n + a_1^* z^{n-1} + \cdots + a_{n-1}^* z + a_n^*
+\end{align*}
+%
+Then we tune $K$ such that 
+\begin{align*}
+  \mathrm{det} \left( z I - ( G - H K ) \right) = p^*(z)
+\end{align*}
+
+\subsection*{Direct Design of State-Feedback Gain}
+
+If $n$ is small, the most efficient method could be the direct
+design. 
+
+\textbf{Example:} Consider the following DT system
+%
+\begin{align*}
+ x[k+1] &= \left[ \begin{array}{cc} 1 & 0 \\ 0 & 2 \end{array} \right] x[k]
+    + \left[ \begin{array}{c} 1 \\ 1 \end{array} \right] u[k]
+\end{align*}
+% 
+Design a state-feedback rule such that poles are located at 
+$\lambda_{1,2} = 0$ (Dead-beat gain)
+
+\textbf{Solution:} Desired characteristic equation can be computed as
+%
+\begin{align*}
+  p^*(z) = z^2
+\end{align*}
+%
+Let $K = \left[ \begin{array}{cc} k_1 & k_2 \end{array} \right]$, then
+the characteristic equation of $\hat{G}$ can be computed as
+%
+\begin{align*}
+  \mathrm{det} \left( z I - ( G - H K ) \right) &= 
+  \mathrm{det} \left(
+  \left[ \begin{array}{cc} z - 1 + k_1 & k_2 \\ k_1 & z - 2 + k_2 \end{array} \right]
+  \right)
+\\
+&= z^2 + z (k_1 + k_2 - 3) + (2 -2 k_1 - k_2)
+\end{align*}
+%
+If we match the equations
+%
+\begin{align*}
+z^2 + z (k_1 + k_2 - 3) + (2 -2 k_1 - k_2) &= z^2
+\\
+k_1 + k_2 &= 3
+\\
+2k_1 + k_2 &= 2
+\\
+k_1 &= -1
+\\
+k_2 &= 4
+\end{align*}
+%
+Thus $K = \left[ \begin{array}{cc} -1 & 4 \end{array} \right]$.
+Now let's compute $\hat{G}^k$ 
+%
+\begin{align*}
+\hat{G} &= \left[ \begin{array}{cc} 2 & -4 \\ 1 & -2 \end{array} \right] 
+\\
+\hat{G}^2 &= \left[ \begin{array}{cc} 2 & -4 \\ 1 & -2 \end{array} \right] 
+\left[ \begin{array}{cc} 2 & -4 \\ 1 & -2 \end{array} \right] = 
+\left[ \begin{array}{cc} 0 & 0 \\ 0 & 0 \end{array} \right]
+\\
+&\vdots
+\end{align*}
+%
+It can be seen that closed-loop system rejects all initial condition
+perturbations in 2 steps. 
+
+
+
+% **** This ENDS THE EXAMPLES. DON'T DELETE THE FOLLOWING LINE:
+\end{document}
