@@ -475,11 +475,10 @@ changes the gain-crossover frequency, which
 can be potentially used for changing the phase 
 margin. 
 
-For our example, required phase-margin, $\phi^*_M$
-can be computed as
+For our example, compensated gain-crossover frequency can be computed as
 %
 \begin{align*}
-  \angle [ \bar{G}(j  \omega_{gc}^*) ] \approx 45^p
+  \angle [ \bar{G}(j  \omega_{gc}^*) ] = -135^o
   \quad \Rightarrow \quad \omega_{gc}^* \approx 1 \ rad/s
 \end{align*}
 %
@@ -501,7 +500,7 @@ From the bode-plots we can observe that
 at the desired  $\omega_{gc}^* \approx 1 \ rad/s$,
 bode-plot approximation has a magnitude of
 $20 \ dB$, whereas the magnitude in the actual
-bide plot is approximately $17 \ dB$. In this example,
+bode plot is approximately $17 \ dB$. In this example,
 let's use the magnitude of the approximation in the
 next Step.
 
