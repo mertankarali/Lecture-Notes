@@ -602,5 +602,154 @@ in observable canonical form is always fully Observable
 \textbf{Remark:} A state-space representation is called minimal 
 if it is both fully Controllable and Observable. 
 
+
+\section{Luenberger Observer}
+
+In general the state, $x(t)$, of a system
+is not accessible and \textit{observers, estimators, filters})
+have to be used to extract this information.
+The output, $y(t)$, represents the measurements
+which is a function of $x(t)$ and $u(t)$.
+%
+\begin{align*}
+  \dot{x} &= A x + B u
+  \\
+  y &= C x + D u
+\end{align*}
+%
+A Luenberger observers is built using a ``simulated'' model of the 
+system and the errors caused by the mismatched initial conditions 
+$x_0 \neq \hat{x}_0$ (or other types of perturbations)
+are reduced by introducing output error feedback.
+
+Let's assume that the state vector of the simulated system
+is $\hat{x}$, then the state space equation of this
+synthetic system takes the form
+%
+\begin{align*}
+  \dot{\hat{x}} &= A \hat{x} + H u
+  \\
+  \hat{y} &= C \hat{x} + D u
+\end{align*}
+%
+Note that since $u$ is the input that is supplied by the 
+controller, we assume that it is known apriori. If $x(0) = \hat{x}[=(0)$ and
+when there is no model mismatch or uncertainty in the system
+then we expect that $x(t) = \hat{x}(t)$ and $y(t) = \hat{y}(t)$ 
+for all $t \in \mathbb{R}^+$. When $x(0) \neq \hat{x}(0)$, then we should observe a 
+difference between the measured and predicted output
+$y(t) \neq \hat{y}(t)$ (if the initial condition is not in the 
+unobservable sub-space). The core idea in Luenberger observer
+is feeding the error in the output prediction 
+$y(t) - \hat{y}(t)$ to the simulated system via a linear feedback gain.
+%
+\begin{align*}
+  \dot{\hat{x}} &= A \hat{x} + H u + L \left( y - \hat{y} \right) 
+  \\
+  \hat{y} &= C \hat{x} + D u
+\end{align*}
+%
+In order to understand how a Luenberger observer works and
+to choose a proper observer gain $L$, we define an error signal
+$e = x - \hat{x}$. The dynamics w.r.t $e$ can be derived
+as
+%
+\begin{align*}
+  \dot{e} &= \dot{x} - \dot{\hat{x}}
+        \\
+     &= \left( A x + H u \right)
+  - \left( A \hat{x} + H u + L \left( y - \hat{y} \right)
+       \right)
+\\
+   \dot{e} &= \left( A - L C \right) e
+\end{align*}
+%
+where $e(0) = x(0) - \hat{x}(0)$ denotes the error in the initial
+condition. 
+
+If the matrix $\left( A - L C \right)$ is stable then the errors in
+initial condition will diminish eventually. Moreover, in order
+to have a good observer/estimator performance the observer
+convergence should be sufficiently fast. 
+
+\newpage
+
+\section*{Observer Gain \& Pole Placement}
+
+Similar to the state-feedback gain design,
+the fundamental principle of ``pole-placement'' Observer design is that
+we first define a desired closed-loop eigenvalue set and 
+compute the associated desired characteristic polynomial. 
+%
+\begin{align*}
+ \mathcal{E}^* &= \lbrace \lambda_1^* , \ \cdots, \  \lambda_n^*
+                 \rbrace
+  \\
+  p^*(s) &= \left( s - \lambda_1^* \right) \cdots \left( s - \lambda_n^*
+         \right)                         
+  \\
+  &= s^n + a_0^* z^{n-1} + \cdots + a_{n-2}^* z + a_{n-1}^*
+\end{align*}
+%
+The necessary and sufficient condition on arbitrary observer pole-placement
+is that the system should be fully Observable. Then, we ca tune $L$ such
+that 
+%
+\begin{align*}
+  \mathrm{det} \left( s I - ( A - L C ) \right) = p^*(s)
+\end{align*}
+%
+\subsection*{Direct Design of Observer Gain}
+
+If $n$ is small, the most efficient method could be the direct
+design. 
+
+\textbf{Example:} Consider the following DT system
+%
+\begin{align*}
+ \dot{x} &= \left[ \begin{array}{cc} 1 & 0 \\ 0 & 2 \end{array} \right] x
+    + \left[ \begin{array}{c} 1 \\ 1 \end{array} \right] u
+\\
+ y &= \left[ \begin{array}{cc} 1 & -1 \end{array} \right] x
+\end{align*}
+% 
+Design an observer such that estimater poles are located at 
+$\lambda_{1,2} = -5$ (Dead-beat Observer)
+
+\textbf{Solution:} Desired characteristic equation can be computed as
+%
+\begin{align*}
+  p^*(s) = s^2 + 10 s + 25
+\end{align*}
+%
+Let $L = \left[ \begin{array}{c} l_2 \\ l_1 \end{array} \right]$, then
+the characteristic equation of $(G - L C)$ can be computed as
+%
+\begin{align*}
+  \mathrm{det} \left( s I - ( A - L C ) \right) &= 
+  \mathrm{det} \left(
+  \left[ \begin{array}{cc} s - 1 + l_2 & -l_2 \\ l_1 & s - 2 - l_1 \end{array} \right]
+  \right)
+\\
+&= s^2 + s (l_2 - l_1 - 3) + (l_1 - 2 l_2 + 2)
+\end{align*}
+%
+If we match the equations
+%
+\begin{align*}
+  l_2 - l_1 &= 13
+\\
+  l_1 - 2 l_2 &= 23
+\\
+ l_2 &= -49
+\\
+ l_1 &= -36
+\end{align*}
+%
+Thus $L = \left[ \begin{array}{c} -49 \\ -36 \end{array} \right]$
+
+
+
+
 % **** This ENDS THE EXAMPLES. DON'T DELETE THE FOLLOWING LINE:
 \end{document}
