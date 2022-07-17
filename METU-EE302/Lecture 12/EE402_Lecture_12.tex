@@ -176,7 +176,7 @@ from the parameter $K$. However, If we focus on the magnitude condition,
 we can see that 
 %
 \begin{align*}
-K = \frac{1}{| G_{OL}(s^*) |} = \left| \frac{d(s^*)}{d(s^*)} \right| = 
+K = \frac{1}{| G_{OL}(s^*) |} = \left| \frac{n(s^*)}{d(s^*)} \right| = 
 \frac{|s^* - p_1| \cdots |s^* - p_N|}{|s^* - z_1| \cdots |s^* - z_M|} 
 \end{align*}
 %
@@ -216,13 +216,13 @@ provided below
 \begin{enumerate} 
 
 \item Compute the zeros poles of the open-loop 
-transfer function and write the characteristic eqiation
+transfer function and write the characteristic equation
 of closed-loop system.
 %
 \begin{align*}
 1 + K G_{OL}(s)  &= 0 \\
 1 + K \frac{n(s)}{d(s)} &= 0 \\
-1 + K \frac{(zs- z_1) \cdots (zs- z_M)}{(s - p_1) \cdots (s - p_N)} &= 0 \\
+1 + K \frac{(s- z_1) \cdots (s- z_M)}{(s - p_1) \cdots (s - p_N)} &= 0 \\
 \end{align*}
 %
 

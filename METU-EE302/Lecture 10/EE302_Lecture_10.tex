@@ -132,13 +132,13 @@ Let's assume that $H(s) = 1$ and $G(s)$ is a second order
 transfer function in general form 
 %
   \begin{align*}
-  G(s) = \frac{\omega_n^2}{s^2 + 2 \zeta \omega_n + \omega_n^2}
+  G(s) = \frac{\omega_n^2}{s^2 + 2 \zeta \omega_n s + \omega_n^2}
   \end{align*}
 %
-SInce $C(s) = K_P$, let's first analyze the steady-state error performance
+Since $C(s) = K_P$, let's first analyze the steady-state error performance
 %
 \begin{align*}
-  &G_{OL}(s) = \frac{K_P \omega_n^2}{s^2 + 2 \zeta \omega_n + \omega_n^2}
+  &G_{OL}(s) = \frac{K_P \omega_n^2}{s^2 + 2 \zeta \omega_n s +  \omega_n^2}
 \\
  Type \ 0 \quad K_p = K_P
 \end{align*}
@@ -171,7 +171,7 @@ We can see that
    K_p \nearrow \ &\Rightarrow \ \zeta \searrow  
   \end{align*}
 %
-If the plant is an over-damped system (i.e. $\zeta > 1$), them increasing
+If the plant is an over-damped system (i.e. $\zeta > 1$), then increasing
 $\omega_n$ and decreasing $\zeta$ should has a positive net 
 effect on the closed-loop performance. 
 
@@ -349,7 +349,7 @@ We can see that
 %
 In other words, for a second order system, we have full control on
 closed-loop pole locations with PD control policy. Since, a high $K_P$
-is required/preferred for steady-state performance (which couses 
+is required/preferred for steady-state performance (which causes 
 the system to have overshoot and oscillatory behavior), $K_D$
 term can be used to suppress oscillations and overshoot.
 Note that in the closed-loop transfer function, numerator part
@@ -365,7 +365,7 @@ plant). Design a $PD$ controller such that steady-state error to
 unit-step input is around $\% 20$ and the maximum percentage overshoot
 is less than $\% 4$. 
 
-\textbf{Solution:} We first design $K_D$ based on steady-state
+\textbf{Solution:} We first design $K_P$ based on steady-state
 requirement then choose $K_D$ based on the over-shoot requirement.
 %
   \begin{align*}
@@ -374,7 +374,7 @@ requirement then choose $K_D$ based on the over-shoot requirement.
    K_P &= 20
   \end{align*} 
 %
-Now let's compte the closed-loop transfer function with $K_P = 20$.
+Now let's compute the closed-loop transfer function with $K_P = 20$.
   \begin{align*}
    T(s) &= \frac{20 + K_D s}{s^2 + (4 + K_D) s + 25}
   \end{align*} 
@@ -412,7 +412,7 @@ higher than the requirement. Moreover, the gap between estimated
 and numerically computed over-shoot is around $\%3.5$. Obviously,
 the $K_D s = 4 s$ term in the numerator affects the output behavior and
 its affect should be maximum when $0 < t < t_s$. In order see how
-$K_D s = 4 s$, let's compre step responses of following transfer
+$K_D s = 4 s$, let's compare step responses of following transfer
 functions
 %
 \begin{align*}
@@ -477,7 +477,7 @@ total system order). Thus for a Type 0 plant, it completely eliminates
 the steady-state error for step-like inputs, and provides a
 constant steady-state error for ramp-like inputs. 
 
-Let's compte the closed-loop transfer function
+Let's compute the closed-loop transfer function
 %
 \begin{align*}
 T(s) = \frac{K_I \omega_n^2}{s^3 + 2 \zeta \omega_n s^2 + \omega_n^2 s
@@ -486,10 +486,10 @@ T(s) = \frac{K_I \omega_n^2}{s^3 + 2 \zeta \omega_n s^2 + \omega_n^2 s
   %
 The closed loop system is now a third order system and
 thus harder to analyze (we need new analysis tools). Moroever, 
-we have only one paremeter $K_I$ and the closed-loop system has
+we have only one parameter $K_I$ and the closed-loop system has
 three poles. One may easily guess that it is very hard to obtain 
 a good performance with a pure Integral controller. 
-Sometimes it bay be even quite hard to obtain a stable behavior.
+Sometimes it may be even quite hard to obtain a stable behavior.
 
 \paragraph{Example 4:} Let's analyze the influence of an $I$ controller on a
 first order plant in order to better understand the positive and
@@ -525,7 +525,7 @@ compute closed-lopp transfer function
 \end{align*}
 %
 Now let's analyze the transient performance (settling time and maximum
-overshoot) for $K_I = 1$ and $K_I = 2$ and compre them
+overshoot) for $K_I = 1$ and $K_I = 2$ and compare them
 w.r.t. uncontrolled plant
 %
 \begin{align*}
@@ -539,8 +539,8 @@ w.r.t. uncontrolled plant
 % 
 We can clearly see that integral action has a negative effect 
 on transient performance. $K_I = 1$ case has a worse
-settling time value than the original plant< 
-Moroever we start to observe over-shoot at the output
+settling time value than the original plant! 
+Moreover we start to observe over-shoot at the output
 when we increase integral gain to $K_I = 2$ case.
 
 In order to illustrate these analytic observations, 
@@ -558,7 +558,7 @@ closed-loop system with $K_I = 2$.
 
 \vspace{12 pt}
 
-It is clear that PI controlle eliminates the
+It is clear that I controller eliminates the
 steady-state error, but we can also observe that
 transient performance substantially degraded. In both cases
 settling time is worse than the original plant,
@@ -619,7 +619,7 @@ and we have two parameters for tuning. Even though it provides a
 much better framework than an I controller, still we need different tools
 to tune the $K_I$ and $K_P$ gains.
 
-\paragraph{Example 5:} Let's compre PI and I controllers using the
+\paragraph{Example 5:} Let's compare PI and I controllers using the
 same plant in previous example, $G(s) = \frac{1}{s+2}$. We know that
 PI controller has the transfer function form $C(s) = \frac{K_I}{s}$
 and steady-state error characteristics can be derived as
@@ -713,7 +713,7 @@ as
 \end{itemize}
   %
 In other words $PID$, $PI$, and $I$ controllers share the same steady-state
-performance characteristics. Now, let's compte the closed-loop transfer function
+performance characteristics. Now, let's compute the closed-loop transfer function
 %
 \begin{align*}
   T(s) &= \frac{( K_D s^2 +  K_P s +  K_I ) \omega_n^2}{ s^3 + (2 \zeta
@@ -726,14 +726,14 @@ can place the closed-loop poles to any desired location. However,
 numerator has now two zeros, thus it is now harder to predict the
 affect of closed-loop zeros on the output behavior. 
 
-\textbf{Example 4:} Let $G(s) = \frac{1}{s^2 + 4 s + 5}$, Design a
+\textbf{Example 6:} Let $G(s) = \frac{1}{s^2 + 4 s + 5}$, Design a
 PID controller such that we observe zero unit-step steady state error, 
 maximum percent overs-shoot is less than $\% 5$, and settling time 
 is around $1 s$. 
 
 \textbf{Solution:} We already know that PID controller for a Type 0
 plant completely eliminates the unit-step steady state error. Now 
-let's compte closed-loop transfer function
+let's compute closed-loop transfer function
 %
 \begin{align*}
   T(s) &= \frac{K_D s^2 +  K_P s +  K_I}{ s^3 + (4 + K_D) s^2 + (5 +K_P) s +  K_I}
@@ -774,7 +774,7 @@ Then, we can compute the PID gains as
   K_D &= 16\\
 \end{align*}
 %
-The first thing, we can observe is that the quantitive values of the gains 
+The first thing, we can observe is that the quantitative values of the gains 
 seem to be much larger than the gains that we played before.
 In general, if we want to improve the performance of both
 steady-state and transient characteristics by implementing PID 

@@ -128,7 +128,7 @@ absolutely integrable.
   g(t) | dt < B < \infty
 \end{align*}
  %
-However, we genrally use transfer function representation in this
+However, we generally use transfer function representation in this
 course. Let 
 %
 \begin{align*}
@@ -206,7 +206,7 @@ of a second order system has the following form
  a_0 &> 0 , \ \mathrm{w.l.g}
 \end{align*}
 %
-If we carefully analyze $\mathrm{Sign} [ D(0 ]$, 
+If we carefully analyze $\mathrm{Sign} [ D(0) ]$, 
 we can see that
 %
 \begin{itemize}
@@ -266,7 +266,7 @@ for the stability of an LTI system. The Routh test is a very
 computationally efficient algorithm for the test of absolute
 LTI system stability. 
 
-In this test, one first constructs the routh table for a given
+In this test, one first constructs the Routh table for a given
 %
 \begin{align*}
 D(s) = a_o s^n + a_1 s^{n-1} + a_2 s^{n-3} + \cdots + a_{n-2} s^{2}
@@ -301,7 +301,7 @@ $s^{0}$ & $g_0$ & $0$ & $0$ & $\cdots$  &
 \end{center}
 \end{table}
 
-where the coefficents $b_i$ are computed with
+where the coefficients $b_i$ are computed with
 %
 \begin{align*}
  b_1 = - \mathrm{det}\left( \left[ \begin{array}{cc} a_0 & a_2 \\ a_1
@@ -331,11 +331,11 @@ b_3 = - \mathrm{det}\left( \left[ \begin{array}{cc} a_0 & a_6 \\ a_1
 \vdots
 \end{align*}  
 %
-coefficents $c_i$ are computed with
+coefficients $c_i$ are computed with
 %
 %
 \begin{align*}
-& c_1 = - \mathrm{det}\left( \left[ \begin{array}{cc} a_1 & b_1 \\ a_3
+& c_1 = - \mathrm{det}\left( \left[ \begin{array}{cc} a_1 & a_3 \\ b_1
                                                          &
                                                            b_2 \end{array}
                                                            \right]
@@ -362,7 +362,7 @@ coefficents $c_i$ are computed with
 &\vdots
 \end{align*}  
 
-Coefficents $d_i$ are computed with
+Coefficients $d_i$ are computed with
 %
 \begin{align*}
 & d_1 = - \mathrm{det}\left( \left[ \begin{array}{cc} b_1 & b_2 \\ 
@@ -699,7 +699,7 @@ $s^0$ & ? & ? &
 \end{minipage}
 
 We can see that one row in Routh table is completely zero. 
-Thus we know that system is indeed BIBO stable. However,
+Thus we know that system is indeed BIBO unstable. However,
 what we can do in order to find number of unstable poles. 
 This happens when there exists roots of equal magnitude
 located radially opposite in $s-$plane, i.e. symmetric

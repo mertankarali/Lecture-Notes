@@ -523,7 +523,7 @@ steady-state error and it is certainly possible to improve the
 steady-state performance of PD controller by increasing its gain.
 
 On the other hand in PID controller, if we locate both zeros to the
-left of the pole at $-3$ location (\textbf{left as a practice}). we 
+left of the pole at $-3$ location (\textbf{left as a practice}), we 
 would obtain better root-locus picture (in terms of pole locations
  with better transient performance). However, the main trade-off will
 be the substantially increased gain values, which is already much
@@ -668,7 +668,7 @@ since we want the specified pole to be on the root-locus
 \end{align*}
 % 
 This implies that a PI controller can not satisfy the requirements.
-Now let's try to designa PID controller. 
+Now let's try to design a PID controller. 
 %
 \begin{align*}
  C(s) &= K_D s + K_P + K_I \frac{1}{s} = 
@@ -752,12 +752,12 @@ step-response of the closed-loop system,
 
 Based on the dominant pole locations, we would expect a settling
 time value of $t_{s} \approx 2 s$, while the actual settling tim is 
-approximatelly $1.8 s$. On the other hand the over-shoot expectation
+approximately $1.8 s$. On the other hand the over-shoot expectation
 based on the pole location is $PM_P = \%4$, where as in the simulation
 we observe $\%12$ maximum overs-hoot. Note that, we observed similar
 ``errors'' due to closed-loop zero dynamics even in the cases where 
 system has only to complex-conjugate poles. For this reason, PID
-controller fairly satisfies tha design requirements. 
+controller fairly satisfies the design requirements. 
 
 
 % **** This ENDS THE EXAMPLES. DON'T DELETE THE FOLLOWING LINE:
