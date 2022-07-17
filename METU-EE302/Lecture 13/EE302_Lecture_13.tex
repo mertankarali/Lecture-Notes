@@ -157,7 +157,7 @@ is $2 s.$ When $K = 1$, system becomes critically damped. When we
 further increase the gain, real part of the poles do not change,
 however oscillations starts and grows with $K_P$. Obviously, we
 should choose a gain $K_P > 1$, however after that point
-theres is a trade-off between over-shoot and settling time
+there is a trade-off between over-shoot and settling time
 performance. Let's choose two candidate locations, $p_{1,2}^{(1)} = -2$
 and $p_{1,2}^{(1)} = -2 \pm 2 j$. Table below details
 the gain values at these pole locations, unit-step steady-state errors,
@@ -283,12 +283,12 @@ We can see that PD control policy outperforms
 the P controller in every category. 
 
 On the other hand, interestingly we expected no over-shoot with
-thet PD controller, yet we still observe some over-shoot 
+the PD controller, yet we still observe some over-shoot 
 at the output. In addition to this, actual settling 
-time is approximatelly half of our previous estimation. 
+time is approximately half of our previous estimation. 
 The discrepancies between the transient characteristics between
 simulation and estimated values occurs due the
-effectx of extra zero in the closed-loop transfer function. 
+effects of extra zero in the closed-loop transfer function. 
 
 \subsection{Integral (I) Controller}
 
@@ -415,10 +415,10 @@ We can make the following observations
 % 
 In conclusion, PI controller has superior steady-state performance
 compared to P and PD controllers, however there exist substantial 
-transent performance drop even compared to simple P controller. 
+transient performance drop even compared to simple P controller. 
 
 Now let's choose $K_P = 2$, then we can find that $K_I = 4$.
-Now let's compre this PI controller $(K_P , K_I) = (2,4)$ with our
+Now let's compare this PI controller $(K_P , K_I) = (2,4)$ with our
 previously chosen P controller $(K_P , K_I) = (5,0)$ by simulating
 the step-responses. 
 
@@ -444,7 +444,7 @@ based on the root locus diagrams.
 \subsection{Proportional Integral Derivative (PID) Controller}
 
 If one is not satisfied with the transient characteristics of a
-P-controller but also would like to eliminiate steady-state error
+P-controller but also would like to eliminate steady-state error
 fot the unit step input, he/she can design a PID controller. 
 
 First make some change of variables and re-write the PID controller in a different form.
@@ -485,7 +485,7 @@ $K \to \infty$, where as other two poles deviates from the imaginary
 axis when $K_D \nearrow$. Let's choose $K_D = 10$ which marked 
 on the root-locus plot. In this case poles of the closed-loop system 
 takes the form $p_1 = -2.1$ and $p_{2,3} = -6 \pm 1.6 j$. We 
-may conclude that the system is approximatelly first order since
+may conclude that the system is approximately first order since
 the single pole is much closer to the real-axis. In this case, we
 expect settling time as $t \approx 1.9 s$. Note that this settling time
 value is slightly better then the best settling time value that is
@@ -503,7 +503,7 @@ When $K_D = 10$, we have
 \end{align*}
 
 Now let's simulate this PID controller and previously designed PD
-controller and compre the transient and steady state performances.
+controller and compare the transient and steady state performances.
 
 \vspace{12 pt}
 
@@ -751,7 +751,7 @@ step-response of the closed-loop system,
 \vspace{6 pt}
 
 Based on the dominant pole locations, we would expect a settling
-time value of $t_{s} \approx 2 s$, while the actual settling tim is 
+time value of $t_{s} \approx 2 s$, while the actual settling time is 
 approximately $1.8 s$. On the other hand the over-shoot expectation
 based on the pole location is $PM_P = \%4$, where as in the simulation
 we observe $\%12$ maximum overs-hoot. Note that, we observed similar

@@ -115,7 +115,7 @@ in this example.
 \textbf{Theorem: Cauchy's Argument Principle}
 
 Given $F(s) = \frac{N(s)}{D(s)}$ and a CW contour $\Gamma_s$ in $s-$ plane
-which does not croes any zeros (roots of $N(s)$) or poles (roots of $D(s)$)
+which does not cross any zeros (roots of $N(s)$) or poles (roots of $D(s)$)
 of $F(s)$, then the mapped contour $\Gamma_{F(s)}$ will encircle the
 origin
 %
@@ -171,7 +171,7 @@ of the origin ($N$). Based on Cauchy's Argument Principle we know that
 \vspace{6 pt}
 
 In this example illustration $N = 2$, which implies that total number
-of unstable poles of $G(s)$ is given by $P = Z + 2$, if $Z$,
+of unstable poles of $G(s)$ is given by $P = Z - 2$, if $Z$,
 i.e. number of zeros with positive real parts, is known than
 we can compute number of unstable poles $P$. Alternatively, 
 since in a feedforward system only denominator part determines
@@ -261,10 +261,10 @@ $P = Z - N = 1 - 1 = 0$, thus the system is obviously stable.
    \quad , \quad \angle [ G \left( R e^{j \theta} \right) ] \approx -\theta
    \end{align*}
    % 
-   Note that when $\theta : \pi/2 \to -\pi/$, the infinite-small 
+   Note that when $\theta : \pi/2 \to -\pi/2$, the infinite-small 
    contour around origin rotates in CCW direction. 
    %
-   \item Last path (mapping of negative imaginaty axis) is again
+   \item Last path (mapping of negative imaginary axis) is again
    is the conjugate of polar plot with reverse direction. 
 \end{enumerate}
 
@@ -317,10 +317,10 @@ $P = Z - N = 0 - 0 = 0$, thus the system is obviously stable.
       \theta
    \end{align*}
    % 
-   Note that when $\theta : \pi/2 \to -\pi/$, the infinite-small 
+   Note that when $\theta : \pi/2 \to -\pi/2$, the infinite-small 
    contour around origin rotates in CCW direction. 
    %
-   \item Last path (mapping of negative imaginaty axis) is again
+   \item Last path (mapping of negative imaginary axis) is again
    the conjugate of polar plot with reverse direction. 
 \end{enumerate}
 
@@ -371,10 +371,10 @@ $P = Z - N = 0 - 0 = 0$, thus the system is obviously stable.
       \theta
    \end{align*}
    % 
-   Note that when $\theta : \pi/2 \to -\pi/$, the infinite-small 
+   Note that when $\theta : \pi/2 \to -\pi/2$, the infinite-small 
    contour around origin rotates in CCW direction. 
    %
-   \item Last path (mapping of negative imaginaty axis) is again
+   \item Last path (mapping of negative imaginary axis) is again
    the conjugate of polar plot with reverse direction. 
 \end{enumerate}
 
@@ -414,7 +414,7 @@ $P = Z - N = 0 - 0 = 0$, thus the system is stable.
   \rbrace < 0
 \end{align*}
 
-Let's derive where the polar plot approachs when $\omega \to 0$
+Let's derive where the polar plot approaches when $\omega \to 0$
 and $\omega \to \infty$
 \begin{align*}
   \lim_{\omega \to 0} G(j \omega) &= -0.5 + 0 j
@@ -438,7 +438,7 @@ direction). Thus,
  \angle [ G(R e^{j \theta}) ] &= - 2 \theta \quad \theta : \pi/2 \to -\pi/2
 \end{align*}
 %
-Note that associated Nyquist plot around origin turns approximatelly
+Note that associated Nyquist plot around origin turns approximately
 $2 \pi$ radians in CCW direction. Last path is the mapping of negative imaginary axis which is simply
 conjugate of the polar plot with reverse direction. 
 

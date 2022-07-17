@@ -185,7 +185,7 @@ design a lead-compensator, $G_c(s) = K_c \frac{T s + 1}{T \alpha s +
 requirement on the unit-ramp error.  
 %
 \begin{align}
-   e_{ss} = \frac{1}{K_v} = \frac{1}{K_c} = 1 \ \rightarrow \ K_c = 10
+   e_{ss} = \frac{1}{K_v} = \frac{1}{K_c} = 0.1 \ \rightarrow \ K_c = 10
 \end{align}
 
 \textbf{Step 2:} Embed $K_c$ into $G(s)$, i.e. 
@@ -194,7 +194,7 @@ requirement on the unit-ramp error.
   \bar{G}(s) = K_c G(s) = \frac{10}{s (s+1)} ,
 \end{align*} 
 %
-draw the bode-plot for $\bar{G}(s)$, and compute the gain-crosover
+draw the bode-plot for $\bar{G}(s)$, and compute the gain-crossover
 frequency, $\omega_{gc}$, and the phase margin, $\phi_M$, for the
 uncompensated $\bar{G}(s)$. The bode plot of $\bar{G}(s)$ and its
 approximation is illustrated in the Figure below. 
@@ -208,7 +208,7 @@ approximation is illustrated in the Figure below.
      \end{center}
 
 If we concentrate on the approximate bode-plots, we can estimate
-the gain-crosover frequency and the phase-margin as
+the gain-crossover frequency and the phase-margin as
 %
 \begin{align*}
   \omega_{gc} &\approx \sqrt{10} \ rad/s = 3.16 \ rad/s
@@ -296,7 +296,7 @@ the new-gain crossover frequency graphically
      \end{center}
 
 where $\hat{\omega}_{gc} \approx 4.5 \ rad/s$.
-We can also estimate the new-gain crosover frequency
+We can also estimate the new-gain crossover frequency
 numerically 
 %
 \begin{align*}
