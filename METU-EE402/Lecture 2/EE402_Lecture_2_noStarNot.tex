@@ -144,7 +144,7 @@ The microcontroller/microprocessor processes some set of digital input signals t
 The DAC is a device that converts a digital signal to an analog signal. In this course, we assume that it is an ideal \textit{Hold} element for which the input signal is a discrete-time signal, whereas the output is a continuous-time signal. The most commonly used \textit{Hold} system is ZOH (Zero-Order-Hold) which is a mapping  defined by the following relation
 %
 \begin{align*}
-  u(t) = u[k] , \ \mathrm{for} t \in [kT , (k+1)T )
+  u(t) = u[k] , \ \mathrm{for} \ t \in [kT , (k+1)T )
 \end{align*}
 %
 Higher-order hold operators exist, but they are extremely rarely used in practice. 
@@ -160,7 +160,7 @@ The idealized and simplified block-diagram structure is given in Fig.
 
 \textbf{Major challenge:} Loop contains both continuous-time and discrete-time parts.
 
-\newpage
+\vspace{12pt}
 
 \section*{Fundamental Discrete-Time Signals \& Systems Concepts}
 
@@ -173,11 +173,11 @@ Z-transform of a (causal) discrete time signal $x[k]$ is given by
 \end{align*}
 %
 If $x[k]$ is a sampled signal from a continuous time signal $x(t)$
-with a sampling time of $T$, we (abuse of notation) also use the
+with a sampling time of $T$, we also use the
 following notation
 %
 \begin{align*}
-  X(z) = \mathcal{Z} \lbrace x(kT) \rbrace = \mathcal{Z} \lbrace x^*(t) \rbrace 
+  X(z) = \mathcal{Z} \lbrace x(kT) \rbrace 
 \end{align*}
 % 
 \subsection*{Z-transforms of elementary functions}
