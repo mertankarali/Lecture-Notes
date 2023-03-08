@@ -47,8 +47,6 @@
    }
    \end{center}
    \markboth{Lecture #1}{Lecture #1}
-
-   \vspace*{4mm}
 }
 
 
@@ -80,19 +78,20 @@
 % **** IF YOU WANT TO DEFINE ADDITIONAL MACROS FOR YOURSELF, PUT THEM HERE:
 
 \begin{document}
-
+ 
 % Lecture Details
-\lecture{12}{Asst. Prof. M. Mert Ankarali}
+\lecture{12}{Assoc. Prof. M. Mert Ankarali}
 
-\par
+
+\vspace{-12pt}
 
 \section{State-Space Models of Dynamical Systems}
 
 For a causal dynamical system, in order to compute output at a given
 time, $t_0$ (or $k_o$ for DT systems), we need to know ``only'' the
 input signal over $(-\infty , t_o]$ (or $(-\infty , k_o]$ for DT
-systems). This requires a lot of data/information (indeed intinite
-amount of data), can we summarize it with somehtin more managable ?
+systems). This requires a lot of data/information (indeed infinite
+amount of data), can we summarize it with something more manageable ?
 For example using some latent variables stored in a vector, a.k.a. \textit{state-vector}.
 
 \textbf{State property of DT state-space models:} 
@@ -105,23 +104,22 @@ $t_0$ and state $x(t_0)$ and input $u(t)$ for $t_0 \leq t \leq t_f$ (with
 $t_0 \ \& \ t_f$ arbitrary), we can compute the output $y(t)$ for 
 $t_0 \leq t \leq t_f$ and the state $x(t)$ for  $t_0 \leq t \leq t_f$. 
 
-In other words $x(t_0)$ (and $x[k]$ for DT systems) summurizes the
+In other words $x(t_0)$ (and $x[k_0]$ for DT systems) summarizes the
 whole input history, $t\in(-\infty , t_0)$ (or $k \in (-\infty ,
-k_0)$) in a compact (preferably \textit{finite-dimensional}) memory package,
+k_0)$) in a compact (most probably \textit{finite-dimensional}) memory package,
 for the purpose of predicting the future output (and states)
 
 Note that both definitions are not limited to LTI state-space models. 
 Nonlinear and time-varying state-space models also are based on this 
-definition. Indeed CT state-definition is more general and indeed also
-applies for DT state-space models. 
+definition. CT state-property is more and also applies for DT state-space models. 
 
 Note that the choice of state-variables is not unique (and there exist
 infinite possible of \textit{realizations}), however, there are some
-options that are prefeerable to others (minimal representations,
-canonical forms, practical benefits etc.)
-
-When a state-space representation includes minimum possible of number of state 
+options that are preferable to others (minimal representations,
+canonical forms, practical benefits etc.). When a state-space representation includes minimum possible of number of state 
 variables, the representation is called minimal. 
+
+\vspace{-12pt}
 
 \subsection{State-Space Representations of LTI, LTV, \& Non-Linear
   Dynamical Systems}
@@ -196,7 +194,7 @@ State-space representation of a (causal \& finite dimensional) non-linear DT sys
   y[n] &= H(x[n],u[n]) , 
 \end{align*}
 
-\subsection{Modeling of Example CT and DT Systems}
+\subsection{Example CT and DT System Models}
 
 \textbf{Ex 1: Series RLC Circuit}
 
@@ -235,11 +233,9 @@ Now, find the transfer function representation of the system for the given input
 	s^2 Y(s) + s \frac{R}{L} Y(s) + \frac{1}{LC} Y(s) &=  \frac{1}{LC} U(s) \\
 	G(s) = \frac{Y(s)}{U(s)} &= \frac{\frac{1}{LC} }{s^2 + \frac{R}{L} s + \frac{1}{LC} }
 \end{align*}
-
+%
 Find a state-space representation of the system.
-
-\par
-
+%
 Let $x = \left[ \begin{array}{c} x_1 \\ x_2 \end{array} \right] = \left[ \begin{array}{c} y \\ \dot{y} \end{array} \right]$, then 
 %
 \begin{align*}
@@ -282,9 +278,9 @@ If we put the equations in state-space form, we obtain
  y &= \left[  \begin{array}{cc} 1 & 0 \end{array} \right] z
 \end{align*}
 %
-Show that both representations will produce the same transfer function ?
+\textbf{Home practice:} Comment on the similarities and differences between two representations.
 
-\vspace{6pt}
+\newpage
 
 \textbf{Ex 2: State-Space Realization of a Third Order FIR Systems}
 
@@ -302,7 +298,7 @@ provides the block-diagram realization of a third order FIR filter.
 %
 \begin{figure}[h]
     \centering
-      \includegraphics[width=0.9\textwidth]{FIR}
+      \includegraphics[width=0.75\textwidth]{FIR}
     \caption{Block diagram realization of a third order FIR system}
         \label{fig:FIR}
 \end{figure}
@@ -352,7 +348,7 @@ find a state-space model of the pendulum dynamics.
     \end{center}
   \end{minipage}
 
-\vspace{6pt}
+\newpage
 
 \textbf{Ex 4: Predator-Prey Model}
 %
@@ -425,7 +421,7 @@ series expansion, we can find the linerized state-space model as
   \dot{\delta x} &\approx \left( \left[ \frac{\partial F(x,u)}{\partial x}
                       \right]_{(x_o,u_o)} \right) \delta x + \left( \left[ \frac{\partial F(x,u)}{\partial u}
                       \right]_{(x_o,u_o)} \right) \delta u  , \\
-  \delta  &\approx \left( \left[ \frac{\partial H(x,u)}{\partial x}
+  \delta y  &\approx \left( \left[ \frac{\partial H(x,u)}{\partial x}
                       \right]_{(x_o,u_o)} \right) \delta x + \left( \left[ \frac{\partial H(x,u)}{\partial u}
                       \right]_{(x_o,u_o)} \right) \delta u , 
 \\ 
@@ -514,6 +510,8 @@ Cumputation of state-space matrices and definition of perturbation
 variables are completely same for the CT case. 
 %
 
+\vspace{12pt}
+
 \textbf{Ex 4-2: Linearization of the Predator-Prey Model}
 
 Let $[g , f , c_{fg} , c_{gf}] = [2 , 0.5 , 0.1 , 0.05]$, first compute the
@@ -540,6 +538,8 @@ A &= \left( \left[ \frac{\partial F(x)}{\partial x}
 \end{array} \right]  =
                     \left[ \begin{array}{cc} 1 & -1 \\ 0.5 & 1 \end{array}  \right]
 \end{align*}
+
+\newpage
 
 Let's go back to non-linear CT time dynamical models. Sometimes, 
 we want to obtain a \textit{Linear} dynamical system model 
@@ -581,13 +581,13 @@ Note that in such a case state-space matrices (almost surely) potentially become
 time-dependent and hence linearitzation leads to a LTV
 (Linear-Time-Varying) state-space model. 
 
-\vspace{6pt}
+\vspace{12pt}
 
 \textbf{Ex 3-3: Linearization(s) of the Pendulum Model Around a Trajectory}
 
 Let's go back to the simple pendulum model. We want to ``control'' the
 system such that it rotates with a constant angular velocity and
-anlyze the dynamics around the nomial trajectory. In that
+analyze the dynamics around the nominal trajectory. In that
 respect nominal trajectory for the state variables can take the
 following form
 %
@@ -626,7 +626,7 @@ C &= \left[ \begin{array}{cc} 1 & 0 \end{array}  \right]
 We can see that system matrix $A(t)$ is now time-dependent thus the
 approximate system is an LTV system. Indeed we can see that $A(t)$ is
 a periodic function, this this is a special class of LTV system and
-belongs to the group of LTP (Lineae Time Periodic) systems. 
+belongs to the group of LTP (Linear Time Periodic) systems. 
 
 % **** This ENDS THE EXAMPLES. DON'T DELETE THE FOLLOWING LINE:
 \end{document}
