@@ -54,7 +54,7 @@
    \framebox{
       \vbox{\vspace{2mm}
     \hbox to 6.28in { {\bf EE502 - Linear Systems Theory II
-	\hfill Spring 2019} }
+	\hfill Spring 2023} }
        \vspace{4mm}
        \hbox to 6.28in { {\Large \hfill Lecture #1 \hfill} }
        \vspace{2mm}
@@ -324,7 +324,7 @@ y[k] &= C x[k] + D u[k]
 Y(z) &= z C  \left( z I - A \right)^{-1} x[0] + \left[ C \left( z I - A \right)^{-1} B + D \right] U(z)
 \end{align*}
 %
-where $z C  \left( s I - A \right)^{-1} x[0]$ corresponds to the initial-condition response and 
+where $z C  \left( z I - A \right)^{-1} x[0]$ corresponds to the initial-condition response and 
 when $u[k]=0$ we have
 %
 \begin{align*}
@@ -335,12 +335,54 @@ G(z) &= C \left( z I - A \right)^{-1} B + D
 %
 similar to the CT case $G(z)$ is called the \textbf{transfer function
   matrix}. Note that resultant frequency domain solution in DT systems
-is very simlar to the solution in CT systems (except the initial
-condition response). Without a big surprize state-space to transfer function related
-definitions CT systems generally holds also for DT systems, Such as \textit{properness, poles,
+is very similar to the solution in CT systems (except the initial
+condition response). Without a big surprise state-space to transfer function related
+definitions of CT systems generally holds also for DT systems, Such as \textit{properness, poles,
   zeros} etc.
 
-
+Similar to the CT case, if we expand $z \left( z I - A \right)^{-1}$ by long ``division'' we
+may find expressions for time-domain solutions. 
+%
+     \begin{center}
+ \begin{minipage}[h]{0.5\linewidth}
+     \begin{center}
+       \includegraphics[width=\textwidth]{directdivision}
+     \end{center}
+ \end{minipage}
+     \end{center}
+%
+\begin{align*}
+z \left( z I - A \right)^{-1} &= I + z^{-1} A + z^{-2} A^2 + z^{-3} A^3
+  + \cdots
+\\
+\Psi[k] = \mathcal{Z}^{-1} \left[ z \left( z I - A \right)^{-1} \right] &=
+I \, \delta[k] + A \, \delta[k-1] + A^2 \, \delta[k-2] + A^3 \,
+  \delta[k-3] + \cdots 
+\\
+&= A^k 
+\end{align*}
+%
+Similarly initial condition only response simple becomes 
+%
+\begin{align*}
+x[k] = A^k x[0]
+\\
+y[k] = C A^k x[0]
+\end{align*}
+%
+whereas we can derive the impulse response as
+%
+\begin{align*}
+G[k] &= \mathcal{Z}^{-1} \lbrace C \left( z I - A \right)^{-1} B + D \rbrace
+\\
+&= C \mathcal{Z}^{-1} \lbrace z^{-1}  \left[ z \left( z I - A
+  \right)^{-1} \right]
+  \rbrace B + D \delta[k]
+\\
+&= C A^{l-1} B h[k-1] +D \delta[k]  
+\end{align*}
+%
+where $h[n]$ is the unit-step function. 
 
 % **** This ENDS THE EXAMPLES. DON'T DELETE THE FOLLOWING LINE:
 \end{document}
