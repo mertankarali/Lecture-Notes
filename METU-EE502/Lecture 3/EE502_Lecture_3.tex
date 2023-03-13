@@ -236,6 +236,50 @@ have no common root.
 \
 \end{itemize}
 
+It seems that if we can find $\Phi(t) = \mathcal{L}\lbrace (sI - A)^{-1} \rbrace$, it would be helpful to
+find both the initial condition respons and forced response in time-domain.
+Let's first expand $\left( s I - A \right)^{-1}$ by long ``division'' 
+%
+     \begin{center}
+ \begin{minipage}[h]{0.5\linewidth}
+     \begin{center}
+       \includegraphics[width=\textwidth]{s_directdivision}
+     \end{center}
+ \end{minipage}
+     \end{center}
+%
+If we follow the path we can find that 
+%
+\begin{align*}
+\left( s I - A \right)^{-1} &= s^{-1} I + s^{-2} A + s^{-3} A^2 +
+                              s^{-4} A^3 +  s^{-5} A^4 + 
+  + \cdots
+\\
+\Psi(t) = \mathcal{L}^{-1} \left[ \left( s I - A \right)^{-1} \right] &= I + A t
+  + A^2 \frac{t^2}{2} + A^3 \frac{t^3}{3 !} + A^4 \frac{t^3}{4 !} + 
+                                                              \cdots =
+                                                                        e^{A t}
+\end{align*}
+%
+We can then find initial condition only response and impulse response
+matrix of the system using $\Psi(t) = e^{A t}$
+%
+\begin{itemize}
+\item Initial Condition Only Response : $x(t) = e^{A t} x_0$
+\item Impulse Response Matrix :  $ G(t) = C e^{A t} B + D \delta(t) $
+\end{itemize}
+%
+In that respect general solution can be written as
+%
+\begin{align*}
+  x(t) &= e^{A t} x_0 + \int\limits_{0}^{t} e^{A ( t - \tau ) } B u(\tau) d
+                  \tau
+\\
+  y(t) &= C e^{A t} x_0 + \int\limits_{0}^{t} C e^{A ( t - \tau ) } B u(\tau) d
+                  \tau + D u(t)
+\end{align*}
+
+
 \subsection{DT State-Space to $z-$domain}
 
 Note that a SS representation of an $n^{th}$ order DTI-LTI system has the from below.
@@ -293,8 +337,7 @@ similar to the CT case $G(z)$ is called the \textbf{transfer function
   matrix}. Note that resultant frequency domain solution in DT systems
 is very simlar to the solution in CT systems (except the initial
 condition response). Without a big surprize state-space to transfer function related
-definitions, remarks, proofs, correlations etc. in CT systems are
-generally holds for DT systems, Such as \textit{properness, poles,
+definitions CT systems generally holds also for DT systems, Such as \textit{properness, poles,
   zeros} etc.
 
 
