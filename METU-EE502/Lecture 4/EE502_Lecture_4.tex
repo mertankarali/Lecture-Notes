@@ -84,6 +84,8 @@ u         \setlength{\labelwidth}{1.6truecm}}}
 \newtheorem{definition}[theorem]{Definition}
 \newenvironment{proof}{{\bf Proof:}}{\hfill\rule{2mm}{2mm}}
 
+\newtheorem{exmp}[theorem]{Ex}
+
 % **** IF YOU WANT TO DEFINE ADDITIONAL MACROS FOR YOURSELF, PUT THEM HERE:
 
 \begin{document}
@@ -126,7 +128,7 @@ $\Rightarrow$ $G(s)$ is realizable
 
 The task is to find $(A,B,C,D)$ tuple such that $G(s) = C (sI - A)^{-1} B + D$
 
-\subsection{Canonical State-Space Realizations (SISO Systems)}
+\subsection{Canonical State-Space Realizations of SISO Systems}
 
 For the sake of clarity, derivations are given for general $3^{rd}$ order LTI systems.
 
@@ -754,13 +756,9 @@ c_1 & c_2 & \cdots &  c_{n-1} & c_n & \cdots\end{array} \right]
 \end{align*}
 %
 
-
-
-\textbf{Example:} Given that
-%
-\begin{align*}
-G(s) &= \frac{s^2 + 8 s + 10}{s^2 + 3 s + 2}
-\end{align*}
+\begin{exmp}
+Let $G(s) = \frac{s^2 + 8 s + 10}{s^2 + 3 s + 2}$
+\end{exmp}
 %
 find a controllable, observable, and  diagonal canonical state-space representation of the given TF.
 
@@ -828,10 +826,9 @@ then SS matrices for the diagonal canonical form can be simply derived as
 	 D_{DCF} &=  [1]
 \end{align*}
 
-\newpage
-
-\textbf{Example:} Consider the following general
-state-space representation
+\begin{exmp}
+Consider the following general state-space representation
+\end{exmp} 
 %
 \begin{align*}
   \dot{x}(t) &= A x(t) + B u(t) , \\
@@ -880,6 +877,80 @@ transpose
 This result also shows that controllable and observable 
 canonical representations are similar. 
 
+\subsection{Canonical State-Space Realizations of SIMO Systems}
 
+For the sake of clarity, we will only consider double output systems, however generalization to higher dimensional outputs is straightforward. 
 
+\subsubsection{CT Reachable/Controllable Canonical Form}
+
+\textbf{Case I:} Let transfer function matrix of a SIMO system be 
+%
+\begin{align*}
+	G(s) = \left[ \begin{array}{c} G_1(s) \\ G_2(s) \end{array} \right] =
+	       \left[ \begin{array}{cc} d_{1} + \frac{ b_{1,2} s^2  + b_{1,1} s + b_{1,0} }{ s^3 + a_2 s^2 + a_1 s + a_0}  
+	       \\ d_{2} + \frac{ b_{2,2} s^2  + b_{2,1} s + b_{2,0} }{ s^3 + a_2 s^2 + a_1 s + a_0}   \end{array} \right]
+\end{align*}
+%
+We can first obtain the $D$ matrix as
+%
+\begin{align*}
+	D = \lim_{s \to \infty} G(s) = \left[ \begin{array}{c} d_1 \\  d_2 \end{array} \right]
+\end{align*}
+%
+Now we concentrate the strictly proper parts of the transfer function matrix. 
+Similar to SISO case we can organize the transfer function matrix equations as
+%
+\begin{align*}
+Y(s) &=  \left[ \begin{array}{cc} b_{1,2} s^2  + b_{1,1} s + b_{1,0} 
+	       \\  b_{2,2} s^2  + b_{2,1} s + b_{2,0}   \end{array} \right]
+\frac{1}{ s^3 + a_2 s^2 + a_1 s + a_0 } U(s) 
+= \left[ \begin{array}{c} n_1(s) \\ n_2(s) \end{array} \right] G_s(s) U(s) \ \mathrm{where} 
+\\
+Y(s) &= \left[ \begin{array}{c} n_1(s) \\ n_2(s) \end{array} \right] H(s) 
+\\
+G_s(s) &= \frac{H(s)}{U(s)} 
+\end{align*}
+%
+$G_s(s) = \frac{H(s)}{U(s)} $ defines a SISO system and we already know its state-update equation in controllable canonical form
+%
+\begin{align*}
+\dot{x} &= A x + B u \ , \ \mathrm{where} \ x = \left[ \begin{array}{c} h \\ \dot{h} \\ \ddot{h} \end{array} \right]
+\\
+A &= \left[ \begin{array}{ccc} 0 & 1 & 0  \\ 0 & 0 & 1 \\
+ -a_0 & -a_1 & -a_2  \end{array} \right]
+\quad , \quad 
+B = \left[ \begin{array}{c} 0 \\ 0 \\  1 \end{array} \right]
+\end{align*}
+%
+Not let's focus on $Y(s) = \left[ \begin{array}{c} N_1(s) \\ N_2(s) \end{array} \right] H(s) $ and take its inverse Laplace transform
+%
+\begin{align}
+  y &= \left[ \begin{array}{c} b_{1,2} \ddot{h}  + b_{1,1} \dot{h} + b_{1,0} h
+	       \\  b_{2,2} \ddot{h} + b_{2,1} \dot{h} + b_{2,0}  h \end{array} \right] = \left[ \begin{array}{ccc} b_{1,2}  & b_{1,1}  & b_{1,0} 
+	       \\  b_{2,2}  &  b_{2,1} & b_{2,0}  \end{array} \right] x
+	       \\
+	       C &= \left[ \begin{array}{ccc} b_{1,2}  & b_{1,1}  & b_{1,0} 
+	       \\  b_{2,2}  &  b_{2,1} & b_{2,0}  \end{array} \right]
+\end{align}
+% 
+It is quite straightforward to extend this operation to higher orders
+
+\textbf{Case II:} Now consider a case where the transfer function matrix of a SIMO system has the following form
+%
+\begin{align*}
+	G(s) = \left[ \begin{array}{c} G_1(s) \\ G_2(s) \end{array} \right] = \left[ \begin{array}{c} \frac{n_1(s)}{d_1(s)} \\ \frac{n_2(s)}{d_2(s)} \end{array} \right]	      
+	\ , \ \mathrm{where} \ d_1(s) \neq d_2(s)
+\end{align*}
+% 
+Obviously we can not directly apply the standard approach for this problem. In this case, one first finds
+the \textit{monic least common denominator} of all entries of the transfer function matrix (i.e. the least common multiple of the
+denominators of all the entries), $d_c(s)$ then we re-write the transfer function matrix as
+%
+\begin{align*}
+	G(s) = \left[ \begin{array}{c} G_1(s) \\ G_2(s) \end{array} \right] = \left[ \begin{array}{c} \frac{n_1(s)}{d_1(s)} \\ \frac{n_2(s)}{d_2(s)} \end{array} \right]	      
+	= \left[ \begin{array}{c} \frac{n_1(s) d_c(s) / d_1(s) }{d_c(s)} \\ \frac{n_2(s) d_c(s) / d_2(s)}{d_c(s)} \end{array} \right]	      
+\end{align*}
+% 
+and realize the transfer function using the controllable canonical form
+ 
 \end{document}
