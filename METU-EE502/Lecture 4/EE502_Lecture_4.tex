@@ -1056,10 +1056,35 @@ using Gilbert's method. Now, a partial fraction expansion to each of the element
 each distinct pole. Not we can re-write the transfer function matrix in the following form
 %
 \begin{align*}
-G(s) = D + \sum_{i=1}^{N_p} R_i \frac{1}{s - \rho)i} 
+G(s) = D + \sum_{i=1}^{N_p} R_i \frac{1}{(s - \rho_i)} 
 \end{align*}
 %
 where $D = \lim_{s \to \infty} G(s)$, $\rho_i$'s denotes the $N_p$ distinct poles/roots, and $R_i \in \mathbb{C}^{q \times p}$ denotes the residue matrix 
-for each $\rho_i$.
+for each $\rho_i$. Let $r_i = \mathrm{Rank}(R_i)$, then $r_i$ gives the number of poles required the mode associated with $\rho_i$. We know that (from Linear Algebra) we can write $R_i$ in terms of multiplication of two full rank matrices
+%
+\begin{align*}
+R_i = C_i  B_i , \ \mathrm{where} \ C_i \in \mathbb{C}^{q \times r_i} \ ,  \ B_i \in \mathbb{C}^{r_i \times p}  
+\end{align*}
+%
+then each state-equation associated with mode $\rho_i$ takes the form
+%
+\begin{align*}
+\dot{x}_i &= \left[ \begin{array}{cccc} \rho_i & 0 & \cdots & 0 \\  0 & \ddots & & \vdots \\  \vdots  & & \ddots & 
+\\  0  & \cdots & 0 & \rho_i \end{array} \right] x_i
+	+ B_i u \ , \ x_i \in \mathbb{R}^{r_i} \ , \ u \in \mathbb{R}^{q}
+	\\
+	y &= C_i x_i 
+\end{align*}
+%
+whole state-space structure will be in diagonal canonical form 
+%
+\begin{align*}
+\dot{x} &= \left[ \begin{array}{cccc} A_1 & 0 & \cdots & 0 \\  0 & \ddots & & \vdots \\  \vdots  & & \ddots & 
+\\  0  & \cdots & 0 & A_{N_P} \end{array} \right] x + 
+\left[ \begin{array}{c} B_1 \\ \vdots \\ B_{N_P} \end{array} \right] u \ , \ x = \left[ \begin{array}{c} x_i \\ \vdots \\ x_{N_P} \end{array} \right]
+\\
+y &= \left[ \begin{array}{ccc} C_1 & \cdots & C_{N_P} \end{array} \right] x + D 
+\end{align*}
+%
 
 \end{document}
