@@ -413,21 +413,21 @@ and perform some grouping based on the delay elements.
 \end{align*}
 %
 As you can see we have only $z^{-1}$ terms in the representation there
-is a special toplogy embedded inside the expression. Let the
+is a special topology embedded inside the expression. Let the
 Z-transform domain representations of state variables 
 $X(z) = \left[ \begin{array}{c} X_1(z) \\ X_2(z) \\ X_3(z) \end{array} \right]$ defined as 
 %
 \begin{align*}
 X_1(z) &= \frac{1}{z} \left( -a_0 Y(z) + b_0 U(z) \right)
 \\
-X_2(s) &= \frac{1}{z}  \left\lbrace \left( -a_1 Y(z) + b_1 U(z) \right) + 
-\frac{1}{s} \left( -a_0 Y(s) + b_0 U(s) \right) \right\rbrace
+X_2(z) &= \frac{1}{z}  \left\lbrace \left( -a_1 Y(z) + b_1 U(z) \right) + 
+\frac{1}{s} \left( -a_0 Y(z) + b_0 U(z) \right) \right\rbrace
 \\
-X_3(s) &= \frac{1}{z} \left[ \left( -a_2 Y(z) + b_2 U(z) \right) + \frac{1}{z}  \left\lbrace \left( -a_1 Y(z) + b_1 U(z) \right) + 
+X_3(z) &= \frac{1}{z} \left[ \left( -a_2 Y(z) + b_2 U(z) \right) + \frac{1}{z}  \left\lbrace \left( -a_1 Y(z) + b_1 U(z) \right) + 
 \frac{1}{z} \left( -a_0 Y(z) + b_0 U(z) \right) \right\rbrace \right]
 \end{align*}
 %
-In this context output equation in $s$ and time domains simply takes the form
+In this context output equation in $z$ and time domains simply takes the form
 %
 \begin{align*}
 	Y(z) = X_3(z) + b_3 U(z) \quad \rightarrow \quad y[k] = x_3[k] + b_3 u[k]
@@ -437,9 +437,9 @@ Dependently the state equations (in $z$ and time domains) take the form
 %
 %
 \begin{align*}
-z X_1(z) = -a_0 X_3(s)  + ( b_0 - a_0 b_3) U(s) \quad &\rightarrow \quad x_1[k+1] = -a_0 x_3[k]  + ( b_0 - a_0 b_3) u[k]
+z X_1(z) = -a_0 X_3(z)  + ( b_0 - a_0 b_3) U(z) \quad &\rightarrow \quad x_1[k+1] = -a_0 x_3[k]  + ( b_0 - a_0 b_3) u[k]
 \\
-z X_2(z) = X_1(s)  -a_1 X_3(s) + ( b_1 - a_1 b_3 ) U(s)  \quad &\rightarrow \quad x_2[k+1] = x_1[k]  - a_1 x_3[k] + ( b_1 - a_1 b_3 ) u[k]
+z X_2(z) = X_1(z)  -a_1 X_3(z) + ( b_1 - a_1 b_3 ) U(z)  \quad &\rightarrow \quad x_2[k+1] = x_1[k]  - a_1 x_3[k] + ( b_1 - a_1 b_3 ) u[k]
 \\
 z X_3(z) = X_2(z)  -a_2 X_3(z) + ( b_2 - a_2 b_3 ) U(z)  \quad &\rightarrow \quad x_3[k+1] = x_2[k]  - a_2 x_3[k] + ( b_2 - a_2 b_3 ) u[k]
 \end{align*}
@@ -478,7 +478,6 @@ B = \left[ \begin{array}{c} (b_0 - b_n a_0)  \\ (b_1 - b_n
 \quad , \quad
 D = b_n
 \end{align*}
-
 
 \subsubsection{CT Diagonal Canonical Form}
 
@@ -578,12 +577,12 @@ Now let's concentrate on the candidate ``state variables''
 and try to write state evaluation equations
 %
 \begin{align*}
-X_1(z) &= \frac{1}{z - p_1} U(s) \quad \rightarrow \quad x_1[k+1] = p_1 x_1[k] + u
+X_1(z) &= \frac{1}{z - p_1} U(z) \quad \rightarrow \quad x_1[k+1] = p_1 x_1[k] + u
 \\
-X_2(z) &= \frac{1}{z - p_2} U(s) \quad \rightarrow \quad x_2[k+1] =
+X_2(z) &= \frac{1}{z - p_2} U(z) \quad \rightarrow \quad x_2[k+1] =
          p_2 x_2[k] + u
 \\
-X_3(z) &= \frac{1}{z - p_3} U(s) \quad \rightarrow \quad x_3[k+1] = p_3 x_3[k] + u
+X_3(z) &= \frac{1}{z - p_3} U(z) \quad \rightarrow \quad x_3[k+1] = p_3 x_3[k] + u
 \end{align*}
 %
 where as output equation can be derived as
@@ -953,4 +952,114 @@ denominators of all the entries), $d_c(s)$ then we re-write the transfer functio
 % 
 and realize the transfer function using the controllable canonical form
  
+\subsection{Canonical State-Space Realizations of MISO Systems}
+
+For the sake of clarity, we will only consider double output systems, however generalization to higher dimensional outputs is straightforward. 
+
+\subsubsection{DT Observable Canonical Form}
+
+\textbf{Case I:} Let transfer function matrix of a MISO system be 
+%
+\begin{align*}
+	G(z) = \left[ \begin{array}{cc} G_1(z) & G_2(z) \end{array} \right] =
+	\left[ \begin{array}{cc} 
+	d_{1} + \frac{ b_{1,2} z^{-1} + b_{1,1} z^{-2} + b_{1,0} z^{-3} }{ 1 + a_2 z^{-1} + a_1 z^{-2} + a_0 z^{-3} }  
+	& 
+	d_{2} + \frac{ b_{2,2} z^{-1} + b_{2,1} z^{-2} + b_{2,0} z^{-3} }{ 1 + a_2  z^{-1} + a_1 z^{-2} + a_0 z^{-3}  } 
+	\end{array} \right]
+\end{align*}
+%
+We can first obtain the $D$ matrix as
+%
+\begin{align*}
+	D = \lim_{z \to \infty} G(z) = \left[ \begin{array}{cc} d_1 &  d_2 \end{array} \right]
+\end{align*}
+%
+Now we concentrate the strictly proper parts of the transfer function matrix. 
+Let's start with the frequency domain expression of the single output 
+and perform some grouping based on the delay elements.
+%
+{\small
+\begin{align*}
+&Y(z) ( 1+ a_2 z^{-1} + a_1 z^{-2} + a_0 z^{-3} ) 
+= ( b_{1,2} z^{-1} + b_{1,1} z^{-2} + b_{1,0} z^{-3} ) U_1(z) 
++ ( b_{2,2} z^{-1} + b_{2,1} z^{-2} + b_{2,0} z^{-3} ) U_1(z) 
+\\
+&Y(z) = z^{-1} \left(  b_{1,2} U_1(z) + b_{2,2} U_2(z) - a_2 Y(z) \right) + z^{-2} \left( b_{1,1} U_1(z) + b_{2,1} U_2(z)  -
+  a_1 Y(z) \right) 
+  \\ & \quad \quad \quad + z^{-3} \left( b_{1,0} U_1(z) + b_{2,0} U_2(z)  - a_0 Y(z) \right)
+\\
+&= \frac{1}{z} \left\lbrace \left( b_{1,2} U_1(z) + b_{2,2} U_2(z) - a_2 Y(z) \right) + \frac{1}{z} \left[ \left( b_{1,1} U_1(z) + b_{2,1} U_2(z) -
+  a_1 Y(z) \right) + \frac{1}{z} \left( b_{1,0} U_1(z) + b_{2,0} U_2(z)  - a_0 Y(z) \right) \right] \right\rbrace 
+\end{align*}
+}
+%
+As you can see we have only $z^{-1}$ terms in the representation there
+is a special topology embedded inside the expression. Let the
+Z-transform domain representations of state variables 
+$X(z) = \left[ \begin{array}{c} X_1(z) \\ X_2(z) \\ X_3(z) \end{array} \right]$ defined as 
+%
+\begin{align*}
+X_1(z) &= \frac{1}{z} \left( -a_0 X_3(z) + b_{1,0} U_1(z) + b_{2,0} U_2(z) \right)
+\\
+X_2(z) &= \frac{1}{z}  \left\lbrace \left( -a_1 X_3(z) + b_{1,1} U_1(z) + b_{2,1} U_2(z) \right) + 
+X_1(z) \right\rbrace
+\\
+X_3(z) &= \frac{1}{z} \left[ \left( -a_2 X_3(z) + b_{1,2} U_1(z) + b_{2,2} U_2(z) \right) + X_2(z) \right]
+\end{align*}
+%
+In this context output equation in $z$ and time domains simply takes the form
+%
+\begin{align*}
+	Y(z) = X_3(z) + D \left[ \begin{array}{c} U_1(z) \\  U_2(z) \end{array} \right] \quad \rightarrow \quad 
+	y[k] = \left[ \begin{array}{ccc} 0 & 0 & 1 \end{array} \right] x[k] + D \left[ \begin{array}{c} u_1[k] \\  u_2[k] \end{array} \right] 
+\end{align*}
+% 
+State equations (in $z$ and time domains) take the form
+%
+%
+{\small
+\begin{align*}
+z X_1(z) = -a_0 X_3(z)  + b_{1,0} U_1(z) + b_{2,0} U_2(z) \, &\rightarrow \, x_1[k+1] = -a_0 x_3[k]  + b_{1,0} u_1[k] + b_{2,0} u_2[k] 
+\\
+z X_2(z) = X_1(z)  - a_1 X_3(z) + b_{1,1} U_1(z) + b_{2,1} U_2(z) U(z)  \, &\rightarrow \, x_2[k+1] = x_1[k]  - a_1 x_3[k] + b_{1,1} u_1[k] + b_{2,1} u_2[k] 
+\\
+z X_3(z) = X_2(z)  - a_2 X_3(z) + b_{1,2} U_1(z) + b_{2,2} U_2(z) U(z)  \, &\rightarrow \, x_3[k+1] = x_2[k]  - a_2 x_3[k] + b_{1,2} u_1[k] + b_{2,2} u_2[k] 
+\end{align*}
+}
+%
+If we re-write all equations in matrix form, we obtain the state-space representation as
+%
+\begin{align*}
+	x[k+1] &= \left[ \begin{array}{ccc} 0 & 0 & -a_0  \\  1 & 0 & -a_1 \\  0 & 1 & -a_2 \end{array} \right] x[k] 
+	+ \left[ \begin{array}{cc} b_{1,0} &  b_{2,0} \\ b_{1,1} &  b_{2,1} \\ b_{1,2} &  b_{2,2} \end{array} \right] u[k]
+	\\
+	y[k] &= \left[ \begin{array}{ccc} 0 & 0  & 1 \end{array} \right] x[k]
+	+ \left[ \begin{array}{cc} d_1 &  d_2 \end{array} \right] u[k]
+\end{align*}
+%
+It is quite straightforward to extend this operation to higher orders. Note that for MISO systems
+with $d_1(s) \neq d_2(s)$ where $G_1(s) = \frac{n_1(s)}{d_1(s)}$ and $G_2(s) = \frac{n_2(s)}{d_2(s)}$
+we can not directly apply same operations. However similar to the controllable canonical form in SIMO systems
+we can start by finding the \textit{monic least common denominator} of all entries of the transfer function matrix (i.e. the least common multiple of the
+denominators of all the entries), $d_c(s)$ then we re-write the transfer function using the similar format in controllable 
+canonical form. After that we can apply the MISO observable canonical form derivations to realize the state-space structure. 
+
+\subsection{Canonical State-Space Realizations of MIMO Systems} 
+
+\subsubsection{Gilbert's Realization - MIMO Generalization of Diagonal Canonical Form}
+
+Suppose we have a transfer function matrix $G(s) \in \mathbb{T}^{q \times p}$ (where $\mathbb{T}$ is the vector space of all proper transfer functions).
+First find/compute the least common denominator, $d_c(s)$,  of all the entries of $G(s)$. If $d_c(s)$ has no repeated 
+poles, then we can find a \textit{minimal} state-space realization in the form of generalized diagonal canonical form 
+using Gilbert's method. Now, a partial fraction expansion to each of the elements of  $G(s)$ and collect residue matrices, $R_i \in \mathbb{C}^{q \times p}$ for
+each distinct pole. Not we can re-write the transfer function matrix in the following form
+%
+\begin{align*}
+G(s) = D + \sum_{i=1}^{N_p} R_i \frac{1}{s - \rho)i} 
+\end{align*}
+%
+where $D = \lim_{s \to \infty} G(s)$, $\rho_i$'s denotes the $N_p$ distinct poles/roots, and $R_i \in \mathbb{C}^{q \times p}$ denotes the residue matrix 
+for each $\rho_i$.
+
 \end{document}
