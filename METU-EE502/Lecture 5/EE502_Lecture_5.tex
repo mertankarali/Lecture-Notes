@@ -1,0 +1,312 @@
+%
+
+
+\documentclass[twoside]{article}
+\setlength{\oddsidemargin}{0.25 in}
+\setlength{\evensidemargin}{-0.25 in}
+\setlength{\topmargin}{-0.6 in}
+\setlength{\textwidth}{6.5 in}
+\setlength{\textheight}{8.5 in}
+\setlength{\headsep}{0.75 in}
+\setlength{\parindent}{0 in}
+\setlength{\parskip}{0.1 in}
+
+%
+% ADD PACKAGES here:
+%
+
+\usepackage{amsmath,amsfonts,graphicx}
+
+
+\newcounter{lecnum}
+\renewcommand{\thepage}{\thelecnum-\arabic{page}}
+\renewcommand{\thesection}{\thelecnum.\arabic{section}}
+\renewcommand{\theequation}{\thelecnum.\arabic{equation}}
+\renewcommand{\thefigure}{\thelecnum.\arabic{figure}}
+\renewcommand{\thetable}{\thelecnum.\arabic{table}}
+
+%
+% The following macro is used to generate the header.
+%
+\newcommand{\lecture}[4]{
+   \pagestyle{myheadings}
+   \thispagestyle{plain}
+   \newpage
+   \setcounter{lecnum}{#1}
+   \setcounter{page}{1}
+   \noindent
+   \begin{center}
+   \framebox{
+      \vbox{\vspace{2mm}
+    \hbox to 6.28in { {\bf EE502 - Linear Systems Theory II
+	\hfill Spring 2032} }
+       \vspace{4mm}
+       \hbox to 6.28in { {\Large \hfill Lecture #1 \hfill} }
+       \vspace{2mm}
+       \hbox to 6.28in { {\it Lecturer: #2 \hfill } }
+      \vspace{2mm}}
+   }
+   \end{center}
+   \markboth{Lecture #1}{Lecture #1}
+
+   \vspace*{4mm}
+}
+
+\renewcommand{\cite}[1]{[#1]}
+\def\beginrefs{\begin{list}%
+        {[\arabic{equation}]}{\usecounter{equation}
+         \setlength{\leftmargin}{2.0truecm}\setlength{\labelsep}{0.4truecm}%
+         \setlength{\labelwidth}{1.6truecm}}}
+\def\endrefs{\end{list}}
+\def\bibentry#1{\item[\hbox{[#1]}]}
+
+
+\newcommand{\fig}[3]{
+			\vspace{#2}
+			\begin{center}
+			Figure \thelecnum.#1:~#3
+			\end{center}
+	}
+
+% Use these for theorems, lemmas, proofs, etc.
+\newtheorem{theorem}{Theorem}[lecnum]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{claim}[theorem]{Claim}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\newenvironment{proof}{{\bf Proof:}}{\hfill\rule{2mm}{2mm}}
+
+% **** IF YOU WANT TO DEFINE ADDITIONAL MACROS FOR YOURSELF, PUT THEM HERE:
+
+\begin{document}
+
+% Lecture Details
+\lecture{5}{Assoc. Prof. M. Mert Ankarali}
+
+
+\section{Functions of a Matrix}
+
+In linear systems theory course, we are interested in matrix polynomials, specifically
+%
+\begin{itemize}
+	\item Matrix Exponential in CT Systems:  $e^{A t}$ 
+	\item Matrix Power in DT Systems:  $A^k$ 	
+\end{itemize}
+%
+which arise on the solution of state-space equations in their respective domains. 
+Obviously $A^k$ in DT systems is ``easier'' to analyze and understand compared to matrix exponential. 
+Let's first review the matrix exponential, $e^{A t}$.
+Let $t \in \mathbb{R}$ and $A \in \mathbb{R}^{nxn}$, then $e^{At}$ defined as
+%
+\begin{align*}
+       e^{A t} &:= I + A t + \frac{1}{2 !} A^2 t^2 + \frac{1}{3 !} A^3
+                 t^3 + \cdots 
+\\
+	e^{A t} &:= \sum\limits_{k=0}^{\infty} \frac{t^k}{k!} A^k
+\end{align*}
+%
+which converges for all  $t \in \mathbb{R}$ and $A \in
+\mathbb{R}^{nxn}$.
+
+Now let's review some properties
+
+\begin{itemize}
+
+ \item \textbf{Claim:} $ \frac{d}{d t} e^{A t} = A e^{A t} = e^{A t} A$
+
+\textbf{Proof:} 
+%
+\begin{align*}
+ 	\frac{d}{dt} e^{A t} &= \frac{d}{dt} \left( \sum\limits_{k=0}^{\infty} \frac{t^{k}}{k!} A^k \right) =
+	\sum\limits_{k=0}^{\infty} k \frac{t^{k-1}}{k!} A^k = \sum\limits_{k=1}^{\infty} \frac{t^{k-1}}{(k-1)!} A^k \\
+	&= \sum\limits_{n=0}^{\infty} \frac{t^{n}}{n!} A^{n+1} = A \sum\limits_{n=0}^{\infty} \frac{t^{n}}{n!} A^{n}   = \left( \sum\limits_{n=0}^{\infty} \frac{t^{n}}{n!} A^{n} \right) A
+	\\
+	\frac{d}{dt} e^{A t}  &= A e^{A t} = e^{A t} A
+\end{align*}
+
+\item \textbf{Claim:} Let $A , B \in \mathrm{R}^{n \times n}$ and $A B
+  = B A$, then 
+%
+\begin{align*}
+	e^{A} e^{B} &= e^{B} e^{A} = e^{(A + B)} 
+\end{align*}
+
+\textbf{Proof:} 
+
+\begin{align*}
+	e^{A} e^{B} &= \left(\sum\limits_{k=0}^{\infty} \frac{1}{k!} A^k \right) \left(\sum\limits_{j=0}^{\infty} \frac{1}{j!} B^j \right) 
+	= \sum\limits_{k=0}^{\infty} \sum\limits_{j=0}^{\infty} \frac{A^k}{k!} \frac{B^j}{j!} 
+\end{align*}
+%
+Let $n = k + j$ and $j = n - k$, then
+%
+\begin{align*}
+	e^{A} e^{B} &= \sum\limits_{k=0}^{\infty} \sum\limits_{n=k}^{\infty} \frac{A^k \ B^{n-k}}{k! (n-k)!} 
+	= \sum\limits_{n=0}^{\infty} \sum\limits_{k=0}^{n} \frac{A^k \ B^{n-k}}{n!} \frac{n!}{k! (n-k)!}  
+    = \sum\limits_{n=0}^{\infty} \frac{1}{n!} \sum\limits_{k=0}^{n} A^k \ B^{n-k}
+    \left( \begin{array}{c} n \\ k \end{array} \right) 
+\end{align*}
+%
+Note that if $A B \neq B A$ we has to stop at this point. However, since $A B = B A$, we can adopt binomial theorem 
+%
+\begin{align*}
+	e^{A} e^{B} &= \sum\limits_{n=0}^{\infty} \frac{1}{n!} (A+B)^{n} = e^{A+B} = e^{B} e^{A}
+\end{align*}
+
+\item \textbf{Claim:} Let $t_1 , t_2 \in \mathrm{R}$ then
+%
+\begin{align*}
+  e^{A t_1} e^{A t_2} = e^{A t_2} e^{A t_1} = e^{A \left( t_1 + t_2 \right)}
+\end{align*}
+%
+\textbf{Proof:} Let $A := A t_1$ and $B := A t_2$, obviously $(A t_1) (A t_2) = (A t_2) (A t_1)$ hence we can use the 
+previous property, i.e. 
+%
+\begin{align*}
+e^{A t_1} e^{A t_2} = e^{ \left( A t_1 \right) +  \left( A  t_2 \right)}
+= e^{A \left( t_1 + t_2 \right)} = e^{A t_2} e^{A t_1} 
+%
+\end{align*}
+%
+Now let $t_1 = t$ and $t_2 = -t$, then we have
+%
+\begin{align*}
+	e^{A t} e^{-A t} &= e^{A (t - t)} = I \quad \rightarrow \quad
+                           \left( e^{A t} \right)^{-1} = e^{-A t}
+\end{align*}
+
+\item \textbf{Claim:} Let $P \in \mathrm{R}^{n \times n}$ and
+ $\mathrm{det}(P) \neq 0$, then
+%
+\begin{align*}
+	e^{\left(P^{-1} A P \right) t} = P^{-1} e^{A t} P
+\end{align*}
+%
+\textbf{Proof:} Let's firs show that $ \left(P^{-1} A P \right)^k  = P^{-1} A^k P $
+%
+\begin{align*}
+	\left(P^{-1} A P \right)^k &= \left(P^{-1} A P \right) \left(P^{-1} A P \right) \cdots \left(P^{-1} A P \right) \left(P^{-1} A P \right)
+	\\
+	&= P^{-1} A P P^{-1} A P P^{-1} \cdots P P^{-1} A P P^{-1} A P 
+	\\
+	&= P^{-1} A I A I \cdots I A I A P 
+	\\
+	&= A^k
+\end{align*}
+%
+Now let's expand
+%
+\begin{align*}
+	e^{\left(P^{-1} A P \right) t} &= \sum\limits_{k=0}^{\infty} \frac{t^k}{k!} \left(P^{-1} A P \right)^k
+	\\
+	&= \sum\limits_{k=0}^{\infty} \frac{t^k}{k!} P^{-1} A^k P 
+	\\
+	&= P^{-1} \left(  \sum\limits_{k=0}^{\infty} \frac{t^k}{k!}  A^k \right) P 
+	\\
+	&= P^{-1} e^{A t} P
+\end{align*}
+
+\end{itemize}
+
+\subsection{Computation of $e^{At}$ and $A^k$}
+
+\subsection{Computation via Solution of State-Space Equations and Frequency Domain Expressions}
+
+An LTI CT state-space representation of an autonomous system has the form
+%
+\begin{align*}
+  \dot{x}(t) &= A x(t) \ , \mathrm{where} \ x(t) \in \mathbb{R}^n 
+\end{align*}
+%
+Let's test if $x(t) = e^{A t} x_0$ is a solution of the homogeneous  equation
+%
+\begin{align*}
+  x(0) &= e^{A \, 0} x_0 = x_0
+  \\
+  \dot{x}(t) - A x(t) &= \left( A e^{At} \right) x_0 - A e^{At} x_0 = 0
+\end{align*}
+%
+Now let's remember Laplace domain solution of the same equation
+%
+\begin{align*}
+\mathcal{L} \left[ \dot{x}(t) \right] &= \mathcal{L} \left[  A x(t) \right]
+\\
+s X(s) - x(0) &= A X(s) 
+\\
+[s I - A]  X(s) &= x(0) 
+\\
+X(s) &= [s I - A]^{-1} x_0 
+\end{align*}
+%
+If we connect time and s-domain solutions we obtain
+%
+\begin{align*}
+  e^{A t} &= \mathcal{L}^{-1} \left[ [s I - A]^{-1} \right]
+\end{align*}
+
+Now let's focus on $A^k$. An LTI DT state-space representation of an autonomous system has the form
+%
+\begin{align*}
+  x[k+1] &= A x[k] 
+\end{align*}
+%
+Unlike CT systems we can compute the response iteratively easily
+%
+\begin{align*}
+  x[1] &= G x[0] 
+  \\
+  x[2] &= G x[1] = G^2 x[0] 
+  \\
+  x[3] &= G x[2] = G^3 x[0] 
+  \\
+  \vdots
+  \\
+  x[k] &= G x[k-1] = G^k x[0] 
+\end{align*}
+%
+Now let's remember form of the response in Z-domain.
+%
+\begin{align*}
+\mathcal{Z} \left[ x[k+1] \right] &= \mathcal{Z} \left[ G x[k] \right]
+\\
+z X(z) - z x[0] &= G X(z)
+\\
+\left( z I - G \right) X(z) &= z X(z) 
+\\
+X(z) &= z \left( z I - G \right)^{-1} x[0]
+\end{align*}
+%
+If we connect time and s-domain solutions we obtain
+\begin{align*}
+G^k &= \mathcal{Z}^{-1} \lbrace z \left( z I - G \right)^{-1} \rbrace
+\end{align*}
+
+\subsection{Computation via Diagonalization}
+
+\textbf{Theorem:} $A \in \mathbb{C}^{n \times n}$ is diagonalizable, if and only if there exists a (nonsingular) similarity transformation, 
+$V \in \mathbb{C}^{n \times n}$, such that $A = V^{-1} \Lambda V$ where $\Lambda$ is a diagonal matrix, 
+%
+\begin{align*}
+	\Lambda = \left[ \begin{array}{ccccc} \lambda_1 &  & & &  \\  & \lambda_2  &  & 0 &  \\ &  & \ddots & \\ & 0 & & \ddots & \\ & &  & &  \lambda_n \end{array} \right]
+\end{align*}
+%
+where $\lambda_i \in \mathbb{C}$'s are the eigenvalues of $A$, which are the roots of the characteristic equation $d(\lambda) = \mathrm{det}(\lambda I - A)$.
+
+Now let's compute $A^k$ and $e^{At}$ for a diagonalizable matrix 
+%
+\begin{align*}
+A^k &= \left(V^{-1} \Lambda V \right)^k  = V^{-1} \Lambda^k V = V^{-1} \left[ \begin{array}{ccc} \lambda_1^k &  &   \\   &  \ddots & \\ & & \lambda_n^k \end{array} \right] V
+\\
+e^{A t} &= e^{V^{-1} \Lambda V t}  = V^{-1} e^{ \Lambda t} V = V^{-1} \left[ \begin{array}{ccc} e^{\lambda_1 t} &  &   \\   &  \ddots & \\ & & e^{\lambda_n t} \end{array} \right] V  
+\end{align*}
+%
+A sufficient but not necessary condition that $A$ will have $n$ distinct eigenvalues in such a case characteristic equation will have the following form
+%
+\begin{align*}
+d(\lambda) = (\lambda - \lambda_1) \cdots (\lambda - \lambda_n) \ , \ \mathrm{where} \ \lambda_i \neq \lambda_j \ , \ \mathrm{if} \ i \neq j 
+\end{align*}
+
+
+% **** This ENDS THE EXAMPLES. DON'T DELETE THE FOLLOWING LINE:
+\end{document}
