@@ -925,11 +925,11 @@ Not let's focus on $Y(s) = \left[ \begin{array}{c} N_1(s) \\ N_2(s) \end{array} 
 %
 \begin{align}
   y &= \left[ \begin{array}{c} b_{1,2} \ddot{h}  + b_{1,1} \dot{h} + b_{1,0} h
-	       \\  b_{2,2} \ddot{h} + b_{2,1} \dot{h} + b_{2,0}  h \end{array} \right] = \left[ \begin{array}{ccc} b_{1,2}  & b_{1,1}  & b_{1,0} 
-	       \\  b_{2,2}  &  b_{2,1} & b_{2,0}  \end{array} \right] x
+	       \\  b_{2,2} \ddot{h} + b_{2,1} \dot{h} + b_{2,0}  h \end{array} \right] = \left[ \begin{array}{ccc} b_{1,0}  & b_{1,1}  & b_{1,2} 
+	       \\  b_{2,0}  &  b_{2,1} & b_{2,2}  \end{array} \right] x
 	       \\
-	       C &= \left[ \begin{array}{ccc} b_{1,2}  & b_{1,1}  & b_{1,0} 
-	       \\  b_{2,2}  &  b_{2,1} & b_{2,0}  \end{array} \right]
+	       C &= \left[ \begin{array}{ccc} b_{1,0}  & b_{1,1}  & b_{1,2} 
+	       \\  b_{2,0}  &  b_{2,1} & b_{2,2}  \end{array} \right]
 \end{align}
 % 
 It is quite straightforward to extend this operation to higher orders
@@ -1086,5 +1086,128 @@ whole state-space structure will be in diagonal canonical form
 y &= \left[ \begin{array}{ccc} C_1 & \cdots & C_{N_P} \end{array} \right] x + D 
 \end{align*}
 %
+
+\begin{exmp}
+Let %
+\begin{align*}
+	G(s) = \left[ \begin{array}{c} G_1(s) \\ G_2(s) \end{array} \right] = 
+	       \left[ \begin{array}{cc} \frac{ 1 }{ s^2 + s }  
+	       \\ \frac{ 1 }{ s }   \end{array} \right] =  \left[ \begin{array}{cc} \frac{ 1 }{ s }  - \frac{ 1 }{ s + 1 } 
+	       \\ \frac{ 1 }{ s }  \end{array} \right] 
+\end{align*}
+%  
+\end{exmp}
+%
+Find reachable and diagonal canonical (both minimal) state-space representations of the given SIMO system
+
+\textbf{Solution:} Let's start with reachable canonical realization. For the given system $d_c(s) = s(s+1)$ and hence we can re-write the 
+transfer function matrix as
+%
+\begin{align*}
+	G(s) =  \left[ \begin{array}{cc} \frac{ 1 }{ s^2 + s }  
+	       \\ \frac{ s+1 }{ s^2 + s}   \end{array} \right] 
+\end{align*}
+%  
+If we follow the reachable canonical forms derivation for SIMO systems we can obtain
+%
+%
+\begin{align*}
+A &= \left[ \begin{array}{ccc} 0 & 1 \\ 0 & -1  \end{array} \right]
+\quad , \quad 
+B = \left[ \begin{array}{c} 0 \\  1 \end{array} \right]
+\quad , \quad 
+	C = \left[ \begin{array}{cc} 1  & 0
+	       \\  1  &  1  \end{array} \right]
+\end{align*}
+% 
+Now let's find the diagonal canonical form using Gilbert's method
+\begin{align*}
+	&G(s) =  \left[ \begin{array}{cc} \frac{ 1 }{ s }  - \frac{ 1 }{ s + 1 } 
+	       \\ \frac{ 1 }{ s }  \end{array} \right]  = \left[ \begin{array}{cc} \frac{ -1 }{ s + 1 } 
+	       \\ 0  \end{array} \right]  + \left[ \begin{array}{cc} \frac{ 1 }{ s }  
+	       \\ \frac{ 1 }{ s }  \end{array} \right] = \left[ \begin{array}{cc} -1
+	       \\ 0  \end{array} \right] \frac{ 1 }{ s + 1 }  + \left[ \begin{array}{cc} 1
+	       \\ 1  \end{array} \right] \frac{ 1 }{ s }  
+	     \\
+	  &   \rho_1 = -1 \ , \ R_1 = \left[ \begin{array}{cc} -1
+	       \\ 0  \end{array} \right] = C_1 B_1 = \left[ \begin{array}{cc} -1
+	       \\ 0  \end{array} \right] [1]
+	       \\
+	       	  &   \rho_2 = 0 \ , \ R_2 = \left[ \begin{array}{cc} 1
+	       \\ 1  \end{array} \right] = C_2 B_2 = \left[ \begin{array}{cc} 1
+	       \\ 1  \end{array} \right] [1]
+\end{align*}
+%
+We can than find the state-space matrices 
+%
+\begin{align*}
+A &= \left[ \begin{array}{ccc} -1 & 0 \\ 0 & 0  \end{array} \right]
+\quad , \quad 
+B = \left[ \begin{array}{c} 1 \\  1 \end{array} \right]
+\quad , \quad 
+	C = \left[ \begin{array}{cc} -1  & 1
+	       \\  0 &  1  \end{array} \right]
+\end{align*}
+% 
+
+\begin{exmp}
+Let %
+\begin{align*}
+	G(s) = \left[ \begin{array}{cc} G_1(s) & G_2(s) \end{array} \right] = 
+	       \left[ \begin{array}{cc} \frac{ 1 }{ s^2 + s }  &
+	        \frac{ 1 }{ s }   \end{array} \right] =  \left[ \begin{array}{cc} \left( \frac{ 1 }{ s }  - \frac{ 1 }{ s + 1 } \right) &
+	        \frac{ 1 }{ s }  \end{array} \right] 
+\end{align*}
+%  
+\end{exmp}
+%
+Find observable and diagonal canonical (both minimal) state-space representations of the given MISO system
+
+\textbf{Solution:} Let's start with observable canonical realization. For the given system $d_c(s) = s(s+1)$ and hence we can re-write the 
+transfer function matrix as
+%
+\begin{align*}
+	G(s) =  \left[ \begin{array}{cc} \frac{ 1 }{ s^2 + s }  
+	       &  \frac{ s+1 }{ s^2 + s}   \end{array} \right] 
+\end{align*}
+%  
+If we follow the reachable canonical forms derivation for MISO systems we can obtain
+%
+%
+\begin{align*}
+A &= \left[ \begin{array}{ccc} 0 & 0 \\ 1 & -1  \end{array} \right]
+\quad , \quad 
+B = \left[ \begin{array}{cc} 1 & 1 \\  0 & 1 \end{array} \right]
+\quad , \quad 
+	C = \left[ \begin{array}{cc} 0  & 1  \end{array} \right]
+\end{align*}
+% 
+Now let's find the diagonal canonical form using Gilbert's method
+\begin{align*}
+	G(s) &=  \left[ \begin{array}{cc} \frac{ 1 }{ s }  - \frac{ 1 }{ s + 1 }  &  \frac{ 1 }{ s }  \end{array} \right]  = 
+	\left[ \begin{array}{cc} \frac{ -1 }{ s + 1 }  & 0  \end{array} \right]  
+	+ \left[ \begin{array}{cc} \frac{ 1 }{ s }  & \frac{ 1 }{ s }  \end{array} \right] 
+	\\ &= \left[ \begin{array}{cc} -1 & 0  \end{array} \right] \frac{ 1 }{ s + 1 }  + \left[ \begin{array}{cc} 1 & 1  \end{array} \right] \frac{ 1 }{ s }  
+	     \\
+	    \rho_1 & = -1 \ , \ R_1 = \left[ \begin{array}{cc} -1
+	       \\ 0  \end{array} \right] = C_1 B_1 = \left[ \begin{array}{cc} -1
+	       \\ 0  \end{array} \right] [1]
+	       \\
+	       	     \rho_2 & = 0 \ , \ R_2 = \left[ \begin{array}{cc} 1
+	       \\ 1  \end{array} \right] = C_2 B_2 = \left[ \begin{array}{cc} 1
+	       \\ 1  \end{array} \right] [1]
+\end{align*}
+%
+We can than find the state-space matrices 
+%
+\begin{align*}
+A &= \left[ \begin{array}{ccc} -1 & 0 \\ 0 & 0  \end{array} \right]
+\quad , \quad 
+B = \left[ \begin{array}{cc} 1 & 1 \\  0 & 1 \end{array} \right]
+\quad , \quad 
+	C = \left[ \begin{array}{cc} -1  & 1
+	       \\  0 &  1  \end{array} \right]
+\end{align*}
+% 
 
 \end{document}
