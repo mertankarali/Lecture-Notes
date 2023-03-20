@@ -1190,12 +1190,12 @@ Now let's find the diagonal canonical form using Gilbert's method
 	\\ &= \left[ \begin{array}{cc} -1 & 0  \end{array} \right] \frac{ 1 }{ s + 1 }  + \left[ \begin{array}{cc} 1 & 1  \end{array} \right] \frac{ 1 }{ s }  
 	     \\
 	    \rho_1 & = -1 \ , \ R_1 = \left[ \begin{array}{cc} -1
-	       \\ 0  \end{array} \right] = C_1 B_1 = \left[ \begin{array}{cc} -1
-	       \\ 0  \end{array} \right] [1]
+	       & 0  \end{array} \right] = C_1 B_1 = [1] \left[ \begin{array}{cc} -1
+	       & 0  \end{array} \right] 
 	       \\
 	       	     \rho_2 & = 0 \ , \ R_2 = \left[ \begin{array}{cc} 1
-	       \\ 1  \end{array} \right] = C_2 B_2 = \left[ \begin{array}{cc} 1
-	       \\ 1  \end{array} \right] [1]
+	       & 1  \end{array} \right] = C_2 B_2 = [1] \left[ \begin{array}{cc} 1
+	       & 1  \end{array} \right] 
 \end{align*}
 %
 We can than find the state-space matrices 
@@ -1203,10 +1203,49 @@ We can than find the state-space matrices
 \begin{align*}
 A &= \left[ \begin{array}{ccc} -1 & 0 \\ 0 & 0  \end{array} \right]
 \quad , \quad 
-B = \left[ \begin{array}{cc} 1 & 1 \\  0 & 1 \end{array} \right]
+B = \left[ \begin{array}{cc} -1 & 0 \\  1 & 1 \end{array} \right]
 \quad , \quad 
-	C = \left[ \begin{array}{cc} -1  & 1
-	       \\  0 &  1  \end{array} \right]
+	C = \left[ \begin{array}{cc} 1  & 1  \end{array} \right]
+\end{align*}
+% 
+
+\begin{exmp}
+Let %
+\begin{align*}
+	G(s) = \left[ \begin{array}{cc} G_{11}(s) & G_{12}(s) \\ G_{21}(s) & G_{22}(s) \end{array} \right]  =  \left[ \begin{array}{cc} \left( \frac{ 1 }{ s }  - \frac{ 1 }{ s + 1 } \right) &
+	        \frac{ 1 }{ s }  \\ 	\frac{ 1 }{ s } & 0  \end{array} \right] 
+\end{align*}
+%  
+\end{exmp}
+%
+Find a diagonal canonical (minimal) state-space representations of the given MIMO system.
+
+\textbf{Solution:} For the given system $d_c(s) = s(s+1)$. let's find the diagonal canonical form using Gilbert's method
+\begin{align*}
+	G(s) &= \left[ \begin{array}{cc} \left( \frac{ 1 }{ s }  - \frac{ 1 }{ s + 1 } \right) &
+	        \frac{ 1 }{ s }  \\ 	\frac{ 1 }{ s } & 0  \end{array} \right]   = 
+	\left[ \begin{array}{cc} \frac{ -1 }{ s + 1 }  & 0 \\ 0 & 0 \end{array} \right]  
+	+ \left[ \begin{array}{cc} \frac{ 1 }{ s }  & \frac{ 1 }{ s } \\ \frac{ 1 }{ s } & 0 \end{array} \right] 
+	\\ &= \left[ \begin{array}{cc} -1 & 0 \\ 0 & 0  \end{array} \right] \frac{ 1 }{ s + 1 }  + \left[ \begin{array}{cc} 1 & 1 \\ 1 & 0 \end{array} \right] \frac{ 1 }{ s }  
+	     \\
+	    \rho_1 & = -1 \ , \ R_1 = \left[ \begin{array}{cc} -1
+	       & 0 \\ 0 & 0  \end{array} \right] = C_1 B_1 = \left[ \begin{array}{c} 1 \\ 0  \end{array} \right] \left[ \begin{array}{cc} -1 
+	       & 0  \end{array} \right] \ , \ \mathrm{Rank}(R_1) = 1
+	       \\
+	       	     \rho_2 & = 0 \ , \ R_2 = \left[ \begin{array}{cc} 1
+	       & 1  \\ 1 & 0 \end{array} \right] = C_2 B_2 = \left[ \begin{array}{cc} 1
+	       & 1  \\ 1 & 0 \end{array} \right] \left[ \begin{array}{cc} 1
+	       & 0 \\ 0 & 1  \end{array} \right] \ , \ \mathrm{Rank}(R_2) = 2
+\end{align*}
+%
+We can than find the state-space matrices 
+%
+\begin{align*}
+A &= \left[ \begin{array}{c|cc} -1 & 0 & 0 \\ \hline 0 & 0 & 0 \\ 0 & 0 & 0   \end{array} \right]
+\quad , \quad 
+B = \left[ \begin{array}{cc} -1 & 0 \\  \hline 1 & 0 \\ 0 & 1 \end{array} \right]
+\quad , \quad 
+	C = \left[ \begin{array}{c|cc} 1  & 1 & 1 \\ 0 & 1 & 0  \end{array} \right]
 \end{align*}
 % 
 
