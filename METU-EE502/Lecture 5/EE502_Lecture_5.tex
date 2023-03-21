@@ -306,7 +306,39 @@ A sufficient but not necessary condition that $A$ will have $n$ distinct eigenva
 \begin{align*}
 d(\lambda) = (\lambda - \lambda_1) \cdots (\lambda - \lambda_n) \ , \ \mathrm{where} \ \lambda_i \neq \lambda_j \ , \ \mathrm{if} \ i \neq j 
 \end{align*}
+% 
+In this case, we also have the following properties associated with $A$
+%
+\begin{itemize}
+	\item $A$ has $n$ linearly independent eigenvectors
+	\item For each $\lambda_i$ there exists an eigenvector, $v_i$, such that $A v_i = \lambda v_i$ and $\mathrm{Span}\lbrace v_1 , \cdots , v_n \rbrace = \mathbb{C}^n$
+	\item $\forall \ \lambda_i$, geometric multiplicity is equal to algebraic multiplicity and they are both equal to 1, i.e. $\mathrm{GM}(\lambda_i) = \mathrm{AM}(\lambda_i) = 1$
+	\item Minimal polynomial is equal to the characteristic equation, $m(\lambda) = d(\lambda)$
+	\item For each $\lambda_i$, $\mathcal{N}(\lambda_i I - A) = \mathrm{Span} \lbrace v_i \rbrace $ and $ \mathrm{dim} [ \mathcal{N}(\lambda_i I - A) ] = 1$
+\end{itemize}
+%
+Let's remember some concepts from EE501, to better understand and generalize \textit{diagonalizable} and \textit{non-diagonalizable} square matrices.  
 
+\textbf{Definition:} Given a matrix $A \in \mathbb{C}^{n \times n}$, the characteristic polynomial $d(\lambda)$ is defined as 
+%
+\begin{align*}
+d(\lambda) &= (\lambda - \lambda_1)^{r_1} \cdots (\lambda - \lambda_n)^{k} 
+\\
+k &: \ \# \ \mathrm{distinct} \ \mathrm{eigenvalues}  \ \mathrm{where} k \leq n
+\\
+r_i = AM(\lambda_i) &: \ \# \ \mathrm{algebraic} \ \mathrm{multiplicty}  \ \lambda_i \ , \ \mathrm{where} \ n = \sum_{i=1}^k r_i
+\end{align*}
+% 
+\textbf{Theorem:} Every $n \times n$ matrix satisfies its characteristic equation (Cayley-Hamilton Theorem)
+%
+\begin{align*}
+d(\lambda) &= (\lambda - \lambda_1)^{r_1} \cdots (\lambda - \lambda_n)^{k} = \lambda^n + d_{n-1} \lambda^{n-1} + \cdots + d_0
+\\
+d(A) &= A^n + d_{n-1} A^{n-1} + \cdots + d_1 A + d_0 I = 0_{n \times n} 
+\end{align*}
+%
+\textbf{Remark:} Any power of a matrix $A \in \mathbb{C}^{n \times n}$ can be written as a liner combination of 
+$\lbrace I \ , \ A \ , \ A^2 \ , \ \cdots \ , \ A^{n-1} \rbrace$
 
 % **** This ENDS THE EXAMPLES. DON'T DELETE THE FOLLOWING LINE:
 \end{document}
