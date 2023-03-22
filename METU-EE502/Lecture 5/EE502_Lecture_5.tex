@@ -76,6 +76,7 @@
 \newtheorem{corollary}[theorem]{Corollary}
 \newtheorem{definition}[theorem]{Definition}
 \newenvironment{proof}{{\bf Proof:}}{\hfill\rule{2mm}{2mm}}
+\newtheorem{exmp}[theorem]{Ex}
 
 % **** IF YOU WANT TO DEFINE ADDITIONAL MACROS FOR YOURSELF, PUT THEM HERE:
 
@@ -332,13 +333,41 @@ r_i = AM(\lambda_i) &: \ \# \ \mathrm{algebraic} \ \mathrm{multiplicty}  \ \lamb
 \textbf{Theorem:} Every $n \times n$ matrix satisfies its characteristic equation (Cayley-Hamilton Theorem)
 %
 \begin{align*}
-d(\lambda) &= (\lambda - \lambda_1)^{r_1} \cdots (\lambda - \lambda_n)^{k} = \lambda^n + d_{n-1} \lambda^{n-1} + \cdots + d_0
+d(\lambda) &= (\lambda - \lambda_1)^{r_1} \cdots (\lambda - \lambda_n)^{r_k} = \lambda^n + d_{n-1} \lambda^{n-1} + \cdots + d_0
 \\
 d(A) &= A^n + d_{n-1} A^{n-1} + \cdots + d_1 A + d_0 I = 0_{n \times n} 
 \end{align*}
 %
 \textbf{Remark:} Any power of a matrix $A \in \mathbb{C}^{n \times n}$ can be written as a liner combination of 
-$\lbrace I \ , \ A \ , \ A^2 \ , \ \cdots \ , \ A^{n-1} \rbrace$
+$\mathcal{A}_n = \lbrace I \ , \ A \ , \ A^2 \ , \ \cdots \ , \ A^{n-1} \rbrace$.
+
+Note that Cayley-Hamilton theorem does not guarantee that $\lbrace I \ , \ A \ , \ A^2 \ , \ \cdots \ , \ A^{n-1} \rbrace$ are linearly independent. 
+
+\textbf{Definition:} For an $A \in \mathbb{R}^{n \times n}$, the minimal polynomial $m(\lambda)$ is the monic polynomial with the smallest degree such that 
+$m(A) = 0_{n\times n}$
+
+\begin{exmp}
+\begin{align*}
+A_1 =   \left[ \begin{array}{cc} -1 & 0  \\ 0 & -1 \end{array} \right] \ \rightarrow \ d_1(\lambda) = (\lambda + 1)^2 \, , \, &\mathrm{Let} \ m_1(\lambda) = (\lambda + 1) \ \rightarrow \ m_1(A) = A + I =  \left[ \begin{array}{cc} 0 & 0  \\ 0 & 0 \end{array} \right] = 0_{n \times n} \ \checkmark
+\\
+\\
+A_2 =   \left[ \begin{array}{cc} -1 & 1  \\ 0 & -1 \end{array} \right] \ \rightarrow \ d_2(\lambda) = (\lambda + 1)^2 \, , \, &\mathrm{Let} \ m_2(\lambda) = (\lambda + 1) \ \rightarrow \ m_1(A) = A + I =  \left[ \begin{array}{cc} 0 & 1  \\ 0 & 0 \end{array} \right] \neq 0_{n \times n} \ \text{\sffamily X}
+\\
+&\mathrm{Let} \ m_2(\lambda) = (\lambda + 1)^2 \ \rightarrow \ m_1(A) = (A + I)^2 =  \left[ \begin{array}{cc} 0 & 0  \\ 0 & 0 \end{array} \right] \neq 0_{n \times n} \ \checkmark
+\end{align*}
+\end{exmp}
+
+\textbf{Theorem:} Given $A \in \mathbb{R}^{n \times n}$, let $m(\lambda)$ be its minimal polynomial 
+\begin{itemize}
+	\item $m(\lambda)$ is unique
+	\item $m(\lambda)$ divides $d(\lambda)$ without any reminder. $\exists q(\lambda)$ such that $d(\lambda) = q(\lambda) m(\lambda)$ 
+	\item Each root of $d(\lambda)$ is a root of $m(\lambda)$, then 
+\begin{align*}
+m(\lambda) &= (\lambda - \lambda_1)^{m_1} \cdots (\lambda - \lambda_n)^{m_k} = \lambda^l + c_{l-1} \lambda^{n-1} + \cdots + c_0 
+\\
+\mathrm{where}& \ 1 \leq m_i \leq r_i \ , \ k \leq l \leq n \ , \ m_1 + \cdots + m_k = l
+\end{align*}
+\end{itemize}
 
 % **** This ENDS THE EXAMPLES. DON'T DELETE THE FOLLOWING LINE:
 \end{document}
