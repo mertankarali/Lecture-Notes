@@ -1249,4 +1249,115 @@ B = \left[ \begin{array}{cc} -1 & 0 \\  \hline 1 & 0 \\ 0 & 1 \end{array} \right
 \end{align*}
 % 
 
+\newpage
+
+\section{Equivalent State-Space Representations}
+
+\textbf{Definition:} If two different quadruples $(A , B , C , D)$ and $(\bar{A} , \bar{B} , \bar{C} , \bar{D})$ yield the same transfer function matrix, 
+i.e. $C (z I - A)^{-1} B + D = \bar{C} (z I - \bar{A})^{-1} \bar{B} + \bar{D}$, then the systems
+%
+\begin{align*}
+ \left\lbrace x[k+1] = A x[k] + B u[k] \ , \  y[k] = C x[k] + D u[k] \right\rbrace \&  \left\lbrace \bar{x}[k+1] = \bar{A} \bar{x}[k] + \bar{B} u[k] \ , \  y[k] = \bar{C} \bar{x}[k] + \bar{D} u[k] \right\rbrace
+\end{align*}
+are said to be \textit{zero-state-equivalent} (ZSE).
+
+Note that if two systems are ZSE, under zero-initial conditions, they give the same output response when excited by the same input (for all inputs).
+
+\textbf{Definition:} Consider the n-dimensional LTI system
+%
+\begin{align*}
+  x[k+1] = A x[k] + B u[k] \ , \  y[k] = C x[k] + D u[k] \ (S_1)
+\end{align*}
+%
+The LTI system given as 
+%
+\begin{align*}
+  \hat{x}[k+1] = \hat{A} \hat{x}[k] + \hat{B} u[k] \ , \  y[k] = \hat{C} \hat{x}[k] + \hat{D} u[k] \ (S_2)
+\end{align*}
+%
+is said to be \textit{algebraically equivalent} (AE) to $S_1$ if $D = \hat{D}$ and  $\exists P \in \mathbb{C}^{n \times n} \quad \mathrm{det}(P) \neq 0$
+that satisfies $\hat{A} = P  A P^{-1} \ , \ \hat{B} = P B \ , \ \hat{C} = C P $.
+
+\textbf{Remark:} $S_2$ corresponds to the state vector transformation $ P x[k] = \hat{x}[k]$
+%
+\begin{align*}
+  P^{-1} \hat{x}[k+1] = A P^{-1} \hat{x}[k] + B u[k] 
+\quad &, \quad y[k] = C P^{-1} \hat{x}[k] + D u[k]
+\\
+  \hat{x}[k+1] = P A P^{-1} \hat{x}[k] + P B u[k] 
+\quad &, \quad y[k] = C P^{-1} \hat{x}[k] + D u[k]
+\end{align*}
+%
+where
+%
+\begin{align*}
+\hat{A} &= P  A P^{-1} \ , \ \hat{B} = P  B \ , \ \hat{C} = C P^{-1} \ ,   \ \hat{D} = D
+\end{align*}
+%
+Since there exist infinitely many non-singular $n \times n$
+matrices, for a given LTI system, there exist infinitely 
+many different but AE  state-space representations.
+
+\vspace{12pt}
+
+\begin{exmp}
+Show that $A \in \mathbb{R}^{n \times n}$ and $P^{-1} A P$, where $P \in \mathbb{R}^{n \times n}$ and $\mathrm{det}(P) \neq 0$, have the same characteristic equation
+\end{exmp}
+
+\textbf{Solution:} 
+\begin{align*}
+  \mathrm{det}\left(\lambda I - P^{-1} A P \right) &= 
+\mathrm{det}\left( \lambda P^{-1} I P - P^{-1} A P \right)
+\\
+&= \mathrm{det} \left( P^{-1} \left( \lambda I - A \right) P \right)
+\\
+&= \mathrm{det} \left( P^{-1} \right)
+\mathrm{det} \left( \lambda I - A \right) 
+\mathrm{det} \left( P \right)
+\\
+&= \mathrm{det} \left( P^{-1} \right) \mathrm{det} \left( P \right)
+\mathrm{det} \left( \lambda I - A \right) 
+\\
+\mathrm{det}\left(\lambda I - P^{-1} A P \right) &= \mathrm{det} \left( \lambda I - A \right) 
+\end{align*}
+
+\textbf{Theorem:} Algebraically equivalent systems has the same transfer function matrix
+
+Consider the two different AE state-space representations
+%
+\begin{align*}
+  x[k+1] = A x[k] + B u[k]  \quad & \quad \quad \hat{x}[k+1] = \hat{A} \hat{x}[k] + \hat{B} u[k] 
+\\
+  y[k] = C x[k] + D u[k] \quad & \quad \quad  y[k] = \hat{C} x[k] + \hat{D} u[k]
+\end{align*}
+%
+where they are related with the following similarity transformation
+%
+\begin{align*}
+P x[k] = \hat{x}[k] \ , \
+\hat{G} &= P  G P^{-1} \ , \ \hat{H} = P  H \ , \ \hat{C} = C P^{-1} \ ,
+  \ \hat{D} = D
+\end{align*}
+%
+Let's compute the transfer function for the second representation
+%
+\begin{align*}
+  \hat{T}(z) &= \left[ \hat{C} \left(z I - \hat{G} \right)^{-1} \hat{H}
+  + \hat{D} \right]
+\\
+&= \left[ C P^{-1} \left(z I - P  G P^{-1} \right)^{-1} P H
+  + D \right]
+\\
+&= \left[ C P^{-1} \left( P \left( z I -   G \right) P^{-1} \right)^{-1} P H
+  + D \right]
+\\
+&= \left[ C P^{-1} P \left( z I -   G \right)^{-1} P^{-1} P H
+  + D \right]
+\\
+&= \left[ C \left( z I -   G \right)^{-1} H + D \right]
+\\
+\hat{T}(z) &= T(z)
+\end{align*}
+
+
 \end{document}
