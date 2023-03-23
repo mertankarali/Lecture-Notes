@@ -358,16 +358,35 @@ A_2 =   \left[ \begin{array}{cc} -1 & 1  \\ 0 & -1 \end{array} \right] \ \righta
 \end{exmp}
 
 \textbf{Theorem:} Given $A \in \mathbb{R}^{n \times n}$, let $m(\lambda)$ be its minimal polynomial 
-\begin{itemize}
+\begin{enumerate}
 	\item $m(\lambda)$ is unique
 	\item $m(\lambda)$ divides $d(\lambda)$ without any reminder. $\exists q(\lambda)$ such that $d(\lambda) = q(\lambda) m(\lambda)$ 
 	\item Each root of $d(\lambda)$ is a root of $m(\lambda)$, then 
 \begin{align*}
 m(\lambda) &= (\lambda - \lambda_1)^{m_1} \cdots (\lambda - \lambda_n)^{m_k} = \lambda^l + c_{l-1} \lambda^{n-1} + \cdots + c_0 
 \\
-\mathrm{where}& \ 1 \leq m_i \leq r_i \ , \ k \leq l \leq n \ , \ m_1 + \cdots + m_k = l
+&\mathrm{where} \ 1 \leq m_i \leq r_i \ , \ k \leq l \leq n \ , \ m_1 + \cdots + m_k = l
+\\
+q(\lambda) &= (\lambda - \lambda_1)^{r_1-m_1} \cdots (\lambda - \lambda_n)^{r_k-m_k} 
 \end{align*}
-\end{itemize}
+\end{enumerate}
+
+\textbf{Proof:} of (3) 
+
+Since m$(\lambda)$ is the minimal polynomial, we know that $m(A) = 0_{n \times n}$. Let $(\lambda_i , v_i)$ is an eigenvalue, eigenvector pair of $A$such that $A v_i = \lambda_vi$, then
+%
+\begin{align*}
+m(A) = 0_{n \times n} \ \rightarrow m(A) v_i &= 0_{n \times n} 
+\\
+\left( A^l + c_{l-1} A^{n-1} + \cdots + c_1 A + c_0 I \right) v_i &= 0_{n \times n} 
+\\
+\left( \lambda_i^l v_i + c_{l-1} \lambda^{l-1} v_i  + \cdots + c_1 \lambda_i v_i + c_0  v_i \right)  &= 0_{n \times n} 
+\\
+ \lambda_i^l  + c_{l-1} \lambda^{l-1}   + \cdots + c_1 \lambda_i  + c_0   &= 0
+ \\
+m(\lambda_i)  &= 0 \ \checkmark
+\end{align*}
+
 
 % **** This ENDS THE EXAMPLES. DON'T DELETE THE FOLLOWING LINE:
 \end{document}
