@@ -392,7 +392,103 @@ are linearly independent and higher order $A^i$'s can be written as a linear com
 
 \vspace{6pt}
 
-\textbf{Theorem:} $\mathbb{C}^{n} =  \bigoplus_{i=1}^k \mathcal{N}\left( (\lambda_i I - A )^{m_i} \right) $ where $\mathrm{Dim} \left[  \mathcal{N}\left( (\lambda_i I - A )^{m_i} \right) \right] = r_i \ , \ \forall i \in \{1, 2, \dots k\}$
+\textbf{Theorem:} $\mathbb{C}^{n} = \mathcal{N}\left( (\lambda_1 - A \right)^{m_1} \bigoplus \cdots \bigoplus \mathcal{N}\left( (\lambda_k I - A )^{m_k} \right) $ where $\mathrm{Dim} \left[  \mathcal{N}\left( (\lambda_i I - A )^{m_i} \right) \right] = r_i \ , \ \forall i$
+
+\vspace{6pt}
+
+Now let's state the necessary sufficient condition(s) such that a matrix can be diagonalizable 
+
+\textbf{Theorem:} $A \in \mathbb{C}^{n \times n}$ is diagonalizable, if and only if 
+\begin{itemize}
+	\item Minimal polynomial has no repeated root. i.e.
+	\begin{align*}
+m(\lambda) &= (\lambda - \lambda_1)^{m_1} \cdots (\lambda - \lambda_n)^{m_k}  \ \mathrm{where} \ m_i = 1 \ \forall i 
+\\  m(\lambda) &= (\lambda - \lambda_1) \cdots (\lambda - \lambda_n) 
+\end{align*}
+%
+\item Geometric multiplicity of each eigenvalue is equal to its algebraic multiplicity, i.e.
+\begin{align*}
+\forall i \ \mathrm{GM}(\lambda_i) = \mathrm{dim}\left( \mathcal{N}(\lambda_i - A) \right) = r_i = \mathrm{AM}(\lambda_i) 
+\end{align*}
+%
+\item There exist $n$ linearly independent eigenvectors of $A$
+\begin{align*}
+\exists \mathcal{V} = \lbrace v_1 , \cdots , v_n \rbrace, \ \mathrm{where} \ A v_i = \lambda_j \ \& \ \mathrm{Span}(\mathcal{V}) = \mathbb{C}^n
+\end{align*}
+\end{itemize}
+
+\begin{exmp}
+\begin{align*}
+A_1 &=   \left[ \begin{array}{cc} -1 & 0  \\ 0 & -1 \end{array} \right] \ \rightarrow  \ m(\lambda) = (\lambda + 1) \, , \, 
+\mathrm{GM}(-1) = \mathrm{dim}\left( \mathcal{N}((-1) - A) \right) = 2 = \mathrm{AM}(-1) \ , \  \mathcal{V} = \left\lbrace  \left[ \begin{array}{c} 1 \\ 0  \end{array} \right] ,   \left[ \begin{array}{c} 0  \\ 1  \end{array} \right]  \right\rbrace \ \checkmark
+\\
+\\
+A_2 &=   \left[ \begin{array}{cc} -1 & 1  \\ 0 & -1 \end{array} \right] \ \rightarrow \ m(\lambda) = (\lambda + 1)^2 \, , \, 
+\mathrm{GM}(-1) = \mathrm{dim}\left( \mathcal{N}((-1) - A) \right) = 1 \leq \mathrm{AM}(-1) \ , \  \mathcal{V} = \left\lbrace  \left[ \begin{array}{c} 1 \\ 0  \end{array} \right]  \right\rbrace \ \text{\sffamily X}
+\end{align*}
+\end{exmp}
+
+\subsection{Computation via Jordan Form}
+
+When a matrix $A$ is not diagonalizable, i.e. does not satisfy necessary and sufficient conditions listed above, there exists a similarity transformation, $A = G^{-1} J G$, such that $J$  
+is Jordan canonical form (as close as possible to a diagonal form). Note that each $A \in \mathbb{R}^{n \times n}$ is similar to only one such J (except for a reordering of the blocks):
+%
+\begin{align*}
+J = \left[  \begin{array}{ccccc} J_1 & \mathbf{0} & \cdots & & \mathbf{0} \\ \mathbf{0} & J_2 & \mathbf{0} & \cdots & \mathbf{0} \\ \vdots &  & \ddots &  \\ & & & \ddots &  \\
+\mathbf{0} &  &  &  & J_{N_J} \end{array} \right] \ \mathrm{where} \ 
+J_i = \left[  \begin{array}{ccccc} \lambda_i & 1 & 0 & \cdots & 0  \\ 0 & \lambda_i & 1 & 0 & \cdots  \\ 
+\vdots &  & \ddots &  \\ & & & \ddots & 1 \\
+0 &  &  & 0 & \lambda_i \end{array} \right]  \in \mathbb{C}^{n_i \times n_i}
+\end{align*}
+
+\begin{exmp}
+\begin{align*}
+A_1 &=   \left[ \begin{array}{cccc} -1 & 0 & 0 & 0  \\ 0 & -1 & 0 & 0 \\ 0 & 0 & -1 & 0 \\ 0 & 0 & 0 & -1 \end{array} \right] \ \rightarrow  
+\begin{array}{c} \ m(\lambda) = (\lambda + 1) \\ \mathrm{GM}(-1) = \mathrm{dim}\left( \mathcal{N}((-1) - A) \right) = 4 
+\\
+\mathcal{V} = \left\lbrace  \left[ \begin{array}{c} 1 \\ 0 \\ 0 \\ 0  \end{array} \right] ,   \left[ \begin{array}{c} 0  \\ 1 \\ 0 \\ 0   \end{array} \right] ,   \left[ \begin{array}{c} 0  \\ 0 \\ 1 \\ 0   \end{array} \right] ,   \left[ \begin{array}{c} 0  \\ 0 \\ 0 \\ 1   \end{array} \right] \right\rbrace 
+\end{array}
+\\
+\\
+A_2 &=   \left[ \begin{array}{cccc} -1 & 1 & 0 & 0  \\ 0 & -1 & 0 & 0 \\ 0 & 0 & -1 & 0 \\ 0 & 0 & 0 & -1 \end{array} \right] \ \rightarrow  
+\begin{array}{c} \ m(\lambda) = (\lambda + 1)^2 \\ \mathrm{GM}(-1) = \mathrm{dim}\left( \mathcal{N}((-1) - A) \right) = 3 
+\\
+\mathcal{V} = \left\lbrace  \left[ \begin{array}{c} 1 \\ 0 \\ 0 \\ 0  \end{array} \right] ,   \left[ \begin{array}{c} 0  \\ 0 \\ 1 \\ 0   \end{array} \right] ,   \left[ \begin{array}{c} 0  \\ 0 \\ 0 \\ 1   \end{array} \right] \right\rbrace 
+\end{array}
+\\
+\\
+A_3 &=   \left[ \begin{array}{cccc} -1 & 1 & 0 & 0  \\ 0 & -1 & 0 & 0 \\ 0 & 0 & -1 & 1 \\ 0 & 0 & 0 & -1 \end{array} \right] \ \rightarrow  
+\begin{array}{c} \ m(\lambda) = (\lambda + 1)^2 \\ \mathrm{GM}(-1) = \mathrm{dim}\left( \mathcal{N}((-1) - A) \right) = 2 
+\\
+\mathcal{V} = \left\lbrace  \left[ \begin{array}{c} 1 \\ 0 \\ 0 \\ 0  \end{array} \right] ,   \left[ \begin{array}{c} 0  \\ 0 \\ 1 \\ 0   \end{array} \right]  \right\rbrace 
+\end{array}
+\\
+\\
+A_4 &=   \left[ \begin{array}{cccc} -1 & 1 & 0 & 0  \\ 0 & -1 & 1 & 0 \\ 0 & 0 & -1 & 0 \\ 0 & 0 & 0 & -1 \end{array} \right] \ \rightarrow  
+\begin{array}{c} \ m(\lambda) = (\lambda + 1)^3 \\ \mathrm{GM}(-1) = \mathrm{dim}\left( \mathcal{N}((-1) - A) \right) = 2 
+\\
+\mathcal{V} = \left\lbrace  \left[ \begin{array}{c} 1 \\ 0 \\ 0 \\ 0  \end{array} \right] ,   \left[ \begin{array}{c} 0  \\ 0 \\ 0 \\ 1 \end{array} \right]  \right\rbrace 
+\end{array}
+\\
+\\
+A_5 &=   \left[ \begin{array}{cccc} -1 & 1 & 0 & 0  \\ 0 & -1 & 1 & 0 \\ 0 & 0 & -1 & 1 \\ 0 & 0 & 0 & -1 \end{array} \right] \ \rightarrow  
+\begin{array}{c} \ m(\lambda) = (\lambda + 1)^4 \\ \mathrm{GM}(-1) = \mathrm{dim}\left( \mathcal{N}((-1) - A) \right) = 1
+\\
+\mathcal{V} = \left\lbrace  \left[ \begin{array}{c} 1 \\ 0 \\ 0 \\ 0  \end{array} \right]   \right\rbrace 
+\end{array}
+\end{align*}
+\end{exmp}
+
+
+\textbf{Proposition:} Jordan transformation of a matrix $A \in \mathbb{C}^{n \times n}$ with 
+$d(\lambda) = (\lambda - \lambda_1)^{r_1} \cdots (\lambda - \lambda_n)^{r_k} $ and
+$m(\lambda) = (\lambda - \lambda_1)^{m_1} \cdots (\lambda - \lambda_n)^{m_k} $, for each $\lambda_i$
+%
+\begin{itemize}
+	\item $m_i :$ Size of the largest Jordan block for $\lambda_i$
+	\item $\mathrm{GM}(\lambda) = \mathrm{dim}\left( \mathcal{N}(\lambda_i - A) \right) : $ \# Jordan blocks for $\lambda_i$
+	\item $\mathrm{dim}\left( \mathcal{N}(\lambda_i - A)^k \right) - \mathrm{dim}\left( \mathcal{N}(\lambda_i - A)^{k-1} \right) : $ \# Jordan blocks for $\lambda_i$ with size $\geq k$
+\end{itemize}
 
 % **** This ENDS THE EXAMPLES. DON'T DELETE THE FOLLOWING LINE:
 \end{document}
