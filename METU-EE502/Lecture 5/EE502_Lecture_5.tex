@@ -479,7 +479,6 @@ A_5 &=   \left[ \begin{array}{cccc} -1 & 1 & 0 & 0  \\ 0 & -1 & 1 & 0 \\ 0 & 0 &
 \end{align*}
 \end{exmp}
 
-
 \textbf{Proposition:} Jordan transformation of a matrix $A \in \mathbb{C}^{n \times n}$ with 
 $d(\lambda) = (\lambda - \lambda_1)^{r_1} \cdots (\lambda - \lambda_n)^{r_k} $ and
 $m(\lambda) = (\lambda - \lambda_1)^{m_1} \cdots (\lambda - \lambda_n)^{m_k} $, for each $\lambda_i$
@@ -489,6 +488,48 @@ $m(\lambda) = (\lambda - \lambda_1)^{m_1} \cdots (\lambda - \lambda_n)^{m_k} $, 
 	\item $\mathrm{GM}(\lambda) = \mathrm{dim}\left( \mathcal{N}(\lambda_i - A) \right) : $ \# Jordan blocks for $\lambda_i$
 	\item $\mathrm{dim}\left( \mathcal{N}(\lambda_i - A)^k \right) - \mathrm{dim}\left( \mathcal{N}(\lambda_i - A)^{k-1} \right) : $ \# Jordan blocks for $\lambda_i$ with size $\geq k$
 \end{itemize}
+
+\subsubsection{Construction of $G$ for $A = G^{-1} J G$}
+
+If $A$ is a diagonalizable matrix transformation matrices, $V \, \& V^{-1}$, are simply composed of right and left eigenvectors 
+%
+\begin{align*}
+ V &= \left[ \begin{array}{ccc} v_1 & \cdots & v_n \end{array} \right] \ , \ \mathrm{where} \ A v_i = \lambda_i v_i 
+ \\
+ V^{-1} &= \left[ \begin{array}{c} \bar{v}_1^T \\ \vdots \\ \bar{v}_n^T \end{array} \right] \ , \ \mathrm{where} \ \bar{v}_i^T A = \lambda_i \bar{v}_i^T
+  \\
+ V^{-1} V &= I \ , \ \bar{v}_i^T v_i = 1 \ , \  \bar{v}_i^T v_j = 0 \ \mathrm{for} \, i \neq j
+\end{align*}
+%
+When the matrix, $A \in \mathbb{C}^{n \times n}$, is not diagonalizable, i.e. does not have $n$ linearly independent eigenvectors to
+construct the transformation matrix, $G$, we need to add (special) linearly independent vectors to complete the transformation matrix, 
+such that  $A = G^{-1} J G$. These vectors are generated from the eigenvectors and are called \textit{generalized eigenvec­tors} of $A$.
+%
+Suppose $(\lambda , g_1)$ is an eigenvalue--eigenvector pair of $A$ associated with Jordan block of size $k$. $k-1$ generalized eigenvec­tors, 
+$\lbrace g_2 \ , \ \cdots \ , \ g_{k} \rbrace$, are constructed as follows 
+%
+\begin{align*}
+	A g_1 &= \lambda g_1 \ \rightarrow \ (A - \lambda I) g_1 = 0
+	\\
+	A g_2 &= \lambda g_2 + g_1 \ \rightarrow \ (A - \lambda I) g_2 = g_1 \ , \ \mathrm{note} \ (A - \lambda I)^2 g_2 = 0 \ \& \ (A - \lambda I) g_2 \neq 0
+		\\
+	A g_3 &= \lambda g_3 + g_2 \ \rightarrow \ (A - \lambda I) g_3 = g_2 \ , \ \mathrm{note} \ (A - \lambda I)^3 g_3 = 0 \ \& \ (A - \lambda I)^2 g_3 \neq 0
+	\\
+	&\vdots
+	\\
+	A g_{k} &= \lambda g_{k} + g_{k-1} \ \rightarrow \ (A - \lambda I) g_k = g_{k-1} \ , \ \mathrm{note} \ (A - \lambda I)^k g_k = 0 \ \& \ (A - \lambda I)^{k-1} g_{k} \neq 0
+\end{align*}
+%
+The string $\left[ \begin{array}{cccc}  g_1 & g_2 & \cdots & g_k \end{array} \right]$ is called a Jordan chain. We can also re-write the relation between 
+the generalized eigenvectors in matrix form using the Jordan chain
+%
+\begin{align*}
+	A \left[ \begin{array}{cccc}  g_1 & g_2 & \cdots & g_k \end{array} \right] = \left[ \begin{array}{cccc}  g_1 & g_2 & \cdots & g_k \end{array} \right] 
+	\left[  \begin{array}{ccccc} \lambda & 1 & 0 & \cdots & 0  \\ 0 & \lambda & 1 & 0 & \cdots  \\ 
+\vdots &  & \ddots &  \\ & & & \ddots & 1 \\
+0 &  &  & 0 & \lambda \end{array} \right]
+\end{align*}
+
 
 % **** This ENDS THE EXAMPLES. DON'T DELETE THE FOLLOWING LINE:
 \end{document}
