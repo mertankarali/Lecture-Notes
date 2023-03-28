@@ -15,7 +15,7 @@
 % ADD PACKAGES here:
 %
 
-\usepackage{amsmath,amsfonts,graphicx}
+\usepackage{amsmath,amsfonts,graphicx,amssymb}
 
 
 \newcounter{lecnum}
@@ -503,9 +503,9 @@ If $A$ is a diagonalizable matrix transformation matrices, $V \, \& V^{-1}$, are
 %
 When the matrix, $A \in \mathbb{C}^{n \times n}$, is not diagonalizable, i.e. does not have $n$ linearly independent eigenvectors to
 construct the transformation matrix, $G$, we need to add (special) linearly independent vectors to complete the transformation matrix, 
-such that  $A = G J G^{-1}$. These vectors are generated from the eigenvectors and are called \textit{generalized eigenvec­tors} of $A$.
+such that  $A = G J G^{-1}$. These vectors are generated from the eigenvectors and are called \textit{generalized eigenvecÂ­tors} of $A$.
 %
-Suppose $(\lambda , g_1)$ is an eigenvalue--eigenvector pair of $A$ associated with Jordan block of size $k$. $k-1$ generalized eigenvec­tors, 
+Suppose $(\lambda , g_1)$ is an eigenvalue--eigenvector pair of $A$ associated with Jordan block of size $k$. $k-1$ generalized eigenvecÂ­tors, 
 $\lbrace g_2 \ , \ \cdots \ , \ g_{k} \rbrace$, are constructed as follows 
 %
 \begin{align*}
@@ -580,6 +580,62 @@ Thus we can construct the transformation matrix and its inverse as
  G &= \left[ \begin{array}{ccc} 1 & 0 & 0 \\ 0 & 1 & -1  \\ 0 & 0 & 1  \end{array} \right]
  \  , \ 
  G^{-1} = \left[ \begin{array}{ccc} 1 & 0 & 0 \\ 0 & 1 & 1  \\ 0 & 0 & 1  \end{array} \right]
+\end{align*}
+
+\begin{exmp}
+	Let 
+\begin{align*}
+A = \left[ \begin{array}{ccc} 1 & 0 & 1 \\ 0 & 1 & 1 \\ 0 & 0 & 1
+\end{array} \right] , 
+\end{align*}
+\end{exmp}
+%
+compute $d(\lambda)$, $m(\lambda)$, algebraic multiplicity eigenvalues, geometric multiplicity eigenvalues, Jordan canonical form, and transformation matrix, $G$.
+
+\textbf{Solution:} Let's start with  $d(\lambda)$
+%
+\begin{align*}
+  \lambda I - A = \left[ \begin{array}{ccc} \lambda - 1 & 0 & -1 \\ 0 & \lambda - 1 & -1 \\ 0 & 0 & \lambda - 1 \end{array} \right] 
+  \ \rightarrow \ d(\lambda) = (\lambda - 1)^3 \ , \ AM(1) = 3
+\end{align*}
+% 
+Let's find $m(\lambda)$ and associated features
+%
+%
+\begin{align*}
+  \Sigma &= \left[ A - \lambda \right]_{\lambda = 1} = \left[ \begin{array}{ccc} 0 & 0 & 1 \\ 0 & 0 & 1 \\ 0 & 0 & 0 \end{array} \right] 
+  \\
+  \Sigma^2 &= \left[ \begin{array}{ccc} 0 & 0 & 1 \\ 0 & 0 & 1 \\ 0 & 0 & 0 \end{array} \right]  \left[ \begin{array}{ccc} 0 & 0 & 1 \\ 0 & 0 & 1 \\ 0 & 0 & 0 \end{array} \right] = \left[ \begin{array}{ccc} 0 & 0 & 0 \\ 0 & 0 & 0 \\ 0 & 0 & 0 \end{array} \right]
+\\
+  m(\lambda) &= (\lambda - 1)^2 \ , \ \mathrm{GM}(1) = 2 \ , \ J = \left[ \begin{array}{ccc} 1 & 1 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 1 \end{array} \right] 
+\end{align*}
+% 
+First compute the eigenvectors and eigenspace 
+%
+\begin{align*}
+ \left[ A - \lambda \right]_{\lambda = 1} v = \Sigma v = 0 \ \rightarrow \ 
+ \left[ \begin{array}{ccc} 0 & 0 & 1 \\ 0 & 0 & 1 \\ 0 & 0 & 0 \end{array} \right] v = 0 \ \rightarrow \ \mathcal{V} = \mathrm{Span} \left( \lbrace x , y \rbrace  \right)
+= \mathrm{Span} \left( \left\lbrace \left[ \begin{array}{c} 1 \\ 0  \\ 0  \end{array} \right] ,  \left[ \begin{array}{c} 0 \\ 1  \\ 0  \end{array} \right] \right\rbrace \right)
+\end{align*}
+%
+%
+Now let's find the generalized eigenvectors
+%
+\begin{align*}
+&\left[ A - \lambda \right]_{\lambda = 1} g_2 = g_1 \ \mathrm{where} \ g_1 \in \mathrm{Span} \left( \lbrace x , y \rbrace  \right)
+\ \rightarrow \ \Sigma g_2 = c_1 x + c_2 y
+\\
+ & \left[ \begin{array}{ccc} 0 & 0 & 1 \\ 0 & 0 & 1 \\ 0 & 0 & 0 \end{array} \right] g_2 =  \left[ \begin{array}{c} c_1 \\ c_2 \\ 0  \end{array} \right] \ \rightarrow \ 
+  g_2 =   \left[ \begin{array}{c} 0 \\ 0  \\ 1 \end{array} \right] \ \rightarrow \  g_1 = \Sigma g_2 =  \left[ \begin{array}{c} 1 \\ 1  \\ 0 \end{array} \right] 
+\end{align*}
+%
+Thus we can construct a transformation matrix and its inverse as
+\begin{align*}
+ G &= \left[ \begin{array}{cccc} g_1 & g_2 & x  \end{array} \right]
+ \ , \ 
+ G = \left[ \begin{array}{ccc} 1 & 0 & 1 \\ 1 & 0 & 0  \\ 0 & 1 & 0  \end{array} \right]
+ \  , \ 
+ G^{-1} = \left[ \begin{array}{ccc} 0 & 1 & 0 \\ 0 & 0 & 1  \\ 1 & -1 & 0 \end{array} \right]
 \end{align*}
 
 
