@@ -643,14 +643,45 @@ Thus we can construct a transformation matrix and its inverse as
 First let's focus on the powers of $J(0)$
 %
 \begin{align*}
-J(0) = \left[  \begin{array}{cccccc} 0 & 1 & 0 & \cdots & 0 & 0  \\ 0 & 0 & 1 & 0 & \cdots  & 0 \\ 
+J(0) &= \left[  \begin{array}{cccccc} 0 & 1 & 0 & \cdots & 0 & 0  \\ 0 & 0 & 1 & 0 & \cdots  & 0 \\ 
 \vdots &  & \ddots & \ddots &  \\ & & & \ddots & 1 & 0 \\ 0 &  & \cdots  &  & 0 & 1 \\
 0 &  & \cdots &  & 0 & 0 \end{array} \right]  \ , \ 
 J(0)^2 = \left[  \begin{array}{cccccc} 0 & 0 & 1 & \cdots & 0 & 0  
 \\ 0 & 0 & 0 & 1 & \cdots  & 0 \\ 
 \vdots &  & \ddots & \ddots &  \\ & & & \ddots & 0 & 1 \\ 0 &  & \cdots  &  & 0 & 0 \\
+0 &  & \cdots &  & 0 & 0 \end{array} \right] , 
+\\
+J(0)^{n-2} &= \left[  \begin{array}{cccccc} 0 & 0 & 0 & \cdots & 1 & 0  
+\\ 0 & 0 & 0 & 0 & \cdots  & 1 \\ 
+\vdots &  & \ddots & \ddots &  \\ & & & \ddots & 0 & 0 \\ 0 &  & \cdots  &  & 0 & 0 \\
 0 &  & \cdots &  & 0 & 0 \end{array} \right] 
+\ , \ 
+J(0)^{n-1} = \left[  \begin{array}{cccccc} 0 & 0 & 0 & \cdots & 0 & 1  
+\\ 0 & 0 & 0 & 0 & \cdots  & 0 \\ 
+\vdots &  & \ddots & \ddots &  \\ & & & \ddots & 0 & 0 \\ 0 &  & \cdots  &  & 0 & 0 \\
+0 &  & \cdots &  & 0 & 0 \end{array} \right] \ , \ J(0)^n = \mathbf{0}_{n \times n}
 \end{align*}
+%
+Note that $J(0)^i = \mathbf{0}_{n \times n}$ for $i \geq n$. Now let's expand 
+$J(\lambda)^k = \left( \lambda I +  J(0)\right)^k$ using binomial theorem (note that $I$ and $J(0)$ commutes)
+%
+\begin{align*}
+	J(\lambda)^k = \lambda^k I + \left( \begin{array}{c} k \\ 1 \end{array} \right) \lambda^{k-1} J(0) + 
+	\left( \begin{array}{c} k \\ 2 \end{array} \right) \lambda^{k-2} J(0)^2 + \cdots + 
+	\left( \begin{array}{c} k \\ n-1 \end{array} \right) \lambda^{k-n+1} J(0)^{n-1} 
+\end{align*}
+% 
+note that by definition $\left( \begin{array}{c} k \\ i \end{array} \right) = 0 $ if $i > k$, thus above formulation is also valid for $k < n$. If we combine 
+all elements in single matrix we obtain
+%
+\begin{align*}
+J(0) &= \left[  \begin{array}{cccccc} \lambda^k & \left( \begin{array}{c} k \\ 1 \end{array} \right) \lambda^{k-1} & \left( \begin{array}{c} k \\ 2 \end{array} \right) \lambda^{k-2} & \cdots & 0 & 0  
+\\ 0 & \lambda^k & \left( \begin{array}{c} k \\ 1 \end{array} \right) \lambda^{k-1} & 0 & \cdots  & 0 \\ 
+\vdots &  & \ddots & \ddots &  \\ & & & \ddots & \left( \begin{array}{c} k \\ 1 \end{array} \right) \lambda^{k-1} & \left( \begin{array}{c} k \\ 2 \end{array} \right) \lambda^{k-2} \\ 0 &  & \cdots  &  & \lambda^k & \left( \begin{array}{c} k \\ 1 \end{array} \right) \lambda^{k-1} \\
+0 &  & \cdots &  & 0 & \lambda^k \end{array} \right] 
+\end{align*}
+
+
 
 % **** This ENDS THE EXAMPLES. DON'T DELETE THE FOLLOWING LINE:
 \end{document}
