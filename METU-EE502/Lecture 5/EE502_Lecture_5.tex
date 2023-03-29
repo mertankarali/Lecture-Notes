@@ -551,7 +551,7 @@ Let's find $m(\lambda)$ and associated features
 %
 %
 \begin{align*}
-  \Sigma &= \left[ A - \lambda \right]_{\lambda = 1} = \left[ \begin{array}{ccc} 0 & 1 & 1 \\ 0 & 0 & 1 \\ 0 & 0 & 0 \end{array} \right] 
+  \Sigma &= \left[ A - \lambda I \right]_{\lambda = 1} = \left[ \begin{array}{ccc} 0 & 1 & 1 \\ 0 & 0 & 1 \\ 0 & 0 & 0 \end{array} \right] 
   \\
   \Sigma^2 &= \left[ \begin{array}{ccc} 0 & 1 & 1 \\ 0 & 0 & 1 \\ 0 & 0 & 0 \end{array} \right]  \left[ \begin{array}{ccc} 0 & 1 & 1 \\ 0 & 0 & 1 \\ 0 & 0 & 0 \end{array} \right] = \left[ \begin{array}{ccc} 0 & 0 & 1 \\ 0 & 0 & 0 \\ 0 & 0 & 0 \end{array} \right]
   \\
@@ -562,15 +562,15 @@ Let's find $m(\lambda)$ and associated features
 Now let's compute the eigenvector and associated generalized eigenvectors
 %
 \begin{align*}
- \left[ A - \lambda \right]_{\lambda = 1} g_1 = \Sigma g_1 = 0 \ \rightarrow \ 
+ \left[ A - \lambda I \right]_{\lambda = 1} g_1 = \Sigma g_1 = 0 \ \rightarrow \ 
  \left[ \begin{array}{ccc} 0 & 1 & 1 \\ 0 & 0 & 1 \\ 0 & 0 & 0 \end{array} \right] g_1 = 0 \ \rightarrow \ g_1 =  
  \left[ \begin{array}{c} 1 \\ 0  \\ 0  \end{array} \right]
  \\
-  \left[ A - \lambda \right]_{\lambda = 1} g_2 = g_1 \ \rightarrow \
+  \left[ A - \lambda I \right]_{\lambda = 1} g_2 = g_1 \ \rightarrow \
   \left[ \begin{array}{ccc} 0 & 1 & 1 \\ 0 & 0 & 1 \\ 0 & 0 & 0 \end{array} \right] g_2 =  \left[ \begin{array}{c} 1 \\ 0  \\ 0  \end{array} \right] \ \rightarrow \ 
   g_2 =   \left[ \begin{array}{c} 0 \\ 1  \\ 0  \end{array} \right]
   \\
-  \left[ A - \lambda \right]_{\lambda = 1} g_3 = g_1 \ \rightarrow \
+  \left[ A - \lambda I \right]_{\lambda = 1} g_3 = g_1 \ \rightarrow \
   \left[ \begin{array}{ccc} 0 & 1 & 1 \\ 0 & 0 & 1 \\ 0 & 0 & 0 \end{array} \right] g_3 =  \left[ \begin{array}{c} 0 \\ 1  \\ 0  \end{array} \right] \ \rightarrow \ 
   g_2 =   \left[ \begin{array}{c} 0 \\ -1  \\ 1  \end{array} \right]
 \end{align*}
@@ -675,13 +675,43 @@ note that by definition $\left( \begin{array}{c} k \\ i \end{array} \right) = 0 
 all elements in single matrix we obtain
 %
 \begin{align*}
-J(0) &= \left[  \begin{array}{cccccc} \lambda^k & \left( \begin{array}{c} k \\ 1 \end{array} \right) \lambda^{k-1} & \left( \begin{array}{c} k \\ 2 \end{array} \right) \lambda^{k-2} & \cdots & 0 & 0  
-\\ 0 & \lambda^k & \left( \begin{array}{c} k \\ 1 \end{array} \right) \lambda^{k-1} & 0 & \cdots  & 0 \\ 
-\vdots &  & \ddots & \ddots &  \\ & & & \ddots & \left( \begin{array}{c} k \\ 1 \end{array} \right) \lambda^{k-1} & \left( \begin{array}{c} k \\ 2 \end{array} \right) \lambda^{k-2} \\ 0 &  & \cdots  &  & \lambda^k & \left( \begin{array}{c} k \\ 1 \end{array} \right) \lambda^{k-1} \\
+J(\lambda)^k &= \left[  \begin{array}{cccccc} \lambda^k & \begin{pmatrix} k \\ 1 \end{pmatrix} \lambda^{k-1} & \begin{pmatrix} k \\ 2 \end{pmatrix}  \lambda^{k-2} 
+& \cdots & \begin{pmatrix} k \\ n\mathrm{-}2 \end{pmatrix} \lambda^{k-n+2} & \begin{pmatrix} k \\ n\mathrm{-}1 \end{pmatrix} \lambda^{k-n+1}
+\\ 0 & \lambda^k & \begin{pmatrix} k \\ 1 \end{pmatrix}  \lambda^{k-1} & \begin{pmatrix} k \\ 2 \end{pmatrix} \lambda^{k-2} & \cdots  & \begin{pmatrix} k \\ n\mathrm{-}2 \end{pmatrix} \lambda^{k-n+2}
+\\ 
+\\  \vdots &  & \ddots &  &  & \vdots \\ 
+\\ 
+& & & \lambda^k & \begin{pmatrix} k \\ 1 \end{pmatrix}  \lambda^{k-1} & \begin{pmatrix} k \\ 2 \end{pmatrix}  \lambda^{k-2} 
+\\ 0 &  & \cdots  &  & \lambda^k & \begin{pmatrix} k \\ 1 \end{pmatrix}  \lambda^{k-1} \\
 0 &  & \cdots &  & 0 & \lambda^k \end{array} \right] 
 \end{align*}
-
-
+% 
+Derivation of $e^{J(\lambda) t}$ is based on similar principles. We know that $J(0)$ and $I$ commutes, thus we have
+%
+\begin{align*}
+	e^{J(\lambda) t} &= e^{(\lambda I t) + (J(0) t)} = e^{\lambda I t} e^{J(0) t} 
+	\\
+	e^{\lambda I t} &= \left[ \begin{array}{ccc} e^{\lambda t} &  &   \\   &  \ddots & \\ & & e^{\lambda t} \end{array} \right]
+	\\
+	\\
+	e^{J(0) t} &= I + J(0) t + \frac{t^2}{2 !} J(0)^2 + \frac{t^3}{3 !} J(0)^3 + \cdots + \frac{t^{n-1}}{(n-1)!} J(0)^{n-1} 
+	\\
+	e^{J(0) t} &= \left[  \begin{array}{cccccc} 1 & t & \frac{t^2}{2 !} & \cdots & \frac{t^{n-2}}{(n-2) !}  & \frac{t^{n-1}}{(n-1) !} 
+\\ 0 & 1 & t & \frac{t^2}{2 !} & \cdots  & \frac{t^{n-2}}{(n-2) !} 
+\\  \vdots &  & \ddots &  &  & \vdots \\ 
+& & & 1 & t & \frac{t^2}{2 !}
+\\ 0 &  & \cdots  &  & 1 & t \\
+0 &  & \cdots &  & 0 & 1 \end{array} \right] 
+\\
+\\
+e^{J(\lambda) t} &= \left[  \begin{array}{cccccc} e^{\lambda t} & t e^{\lambda t} & \frac{t^2}{2 !} e^{\lambda t} 
+& \cdots & \frac{t^{n-2}}{(n-2) !} e^{\lambda t}  & \frac{t^{n-1}}{(n-1) !} e^{\lambda t}
+\\ 0 & e^{\lambda t} & t e^{\lambda t} & \frac{t^2}{2 !} e^{\lambda t} & \cdots  & \frac{t^{n-2}}{(n-2) !} e^{\lambda t}
+\\  \vdots &  & \ddots &  &  & \vdots \\ 
+& & & e^{\lambda t} & t e^{\lambda t} & \frac{t^2}{2 !} e^{\lambda t}
+\\ 0 &  & \cdots  &  & e^{\lambda t} & t e^{\lambda t} \\
+0 &  & \cdots &  & 0 & e^{\lambda t} \end{array} \right] 
+\end{align*}
 
 % **** This ENDS THE EXAMPLES. DON'T DELETE THE FOLLOWING LINE:
 \end{document}
