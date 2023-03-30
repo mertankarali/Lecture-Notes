@@ -152,8 +152,21 @@ Now let's compute the zero-input responses for an arbitrary $x_0$
 	= \sum\limits_{i=1}^n v_i \lambda_i^k \left( \bar{v}_i^T x_0 \right) \ \rightarrow \ \alpha_i = \bar{v}_i^T x_0
 \end{align*}
 %
+Based on these results, we can see that in order to excite the $i^{th}$ mode the system, we need $\bar{v}_i^T x_0 \neq 0$. If we treat initial conditions 
+as inputs this generates a reachability/controllability argument. Let's also analyze the output response
+%
+\begin{align*}
+	y(t) &= C x(t) = C e^{A t} x_0 = \sum\limits_{i=1}^n (C v_i) e^{\lambda_i t} \left( \bar{v}_i^T x_0 \right) 
+       \\
+	y[k] &= C x[k] 
+	= \sum\limits_{i=1}^n (C v_i) \lambda_i^k \left( \bar{v}_i^T x_0 \right) 
+\end{align*}
+%
+We can see that if $C v_i = 0$, then we can not observe the $i^{th}$ mode at the output $\forall x_0 \in \mathbb{R}^{n}$. Thus we can conclude that in order to have a fully 
+observable system all modes needs to be observable, i.e. i.e. $C v_i \neq 0 \ \forall i \in \lbrace 1 , \cdots , n \rbrace$.
+
 Now let's try to find a similar solution for systems where matrix $A$ can not be diagonalizable. For the sake of clarity let's focus on 
-matrices that is composed of a single Jordan block, i.e.
+matrices that is composed of a single Jordan block
 %
 \begin{align*}
 A &= G J G^{-1} = G \left[  \begin{array}{ccccc} \lambda & 1 & 0 & \cdots & 0  \\ 0 & \lambda & 1 & 0 & \cdots  \\ 
@@ -276,6 +289,10 @@ where
 \left[ \begin{array}{c} \alpha_1 \\ \alpha_2 \\ \vdots \\ \alpha_n \end{array} \right] = G^{-1} x_0 
 = \left[ \begin{array}{c} \bar{g}_1^T \\ \bar{g}_2^T \\ \vdots \\ \bar{g}_n^T \end{array} \right] x_0 \ \rightarrow \ \alpha_i = \bar{g}_i^T x_0
 \end{align*}
+
+Based on these results, we can see that in order to excite all of the modes associated with a Jordan block of size $n$, 
+we need $\alpha_n \bar{g}_n^T x_0 \neq 0$. If we treat initial conditions as inputs this generates a reachability/controllability argument. 
+Thus in order for this Jordan block to be reachable/controllable, we need to excite highest order mode (generalized eigenvector).
 
 \begin{exmp}
 	Let 
