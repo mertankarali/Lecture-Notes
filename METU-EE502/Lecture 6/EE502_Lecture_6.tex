@@ -91,8 +91,6 @@
 \subsection{Zero Input Response}
 
 Let's consider autonomous LTI CT and DT state-space models
-
-In linear systems theory course, we are interested in matrix polynomials, specifically
 %
 \begin{align*}
        \dot{x} &= A x
@@ -339,6 +337,150 @@ x(t) &=  x_{g_1}(t) +  x_{g_2}(t) +  x_{v}(t)  = e^{t} \left( (\alpha_{g_1} + t 
 \left[ \begin{array}{ccc} \alpha_{g_1} \\ \alpha_{g_2} \\ \alpha_{v} \end{array} \right] &= G^{-1} x_0 = \left[ \begin{array}{ccc} 0 & 1 & 0 \\ 0 & 0 & 1  \\ 1 & -1 & 0 \end{array} \right] x_0
 \end{align*}
 
+\subsection{Zero State Response \& Modal Decomposition}
+
+Let's consider input driven LTI CT and DT state-space models where $x_0 = 0$
+%
+\begin{align*}
+  x(t) &= \int\limits_{0}^{t} e^{A ( t - \tau ) } B u(\tau) d
+                  \tau
+\\
+  y(t) &= \int\limits_{0}^{t} C e^{A ( t - \tau ) } B u(\tau) d
+                  \tau + D u(t)
+       \\ \\
+  x[k]  &= \left[ \begin{array}{c|c|c|c|c} A^{k-1} B & A^{k-2} B &
+         \cdots & A B & B \end{array} \right]
+         \left[ \begin{array}{c}
+                  u[0] \\ u[1] \\ \vdots \\ u[k-2] \\ u[k-1]
+         \end{array} \right]
+         = \sum\limits_{j = 0}^{k-1} A^{k-j-1} B u[j]
+\\
+  y[k]  &= \left[ \begin{array}{c|c|c|c|c} C A^{k-1} B & C A^{k-2} B &
+         \cdots & C A B & C B \end{array} \right]
+         \left[ \begin{array}{c}
+                  u[0] \\ u[1] \\ \vdots \\ u[k-2] \\ u[k-1]
+         \end{array} \right]
+         = \sum\limits_{j = 0}^{k-1} C A^{k-j-1} B u[j]
+\end{align*}
+%
+Now let's assume that $A$ is diagonalizable, 
+%
+\begin{align*}
+	A &= V \Lambda V^{-1} = V \left[ \begin{array}{ccccc} \lambda_1 &  & & &  \\  & \lambda_2  &  & 0 &  \\ &  & \ddots & \\ & 0 & & \ddots & \\ & &  & &  \lambda_n \end{array} \right] V^{-1} \ , \mathrm{where}
+	\\
+	 V &= \left[ \begin{array}{ccc} v_1 & \cdots & v_n \end{array} \right] \ , \ \mathrm{where} \ A v_i = \lambda_i v_i 
+ \\
+ V^{-1} &= \bar{V} =  \left[ \begin{array}{c} \bar{v}_1^T \\ \vdots \\ \bar{v}_n^T \end{array} \right] \ , \ \mathrm{where} \ \bar{v}_i^T A = \lambda_i \bar{v}_i^T
+  \\
+\bar{V} V &= V \bar{V} = I \ , \ \bar{v}_i^T v_i = 1 \ , \  \bar{v}_i^T v_j = 0 \ \mathrm{for} \, i \neq j
+\end{align*}
+%
+and derive the zero-state responses in modal coordinates (for CT
+systems first)
+%
+\begin{align*}
+	x(t) &= \int\limits_{0}^{t} e^{A ( t - \tau ) } B u(\tau) d \tau = \left[ \begin{array}{ccc} v_1 & \cdots v_n \end{array} \right] \int\limits_{0}^{t} 
+	\left[ \begin{array}{c} e^{\lambda_1 (t - \tau)} \bar{v}_1^T \\  \vdots \\ e^{\lambda_n (t - \tau)} \bar{v}_n^T \end{array} \right]  B u(\tau) d \tau
+\\
+&= \left[ \begin{array}{ccc} v_1 & \cdots v_n \end{array} \right] 
+	\left[ \begin{array}{c} \int\limits_{0}^{t}  e^{\lambda_1 (t - \tau)} \bar{v}_1^T B u(\tau) d \tau \\  \vdots \\ \int\limits_{0}^{t} e^{\lambda_n (t - \tau)} \bar{v}_n^T B u(\tau) d \tau \end{array} \right]  
+	=  \sum\limits_{i=1}^n v_i \int\limits_{0}^{t} e^{\lambda_i (t - \tau)} \beta_i u(\tau) d \tau \ \mathrm{where} \ \beta_i = \bar{v}_i^T B
+	\\
+	&= \sum\limits_{i=1}^n v_i \beta_i \int\limits_{0}^{t} e^{\lambda_i (t - \tau)} u(\tau) d \tau 
+	\\
+	y(t) &= C x(t) + D u(t) = \left[ \sum\limits_{i=1}^n C v_i \beta_i \int\limits_{0}^{t} e^{\lambda_i (t - \tau)} u(\tau) d \tau \right] + D u(t)
+	\\ &= \left[ \sum\limits_{i=1}^n \gamma_i  \beta_i \int\limits_{0}^{t} e^{\lambda_i (t - \tau)} u(\tau) d \tau \right] + D u(t) \ \mathrm{where} \ \gamma_i = C v_i
+\end{align*}
+%
+We can see that in order to observe \& excite a mode associated with $\lambda_i$, we need $\gamma_i = C v_i \neq 0$ and $\beta_i = \bar{v}_i^T B \neq 0$ (only necessary conditions).
+%
+\begin{exmp}
+	Derive $x[k]$ and $y[k]$ using modal decomposition following the derivation details explained for CT systems. (Take-home example)
+\end{exmp}
+
+Now let's try to find a similar solution for systems where matrix $A$ can not be diagonalizable. For the sake of clarity let's focus on $A \in \mathbb{R}^{4 \times 4}$
+matrices that is composed of a single Jordan block
+%
+\begin{align*}
+A &= G J G^{-1} = G \left[  \begin{array}{ccccc} \lambda & 1 & 0 & 0  \\ 0 & \lambda & 1 & 0  \\ 
+0 & 0 & \lambda & 1 \\  0 & 0  & 0  & \lambda \end{array} \right] G^{-1} 
+\end{align*}
+%
+\noindent where
+%
+\begin{align*}
+	 G &= \left[ \begin{array}{ccc} g_1 & \cdots & g_n \end{array} \right]
+	 \\
+ A g_1 &= \lambda g_1 \ \rightarrow \ (A - \lambda I) g_1 = 0
+	\\
+	A g_2 &= \lambda g_2 + g_1 \ \rightarrow \ (A - \lambda I) g_2 = g_1 \ , \ \mathrm{note} \ (A - \lambda I)^2 g_2 = 0 \ \& \ (A - \lambda I) g_2 \neq 0
+		\\
+	A g_3 &= \lambda g_3 + g_2 \ \rightarrow \ (A - \lambda I) g_3 = g_2 \ , \ \mathrm{note} \ (A - \lambda I)^3 g_3 = 0 \ \& \ (A - \lambda I)^2 g_3 \neq 0
+	\\
+	A g_{4} &= \lambda g_{4} + g_{3} \ \rightarrow \ (A - \lambda I) g_4 = g_{3} \ , \ \mathrm{note} \ (A - \lambda I)^4 g_4 = 0 \ \& \ (A - \lambda I)^{3} g_{4} \neq 0
+\end{align*}
+%
+and we also know that
+\begin{align*}
+ G^{-1} &= \bar{G} =  \left[ \begin{array}{c} \bar{g}_1^T \\ \vdots \\ \bar{g}_n^T \end{array} \right] 
+  \\
+\bar{G} G &= G \bar{G} = I \ , \ \bar{g}_i^T g_i = 1 \ , \  \bar{g}_i^T g_j = 0 \ \mathrm{for} \, i \neq j
+\end{align*}
+%
+%
+\begin{align*}
+	x(t) =& \int\limits_{0}^{t} e^{A ( t - \tau ) } B u(\tau) d \tau 
+	\\
+	=& \left[ \begin{array}{ccc} g_1 & \cdots g_n \end{array} \right] \int\limits_{0}^{t} 
+	%
+\begin{bmatrix} e^{\lambda (t - \tau)} & (t-\tau) e^{\lambda (t-\tau)} & \frac{(t-\tau)^2}{2 !} e^{\lambda (t-\tau)} & \frac{(t-\tau)^3}{3 !} e^{\lambda (t-\tau)}
+\\ 0 & e^{\lambda (t-\tau)} & (t-\tau) e^{\lambda (t-\tau)} & \frac{(t-\tau)^2}{2 !} e^{\lambda (t-\tau)} \\ 0 & 0 & e^{\lambda (t-\tau)} & (t-\tau) e^{\lambda (t-\tau)} \\ 0 & 0 & 0 & e^{\lambda (t-\tau)} \end{bmatrix} 
+%
+	\left[ \begin{array}{c} \bar{g}_1^T \\  \vdots \\ \bar{g}_4^T \end{array} \right]  B u(\tau) d \tau
+\\
+=& \left[ \begin{array}{ccc} g_1 & \cdots g_n \end{array} \right] \int\limits_{0}^{t} 
+	%
+e^{\lambda (t - \tau)} \begin{bmatrix} 1 & (t-\tau)  & \frac{(t-\tau)^2}{2 !}  & \frac{(t-\tau)^3}{3 !} 
+\\ 0 & 1 & (t-\tau)  & \frac{(t-\tau)^2}{2 !}  \\ 0 & 0 & 1 & (t-\tau)  \\ 0 & 0 & 0 & 1 \end{bmatrix} 
+%
+	\left[ \begin{array}{c} \beta_1 \\  \vdots \\ \beta_4 \end{array} \right] u(\tau) d \tau \ , \ \beta_i = \bar{g}_i^T B
+\\
+=& \left[ \begin{array}{ccc} g_1 & \cdots g_n \end{array} \right] \int\limits_{0}^{t} 
+	%
+\begin{bmatrix} \beta_1 + \beta_2 (t-\tau) +  \beta_3 \frac{(t-\tau)^2}{2 !} + \beta_4 \frac{(t-\tau)^3}{3 !} 
+\\  \beta_2 + \beta_3 (t-\tau)  + \beta_4 \frac{(t-\tau)^2}{2 !}  \\ \beta_3 + \beta_4 (t-\tau)  \\ \beta_4  \end{bmatrix} 
+e^{\lambda (t - \tau)} u(\tau) d \tau 
+\\
+=& \int\limits_{0}^{t} g_1 \left( \beta_1 + \beta_2 (t-\tau) +  \beta_3 \frac{(t-\tau)^2}{2 !} + \beta_4 \frac{(t-\tau)^3}{3 !} \right)  e^{\lambda (t - \tau)} u(\tau) d \tau 
+\\
+&+ \int\limits_{0}^{t} g_2 \left( \beta_2 + \beta_3 (t-\tau) +  \beta_4 \frac{(t-\tau)^2}{2 !}  \right)  e^{\lambda (t - \tau)} u(\tau) d \tau 
+\\
+&+ \int\limits_{0}^{t} g_3 \left( \beta_3 + \beta_4 (t-\tau) \right)  e^{\lambda (t - \tau)} u(\tau) d \tau 
+\\
+&+ \int\limits_{0}^{t} g_4 \left( \beta_4 \right)  e^{\lambda (t - \tau)} u(\tau) d \tau 
+\end{align*}
+whereas the output equation takes the form
+%
+\begin{align*}
+	y(t) =& C x(t) + D u(t) 
+	\\
+	=& \int\limits_{0}^{t} (C g_1) \left( \beta_1 + \beta_2 (t-\tau) +  \beta_3 \frac{(t-\tau)^2}{2 !} + \beta_4 \frac{(t-\tau)^3}{3 !} \right)  e^{\lambda (t - \tau)} u(\tau) d \tau 
+\\
+&+ \int\limits_{0}^{t} (C g_2) \left( \beta_2 + \beta_3 (t-\tau) +  \beta_4 \frac{(t-\tau)^2}{2 !}  \right)  e^{\lambda (t - \tau)} u(\tau) d \tau 
+\\
+&+ \int\limits_{0}^{t} (C g_3) \left( \beta_3 + \beta_4 (t-\tau) \right)  e^{\lambda (t - \tau)} u(\tau) d \tau 
+\\
+&+ \int\limits_{0}^{t} (C g_4) \left( \beta_4 \right)  e^{\lambda (t - \tau)} u(\tau) d \tau 
+\\
+&+ D u(t)
+\end{align*}
+%
+We can see that in order to observe \& excite all of the modes associated with $\lambda$, we need $\gamma_1 = C g_1 \neq 0$ and $\beta_4 = \bar{g}_4^T B \neq 0$.
+
+\begin{exmp}
+	Derive $x[k]$ and $y[k]$ using modal decomposition for a $A \in \mathbb{R}^{4 \times 4}$ matrice that is composed of a single Jordan block
+         following the derivation details explained for CT systems. (Take-home example)
+\end{exmp}
 
 % **** This ENDS THE EXAMPLES. DON'T DELETE THE FOLLOWING LINE:
 \end{document}
