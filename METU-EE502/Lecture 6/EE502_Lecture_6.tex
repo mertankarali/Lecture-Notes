@@ -566,9 +566,55 @@ we can then find $y[k]$ as
    \quad \quad \quad \underbrace{G(z_0) z_0^k}_{steady-state} \ , \ \mathrm{where}
    \\
    \\
-   \bar{x}_0 &= \left( - \left(z_0 - A z_0 \right)^{-1} B \right) \ , \ \mathrm{quasi} \ \mathrm{initial-condition}
+   \bar{x}_0 &= \left( - \left(z_0 I - A \right)^{-1} B \right) \ , \ \mathrm{quasi} \ \mathrm{initial-condition}
    \\
    G(z) &= C (z I - A)^{-1} B + D \ , \ \mathrm{TF-matrix} 
+\end{align*}
+
+\begin{exmp}
+Let
+\begin{align*} 
+\dot{x} = \begin{bmatrix} -2 & 1 \\ 0 & -2 \end{bmatrix} x + \begin{bmatrix} 0 \\ 4 \end{bmatrix} u \ , \ y = \begin{bmatrix} -1 & 1 \end{bmatrix} x 
+\end{align*}
+\end{exmp}
+%
+Compute (zero-state) steady-state and transient responses for $u_1(t) = 1$ and $u_2(t) = e^{-t}$.
+
+\textbf{Solution:} Let's start with SS response 
+\begin{align*} 
+y_1^{ss}(t) &= \left( C \left(s_0 I - A \right)^{-1} B + D \right)_{s_0 = 0} e^{0 t} =
+C (-A)^{-1} B =  \begin{bmatrix} -1 & 1 \end{bmatrix}  \begin{bmatrix} 1/2 & 1/4 \\ 0 & 1/2 \end{bmatrix}  \begin{bmatrix} 0 \\ 4 \end{bmatrix} = 1
+\\
+ y_2^{ss}(t) &= C \left(-I - A \right)^{-1} B e^{- t} = \begin{bmatrix} -1 & 1 \end{bmatrix}  \begin{bmatrix} 1 & 1 \\ 0 & 1 \end{bmatrix}  \begin{bmatrix} 0 \\ 4 \end{bmatrix} = \textbf{0} \ ???
+\end{align*}
+
+Now let's analyze transient response
+\begin{align*} 
+y_1^{tr}(t) &= C e^{A t} \bar{x}_0 \ , \ \mathrm{where} \ , \  \bar{x}_0 = A^{-1} B = \begin{bmatrix} -1/2 & -1/4 \\ 0 & -1/2 \end{bmatrix}  \begin{bmatrix} 0 \\ 4 \end{bmatrix} = \begin{bmatrix} -1 \\ -2 \end{bmatrix} 
+\\
+&= \begin{bmatrix} -1 & 1 \end{bmatrix} \begin{bmatrix} e^{-2 t} & t e^{-2 t} \\ 0 &e^{-2 t} \end{bmatrix} \begin{bmatrix} -1 \\ -2 \end{bmatrix} 
+= \begin{bmatrix} -e^{-2 t} & -t e^{-2 t} + e^{-2 t} \end{bmatrix} \begin{bmatrix} -1 \\ -2 \end{bmatrix}  
+= (2 t - 1) e^{-2 t} 
+\\
+y_2^{tr}(t) &= C e^{A t} \bar{x}_0 \ , \ \mathrm{where} \ , \  \bar{x}_0 = (I+A)^{-1} B = \begin{bmatrix} -1 & -1 \\ 0 & -1 \end{bmatrix}  \begin{bmatrix} 0 \\ 4 \end{bmatrix} = \begin{bmatrix} -4 \\ -4 \end{bmatrix} 
+\\
+&= \begin{bmatrix} -1 & 1 \end{bmatrix} \begin{bmatrix} e^{-2 t} & t e^{-2 t} \\ 0 &e^{-2 t} \end{bmatrix} \begin{bmatrix} -4 \\ -4 \end{bmatrix} 
+= \begin{bmatrix} -e^{-2 t} & -t e^{-2 t} + e^{-2 t} \end{bmatrix} \begin{bmatrix} -4 \\ -4 \end{bmatrix}  
+= 4 t e^{-2 t} 
+\end{align*}
+
+\begin{exmp}
+Now, let $u_3(t) = e^{j t}$ and compute (zero-state) steady-state responses 
+\end{exmp}
+
+\textbf{Solution:}
+\begin{align*} 
+y_3^{ss}(t) &= \left( C \left(s_0 I - A \right)^{-1} B \right)_{s_0 = j} e^{j t} = G(j) e^{j t} = |G( j)| e^{j t + \angle [G(j)]}
+\\ 
+G(j) &= C (j I -A)^{-1} B =  \begin{bmatrix} -1 & 1 \end{bmatrix}  \begin{bmatrix} j+2 & -1 \\ 0 & j+2 \end{bmatrix}^{-1}  \begin{bmatrix} 0 \\ 4 \end{bmatrix} = 
+\begin{bmatrix} -1 & 1 \end{bmatrix}  \begin{bmatrix} 0.4 - 0.2 j & 0.12 - 0.16 j \\ 0 & 0.4 - 0.2 j \end{bmatrix}^{-1}  \begin{bmatrix} 0 \\ 4 \end{bmatrix} 
+\\
+&= \begin{bmatrix} -1 & 1 \end{bmatrix} \begin{bmatrix} 0.48 - 0.64 j \\ 1.6 - 0.8 j \end{bmatrix} = 1.12 - 0.16 j = 1.1314 \angle[ -8.1301^o ]
 \end{align*}
 
 
