@@ -15,7 +15,7 @@
 % ADD PACKAGES here:
 %
 
-\usepackage{amsmath,amsfonts,graphicx,amssymb}
+\usepackage{amsmath,amsfonts,graphicx,amssymb,mathtools}
 
 
 \newcounter{lecnum}
@@ -481,6 +481,97 @@ We can see that in order to observe \& excite all of the modes associated with $
 	Derive $x[k]$ and $y[k]$ using modal decomposition for a $A \in \mathbb{R}^{4 \times 4}$ matrice that is composed of a single Jordan block
          following the derivation details explained for CT systems. (Take-home example)
 \end{exmp}
+
+\section{Zero-State Response to Fundamental Inputs \& Steady-State Response}
+
+Let's first focus on single-input CT systems 
+%
+\begin{align*}
+       \dot{x} &= A x + B u \ , \ y = C x + D u
+\end{align*}
+%
+Fundamental test signal for the analysis of LTI CT systems is $u(t) = e^{s_0 t}$ where $s_0 \in mathbb{C}$. Note that for a multi-input system, $u(t) \in mathbb{C}^q$ the test signal becomes $u(t) = u_0 s_0 t$ where $u_0 \in \mathbb{C}^q$ and $u_o \neq 0$. However as you may guess, in such a case we may need to explore more than one $u_0$.
+%
+\begin{align*}
+  y(t) &= C \int\limits_{0}^{t} e^{A ( t - \tau ) } B u(\tau) d \tau + D u(t) = C \int\limits_{0}^{t} e^{A ( t - \tau ) } B e^{s_o \tau} d \tau + D e^{s_0 t} = 
+  C \int\limits_{0}^{t} e^{A ( t - \tau ) } e^{I   s_o \tau} B d \tau + D e^{s_0 t}
+  \\
+  &=   C e^{A t} \int\limits_{0}^{t} e^{(s_o I - A)  \tau} B d \tau + D e^{s_0 t}
+\end{align*}
+%
+Let's assume that $s_0$ is not an eigenvalue, then $\mathrm{det}(s_o I - A) \neq 0$, which implies that $(s_o I - A)^{-1}$ exists. Note that
+%
+\begin{align*}
+\int e^{B \lambda} d \lambda = B^{-1} e^{B \lambda} = e^{B \lambda} B^{-1} \ , \ \mathrm{if} \ \mathrm{det}(B) \neq 0
+\end{align*}
+%
+then we can write the output equation as
+\begin{align*}
+  y(t) &= C e^{A t} \left[ e^{(s_o I - A)  \tau} \right]_{\tau = 0}^{\tau = t} (s_o I - A)^{-1} B + D e^{s_0 t}
+  = C e^{A t} \left[ e^{(s_o I - A)  t} - I \right] (s_o I - A)^{-1} B + D e^{s_0 t}
+  \\
+  &= C \left[ e^{I s_o t} - e^{A t} \right] (s_o I - A)^{-1} B + D e^{s_0 t} 
+  \\
+  &=  C e^{A t} \left[ - (s_o I - A)^{-1} B \right] +
+  \left[ C (s_o I - A)^{-1} B + D \right] e^{s_0 t}
+  \\
+  &= \quad \quad  \quad  \underbrace{C e^{A t} \bar{x}_0}_{transient}  \quad \quad \quad \ \ \, +
+   \quad \quad \quad \underbrace{G(s_0) e^{s_0 t}}_{steady-state} \ , \ \mathrm{where}
+   \\
+   \\
+   \bar{x}_0 &=  \left[ - (s_o I - A)^{-1} B \right] \ , \ \mathrm{quasi} \ \mathrm{initial-condition}
+   \\
+   G(s) &= C (s I - A)^{-1} B + D \ , \ \mathrm{TF-matrix} 
+\end{align*}
+
+\begin{exmp}
+ Find $y(t)$ using this time using Laplace transform based solution 
+\end{exmp}
+
+Now let's focus on single-input DT systems 
+%
+\begin{align*}
+       x[k+1] &= A x[k] + B u[k] \ , \ y = C x[k] + D u[k]
+\end{align*}
+%
+Fundamental test signal for the analysis of LTI DT systems is $u(t) = z_0^{k}$ where $z_0 \in \mathbb{C}$. Note that for a multi-input system, $u[k] \in \mathbb{C}^q$ the test signal becomes $u[k] = u_0 z_0^{k}$ where $u_0 \in \mathbb{C}^q$ and $u_o \neq 0$. However as you may guess, in such a case we may need to explore more than one $u_0$.
+%
+\begin{align*}
+ y[k] &= \left[ \sum\limits_{j = 0}^{k-1} C A^{k-j-1} B u[j] \right] + D u[k] = \left[ \sum\limits_{j = 0}^{k-1} C A^{j} B u[k-j-1] \right] + D u[k] 
+ \\
+ &= C \left[ \sum\limits_{j = 0}^{k-1} A^{j} z^{-j}_0 \right] B z^{k-1} + D z_0^k = C \left[ \sum\limits_{j = 0}^{k-1} \left( \frac{A}{z_0} \right)^j \right] z^{k-1} B + D z_0^k 
+\end{align*}
+%
+Let $M = \left( \frac{A}{z_0} \right)$, then 
+%
+\begin{align*}
+\sum\limits_{j = 0}^{k-1} M^j &= I + M + M^2 + \cdots + M^{n-1}
+\\
+M^k + \sum\limits_{j = 0}^{k-1} M^j &= \sum\limits_{j = 0}^{k} M^j = I + M \sum\limits_{j = 0}^{k-1} M^j
+\\
+(I - M) \sum\limits_{j = 0}^{k-1} M^j &= I - M^k 
+\\
+\sum\limits_{j = 0}^{k-1} M^j &= (I - M)^{-1} \left( I - M^k  \right) = \left( I - M^k  \right) (I - M)^{-1}
+\end{align*}
+%
+we can then find $y[k]$ as
+%
+\begin{align*}
+ y[k] &= C \left[ \left( I - A^k z_0^{-k}  \right) \left(I - A z_0^{-1} \right)^{-1} \right] z_0^{k-1} B + D z_0^k
+ = C \left[ \left( z_0^k I - A^k \right) \left(z_0 I - A \right)^{-1} \right] B + D z_0^k
+ \\
+ &= C A^k \left( - \left(z_0 - A z_0 \right)^{-1} B \right) + \left( C \left(z_0 I - A \right)^{-1} B + D \right) z_0^k
+ \\
+  &= \quad \quad  \quad  \underbrace{C A^k \bar{x}_0}_{transient}  \quad \quad \quad \ \ \, +
+   \quad \quad \quad \underbrace{G(z_0) z_0^k}_{steady-state} \ , \ \mathrm{where}
+   \\
+   \\
+   \bar{x}_0 &= \left( - \left(z_0 - A z_0 \right)^{-1} B \right) \ , \ \mathrm{quasi} \ \mathrm{initial-condition}
+   \\
+   G(z) &= C (z I - A)^{-1} B + D \ , \ \mathrm{TF-matrix} 
+\end{align*}
+
+
 
 % **** This ENDS THE EXAMPLES. DON'T DELETE THE FOLLOWING LINE:
 \end{document}
