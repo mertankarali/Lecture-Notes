@@ -560,7 +560,7 @@ we can then find $y[k]$ as
  y[k] &= C \left[ \left( I - A^k z_0^{-k}  \right) \left(I - A z_0^{-1} \right)^{-1} \right] z_0^{k-1} B + D z_0^k
  = C \left[ \left( z_0^k I - A^k \right) \left(z_0 I - A \right)^{-1} \right] B + D z_0^k
  \\
- &= C A^k \left( - \left(z_0 - A z_0 \right)^{-1} B \right) + \left( C \left(z_0 I - A \right)^{-1} B + D \right) z_0^k
+ &= C A^k \left( - \left(z_0 I - A \right)^{-1} B \right) + \left( C \left(z_0 I - A \right)^{-1} B + D \right) z_0^k
  \\
   &= \quad \quad  \quad  \underbrace{C A^k \bar{x}_0}_{transient}  \quad \quad \quad \ \ \, +
    \quad \quad \quad \underbrace{G(z_0) z_0^k}_{steady-state} \ , \ \mathrm{where}
@@ -617,7 +617,87 @@ G(j) &= C (j I -A)^{-1} B =  \begin{bmatrix} -1 & 1 \end{bmatrix}  \begin{bmatri
 &= \begin{bmatrix} -1 & 1 \end{bmatrix} \begin{bmatrix} 0.48 - 0.64 j \\ 1.6 - 0.8 j \end{bmatrix} = 1.12 - 0.16 j = 1.1314 \angle[ -8.1301^o ]
 \end{align*}
 
+\subsection{Response to Real Sinusoidal Inputs}
 
+We can write CT and DT cosine/sine signals as a sum of two complex exponential functions
+%
+\begin{align*} 
+ 	\cos(\omega t) &= \frac{1}{2} e^{j \omega t} + \frac{1}{2} e^{-j \omega t} \ , \ \sin(\omega t) = \frac{1}{2} e^{j \omega t} - \frac{1}{2} e^{-j \omega t} \ , \ \omega \in \mathbb{R} 
+	\\
+	\cos(\omega_d k) &= \frac{1}{2} e^{j \omega_d k} + \frac{1}{2} e^{-j \omega_d k} \ , \ 	\cos(\omega t) = \frac{1}{2} e^{j \omega_d k} - \frac{1}{2} e^{-j \omega t} \ , \ \omega_d \in \left( -\pi , \pi \right) 
+\end{align*}
+%
+Using linearity (and assuming $A, B, C, D$ are all matrices with real entires) we can find the CT response to $\cos(\omega t)$ signal as
+%
+\begin{align*}
+   y_c(t) &= \frac{1}{2} \left[ C e^{A t} \bar{x}_0^+ + G(j \omega) e^{j \omega t} \right] + \frac{1}{2} \left[ C e^{A t} \bar{x}_0^- + G(-j \omega) e^{-j \omega t} \right] \ \mathrm{where} \ 
+   \\
+   \bar{x}_0^+ &= \left[ - (j \omega I - A)^{-1} B \right]  \ , \ \bar{x}_0^- = \left[ - (-j \omega I - A)^{-1} B \right] \ , \ \left( \bar{x}_0^+ \right)^* = \bar{x}_0^- 
+   \\
+   G(j \omega) &= \left[ C (j \omega I - A)^{-1} B + D \right] = \left( G(-j \omega) \right)^*
+   \\
+   \\
+   y_c(t) &= C e^{A t} \left[ \frac{1}{2} \bar{x}_0^+ + \frac{1}{2} \bar{x}_0^- \right] +
+   \frac{1}{2} \left[ G(j \omega) e^{j \omega t} \right] + \frac{1}{2} \left[ G(j \omega) e^{j \omega t} \right]^* \ \mathrm{note} 
+   \\
+   G(j \omega) e^{j \omega t} &= |G(j \omega)| \left( \cos \phi + j \sin \phi \right) \ \phi = \angle [G(j \omega)]
+   \\
+   \\
+   y_c(t) &=  \underbrace{C e^{A t} \mathrm{Re}\left\lbrace \bar{x}_0^+ \right\rbrace}_{transient}  \ +  \  \underbrace{| G(j \omega) | \cos \left( \omega t + \angle [G(j \omega)] \right)}_{sinusoidal \ steady-state} \ , \ \mathrm{where}
+   \\
+   \\
+   y_s(t) &=  \underbrace{C e^{A t} \mathrm{Im}\left\lbrace \bar{x}_0^+ \right\rbrace}_{transient}  \ +  \  \underbrace{| G(j \omega) | \sin \left( \omega t + \angle [G(j \omega)] \right)}_{sinusoidal \ steady-state}
+\end{align*}
+
+Now let's apply the some process on DT systems with discrete-time cosine input signal
+%
+\begin{align*}
+   y_c[k] &= \frac{1}{2} \left[ C A^k \bar{x}_0^+ + G(e^{j \omega_d}) e^{j \omega_d k} \right] + \frac{1}{2} \left[ C A^k \bar{x}_0^- + G(e^{-j \omega_d}) e^{-j \omega_d k}  \right] \ \mathrm{where} \ 
+   \\
+   \bar{x}_0^+ &= \left[ - (e^{j \omega_d } I - A)^{-1} B \right]  = \left(  \bar{x}_0^- \right)^* 
+   \\
+   G(e^{j \omega_d }) &= \left[ C (e^{j \omega_d } I - A)^{-1} B + D \right] = \left( G(e^{-j \omega_d }) \right)^*
+   \\
+   \\
+   y_c[k] &= C A^k \left[ \frac{1}{2} \bar{x}_0^+ + \frac{1}{2} \bar{x}_0^- \right] +
+   \frac{1}{2} \left[ G(e^{j \omega_d k}) e^{j \omega_d k} \right] + \frac{1}{2} \left[G(e^{j \omega_d k}) e^{j \omega_d k}  \right]^* \ \mathrm{note} 
+   \\
+   \\
+   y_c[k] &=  \underbrace{C A^k \mathrm{Re}\left\lbrace \bar{x}_0^+ \right\rbrace}_{transient}  \ +  \  \underbrace{| G(e^{j \omega_d k}) \cos \left( \omega_d k + \angle [G(j \omega)] \right)}_{sinusoidal \ steady-state} \ , \ \mathrm{where}
+   \\
+   \\
+   y_s[k] &=  \underbrace{C A^k \mathrm{Im}\left\lbrace \bar{x}_0^+ \right\rbrace}_{transient}  \ +  \  \underbrace{| G(e^{j \omega_d k}) \sin \left( \omega_d k + \angle [G(j \omega)] \right)}_{sinusoidal \ steady-state}
+\end{align*}
+
+\begin{exmp}
+Let
+\begin{align*} 
+x[k+1] = \begin{bmatrix} 0 & 1 \\ 0 & 0 \end{bmatrix} x + \begin{bmatrix} 0 \\ 1 \end{bmatrix} u \ , \ y = \begin{bmatrix} 1 & 0 \end{bmatrix} x 
+\end{align*}
+\end{exmp}
+%
+Compute (zero-state) the transient and steady-state responses for $u[k] = \cos (\omega_d k)$ for $\omega_d \in \lbrace 0 , \pi / 2  , \pi \rbrace$
+
+\textbf{Solution:} 
+%
+\begin{align*} 
+	\omega_1 &= 0 \ \rightarrow \ u[k] = 1
+	\\
+ 	\bar{x}_0 &= \bar{x}_0^+ = \left[ - (I - A)^{-1} B \right] = - \begin{bmatrix} 1 & -1 \\ 0 & 1 \end{bmatrix}^{-1} \begin{bmatrix} 0 \\ 1 \end{bmatrix} = 
+	 \begin{bmatrix} 1 & 1 \\ 0 & 1 \end{bmatrix} \begin{bmatrix} 0 \\ -1 \end{bmatrix} = \begin{bmatrix} -1 \\ -1 \end{bmatrix} 
+	 \\
+	 y^{tr}[k] &= C A^k \bar{x}_0 = \begin{bmatrix} 1 & 0 \end{bmatrix} A^k \begin{bmatrix} -1 \\ -1 \end{bmatrix} \ ,  \mathrm{note} \  A^0 = I \ \& \ A^k = 0 \ , \ k > 1 ,
+	 \\
+	 y^{tr}[k] &= - \delta[k]  - \delta[k-1]
+	 \\
+	 \\
+	 G(e^{j 0 }) &= G(1) = \left[ C (I - A)^{-1} B \right] = \begin{bmatrix} 1 & 0 \end{bmatrix} \begin{bmatrix} 1 & 1 \\ 0 & 1 \end{bmatrix} \begin{bmatrix} 0 \\ 1 \end{bmatrix} = 1
+	 \\
+	 y^{ss}[k] &= 1
+	 \\
+	 \\
+	 y[k] &= 1 - \delta[k]  - \delta[k-1]
+\end{align*}
 
 % **** This ENDS THE EXAMPLES. DON'T DELETE THE FOLLOWING LINE:
 \end{document}
