@@ -708,7 +708,7 @@ Now let's analyze the case  $\omega = \pi/2$
 	 \\
 	 y^{tr}[k] &= C A^k \mathrm{Re} \left( \bar{x}_0^+ \right) = \begin{bmatrix} 1 & 0 \end{bmatrix} A^k \begin{bmatrix} 1 \\ 0 \end{bmatrix} \ ,  \mathrm{note} \  A^0 = I \ \& \ A^k = 0 \ , \ k > 1 ,
 	 \\
-	 y^{tr}[k] &= \delta[k-1]
+	 y^{tr}[k] &= \delta[k]
 	 \\
 	 \\
 	 G(e^{j \pi/2 }) &= G(j) = \left[ C (j I - A)^{-1} B \right] = \begin{bmatrix} 1 & 0 \end{bmatrix} \begin{bmatrix} -j & -1 \\ 0 & -j \end{bmatrix} \begin{bmatrix} 0 \\ 1 \end{bmatrix} = -1
@@ -716,8 +716,123 @@ Now let's analyze the case  $\omega = \pi/2$
 	 y^{ss}[k] &= \cos\left( \frac{\pi}{2} k + \pi \right) = - \cos\left( \frac{\pi}{2} k \right)
 	 \\
 	 \\
-	 y[k] &= - \cos\left( \frac{\pi}{2} k \right) + \delta[k-1]
+	 y[k] &= - \cos\left( \frac{\pi}{2} k \right) + \delta[k]
 \end{align*}
+
+Solution for $\omega = \pi$ is take-home problem. 
+
+\subsection{Response to Inputs of the Form, $u(t) = t^i e^{s_0 t}$ and
+$u[k] = k^i z_0^{k-i}$}
+
+Let $y_0(t)$ and $y_0[k]$ be the inputs for $u(t) = t^i e^{s_0 t}$ and
+$u_0[k] = k^i z_0^{k}$ 
+%
+\begin{align*} 
+y_0(t) &= \int\limits_{0}^t C e^{t-\tau} u(\tau) d \tau =
+         \int\limits_{0}^t C e^{t-\tau} e^{s_0 \tau} d \tau
+\\
+y_0[k] &= \sum\limits_{j = 0}^{k-1} C A^{k-j-1} B z_0^{j}
+\end{align*}
+%
+Let's take de derivative of the expressions with respect to $s_0$ and
+$z_0$ respectively
+%  
+%
+\begin{align*} 
+\frac{\partial}{\partial s_0}y_0(t) &= 
+         \frac{\partial}{\partial s_0} \int\limits_{0}^t C e^{t-\tau}
+                                     \left( \tau e^{s_0 \tau} \right)
+                                      d \tau = \frac{\partial}{\partial s_0} \int\limits_{0}^t C e^{t-\tau}
+                                    u_1 ( \tau) d \tau = y_1(t)
+\\
+\frac{\partial}{\partial z_0} y_0[k] &= \frac{\partial}{\partial z_0}
+                                       \sum\limits_{j = 0}^{k-1} C
+                                       A^{k-j-1} B \left( j z_0^{j-1}
+                                       \right) 
+= \frac{\partial}{\partial z_0}
+                                       \sum\limits_{j = 0}^{k-1} C
+                                       A^{k-j-1} B u_1[k]= y_1[k]
+\end{align*}
+%
+It is straightforward to extend the result for higher order inputs of
+the form $u(t) = t^i e^{s_0 t}$ and $u[k] = k^i z_0^{k-1}$. Let's
+explore $y_1(t)$ 
+%
+\begin{align*} 
+y_1(t) =& \frac{\partial}{\partial s_0}y_0(t) = C e^{A t} \left[ -
+                                             \left\lbrace
+                                               \frac{\partial}{\partial
+                                               s_0} (s_o I - A)^{-1} \right\rbrace B
+\right] + \left[ C \left\lbrace \frac{\partial}{\partial s_0} (s_o I -
+                                               A)^{-1} \right\rbrace B
+                                               \right] e^{s_0 t}
+\\ &+ \left[ C (s_o I - A)^{-1} B + D \right] t e^{s_0 t}
+\end{align*}
+%
+Let's derive $\left\lbrace \frac{\partial}{\partial s_0} (s_o I -
+  A)^{-1} \right\rbrace$
+%
+\begin{align*} 
+(s_o I - A)^{-1} (s_o I - A) & = I
+\\
+\frac{\partial}{\partial s_0} \left[ (s_o I - A)^{-1} (s_o I - A)
+  \right] &= 0
+\\
+\frac{\partial}{\partial s_0} \left[ (s_o I - A)^{-1} \right] (s_o I - A)
++ (s_o I - A)^{-1} &= 0
+\\
+\frac{\partial}{\partial s_0} \left[ (s_o I - A)^{-1} \right] = - (s_o I - A)^2
+\end{align*}
+%
+then we can express $y_1(t)$ as
+%
+\begin{align*} 
+y_1(t) &= C e^{A t} \left[ (s_o I - A)^{-2} B \right] + \left[ -C (s_o
+         I - A)^{-2} B \right] e^{s_0 t} + \left[ C (s_o I -
+         A)^{-1} B + D \right] t e^{s_0 t}
+\\
+\\
+\bar{x}_{0,1} &= \left[ (s_o I - A)^{-2} B \right]                 
+\\
+G'(s_0) &= -C (s_o I - A)^{-2} B 
+\\
+\\
+y_1(t) &= \underbrace{C e^{A t} \bar{x}_{0,1}}_{transient} \ + \ \underbrace{ G'(s_0) e^{s_0 t} + G(s_0) t e^{s_0 t}}_{steady-state}
+\end{align*}
+%
+It is relatively easy to derive a similar expression for $y_1[k]$.
+
+\begin{exmp}
+Let
+\begin{align*} 
+\dot{x} = \begin{bmatrix} -2 & 1 \\ 0 & -2 \end{bmatrix} x + \begin{bmatrix} 0 \\ 4 \end{bmatrix} u \ , \ y = \begin{bmatrix} -1 & 1 \end{bmatrix} x 
+\end{align*}
+\end{exmp}
+%
+Compute (zero-state) steady-state and transient responses for $u(t) =
+t$
+
+\textbf{Solution:} $s_0 = 0$. Let's first compute the transient part
+%
+\textbf{Solution:} Let's start with SS response 
+\begin{align*} 
+y^{ss}(t) &= \left( C \left(- A \right)^{-1} B \right) t  - \left( C \left(- A \right)^{-2} B \right) 
+\\ &=  \begin{bmatrix} -1 & 1 \end{bmatrix}  \begin{bmatrix} 1/2 & 1/4 \\ 0 & 1/2 \end{bmatrix}  \begin{bmatrix} 0 \\ 4 \end{bmatrix} t 
++  \begin{bmatrix} -1 & 1 \end{bmatrix}  \begin{bmatrix} 1/2 & 1/4 \\ 0 & 1/2 \end{bmatrix}^2  \begin{bmatrix} 0 \\ 4 \end{bmatrix}
+\\ &= t + \begin{bmatrix} -1 & 1 \end{bmatrix}  \begin{bmatrix} 1/4 & 1/4 \\ 0 & 1/4 \end{bmatrix}  \begin{bmatrix} 0 \\ 4 \end{bmatrix} = t - 0
+\\ &= t
+\end{align*}
+
+Now let's analyze transient response
+\begin{align*} 
+y^{tr}(t) &= C e^{A t} \bar{x}_{0,1} \ , \ \mathrm{where} \ , \  \bar{x}_0 = \left(-A \right)^{-2} B = \begin{bmatrix} -1/2 & -1/4 \\ 0 & -1/2 \end{bmatrix}  \begin{bmatrix} 0 \\ 4 \end{bmatrix} = \begin{bmatrix} -1 \\ -2 \end{bmatrix} 
+\\
+&= \begin{bmatrix} -1 & 1 \end{bmatrix} \begin{bmatrix} e^{-2 t} & t e^{-2 t} \\ 0 &e^{-2 t} \end{bmatrix} \begin{bmatrix} -1 \\ -2 \end{bmatrix} 
+= \begin{bmatrix} -e^{-2 t} & -t e^{-2 t} + e^{-2 t} \end{bmatrix} \begin{bmatrix} -1 \\ -2 \end{bmatrix}  
+= (2 t - 1) e^{-2 t} 
+\end{align*}
+
+
 
 % **** This ENDS THE EXAMPLES. DON'T DELETE THE FOLLOWING LINE:
 \end{document}
