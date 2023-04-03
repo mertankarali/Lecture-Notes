@@ -812,9 +812,8 @@ Let
 Compute (zero-state) steady-state and transient responses for $u(t) =
 t$
 
-\textbf{Solution:} $s_0 = 0$. Let's first compute the transient part
+\textbf{Solution:} $s_0 = 0$. Let's start with SS response 
 %
-\textbf{Solution:} Let's start with SS response 
 \begin{align*} 
 y^{ss}(t) &= \left( C \left(- A \right)^{-1} B \right) t  - \left( C \left(- A \right)^{-2} B \right) 
 \\ &=  \begin{bmatrix} -1 & 1 \end{bmatrix}  \begin{bmatrix} 1/2 & 1/4 \\ 0 & 1/2 \end{bmatrix}  \begin{bmatrix} 0 \\ 4 \end{bmatrix} t 
@@ -825,14 +824,14 @@ y^{ss}(t) &= \left( C \left(- A \right)^{-1} B \right) t  - \left( C \left(- A \
 
 Now let's analyze transient response
 \begin{align*} 
-y^{tr}(t) &= C e^{A t} \bar{x}_{0,1} \ , \ \mathrm{where} \ , \  \bar{x}_0 = \left(-A \right)^{-2} B = \begin{bmatrix} -1/2 & -1/4 \\ 0 & -1/2 \end{bmatrix}  \begin{bmatrix} 0 \\ 4 \end{bmatrix} = \begin{bmatrix} -1 \\ -2 \end{bmatrix} 
+y^{tr}(t) &= C e^{A t} \bar{x}_{0,1} \ , \ \mathrm{where} \ , \  \bar{x}_0 = \left(-A \right)^{-2} B = \begin{bmatrix} 1/4 & 1/4 \\ 0 & -1/4 \end{bmatrix}  \begin{bmatrix} 0 \\ 4 \end{bmatrix} = \begin{bmatrix} 1 \\ 1 \end{bmatrix} 
 \\
-&= \begin{bmatrix} -1 & 1 \end{bmatrix} \begin{bmatrix} e^{-2 t} & t e^{-2 t} \\ 0 &e^{-2 t} \end{bmatrix} \begin{bmatrix} -1 \\ -2 \end{bmatrix} 
-= \begin{bmatrix} -e^{-2 t} & -t e^{-2 t} + e^{-2 t} \end{bmatrix} \begin{bmatrix} -1 \\ -2 \end{bmatrix}  
-= (2 t - 1) e^{-2 t} 
+&= \begin{bmatrix} -1 & 1 \end{bmatrix} \begin{bmatrix} e^{-2 t} & t e^{-2 t} \\ 0 &e^{-2 t} \end{bmatrix} \begin{bmatrix} 1 \\ 1 \end{bmatrix} 
+= \begin{bmatrix} -e^{-2 t} & -t e^{-2 t} + e^{-2 t} \end{bmatrix} \begin{bmatrix} 1 \\ 1 \end{bmatrix}  
+= - t e^{-2 t} 
 \end{align*}
+%
+General solution takes the form $y(t) = t \left(1 - e^{-2 t} \right)$
 
 
-
-% **** This ENDS THE EXAMPLES. DON'T DELETE THE FOLLOWING LINE:
 \end{document}
