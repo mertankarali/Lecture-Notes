@@ -678,10 +678,10 @@ x[k+1] = \begin{bmatrix} 0 & 1 \\ 0 & 0 \end{bmatrix} x + \begin{bmatrix} 0 \\ 1
 %
 Compute (zero-state) the transient and steady-state responses for $u[k] = \cos (\omega_d k)$ for $\omega_d \in \lbrace 0 , \pi / 2  , \pi \rbrace$
 
-\textbf{Solution:} 
+\textbf{Solution:} Let's start with $\omega = 0$
 %
 \begin{align*} 
-	\omega_1 &= 0 \ \rightarrow \ u[k] = 1
+	\omega &= 0 \ \rightarrow \ u[k] = 1
 	\\
  	\bar{x}_0 &= \bar{x}_0^+ = \left[ - (I - A)^{-1} B \right] = - \begin{bmatrix} 1 & -1 \\ 0 & 1 \end{bmatrix}^{-1} \begin{bmatrix} 0 \\ 1 \end{bmatrix} = 
 	 \begin{bmatrix} 1 & 1 \\ 0 & 1 \end{bmatrix} \begin{bmatrix} 0 \\ -1 \end{bmatrix} = \begin{bmatrix} -1 \\ -1 \end{bmatrix} 
@@ -697,6 +697,26 @@ Compute (zero-state) the transient and steady-state responses for $u[k] = \cos (
 	 \\
 	 \\
 	 y[k] &= 1 - \delta[k]  - \delta[k-1]
+\end{align*}
+%
+Now let's analyze the case  $\omega = \pi/2$
+\begin{align*} 
+	\omega &= \pi/2 \ \rightarrow \ u[k] = \cos \left( \frac{\pi}{2} k \right)
+	\\
+ 	\bar{x}_0^+ &= \left[ - (j I - A)^{-1} B \right] = - \begin{bmatrix} j & -1 \\ 0 & j \end{bmatrix}^{-1} \begin{bmatrix} 0 \\ 1 \end{bmatrix} = 
+	 \begin{bmatrix} j & 1 \\ 0 & j \end{bmatrix} \begin{bmatrix} 0 \\ 1 \end{bmatrix} = \begin{bmatrix} 1 \\ j \end{bmatrix} 
+	 \\
+	 y^{tr}[k] &= C A^k \mathrm{Re} \left( \bar{x}_0^+ \right) = \begin{bmatrix} 1 & 0 \end{bmatrix} A^k \begin{bmatrix} 1 \\ 0 \end{bmatrix} \ ,  \mathrm{note} \  A^0 = I \ \& \ A^k = 0 \ , \ k > 1 ,
+	 \\
+	 y^{tr}[k] &= \delta[k-1]
+	 \\
+	 \\
+	 G(e^{j \pi/2 }) &= G(j) = \left[ C (j I - A)^{-1} B \right] = \begin{bmatrix} 1 & 0 \end{bmatrix} \begin{bmatrix} -j & -1 \\ 0 & -j \end{bmatrix} \begin{bmatrix} 0 \\ 1 \end{bmatrix} = -1
+	 \\
+	 y^{ss}[k] &= \cos\left( \frac{\pi}{2} k + \pi \right) = - \cos\left( \frac{\pi}{2} k \right)
+	 \\
+	 \\
+	 y[k] &= - \cos\left( \frac{\pi}{2} k \right) + \delta[k-1]
 \end{align*}
 
 % **** This ENDS THE EXAMPLES. DON'T DELETE THE FOLLOWING LINE:
