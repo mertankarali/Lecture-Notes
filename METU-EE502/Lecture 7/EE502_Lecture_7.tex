@@ -99,7 +99,6 @@ State-space representation of a (causal \& finite dimensional) LTV DT system is 
     B[k] \in \mathbb{R}^{n \times r} \ ,\  C[k] \in \mathbb{R}^{m \times n} \ , \ D[d] \in \mathbb{R}^{m \times r}
 \end{align*}
 %
-
 Let's first assume that $u[k] = 0$, and find un-driven 
 response.
 %
@@ -125,28 +124,32 @@ Unlike LTV-CT systems we easily can compute the response iteratively
   x[k] &= \prod_{i=0}^{k-1} A[k-1-i] 
 \end{align*}
 %
-It is easy to see that for $k , p \in \mathbb{Z}$ where $k > p$
+Motivated by the LTI case, we define the \textbf{state transition matrix}, which relates the state of the
+undriven system at time $k$ to the state at an earlier time $m$
 %
 \begin{align*}
-  x[k] &= G^{k-p} x[p] 
+  x[k] &= \Phi[k,m] x[m] \ , \  k \geq m \ , \  \mathrm{where}
+  \\
+  \Phi[k,m] &= \left\lbrace \begin{array}{l} \prod_{i=0}^{k-1} A[k-1-i] \ , \ k > m 
+  \\ I \quad \quad \quad \quad  \quad \quad  \quad \ \ , \ k = m 
+  \end{array} \right.
 \end{align*}
 %
-Let $\Psi(k) = G^k$, then this matrix of functions solves the
-homogeneous difference equation
+Note that state-transition matrix satisfies following important properties
+undriven system at time $k$ to the state at an earlier time $m$
 %
 \begin{align*}
-  x[k+1] &= G x[k] 
-\\    
-\\
-  x[k] &=\Psi[k] x[0] 
-\\
-  x[k] &=\Psi[k-p] x[p] 
-\\
- x[k+m] &=\Psi[ k + m - m] x[m] = \Psi[k]
+  \Phi[k,k] &= I
+  \\
+  x[k] &= \Phi[k,0] x[0]
+  \\
+  \Phi[k+1,m] = A[k] \Phi[k,m] 
 \end{align*}
 %
-$\Psi[k]$ is called the state-transition matrix.
+as you can see, the state-transition matrix satisfies the discrete dynamical state equations. 
 %
+
+
 Now let's consider input-only state response (i.e. $x[0] = 0$).
 %
 \begin{align*}
