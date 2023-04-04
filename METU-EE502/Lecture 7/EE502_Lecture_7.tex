@@ -147,194 +147,51 @@ undriven system at time $k$ to the state at an earlier time $m$
 \end{align*}
 %
 as you can see, the state-transition matrix satisfies the discrete dynamical state equations. 
-%
-
-
 Now let's consider input-only state response (i.e. $x[0] = 0$).
 %
 \begin{align*}
-  x[k+1] &= G x[k] + H u[k] 
+  x[k+1] &= A[k] x[k] + B[k] u[k] 
   \\
   \\
-  x[1] &= H u[0]
+  x[1] &= B[0] u[0] = \Phi[1,1] B[0] u[0]
   \\
-  x[2] &= G x[1] + H u[1] = G H u[0] + H u[1] 
   \\
-  x[3] &= G x[2] + H u[2] = G^2 H u[0] + G H u[1] + H u[2]
+  x[2] &= A[1] x[1] + B[1] u[1] = A[1] B[0] u[0] + B[1] u[1]  = \Phi[2,1] B[0] u[0] + \Phi[2,2] B[1] u[1] 
   \\
-  x[4] &= G x[3] + H u[3] = G^3 H u[0] + G^2 H u[1] + G H u[2] + H
-         u[3]
+  \\
+  x[3] &= A[2] x[2] + B[2] u[2] = A[2] A[1] B[0] u[0] + A[2] B[1] u[1] + B[2] u[2]
+  \\
+  \\
+  &= \Phi[3,1] B[0] u[0] + \Phi[3,2] B[1] u[1] + \Phi[3,3] B[2] u[2]
+  \\
+  \\
+  x[4] &= A[3] x[3] + B[3] u[3] = A[3] A[2] A[1] B[0] u[0] + A[3] A[2] B[1] u[1] + A[3] B[2] u[2] + B[3] u[3]
+  \\
+  \\
+  &= \Phi[4,1] B[0] u[0] + \Phi[4,2]  B[1] u[1] + \Phi[4,3] B[2] u[2] + \Phi[4,4] B[3] u[3]
   \\
   \vdots
  \\
-  x[k] &= G x[k-1] + H u[k-1] \\
-         &= G^{k-1} H u[0] + G^{k-2} H u[1] +
-         \cdots + G H u[k-2] + H u[k-1]
+  x[k] &= \Phi[k,1] B[0] u[0] + \Phi[k,2] B[1] u[1] + \cdots + \Phi[k,k-1] B[k-2] u[k-2] + \Phi[k,k] B[k-1] u[k-1]
          \\
-         &= \left[ \begin{array}{c|c|c|c|c} G^{k-1} H & G^{k-2} H &
-         \cdots & G H & H \end{array} \right]
+         &= \left[ \begin{array}{c|c|c|c|c} \Phi[k,1] B[0] & \Phi[k,2] B[1]  & \cdots & \Phi[k,k-1] B[k-2]  & \Phi[k,k] B[k-1] \end{array} \right]
          \left[ \begin{array}{c}
                   u[0] \\ u[1] \\ \vdots \\ u[k-2] \\ u[k-1]
          \end{array} \right]
          \\
-         &= \sum\limits_{j = 0}^{k-1} G^{k-j-1} H u[j]
+         &= \sum\limits_{j = 0}^{k-1} \Phi[k,j+1] B[j] u[j]
          \\
-         &= \sum\limits_{j = 0}^{k-1} G^{j} H u[k-j-1]
+         &= \Gamma[k,0] \mathcal{U}[k,0]
 \end{align*}
 %
-Given that $\Psi[k] = G^k$
+where
 %
 \begin{align*}
-    x[k] &= \sum\limits_{j = 0}^{k-1} \Psi[k-j-1] H u[j]
+    \Gamma[k,0] &= \left[ \begin{array}{c|c|c|c|c} \Phi[k,1] B[0] & \Phi[k,2] B[1]  & \cdots & \Phi[k,k-1] B[k-2]  & \Phi[k,k] B[k-1] \end{array} \right]
 \\
-&= \sum\limits_{j = 0}^{k-1} \Psi[j] H u[k-j-1]
+    \mathcal{U}[k,0] &=  \left[ \begin{array}{c} u[0] \\ u[1] \\ \vdots \\ u[k-2] \\ u[k-1]  \end{array} \right]
 \end{align*}
 %
-If we combine homegeneous and driven responses we can simply obtain
-%
-\begin{align*}
-    x[k] &= \Psi[k] x[0] + \sum\limits_{j = 0}^{k-1} \Psi[k-j-1] H u[j]
-\\
-&= \Psi[k] x[0] + \sum\limits_{j = 0}^{k-1} \Psi[j] H u[k-j-1]
-\end{align*}
-% 
-whereas output at time $k$ has the form
-%
-\begin{align*}
-    y[k] &= C \Psi[k] x[0] + C \left( \sum\limits_{j = 0}^{k-1}
-           \Psi[k-j-1] H u[j] \right) + D u[k]
-\\
-&= C \Psi[k] x[0] + C \left( \sum\limits_{j = 0}^{k-1} \Psi[j] H
-  u[k-j-1] \right) +  D u[k]
-\end{align*}
-% 
-
-\subsection*{Z-domain Solution of State-Space Equations}
-
-We already computed the transfer function under zero initial
-conditions.
-%
-\begin{align*}
-  Y(z) =  \left[ C \left(z I - G \right)^{-1} H + D \right] U(z)
-\end{align*}
-%
-
-%
-\begin{align*}
-z \left( z I - G \right)^{-1} &= I + z^{-1} G + z^{-2} G^2 + z^{-3} G^3
-  + \cdots
-\\
-\mathcal{Z}^{-1} \left[ z \left( z I - G \right)^{-1} \right] &=
-I \, \delta[k] + G \, \delta[k-1] + G^2 \, \delta[k-2] + G^3 \,
-  \delta[k-3] + \cdots 
-\end{align*}
-%
-
-\newpage
-
-\textbf{Example:} Consider the following state-space representation
-%
-\begin{align*}
-  x[k+1] &= \left[ \begin{array}{ccc} 1 & 0 & 0\\ 0 & 1/2 & 0
-    \\ 0 & 0 & -1 \end{array} \right] x[k] 
-    + \left[ \begin{array}{c} 1 \\ 1 \\ 1\end{array} \right] u[k]
-\\
- y[k] &= \left[ \begin{array}{ccc} 1 & 2 & 3 \end{array} \right] x[k] 
-\end{align*}
-%
-\begin{itemize}
-  \item Compute the closed form expression $\Psi[k]$ using the time
-   expression
-
-    \textbf{Solution:} The state-space representation is in Diagonal
-    canonical form
-    
-\begin{align*}
-  \Psi[k]  = G^k = \left[ \begin{array}{ccc} 1 & 0 & 0\\ 0 & 1/2 & 0
-    \\ 0 & 0 & -1 \end{array} \right]^k 
-    = \left[ \begin{array}{ccc} 1^k & 0 & 0\\ 0 & (1/2)^k & 0
-    \\ 0 & 0 & (-1)^k \end{array} \right]
- = \left[ \begin{array}{ccc} 1 & 0 & 0\\ 0 & (1/2)^k & 0
-    \\ 0 & 0 & (-1)^k \end{array} \right]
-\end{align*}    
-
-\item Compute the closed form expression $\Psi[k]$ using the z-domain 
-  solution method
-
-\textbf{Solution:}
-
-\begin{align*}
-  \Psi[k]  &= \mathcal{Z}^{-1} \left[   z \left( z I - G \right)^{-1} \right]
-\\
-&= \mathcal{Z}^{-1} \left[   z \left( \left[ \begin{array}{ccc} z-1 & 0 & 0\\ 0 & (z-1/2) & 0
-    \\ 0 & 0 & z+1 \end{array} \right] \right)^{-1} \right]
-\\
-&= \mathcal{Z}^{-1} \left[   \left[ \begin{array}{ccc} \frac{z}{z-1} & 0 & 0\\ 0 & \frac{z}{z-1/2} & 0
-    \\ 0 & 0 & \frac{z}{z+1} \end{array} \right] \right]
-\\
-&= \left[ \begin{array}{ccc} 1 & 0 & 0\\ 0 & (1/2)^k & 0
-    \\ 0 & 0 & (-1)^k \end{array} \right] \quad \mathrm{for} k \geq 0
-\end{align*}    
-
-\item Compute the impulse response of the system from the time domain
-solution
-
-\textbf{Solution:}
-
-\begin{align*}
-  x[k] &= G^{k-1} H u[0] \quad \mathrm{for} \  k > 0 \\
-  y[k] &= C G^{k-1} H \quad \mathrm{for} \ k > 0 \\ 
-         &= \left[ \begin{array}{ccc} 1 & 2 & 3 \end{array} \right] 
-                \left[ \begin{array}{ccc} 1 & 0 & 0\\ 0 & (1/2)^{k-1} & 0
-    \\ 0 & 0 & (-1)^{k-1} \end{array} \right]
-      \left[ \begin{array}{c} 1 \\ 1 \\ 1\end{array} \right] 
-\\
-&= \left[ \begin{array}{ccc} 1 & 2 & 3 \end{array} \right] 
-\left[ \begin{array}{c} 1 \\ (1/2)^{k-1} \\ (-1)^{k-1} \end{array}
-  \right] 
-\\
-y[k] &= 1 + 2 (1/2)^{k-1} + 3 (-1)^{k-1} \quad \mathrm{for} \ k > 0 
-\end{align*}    
-
-\item Compute the transfer function $\frac{Y(z)}{U(z)}$
-
-\textbf{Solution:}
-
-\begin{align*}
-  T(z) &= C \left( z I - G \right)^{-1} H \\
-         &= \left[ \begin{array}{ccc} 1 & 2 & 3 \end{array} \right] 
-\left[ \begin{array}{ccc} z-1 & 0 & 0\\ 0 & z-1/2 & 0
-    \\ 0 & 0 & z+1 \end{array} \right]^{-1}           
-\left[ \begin{array}{c} 1 \\ 1 \\ 1\end{array} \right]
-\\
-&= \left[ \begin{array}{ccc} 1 & 2 & 3 \end{array} \right] 
-\left[ \begin{array}{ccc} \frac{1}{z-1} & 0 & 0\\ 0 & \frac{1}{z-1/2} & 0
-    \\ 0 & 0 & \frac{1}{z+1} \end{array} \right]           
-\left[ \begin{array}{c} 1 \\ 1 \\ 1\end{array} \right]                                   
-\\
-&= 
-\left[ \begin{array}{ccc} 1 & 2 & 3 \end{array} \right] 
-\left[ \begin{array}{c} \frac{1}{z-1} \\ \frac{1}{z-1/2} \\
-         \frac{1}{z+1}\end{array} \right]         
-\\
-  T(z) &= \frac{1}{z-1} + \frac{2}{z-1/2} + \frac{3}{z+1}
-\end{align*}    
-
-\item Compute the inverse Z-transform of the  transfer function 
-
-\textbf{Solution:}
-
-\begin{align*}
-  t[k] &= \mathcal{Z}^{-1} \left[ \frac{1}{z-1} + \frac{2}{z-1/2} +
-  \frac{3}{z+1} \right]
-\\
-&= \left( 1 + 2 (1/2)^{k-1} + 3 (-1)^{k-1} \right) h[k-1]
-\end{align*}    
-%
-where $h[k]$ is the unit step function
-
-
-\end{itemize}
 
 % **** This ENDS THE EXAMPLES. DON'T DELETE THE FOLLOWING LINE:
 \end{document}
