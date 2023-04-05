@@ -76,6 +76,7 @@
 \newtheorem{corollary}[theorem]{Corollary}
 \newtheorem{definition}[theorem]{Definition}
 \newenvironment{proof}{{\bf Proof:}}{\hfill\rule{2mm}{2mm}}
+\newtheorem{exmp}[theorem]{Ex}
 
 % **** IF YOU WANT TO DEFINE ADDITIONAL MACROS FOR YOURSELF, PUT THEM HERE:
 
@@ -95,7 +96,7 @@ State-space representation of a (causal \& finite dimensional) LTV DT system is 
   \mathbb{R}^r , \\
   x[k+1] &= A[k] x[k] + B[k] u[k] , \\
   y[k] &= C[l] x[k] + D u[k] , \\
-  \mathrm{where} \ G[k] &\in \mathbb{R}^{n \times n} \ , \ 
+  \mathrm{where} \ A[k] &\in \mathbb{R}^{n \times n} \ , \ 
     B[k] \in \mathbb{R}^{n \times r} \ ,\  C[k] \in \mathbb{R}^{m \times n} \ , \ D[d] \in \mathbb{R}^{m \times r}
 \end{align*}
 %
@@ -143,7 +144,7 @@ undriven system at time $k$ to the state at an earlier time $m$
   \\
   x[k] &= \Phi[k,0] x[0]
   \\
-  \Phi[k+1,m] = A[k] \Phi[k,m] 
+  \Phi[k+1,m] &= A[k] \Phi[k,m] 
 \end{align*}
 %
 as you can see, the state-transition matrix satisfies the discrete dynamical state equations. 
@@ -192,6 +193,52 @@ where
     \mathcal{U}[k,0] &=  \left[ \begin{array}{c} u[0] \\ u[1] \\ \vdots \\ u[k-2] \\ u[k-1]  \end{array} \right]
 \end{align*}
 %
+
+\begin{exmp}
+Let's consider following SISO LTP system
+ \begin{align*}
+  x[k+1] &= A[k] x[k] + B[k] u[k] , \ , y[k] = C[k] x[k]  \ , \   \mathrm{where} \\
+  A[k] &= A[k+4]  \ , \  B[k] = B[k+4]  \ , \ C[k] = C[k+4]
+ \end{align*}
+\end{exmp}
+%
+convert this SISO LTP system into a MISO LTI system
+
+\textbf{Solution:} Let's derive $x[4]$ in terms of $x[0] , u[0] , u[1], u[2] , u[3]$
+
+\begin{align*}
+ x[4] &= A[3] A[2] A[1] A[0] x[0] +  A[3] A[2] A[1] B[0] u[0] + A[3] A[2] B[1] u[1] + A[3] B[2] u[2] + B[3] u[3]
+ \\
+ \\
+  &= \begin{bmatrix} A[3] A[2] A[1] A[0] \end{bmatrix} x[0] + \begin{bmatrix} A[3] A[2] A[1] B[0] & A[3] A[2] B[1] & A[3] B[2] &  B[3] \end{bmatrix} 
+ \begin{bmatrix} u[0] \\ u[1] \\ u[2] \\ u[3] \end{bmatrix} 
+\end{align*}
+%
+Now let's find $x[8]$ in terms of $x[4] , u[4] , u[5], u[6] , u[7]$
+%
+\begin{align*}
+ x[8] &= \begin{bmatrix} A[3] A[2] A[1] A[0] \end{bmatrix} x[4] + \begin{bmatrix} A[3] A[2] A[1] B[0] & A[3] A[2] B[1] & A[3] B[2] &  B[3] \end{bmatrix} 
+ \begin{bmatrix} u[4] \\ u[5] \\ u[6] \\ u[7] \end{bmatrix} 
+\end{align*}
+%
+Let $\mathcal{X}[m] = x[4k]$,  $\mathcal{U}[m] = \begin{bmatrix} u[4k] & u[4k + 1] & u[4k + 2] & u[4k + 3] \end{bmatrix}^T$, and $\mathcal{Y}[m] = y[4k]$, then we have 
+%
+\begin{align*}
+ \mathcal{X}[m+1] &= \begin{bmatrix} A[3] A[2] A[1] A[0] \end{bmatrix} \mathcal{X}[m] + \begin{bmatrix} A[3] A[2] A[1] B[0] & A[3] A[2] B[1] & A[3] B[2] &  B[3] \end{bmatrix} 
+\mathcal{U}[m] 
+\\
+ &= \mathcal{A}  \mathcal{X}[m] + \mathcal{B} \mathcal{U}[m] 
+\\ 
+\mathcal{Y}[m] &= \left[ C[0] \right] \mathcal{X}[m]
+\\
+&= \mathcal{C} \mathcal{X}[m]
+\end{align*}
+%
+which is a multi input single output LTI state-space representation. Note that in this representation we technically perform periodic sampling and analyze the mapping between two sampling instants. However, in this representation we technically loose some information, e.g. measurements/outputs between to sampling instants at i.e. $y[4k+1] \ , \ y[4k+2] \, \ y[4k+3] \ k > 0$.
+
+\begin{exmp}
+	Obtain a new state-space representation (still LTI) such that it also includes these measurements, i.e. $y[4k+1] \ , \ y[4k+2] \, \ y[4k+3] \ k > 0$.
+\end{exmp}
 
 % **** This ENDS THE EXAMPLES. DON'T DELETE THE FOLLOWING LINE:
 \end{document}
