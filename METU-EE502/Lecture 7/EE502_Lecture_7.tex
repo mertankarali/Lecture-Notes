@@ -240,5 +240,115 @@ which is a multi input single output LTI state-space representation. Note that i
 	Obtain a new state-space representation (still LTI) such that it also includes these measurements, i.e. $y[4k+1] \ , \ y[4k+2] \, \ y[4k+3] \ k > 0$.
 \end{exmp}
 
+\newpage
+
+\section{Continuous-Time Linear Time Varying State Space Models} 
+
+State-space representation of a (causal \& finite dimensional) LTV CT system is given by
+%
+\begin{align*}
+  \mathrm{Let} \ x(t) &\in \mathbb{R}^n \ , \ y(t) \in \mathbb{R}^q \ ,\  u(t) \in \mathbb{R}^r , \\
+  \dot{x}(t) &= A(t) x(t) + B(t) u(t) , \\
+  y(t) &= C(t) x(t) + D(t) u(t) , 
+\end{align*}
+%
+If we assume that the mapping, $t \mapsto A(t)$ is sufficiently well behaved (if $\forall (i,j) \ , \ a_{ij}(t)$ is piecewise continuous, with a fnite number of discontinuities in any nite interval)
+there exist a unique solution for the differential equation. In such a case we can describe the solution of the system of equations via a matrix function, $\Phi(t , \tau)$, that ha the following 
+two fundamental properties
+%
+\begin{align*}
+	\frac{d}{dt} \Phi(t , \tau) &= A(t) \Phi(t , \tau) ,
+	\\
+	\Phi(\tau , \tau) &= I
+\end{align*}
+%
+First let's show that $x(t) = \Phi(t , t_0) x_0$ for the solution of zero-input response with $x(t_0) = x_0$
+%
+\begin{align*}
+	x(t_0) = \Phi(t_0 , t_0) x_0 = I x_0 = x_0 \ \checkmark
+	\\
+	\frac{d}{dt} x(t) = \frac{d}{dt} \left[ \Phi(t , t_0) x_0 \right] = A(t) \Phi(t , t_0 ) x_0 = A(t) x(t) , \ \checkmark
+\end{align*}
+%
+Now let's show that $x(t) = \int\limits_{t_0}^{t} \Phi(t , \tau) B(\tau) u(\tau) d\tau$ for the solution of zero-state response 
+%
+\begin{align*}
+	\frac{d}{dt} x(t) &= \frac{d}{dt} \left[ \int\limits_{t_0}^{t} \Phi(t , \tau) B(\tau) u(\tau) d\tau \right]
+	\\
+	&= \left[ \int\limits_{t_0}^{t} \frac{\partial}{\partial t} \Phi(t , \tau) B(\tau) u(\tau) d\tau \right] + \left[ \Phi(t , \tau) B(\tau) u(\tau) \right]_{\tau = t}
+	\\
+	&= \left[ \int\limits_{t_0}^{t} A(t) \Phi(t , \tau) B(\tau) u(\tau) d\tau \right] + \Phi(t , t) B(t) u(t) 
+	\\
+	&= A(t) \left[ \int\limits_{t_0}^{t} \Phi(t , \tau) B(\tau) u(\tau) d\tau \right] + I B(t) u(t) 
+	\\
+	\frac{d}{dt} x(t) &= A(t) x(t) + B(t) u(t) \ \checkmark
+\end{align*}
+%
+It is relatively easy to show that 
+%
+\begin{align*}
+	\Phi(t_2 , t_0) = \Phi(t_2 , t_1) \Phi(t_1 , t_0) \ , \ t_2 \geq t_1 \geq t_0
+\end{align*}
+
+\subsection{Solution of Scalar LTV Models}
+
+State-evolution equation of a scalar LTV CT system is given by
+%
+\begin{align*}
+  \dot{x}(t) &= a(t) x(t) + b(t) u(t) , \ x(t) \in \mathbb{R} , \ y(t) \in \mathbb{R} \ ,\  u(t) \in \mathbb{R} , 
+\end{align*}
+%
+Let's try to find $x(t)$ and $\Phi(t,\tau)$ for zero-input response
+%
+\begin{align*}
+  &\dot{x}(t) = a(t) x(t) \ \rightarrow \ \frac{1}{x} dx = a(t) dt \ \rightarrow \int\limits_{x(t_0)}^{x(t)} \frac{1}{x} dx = \int\limits_{t_0}^{t} a(\gamma) d\gamma \ \rightarrow \
+  \left[ \mathrm{ln} x \right]_{x_0}^{x(t)} = \int\limits_{t_0}^{t} a(\gamma) d\gamma \ \rightarrow \   \mathrm{ln} (x / x_0 ) = \int\limits_{t_0}^{t} a(\gamma) d\gamma 
+  \\
+&x(t) = e^{ \int\limits_{t_0}^{t} a(\gamma) d\gamma  }  x_0 \ \rightarrow \ \Phi(t,\tau) = e^{ \int\limits_{\tau}^{t} a(\gamma) d\gamma  } 
+\end{align*}
+%
+General solution then can be expressed as
+%
+\begin{align*}
+x(t) &= \Phi(t , t_0) x_0 +  \int\limits_{t_0}^{t} \Phi(t , \tau) B(\tau) u(\tau) d\tau
+\\
+&= e^{ \int\limits_{t_0}^{t} a(\gamma) d\gamma  }  x_0 +  \int\limits_{t_0}^{t} \begin{pmatrix} e^{ \int\limits_{\tau}^{t} a(\gamma) d\gamma  } \end{pmatrix} B(\tau) u(\tau) d\tau
+\end{align*}
+
+
+\begin{exmp}
+	Let
+	\begin{align*}	
+		\frac{d}{dt} x(t) = \begin{bmatrix} - t & 0 \\ 0 & \cos t \end{bmatrix} x(t) + \begin{bmatrix} 1 \\ 1  \end{bmatrix} u(t)
+	\end{align*}	
+\end{exmp}
+%
+First find the state-transition matrix
+
+\textbf{Solution:} Even though the system is not a scalar LTV system since it is in diagonal form, we can use the same derivation on the scalar case
+%
+\begin{align*}	
+	\Phi(t , t_0) = \begin{bmatrix} e^{ \int\limits_{t_0}^{t} -\gamma d\gamma  } & 0 \\ 0 & e^{ \int\limits_{t_0}^{t} \cos(\gamma) d\gamma  } \end{bmatrix} 
+	= \begin{bmatrix} e^{ \frac{t_0^2 - t^2}{2} } & 0 \\ 0 & e^{ \sin(t) - \sin(t_0)  } \end{bmatrix} 
+\end{align*}	
+%
+Now let $x(0) = 0$ and $u(t) = 1$, find $x(t)$
+%
+\begin{align*}
+x(t) &= \int\limits_{0}^{t} \Phi(t , \tau) B(\tau) u(\tau) d\tau = \int\limits_{0}^{t} \begin{bmatrix} e^{ \frac{\tau^2 - t^2}{2} } & 0 \\ 0 & e^{ \sin(t) - \sin(\tau)  } \end{bmatrix}  \begin{bmatrix} 1 \\ 1  \end{bmatrix} d\tau
+= \begin{bmatrix} \int\limits_{0}^{t} e^{ \frac{\tau^2 - t^2}{2} } d\tau \\ \int\limits_{0}^{t} e^{ \sin(t) - \sin(\tau)  } d\tau \end{bmatrix}   
+\\
+&= \begin{bmatrix} e^{ \frac{- t^2}{2} } \int\limits_{0}^{t} e^{ \frac{\tau^2}{2} } d\tau \\ e^{ \sin(t) } \int\limits_{0}^{t} e^{ - \sin(\tau)  } d\tau \end{bmatrix}   
+\end{align*}
+
+\subsection{Solution of Vector LTV Models}
+
+\textbf{Question:} For the vector LTV systems, can we express the zero input solution and the state-transition matrix as
+%
+\begin{align*}
+x(t) &= e^{ \int\limits_{t_0}^{t} A(\gamma) d\gamma  }  x_0 \ , \ \Phi(t,\tau) = e^{ \int\limits_{\tau}^{t} A(\gamma) d\gamma  } 
+\end{align*}
+
+
 % **** This ENDS THE EXAMPLES. DON'T DELETE THE FOLLOWING LINE:
 \end{document}
