@@ -346,9 +346,58 @@ x(t) &= \int\limits_{0}^{t} \Phi(t , \tau) B(\tau) u(\tau) d\tau = \int\limits_{
 \textbf{Question:} For the vector LTV systems, can we express the zero input solution and the state-transition matrix as
 %
 \begin{align*}
-x(t) &= e^{ \int\limits_{t_0}^{t} A(\gamma) d\gamma  }  x_0 \ , \ \Phi(t,\tau) = e^{ \int\limits_{\tau}^{t} A(\gamma) d\gamma  } 
+x(t) &\overset{?}{=}  e^{ \int\limits_{t_0}^{t} A(\gamma) d\gamma  }  x_0 \ , \ \Phi(t,\tau) \overset{?}{=}  e^{ \int\limits_{\tau}^{t} A(\gamma) d\gamma  } 
 \end{align*}
-
+%
+Let $\Psi(t,0) = e^{ \int\limits_{0}^{t} A(\gamma) d\gamma  } $ and expand the matrix exponential 
+%
+\begin{align*}
+\Psi(t,0) &= e^{ \int\limits_{0}^{t} A(\gamma) d\gamma }  = I + \begin{pmatrix} \int\limits_{0}^{t} A(\gamma) d\gamma \end{pmatrix} + \frac{1}{2 !} \begin{pmatrix} \int\limits_{0}^{t} A(\gamma) d\gamma \end{pmatrix}^2  
++ \frac{1}{3 !} \begin{pmatrix} \int\limits_{0}^{t} A(\gamma) d\gamma \end{pmatrix}^3  + \cdots 
+\\ 
+&= \sum\limits_{i=0}^{\infty} \frac{1}{i !} \begin{pmatrix} \int\limits_{0}^{t} A(\gamma) d\gamma \end{pmatrix}^i  
+\end{align*}
+%
+Let's focus on the derivates of the individual elements in the expansion of $\Psi(t,0)$
+%
+\begin{align*}
+\frac{d}{dt} I &= 0 \ , \ \checkmark
+\\
+\frac{d}{dt}  \begin{pmatrix} \int\limits_{0}^{t} A(\gamma) d\gamma \end{pmatrix} &= A(t) \ , \ \checkmark
+\\
+\frac{d}{dt} \frac{1}{2}  \begin{pmatrix} \int\limits_{0}^{t} A(\gamma) d\gamma \end{pmatrix}^2 &= \frac{1}{2} \frac{d}{dt} \left[  \begin{pmatrix} \int\limits_{0}^{t} A(\gamma) d\gamma \end{pmatrix}  \begin{pmatrix} \int\limits_{0}^{t} A(\gamma) d\gamma \end{pmatrix} \right] \\
+&= \frac{1}{2} \left[ A(t) \begin{pmatrix} \int\limits_{0}^{t} A(\gamma) d\gamma \end{pmatrix} \right] 
++  \frac{1}{2} \left[ \begin{pmatrix} \int\limits_{0}^{t} A(\gamma) d\gamma \end{pmatrix} A(t) \right] 
+\end{align*}
+%
+If $\begin{pmatrix} \int\limits_{0}^{t} A(\gamma) d\gamma \end{pmatrix}$ and $A(t)$ does not commute, we can go further from here. However, if $\begin{pmatrix} \int\limits_{0}^{t} A(\gamma) d\gamma \end{pmatrix}$ and $A(t)$ commutes then 
+%
+\begin{align*}
+\frac{d}{dt} \frac{1}{2} \begin{pmatrix} \int\limits_{0}^{t} A(\gamma) d\gamma \end{pmatrix}^2 &=  A(t) \begin{pmatrix} \int\limits_{0}^{t} A(\gamma) d\gamma \end{pmatrix} 
+= \begin{pmatrix} \int\limits_{0}^{t} A(\gamma) d\gamma \end{pmatrix} A(t) 
+\\
+\frac{d}{dt} \frac{1}{2 !} \begin{pmatrix} \int\limits_{0}^{t} A(\gamma) d\gamma \end{pmatrix}^3 &= \frac{1}{2 !}  A(t) \begin{pmatrix} \int\limits_{0}^{t} A(\gamma) d\gamma \end{pmatrix}^2
+= \frac{1}{2 !} \begin{pmatrix} \int\limits_{0}^{t} A(\gamma) d\gamma \end{pmatrix}^2 A(t) 
+\\
+&\vdots
+\end{align*}
+%
+Thus similar to constant $A$ case if $\begin{pmatrix} \int\limits_{0}^{t} A(\gamma) d\gamma \end{pmatrix}$ and $A(t)$ commutes, we can express the derivative of the matrix exponential as
+%
+\begin{align*}
+\frac{d}{dt} \Psi(t,t_0) &= \frac{d}{dt} e^{ \int\limits_{t_0}^{t} A(\gamma) d\gamma }  = A(t) e^{ \int\limits_{t_0}^{t} A(\gamma) d\gamma } = e^{ \int\limits_{t_0}^{t} A(\gamma) d\gamma } A(t)
+\end{align*}
+% 
+Now let's check if $\Psi(t,t_0) = \Phi(t,t_0)$, i.e. control weather $e^{ \int\limits_{t_0}^{t} A(\gamma) d\gamma }$ is a state transition matrix of the given LTV system
+%
+\begin{align*}
+\Psi(t_0,t_0) = e^{ \int\limits_{0}^{0} A(\gamma) d\gamma } = I \ , \ \checkmark
+\\
+\frac{d}{dt} \Psi(t,\tau) &= A(t) \Psi(t,\tau) \ , \ \checkmark
+\end{align*}
+%
+Thus $\Phi(t,t_0)  = e^{ \int\limits_{t_0}^{t} A(\gamma) d\gamma }$ is the state-transition matrix of the system under the condition that 
+$\begin{pmatrix} \int\limits_{0}^{t} A(\gamma) d\gamma \end{pmatrix}$ and $A(t)$ commutes.
 
 % **** This ENDS THE EXAMPLES. DON'T DELETE THE FOLLOWING LINE:
 \end{document}
