@@ -533,6 +533,39 @@ Now, let's find the state-transition matrix using the matrix exponential. Since 
 	\\
 	\Phi(t,0) &= \begin{bmatrix} 1 & \frac{t^2}{2} & \frac{t^4}{8} \\ 0 & 1 & \frac{t^2}{2} \\ 0 & 0 & 1 \end{bmatrix} 
 \end{align*}
+
+\begin{exmp}
+Compute the unit step response for the same system given that
+\begin{align*}
+	x(0) = 0 \ , \ B(t) = \begin{bmatrix} 0 \\ 0 \\ 1 \end{bmatrix} 
+	\ , \
+	C(t) = \begin{bmatrix} 1 & 0 & 0 \end{bmatrix} 
+\end{align*}
+\end{exmp}
+%
+\textbf{Solution:} First let's find $\Phi(t , \tau)$
+%
+\begin{align*}
+	\Phi(t , \tau) &= X(t) X(\tau)^{-1} = \begin{bmatrix} 1 & \frac{t^2}{2} & \frac{t^4}{8} \\ 0 & 1 & \frac{t^2}{2} \\ 0 & 0 & 1 \end{bmatrix} 
+	\begin{bmatrix} 1 & \frac{\tau^2}{2} & \frac{\tau^4}{8} \\ 0 & 1 & \frac{\tau^2}{2} \\ 0 & 0 & 1 \end{bmatrix}^{-1}
+	= \begin{bmatrix} 1 & \frac{t^2}{2} & \frac{t^4}{8} \\ 0 & 1 & \frac{t^2}{2} \\ 0 & 0 & 1 \end{bmatrix} 
+	\begin{bmatrix} 1 & -\frac{\tau^2}{2} & 0 \\ 0 & 1 & -\frac{\tau^2}{2} \\ 0 & 0 & 1 \end{bmatrix}
+	\\
+\end{align*}
+%
+Now we can find the solution
+%
+\begin{align*}
+	y(t) &= C(t) \int\limits_{t_0}^{t} \Phi(t , \tau) B(\tau) u(\tau) d\tau 
+	\\
+	&= \begin{bmatrix} 1 & 0 & 0 \end{bmatrix}  \int\limits_{0}^{t} \begin{bmatrix} 1 & \frac{t^2}{2} & \frac{t^4}{8} \\ 0 & 1 & \frac{t^2}{2} \\ 0 & 0 & 1 \end{bmatrix} 
+	\begin{bmatrix} 1 & -\frac{\tau^2}{2} & 0 \\ 0 & 1 & -\frac{\tau^2}{2} \\ 0 & 0 & 1 \end{bmatrix} \begin{bmatrix} 0 \\ 0 \\ 1 \end{bmatrix}  d\tau 
+	\\
+	&= \begin{bmatrix} 1 & \frac{t^2}{2} & \frac{t^4}{8} \end{bmatrix}  \int\limits_{t_0}^{t} \begin{bmatrix} \frac{\tau^4}{8} \\ -\frac{\tau^2}{2} \\ 1 \end{bmatrix} d\tau 
+	= \begin{bmatrix} 1 & \frac{t^2}{2} & \frac{t^4}{8} \end{bmatrix} \begin{bmatrix} \frac{t^5}{40} \\ -\frac{t^3}{6} \\ t \end{bmatrix} 
+	\\
+	&= \frac{t^5}{40} - \frac{t^5}{12} + \frac{t^5}{8} = \frac{t^5}{15}
+\end{align*}
 % 
 % **** This ENDS THE EXAMPLES. DON'T DELETE THE FOLLOWING LINE:
 \end{document}
