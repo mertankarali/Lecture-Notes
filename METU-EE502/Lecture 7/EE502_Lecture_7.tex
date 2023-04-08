@@ -464,5 +464,75 @@ since, if $\mathrm{det}[X(t_0)]=0$ then $X(t)$ is not a fundamental matrix.
 	\frac{d}{dt} \Phi(t , \tau) &= A(t) \Phi(t , \tau) \ , \ \checkmark
 \end{align*}
 
+\begin{exmp}
+Let 
+\begin{align*}
+	\dot{x}(t) = \begin{bmatrix} 0 & t & 0 \\ 0 & 0 & t \\ 0 & 0 & 0 \end{bmatrix} x(t)
+\end{align*}
+\end{exmp}
+%
+Compute $\Phi(t,0)$ via two different methods
+
+\textbf{Solution:} Let's first find state-transition matrix via finding a fundamental matrix. Let $X(0) = I$ 
+%
+\begin{align*}
+	X(0) = \begin{bmatrix} 1 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 1 \end{bmatrix} 
+	= \begin{bmatrix} e_1 & e_2 & e_3  \end{bmatrix} 
+\end{align*}
+% 
+Let's start with $x(0) = e_1$. Let's write individual differential equations in the reverse order of the state numbering 
+%
+\begin{align*}
+	\dot{x}_3 &= 0 \ , \ x_3(0) = 0 \ \rightarrow \ x_3(t) = 0
+	\\
+	\dot{x}_2 &= t x_3 = 0\ , \ x_2(0) = 0 \ \rightarrow \ x_2(t) = 0
+	\\
+	\dot{x}_1 &= t x_2 = 0 \ , \ x_1(0) = 1 \ \rightarrow \ x_1(t) = 1
+	\\
+	x(t)_1 &= \begin{bmatrix} 1 \\ 0 \\ 0 \end{bmatrix}
+\end{align*}
+% 
+Now apply the same process for $x(0) = e_2$.
+%
+\begin{align*}
+	\dot{x}_3 &= 0 \ , \ x_3(0) = 0 \ \rightarrow \ x_3(t) = 0
+	\\
+	\dot{x}_2 &= t x_3 = 0 \ , \ x_2(0) = 1 \ \rightarrow \ x_2(t) = 1
+	\\
+	\dot{x}_1 &= t x_2 = t \ , \ x_1(0) = 0 \ \rightarrow \ x_1(t) = \frac{t^2}{2}
+	\\
+	x(t)_2 &= \begin{bmatrix} \frac{t^2}{2} \\ 1 \\ 0 \end{bmatrix}
+\end{align*}
+%
+Finally apply the same process for $x(0) = e_3$.
+%
+\begin{align*}
+	\dot{x}_3 &= 0 \ , \ x_3(0) = 1 \ \rightarrow \ x_3(t) = 1
+	\\
+	\dot{x}_2 &= t x_3 = t \ , \ x_2(0) = 0 \ \rightarrow \ x_2(t) =  \frac{t^2}{2}
+	\\
+	\dot{x}_1 &= t x_2 = \frac{t^3}{2} \ , \ x_1(0) = 0 \ \rightarrow \ x_1(t) = \frac{t^4}{8}
+	\\
+	x(t)_3 &= \begin{bmatrix} \frac{t^4}{8} \\ \frac{t^2}{2} \\ 1 \end{bmatrix}
+\end{align*}
+%
+We can then form the fundamental and state-transition matrices 
+%
+\begin{align*}
+	X(t) &= \begin{bmatrix} x(t)_1 & x(t)_2 & x(t)_3 \end{bmatrix}  = \begin{bmatrix} 1 & \frac{t^2}{2} & \frac{t^4}{8} \\ 0 & 1 & \frac{t^2}{2} \\ 0 & 0 & 1 \end{bmatrix} 
+	\\
+	\Phi(t,0) &= X(t)X(0)^{-1} = \begin{bmatrix} 1 & \frac{t^2}{2} & \frac{t^4}{8} \\ 0 & 1 & \frac{t^2}{2} \\ 0 & 0 & 1 \end{bmatrix} 
+\end{align*}
+% 
+Now, let's find the state-transition matrix using the matrix exponential. Since $\begin{pmatrix} \int\limits_{0}^{t} A(\gamma) d\gamma \end{pmatrix}$ and $A(t)$ commutes, we can express the state-transition matrix as
+%
+\begin{align*}
+	\Phi(t,0) &= e^{ \int\limits_{0}^{t} A(\gamma) d\gamma } 
+	= \mathrm{exp} \begin{pmatrix} \int\limits_{0}^{t} \begin{bmatrix} 0 & \gamma & 0 \\ 0 & 0 & \gamma \\ 0 & 0 & 0 \end{bmatrix} d\gamma \end{pmatrix}	
+	= \mathrm{exp} \begin{pmatrix} \begin{bmatrix} 0 & \frac{t^2}{2} & 0 \\ 0 & 0 & \frac{t^2}{2} \\ 0 & 0 & 0 \end{bmatrix} \end{pmatrix}	
+	\\
+	\Phi(t,0) &= \begin{bmatrix} 1 & \frac{t^2}{2} & \frac{t^4}{8} \\ 0 & 1 & \frac{t^2}{2} \\ 0 & 0 & 1 \end{bmatrix} 
+\end{align*}
+% 
 % **** This ENDS THE EXAMPLES. DON'T DELETE THE FOLLOWING LINE:
 \end{document}
