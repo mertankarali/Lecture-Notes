@@ -14,7 +14,7 @@
 % ADD PACKAGES here:
 %
 
-\usepackage{amsmath,amsfonts,graphicx}
+\usepackage{amsmath,amsfonts,graphicx,mathtools}
 
 %
 \newcounter{lecnum}
@@ -315,7 +315,6 @@ x(t) &= \Phi(t , t_0) x_0 +  \int\limits_{t_0}^{t} \Phi(t , \tau) B(\tau) u(\tau
 &= e^{ \int\limits_{t_0}^{t} a(\gamma) d\gamma  }  x_0 +  \int\limits_{t_0}^{t} \begin{pmatrix} e^{ \int\limits_{\tau}^{t} a(\gamma) d\gamma  } \end{pmatrix} B(\tau) u(\tau) d\tau
 \end{align*}
 
-
 \begin{exmp}
 	Let
 	\begin{align*}	
@@ -403,7 +402,67 @@ Two special cases for which $\begin{pmatrix} \int\limits_{0}^{t} A(\gamma) d\gam
 %
 \begin{itemize}
 	\item $A(t)$ is a diagonal matrix $\forall t \in \mathbb{R}$
-	\item $A(t) = A_c f(t)$ where $A_c \in mathbb{R}^{n \times n}$ is a constant matrix and $f(t) \in \mathbb{R}$ is a scalar function.
+	\item $A(t) = A_c f(t)$ where $A_c \in \mathbb{R}^{n \times n}$ is a constant matrix and $f(t) \in \mathbb{R}$ is a scalar function.
 \end{itemize}
+
+\subsubsection{General Theory for CT LTV Systems}
+
+Previously we showed that if $\begin{pmatrix} \int\limits_{0}^{t} A(\gamma) d\gamma \end{pmatrix}$ and $A(t)$ commutes we can write an ``analytical'' expression (for which we generally still adopt numerical integration techniques) for the state transition matrix, $\Phi(t,\tau) = e^{ \int\limits_{t_0}^{\tau} A(\gamma) d\gamma }$
+For a general linear time-varying system, there is no analytical expression that expresses $\Phi(t,\tau)$ analytically as a function of $A(t)$. Instead, we are essentially limited to numerical solutions, how ever we still need a theoretical framework. 
+
+\textbf{Definition:} Consider $\dot{x} = A(t) x$, where $A(t)$ is a sufficiently well behaved matrix of functions of $t$. Then for every initial state, 
+$x(t_0)_i \ , \ i = 1, \ 2, \ \cdots n $, there exists a unique solution $x(t)_i \ , \ i = 1, \ 2, \ \cdots n $. Let's define a matrix 
+%
+\begin{align*}
+X(t) \vcentcolon= \left[ \begin{array}{c|c|c|c} x(t)_1 & x(t)_2 & \cdots & x(t)_n \end{array} \right] \ , \ X(t) \in \mathbb{C}^{n}
+\end{align*}
+%
+The matrix $X(t)$ satisfies the matrix differential equation, $\dot{X}(t) = A(t) X(t)$. If $X(t_0)$ is full rank (and hence invertible), then $X(t)$ is called ``a fundamental matrix''. Note that $X(t)$ is not unique and there exists infinitely many fundamental matrices. 
+
+\vspace{6pt}
+
+\textbf{Theorem:} A fundamental matrix $X(t)$ is invertible $\forall \ t$
+
+\textbf{Proof:} Let's try proof by contradiction. 
+
+Suppose that $\exists \ \bar{t}$ such that $\det( X(\bar{t}) ) = 0$, then we know that 
+%
+\begin{align*}
+	\mathrm{dim} \mathcal{N}\left( X(\bar{t}) \right) > 0 \ \rightarrow \ \exists \ \bar{v}\neq0 \ s.t. \ X(\bar{t}) \bar{v} = 0
+\end{align*}
+%
+now let $\zeta(t) = X(\bar{t}) \bar{v}$ and take the derivate of $\zeta(t)$
+%
+\begin{align*}
+	\dot{\zeta}(t) &= \dot{X}(\bar{t}) \bar{v} = A(t) \left[ X(\bar{t}) \bar{v} \right] = A(t) \zeta(t)
+	\\
+	\dot{\zeta}(t) &= A(t) \zeta(t)
+\end{align*}
+%
+Since we assumed that $X(\bar{t}) \bar{v} = 0$
+%
+\begin{align*}
+	\zeta(\bar{t}) &= 0 \ \rightarrow \ \zeta(t) = 0 \ \mathrm{for} \ t < \bar{t} \ \mathrm{(CT-Linear-System)}
+	\\
+	\zeta(t_0) &= 0 \ \rightarrow \ X(t_0) \bar{v} = 0 \ \rightarrow \ \mathrm{det}[X(t_0)]=0 \ \rightarrow \ \mathrm{contrdiction}
+\end{align*}
+%
+since, if $\mathrm{det}[X(t_0)]=0$ then $X(t)$ is not a fundamental matrix. 
+
+\vspace{6pt}
+
+\textbf{Theorem:} Let $X(t)$ be any fundamental matrix of $\dot{x} = A(t) x(t)$, then $\Phi(t,t_0) = X(t) X(t_0)^{-1}$
+
+\textbf{Proof:} Let's show that $X(t) X(t_0)^{-1}$ is the state-transition matrix
+%
+\begin{align*}
+\Phi(t_0,t_0) &= \left[ X(t) X(t_0)^{-1} \right]_{t=t_0} = X(t_0) X(t_0)^{-1}= I \ , \ \checkmark
+	\\
+	\\
+	\frac{d}{dt} \Phi(t , \tau) &= \frac{d}{dt} \left[ X(t) X(\tau)^{-1} \right] = \dot{X}(t) X(\tau)^{-1}  = A(t) X(t) X(\tau)^{-1}
+	\\
+	\frac{d}{dt} \Phi(t , \tau) &= A(t) \Phi(t , \tau) \ , \ \checkmark
+\end{align*}
+
 % **** This ENDS THE EXAMPLES. DON'T DELETE THE FOLLOWING LINE:
 \end{document}
