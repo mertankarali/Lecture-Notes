@@ -152,6 +152,45 @@ stability is (slightly) important for only time-varying non-linear systems. Thus
 
 \textbf{Remark:} Note that as you can see the internal stability definitions, \textit{s.i.s.L}, \textit{asymptotic stability}, and \textit{exponentially stability}, are all local stability definitions defined in the neighborhood of $x_e$. If a stability definition holds for all initial conditions, i.e. $x(t_0) \in \mathbb{R}^n$, then use the terms
 \textit{globally s.i.s.L}, \textit{globally asymptotically stable}, and \textit{globally exponentially stable}.
- 
+
+\begin{exmp}
+    Consider the pendulum dynamics
+    \begin{align*}
+    \dot{x} = \begin{bmatrix} x_2 \\ -sin(x_1)\end{bmatrix} \ , \ \mathrm{where} \ \begin{bmatrix}  \theta \\ \dot{\theta} \end{bmatrix}
+\end{align*}
+\end{exmp}
+Analyze the stability of the dynamics around $x_e = \begin{bmatrix} 0 \\ 0 \end{bmatrix}$ using Lyapunov's stability definitions.
+
+\textbf{Solution:} We know that a mechanical pendulum is an
+energy-conserving system since there is no dissipative or active element. In that respect, at any time instant, we can write total energy as 
+%
+\begin{align*}
+E(x) &= \frac{1}{2} x_2^2 + 1 - \cos{x_2}  \ , \ \mathrm{note} \ E(0) = 0
+\end{align*}
+%
+Let $x(0) = \begin{bmatrix} x_1(0) \\ x_2(0) \end{bmatrix}$ and $|| x(0) ||_2 < \epsilon , \, \epsilon \in \mathbb{R}^+ $, then we know that $ (x_1(0)^2 + x_2(0)^2) < \epsilon^2 $. Due to the conservation of energy, we also know that
+%
+\begin{align*}
+&E(x(t)) = E(x(0)) \\
+&\frac{1}{2} x_2(t)^2 + 1 - \cos{x_2(t)} 
+= 
+\frac{1}{2} x_2(0)^2 + 1 - \cos{x_2(0)} < \frac{1}{2} x_2(0)^2 + \frac{1}{2} x_1(0)^2 < \frac{\epsilon^2}{2}
+\\
+&\frac{1}{2} x_2(0)^2 + 1 - \cos{x_2(0)} < \frac{\epsilon^2}{2} 
+\ \rightarrow \ x_2(0)^2 < \epsilon^2 + 4
+\end{align*}
+%
+We already know that $x_1 = \theta$ and it is bounded since $\theta \in \mathbb{S}$, so 
+%
+\begin{align*}
+x_1(t)^2 \leq 1 \ \rightarrow \ ( x_1(t)^2 + x_2(t)^2 ) < \epsilon^2 + 5 \ \rightarrow \ || x(t) ||_2 < \sqrt{\epsilon^2 + 5} = \delta(\epsilon)
+\end{align*}
+%
+This shows that the dynamics around the equilibrium is \textit{stable in the sense of Lyapunov} (globally). Note that 
+since $E(t) = E(0) \, \forall t >0$, $|| x(t) ||_2 \neq 0 \forall t >0$, thus the system around the equilibrium is not asymptotically
+stable (local or global), and hence not exponentially stable. 
+
+
+
 % **** This ENDS THE EXAMPLES. DON'T DELETE THE FOLLOWING LINE:
 \end{document}
