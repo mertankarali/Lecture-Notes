@@ -490,7 +490,7 @@ Let's first focus on single-input CT systems
        \dot{x} &= A x + B u \ , \ y = C x + D u
 \end{align*}
 %
-Fundamental test signal for the analysis of LTI CT systems is $u(t) = e^{s_0 t}$ where $s_0 \in mathbb{C}$. Note that for a multi-input system, $u(t) \in mathbb{C}^q$ the test signal becomes $u(t) = u_0 s_0 t$ where $u_0 \in \mathbb{C}^q$ and $u_o \neq 0$. However as you may guess, in such a case we may need to explore more than one $u_0$.
+Fundamental test signal for the analysis of LTI CT systems is $u(t) = e^{s_0 t}$ where $s_0 \in \mathbb{C}$. Note that for a multi-input system, $u(t) \in \mathbb{C}^q$ the test signal becomes $u(t) = u_0 s_0 t$ where $u_0 \in \mathbb{C}^q$ and $u_o \neq 0$. However as you may guess, in such a case we may need to explore more than one $u_0$.
 %
 \begin{align*}
   y(t) &= C \int\limits_{0}^{t} e^{A ( t - \tau ) } B u(\tau) d \tau + D u(t) = C \int\limits_{0}^{t} e^{A ( t - \tau ) } B e^{s_o \tau} d \tau + D e^{s_0 t} = 
@@ -622,9 +622,9 @@ G(j) &= C (j I -A)^{-1} B =  \begin{bmatrix} -1 & 1 \end{bmatrix}  \begin{bmatri
 We can write CT and DT cosine/sine signals as a sum of two complex exponential functions
 %
 \begin{align*} 
- 	\cos(\omega t) &= \frac{1}{2} e^{j \omega t} + \frac{1}{2} e^{-j \omega t} \ , \ \sin(\omega t) = \frac{1}{2} e^{j \omega t} - \frac{1}{2} e^{-j \omega t} \ , \ \omega \in \mathbb{R} 
+ 	\cos(\omega t) &= \frac{1}{2} e^{j \omega t} + \frac{1}{2} e^{-j \omega t} \ , \ \sin(\omega t) = \frac{1}{2 j} e^{j \omega t} - \frac{1}{2 j} e^{-j \omega t} \ , \ \omega \in \mathbb{R} 
 	\\
-	\cos(\omega_d k) &= \frac{1}{2} e^{j \omega_d k} + \frac{1}{2} e^{-j \omega_d k} \ , \ 	\cos(\omega t) = \frac{1}{2} e^{j \omega_d k} - \frac{1}{2} e^{-j \omega t} \ , \ \omega_d \in \left( -\pi , \pi \right) 
+	\cos(\omega_d k) &= \frac{1}{2} e^{j \omega_d k} + \frac{1}{2} e^{-j \omega_d k} \ , \ 	\sin(\omega_d k) = \frac{1}{2 j} e^{j \omega_d k} - \frac{1}{2 j} e^{-j \omega t} \ , \ \omega_d \in \left[ -\pi , \pi \right] 
 \end{align*}
 %
 Using linearity (and assuming $A, B, C, D$ are all matrices with real entires) we can find the CT response to $\cos(\omega t)$ signal as
