@@ -1,0 +1,157 @@
+
+
+\documentclass[twoside]{article}
+\setlength{\oddsidemargin}{0.25 in}
+\setlength{\evensidemargin}{-0.25 in}
+\setlength{\topmargin}{-0.6 in}
+\setlength{\textwidth}{6.5 in}
+\setlength{\textheight}{8.5 in}
+\setlength{\headsep}{0.75 in}
+\setlength{\parindent}{0 in}
+\setlength{\parskip}{0.1 in}
+
+%
+% ADD PACKAGES here:
+%
+
+\usepackage{amsmath,amsfonts,graphicx,mathtools}
+
+%
+\newcounter{lecnum}
+\renewcommand{\thepage}{\thelecnum-\arabic{page}}
+\renewcommand{\thesection}{\thelecnum.\arabic{section}}
+\renewcommand{\theequation}{\thelecnum.\arabic{equation}}
+\renewcommand{\thefigure}{\thelecnum.\arabic{figure}}
+\renewcommand{\thetable}{\thelecnum.\arabic{table}}
+
+%
+% The following macro is used to generate the header.
+%
+\newcommand{\lecture}[4]{
+   \pagestyle{myheadings}
+   \thispagestyle{plain}
+   \newpage
+   \setcounter{lecnum}{#1}
+   \setcounter{page}{1}
+   \noindent
+   \begin{center}
+   \framebox{
+      \vbox{\vspace{2mm}
+    \hbox to 6.28in { {\bf EE502 - Linear Systems Theory II
+	\hfill Spring 2032} }
+       \vspace{4mm}
+       \hbox to 6.28in { {\Large \hfill Lecture #1 \hfill} }
+       \vspace{2mm}
+       \hbox to 6.28in { {\it Lecturer: #2 \hfill } }
+      \vspace{2mm}}
+   }
+   \end{center}
+   \markboth{Lecture #1}{Lecture #1}
+
+   \vspace*{4mm}
+}
+
+
+\renewcommand{\cite}[1]{[#1]}
+\def\beginrefs{\begin{list}%
+        {[\arabic{equation}]}{\usecounter{equation}
+         \setlength{\leftmargin}{2.0truecm}\setlength{\labelsep}{0.4truecm}%
+         \setlength{\labelwidth}{1.6truecm}}}
+\def\endrefs{\end{list}}
+\def\bibentry#1{\item[\hbox{[#1]}]}
+
+%Use this command for a figure; it puts a figure in wherever you want it.
+%usage: \fig{NUMBER}{SPACE-IN-INCHES}{CAPTION}
+\newcommand{\fig}[3]{
+			\vspace{#2}
+			\begin{center}
+			Figure \thelecnum.#1:~#3
+			\end{center}
+	}
+% Use these for theorems, lemmas, proofs, etc.
+\newtheorem{theorem}{Theorem}[lecnum]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{claim}[theorem]{Claim}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\newenvironment{proof}{{\bf Proof:}}{\hfill\rule{2mm}{2mm}}
+\newtheorem{exmp}[theorem]{Ex}
+
+% **** IF YOU WANT TO DEFINE ADDITIONAL MACROS FOR YOURSELF, PUT THEM HERE:
+
+\begin{document}
+
+% Lecture Details
+\lecture{8}{Assoc. Prof. M. Mert Ankarali}
+
+
+
+\section{Internal (Lyapunov) Stability} 
+
+In internal stability, we are interested in un-driven (zero-input response) part of the dynamical system and solely 
+focus on state evolution dynamics, i.e. autonomous part of the dynamical system. CT and DT non-linear autonomous 
+systems can simply be expressed by 
+%
+\begin{align*}
+ \dot{x} &= F(x , t) \\
+  x[k+1] &= F(x[k]], k) 
+\end{align*}
+%
+For non-linear systems, in order to define and analyze the stability of a dynamical system, we need to 
+define equilibrium points (or nominal solutions), since we will technically analyze the stability around 
+such points. An equilibrium point for CT and DT non-linear systems are defined as
+%
+\begin{align*}
+  &x_e \in \mathbb{R}^{n}
+  \\
+  CT:& \ 0 = F(x_e , t) \ \forall t > t_0
+  \\
+  DT:& \ x_e = F(x_e , k) \ \forall k > k_0
+\end{align*}
+%
+Obviously if a dynamical system at time $t_0$ (or $k_0)$ starts from an an equilibrium point, $x(t_0) = x_e$ 
+(or $x[k_o] = x_e$), it will remain on the equilibrium point $\forall \ t \geq t_0$ (or $\forall \ k \geq k_0$). 
+A non-linear system can have a single equilibrium point, $x_e \in \mathcal{E}, \, \mathrm{card}(\mathcal{E}) = 1$, have multiple finite 
+number of equilibria, $x_e \in \mathcal{E}, \, \mathrm{card}(\mathcal{E}) = n_e < \infty$, or infinite number of equilibrium points, 
+$x_e \in \mathcal{E}, \, \mathrm{card}(\mathcal{E}) = \infty$.
+
+\begin{exmp}
+	Show that for an LTI dynamical system, set of equilibrium points define a vector space. Then characterize this vector space. 
+\end{exmp}
+
+\textbf{Definition:} Without loss of generality, let's assume that the equilibrium point that is point of interest is located at the origin $x_e = 0$.
+%
+\begin{enumerate}
+%
+\item The system is called \textit{stable in the sense of Lyapunov (s.i.s.L)} around $x_e = 0$ if it satisfies
+%
+\begin{align*}
+	\forall \epsilon > 0 , \ \exists \delta_L(\epsilon) \ s.t. \ if \ || x(t_0) || < \delta_L \ \rightarrow || x(t) || < \epsilon \ \forall t \geq t_0
+\end{align*}
+%
+\item The system is called \textit{asymptotically stable} around  around $x_e = 0$ if it is 
+\textit{stable in the sense of Lyapunov (s.i.s.L)} around $x_e = 0$ and \textit{locally attractive}, i.e.
+%
+\begin{align*}
+	\exists \delta_a \ s.t. \ if \ || x(t_0) || < \delta_a \ \rightarrow \lim_{t \to \infty} || x(t) || = 0
+\end{align*}
+%
+\item The system is called \textit{exponentially stable} around  around $x_e = 0$ if it is 
+\textit{asymptotically stable} around $x_e = 0$ and satisfies 
+%
+\begin{align*}
+	\exists \delta_e > 0 , \, \alpha > 0 , \, \sigma >0 \ s.t. \ if \ || x(t_0) || < \delta_e \ \rightarrow || x(t) || \leq \alpha || x(t_0) || e^{- \sigma t} \ \forall t \geq t_0
+\end{align*}
+%
+\end{enumerate}
+
+\textbf{Remark:} If above stability conditions are satisfied $\forall \, t_0 \in \mathbb{R}$, then we call the system around the equilibrium \textit{uniformly s.i.s.L}, 
+\textit{uniformly asymptotically stable}, and \textit{uniformly exponentially stable} respectively. The difference between uniform and non-uniform
+stability is (slightly) important for only time-varying non-linear systems. Thus we will not use uniform stability definition in this course. 
+
+\textbf{Remark:} Note that as you can see the internal stability definitions, \textit{s.i.s.L}, \textit{asymptotic stability}, and \textit{exponentially stability}, are all local stability definitions defined in the neighborhood of $x_e$. If a stability definition holds for all initial conditions, i.e. $x(t_0) \in \mathbb{R}^n$, then use the terms
+\textit{globally s.i.s.L}, \textit{globally asymptotically stable}, and \textit{globally exponentially stable}.
+ 
+% **** This ENDS THE EXAMPLES. DON'T DELETE THE FOLLOWING LINE:
+\end{document}
