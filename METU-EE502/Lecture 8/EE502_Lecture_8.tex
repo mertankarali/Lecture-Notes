@@ -94,6 +94,8 @@ focus on state evolution dynamics, i.e. autonomous part of the dynamical system.
 systems can simply be expressed by 
 %
 \begin{align*}
+ x &\in \mathbb{D} \subset \mathbb{R}^n
+ \\
  \dot{x} &= F(x , t) \\
   x[k+1] &= F(x[k]], k) 
 \end{align*}
@@ -103,7 +105,7 @@ define equilibrium points (or nominal solutions), since we will technically anal
 such points. An equilibrium point for CT and DT non-linear systems are defined as
 %
 \begin{align*}
-  &x_e \in \mathbb{R}^{n}
+  &x_e \in \mathbb{D}
   \\
   CT:& \ 0 = F(x_e , t) \ \forall t > t_0
   \\
@@ -150,7 +152,11 @@ $x_e \in \mathcal{E}, \, \mathrm{card}(\mathcal{E}) = \infty$.
 \textit{uniformly asymptotically stable}, and \textit{uniformly exponentially stable} respectively. The difference between uniform and non-uniform
 stability is (slightly) important for only time-varying non-linear systems. Thus we will not use uniform stability definition in this course. 
 
-\textbf{Remark:} Note that as you can see the internal stability definitions, \textit{s.i.s.L}, \textit{asymptotic stability}, and \textit{exponentially stability}, are all local stability definitions defined in the neighborhood of $x_e$. If a stability definition holds for all initial conditions, i.e. $x(t_0) \in \mathbb{R}^n$, then use the terms
+\textbf{Remark:} Note that as you can see the internal stability
+definitions, \textit{s.i.s.L}, \textit{asymptotic stability}, and
+\textit{exponentially stability}, are all local stability definitions
+defined in the neighborhood of $x_e$. If a stability definition holds
+for all initial conditions, i.e. $x(t_0) \in \mathbb{D}$, then we use the terms
 \textit{globally s.i.s.L}, \textit{globally asymptotically stable}, and \textit{globally exponentially stable}.
 
 \begin{exmp}
@@ -189,6 +195,118 @@ x_1(t)^2 \leq 1 \ \rightarrow \ ( x_1(t)^2 + x_2(t)^2 ) < \epsilon^2 + 5 \ \righ
 This shows that the dynamics around the equilibrium is \textit{stable in the sense of Lyapunov} (globally). Note that 
 since $E(t) = E(0) \, \forall t >0$, $|| x(t) ||_2 \neq 0 \forall t >0$, thus the system around the equilibrium is not asymptotically
 stable (local or global), and hence not exponentially stable. 
+
+\subsection{Internal Stability of LTI Systems}
+
+Lyapunov's stability definitions may not be very useful for analyzing
+the stability of non-linear systems, however we can easily derive
+necessary and sufficient conditions for stability. One should also note the 
+in LTI systems (and linear systems in general) we are interested in the
+stability of the origin $x_e = 0$. Autonomous CT and DT LTI systems are expressed 
+by the following matrix differential and difference equations
+%
+\begin{align*}
+\dot{x} &= A x 
+\\
+x[k+1] =& A x[k]
+\end{align*}
+%
+and we know the analytical solutions to the zero-input responses have the following forms
+%
+\begin{align*}
+x(t) = e^{A t} x_0
+\\
+x[k] = A^k x_0
+\end{align*}
+%
+It is easier to analyze the internal stability using Jordan decomposition of the system matrix $A$, 
+%
+\begin{align*}
+x(t) = G e^{J t} G^{-1} x_0 \ \rightarrow \  \left[ G^{-1} x(t) \right] = e^{J t} \left[ G^{-1} x_0 \right] \ \rightarrow \ \alpha(t) = e^{J t} \alpha_0
+\\
+x[k] = G J^k G^{-1} x_0  \ \rightarrow \ \alpha[k] = J^k \alpha_0
+\end{align*}
+%
+Note that since $G$ and $G^{-1}$ finite and invertible matrices, we know that 
+%
+\begin{align*}
+|| x || = 0 &\iff || G^{-1} x || = 0 \iff x = 0 
+\\
+|| x || < M_1 < \infty &\iff || G^{-1} x || < M_2 < \infty \ \mathrm{where} M_1 , M_2 \in \mathbb{R}
+\\
+|| x || \to \infty &\iff || G^{-1} x || \to \infty 
+\end{align*}
+%
+We know that $e^{J t}$ and $J^k$ has the following block diagonal form
+%
+\begin{align*}
+e^{J t} &= \left[ \begin{array}{ccccc} e^{J_1 t} &  & & &  \\  & e^{J_2 t}  &  & 0 &  \\ &  & \ddots & \\ & 0 & & \ddots & \\ & &  & &  e^{J_n t}  \end{array} \right]
+\\
+J^k &= \left[ \begin{array}{ccccc} J_1^k &  & & &  \\  & J_2^k  &  & 0 &  \\ &  & \ddots & \\ & 0 & & \ddots & \\ & &  & &  J_n^k  \end{array} \right]
+\end{align*}
+%
+where an individual block associated with a Jordan block of $A$ has the following form
+%
+\begin{align*}
+e^{J_i t} &= \left[  \begin{array}{cccccc} e^{\lambda_i t} & t e^{\lambda t} & \frac{t^2}{2 !} e^{\lambda_i t} 
+& \cdots & \frac{t^{n-2}}{(n-2) !} e^{\lambda_i t}  & \frac{t^{n-1}}{(n-1) !} e^{\lambda_i t}
+\\ 0 & e^{\lambda_i t} & t e^{\lambda_i t} & \frac{t^2}{2 !} e^{\lambda_i t} & \cdots  & \frac{t^{n-2}}{(n-2) !} e^{\lambda_i t}
+\\  \vdots &  & \ddots &  &  & \vdots \\ 
+& & & e^{\lambda_i t} & t e^{\lambda_i t} & \frac{t^2}{2 !} e^{\lambda_i t}
+\\ 0 &  & \cdots  &  & e^{\lambda_i t} & t e^{\lambda_i t} \\
+0 &  & \cdots &  & 0 & e^{\lambda_i t} \end{array} \right] 
+\\
+J_i^k &= \left[  \begin{array}{cccccc} \lambda_i^k & \begin{pmatrix} k \\ 1 \end{pmatrix} \lambda_i^{k-1} & \begin{pmatrix} k \\ 2 \end{pmatrix}  \lambda_i^{k-2} 
+& \cdots & \begin{pmatrix} k \\ n\mathrm{-}2 \end{pmatrix} \lambda_i^{k-n+2} & \begin{pmatrix} k \\ n\mathrm{-}1 \end{pmatrix} \lambda_i^{k-n+1}
+\\ 0 & \lambda_i^k & \begin{pmatrix} k \\ 1 \end{pmatrix}  \lambda_i^{k-1} & \begin{pmatrix} k \\ 2 \end{pmatrix} \lambda_i^{k-2} & \cdots  & \begin{pmatrix} k \\ n\mathrm{-}2 \end{pmatrix} \lambda_i^{k-n+2}
+\\ 
+\\  \vdots &  & \ddots &  &  & \vdots \\ 
+\\ 
+& & & \lambda_i^k & \begin{pmatrix} k \\ 1 \end{pmatrix}  \lambda_i^{k-1} & \begin{pmatrix} k \\ 2 \end{pmatrix}  \lambda_i^{k-2} 
+\\ 0 &  & \cdots  &  & \lambda_i^k & \begin{pmatrix} k \\ 1 \end{pmatrix}  \lambda_i^{k-1} \\
+0 &  & \cdots &  & 0 & \lambda_i^k \end{array} \right] 
+\end{align*}
+%
+Based on this decomposition we can derive the stability conditions
+%
+\begin{enumerate}
+\item 
+\begin{itemize}
+\item A CT LTI system is \textit{asympotitically \& exponentially stable} 
+
+$\iff \ \lim_{t \to \infty } e^{J_i t} = 0 \ \forall i \ \iff \ \mathrm{Re}\lbrace \lambda_i \rbrace < 0 \ \forall i$  
+\item A DT LTI system is \textit{asympotitically \& exponentially stable} 
+
+$\iff \ \lim_{k \to \infty } J_i^k = 0 \ \forall i \ \iff \ | \lambda_i | < 1 \ \forall i$  
+\end{itemize}
+%
+\item 
+\begin{itemize}
+\item A CT LTI system is \textit{s.i.s.L} 
+
+$\iff \ \lim_{t \to \infty } e^{J_i t} = M_i < \infty \ \forall i \ \iff $ 
+$ \lbrace \mathrm{Re}\lbrace \lambda_i \rbrace < 0 \ \mathrm{or} \ \left\lbrace \mathrm{Re}\lbrace \lambda_i \rbrace = 0 \ \mathrm{and} \ J_i \in \mathbb{R} \rbrace \right\rbrace \ \forall i$  
+%
+\item A DT LTI system is \textit{s.i.s.L} 
+
+$\iff \ \lim_{k \to \infty } J_i^k = M_i < \infty \ \forall i \ \iff $ 
+$ \lbrace | \lambda_i | < 1 \ \mathrm{or} \ \left\lbrace | \lambda_i | = 1 \ \mathrm{and} \ J_i \in \mathbb{R} \rbrace \right\rbrace \ \forall i$  
+\end{itemize}
+
+\item 
+\begin{itemize}
+\item A CT LTI system is \textit{unstable}
+
+$\iff \ \exists i \ \ \lim_{t \to \infty } e^{J_i t} = \infty \ \iff $ 
+$ \lbrace \mathrm{Re}\lbrace \lambda_i \rbrace > 0 \ \mathrm{or} \ \left\lbrace \mathrm{Re}\lbrace \lambda_i \rbrace = 0 \ \mathrm{and} \ J_i \in \mathbb{R}^{n \times n} , n>1 \rbrace \right\rbrace \ \forall i$  
+%
+\item A DT LTI system is \textit{unstable} 
+
+$\iff \ \exists i \ \lim_{k \to \infty } J_i^k = \infty \ \iff $ 
+$ \exists i \lbrace | \lambda_i | > 1 \ \mathrm{or} \ \left\lbrace | \lambda_i | = 1 \ \mathrm{and} \ J_i \in \mathbb{R}^{n \times n} , n>1 \rbrace \right\rbrace $  
+\end{itemize}
+
+\end{enumerate}
 
 
 
