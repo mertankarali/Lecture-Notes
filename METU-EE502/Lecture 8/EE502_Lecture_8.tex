@@ -267,7 +267,7 @@ J_i^k &= \left[  \begin{array}{cccccc} \lambda_i^k & \begin{pmatrix} k \\ 1 \end
 0 &  & \cdots &  & 0 & \lambda_i^k \end{array} \right] 
 \end{align*}
 %
-Based on this decomposition we can derive the stability conditions
+Based on this decomposition, we can derive the stability conditions.
 %
 \begin{enumerate}
 \item 
@@ -307,6 +307,29 @@ $ \exists i \lbrace | \lambda_i | > 1 \ \mathrm{or} \ \left\lbrace | \lambda_i |
 \end{itemize}
 
 \end{enumerate}
+
+\subsection{Internal Stability of LTV Systems}
+
+Indeed, for LTI systems we derived the conditions of stability using the state-transition matrix, 
+which leads us to some conditions based on the eigenvalues of the system matrix. For general LTV systems,
+if we follow Lyapunov's stability definitions, we can construct the stability conditions.
+
+\textbf{Theroem:} The LTV system with the following state equation and state-transition matrix
+%
+\begin{align*}
+ \dot{x}(t) = A(t) x(t) \ , \ x(t) = \Phi(t,t_0) x_0
+\end{align*}
+%
+\begin{enumerate}
+\item is \textit{s.i.s.L.} $\iff \ \exists M(t_0) \ s.t. \ || \Phi(t,t_0) || \leq M(t_0) < \infty \ , \ \forall t \geq t_0$
+\item is \textit{asymptotically stable} $\iff$ if it is \textit{s.i.s.L.} and $ \lim_{t \to \infty} \Phi(t,t_0) = 0$
+\item is \textit{exponentially stable} $\iff$ if it is \textit{asymptotically stable} and 
+$ \exists \sigma(t_0) , C(t_0) > 0 $ s.t. $ || \Phi(t,t_0) || \leq C(t_0) e^{-\sigma(t_0) (t - t_0} \ \forall t \geq t_0$
+\end{enumerate}
+% 
+If these stability definitions hold $\forall t_0 \in mathbb{R}$, then they become \textit{uniformly stable} in their respective 
+categories. Note that same conditions are valid for the stability of DT LTV systems if we replace time variables. 
+
 
 
 
