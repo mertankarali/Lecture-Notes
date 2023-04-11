@@ -640,7 +640,7 @@ Using linearity (and assuming $A, B, C, D$ are all matrices with real entires) w
    y_c(t) &= C e^{A t} \left[ \frac{1}{2} \bar{x}_0^+ + \frac{1}{2} \bar{x}_0^- \right] +
    \frac{1}{2} \left[ G(j \omega) e^{j \omega t} \right] + \frac{1}{2} \left[ G(j \omega) e^{j \omega t} \right]^* \ \mathrm{note} 
    \\
-   G(j \omega) e^{j \omega t} &= |G(j \omega)| \left( \cos \phi + j \sin \phi \right) \ \phi = \angle [G(j \omega)]
+   G(j \omega) e^{j \omega t} &= |G(j \omega)| e^{j \phi} e^{j \omega t} \left( \cos (\omega t + \phi) + j \sin (\omega t + \phi) \right) \ \phi = \angle [G(j \omega)]
    \\
    \\
    y_c(t) &=  \underbrace{C e^{A t} \mathrm{Re}\left\lbrace \bar{x}_0^+ \right\rbrace}_{transient}  \ +  \  \underbrace{| G(j \omega) | \cos \left( \omega t + \angle [G(j \omega)] \right)}_{sinusoidal \ steady-state} \ , \ \mathrm{where}
