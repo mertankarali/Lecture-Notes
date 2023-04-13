@@ -1,5 +1,3 @@
-
-
 \documentclass[twoside]{article}
 \setlength{\oddsidemargin}{0.25 in}
 \setlength{\evensidemargin}{-0.25 in}
@@ -202,8 +200,7 @@ Lyapunov's stability definitions may not be very useful for analyzing
 the stability of non-linear systems, however we can easily derive
 necessary and sufficient conditions for stability. One should also note the 
 in LTI systems (and linear systems in general) we are interested in the
-stability of the origin $x_e = 0$. Autonomous CT and DT LTI systems are expressed 
-by the following matrix differential and difference equations
+stability of the origin $x_e = 0$. The following matrix differential and difference equations express autonomous CT and DT LTI systems
 %
 \begin{align*}
 \dot{x} &= A x 
@@ -327,11 +324,85 @@ if we follow Lyapunov's stability definitions, we can construct the stability co
 $ \exists \sigma(t_0) , C(t_0) > 0 $ s.t. $ || \Phi(t,t_0) || \leq C(t_0) e^{-\sigma(t_0) (t - t_0} \ \forall t \geq t_0$
 \end{enumerate}
 % 
-If these stability definitions hold $\forall t_0 \in mathbb{R}$, then they become \textit{uniformly stable} in their respective 
+If these stability definitions hold $\forall t_0 \in \mathbb{R}$, then they become \textit{uniformly stable} in their respective 
 categories. Note that same conditions are valid for the stability of DT LTV systems if we replace time variables. 
 
+\begin{exmp}
+ Let 
+ \begin{align*}
+  x[k+1] = \begin{bmatrix} 0 & \rho^k  \\ 0 & (1/2)^k \end{bmatrix}
+ \end{align*}
+\end{exmp}
+Analyze the stability of the origin based on the value of $\rho$
 
+\textbf{Solution:} In LTI systems, we know that eigenvalues of the system matrix provide necessary and sufficient conditions on
+Lyapunov, asymptotic, and exponential stability. We can see that for this LTV system, eigenvalues are independent of $k$, and
+they satisfy LTI stability conditions, i.e.
+%
+\begin{align*}
+  \lambda(A[k]) \in \lbrace 0 \ , \ 1/2 \rbrace \& | \lambda_{1,2} | < 1
+\end{align*}
+%
+Let's try to find a solution to the initial value problem for the given LTV system and see if LTI intuition is valid or not for this LTV system. Let $x_{0,1} = \begin{bmatrix} 1 \\ 0 \end{bmatrix}$, then
+%
+\begin{align*}
+   x[k]_1 = \begin{bmatrix} 0 \\ 0 \end{bmatrix}
+\end{align*}
+%
+now let $x_{0,2} = \begin{bmatrix} 0 \\ 1 \end{bmatrix}$
+%
+%
+\begin{align*}
+   x[k]_2 = \begin{bmatrix} (\rho/2)^{k-1} \\ (1/2)^k \end{bmatrix} \ k>0
+\end{align*}
+%
+thus we can write $\Phi[k,0]$ as
+%
+\begin{align*}
+   \Phi[k,0] = \begin{bmatrix} x[k]_1 & x[k]_2 \end{bmatrix} = 
+   \begin{bmatrix} 0 & (\rho/2)^k \\ 0 & (1/2)^{k-1} \end{bmatrix} \ k > 0 
+\end{align*}
+%
+Based on this result, we can conclude that.
+%
+\begin{itemize}
+    \item LTV system around the origin is asymptotically \& exponentially stable if $|\rho| < 2$
+    %
+    \item LTV system around the origin is stable i.s.L if $|\rho| \leq 2$
+    %
+    \item LTV system around the origin is unstable if $|\rho| > 2$
+\end{itemize}
+%
+As you can see in this example (and in general) for LTV systems, eigenvalues of the system matrix $A[k]$ do not imply stability.
 
+\begin{exmp}
+ Let 
+ \begin{align*}
+  \dot{x} = \begin{bmatrix} 0 & e^{-t}  \\ 0 & 0 \end{bmatrix}
+ \end{align*}
+\end{exmp}
+Analyze the stability of the origin 
+
+\textbf{Solution:} Since 
+\begin{align*}
+  A(t) = \begin{bmatrix} 0 & e^{-t}  \\ 0 & 0 \end{bmatrix} =
+  \begin{bmatrix} 0 & 1 \\ 0 & 0 \end{bmatrix} e^{-t} = \bar{A} f(t)
+ \end{align*}
+%
+We can find the state transition matrix via
+\begin{align*}
+\Phi(t,t_0) = e^{\int\limits_{t_0}^t A(\tau) d\tau} = 
+  \mathrm{exp} \begin{pmatrix}
+      \int\limits_{t_0}^t \begin{bmatrix} 0 & e^{-\tau}  \\ 0 & 0 \end{bmatrix} d\tau
+  \end{pmatrix}
+  =  \mathrm{exp} \begin{pmatrix}  \begin{bmatrix} 0 & e^{-t_0} - e^{-t}  \\ 0 & 0 \end{bmatrix} 
+  \end{pmatrix}
+  = \begin{bmatrix} 1 & e^{-t_0} - e^{-t}  \\ 0 & 1 \end{bmatrix} 
+\end{align*}
+%
+We can see that $ || \Phi(t,t_0) || < M < \infty \ \forall \ (t,t_0)$ but $\lim_{t\to\infty} \neq 0$
+thus system around the origin is (only) stable in the sense of Lyapunov. However, if we had only 
+checked the eigenvalues, we may have (wrongly) concluded that the system was unstable. 
 
 % **** This ENDS THE EXAMPLES. DON'T DELETE THE FOLLOWING LINE:
 \end{document}

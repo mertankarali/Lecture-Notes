@@ -568,53 +568,6 @@ Now we can find the solution
 \end{align*}
 %
 
-\begin{exmp}
- Let 
- \begin{align*}
-  x[k+1] = \begin{bmatrix} 0 & \rho^k  \\ 0 & (1/2)^k \end{bmatrix}
- \end{align*}
-\end{exmp}
-Analyze the stability of the origin based on the value of $\rho$
-
-\textbf{Solution:} In LTI systems, we know that eigenvalues of the system matrix provide necessary and sufficient conditions on
-Lyapunov, asymptotic, and exponential stability. We can see that for this LTV system, eigenvalues are independent of $k$, and
-they satisfy LTI stability conditions, i.e.
-%
-\begin{align*}
-  \lambda(A[k]) \in \lbrace 0 \ , \ 1/2 \rbrace \& | \lambda_{1,2} | < 1
-\end{align*}
-%
-Let's try to find a solution to the initial value problem for the given LTV system and see if LTI intuition is valid or not for this LTV system. Let $x_{0,1} = \begin{bmatrix} 1 \\ 0 \end{bmatrix}$, then
-%
-\begin{align*}
-   x[k]_1 = \begin{bmatrix} 0 \\ 0 \end{bmatrix}
-\end{align*}
-%
-now let $x_{0,2} = \begin{bmatrix} 0 \\ 1 \end{bmatrix}$
-%
-%
-\begin{align*}
-   x[k]_2 = \begin{bmatrix} (\rho/2)^k \\ (1/2)^k \end{bmatrix}
-\end{align*}
-%
-thus we can write $\Phi[k,0]$ as
-%
-\begin{align*}
-   Phi[k,0] = \begin{bmatrix} x[k]_1 & x[k]_2 \end{bmatrix} = 
-   \begin{bmatrix} 0 & (\rho/2)^k \\ 0 & (1/2)^k \end{bmatrix}
-\end{align*}
-%
-Based on this result, we can conclude that.
-%
-\begin{itemize}
-    \item LTV system around the origin is asymptotically \& exponentially stable if $|\rho| < 2$
-    %
-    \item LTV system around the origin is stable i.s.L if $|\rho| \leq 2$
-    %
-    \item LTV system around the origin is unstable if $|\rho| > 2$
-\end{itemize}
-%
-As you can see in this example (and in general) for LTV systems, eigenvalues of the system matrix $A[k]$ do not imply stability.
 
 % **** This ENDS THE EXAMPLES. DON'T DELETE THE FOLLOWING LINE:
 \end{document}
