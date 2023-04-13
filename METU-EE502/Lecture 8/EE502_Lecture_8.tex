@@ -404,5 +404,84 @@ We can see that $ || \Phi(t,t_0) || < M < \infty \ \forall \ (t,t_0)$ but $\lim_
 thus system around the origin is (only) stable in the sense of Lyapunov. However, if we had only 
 checked the eigenvalues, we may have (wrongly) concluded that the system was unstable. 
 
+\subsection{Lyapunov's Direct Method}
+
+Consider an autonomous time-invariant CT or DT non-linear state-space mode;
+%
+\begin{align*}
+    \dot{x} = F(x(t) \\
+    x[k+1] = F(x[k]) \\
+\end{align*}
+%
+with an equilibrium point $x_e$. Without loss of generality, let's assume that $x_e = 0$. Consider a continuous
+scalar function $V : \mathbb{R}^{m} \mapsto \mathbb{R}$ (or  $V : D \mapsto F$ in general, where $D$ is the domain and $F$ is the field), where $V(0) = 0$ and $V(x) > 0$ for $x \neq 0$ inside some ``ball'' enclosing the equilibrium point. 
+In that context, $V(x)$ can be considered as a function of ``energy'' (indeed, for a mechanical system, it can be a very good choice), or mathematically $V(x)$ can be a norm. Then $\dot{V}(x)$ for CT systems and $\triangle V(x) := V(x[k+1]) - V(x[k])$ 
+DT systems can provide critical information regarding the internal stability of the dynamical system.
+
+\subsubsection*{Lyapunov Functions, Lyapunov Theorem for Local \& Global Stability}
+
+\textbf{Definition:} Let $V : \mathbb{R}^{m} \mapsto \mathbb{R}$. 
+\begin{itemize}
+\item We call $V(x)$ a \textit{locally positive definite (lpd)} function around $x = 0$ if 
+\begin{enumerate}
+    \item $V(0) = 0$
+    \item $V(x) > 0, \ || x || \in (0 , r)$ for some $0 < r$
+\end{enumerate}
+%
+\item We call $V(x)$ a \textit{locally negative definite (lnd)} function around $x = 0$ if 
+\begin{enumerate}
+    \item $V(0) = 0$
+    \item $V(x) < 0, \ || x || \in (0 , r)$ for some $0 < r$
+\end{enumerate}
+%
+%
+\item We call $V(x)$ a \textit{locally positive semi definite (lpsd)} function around $x = 0$ if 
+\begin{enumerate}
+    \item $V(0) = 0$
+    \item $V(x) \geq 0, \ || x || \in (0 , r)$ for some $0 < r$
+\end{enumerate}
+%
+%
+\item We call $V(x)$ a \textit{locally negative semi definite (lnsd)} function around $x = 0$ if 
+\begin{enumerate}
+    \item $V(0) = 0$
+    \item $V(x) \leq 0, \ || x || \in (0 , r)$ for some $0 < r$
+\end{enumerate}
+%
+\end{itemize}
+
+\textbf{Definition:} Let $V(x)$ be a \textit{lpd} function, then we call it a ``candidate'' Lyapunov function. 
+If $\dot{V}(x)$ (or $\triangle V(x)$) for the dynamical system of interest is a \textit{lnsd} function, then 
+$V(x)$ is called a \textbf{Lyapunov function} of the system.
+
+\textbf{Theorem:} If there exists a Lyapunov function of the system, $V(x)$, then
+\begin{enumerate}
+    \item Then $x_e = 0$ is a (locally) stable equilibrium point \textit{in the sense of Lyapunov}
+    \item and if $\dot{V}(x) < 0$ (or $\triangle V(x) < 0$) $\ || x || \in (0 , r_a)$ (i.e. \textit{lsd}), then 
+    $x_e = 0$ is a (locally) asymptotically stable equilibrium point.
+\end{enumerate}
+
+\textbf{Theorem:} If there exists a Lyapunov function of the system, $V(x)$, defined on the entire state-space (or domain in general), i.e. 
+\begin{align*}
+    &\exists V: \mathbb{R}^n \to \mathbb{R} \ s.t. \ V(0) = 0 \ \mathrm{and}
+    \\
+    &V(x) > 0, \ \forall x \in \mathbb{R}^n \ \mathrm{and}
+    \\
+    &\dot{V}(x) \leq 0, \ \forall x \in \mathbb{R}^n
+\end{align*}
+then 
+\begin{enumerate}
+    \item Then $x_e = 0$ is a globally stable equilibrium point \textit{in the sense of Lyapunov}
+%    
+    \item if $x_e = 0$ is a globally stable equilibrium point \textit{in the sense of Lyapunov} and if 
+    \begin{align*}
+    &\dot{V}(x) < 0, \ \forall x \in \mathbb{R}^n
+    \\
+    &|| x || \to \infty \implies V(x) \to \infty
+\end{align*}
+then $x_e = 0$ is a globally asymptotically stable equilibrium point.
+\end{enumerate}
+
+
 % **** This ENDS THE EXAMPLES. DON'T DELETE THE FOLLOWING LINE:
 \end{document}
