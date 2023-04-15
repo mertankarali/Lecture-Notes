@@ -160,7 +160,7 @@ for all initial conditions, i.e. $x(t_0) \in \mathbb{D}$, then we use the terms
 \begin{exmp}
     Consider the pendulum dynamics
     \begin{align*}
-    \dot{x} = \begin{bmatrix} x_2 \\ -sin(x_1)\end{bmatrix} \ , \ \mathrm{where} \ \begin{bmatrix}  \theta \\ \dot{\theta} \end{bmatrix}
+    \dot{x} = \begin{bmatrix} x_2 \\ -sin(x_1)\end{bmatrix} \ , \ \mathrm{where} \ \begin{bmatrix} x_1 \\ x_2 \end{bmatrix} = \begin{bmatrix}  \theta \\ \dot{\theta} \end{bmatrix}
 \end{align*}
 \end{exmp}
 Analyze the stability of the dynamics around $x_e = \begin{bmatrix} 0 \\ 0 \end{bmatrix}$ using Lyapunov's stability definitions.
@@ -482,6 +482,40 @@ then
 then $x_e = 0$ is a globally asymptotically stable equilibrium point.
 \end{enumerate}
 
+\begin{exmp}
+    Let's go back to the pendulum dynamics
+    \begin{align*}
+    \dot{x} = \begin{bmatrix} x_2 \\ -sin(x_1)\end{bmatrix} \ , \ \mathrm{where} \ \begin{bmatrix} x_1 \\ x_2 \end{bmatrix} = \begin{bmatrix}  \theta \\ \dot{\theta} \end{bmatrix}
+\end{align*}
+\end{exmp}
+Analyze the stability of the dynamics around $x_e = \begin{bmatrix} 0 \\ 0 \end{bmatrix}$ using Lyapunov's direct method.
+
+\textbf{Solution:} We first need to find a candidate Lyapunov function. Let's test if
+the total mechanical energy can be adopted as a Lyapunov candidate
+%
+\begin{align*}
+V(x) &= E(x) = \frac{1}{2} x_2^2 + 1 - \cos{x_2}  \\ 
+V(0) &= 0 \\
+V(x) &> 0 \ , \ \forall x \neq 0
+\end{align*}
+%
+Now let's test if $V(x)$ is a Lyapunov function.
+%
+\begin{align*}
+\frac{d}{dt} V(x) &= - x_2 \sin x_1 + \sin(x_1) x_2 = 0
+\\
+\dot{V}(x) &\geq 0 \ \forall x 
+\end{align*}
+%
+Thus we can conclude that $E(x)$ is a Lyapunov function and $x_e = 0$
+is a globally stable point in the sense of Lyapunov. We know that since 
+$x_{e,k} = \begin{bmatrix} k \pi \\ 0 \end{bmatrix} \forall k \in \mathbb{Z}$
+is an equilibrium point, $x_e = 0$ is not globally asymptotically stable. 
+Indeed, since $\dot{V}(x) = 0 \, \forall x $ we also know 
+that $x_e = 0$ is not even locally asymptotically stable. However, one should
+know the fact that Lyapunov's direct method, in general, does not imply 
+un-stability.
+%
 
 % **** This ENDS THE EXAMPLES. DON'T DELETE THE FOLLOWING LINE:
 \end{document}
