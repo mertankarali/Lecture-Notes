@@ -153,9 +153,9 @@ stability is (slightly) important for only time-varying non-linear systems. Thus
 \textbf{Remark:} Note that as you can see the internal stability
 definitions, \textit{s.i.s.L}, \textit{asymptotic stability}, and
 \textit{exponentially stability}, are all local stability definitions
-defined in the neighborhood of $x_e$. If a stability definition holds
+defined in the neighborhood of $x_e$. If asymptotic and exponential stability definition holds
 for all initial conditions, i.e. $x(t_0) \in \mathbb{D}$, then we use the terms
-\textit{globally s.i.s.L}, \textit{globally asymptotically stable}, and \textit{globally exponentially stable}.
+\textit{globally asymptotically stable}, and \textit{globally exponentially stable}.
 
 \begin{exmp}
     Consider the pendulum dynamics
@@ -190,9 +190,8 @@ We already know that $x_1 = \theta$ and it is bounded since $\theta \in \mathbb{
 x_1(t)^2 \leq 1 \ \rightarrow \ ( x_1(t)^2 + x_2(t)^2 ) < \epsilon^2 + 5 \ \rightarrow \ || x(t) ||_2 < \sqrt{\epsilon^2 + 5} = \delta(\epsilon)
 \end{align*}
 %
-This shows that the dynamics around the equilibrium is \textit{stable in the sense of Lyapunov} (globally). Note that 
-since $E(t) = E(0) \, \forall t >0$, $|| x(t) ||_2 \neq 0 \forall t >0$, thus the system around the equilibrium is not asymptotically
-stable (local or global), and hence not exponentially stable. 
+This shows that the dynamics around the equilibrium is \textit{stable in the sense of Lyapunov}. Note that 
+since $E(t) = E(0) \, \forall t >0$, $|| x(t) ||_2 \neq 0 \forall t >0$, thus the system around the equilibrium is not asymptotically stable (neither local nor global), and hence not exponentially stable. 
 
 \subsection{Internal Stability of LTI Systems}
 
@@ -463,15 +462,15 @@ $V(x)$ is called a \textbf{Lyapunov function} of the system.
 
 \textbf{Theorem:} If there exists a Lyapunov function of the system, $V(x)$, defined on the entire state-space (or domain in general), i.e. 
 \begin{align*}
-    &\exists V: \mathbb{R}^n \to \mathbb{R} \ s.t. \ V(0) = 0 \ \mathrm{and}
+    &\exists V: \mathbb{R}^n \to \mathbb{R} \ s.t. \ V(0) = 0 \ 
+    \ , \
+    V(x) > 0, \ \forall x \in \mathbb{R}^n \ (i.e. nd) \ (i.e. \ pd) \ \mathrm{and}
     \\
-    &V(x) > 0, \ \forall x \in \mathbb{R}^n \ \mathrm{and}
-    \\
-    &\dot{V}(x) \leq 0, \ \forall x \in \mathbb{R}^n
+    &\dot{V}(x) \leq 0, \ \forall x \in \mathbb{R}^n \ (i.e. \ nd)
 \end{align*}
 then 
 \begin{enumerate}
-    \item Then $x_e = 0$ is a globally stable equilibrium point \textit{in the sense of Lyapunov}
+    \item Then $x_e = 0$ is a stable equilibrium point \textit{in the sense of Lyapunov} (in a more global sense)
 %    
     \item if $x_e = 0$ is a globally stable equilibrium point \textit{in the sense of Lyapunov} and if 
     \begin{align*}
@@ -494,7 +493,7 @@ Analyze the stability of the dynamics around $x_e = \begin{bmatrix} 0 \\ 0 \end{
 the total mechanical energy can be adopted as a Lyapunov candidate
 %
 \begin{align*}
-V(x) &= E(x) = \frac{1}{2} x_2^2 + 1 - \cos{x_2}  \\ 
+V(x) &= E(x) = \frac{1}{2} x_2^2 + 1 - \cos{x_1}  \\ 
 V(0) &= 0 \\
 V(x) &> 0 \ , \ \forall x \neq 0
 \end{align*}
@@ -508,14 +507,72 @@ Now let's test if $V(x)$ is a Lyapunov function.
 \end{align*}
 %
 Thus we can conclude that $E(x)$ is a Lyapunov function and $x_e = 0$
-is a globally stable point in the sense of Lyapunov. We know that since 
+is a stable equilibrium point in the sense of Lyapunov (globally). We know that since 
 $x_{e,k} = \begin{bmatrix} k \pi \\ 0 \end{bmatrix} \forall k \in \mathbb{Z}$
 is an equilibrium point, $x_e = 0$ is not globally asymptotically stable. 
-Indeed, since $\dot{V}(x) = 0 \, \forall x $ we also know 
+Indeed, since $\dot{V}(x) = 0 \, \forall x $, we also know 
 that $x_e = 0$ is not even locally asymptotically stable. However, one should
 know the fact that Lyapunov's direct method, in general, does not imply 
 un-stability.
+
+\begin{exmp}
+    Now let's add a linear damping term to the pendulum dynamics
+    \begin{align*}
+    \dot{x} = \begin{bmatrix} x_2 \\ -sin(x_1) - x_2 \end{bmatrix} \ , \ \mathrm{where} \ b > 0
+\end{align*}
+\end{exmp}
+Analyze the stability of the dynamics around $x_e = \begin{bmatrix} 0 \\ 0 \end{bmatrix}$ using Lyapunov's direct method.
+
+\textbf{Solution:} Total mechanical energy can again be a good candidate as
+a Lyapunov function 
 %
+\begin{align*}
+V(x) &= E(x) = \frac{1}{2} x_2^2 + 1 - \cos{x_1}  \\ 
+V(0) &= 0 \ , \ V(x) > 0 \ , \ \forall x \neq 0
+\\
+\\
+\frac{d}{dt} V(x) &= - x_2^2 - x_2 \sin x_1 + \sin(x_1) x_2 = - x_2^2 \geq 0
+\\
+\dot{V}(x) &= 0 ,\ \forall x \in \lbrace x | \begin{bmatrix}0 & 1\end{bmatrix} x = 0 \rbrace
+\\
+\dot{V}(x) &> 0 ,\ \forall x \in \lbrace x | \begin{bmatrix}0 & 1\end{bmatrix} x \neq 0 \rbrace
+\end{align*}
+%
+In this case we can again conclude that $E(x)$ is a Lyapunov function and $x_e = 0$
+is a stable equilibrium point in the sense of Lyapunov (globally). However, we can still not 
+conclude that the system is asymptotically stable (even though intuitively, we know that it is 
+at least locally asymptotically stable), since $\dot{V}(x)$ is a \textit{nsd} function 
+(locally and globally). Let's try another candidate $V(x)$
+%
+\begin{align*}
+V(x) &= \frac{1}{2} x_2^2 + a ( 1 - \cos{x_2} ) + \frac{b}{2} \begin{pmatrix} x_1 + x_2 \end{pmatrix}^2  ,
+\, a > 0 , \,  b > 0
+\\ 
+V(0) &= 0 \ , \ V(x) > 0 \ , \ \forall x \neq 0 \ \rightarrow \ pd \ \checkmark
+\\
+\\
+\frac{d}{dt} V(x) &= - x_2^2 - x_2 \sin(x_1) + a \sin(x_1) x_2 + b \begin{pmatrix} x_1 + x_2 \end{pmatrix} \dot{x_1} 
++ b \begin{pmatrix} x_1 + x_2 \end{pmatrix} \dot{x_2}
+\\
+&= (b - 1) x_2^2 + (a - 1) x_2 \sin(x_1) + b x_1 x_2 
++ b \begin{pmatrix} x_1 + x_2 \end{pmatrix} \dot{x_2}
+\\
+&= (b - 1) x_2^2 + (a - 1) \sin(x_1) x_2 + b x_1 x_2 
+- b \sin(x_1) \begin{pmatrix} x_1 + x_2 \end{pmatrix} 
+- b x_2\begin{pmatrix} x_1 + x_2 \end{pmatrix} 
+\\
+&= - x_2^2 + (a - b - 1) \sin(x_1) x_2 - b \sin(x_1) x_1 
+\end{align*}
+%
+Let $(a,b) = (2,1)$, then 
+\begin{align*}
+\frac{d}{dt} V(x) &= - \left( x_2^2  + \sin(x_1) x_1 \right) \geq 0
+\\
+\frac{d}{dt} V(x) &= 0 \ \iff \ x_1 = k \pi \, k \in \mathbb{Z} \rightarrow \ l.n.d 
+\end{align*}
+%
+We can now see that when $x_1 \in (\pi , \pi)$, $\dot{V}(x)$ is a locally negative 
+definite function, the system around $x_e = 0$ is also locally asymptotically stable. 
 
 % **** This ENDS THE EXAMPLES. DON'T DELETE THE FOLLOWING LINE:
 \end{document}
