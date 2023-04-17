@@ -574,5 +574,64 @@ Let $(a,b) = (2,1)$, then
 We can now see that when $x_1 \in (\pi , \pi)$, $\dot{V}(x)$ is a locally negative 
 definite function, the system around $x_e = 0$ is also locally asymptotically stable. 
 
+\subsection{Lyapunov's Indirect Method}
+
+Consider an autonomous time-invariant CT or DT non-linear state-space mode;
+%
+\begin{align*}
+    \dot{x} = F(x(t) \\
+    x[k+1] = F(x[k]) 
+\end{align*}
+%
+with an equilibrium point $x_e$. Without loss of generality, let's assume that $x_e = 0$. Let the linearization of dynamics around the equilibrium yields
+%
+\begin{align*}
+    \dot{\delta x} = A x(t) \\
+    \delta x[k+1] = \delta x[k]) 
+\end{align*}
+%
+
+\textbf{Theorem:} 
+\begin{enumerate}
+    \item If the linearized system matrix, $A$, is asymptotically/exponentially stable, then the non-linear system
+    is also \textit{locally asymptotically stable} around the equilibrium point, $x_e$, inside a region locally defined around the equilibrium point
+    %
+    \item If the linearized system matrix, $A$, is asymptoticall/exponentially unstable, then the non-linear system
+    is also \textit{locally unstable} around the equilibrium point
+    %
+    \item If the linearized system matrix, $A$, is stable i.s.L., we can not comment on the stability of the non-linear system around the equilibrium 
+\end{enumerate}
+
+\begin{exmp}
+    Consider the following scalar DT dynamical system
+    \begin{align*}
+    x[k+1] = \frac{x[k]}{1 + (x[k])^2}
+\end{align*}
+\end{exmp}
+Analyze the stability of the dynamics around $x_e = \begin{bmatrix} 0 \\ 0 \end{bmatrix}$ using both Lyapunov's direct and indirect methods.
+
+\textbf{Solution:} Let's first start with the direct method and see if $V(x) = x^2$ is a Lyapunov function
+%
+\begin{align*}
+V(x) &= x^2 \ , \ V(0) = 0 \ , \ V(x) > 0 \ , \ \forall x \neq 0 \ \rightarrow \ pd \ \checkmark
+\\
+\triangle V(x) &= x^2 \left( \frac{1}{(1 + x^2)^2} - 1 \right)  \ , \ \triangle V(0) = 0 \ , \ \triangle V(x) < 0 \ , \ \forall x \neq 0 \ \rightarrow \ nd \ \checkmark
+\end{align*}
+%
+Thus we can conclude that the system around the origin is globally asymptotically stable. Now
+let's adopt the indirect method
+%
+\begin{align*}
+ \delta x[k+1] &= \frac{\partial 
+ }{\partial} \left(
+ \frac{x}{1 + (x)^2} \right)_{x=0} \delta x[k]
+ \\
+\delta x[k+1] &= \delta x[k]
+\end{align*}
+%
+We can see that linearized dynamics has a single eigenvalue at $z = 1$, which implies that the linear dynamical system is stable i.s.L. However, based on only this result, we can not comment on the stability of the non-linear system. However, we know from the direct method that the system around the origin, indeed, asymptotically stable
+
+
+
 % **** This ENDS THE EXAMPLES. DON'T DELETE THE FOLLOWING LINE:
 \end{document}
