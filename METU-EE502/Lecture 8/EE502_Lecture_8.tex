@@ -629,9 +629,93 @@ let's adopt the indirect method
 \delta x[k+1] &= \delta x[k]
 \end{align*}
 %
-We can see that linearized dynamics has a single eigenvalue at $z = 1$, which implies that the linear dynamical system is stable i.s.L. However, based on only this result, we can not comment on the stability of the non-linear system. However, we know from the direct method that the system around the origin, indeed, asymptotically stable
+We can see that linearized dynamics has a single eigenvalue at $z = 1$, which implies that the linear dynamical system is stable i.s.L. However, based on only this result, we can not comment on the stability of the non-linear system. However, we know from the direct method that the system around the origin is, indeed, asymptotically stable.
 
+\subsection{Quadratic Lyapunov Functions and Lyapunov Stability for LTI Systems}
 
+Consider the function
+%
+\begin{align*}
+V(x) = x^T P x , \ x \in \mathbb{R}^{n} , P \in \mathbb{R}^{n \times n} , \& \ P^T = P
+\end{align*}
+%
+\textbf{Proposition:} $V(x)$ is a positive definite function if and only if all the eigenvalues of 
+$P$ are positive
+
+\textbf{Proof:} Since $P$ is a symmetric real matrix, we know that it can be diagonalized by an
+\textit{orthagonal matirx}, i.e.
+%
+\begin{align*}
+P = U^T \Lambda U , \ U^T U = I , \& \ \Lambda = 
+\mathrm{diag}\begin{bmatrix} \lambda_1 , & \cdots , & \lambda_n  \end{bmatrix}
+\end{align*}
+%
+Let $y = U x \ \rightarrow \ || y ||_2 = || x ||_2$, then
+%
+\begin{align*}
+V(x) = x^T P x  = y^T \Lambda y = \sum\limits_{i=1}^n \lambda_i y_i^2 
+\end{align*}
+%
+Thus
+%
+\begin{align*}
+V(x) > 0 \ \forall x \neq 0 \ \iff \ \lambda_i > 0 \ \forall i 
+\end{align*}
+%
+\textbf{Definition:} A symmetric matrix $P^T = P$ 
+\begin{itemize}
+    \item is called \textit{positive definite} if it satisfies 
+%
+\begin{align*}
+x^T P x > 0 \ \forall x \neq 0
+\end{align*}
+%
+and use the notation, $P > 0$ for such matrices
+%
+\item is called \textit{positive semi definite} if 
+%
+\begin{align*}
+x^T P x \geq 0 \ \forall x \neq 0
+\end{align*}
+%
+and use the notation, $P \geq 0$ for such matrices
+\end{itemize}
+
+\textbf{Corollaries:} 
+\begin{itemize}
+\item For a symmetric positive definite or symmetric positive semi-definite matrix 
+%
+\begin{align*}
+ \lambda_{min}(P) || x ||_2^2 \leq x^T P x \leq \lambda_{max}(P) || x ||_2^2
+\end{align*}
+%
+\item If $P \geq 0$ but $P \not> 0$, then $\lambda_{min} = 0$ 
+\end{itemize}
+
+\subsection{Quadratic Lyapunov Functions for LTI Systems}
+
+Consider defining a Lyapunov function candidate of the form
+%
+\begin{align*}
+V(x) = x^T P x  \ P > 0
+\end{align*}
+%
+for an LTI CT or DT system. Then for a CT-LTI system, $\dot{x} = A x$, we have
+%
+\begin{align*}
+\dot{V}(x) &= \dot{x}^T P x + x^T P x = x^T A^T P x + x^T P A x 
+\\
+&= x^T (A^T P + P A) x = - x^T Q x
+\\
+Q = - (A^T P + P A)
+\end{align*}
+%
+note that $Q^T = Q$. Based on Lyapunov's direct method, we conclude that
+\begin{itemize}
+\item $\dot{x} = A x$ is stable i.s.L. if $-Q = (A^T P + P A) \geq 0$
+%
+\item $\dot{x} = A x$ is asymptotically stable if $-Q = (A^T P + P A) > 0$
+\end{itemize}
 
 % **** This ENDS THE EXAMPLES. DON'T DELETE THE FOLLOWING LINE:
 \end{document}
