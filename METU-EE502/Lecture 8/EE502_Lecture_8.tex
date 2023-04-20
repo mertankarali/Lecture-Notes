@@ -707,15 +707,133 @@ for an LTI CT or DT system. Then for a CT-LTI system, $\dot{x} = A x$, we have
 \\
 &= x^T (A^T P + P A) x = - x^T Q x
 \\
-Q = - (A^T P + P A)
+Q &= - (A^T P + P A)
 \end{align*}
 %
 note that $Q^T = Q$. Based on Lyapunov's direct method, we conclude that
 \begin{itemize}
-\item $\dot{x} = A x$ is stable i.s.L. if $-Q = (A^T P + P A) \geq 0$
+\item $\dot{x} = A x$ is stable i.s.L. if $Q = -(A^T P + P A) \geq 0$ or 
 %
-\item $\dot{x} = A x$ is asymptotically stable if $-Q = (A^T P + P A) > 0$
+\item $\dot{x} = A x$ is asymptotically stable if $Q = -(A^T P + P A) > 0$
 \end{itemize}
+%
+Similarly for a DT-LTI system, $x[k+1] = A x$, we have
+%
+\begin{align*}
+\triangle V(x) &= x^T A^T P A x - x^T P x 
+\\
+&= x^T (A^T P A - P) x = - x^T Q x
+\\
+Q &= - A^T ( P - I ) A
+\end{align*}
+%
+note that again $Q^T = Q$. Based on Lyapunov's direct method, we conclude that
+\begin{itemize}
+\item $x[k+1] = A x[k]$ is stable i.s.L. if $Q = - A^T ( P - I ) A \geq 0$ or 
+%
+\item $x[k+1] = A x[k]$ is asymptotically stable if $Q = - A^T ( P - I ) A \geq 0$
+\end{itemize}
+%
+
+\textbf{Theorem:} Given a CT-LTI dynamic system, $\dot{x} = A x$, and 
+any $Q>0$, there exists a definite positive solution $P$ of the Lyapunov equation, $Q = - (A^T P + P A)$, if and only if $\dot{x} = A x$ is asymptotically stable. Solution $P$, in this case, is unique.
+
+\textbf{Proof:} 
+\begin{enumerate}
+\item For a given $Q > 0$, if $P > 0$ is a solution of $Q = - (A^T P + P A)$, then $V(x) = x^T P x$ is p.d. and $\dot{V}(x)$ is n.d., hence
+$\dot{x} = A x$ globally asymptotically stable
+%
+\item Now let's try to find ``a'' solution of $P > 0$, given $Q>0$. Let
+%
+\begin{align*}
+P = \int\limits_{0}^{\infty} e^{t A^T} Q e^{A t} dt
+\end{align*}
+%
+$P$ is well defined since, all eigenvalues of $A$ is in O.L.P, and 
+$e^{A t}$ exponentially converges to $0$. Now
+%
+\begin{align*}
+A^T P + P A &= \int\limits_{0}^{\infty} A^T e^{t A^T} Q e^{A t} dt
++ \int\limits_{0}^{\infty} e^{t A^T} Q e^{A t} A dt 
+= \int\limits_{0}^{\infty} A^T e^{t A^T} Q e^{A t} + e^{t A^T} Q e^{A t} A \ dt
+\\
+&= \int\limits_{0}^{\infty} \frac{d}{dt} \begin{bmatrix}
+    e^{t A^T} Q e^{A t}
+\end{bmatrix} dt =  \begin{bmatrix}
+    e^{t A^T} Q e^{A t} 
+\end{bmatrix}_{0}^{\infty} = 0 -Q 
+\\
+A^T P + P A &= -Q
+\end{align*}
+%
+i.e., $P$ satisfies the Lyapunov equation
+%
+\item Let's show P is symmetric
+%
+\begin{align*}
+P^T = \int\limits_{0}^{\infty} \left[ e^{t A^T} Q e^{A t} \right]^T dt
+= \int\limits_{0}^{\infty} \left[ e^{A t} \right]^T Q 
+\left[ e^{t A^T}\right]^T dt
+= \int\limits_{0}^{\infty} e^{t A^T} Q e^{A t} dt = P
+\end{align*}
+%
+\item Let's show $P > 0$. Let $x \in \mathbb{R}^n$
+%
+\begin{align*}
+x^T P x = \int\limits_{0}^{\infty} x^T e^{t A^T} Q e^{A t} x dt =
+\int\limits_{0}^{\infty} z(t)^T Q z(t) \ z(t) = e^{A t} x
+\end{align*}
+%
+Note that 
+%
+\begin{align*}
+z(t) = 0 \ \iff \ x = 0 \ , \  \forall t < \infty
+\end{align*}
+%
+Since $Q > 0$, 
+%
+\begin{align*}
+z(t)^T Q z(t) &= 0 \ \iff \ z(t) = 0 \ , \  \forall t 
+\\
+z(t)^T Q z(t) &> 0 \ \forall z(t) \neq 0
+\end{align*}
+%
+Thus 
+%
+\begin{align*}
+x^T P x &= \int\limits_{0}^{\infty} z(t)^T Q z(t) = 0 \ \iff z(t) \ \forall t 
+\ \iff \ x = 0
+\\
+x^T P x &= \int\limits_{0}^{\infty} z(t)^T Q z(t) > 0 \ , \ \forall x \neq 0
+\end{align*}
+%
+\item Let's show $P$ is unique. Let's prove this by contradiction.
+Let's assume that $\exists \, \bar{P} \neq P$ and $\bar{P}^T = \bar{P}$ 
+such that  
+%
+\begin{align*}
+&A^T \bar{P} + \bar{P} A = - Q \ , \ A^T P + P A = - Q
+\end{align*}
+%
+Let $W(t) = e^{t A^T} \bar{P} e^{A t}$ and let's analyze the following integral  
+%
+\begin{align*}
+\int_{0}^{\infty} - \dot{W}(t) dt &= \left[ W(t) \right]^{0}_{\infty} = W(0) - W(\infty) = \bar{P}
+\\
+\\
+\int_{0}^{\infty} - \dot{W}(t) dt &=
+\int_{0}^{\infty} - \left( e^{t A^T} A^T \bar{P} e^{A t} +
+e^{t A^T}\bar{P} A e^{A t} 
+\right) dt =
+\int_{0}^{\infty} e^{t A^T} ( - \left( A^T \bar{P} +
+ \bar{P} A \right) ) e^{A t} dt
+ \\
+ &= \int_{0}^{\infty} e^{t A^T} Q e^{A t} dt = P = \bar{P}
+\end{align*}
+%
+which is the contradiction to the assumption that $\exists \, \bar{P} \neq P$. This completes the proof
+\end{enumerate}
+
 
 % **** This ENDS THE EXAMPLES. DON'T DELETE THE FOLLOWING LINE:
 \end{document}
