@@ -169,19 +169,19 @@ Analyze the stability of the dynamics around $x_e = \begin{bmatrix} 0 \\ 0 \end{
 energy-conserving system since there is no dissipative or active element. In that respect, at any time instant, we can write total energy as 
 %
 \begin{align*}
-E(x) &= \frac{1}{2} x_2^2 + 1 - \cos{x_2}  \ , \ \mathrm{note} \ E(0) = 0
+E(x) &= \frac{1}{2} x_2^2 + 1 - \cos{x_1}  \ , \ \mathrm{note} \ E(0) = 0
 \end{align*}
 %
 Let $x(0) = \begin{bmatrix} x_1(0) \\ x_2(0) \end{bmatrix}$ and $|| x(0) ||_2 < \epsilon , \, \epsilon \in \mathbb{R}^+ $, then we know that $ (x_1(0)^2 + x_2(0)^2) < \epsilon^2 $. Due to the conservation of energy, we also know that
 %
 \begin{align*}
 &E(x(t)) = E(x(0)) \\
-&\frac{1}{2} x_2(t)^2 + 1 - \cos{x_2(t)} 
+&\frac{1}{2} x_2(t)^2 + 1 - \cos{x_1(t)} 
 = 
-\frac{1}{2} x_2(0)^2 + 1 - \cos{x_2(0)} < \frac{1}{2} x_2(0)^2 + \frac{1}{2} x_1(0)^2 < \frac{\epsilon^2}{2}
+\frac{1}{2} x_2(0)^2 + 1 - \cos{x_1(0)} < \frac{1}{2} x_2(0)^2 + \frac{1}{2} x_1(0)^2 < \frac{\epsilon^2}{2}
 \\
-&\frac{1}{2} x_2(0)^2 + 1 - \cos{x_2(0)} < \frac{\epsilon^2}{2} 
-\ \rightarrow \ x_2(0)^2 < \epsilon^2 + 4
+&\frac{1}{2} x_2(t)^2 + 1 - \cos{x_1(t)} < \frac{\epsilon^2}{2} 
+\ \rightarrow \ x_2(t)^2 < \epsilon^2 + 4
 \end{align*}
 %
 We already know that $x_1 = \theta$ and it is bounded since $\theta \in \mathbb{S}$, so 
@@ -518,7 +518,7 @@ un-stability.
 \begin{exmp}
     Now let's add a linear damping term to the pendulum dynamics
     \begin{align*}
-    \dot{x} = \begin{bmatrix} x_2 \\ -sin(x_1) - x_2 \end{bmatrix} \ , \ \mathrm{where} \ b > 0
+    \dot{x} = \begin{bmatrix} x_2 \\ -\sin(x_1) - x_2 \end{bmatrix} \ , \ \mathrm{where} \ b > 0
 \end{align*}
 \end{exmp}
 Analyze the stability of the dynamics around $x_e = \begin{bmatrix} 0 \\ 0 \end{bmatrix}$ using Lyapunov's direct method.
@@ -545,7 +545,7 @@ at least locally asymptotically stable), since $\dot{V}(x)$ is a \textit{nsd} fu
 (locally and globally). Let's try another candidate $V(x)$
 %
 \begin{align*}
-V(x) &= \frac{1}{2} x_2^2 + a ( 1 - \cos{x_2} ) + \frac{b}{2} \begin{pmatrix} x_1 + x_2 \end{pmatrix}^2  ,
+V(x) &= \frac{1}{2} x_2^2 + a ( 1 - \cos{x_1} ) + \frac{b}{2} \begin{pmatrix} x_1 + x_2 \end{pmatrix}^2  ,
 \, a > 0 , \,  b > 0
 \\ 
 V(0) &= 0 \ , \ V(x) > 0 \ , \ \forall x \neq 0 \ \rightarrow \ pd \ \checkmark
@@ -834,6 +834,36 @@ e^{t A^T}\bar{P} A e^{A t}
 which is the contradiction to the assumption that $\exists \, \bar{P} \neq P$. This completes the proof
 \end{enumerate}
 
+\textbf{Theorem:} Given a DT-LTI dynamic system, $x[k+1] = A x[k]$, and 
+any $Q>0$, there exists a definite positive solution $P$ of the Lyapunov equation, $Q = P - A^T P A $, if and only if $x[k+1] = A x[k]$ is asymptotically stable. Solution $P$, in this case, is unique.
+
+\textbf{Proof:} 
+\begin{enumerate}
+\item For a given $Q > 0$, if $P > 0$ is a solution of $Q = P - A^T P A$, then $V(x) = x^T P x$ is p.d. and $\dot{V}(x)$ is n.d., hence
+$x[k+1] = A x[k]$ globally asymptotically stable
+%
+\item Now let's try to find ``a'' solution of $P > 0$, given $Q>0$. Let
+%
+\begin{align*}
+P = \sum\limits_{k=0}^{\infty} {A^{k}}^T Q A^k \end{align*}
+%
+$P$ is well defined since, all eigenvalues of $A$ is in inside the unit circle, and 
+$A^k$ exponentially converges to $0$. Now
+%
+\begin{align*}
+P - Q &= \sum\limits_{k=1}^{\infty} {A^{k}}^T Q A^k = 
+\sum\limits_{n=0}^{\infty} {A^{n+1}}^T Q A^{n+1} 
+= A^T \left( \sum\limits_{n=0}^{\infty} {A^{n}}^T Q A^{n} \right) A
+\\
+P - Q &= A^T P A
+\\
+-Q &= A^T P A - P
+\end{align*} 
+%
+i.e., $P$ satisfies the Lyapunov equation
+%
+\item Remaining parts of the proof are left to the student as a take-home problem
+\end{enumerate}
 
 % **** This ENDS THE EXAMPLES. DON'T DELETE THE FOLLOWING LINE:
 \end{document}
