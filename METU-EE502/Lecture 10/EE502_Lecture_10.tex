@@ -76,6 +76,7 @@
 \newtheorem{corollary}[theorem]{Corollary}
 \newtheorem{definition}[theorem]{Definition}
 \newenvironment{proof}{{\bf Proof:}}{\hfill\rule{2mm}{2mm}}
+\newtheorem{exmp}[theorem]{Ex}
 
 % **** IF YOU WANT TO DEFINE ADDITIONAL MACROS FOR YOURSELF, PUT THEM HERE:
 
@@ -213,7 +214,34 @@ wide the reachability matrix. The system is termed a (fully) reachable system if
  \mathrm{Ra} (\mathbf{R}) &= \mathcal{R} = \mathbb{R}^n
 \end{align*}
 
+\begin{exmp}
+Solve the following problems regarding controllable sub-space
+\end{exmp}
+\begin{itemize}
+    \item Show that $\mathcal{R} \subset \matjcal{C}$, $\forall (A,B)$, however $\mathcal{C} \subset \matjcal{R}$ not necessarily true $\forall (A,B)$.
+    \item Similar to the reachable subspace, characterize the controllable subspace
+    \item Derive conditions such that $\mathcal{R} = \matjcal{C}$
+\end{itemize}
 
+\subsubsection{Reachability Gramian}
+
+An alternative characterization of $\mathbf{R}$ is using reachability Gramian (which is more critical for CT systems).
+$m$-step reachability Gramian, $\mathbf{P}_m$, is defined as
+%
+\begin{align}
+ \mathbf{P}_m &= \mathbf{R}_m {\mathbf{R}_m}^T =\sum\limits_{i=0}^{k-1} A^i B B^T \begin{pmatrix} A^T \end{pmatrix}^i
+\end{align}
+%
+Note that $\mathcal{P}_m$ is a symmetric positive semi-definite matrix.
+
+\textbf{Lemma:} $\mathcal{R}_m = \mathrm{Ra}( \mathbf{R}_m ) = \mathrm{Ra} ( \mathbf{P}_m )$
+
+\textbf{Proof:} Let's fits show that $\mathrm{Ra}( \mathbf{P}_m ) \subset \mathrm{Ra}( \mathbf{R}_m )$. 
+If $x \in \mathrm{Ra} (\mathbf{P}_m)$, then $\exits v \in \mathbb{R}^n$ s.t. $x = \mathbf{P}_m v$ then
+%
+\begin{align*}
+ x = \mathbf{P}_m v &= \mathbf{R}_m {\mathbf{R}_m}^T v = \mathbf{R}_m y \ \rightarrow \ x \in \mathrm{Ra}( \mathbf{R}_m ) \ \rightarrow \ \mathrm{Ra}( \mathbf{P}_m ) \subset \mathrm{Ra}( \mathbf{R}_m )
+\end{align*}
 
 % **** This ENDS THE EXAMPLES. DON'T DELETE THE FOLLOWING LINE:
 \end{document}
