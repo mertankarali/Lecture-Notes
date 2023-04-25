@@ -88,7 +88,7 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsection{Reachability \& Controllability of DT-LTI Systems}
+\section{Reachability \& Controllability of DT-LTI Systems}
 
 For LTI a discrete time state-space representation
 %
@@ -203,7 +203,7 @@ which shows that $ A^n B$ is linearly dependent to previous columns and thus
 \mathrm{Ra} ( \mathbf{R}_{n} ) &= \mathrm{Ra} ( \mathbf{R}_{l} )
 \end{align*}
 %
-This theorem shows that if $x_r$ is reachable in $n$ steps then it is reachable for $l > n$ steps, similarly if it is not reachable in 
+This theorem shows that if $x_r$ is reachable in $n$ steps then it is reachable for $l > n$ steps, similarly, if it is not reachable in 
 $n$ steps then it is reachable for $l > n$ steps. In this context, the sub-space of states reachable in $n$-steps, $\mathcal{R}_n$
 is referred as the reachable subspace of $(A,N)$, and will be denoted simply by $\mathcal{R}$ and $\mathbf{R} = \mathbf{R}_k$ will be system 
 wide the reachability matrix. The system is termed a (fully) reachable system if 
@@ -218,12 +218,12 @@ wide the reachability matrix. The system is termed a (fully) reachable system if
 Solve the following problems regarding controllable sub-space
 \end{exmp}
 \begin{itemize}
-    \item Show that $\mathcal{R} \subset \matjcal{C}$, $\forall (A,B)$, however $\mathcal{C} \subset \matjcal{R}$ not necessarily true $\forall (A,B)$.
+    \item Show that $\mathcal{R} \subset \mathcal{C}$, $\forall (A,B)$, however $\mathcal{C} \subset \mathcal{R}$ not necessarily true $\forall (A,B)$.
     \item Similar to the reachable subspace, characterize the controllable subspace
-    \item Derive conditions such that $\mathcal{R} = \matjcal{C}$
+    \item Derive conditions such that $\mathcal{R} = \mathcal{C}$
 \end{itemize}
 
-\subsubsection{Reachability Gramian}
+\subsection{Reachability Gramian}
 
 An alternative characterization of $\mathbf{R}$ is using reachability Gramian (which is more critical for CT systems).
 $m$-step reachability Gramian, $\mathbf{P}_m$, is defined as
@@ -237,11 +237,44 @@ Note that $\mathcal{P}_m$ is a symmetric positive semi-definite matrix.
 \textbf{Lemma:} $\mathcal{R}_m = \mathrm{Ra}( \mathbf{R}_m ) = \mathrm{Ra} ( \mathbf{P}_m )$
 
 \textbf{Proof:} Let's fits show that $\mathrm{Ra}( \mathbf{P}_m ) \subset \mathrm{Ra}( \mathbf{R}_m )$. 
-If $x \in \mathrm{Ra} (\mathbf{P}_m)$, then $\exits v \in \mathbb{R}^n$ s.t. $x = \mathbf{P}_m v$ then
+If $x \in \mathrm{Ra} (\mathbf{P}_m)$, then $\exists v \in \mathbb{R}^n$ s.t. $x = \mathbf{P}_m v$ then
 %
 \begin{align*}
- x = \mathbf{P}_m v &= \mathbf{R}_m {\mathbf{R}_m}^T v = \mathbf{R}_m y \ \rightarrow \ x \in \mathrm{Ra}( \mathbf{R}_m ) \ \rightarrow \ \mathrm{Ra}( \mathbf{P}_m ) \subset \mathrm{Ra}( \mathbf{R}_m )
+ x = \mathbf{P}_m v &= \mathbf{R}_m {\mathbf{R}_m}^T v = \mathbf{R}_m y \ \Rightarrow \ x \in \mathrm{Ra}( \mathbf{R}_m ) \ \Rightarrow \ \mathrm{Ra}( \mathbf{P}_m ) \subset \mathrm{Ra}( \mathbf{R}_m )
 \end{align*}
+
+Now let's show that $\mathrm{Ra}( \mathbf{R}_m ) \subset \mathrm{Ra}( \mathbf{P}_m )$. We know that
+%
+\begin{align*}
+    \mathrm{Ra}( \mathbf{R}_m ) \subset \mathrm{Ra}( \mathbf{P}_m ) 
+    \ \iff \ \mathrm{Ra}^\perp( \mathbf{P}_m ) \subset \mathrm{Ra}^\perp( \mathbf{R}_m )
+\end{align*}
+%
+So we can equivalently show that $\mathrm{Ra}^\perp( \mathbf{P}_m ) \subset \mathrm{Ra}^\perp( \mathbf{R}_m )$.
+Let $q \in \mathrm{Ra}^\perp( \mathbf{P}_m )$, then
+%
+%
+\begin{align*}
+    q^T \mathbf{P}_m = \mathbf{0} \ \Rightarrow \ q^T \mathbf{P}_m q = 0 \ &\iff \ q^T \mathbf{R}_m {\mathbf{R}_m}^T q = 0
+    \ \iff \ ( {\mathbf{R}_m}^T q )^T ( {\mathbf{R}_m}^T q ) = 0
+    \\ \ &\iff \ {\mathbf{R}_m}^T q = \mathbf{0} \ \iff \ q^T {\mathbf{R}_m} = \mathbf{0}^T = \mathbf{0}  
+    \\ \ &\Rightarrow \ q \in \mathrm{Ra}^\perp( \mathbf{R}_m ) \ \Rightarrow \ \mathrm{Ra}^\perp( \mathbf{P}_m ) \subset \mathrm{Ra}^\perp( \mathbf{R}_m )
+\end{align*}
+%
+This completes the proof. As a result of this lemma, full reachable subspace $\mathcal{R} = \mathrm{Ra}( \mathbf{P}_l )$ for any $l \geq 0$.
+As a result we can make the following conclusions 
+\begin{itemize}
+\item $(A,B)$ pair is fully reachable $\iff$ $\mathrm{dim} \left [\mathrm{Ra}( \mathbf{P}_l ) \right] = n$ for any $l \geq n$
+\item $(A,B)$ pair is fully reachable $\iff$ $\mathrm{det} \left [\mathbf{P}_l\right] \neq 0$ for any $l \geq n$
+\end{itemize}
+% 
+If $x[k+1] = A x[k]$ is asymptotically stable, then $\textbf{P}_{\infty} = \lim_{k \to \infty} \sum\limits_{i=0}^{k-1} A^i B B^T \begin{pmatrix} A^T \end{pmatrix}^i \stackrel{\triangle}{=} P$ is well defined and $P$ satisfies the following Lyapunov equation
+%
+\begin{align*}
+ A P A^T - P = -B B^T
+\end{align*}
+%
+To understand the derivation of this, refer to the Quadratic Lyapunov Functions for LTI systems section in Lecture Notes 8. 
 
 % **** This ENDS THE EXAMPLES. DON'T DELETE THE FOLLOWING LINE:
 \end{document}
