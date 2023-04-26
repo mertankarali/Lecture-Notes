@@ -321,6 +321,21 @@ Using Cayley-Hamilton theorem we reach that
          \cdots & A B , & B \end{array} \right\rbrace = \mathcal{R}
 \end{align*}
 %
+\textbf{Theorem:} $(A,B)$ pair is unreachable (or not fully reachable) if and only if $w^T B = 0$ for some left eigenvactor of $A$, i.e. 
+$w^T A = \lambda w^T$.
+
+\textbf{Proof:} Let $w^T A = \lambda w^T$ and $w^T B = 0$, then
+%
+\begin{align*}
+ w^T \mathbf{R} &= w^T \left[ \begin{array}{c|c|c|c|c} A^{n-1} B & A^{n-2} B &
+         \cdots & A B & B \end{array} \right] 
+         \\
+  &= \left[ \begin{array}{c|c|c|c|c} w^T A^{n-1} B & w^T A^{n-2} B &
+         \cdots & w^T A B & w^T B \end{array} \right] 
+         \\
+&= \left[ \begin{array}{c|c|c|c|c} \lambda^{n-1} w^T B & \lambda^{n-2} w^T B &
+         \cdots & \lambda w^T  B & w^T B \end{array} \right] = 0 \ \rightarrow \ (A,B) \ \mathrm{unreachable} 
+\end{align*}
 %
 
 % **** This ENDS THE EXAMPLES. DON'T DELETE THE FOLLOWING LINE:
