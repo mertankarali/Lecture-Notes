@@ -274,7 +274,54 @@ If $x[k+1] = A x[k]$ is asymptotically stable, then $\textbf{P}_{\infty} = \lim_
  A P A^T - P = -B B^T
 \end{align*}
 %
-To understand the derivation of this, refer to the Quadratic Lyapunov Functions for LTI systems section in Lecture Notes 8. 
+To understand this derivation, refer to the Quadratic Lyapunov Functions for LTI systems section in Lecture Notes 8. 
+%
+\begin{exmp}
+ Let $x[k+1] = Ax [k]$ be asymptotically stable. Then, show that  
+\end{exmp}
+%
+\begin{align*}
+ A P A^T - P = -B B^T
+\end{align*}
+%
+has a unique positive definite solution of $P$, if and only if, $(A,B)$ pair is fully reachable.
+
+\subsection{Modal Aspects and Modal Reachability Tests}
+
+\textbf{Lemma:} The reachable sub-space, $\mathcal{R}$ is $A$ invariant, i.e. $x\in \mathcal{R} \ \Rightarrow \ A x \in \mathcal{R}$. We 
+write this as $A \mathcal{R} \subset \mathcal{R}$.
+
+\textbf{Proof:} Let $x \in \mathcal{R}$ then $\exists \textbf{U}_n \in \mathbb{R}^{n p}$, s.t. $\ x = \mathbf{R} \textbf{U}_n 
+ \ \mathrm{where} \ B \in \mathbb{R}^{n \times p}$, then
+%
+\begin{align*}
+ x = \left[ \begin{array}{c|c|c|c|c} A^{n-1} B & A^{n-2} B &
+         \cdots & A B & B \end{array} \right] \textbf{U}_n 
+\end{align*}
+%
+Now let's expand $A x$
+%
+\begin{align*}
+ A x = \left[ \begin{array}{c|c|c|c|c} A^{n} B & A^{n-1} B &
+         \cdots & A^2 B & A B \end{array} \right] \textbf{U}_n 
+\end{align*}
+%
+Using Cayley-Hamilton theorem we reach that
+%
+%
+\begin{align*}
+ A^n &= -a_{n-1} A^{n-1} - \cdots - a_1 A - a_0 I
+ \\
+ A^n B &= -a_{n-1} A^{n-1} B - \cdots - a_1 A B - a_0 B
+ \\
+ A x &= \left[ \begin{array}{c|c|c|c|c} \sum\limits_{i=0}^{n-1} A^{i} B & A^{n-2} B &
+         \cdots & A^2 B & A B \end{array} \right] \textbf{U}_n 
+ \\
+ A x &\in \mathrm{Span} \left\lbrace \begin{array}{ccccc} A^{n-1} B , & A^{n-2} B , &
+         \cdots & A B , & B \end{array} \right\rbrace = \mathcal{R}
+\end{align*}
+%
+%
 
 % **** This ENDS THE EXAMPLES. DON'T DELETE THE FOLLOWING LINE:
 \end{document}
