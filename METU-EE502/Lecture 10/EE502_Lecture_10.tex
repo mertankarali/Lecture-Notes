@@ -321,7 +321,7 @@ Using Cayley-Hamilton theorem we reach that
          \cdots & A B , & B \end{array} \right\rbrace = \mathcal{R}
 \end{align*}
 %
-\textbf{Theorem:} $(A,B)$ pair is unreachable (or not fully reachable) if and only if $w^T B = 0$ for some left eigenvactor of $A$, i.e. 
+\textbf{Theorem:} $(A,B)$ pair is unreachable (or not fully reachable) if and only if $w^T B = 0$ for some left eigenvector of $A$, i.e. 
 $w^T A = \lambda w^T$.
 
 \textbf{Proof:} Let $w^T A = \lambda w^T$ and $w^T B = 0$, then
@@ -337,6 +337,43 @@ $w^T A = \lambda w^T$.
          \cdots & \lambda w^T  B & w^T B \end{array} \right] = 0 \ \rightarrow \ (A,B) \ \mathrm{unreachable} 
 \end{align*}
 %
+Now let's show that if $(A,B)$ is not reachable, then $\exists w$ s.t. $w^T A = \lambda w^T$ and $w^T B = 0$.  if $(A,B)$ is not reachable, then there exist $q \in \mathbb{R}^n$ such that
+%
+\begin{align*}
+q^T \mathbf{R} &= 0 \ \Rightarrow \ \mathbf{R}^T q = 0 
+\ \Rightarrow \ \begin{array}{c} B^T (A^T)^{n-1} q = 0 & B^T (A^T)^{n-2} q = 0 &
+         \cdots & B^T A^T q = 0 & B^T q = 0 \end{array} 
+\end{align*}
+%
+Define $\mathcal{S} = \mathrm{Span} \left\lbrace q \ , \ A^T q \ , \ \cdots \ , \  (A^T)^{n-1} q \right\rbrace$, note that 
+$\mathcal{S} \subset \mathcal{N}(B^T)$ and $\mathcal{S}$ is invariant under $A^T$ (see the similar proof above), i.e. 
+If $v \in \mathcal{S}$, then $A^T v \in \mathcal{S}$. Let $\mathrm{dim} (\mathcal{S}) = j$ and $V \in \mathbb{R}^{n \times j}$ 
+be a matrix whose columns form a basis for $\mathcal{S}$. Since $\mathcal{S}$ is invariant under $A^T$, we can find a transformation
+matrix, $\Gamma \in \mathbb{R}^{j \times j}$ such that 
+%
+\begin{align*}
+A^T V = V \Gamma
+\end{align*}
+%
+Let $\nu$ be an eigenvector of $V$, i.e. $\Gamma \nu = \alpha \nu , \, \alpha \in \mathcal{C}$, then 
+%
+\begin{align*}
+A^T V \nu = V \Gamma \nu = \alpha V \nu \ \rightarrow \ z = V \nu \in \mathbb{C}^n
+\end{align*}
+%
+where $z$ is an eigenvector of $A^T$, moreover $z \in \mathcal{S} = \mathcal{N}(B^T)$. This completes the proof. 
+
+\textbf{Theorem:} \textit{PBH Rechability Test} - $(A,B)$ is reachable if and only if 
+%
+\begin{align*}
+    \mathrm{rank} \left[ \begin{array}{c|c} \lambda I - A & B \end{array} \right] = n , \ \forall \lambda \in \mathcal{C}
+\end{align*}
+%
+\textbf{Proof:} Technically, it is the same argument as the eigenvector/modal reachability test proposed above. The same proof can be adapted for
+the PBH test.
+
+\textbf{Definition:} If $\lambda, w^T$ (eigenvalue, left-eigenvector) pair fails in one of the modal reachability tests, we call this 
+pair an unreachable mode of the system. 
 
 % **** This ENDS THE EXAMPLES. DON'T DELETE THE FOLLOWING LINE:
 \end{document}
