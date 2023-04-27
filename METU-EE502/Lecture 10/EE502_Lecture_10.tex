@@ -90,7 +90,7 @@
 
 \section{Reachability \& Controllability of DT-LTI Systems}
 
-For LTI a discrete time state-space representation
+For LTI a discrete-time state-space representation
 %
 \begin{align*}
   x[k+1] &= A x[k] + B u[k]
@@ -431,8 +431,108 @@ standard unreachable form takes the form
 %
 \begin{align*}
 \bar{x}[k+1] &= \left[ \begin{array}{c|c} A_{11} & A_{22} \\ \hline 0 & A_{22}  \end{array} \right] \bar{x}[k]
-+ \left[ \begin{array}{c} B_1 & 0  \end{array} \right] u[k]
++ \left[ \begin{array}{c} B_1 & 0 \end{array} \right] u[k]
 \end{align*}
+
+\newpage
+
+\section{Reachability \& Controllability of CT-LTI Systems}
+
+For LTI a continuous-time state-space representation
+%
+\begin{align*}
+  \dot{x} &= A x + B u
+\\
+  y &= C x + D u
+\end{align*}
+%
+\begin{itemize}
+  \item A state $x_r$ is said to be \textbf{reachable} in time $t_f > 0$, if there exist
+  an input signal, $u(t) , t \in [ 0 , t_f ]$, that transfers the state vector 
+  $x(t)$ from the origin (i.e. $x(0) = 0$) to the state $x_r$ at the given time, 
+   i.e. $x(t) = x_r$.
+ 
+  \item A state $x_c$ is said to be \textbf{controllable} in time $t_f > 0$,
+  if there exist an input signal, $u(t) , t \in [0 , t_f] $, that transfers the state vector 
+  $x(t)$ from the initial state $x_c$ (i.e. $x(0) = x_c$) to the origin
+  in given time frame, i.e. $x(t) = 0$.
+\end{itemize}
+
+Note that
+\begin{itemize}
+  \item the set $\mathcal{R}_{t_f}$ of all states that reachable in time $t_f$ is a linear
+(sub)space: $\mathcal{R}_{t_f} \subset \mathbb{R}^n$
+  \item the set $\mathcal{R}_{t_f}$ of all states that controllable in time $t_f$ is a linear
+(sub)space: $\mathcal{R}_{t_f} \subset \mathbb{R}^n$
+\end{itemize}
+
+Let's characterize $\mathcal{R}_{t_f}$. In CT derivation of the reachability 
+matrix is not as intuitive as the case in DT systems. Instead, we construct the
+main concepts using the reachability Gramian for CT systems. Note that 
+for an CT-LTI system $x(t_f)$ for a zero-state response written as
+%
+\begin{align*}
+  x(t_f) = \int\limits_{0}^{t_f} e^{A (t_f - \tau)} B u(\tau) d \tau
+\end{align*}
+%
+Obviously if a $x_r \in \mathbb{R}$ is reachable in time $t_f$, 
+then $\exists u(t), \ t \in [0 , t_f]$ such that $x(t_f) = x_r$. In this context,
+the reachability Grammian is defined as
+%
+\begin{align}
+    \textbf{P}(t) = \int\limits_{0}^{t} e^{A (t - \tau)} B B^T e^{A^T (t - \tau)}  d \tau 
+\end{align}
+%
+\textbf{Theorem:} $\mathcal{R}_{t_f} = \mathrm{Ra}[ \textbf{P}(t_f) ]$, i.e. reachable in time $t_f$ sub-space is characterized by the range-space of the reachability Gramian.
+
+\textbf{Proof:} Let's first show that $\mathrm{Ra}[ \textbf{P}(t_f) ] \subset \mathcal{R}_{t_f}$.
+Let $x^* \in \mathrm{Ra}[ \textbf{P}(t_f) ]$, then $\exist v \in \mathbb{R}^n$ such that 
+%
+\begin{align}
+    x^* = \textbf{P}(t_f) v
+\end{align}
+%
+Let $u(t) = B^T e^{A (t_f - t)} v$, then
+%
+\begin{align*}
+  x(t_f) &= \int\limits_{0}^{t_f} e^{A (t_f - \tau)} B u(\tau) d \tau
+  \\
+  &= \int\limits_{0}^{t_f} e^{A (t_f - \tau)} B B^T e^{A^T (t_f - \tau)} v d \tau
+  \\
+  &= \textbf{P}(t_f) v = x^* \ \Rightarrow \ x^* \in  \mathcal{R}_{t_f} 
+  \ \Rightarrow \ \mathrm{Ra}[ \textbf{P}(t_f) ] \subset \mathcal{R}_{t_f}
+\end{align*}
+
+Now let's show that $\mathcal{R}_{t_f} \subset \mathrm{Ra}[ \textbf{P}(t_f) ] $. Equivalently we can show that 
+$\mathrm{Ra}^\perp[ \textbf{P}(t_f) ] \subset \mathcal{R}_{t_f}^\perp$. Let $q \in \mathrm{Ra}^\perp[ \textbf{P}(t_f) ]$, then 
+%
+\begin{align*}
+q^T \textbf{P}(t_f) = 0 \, &\Rightarrow \, q^T \textbf{P}(t_f) q = 0 
+\, \iff \,
+\int\limits_{0}^{t_f} q^T e^{A (t_f - \tau)} B B^T e^{A^T (t_f - \tau)} q d \tau = 0
+\, \iff \,
+\int\limits_{0}^{t_f} || B^T e^{A^T (t_f - \tau)} q ||_2^2 d \tau = 0
+\\
+&\iff \ B^T e^{A^T (t_f - \tau)} q = 0 \, \forall \, \tau \in [0 , t_f]
+\end{align*}
+%
+Let $x(t_f) \in \mathcal{R}_{t_f}$ (any vector in the reachable space), then we know that
+%
+\begin{align*}
+  x(t_f) &= \int\limits_{0}^{t_f} e^{A (t_f - \tau)} B u(\tau) d \tau
+\end{align*}
+%
+Let's analyze $x(t_f)^T q$
+%
+\begin{align*}
+  x(t_f)^T q &= \int\limits_{0}^{t_f} u(\tau)^T \left[ B^T e^{A^T (t_f - \tau)} q \right] d \tau
+  = \int\limits_{0}^{t_f} u(\tau)^T \left[ 0 \right] d \tau = 0
+  \, \Rightarrow \, q \in \mathcal{R}_{t_f}^\perp
+  \, \Rightarrow \, \mathrm{Ra}^\perp[ \textbf{P}(t_f) ] \subset \mathcal{R}_{t_f}^\perp
+\end{align*}
+%
+This completes the proof.
+
 
 % **** This ENDS THE EXAMPLES. DON'T DELETE THE FOLLOWING LINE:
 \end{document}
