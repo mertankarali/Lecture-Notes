@@ -375,5 +375,26 @@ the PBH test.
 \textbf{Definition:} If $\lambda, w^T$ (eigenvalue, left-eigenvector) pair fails in one of the modal reachability tests, we call this 
 pair an unreachable mode of the system. 
 
+\subsection{Reachability \& Similarity Transformation}
+
+\textbf{Theorem:} Reachability is invariant under state/similarity transformation $\bar{x} = P^{-1} x$ where $\mathrm{det}(P) \neq 0$. 
+We know that system and input matrices under such a transformation take the form
+\begin{align*}
+    \bar{A} = P A P^{-1} \ , \ \bar{B} = P B
+\end{align*}
+%
+Reachability matrix for the $(\bar{A},\bar{B)}$ can be written as
+%
+\begin{align*}
+   \bar{\mathbf{R}} &= \left[ \begin{array}{c|c|c|c|c} \bar{A}^{n-1} \bar{B} & \bar{A}^{n-2} \bar{B} & \cdots & \bar{A} \bar{B} & \bar{B} \end{array} \right] 
+   \\
+    =& \left[ \begin{array}{c|c|c|c|c} P A^{n-1} B & P A^{n-2} B & \cdots & P A P^{-1} P B & P B \end{array} \right] 
+    \\
+    =& P \left[ \begin{array}{c|c|c|c|c} A^{n-1} B & A^{n-2} B & \cdots & A P^{-1} B & B \end{array} \right] = P \mathbf{R}
+    \\
+    &\Rightarrow \mathrm{rank} [ \mathbf{R} ] = \mathrm{rank} [ \mathbf{\bar{R}} ]
+\end{align*}
+%
+
 % **** This ENDS THE EXAMPLES. DON'T DELETE THE FOLLOWING LINE:
 \end{document}
