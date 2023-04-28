@@ -609,5 +609,84 @@ satisfies the following Lyapunov equation
 , and this Lyapunov equation has a (unique) positive-definite solution for $P$,
 if and only if, $(A,B)$ is fully reachable.
 
+\begin{exmp}
+Show that for a CT-LTI system $\mathcal{C} = \mathcal{R}$
+\end{exmp}
+in other words, show that reachability is equivalent to
+controllability for CT systems. 
+
+\begin{exmp}
+Let 
+\end{exmp}
+%
+%
+\begin{align*}
+    \dot{x} = \begin{bmatrix} \lambda_1 & & 0  \\
+    & \ddots &
+    \\
+    0 & &  \lambda_n 
+    \end{bmatrix} x + \begin{bmatrix} b_1 \\ \vdots \\ b_n \end{bmatrix} u
+\end{align*}
+% 
+Analyze the reachability of the $(A,B)$ pair and
+find the necessary and sufficient conditions such that 
+$(A,B)$ fully reachable.
+
+\textbf{Solution:} Since $A$ is already in diagonal Canonical 
+form, the most convenient way to analyze reachability is the PBH's modal
+test 
+%
+\begin{align*}
+  \left[ \begin{array}{c|c} A - \lambda I & B \end{array} \right]
+  &= \left[ \begin{array}{ccc|c} 
+  \lambda_1 & & 0 & b_1 \\
+    & \ddots &
+    \\
+    0 & &  \lambda_n & b_n \end{array} \right]
+\end{align*}
+%
+\textit{Necessary Condition:} Let $\lambda = \lambda_i$, if $b_i = 0$,
+then $\left[ \begin{array}{c|c} A - \lambda I & B \end{array} \right]$
+drops rank. Thus, if $\exists \lambda_i$ such that $b_i = 0$, then the system 
+is unreachable. 
+
+\textit{Sufficient Condition:} Not that if $\lambda_i \neq \lambda_j$ for $i \neq j$,
+the condition above also becomes sufficient. Now analyze the general case, without loss 
+of generality let's assume $\lambda_1 = \lambda_2 = \cdots = \lambda_p$ and all other 
+eigenvalues are different. Let $\lambda = \lambda_1$ in the PBH test, then first $p$-rows of the
+PBH matrix takes the form
+%
+\begin{align*}
+  \left[ \begin{array}{c|c} A - \lambda_1 I & B \end{array} \right]
+  &= \left[ \begin{array}{c|c} 
+  0_{1 \times n} & b_1 \\
+  0_{1 \times n}  & b_2 \\
+  \\
+  \vdots
+  \\
+  0_{1 \times n}  & b_p \\
+     \end{array} \right]
+\end{align*}
+%
+PBH matrix does not drop rank, if and only if, $\lbrace b_1^T , b_2^T , \cdots , b_p^T \rbrace$ 
+is a linearly independent set. We can see that number of inputs of the system has to be larger than 
+or equal to $p$ (indeed $\mathrm{max}(p)$ for system-wide reachability). Moreover, the rank of the 
+following sub-matrix matrix has to be equal to the algebraic multiplicity of the eigenvalue, i.e.
+%
+\begin{align*}
+  B_{\lambda_1}
+  &= \left[ \begin{array}{c} 
+  b_1 \\
+   b_2 \\
+  \\
+  \vdots
+  \\
+  & b_p \\
+     \end{array} \right] \ , \ \mathrm{rank}(B_{\lambda_1}) = p  
+\end{align*}
+%
+
+
+
 % **** This ENDS THE EXAMPLES. DON'T DELETE THE FOLLOWING LINE:
 \end{document}
