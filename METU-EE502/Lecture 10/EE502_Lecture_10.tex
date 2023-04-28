@@ -306,7 +306,7 @@ Now let's expand $A x$
          \cdots & A^2 B & A B \end{array} \right] \textbf{U}_n 
 \end{align*}
 %
-Using Cayley-Hamilton theorem we reach that
+Using Cayley-Hamilton theorem, we reach that
 %
 %
 \begin{align*}
@@ -341,8 +341,8 @@ Now let's show that if $(A,B)$ is not reachable, then $\exists w$ s.t. $w^T A = 
 %
 \begin{align*}
 q^T \mathbf{R} &= 0 \ \Rightarrow \ \mathbf{R}^T q = 0 
-\ \Rightarrow \ \begin{array}{c} B^T (A^T)^{n-1} q = 0 & B^T (A^T)^{n-2} q = 0 &
-         \cdots & B^T A^T q = 0 & B^T q = 0 \end{array} 
+\ \Rightarrow \ \begin{array}{c} B^T (A^T)^{n-1} q = 0 \\ B^T (A^T)^{n-2} q = 0 \\
+         \vdots \\ B^T A^T q = 0 \\ B^T q = 0 \end{array} 
 \end{align*}
 %
 Define $\mathcal{S} = \mathrm{Span} \left\lbrace q \ , \ A^T q \ , \ \cdots \ , \  (A^T)^{n-1} q \right\rbrace$, note that 
@@ -406,7 +406,7 @@ to highlight reachable and reachable ``spaces''. Let
 \end{align*}
 %
 Let's choose a $T_1$ such that $\mathrm{Ra}(T_1) = \mathrm{Ra}(\mathbf{R}) = \mathcal{R}$ and let's choose $T_2$ be a matrix such that 
-columns of $T$ are linearly independent. Let's analyze the similarity transformation 
+columns of $T$ are linearly independent. Let's analyze the similarity transformation. 
 %
 %
 \begin{align*}
@@ -418,20 +418,19 @@ columns of $T$ are linearly independent. Let's analyze the similarity transforma
 %
 Note that the reachable sub-space is $A$ invariant $A T_1$ must remain in $\mathrm{Ra}(T_1) = \mathrm{Ra}(\mathbf{R}) = \mathcal{R}$,
 since $T_2$ is composed of linearly independent columns, in order $T_1 A_{11} + T_2 A_{22}$ remain in $\mathrm{Ra}(T_1)$, $A_{12} = \mathbf{0}$.
-Now let's analyze the effect of transformation on the input matrix
+Now let's analyze the effect of transformation on the input matrix.
 %
 \begin{align*}
-    B &= T \bar{B} = \left[ \begin{array}{c|c} T_1 & T_2  \end{array} \right] \left[ \begin{array}{c} B_1 & B_2  \end{array} \right]
+    B &= T \bar{B} = \left[ \begin{array}{c|c} T_1 & T_2  \end{array} \right] \left[ \begin{array}{c} B_1 \\ B_2  \end{array} \right]
     \\
     B &= T_1 B_1 + T_2 B_2
 \end{align*}
 %
-Similarly since $\mathrm{Ra}(B) \subset \mathrm{Ra}(T_1) = \mathrm{Ra}(\mathbf{R}) = \mathcal{R} \ \Rightarrow \ B_2 = 0$, thus a
-standard unreachable form takes the form
+Similarly since $\mathrm{Ra}(B) \subset \mathrm{Ra}(T_1) = \mathrm{Ra}(\mathbf{R}) = \mathcal{R} \ \Rightarrow \ B_2 = 0$, thus a standard unreachable form takes the form
 %
 \begin{align*}
 \bar{x}[k+1] &= \left[ \begin{array}{c|c} A_{11} & A_{22} \\ \hline 0 & A_{22}  \end{array} \right] \bar{x}[k]
-+ \left[ \begin{array}{c} B_1 & 0 \end{array} \right] u[k]
++ \left[ \begin{array}{c} B_1 \\ 0 \end{array} \right] u[k]
 \end{align*}
 
 \newpage
@@ -447,7 +446,7 @@ For LTI a continuous-time state-space representation
 \end{align*}
 %
 \begin{itemize}
-  \item A state $x_r$ is said to be \textbf{reachable} in time $t_f > 0$, if there exist
+  \item A state $x_r$ is said to be \textbf{reachable} in time $t_f > 0$, if there exists
   an input signal, $u(t) , t \in [ 0 , t_f ]$, that transfers the state vector 
   $x(t)$ from the origin (i.e. $x(0) = 0$) to the state $x_r$ at the given time, 
    i.e. $x(t) = x_r$.
@@ -469,7 +468,7 @@ Note that
 Let's characterize $\mathcal{R}_{t_f}$. In CT derivation of the reachability 
 matrix is not as intuitive as the case in DT systems. Instead, we construct the
 main concepts using the reachability Gramian for CT systems. Note that 
-for an CT-LTI system $x(t_f)$ for a zero-state response written as
+for a CT-LTI system $x(t_f)$ for a zero-state response written as
 %
 \begin{align*}
   x(t_f) = \int\limits_{0}^{t_f} e^{A (t_f - \tau)} B u(\tau) d \tau
@@ -486,7 +485,7 @@ the reachability Grammian is defined as
 \textbf{Theorem:} $\mathcal{R}_{t_f} = \mathrm{Ra}[ \textbf{P}(t_f) ]$, i.e. reachable in time $t_f$ sub-space is characterized by the range-space of the reachability Gramian.
 
 \textbf{Proof:} Let's first show that $\mathrm{Ra}[ \textbf{P}(t_f) ] \subset \mathcal{R}_{t_f}$.
-Let $x^* \in \mathrm{Ra}[ \textbf{P}(t_f) ]$, then $\exist v \in \mathbb{R}^n$ such that 
+Let $x^* \in \mathrm{Ra}[ \textbf{P}(t_f) ]$, then $\exists v \in \mathbb{R}^n$ such that 
 %
 \begin{align}
     x^* = \textbf{P}(t_f) v
@@ -506,7 +505,8 @@ Let $u(t) = B^T e^{A (t_f - t)} v$, then
 Now let's show that $\mathcal{R}_{t_f} \subset \mathrm{Ra}[ \textbf{P}(t_f) ] $. Equivalently we can show that 
 $\mathrm{Ra}^\perp[ \textbf{P}(t_f) ] \subset \mathcal{R}_{t_f}^\perp$. Let $q \in \mathrm{Ra}^\perp[ \textbf{P}(t_f) ]$, then 
 %
-\begin{align*}
+\begin{align}
+\notag
 q^T \textbf{P}(t_f) = 0 \, &\Rightarrow \, q^T \textbf{P}(t_f) q = 0 
 \, \iff \,
 \int\limits_{0}^{t_f} q^T e^{A (t_f - \tau)} B B^T e^{A^T (t_f - \tau)} q d \tau = 0
@@ -514,7 +514,8 @@ q^T \textbf{P}(t_f) = 0 \, &\Rightarrow \, q^T \textbf{P}(t_f) q = 0
 \int\limits_{0}^{t_f} || B^T e^{A^T (t_f - \tau)} q ||_2^2 d \tau = 0
 \\
 &\iff \ B^T e^{A^T (t_f - \tau)} q = 0 \, \forall \, \tau \in [0 , t_f]
-\end{align*}
+\label{eq:orthGram}
+\end{align}
 %
 Let $x(t_f) \in \mathcal{R}_{t_f}$ (any vector in the reachable space), then we know that
 %
@@ -533,6 +534,80 @@ Let's analyze $x(t_f)^T q$
 %
 This completes the proof.
 
+\textbf{Theorem:} $\mathcal{R}_{t_f} = \mathrm{Ra}[ \textbf{P}(t_f) ] = \mathrm{Ra}[ \mathbf{R} ] \ \forall t_f > 0$. This theorem claims that also, for CT-LTI systems, the reachability matrix characterizes the reachable in time $t_f$ sub-space; moreover, reachable sub-space is indeed independent of $t_f$.
+
+Let's concentrate the relation between the reachability grammian, $\textbf{P}(t_f) = \int\limits_{0}^{t_f} e^{A (t_f - \tau)} B B^T e^{A^T (t_f - \tau)}  d \tau $ 
+and the reachability matrix, $\mathbf{R} = \left[ \begin{array}{c|c|c|c|c} A^{n-1} B & A^{n-2} B & \cdots & A B & B \end{array} \right] $. Note that 
+%
+\begin{align*}
+  \mathrm{Ra}[ \textbf{P}(t_f) ] = \mathrm{Ra}[ \mathbf{R} ]
+  \, \iff \, \mathrm{Ra}^\perp [ \textbf{P}(t_f) ] = \mathrm{Ra}^\perp [ \mathbf{R} ]
+\end{align*}
+%
+Firs show that if $\mathrm{Ra}^\perp [ \mathbf{R} ] \subset \mathrm{Ra}^\perp [ \textbf{P}(t_f) ]$.
+Let $q \in \mathrm{Ra}^\perp [ \mathbf{R} ] $, then 
+%
+\begin{align*}
+  q^T \mathbf{R} = 0 \, &\iff \, q^T \left[ \begin{array}{c|c|c|c|c} A^{n-1} B & A^{n-2} B & \cdots & A B & B \end{array} \right] = 0 \ \iff \, q^T A^i B = 0 \forall i \in \mathbb{Z^+}
+\end{align*}
+%
+Note that for $i \geq n$, we referred to the Cayley-Hamilton theorem. Now let's check if 
+$q \in \mathrm{Ra}^\perp [ \mathbf{P}_{t_f} ] $
+%
+\begin{align*}
+  q^T \mathbf{P}_{t_f} &= \int\limits_{0}^{t_f} q^T e^{A (t_f - \tau)} B B^T e^{A^T (t_f - \tau)}  d \tau 
+  \\
+  q^T A^i B &= 0 \forall i \in \mathbb{Z^+} \, \Rightarrow \, q^T e^{A (t_f - \tau)} = 0 \, \forall t_f \geq 0
+  \\
+  &\Rightarrow \, q^T \mathbf{P}_{t_f} = 0 \, \Rightarrow \, q \in \mathrm{Ra}^\perp [ \mathbf{P}_{t_f} ]
+  \, \Rightarrow \, \mathrm{Ra}^\perp [ \mathbf{R} ] \subset \mathrm{Ra}^\perp [ \textbf{P}(t_f) ]
+\end{align*}
+%
+Now let's show that if $\mathrm{Ra}^\perp [ \textbf{P}(t_f) ] \subset \mathrm{Ra}^\perp [ \mathbf{R} ]$.
+Let $q \in \mathrm{Ra}^\perp [ \mathbf{R} ] $, from (\ref{eq:orthGram}) we know that 
+%
+\begin{align*}
+  q e^{A (t_f - \tau)} B = 0 \, \forall \, \tau \in [0 , t_f]
+\end{align*}
+%
+Then we know that 
+%
+\begin{align*}
+  [ q e^{A \eta} B]_{\eta = 0} = 0 \, &\Rightarrow \, q^T B = 0
+  \\
+  \frac{d}{dt}[ q e^{A \eta} B]_{\eta = 0} = 0 \, &\rightarrow \, q^T A B = 0
+  \\
+  \frac{d^2}{dt^2}[ q e^{A \eta} B]_{\eta = 0} = 0 \, &\Rightarrow \, q^T A^2 B = 0
+  \\
+  &\vdots
+    \\
+    \frac{d^{n-1}}{dt^{n-1}}[ q e^{A \eta} B]_{\eta = 0} = 0 \, &\Rightarrow \, q^T A^{n-1} B = 0
+    \\
+    &\Rightarrow \, q^T \mathbf{R} = 0 \, \Rightarrow \, q \in \mathrm{Ra}^\perp [ \mathbf{R} ]
+    \, \Rightarrow \, \mathrm{Ra}^\perp [ \textbf{P}(t_f) ] \subset \mathrm{Ra}^\perp [ \mathbf{R} ]
+\end{align*}
+%
+This completes the proof. This theorem indicates that similar to the DT systems range space of the
+reachability matrix, $\mathbf{R}$, characterizes the whole reachable space, and this space independent
+of the time interval. In that respect 
+
+\textbf{Corollary:} $(A,B)$ is fully reachable if and only if $\mathrm{dim} \left( \mathrm{Ra} [ \mathbf{R} ] \right) = \mathrm{dim} \left( \mathrm{Ra} [ \textbf{P}(t_f) ] \right)$
+
+\textbf{Remark:} This theorem shows that the condition for CT reachability is expressed in the same way 
+as DT reachability. Hence all our DT results on standard forms for unreachable systems, modal tests, and so on; remain unchanged. We, therefore, do not repeat any of these DT results for the CT case but count on you to explicitly note the CT versions of our earlier DT results.
+
+\begin{exmp}
+Let 
+\end{exmp}
+$\dot{x} = A x$ is asymptotically stable, then reachability Grammian at $t_f \to \infty$, $P := \mathbf{P}_{\infty}$,
+satisfies the following Lyapunov equation
+%
+\begin{align*}
+    A P + P A^T = - B B^T
+\end{align*}
+% 
+, and this Lyapunov equation has a (unique) positive-definite solution for $P$,
+if and only if, $(A,B)$ is fully reachable.
 
 % **** This ENDS THE EXAMPLES. DON'T DELETE THE FOLLOWING LINE:
 \end{document}
