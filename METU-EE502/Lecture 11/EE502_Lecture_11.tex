@@ -1,0 +1,167 @@
+% 
+
+
+\documentclass[twoside]{article}
+\setlength{\oddsidemargin}{0.25 in}
+\setlength{\evensidemargin}{-0.25 in}
+\setlength{\topmargin}{-0.6 in}
+\setlength{\textwidth}{6.5 in}
+\setlength{\textheight}{8.5 in}
+\setlength{\headsep}{0.75 in}
+\setlength{\parindent}{0 in}
+\setlength{\parskip}{0.1 in}
+
+%
+% ADD PACKAGES here:
+%
+
+\usepackage{amsmath,amsfonts,graphicx,arydshln}
+
+
+\newcounter{lecnum}
+\renewcommand{\thepage}{\thelecnum-\arabic{page}}
+\renewcommand{\thesection}{\thelecnum.\arabic{section}}
+\renewcommand{\theequation}{\thelecnum.\arabic{equation}}
+\renewcommand{\thefigure}{\thelecnum.\arabic{figure}}
+\renewcommand{\thetable}{\thelecnum.\arabic{table}}
+
+%
+% The following macro is used to generate the header.
+%
+\newcommand{\lecture}[4]{
+   \pagestyle{myheadings}
+   \thispagestyle{plain}
+   \newpage
+   \setcounter{lecnum}{#1}
+   \setcounter{page}{1}
+   \noindent
+   \begin{center}
+   \framebox{
+      \vbox{\vspace{2mm}
+    \hbox to 6.28in { {\bf EE402 - Discrete Time Systems
+	\hfill Spring 2018} }
+       \vspace{4mm}
+       \hbox to 6.28in { {\Large \hfill Lecture #1 \hfill} }
+       \vspace{2mm}
+       \hbox to 6.28in { {\it Lecturer: #2 \hfill } }
+      \vspace{2mm}}
+   }
+   \end{center}
+   \markboth{Lecture #1}{Lecture #1}
+
+   \vspace*{4mm}
+}
+
+\renewcommand{\cite}[1]{[#1]}
+\def\beginrefs{\begin{list}%
+        {[\arabic{equation}]}{\usecounter{equation}
+         \setlength{\leftmargin}{2.0truecm}\setlength{\labelsep}{0.4truecm}%
+         \setlength{\labelwidth}{1.6truecm}}}
+\def\endrefs{\end{list}}
+\def\bibentry#1{\item[\hbox{[#1]}]}
+
+
+\newcommand{\fig}[3]{
+			\vspace{#2}
+			\begin{center}
+			Figure \thelecnum.#1:~#3
+			\end{center}
+	}
+
+% Use these for theorems, lemmas, proofs, etc.
+\newtheorem{theorem}{Theorem}[lecnum]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{claim}[theorem]{Claim}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\newenvironment{proof}{{\bf Proof:}}{\hfill\rule{2mm}{2mm}}
+\newtheorem{exmp}[theorem]{Ex}
+
+% **** IF YOU WANT TO DEFINE ADDITIONAL MACROS FOR YOURSELF, PUT THEM HERE:
+
+\begin{document}
+
+% Lecture Details
+\lecture{11}{Asst. Prof. M. Mert Ankarali}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Observability in CT-LTI Systems}
+
+In the context of observability of dynamical systems, it 
+turns out that it is more convenient to think in terms of
+``un-observabile states'' and then connect it to the 
+concept of observability and fully observable systems.
+as reflected in the following definitions.
+
+\textbf{Definition:} For LTI a contınıous-time state-space representation
+%
+\begin{align*}
+  \dot{x} &= A x + B u
+\\
+  y &= C x + D u
+\end{align*}
+%
+A state $x_u$ is said to be unobservable over $t \in [0 , T )$,
+if with $x(0) = x_u$ and $\forall \, u(t)$ we get the same $y(t)$ as we would with $x(0) = 0$. 
+
+The set, $\bar{\mathcal{O}_T}$, of all unobservale states over $t \in [0 , T )$ forms a vecotor space, $\bar{\mathcal{O}_T} \subset 
+\mathbb{R}^n$, and the system is called fully observable over
+$t \in [0 , T )$, if $\mathrm{dim}[\bar{\mathcal{O}_T}] = 0$.
+
+Note for linear dynamical systems observability of a state and
+system is independent from $u(t)$, in that respect we will 
+only analuze zero-input response of the system in our derivations.
+
+\textbf{Theorem:} $x_u \in \bar{\mathcal{O}_T} \, \iff \, 
+x_u \in \bar{\mathcal{O}_{\tau}} , \, \forall \tau > 0 \, \iff \, 
+x_u \in \mathcal{N}[ \mathbf{O} ]$, where 
+%
+\begin{align*}
+  \mathbf{O} = \left[ 
+  \begin{array}{c}
+    C 
+    \\ \hdashline
+    C A 
+    \\ \hdashline
+    C A^2
+    \\ \hdashline
+    \vdots
+    \\ \hdashline
+    C A^{n-1}
+  \end{array}
+  \right]
+\end{align*}
+%
+Let's first show that $x_u \in \mathcal{N}[ \mathbf{O} ] \, \iff \, x_u \in \bar{\mathcal{O}_{\tau}} , \, \forall \tau > 0$. Let $x_u \in \mathcal{N}[ \mathbf{O} ]$, then  
+%
+\begin{align*}
+  \mathbf{O} x_u &= 0
+  \, 
+    \rightarrow
+  \,
+  \begin{array}{c}
+    C x_u = 0
+    \\ \hdashline
+    C A x_u = 0
+    \\ \hdashline
+    C A^2 x_u = 0
+    \\ \hdashline
+    \vdots
+    \\ \hdashline
+    C A^{n-1} x_u = 0
+  \end{array}
+\end{align*}
+%
+Morover by Cayleh-Hamilton theorem we can also conclude that, $C A^{l} x_u = 0 , \ \forall l \in \mathbf{Z}^+$. Now let's anlayze the zero-input response of teh system with $x(0) = x_u$
+%
+\begin{align*}
+  x(\tau) = C e^{A \tau} x_u = 0 \, \Rightarrow \, x_u \in \bar{\mathcal{O}_{\tau}}
+\end{align*}
+%
+and indeed it is true for all $\tau \in \mathbb{R}$.
+
+% **** This ENDS THE EXAMPLES. DON'T DELETE THE FOLLOWING LINE:
+\end{document}
