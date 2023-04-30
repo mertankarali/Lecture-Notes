@@ -612,8 +612,7 @@ if and only if, $(A,B)$ is fully reachable.
 \begin{exmp}
 Show that for a CT-LTI system $\mathcal{C} = \mathcal{R}$
 \end{exmp}
-in other words, show that reachability is equivalent to
-controllability for CT systems. 
+i.e., show that reachability is equivalent to controllability for CT systems. 
 
 \begin{exmp}
 Let 
@@ -686,7 +685,83 @@ following sub-matrix matrix has to be equal to the algebraic multiplicity of the
 \end{align*}
 %
 
+\begin{exmp}
+Let 
+\end{exmp}
+%
+%
+\begin{align*}
+    \dot{x} = \left[
+ \begin{array}{ccc|cc} \lambda_1 & 1 & 0 & 0 & 0 \\
+     0 & \lambda_1 & 1 & 0 & 0 
+    \\
+    0 & 0 & \lambda_1 &  0 & 0 \\
+    \hline
+    0 & 0 & 0 & \lambda_2 & 1 \\
+    0 & 0 & 0 & 0 & \lambda_2 \\
+    \end{array} \right]
+    x + \left[ \begin{array}{c} b_{1,1} \\ b_{1,2} 
+    \\ b_{1,3} \\ b_{2,1} \\ b_{2,2}  
+  \end{array} \right] u
+\end{align*}
+% 
+Analyze the reachability of the $(A,B)$ pair for $\lambda_1 
+neq \lambda_2$ and $\lambda_1 = \lambda_2$
+and find the necessary and sufficient conditions such that 
+$(A,B)$ fully reachable.
 
+\textbf{Solution:} Let's first assume that $\lambda_1 
+neq \lambda_2$, we can analyze each mode separately using the BPH test. Let's start with $\lambda = \lambda_1$
+%
+\begin{align*}
+  \left[ \begin{array}{c|c} A - \lambda_1 I & B \end{array} \right]
+  &= \left[  \begin{array}{ccc|cc|c} 0 & 1 & 0 & 0 & 0 & b_{1,1} \\
+     0 & 0 & 1 & 0 & 0 & b_{1,2}
+    \\
+    0 & 0 & 0 &  0 & 0 & b_{1,3 }\\
+    \hline
+    0 & 0 & 0 & \lambda_2 - \lambda_1 & 1 & b_{2,1} \\
+    0 & 0 & 0 & 0 & \lambda_2 - \lambda_2 & b_{2,2}   \\
+    \end{array} \right]
+\end{align*}
+%
+The matrix above is full rank if and only if $b_{1,3}  
+\neq 0$,
+this implies that $b_{1,1}$ and $b_{1,2}$ do not affect
+the reachability condition. Similarly for $\lambda = \lambda_2$
+we can find that $b_{2,2} \neq 0$ is a necessary condition for 
+reachability. So for $\lambda_1 neq \lambda_2$, $(A,B)$ pair
+is reachable if and only if $b_{2,2} \neq 0$ and $b_{1,3} \neq 0$.
+
+Now let's analyze the case $\lambda_2 = \lambda_1$. It is fairly easy 
+to observe that $b_{2,2} \neq 0$ and $b_{1,3} \neq 0$ is a necessary
+but not sufficient condition for full reachability. Let's re-analyze the
+PBH matrix
+%
+\begin{align*}
+  \left[ \begin{array}{c|c} A - \lambda_1 I & B \end{array} \right]
+  &= \left[  \begin{array}{ccc|cc|c} 0 & 1 & 0 & 0 & 0 & b_{1,1} \\
+     0 & 0 & 1 & 0 & 0 & b_{1,2}
+    \\
+    0 & 0 & 0 &  0 & 0 & b_{1,3 }\\
+    \hline
+    0 & 0 & 0 & 0 & 1 & b_{2,1} \\
+    0 & 0 & 0 & 0 & 0 & b_{2,2}   \\
+    \end{array} \right]
+\end{align*}
+%
+The matrix has full rank if and only if 
+%
+\begin{align*}
+ \mathrm{Ra}\left\lbrace 
+ \begin{bmatrix}
+     b_{1,3}
+     \\
+     b_{2,2}
+ \end{bmatrix}
+ \right\rbrace = \mathbb{R}^2
+\end{align*}
+%
 
 % **** This ENDS THE EXAMPLES. DON'T DELETE THE FOLLOWING LINE:
 \end{document}
