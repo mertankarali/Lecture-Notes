@@ -194,6 +194,48 @@ Similar to the reachability, we show that for CT-LTI systems
 observability and unobservable (and observable) subspace
 are independent of time. 
 
+\subsection{Observability Grammian}
+
+For a CT-LTI system, observability Grammian is defined as
+%
+\begin{align*}
+    \textbf{Q}(t) = \int\limits_{0}^{t} e^{A^T (t - \tau)} C^T C e^{A (t - \tau)}  d \tau 
+\end{align*}
+%
+\textbf{Theorem:} $\mathcal{N}[ \textbf{Q}(t) ] = \mathcal{N}[ \mathbf{O} ] \ \forall t > 0$. 
+
+\textbf{Proof:} Let's first show that $\mathcal{N}[ \mathbf{O} ] \subset \mathcal{N}[ \textbf{Q}(t) ] \ \forall t > 0$. 
+If $x_u \in \mathcal{N}[ \mathbf{O} ]$, then we know that $C A^{l} x_u = 0, \ \forall l \in \mathbb{Z}^{\geq 0}$. Let's anlayze 
+if $x_u$ is in the null-space of $\textbf{Q}(t)$
+%
+\begin{align*}
+    \textbf{Q}(t) x_u = \int\limits_{0}^{t} e^{A^T (t - \tau)} C^T C e^{A (t - \tau)} x_u d \tau
+    = 0 \, \Rightarrow \, x_u \in \mathcal{N}[ \textbf{Q}(t) ] \ \forall t > 0
+\end{align*}
+%
+Now let's show that $\mathcal{N}[ \textbf{Q}(t) ] \subset \mathcal{N}[ \mathbf{O} ], \, \forall t > 0$.
+Let $x_u \in \mathcal{N}[ \textbf{Q}(t) ]$, then
+\begin{align*}
+    \textbf{Q}(t) x_u = 0 \, \Rightarrow \, x_u^T \textbf{Q}(t) x_u \, \iff \, \int\limits_{0}^{t} x_u^T e^{A^T (t - \tau)} C^T C e^{A (t - \tau)} x_u d \tau
+    = 0 \, \iff \, C e^{A (t - \tau)} x_u = 0 \, \forall \tau \in [0 , t]
+\end{align*}
+%
+Then we know that 
+%
+\begin{align*}
+  [ C e^{A \eta} x_u]_{\eta = 0} = 0 \, &\Rightarrow \, C x_u = 0
+  \\
+  \frac{d}{d\eta}[ C e^{A \eta} x_u ]_{\eta = 0} = 0 \, &\rightarrow \, C A x_u = 0
+  \\
+  \frac{d^2}{d\eta^2}[ C e^{A \eta} x_u ]_{\eta = 0} = 0 \, &\Rightarrow \, C A^2 x_u = 0
+  \\
+  &\vdots
+    \\
+    \frac{d^{n-1}}{d\eta^{n-1}}[ C e^{A \eta} x_u ]_{\eta = 0} = 0 \, &\Rightarrow \, C A^{n-1} x_u = 0
+    \\
+    &\Rightarrow \, \mathbf{O} x_u = 0 \, \Rightarrow \, x_u \in \mathcal{N}[ \mathbf{O} ]
+    \, \Rightarrow \, \mathcal{N}[ \textbf{Q}(t) ] \subset \mathcal{N}[ \mathbf{O} ] \, \forall t > 0
+\end{align*}
 
 % **** This ENDS THE EXAMPLES. DON'T DELETE THE FOLLOWING LINE:
 \end{document}
