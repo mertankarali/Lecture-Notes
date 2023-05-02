@@ -155,13 +155,45 @@ Let's first show that $x_u \in \mathcal{N}[ \mathbf{O} ] \, \iff \, x_u \in \bar
   \end{array}
 \end{align*}
 %
-Morover by Cayleh-Hamilton theorem we can also conclude that, $C A^{l} x_u = 0 , \ \forall l \in \mathbf{Z}^+$. Now let's anlayze the zero-input response of teh system with $x(0) = x_u$
+Moreover, by Cayley-Hamilton theorem, we can also conclude that $C A^{l} x_u = 0, \ \forall l \in \mathbf{Z}^+$. Now let's analyze the zero-input response of the system with $x(0) = x_u$
 %
 \begin{align*}
   x(\tau) = C e^{A \tau} x_u = 0 \, \Rightarrow \, x_u \in \bar{\mathcal{O}_{\tau}}
 \end{align*}
 %
-and indeed it is true for all $\tau \in \mathbb{R}$.
+and indeed it is true for all $\tau \in \mathbb{R}$. Now let's 
+show that $x_u \in \bar{\mathcal{O}_T} \, \Rightarrow \, x_u \in \mathcal{N}[ \mathbf{O} ]$
+%
+\begin{align*}
+  x(t) = C e^{A t} x_u = 0 , \, 
+  \forall t \in [0,\tau] , \, \forall 
+  \tau \in \mathbb{R} \, \Rightarrow \, x_u \in \bar{\mathcal{O}_{\tau}}
+\end{align*}
+%
+Now let's show that $x_u \in \bar{\mathcal{O}_T} \, \Rightarrow \, 
+x_u \in \mathcal{N}[ \mathbf{O} ]$. If $x_u \in \bar{\mathcal{O}_T}$, then 
+%
+\begin{align*}
+  x(t) = C e^{A t} x_u = 0 , \, \forall t \in [0,T] \, 
+  \Rightarrow \, \begin{array}{c} 
+  x(0) = 0 \, \Rightarrow \, C x_u = 0
+  \\
+  \left[\frac{d}{dt}x(t) \right]_{t=0} = 0 \, \Rightarrow \, C A x_u = 0
+  \\
+  \left[\frac{d^2}{dt^2}x(t) \right]_{t=0} = 0 \, \Rightarrow \, C A^2 x_u = 0
+  \\
+  \vdots
+  \\
+  \left[\frac{d^{n-1}}{dt^{n-1}}x(t) \right]_{t=0} = 0 \, \Rightarrow \, C A^{n-1} x_u = 0
+  \end{array}
+  \, \Rightarrow \, \mathbf{O} x_u = 0 
+  \, \iff \, x_u \in \mathcal{N}[ \mathbf{O} ]
+\end{align*}
+%
+Similar to the reachability, we show that for CT-LTI systems
+observability and unobservable (and observable) subspace
+are independent of time. 
+
 
 % **** This ENDS THE EXAMPLES. DON'T DELETE THE FOLLOWING LINE:
 \end{document}
