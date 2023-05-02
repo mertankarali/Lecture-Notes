@@ -237,5 +237,33 @@ Then we know that
     \, \Rightarrow \, \mathcal{N}[ \textbf{Q}(t) ] \subset \mathcal{N}[ \mathbf{O} ] \, \forall t > 0
 \end{align*}
 
+\begin{exmp}
+Show that
+\end{exmp}
+if $\dot{x} = A x$ is asymptotically stable, then observability Grammian at $t \to \infty$, $Q := \mathbf{Q}_{\infty}$,
+satisfies the following Lyapunov equation
+%
+\begin{align*}
+    A Q + Q A^T = - C^T C
+\end{align*}
+% 
+, and this Lyapunov equation has a (unique) positive-definite solution for $Q$,
+if and only if, $(A,C)$ is fully observable.
+
+\subsection{Futher Results in CT-LTI Observability}
+
+In view of duality, we can use our reachability results to immediately derive various conclusions, tests,
+standard and canonical forms, etc., for observable and unobservable systems. The reader is highly encouraged to 
+derive the following results, theorems, and claims by referring to the dual results in the reachability lecture.
+
+\textbf{Result 1:} The unobservable sub-space, $\mathcal{N} [\mathbf{O}] $ is $A$ invariant, i.e. $x\in \mathcal{N} [\mathbf{O}]  \ \Rightarrow \ A x \in \mathcal{N} [\mathbf{O}] $. 
+
+\textbf{Result 2:} $(A,C)$ pair is unobservable $\iff$ $C v = 0$ for some right eigenvector of $A$, i.e. $A v = \lambda v$ $\iff$
+\begin{align*}
+\mathrm{rank} \left[ \begin{array}{c} \lambda I - A \\ \hline C \end{array} \right] = n , \ \forall \lambda \in \mathcal{C}
+\end{align*}
+
+\textbf{Result 3:} Observability is invariant under state/similarity transformation. 
+
 % **** This ENDS THE EXAMPLES. DON'T DELETE THE FOLLOWING LINE:
 \end{document}
