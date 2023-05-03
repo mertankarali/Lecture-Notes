@@ -38,8 +38,8 @@
    \begin{center}
    \framebox{
       \vbox{\vspace{2mm}
-    \hbox to 6.28in { {\bf EE402 - Discrete Time Systems
-	\hfill Spring 2018} }
+    \hbox to 6.28in { {\bf EE502 - Linear Systems Theory II
+	\hfill Spring 2023} }
        \vspace{4mm}
        \hbox to 6.28in { {\Large \hfill Lecture #1 \hfill} }
        \vspace{2mm}
@@ -264,6 +264,51 @@ derive the following results, theorems, and claims by referring to the dual resu
 \end{align*}
 
 \textbf{Result 3:} Observability is invariant under state/similarity transformation. 
+
+\subsection{Standard Form of Unobservable Systems}
+
+Let $\dot{x} = A x + B u \ , \ y = C x + D u$ be an unobservable system; then it can be convenient and practical to choose coordinates (via similarity transformation)
+to highlight unobservable and observable ``spaces''. Let 
+%
+\begin{align*}
+   \mathrm{dim}({\mathcal{\mathbf{O}}}) &= \bar{o} 
+   \ \& \
+   T = \left[ \begin{array}{c|c} T_2 & T_{\bar{o}}  \end{array} \right] \ \mathrm{where} \ T_{\bar{o}} \in \mathbb{R}^{n \times \bar{o}} \ , 
+   T_2 \in \mathbb{R}^{n \times (n-\bar{o})} \ , 
+   \\
+   T^{-1} A T &= \bar{A} \ , \ C T = \bar{C}
+\end{align*}
+%
+Let's choose a $T_{\bar{o}}$ such that $\mathrm{Ra}(T_{\bar{o}}) = \mathcal{N}(\mathbf{O}) = \bar{\mathcal{O}}$, in other words columns of $T_{\bar{o}}$
+span the null-space of the observability matrix (i.e. non-observable subspace).
+Similarly, let's choose $T_2$ such that columns of $T$ are linearly independent. Let's analyze the similarity transformation. 
+%
+\begin{align*}
+    A T &=  A \left[ \begin{array}{c|c} T_2 & T_{\bar{o}} \end{array} \right] = T \bar{A} = \left[ \begin{array}{c|c} T_2 & T_{\bar{o}} \end{array} \right]
+    \left[ \begin{array}{c|c} A_{11} & A_{12} \\ \hline A_{21} & A_{22}  \end{array} \right]
+    \\
+    A T_{\bar{o}} &= T_2 A_{12} + T_{\bar{o}} A_{22}
+\end{align*}
+%
+Note that the unobservable sub-space is $A$ invariant $A T_{\bar{o}}$ must remain in $\mathrm{Ra}(T_{\bar{o}}) = \mathcal{N}(\mathbf{O}) = \bar{\mathcal{O}}$,
+since $T_2$ is composed of linearly independent columns, in order $T_2 A_{12} + T_{\bar{o}} A_{22}$ remain in $\mathrm{Ra}(T_{\bar{o}})$, $A_{12} = \mathbf{0}$.
+Now let's analyze the effect of transformation on the output matrix.
+%
+\begin{align*}
+    \bar{C} &= C T = C \left[ \begin{array}{c|c} T_2 & T_{\bar{o}} \end{array} 
+    \right] = \left[ \begin{array}{c|c} C_1 & C_2  \end{array} \right]
+    \\
+    C_2 &= C T_{\bar{o}} = 0
+\end{align*}
+%
+thus a standard unobservable form takes the form
+%
+\begin{align*}
+\dot{\bar{x}} &= \left[ \begin{array}{c|c} A_{11} & 0 \\ \hline A_{21} & A_{22}  \end{array} \right] \bar{x} + \left[ \begin{array}{c} B_1 \\ B_2 \end{array} \right] u
+\\
+y &= \left[ \begin{array}{c|c} C_1 & 0 \end{array} \right] x + D u
+\end{align*}
+
 
 % **** This ENDS THE EXAMPLES. DON'T DELETE THE FOLLOWING LINE:
 \end{document}
