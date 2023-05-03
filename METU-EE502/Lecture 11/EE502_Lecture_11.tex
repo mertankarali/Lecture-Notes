@@ -96,7 +96,7 @@ turns out that it is more convenient to think in terms of
 concept of observability and fully observable systems.
 as reflected in the following definitions.
 
-\textbf{Definition:} For LTI a contınıous-time state-space representation
+\textbf{Definition:} For an LTI contınıous-time state-space representation
 %
 \begin{align*}
   \dot{x} &= A x + B u
@@ -107,13 +107,13 @@ as reflected in the following definitions.
 A state $x_u$ is said to be unobservable over $t \in [0 , T )$,
 if with $x(0) = x_u$ and $\forall \, u(t)$ we get the same $y(t)$ as we would with $x(0) = 0$. 
 
-The set, $\bar{\mathcal{O}_T}$, of all unobservale states over $t \in [0 , T )$ forms a vecotor space, $\bar{\mathcal{O}_T} \subset 
+The set, $\bar{\mathcal{O}_T}$, of all unobservable states over $t \in [0 , T )$ forms a vector space, $\bar{\mathcal{O}_T} \subset 
 \mathbb{R}^n$, and the system is called fully observable over
 $t \in [0 , T )$, if $\mathrm{dim}[\bar{\mathcal{O}_T}] = 0$.
 
 Note for linear dynamical systems observability of a state and
 system is independent from $u(t)$, in that respect we will 
-only analuze zero-input response of the system in our derivations.
+only analyze zero-input response of the system in our derivations.
 
 \textbf{Theorem:} $x_u \in \bar{\mathcal{O}_T} \, \iff \, 
 x_u \in \bar{\mathcal{O}_{\tau}} , \, \forall \tau > 0 \, \iff \, 
@@ -194,7 +194,7 @@ Similar to the reachability, we show that for CT-LTI systems
 observability and unobservable (and observable) subspace
 are independent of time. 
 
-\subsection{Observability Grammian}
+\subsection{CT Observability Grammian}
 
 For a CT-LTI system, observability Grammian is defined as
 %
@@ -308,6 +308,92 @@ thus a standard unobservable form takes the form
 \\
 y &= \left[ \begin{array}{c|c} C_1 & 0 \end{array} \right] x + D u
 \end{align*}
+
+\section{Observability in DT-LTI Systems}
+
+\textbf{Definition:} For LTI a discrete-time state-space representation
+%
+\begin{align*}
+  x[k+1] &= A[k] x + B[k] u
+\\
+  y[k] &= C[k] x + D[k] u
+\end{align*}
+%
+A state $x_u$ is said to be $m$-step unobservable 
+if with $x[0] = x_u$ and $\forall \, u[k] \, k \in [0,m)$ we get the same $y[k] \, k \in [0,m)$ as we would with $x[0] = 0$. 
+
+The set, $\bar{\mathcal{O}_m}$, of all $m$-step unobservale states forms a vecotor space, $\bar{\mathcal{O}_m} \subset 
+\mathbb{R}^n$.
+
+Similar to the CT-LTI case, we will only analyze zero-input response of the system in our 
+observability-related derivations. 
+
+If $x_u \in \bar{\mathcal{O}_m}$, then 
+%
+\begin{align*}
+y[k] = C A^k x_u = 0 \ , \ \forall k \in [0,m)
+\, , \, \Rightarrow \, \begin{array}{c} C x_u = 0 
+\\
+C A x_u = 0
+\\
+\vdots
+\\
+C A^{m-1} x_u = 0
+\end{array}
+\, \Rightarrow \, 
+\left[ \begin{array}{c} C 
+\\
+C A x_u 
+\\
+\vdots
+\\
+C A^{m-1} x_u 
+\end{array} \right] x_u = \mathbf{O}_m x_u = 0
+\end{align*}
+%
+This implies that $x_u$ is $m$-step unobservable if and only if
+$x_u \in \mathcal{N}[ \mathbf{O}_m ]$
+
+\textbf{Theorem:} $\mathcal{N}[ \mathbf{O}_m ] \subset \mathcal{N}[ \mathbf{O}_n ] = \mathcal{N}[ \mathbf{O}_i ]$ for $m < n < l$.
+
+\textbf{Corollary:} If $x_u$ is $n$-step observable, then it is $i$-step observable $\forall k \in \mathbb{Z}^+$.
+
+In this context for DT systems, unobservable space is defined as $\bar{O} = \mathcal{N}[ \mathbf{O}_n ]$
+and the system is fully observable if and only if 
+\begin{align*}
+ \bar{O} = {0} \, \iff \, \mathrm{dim}( \mathcal{N}[ \mathbf{O}_n ] ) = 0 \, \iff \,
+ \mathrm{rank}[ \mathbf{O}_n ] = n
+\end{align*}
+
+\subsection{DT Observability Grammian}
+
+$m$-step observability Grammian is defined as
+\begin{align*}
+ Q_m = \mathbf{O}_m^T \mathbf{O} = \sum\limits_{i=0}^{m-1} (A^i)^T C^T C A^i 
+\end{align*}
+
+\textbf{Theorem:} $\mathcal{N}[ \mathbf{O}_m ] = \mathcal{N}[ \mathbf{Q}_m ]$.
+
+Let $x[k+1] = A x[k]$ be asymptotically stable, then $Q = \mathbf{Q}_{\infty}$ is well defined 
+and satisfies the Lyapunov equation below
+%
+\begin{align*}
+ A^T Q + Q A = - C^T C    
+\end{align*}
+%
+and this Lyapunov equation has a (unique) positive-definite solution for $Q$,
+if and only if, $(A,C)$ is fully observable.
+
+\vspace{6pt}
+
+\textbf{Corollary:} Total observability theorem
+\begin{itemize}
+ \item System is fully observable $\iff$ $(A,C)$ pair is observable $\iff$
+ \item $\mathrm{rank}[\mathbf{O}] = n$, where $\mathbf{O} = \mathbf{O}_n$ $\iff$ 
+ \item $C v \neq 0 \, , \, \forall v \in \lbrace v | v \neq 0 \, , \, A v = \lambda v , \, \lambda \in \mathcal{C} \rbrace$ $\iff$ 
+ \item $\mathrm{rank} \left[ \begin{array}{c} \lambda I - A \\ \hline C \end{array} \right] = n , \ \forall \lambda \in \mathcal{C}$
+\end{itemize}
+
 
 
 % **** This ENDS THE EXAMPLES. DON'T DELETE THE FOLLOWING LINE:
