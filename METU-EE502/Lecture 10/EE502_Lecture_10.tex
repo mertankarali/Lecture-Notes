@@ -411,13 +411,13 @@ columns of $T$ are linearly independent. Let's analyze the similarity transforma
 %
 \begin{align*}
     A T &=  A \left[ \begin{array}{c|c} T_1 & T_2  \end{array} \right] = T \bar{A} = \left[ \begin{array}{c|c} T_1 & T_2  \end{array} \right]
-    \left[ \begin{array}{c|c} A_{11} & A_{22} \\ \hline A_{21} & A_{22}  \end{array} \right]
+    \left[ \begin{array}{c|c} A_{11} & A_{12} \\ \hline A_{21} & A_{22}  \end{array} \right]
     \\
-    A T_1 &= T_1 A_{11} + T_2 A_{22}
+    A T_1 &= T_1 A_{11} + T_2 A_{21}
 \end{align*}
 %
 Note that the reachable sub-space is $A$ invariant $A T_1$ must remain in $\mathrm{Ra}(T_1) = \mathrm{Ra}(\mathbf{R}) = \mathcal{R}$,
-since $T_2$ is composed of linearly independent columns, in order $T_1 A_{11} + T_2 A_{22}$ remain in $\mathrm{Ra}(T_1)$, $A_{12} = \mathbf{0}$.
+since $T_2$ is composed of linearly independent columns, in order $T_1 A_{11} + T_2 A_{22}$ remain in $\mathrm{Ra}(T_1)$, $A_{21} = \mathbf{0}$.
 Now let's analyze the effect of transformation on the input matrix.
 %
 \begin{align*}
@@ -429,7 +429,7 @@ Now let's analyze the effect of transformation on the input matrix.
 Similarly since $\mathrm{Ra}(B) \subset \mathrm{Ra}(T_1) = \mathrm{Ra}(\mathbf{R}) = \mathcal{R} \ \Rightarrow \ B_2 = 0$, thus a standard unreachable form takes the form
 %
 \begin{align*}
-\bar{x}[k+1] &= \left[ \begin{array}{c|c} A_{11} & A_{22} \\ \hline 0 & A_{22}  \end{array} \right] \bar{x}[k]
+\bar{x}[k+1] &= \left[ \begin{array}{c|c} A_{11} & A_{12} \\ \hline 0 & A_{22}  \end{array} \right] \bar{x}[k]
 + \left[ \begin{array}{c} B_1 \\ 0 \end{array} \right] u[k]
 \end{align*}
 
@@ -730,7 +730,7 @@ The matrix above is full rank if and only if $b_{1,3}
 this implies that $b_{1,1}$ and $b_{1,2}$ do not affect
 the reachability condition. Similarly for $\lambda = \lambda_2$
 we can find that $b_{2,2} \neq 0$ is a necessary condition for 
-reachability. So for $\lambda_1 neq \lambda_2$, $(A,B)$ pair
+reachability. So for $\lambda_1 \neq \lambda_2$, $(A,B)$ pair
 is reachable if and only if $b_{2,2} \neq 0$ and $b_{1,3} \neq 0$.
 
 Now let's analyze the case $\lambda_2 = \lambda_1$. It is fairly easy 
