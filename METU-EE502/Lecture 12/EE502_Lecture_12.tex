@@ -125,9 +125,161 @@ Let's define sub-matrices as follows:
 \begin{enumerate}
 \item Let $\mathcal{R}\bar{\mathcal{O}} = \mathcal{R} \cap \bar{\mathcal{O}}$, i.e. 
 $x \in \mathcal{R}\bar{\mathcal{O}} \, \Rightarrow \, x \in \mathcal{R} \ \& \ x \in \bar{\mathcal{O}}$. 
-Columns of $T_{r\bar{o}} $ forms a basis for $\mathcal{R}\bar{\mathcal{O}}$.
+Choose $T_{r\bar{o}}$ such that columns of $T_{r\bar{o}}$ forms a basis for $\mathcal{R}\bar{\mathcal{O}}$.
+%
+\item Choose a $T_{ro}$ such that $\mathrm{Ra}\left[ \begin{array}{c|c} T_{r\bar{o}} & T_{ro} \end{array} \right] = \mathcal{R} = \mathrm{Ra}[\mathbf{R}]$, i.e. columns of $T_{ro}$ complements $T_{r\bar{o}}$ in the reachable sub-space and  
+%
+\item Choose a $T_{\bar{r}\bar{o}}$ such that $\mathrm{Ra}\left[ \begin{array}{c|c} T_{r\bar{o}} & T_{\bar{r}\bar{o}} \end{array} \right] = \bar{\mathcal{O}} = \mathcal{N}[ \mathbf{O} ]$,
+i.e. columns of $T_{\bar{r}\bar{o}}$ complements $T_{r\bar{o}}$ in the unobservable sub-space 
+%
+\item Choose  $T_{\bar{r}o}$ such that $\mathrm{Ra}[ T ] = \mathbb{R}^n$
+%
 \end{enumerate}
 %
+Let's remember the important sub-spaces invariant under $A$ and some critical features that will be helpful 
+for constructing the Kalman decomposition
+\begin{align*}
+    &\begin{array}{c} A \mathcal{R} \subset \mathcal{R}
+    \\
+    A \bar{\mathcal{O}} \subset \bar{\mathcal{O}} \end{array} \, \Rightarrow \, A \mathcal{R}\bar{\mathcal{O}} \subset \mathcal{R}\bar{\mathcal{O}}
+    \\
+    &\mathrm{Ra}[B] \subset \mathcal{R}
+    \\
+    &\bar{\mathcal{O}} \subset \mathcal{N}[C]
+\end{align*}
+%
+Let's analyze the similarity transformation of the system matrix.
+%
+\begin{align*}
+    A T &=  T A
+    \\
+    A \left[ \begin{array}{c|c|c|c} T_{r\bar{o}} & T_{ro} & T_{\bar{r} \bar{o}} & T_{\bar{r} o} \end{array} \right]
+    &= \left[ \begin{array}{c|c|c|c} T_{r\bar{o}} & T_{ro} & T_{\bar{r} \bar{o}} & T_{\bar{r} o} \end{array} \right]
+    \left[ \begin{array}{c|c|c|c} A_{11} & A_{12} & A_{13} & A_{14} \\ \hline 
+    A_{21} & A_{22} & A_{23} & A_{24} \\ \hline 
+    A_{31} & A_{32} & A_{33} & A_{34} \\ \hline 
+    A_{41} & A_{42} & A_{43} & A_{44} \\ 
+    \end{array} \right]
+\end{align*}
+%
+Let's expand $A T_{r\bar{o}}$
+%
+\begin{align*}
+    A T_{r\bar{o}} = \left[ \begin{array}{c|c|c|c} T_{r\bar{o}} & T_{ro} & T_{\bar{r} \bar{o}} & T_{\bar{r} o} \end{array} \right]
+    \left[ \begin{array}{c} A_{11} \\ \hline 
+    A_{21} \\ \hline 
+    A_{31} \\ \hline 
+    A_{41} \\ 
+    \end{array} \right]
+\end{align*}
+%
+Since $\mathrm{Ra}[ T_{r\bar{o}} ]$ is invariant under $A$ (i.e. $A \mathcal{R}\bar{\mathcal{O}} \subset \mathcal{R}\bar{\mathcal{O}}$), 
+$A_{i1} = 0 , \, \forall \, i>1$. 
+
+Now let's focus on $A \left[ \begin{array}{c|c} T_{r\bar{o}} & T_{ro} \end{array} \right]$
+%
+\begin{align*}
+    A \left[ \begin{array}{c|c} T_{r\bar{o}} & T_{ro} \end{array} \right] = \left[ \begin{array}{c|c|c|c} T_{r\bar{o}} & T_{ro} & T_{\bar{r} \bar{o}} & T_{\bar{r} o} \end{array} \right]
+    \left[ \begin{array}{c|c} A_{11} & A_{12} \\ \hline 
+    0 & A_{22} \\ \hline 
+    0 & A_{32} \\ \hline 
+    0 & A_{42} \\ 
+    \end{array} \right]
+\end{align*}
+%
+Since $\mathrm{Ra}\left[ \begin{array}{c|c} T_{r\bar{o}} & T_{ro} \end{array} \right]$ is invariant under $A$ (i.e. $A \mathcal{R} \subset \mathcal{R}$), $A_{32} = 0$ and $A_{42} = 0$. 
+
+Now let's focus on $A \left[ \begin{array}{c|c} T_{r\bar{o}} & T_{\bar{r}\bar{o}} \end{array} \right]$
+%
+\begin{align*}
+    A \left[ \begin{array}{c|c} T_{r\bar{o}} & T_{\bar{r}\bar{o}} \end{array} \right] = \left[ \begin{array}{c|c|c|c} T_{r\bar{o}} & T_{ro} & T_{\bar{r}\bar{o}} & T_{\bar{r} o} \end{array} \right]
+    \left[ \begin{array}{c|c} A_{11} & A_{13} \\ \hline 
+    0 & A_{23} \\ \hline 
+    0 & A_{33} \\ \hline 
+    0 & A_{43} \\ 
+    \end{array} \right]
+\end{align*}
+%
+Since $\mathrm{Ra}\left[ \begin{array}{c|c} T_{r\bar{o}} & T_{\bar{r}\bar{o}} \end{array} \right]$ is invariant under $A$ (i.e. $A \bar{\mathcal{O}} \subset \bar{\mathcal{O}}$), $A_{23} = 0$ and $A_{43} = 0$. 
+
+As a results $\hat{A}$ takes the form
+%
+\begin{align*}
+    \hat{A} = 
+    \left[ \begin{array}{c|c|c|c} A_{11} & A_{12} & A_{13} & A_{14} \\ \hline 
+    0 & A_{22} & 0 & A_{24} \\ \hline 
+    0 & 0 & A_{33} & A_{34} \\ \hline 
+    0 & 0 & 0 & A_{44} \\ 
+    \end{array} \right] = 
+    \left[ \begin{array}{c|c|c|c} A_{r\bar{o}} & A_{12} & A_{13} & A_{14} \\ \hline 
+    0 & A_{ro} & 0 & A_{24} \\ \hline 
+    0 & 0 & A_{\bar{r}\bar{o}} & A_{34} \\ \hline 
+    0 & 0 & 0 & A_{\bar{r}o} \\ 
+    \end{array} \right]
+\end{align*}
+%
+Now let's focus on input matrix transformation.
+%
+\begin{align*}
+    B &= T \hat{B} = \left[ \begin{array}{c|c|c|c} T_{r\bar{o}} & T_{ro} & T_{\bar{r} \bar{o}} & T_{\bar{r} o} \end{array} \right] \left[ \begin{array}{c} B_1 \\ B_2 \\ B_3 \\ B_4 \end{array} \right]
+\end{align*}
+%
+Since $\mathrm{Ra}(B) \subset \mathcal{R} =\mathrm{Ra}\left[ \begin{array}{c|c} T_{r\bar{o}} & T_{ro} \end{array} \right]$, $B_3 = 0$
+and $B_4 = 0$ and thus $\hat{B}$ takes the form
+\begin{align*}
+    \hat{B} = \left[ \begin{array}{c} B_{r\bar{o}} \\ B_{ro} \\ 0 \\ 0 \end{array} \right]
+\end{align*}
+%
+Now let's focus on input matrix transformation.
+%
+\begin{align*}
+    C T &= \hat{C} 
+    \\
+    C \left[ \begin{array}{c|c|c|c} T_{r\bar{o}} & T_{ro} & T_{\bar{r} \bar{o}} & T_{\bar{r} o} \end{array} \right] &= 
+    \left[ \begin{array}{c|c|c|c} C_1 & C_2 & C_3 & C_4 \end{array} \right]
+    \\
+    \left[ \begin{array}{c|c|c|c} C T_{r\bar{o}} & C T_{ro} & C T_{\bar{r} \bar{o}} & C T_{\bar{r} o} \end{array} \right] &= 
+    \left[ \begin{array}{c|c|c|c} C_1 & C_2 & C_3 & C_4 \end{array} \right]
+    \\
+    \left[ \begin{array}{c|c|c|c} 0 & C T_{ro} & 0 & C T_{\bar{r} o} \end{array} \right] &= 
+    \left[ \begin{array}{c|c|c|c} C_1 & C_2 & C_3 & C_4 \end{array} \right]
+\end{align*}
+%
+and thus $\hat{C}$ takes the form
+\begin{align*}
+    \hat{C} = \left[ \begin{array}{c|c|c|c} 0 & C_{ro} & 0 & C_{\bar{r}o} \end{array} \right]
+\end{align*}
+
+Based on Kalman decomposition, we can obtain reachable and observable (minimal) sub-system, reachable only sub-system, and observable only system.
+\begin{itemize}
+    \item Reachable and observable sub-system
+    \begin{align*}
+        \dot{x}_{ro} &= A_{ro} x_{ro} + B_{ro} u
+        \\
+        y &= C_{ro} x_{ro} + D u
+    \end{align*}
+    %
+    \item Reachable only (but not fully observable) sub-system
+    \begin{align*}
+        \frac{d}{dt}\begin{bmatrix} x_{r\bar{o}} \\ x_{ro}\end{bmatrix} &= 
+        \left[ \begin{array}{c|c} A_{r\bar{o}} & A_{12} \\ \hline 
+    0 & A_{ro}  \end{array} \right]
+    \begin{bmatrix} x_{r\bar{o}} \\ x_{ro}\end{bmatrix} + \left[ \begin{array}{c} B_{r\bar{o}} \\ B_{ro} \end{array} \right] u
+        \\
+        y &= \left[ \begin{array}{c|c} 0 & C_{ro} \end{array} \right] \begin{bmatrix} x_{r\bar{o}} \\ x_{ro}\end{bmatrix}  + D u
+    \end{align*}
+    %
+    \item Observable only (but not fully reachable) sub-system
+    \begin{align*}
+        \frac{d}{dt}\begin{bmatrix} x_{ro} \\ x_{\bar{r}o}\end{bmatrix} &= 
+        \left[ \begin{array}{c|c} A_{ro} & A_{24} \\ \hline 
+    0 & A_{\bar{r}o}  \end{array} \right]
+    \begin{bmatrix} x_{ro} \\ x_{\bar{r}o}\end{bmatrix} + \left[ \begin{array}{c} B_{ro} \\ 0 \end{array} \right] u
+        \\
+        y &= \left[ \begin{array}{c|c} C_{ro} & C_{\bar{r}o} \end{array} \right] \begin{bmatrix} x_{ro} \\ x_{\bar{r}o}\end{bmatrix} + D u
+    \end{align*}
+\end{itemize}
+
 
 % **** This ENDS THE EXAMPLES. DON'T DELETE THE FOLLOWING LINE:
 \end{document}
