@@ -280,6 +280,63 @@ Based on Kalman decomposition, we can obtain reachable and observable (minimal) 
     \end{align*}
 \end{itemize}
 
-
+\begin{exmp}
+Let}
+\end{exmp}
+\begin{align*}
+    x[k+1] &= \left[ \begin{array}{cccc} 0 & 1 & 0 & 1 \\ 
+    2 & 1 & 0 & 3 \\ 
+    0 & 1 & 0 & 1 \\ 
+    0 & -1 & 0 & -1 
+    \end{array} \right] x[k] + 
+    \left[ \begin{array}{c} -1 \\ 
+    1 \\ 
+    1 \\ 
+    1
+    \end{array} \right] u
+    \\
+    y[k] &= \left[ \begin{array}{cccc} 0 & 1 & 1 & 2 \end{array} \right] x
+\end{align*}
+%
+Obtain Kalman decomposition and extract  reachable and observable (minimal) sub-system, reachable only sub-system, and observable only system,
+and non-reachable and non-observable sub-system.
+%
+Let's first find the reachability matrix and reachable subspace 
+%
+\begin{align*}
+    \mathbf{R} &= \left[ \begin{array}{c|c|c|c} A^3 B & A^2 B & A B & B \end{array} \right] 
+    =
+    \left[ \begin{array}{cccc} 0 & 0 & 2 & -1 \\ 
+    0 & 0 & 2 & 1 \\ 
+    0 & 0 & 2 & 1 \\ 
+    0 & 0 & -2 & 1 
+    \end{array} \right] 
+    \\
+    \mathcal{R} &= \mathrm{Ra}[ \mathbf{R} ] = \mathrm{Span} \left\lbrace 
+    \left[ \begin{array}{c} -1 \\  1 \\  1 \\  1  \end{array} \right] 
+    \ , \
+    \left[ \begin{array}{c} 1 \\  1 \\  1 \\  -1  \end{array} \right] 
+    \right\rbrace
+\end{align*}
+%
+Now let's find the observability matrix and non-observable subspace
+%
+%
+\begin{align*}
+    \mathbf{O} &= \left[ \begin{array}{c} C & C A & C A^2 & C A^3 \end{array} \right] 
+    =
+    \left[ \begin{array}{cccc} 0 & 1 & 1 & 2 \\ 
+    2 & 0 & 0 & 2 \\ 
+    0 & 0 & 0 & 0 \\ 
+    0 & 0 & 0 & 0 
+    \end{array} \right] 
+    \\
+    \mathbf{\mathcal{O}} &= \mathcal{N}[ \mathbf{O} ] = \mathrm{Span} \left\lbrace 
+    \left[ \begin{array}{c} 0 \\  1 \\  -1 \\  0  \end{array} \right] 
+    \ , \
+    \left[ \begin{array}{c} 1 \\  2 \\  0 \\  -1  \end{array} \right] 
+    \right\rbrace
+\end{align*}
+%
 % **** This ENDS THE EXAMPLES. DON'T DELETE THE FOLLOWING LINE:
 \end{document}
