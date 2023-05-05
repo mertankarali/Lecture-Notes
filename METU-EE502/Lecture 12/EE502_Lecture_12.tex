@@ -331,12 +331,109 @@ Now let's find the observability matrix and non-observable subspace
     0 & 0 & 0 & 0 
     \end{array} \right] 
     \\
-    \mathbf{\mathcal{O}} &= \mathcal{N}[ \mathbf{O} ] = \mathrm{Span} \left\lbrace 
+    \bar{\mathcal{O}} &= \mathcal{N}[ \mathbf{O} ] = \mathrm{Span} \left\lbrace 
     \left[ \begin{array}{c} 0 \\  1 \\  -1 \\  0  \end{array} \right] 
     \ , \
     \left[ \begin{array}{c} 1 \\  2 \\  0 \\  -1  \end{array} \right] 
-    \right\rbrace
+    \right\rbrace = \mathrm{Span} \left\lbrace 
+    \left[ \begin{array}{c} 0 \\  1 \\  -1 \\  0  \end{array} \right] 
+    \ , \
+    \left[ \begin{array}{c} 1 \\  1 \\  1 \\  -1  \end{array} \right] \right\rbrace 
 \end{align*}
 %
+One can see the intersection of reachable and unobservable sub-spaces 
+is one-dimensional and 
+%
+\begin{align*}
+    \mathcal{R}\bar{\mathcal{O}} = \mathrm{Span} \left\lbrace 
+    \left[ \begin{array}{c} 1 \\  1 \\  1 \\  -1  \end{array} \right] \right\rbrace 
+\end{align*}
+%
+Based on these findings, we can construct the transformation matrix as
+%
+\begin{align*}
+   T &= \left[ \begin{array}{c|c|c|c} T_{r\bar{o}} & T_{ro} & T_{\bar{r} \bar{o}} & T_{\bar{r} o} \end{array} \right] 
+   = \left[ \begin{array}{c|c|c|c} 1 & -1 & 0 & 0
+   \\
+   1 & 1 & 1 & 0
+   \\
+   1 & 1 & -1 & 0
+   \\
+   -1 & 1 & 0 & 1
+   \end{array} \right] 
+   \\
+   T^{-1} &= \left[ \begin{array}{c|c|c|c} 1/2 & 1/4 & 1/4 & 0
+   \\
+   -1/2 & 1/4 & 1/4 & 0
+   \\
+   0 & 1/2 & -1/2 & 0
+   \\
+   1 & 0 & 0 & 1
+   \end{array} \right] 
+\end{align*}
+%
+Now let's find the transformed state-space matrices 
+and find the required decompisition
+\begin{align*}
+    \hat{A} &= T^{-1} A T =  
+    \left[ \begin{array}{c|c|c|c} A_{r\bar{o}} & A_{12} & A_{13} & A_{14} \\ \hline 
+    0 & A_{ro} & 0 & A_{24} \\ \hline 
+    0 & 0 & A_{\bar{r}\bar{o}} & A_{34} \\ \hline 
+    0 & 0 & 0 & A_{\bar{r}o} \\ 
+    \end{array} \right] =
+    \left[ \begin{array}{c|c|c|c} 0 & 2 & 1 & 3/2 \\ \hline 
+    0 & 0 & 0 & 1/2 \\ \hline 
+    0 & 0 & 0 & 1 \\ \hline 
+    0 & 0 & 0 & 0 \\ 
+    \end{array} \right] ,
+    \\
+    \hat{B} &= T^{-1} B = \left[ \begin{array}{c} B_{r\bar{o}} \\ B_{ro} \\ 0 \\ 0 \end{array} \right]
+    =
+    \left[ \begin{array}{c} 0  \\ \hline 
+    1 \\ \hline 
+    0 \\ \hline 
+    0 \\ 
+    \end{array} \right] \\
+    \hat{C} &= C T = \left[ \begin{array}{c|c|c|c} 0 & C_{ro} & 0 & C_{\bar{r}o} \end{array} \right] =
+    \left[ \begin{array}{c|c|c|c} 0 & 4 & 0 & 2 \end{array} \right]
+\end{align*}
+We can then extract the reachable and observable (minimal), reachable only,  observable only, and non-reachable and non-observable sub-systems as
+\begin{itemize}
+    \item Reachable and observable sub-system
+    \begin{align*}
+        x_{ro}[k+1] &= [0] x_{ro}[k] + [1] u[k]
+        \\
+        y[k] &= [4] x_{ro}[k]
+    \end{align*}
+    %
+    \item Reachable only sub-system
+    \begin{align*}
+        \begin{bmatrix} x_{r\bar{o}}[k+1] \\ x_{ro}\end{bmatrix}[k+1] &= 
+        \left[ \begin{array}{c|c} 0 & 2 \\ \hline 
+    0 & 0  \end{array} \right]
+    \begin{bmatrix} x_{r\bar{o}}[k] \\ x_{ro}\end{bmatrix}[k] + \left[ \begin{array}{c} 0 \\ 1 \end{array} \right] u[k]
+        \\
+        y[k] &= \left[ \begin{array}{c|c} 0 & 4 \end{array} \right] \begin{bmatrix} x_{r\bar{o}}[k] \\ x_{ro}[k] \end{bmatrix}  
+    \end{align*}
+    %
+    \item Observable only (but not fully reachable) sub-system
+    \begin{align*}
+        \begin{bmatrix} x_{ro}[k+1] \\ x_{\bar{r}o}[k+1] \end{bmatrix} &= 
+        \left[ \begin{array}{c|c} 0 & 1/2 \\ \hline 
+    0 & 0  \end{array} \right]
+    \begin{bmatrix} x_{ro}[k] \\ x_{\bar{r}o}[k] \end{bmatrix} + \left[ \begin{array}{c} 1 \\ 0 \end{array} \right] u[k]
+        \\
+        y[k] &= \left[ \begin{array}{c|c} 4 & 2 \end{array} \right] \begin{bmatrix} x_{ro}[k] \\ x_{\bar{r}o}[k] \end{bmatrix} 
+    \end{align*}
+    \item Non-observable and non-reachable sub-system
+    \begin{align*}
+        x_{\bar{r}\bar{o}}[k+1] &= [0] x_{\bar{r}\bar{o}}[k] + [0] u[k]
+        \\
+        y[k] &= [0] x_{\bar{r}\bar{o}}[k]
+    \end{align*}
+\end{itemize}
+
+
+
 % **** This ENDS THE EXAMPLES. DON'T DELETE THE FOLLOWING LINE:
 \end{document}
