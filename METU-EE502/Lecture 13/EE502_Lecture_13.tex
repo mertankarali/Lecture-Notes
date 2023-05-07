@@ -154,10 +154,92 @@ Let's assume that $(A,B)$ is reachable and we know that reachability is invarian
 %
 and $(\bar{A}, \bar{B})$ is reachable. Noe let's choose $T$ such that
 %
+\begin{align*}
+T = \mathbf{R} = \left[ \begin{array}{c|c|c|c|c} A^{n-1} B & A^{n-2} B & \cdots & A B &  B \end{array} \right]
+\end{align*}
+%
+then $\bar{B}$ can be derived as
+% 
+\begin{align*}
+B = T \bar{B} = \left[ \begin{array}{c|c|c|c|c} A^{n-1} B & A^{n-2} B & \cdots & A B &  B \end{array} \right] \bar{B} 
+\, \Rightarrow \, B = \begin{bmatrix} 0 \\ 0 \\ \vdots \\ 0 \\ 1 \end{bmatrix}
+\end{align*}
+%
+and similarly $\bar{A}$ can be expressed as
+\begin{align*}
+A \mathbf{R} &= \mathbf{R} \bar{A}
+\\
+A \left[ \begin{array}{c|c|c|c|c} A^{n-1} B & A^{n-2} B & \cdots & A B &  B \end{array} \right] &= \left[ \begin{array}{c|c|c|c|c} A^{n-1} B & A^{n-2} B & \cdots & A B &  B \end{array} \right] \bar{A}
+\\
+\left[ \begin{array}{c|c|c|c|c} A^{n} B & A^{n-1} B & \cdots & A B &  B \end{array} \right] &= \left[ \begin{array}{c|c|c|c|c} A^{n-1} B & A^{n-2} B & \cdots & A B &  B \end{array} \right] \left[ \begin{array}{c|c|c|c|c|c} 
+\bar{a}_{11} & 1 & 0 & 0 & \cdots & 0 \\
+\bar{a}_{12} & 0 & 1 &  0 & \cdots & 0 \\
+\vdots & \vdots & \vdots & \ddots &  & \vdots \\
+\bar{a}_{1(n-2)} & 0 & 0 & \cdots  & 1 & 0 \\
+\bar{a}_{1(n-1)} & 0 & 0 & \cdots  & 0 & 1 \\
+\bar{a}_{1(n)} & 0 & 0 & \cdots  & 0 & 0 \\
+\end{array} 
+\right] 
+\end{align*}
+%
+We can find $a_{1i}$'s using Cayley-Hamilton theorem
 %
 \begin{align*}
-T = \mathbf{R} = \left[ \begin{array}{c|c|c|c} B & A B & \cdots & A^{n-1} B \end{array} \right]
+A^{n} B &= \bar{a}_{11} A^{n-1} B + \bar{a}_{12} A^{n-2} B + \cdots + \bar{a}_{1(n-1)} A B + \bar{a}_{1(n)} B
+\\
+A^{n} &= - \left( a_{n-1} A^{n-1} + a_{n-1} A^{n-2} + \cdots + a_1 A + a_ I \right) \, \mathrm{where}
+\\
+\mathrm{det}[\lambda I - A] &= \lambda^n + a_{n-1}  \lambda^{n-1}
+	+ \cdots + a_{1} \lambda + a_0
 \end{align*}
+then $\bar{A}$ takes the form
+\begin{align*}
+\bar{A} &= \left[ \begin{array}{c|c|c|c|c|c} 
+-a_{n-1} & 1 & 0 & 0 & \cdots & 0 \\
+-a_{n-2} & 0 & 1 &  0 & \cdots & 0 \\
+\vdots & \vdots & \vdots & \ddots &  & \vdots \\
+-a_{2} & 0 & 0 & \cdots  & 1 & 0 \\
+-a_{1} & 0 & 0 & \cdots  & 0 & 1 \\
+-a_{0} & 0 & 0 & \cdots  & 0 & 0 
+\end{array} 
+\right] 
+\end{align*}
+%
+Note that this similarity transformation is in a companion form however we will transform this into (more useful) 
+reachable canonical form
+%
+\begin{align*}
+\tilde{A} =  \left[ \begin{array}{c|c|c|c|c|c} 
+0 & 1 & 0 & 0 & \cdots & 0 \\
+0 & 0 & 1 &  0 & \cdots & 0 \\
+\vdots & \vdots & \vdots & \ddots &  & \vdots \\
+0 & 0 & 0 & \cdots  & 1 & 0 \\
+0 & 0 & 0 & \cdots  & 0 & 1 \\
+-a_{0} & -a_{1} & -a_{2} & \cdots  & -a_{n-2} & -a_{n-1} 
+\end{array} 
+\right] 
+\ , \ \tilde{B} = \begin{bmatrix} 0 \\ 0 \\ \vdots \\ 0 \\ 1 \end{bmatrix}
+\end{align*}
+%
+Let's $\tilde{\mathbf{R}}$ be the reachability matrix of $(\tilde{A} , \tilde{B})$ then we know that 
+%
+%
+\begin{align*}
+	\bar{A} &= \tilde{\mathbf{R}}^{-1} A \tilde{\mathbf{R}} \ , \ \bar{B} = \tilde{\mathbf{R}}^{-1} B 
+\end{align*}
+%
+where $(\bar{A},\bar{B})$ are the matrices of the companion form derived above. Thus if we let 
+$\hat{T} = \mathbf{R} \tilde{\mathbf{R}}^{-1}$, where $\mathbf{R}$ is the reachability matrix of the
+original representation and $\tilde{\mathbf{R}}$ is the reachability matrix of the reachable
+canonical form and adopt $T$ for similarity transformation we obtain
+%
+\begin{align*}
+	q &= \hat{T}^{-1} x \, \Rightarrow \, \dot{q} = \hat{A} q + \hat{B} u \\
+	\tilde{A} &= \hat{T}^{-1} A \hat{T} \ , \ \tilde{B} = \hat{T}^{-1} B 
+\end{align*}
+%
+
+
 
 
 % **** This ENDS THE EXAMPLES. DON'T DELETE THE FOLLOWING LINE:
