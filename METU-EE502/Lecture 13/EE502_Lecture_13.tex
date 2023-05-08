@@ -109,13 +109,13 @@ for both CT- and DT-LTI systems under state-feedback rule proposed above
 	x[k+1] &= A x + B \left( \gamma r[k] - K x[k] \right) \, \Rightarrow \, x[k+1] = \left( A - B K \right) x[k] + \gamma B r[k]
 \end{align*}
 %
-In both cases the closed loop system and input matrices takes the following form
+In both cases the closed loop system and input matrices take the following form.
 %
 \begin{align*}
 	A_c = A - B K \ , \  B_c = \gamma B r
 \end{align*}
 %
-A key question in this domain is that can I find a $K$ such that eigenvalues of $A_c$ is located at arbitrary 
+A key question in this domain is whether we can find a $K$ such that eigenvalues of $A_c$ is located at arbitrary 
 desired locations. 
 
 \textbf{Theorem: (Eigenvalue/Pole Placement)} Given $(A,B)$, $\exists K$ s.t. 
@@ -144,8 +144,9 @@ Here not only we showed that $\lambda_u$ can not be moved hence it is not possib
 arbitrary locations, we also showed that state-feedback rules does not affect the reachability.
 
 \textbf{Proof of sufficiency:} We will only show the sufficiency for a multi-input case, i.e. $B \in \mathbb{R}^{n \times 1}$, 
-however the reader should not the fact that for a complete proof multi-input case also needs to be analyzed. 
-Let's assume that $(A,B)$ is reachable and we know that reachability is invariant under similarity transformations, i.e.
+however, the reader should note that a complete proof multi-input case must be analyzed. 
+
+Let's assume that $(A,B)$ is reachable, and we know that reachability is invariant under similarity transformations, i.e.
 %
 \begin{align*}
 	z &= T^{-1} x \, , \, \mathrm{det}(T) \neq 0 \, \Rightarrow \, \dot{z} = \bar{A} z + \bar{B} u \\
@@ -209,7 +210,7 @@ Note that this similarity transformation is in a companion form however we will 
 reachable canonical form
 %
 \begin{align*}
-\tilde{A} =  \left[ \begin{array}{c|c|c|c|c|c} 
+\tilde{A} = \left[ \begin{array}{c|c|c|c|c|c} 
 0 & 1 & 0 & 0 & \cdots & 0 \\
 0 & 0 & 1 &  0 & \cdots & 0 \\
 \vdots & \vdots & \vdots & \ddots &  & \vdots \\
@@ -229,18 +230,88 @@ Let's $\tilde{\mathbf{R}}$ be the reachability matrix of $(\tilde{A} , \tilde{B}
 \end{align*}
 %
 where $(\bar{A},\bar{B})$ are the matrices of the companion form derived above. Thus if we let 
-$\hat{T} = \mathbf{R} \tilde{\mathbf{R}}^{-1}$, where $\mathbf{R}$ is the reachability matrix of the
+$T_{\mathbf{R} \tilde{\mathbf{R}}^{-1}} = \mathbf{R} \tilde{\mathbf{R}}^{-1}$, where $\mathbf{R}$ is the reachability matrix of the
 original representation and $\tilde{\mathbf{R}}$ is the reachability matrix of the reachable
 canonical form and adopt $T$ for similarity transformation we obtain
 %
 \begin{align*}
-	q &= \hat{T}^{-1} x \, \Rightarrow \, \dot{q} = \hat{A} q + \hat{B} u \\
-	\tilde{A} &= \hat{T}^{-1} A \hat{T} \ , \ \tilde{B} = \hat{T}^{-1} B 
+	q &= \left( T_{\mathbf{R} \tilde{\mathbf{R}}^{-1}} \right)^{-1} x \, \Rightarrow \, \dot{q} = \tilde{A} q + \tilde{B} u \\
+	\tilde{A} &= \left( T_{\mathbf{R} \tilde{\mathbf{R}}^{-1}} \right)^{-1} \, A \, T_{\mathbf{R} \tilde{\mathbf{R}}^{-1}} \ , \ \tilde{B} = \left(  T_{\mathbf{R} \tilde{\mathbf{R}}^{-1}} \right)^{-1} B 
 \end{align*}
 %
-
-
-
+Now let's apply the state feedback rule in the transformed coordinates.
+%
+%
+\begin{align*}
+	\dot{q} &= \tilde{A} q + \tilde{B} u \ , \ u = \alpha r - \tilde{K} q 
+ \\
+ \dot{q} &= ( \tilde{A} - \tilde{B} \tilde{K} ) q + \alpha \tilde{B} u 
+ \\
+ \\
+ ( \tilde{A} - \tilde{B} \tilde{K} ) &= 
+ \left[ \begin{array}{c|c|c|c|c|c} 
+0 & 1 & 0 & 0 & \cdots & 0 \\
+0 & 0 & 1 &  0 & \cdots & 0 \\
+\vdots & \vdots & \vdots & \ddots &  & \vdots \\
+0 & 0 & 0 & \cdots  & 1 & 0 \\
+0 & 0 & 0 & \cdots  & 0 & 1 \\
+-a_{0} & -a_{1} & -a_{2} & \cdots  & -a_{n-2} & -a_{n-1} 
+\end{array} \right] - \begin{bmatrix} 0 \\ 0 \\ \vdots \\ 0 \\ 1 \end{bmatrix}
+\begin{bmatrix} \tilde{k}_0 & \tilde{k}_1 & \cdots & \tilde{k}_{n-1} \end{bmatrix}
+\\
+&=  \left[ \begin{array}{c|c|c|c|c|c} 
+0 & 1 & 0 & 0 & \cdots & 0 \\
+0 & 0 & 1 &  0 & \cdots & 0 \\
+ &  &  &   &  &  
+\\ 
+\vdots & \vdots & \vdots & \ddots &  & \vdots \\
+&  &  &   &  & 
+\\ 
+0 & 0 & 0 & \cdots  & 1 & 0 \\
+0 & 0 & 0 & \cdots  & 0 & 1 \\
+-a_{0}-\tilde{k}_0 & -a_{1}-\tilde{k}_1 & -a_{2}-\tilde{k}_2 & \cdots  & -a_{n-2}-\tilde{k}_{n-2} & -a_{n-1} - \tilde{k}_{n-1}
+\end{array} \right]
+\\
+\mathrm{det}\left( \tilde{A} - \tilde{B} \tilde{K} \right) &=
+\lambda^n + ( a_{n-1} + \tilde{k}_{n-1}  \lambda^{n-1}
+	+ \cdots + ( a_{1} + \tilde{k}_1 )  \lambda + ( a_0 + \tilde{k}_0 )
+\end{align*}
+%
+It is evident that $\exists \tilde{K}$ s.t. 
+%
+\begin{align*}
+	\mathrm{det}\left( \tilde{A} - \tilde{B} \tilde{K} \right) &= \lambda^n + a_{n-1}^*  \lambda^{n-1}
+	+ \cdots + a_{1}^* \lambda + a_0^*
+	\\
+	\forall \mathcal{A} &= \lbrace a_0^* , \, a_1^* \, \cdots \, a_{n-1}^* \rbrace , \, a_i^* \in \mathbb{R}
+\end{align*} 
+%
+Now we need to find the state-feedback gain and rule in the original coordinate frame
+\begin{align*}
+ u = \alpha r - \tilde{K} q = \alpha r - \tilde{K} \left( T_{\mathbf{R} \tilde{\mathbf{R}}^{-1}} \right)^{-1} x     
+ \\
+ \dot{x} = \left( A - B \tilde{K} \left( T_{\mathbf{R} \tilde{\mathbf{R}}^{-1}} \right)^{-1} \right) + \alpha B r \ , \ K = \tilde{K} \left( T_{\mathbf{R} \tilde{\mathbf{R}}^{-1}} \right)^{-1}
+\end{align*} 
+%
+Now let's verify that $(A - B K)$ and $( \tilde{A} - \tilde{B} \tilde{K} )$ has the same characteristic equations
+%
+\begin{align*}
+ \mathrm{det}( \lambda I - \left[ A - B K \right] ) &=
+ \mathrm{det}\left( \lambda I - \left[ A - B \tilde{K} \left( T_{\mathbf{R} \tilde{\mathbf{R}}^{-1}} \right)^{-1} \right] \right) 
+ \\
+ &= \mathrm{det}\left( \lambda I - \left( T_{\mathbf{R} \tilde{\mathbf{R}}^{-1}} \right)^{-1} 
+ \left[ A - B \tilde{K} \left( T_{\mathbf{R} \tilde{\mathbf{R}}^{-1}} \right)^{-1} \right] 
+T_{\mathbf{R} \tilde{\mathbf{R}}^{-1}} 
+ \right) 
+ \\
+ &= \mathrm{det}\left( \lambda I -
+ \left[ \left( T_{\mathbf{R} \tilde{\mathbf{R}}^{-1}} \right)^{-1}  A T_{\mathbf{R} \tilde{\mathbf{R}}^{-1}} - \left( T_{\mathbf{R} \tilde{\mathbf{R}}^{-1}} \right)^{-1}  B \tilde{K}  \right] 
+ \right) 
+ \\
+ &= \mathrm{det}\left( \lambda I - \left[ \tilde{A} - \tilde{B} \tilde{K} \right] \right)
+\end{align*} 
+%
+this completes the proof for SISO case.
 
 % **** This ENDS THE EXAMPLES. DON'T DELETE THE FOLLOWING LINE:
 \end{document}
