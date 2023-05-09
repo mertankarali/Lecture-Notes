@@ -195,6 +195,21 @@ and obviously
 %
 which completes the proof.
 
+\section{Detectability}
+
+The dual of stabilizability in the observability domain is called detectability. 
+
+\textbf{Theorem} The following statements are equal 
+\begin{itemize}
+\item $(A,C)$ is detectable $\iff$
+\item if unobservable modes of $(A,C)$ are asymptotically stable $\iff$
+\item $\forall (\lambda_i , v_i)$ s.t. $A v_i = \lambda_i v_i$ $\iff$
+and $\mathrm{Re}\lbrace \lambda_i \rbrace \geq 0$ (or $|\lambda_i|\geq0$),
+$v_i \notin \mathcal{N}(C)$ $\iff$
+\item $\mathrm{rank}\left[ \begin{array}{c} A - \lambda I \\ \hline C \end{array} \right] = n$,
+$\forall \lambda \in \mathbb{C}$ s.t. $\mathrm{Re}\lbrace \lambda_i \rbrace \geq 0$ for CT systems (or $\forall \lambda \in \mathbb{C}$ s.t. $|\lambda|  \geq 1$ for DT systems)
+\item $\exists L$ such that $(A - L C)$ is asymptotically stable
+\end{itemize}
 
 % **** This ENDS THE EXAMPLES. DON'T DELETE THE FOLLOWING LINE:
 \end{document}
