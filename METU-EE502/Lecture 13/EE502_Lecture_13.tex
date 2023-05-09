@@ -87,10 +87,10 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\section{State Feedback \& Stabilizability}
+\section{State Feedback}
 
-The state-feedback based control-policies for LTI systems starts with the assumption that 
-we have ``access'' to the all of the states of the systems either via direct measurement 
+The state-feedback based control-policies for LTI systems start with the assumption that 
+we have ``access'' to all of the states of the systems either via direct measurement 
 or through some observer/estimator/tracker. In that context a family of state-feedback 
 controllers for CT- and DT-LTI systems can be constructed as
 %
@@ -312,6 +312,39 @@ T_{\mathbf{R} \tilde{\mathbf{R}}^{-1}}
 \end{align*} 
 %
 this completes the proof for SISO case.
+
+ \section{Stabilizability}
+
+ \textbf{Definition:} An LTI system is called stabilizable, if 
+ $\forall x_0 \in \mathbb{R}^{n}$, $\exists \, u(t)$ (or $u[k]$) such that
+ $\lim_{t\to\infty} x(t) = 0$ (or $\lim_{k\to\infty} x[k] = 0$).
+
+ An obvious \textbf{sufficient} condition on stabilizability for CT-LTI and DT-LTI systems is that, if $(A,B)$ is reachable then $(A,B)$ stabilizable, since
+ in such a case $\forall x_0 \in \mathbb{R}^{n}$, $\exists \, u(t)$ or $u[k]$
+ such that $x(T) = 0 \, \forall T < 0$ for CT systems, and $x[k] = 0 \, \forall  k > n$. 
+
+Another \textbf{sufficient} (but weaker) condition on stabilizability for DT-LTI systems is that if $(A,B)$ is controllable then $(A,B)$ stabilizable, since
+ in such a case $\forall x_0 \in \mathbb{R}^{n}$, $\exists \, u[k]$
+ such that $x[k] = 0 \, \forall  k > n$. 
+
+\textbf{Theorem} The following statements are equal 
+\begin{itemize}
+\item $(A,B)$ is stabilizable $\iff$
+\item if unreachable modes of $(A,B)$ are asymptotically stable 
+\item $\forall (\lambda_i , w_i)$ s.t. $w_i^T A = \lambda_i w_i^T$
+and $\mathrm{Re}\lbrace \lambda_i \rbrace \geq 0$ (or $|\lambda_i|\geq0$),
+$w_i \notin \mathcal{N}(B)$
+\item $\mathrm{rank}\left[ A - \lambda I \, | \, B \right] = n$,
+$\forall \lambda \in \mathbb{C}$ s.t. $\mathrm{Re}\lbrace \lambda_i \rbrace \geq 0$ for CT systems (or $\forall \lambda \in \mathbb{C}$ s.t. $|\lambda|  \geq 1$ for DT systems)
+\end{itemize}
+
+\textbf{Proof:} Given $(A,B)$ that is not necessarily reachable, we can transform it into the standard unreachable form
+%
+\begin{align*}
+\dot{x} = \left[ \begin{array}{c} \dot{x}_r \\ \dot{x}_{\bar{r}} \end{array} \right]  = \left[ \begin{array}{c|c} A_{r} & A_{12} \\ \hline 0 & A_{\bar{r}} \end{array} \right] \left[ \begin{array}{c} x_r \\ x_{\bar{r}} \end{array} \right]  
++ \left[ \begin{array}{c} B_r \\ 0 \end{array} \right] u
+\end{align*}
+
 
 % **** This ENDS THE EXAMPLES. DON'T DELETE THE FOLLOWING LINE:
 \end{document}
