@@ -330,10 +330,10 @@ Another \textbf{sufficient} (but weaker) condition on stabilizability for DT-LTI
 \textbf{Theorem} The following statements are equal 
 \begin{itemize}
 \item $(A,B)$ is stabilizable $\iff$
-\item if unreachable modes of $(A,B)$ are asymptotically stable 
-\item $\forall (\lambda_i , w_i)$ s.t. $w_i^T A = \lambda_i w_i^T$
+\item if unreachable modes of $(A,B)$ are asymptotically stable $\iff$
+\item $\forall (\lambda_i , w_i)$ s.t. $w_i^T A = \lambda_i w_i^T$ $\iff$
 and $\mathrm{Re}\lbrace \lambda_i \rbrace \geq 0$ (or $|\lambda_i|\geq0$),
-$w_i \notin \mathcal{N}(B)$
+$w_i \notin \mathcal{N}(B)$ $\iff$
 \item $\mathrm{rank}\left[ A - \lambda I \, | \, B \right] = n$,
 $\forall \lambda \in \mathbb{C}$ s.t. $\mathrm{Re}\lbrace \lambda_i \rbrace \geq 0$ for CT systems (or $\forall \lambda \in \mathbb{C}$ s.t. $|\lambda|  \geq 1$ for DT systems)
 \end{itemize}
@@ -344,6 +344,19 @@ $\forall \lambda \in \mathbb{C}$ s.t. $\mathrm{Re}\lbrace \lambda_i \rbrace \geq
 \dot{x} = \left[ \begin{array}{c} \dot{x}_r \\ \dot{x}_{\bar{r}} \end{array} \right]  = \left[ \begin{array}{c|c} A_{r} & A_{12} \\ \hline 0 & A_{\bar{r}} \end{array} \right] \left[ \begin{array}{c} x_r \\ x_{\bar{r}} \end{array} \right]  
 + \left[ \begin{array}{c} B_r \\ 0 \end{array} \right] u
 \end{align*}
+%
+Let $\dot{x}_{\bar{r}} = A_{\bar{r}} x_{\bar{r}}$ is not asymptotically stable then obviously 
+the whole system is unstable; thus, the system is not stabilizable .
+%
+Now let $\dot{x}_{\bar{r}} = A\bar{r} x_{\bar{r}}$ is asymptotically stable, then 
+let $u = - K_{r} x_{r}$ then the closed-loop system takes the form
+%
+\begin{align*}
+\dot{x} = \left[ \begin{array}{c} \dot{x}_r \\ \dot{x}_{\bar{r}} \end{array} \right]  = \left[ \begin{array}{c|c} A_{r} - B_r K_r & A_{12} \\ \hline 0 & A_{\bar{r}} \end{array} \right] \left[ \begin{array}{c} x_r \\ x_{\bar{r}} \end{array} \right]  
+\end{align*}
+%
+Since $(A_r,B_r)$ pair is reachable we can find $K$ such that eigenvalues of  $(A_{r} - B_r K_r)$ are located in the
+open-left-half of the complex plane, thus the system is stabilizable. The same logic can be adopted for DT systems.
 
 
 % **** This ENDS THE EXAMPLES. DON'T DELETE THE FOLLOWING LINE:
