@@ -129,10 +129,10 @@ desired locations.
 %
 if and only if $(A,B)$ is reachable. 
 
-\textbf{Proof:} For a general complete proof we need to show that reachability of $(A,B)$ is necessary and sufficient. 
+\textbf{Proof:} For a general complete proof, we need to show that reachability of $(A,B)$ is necessary and sufficient. 
 
 \textbf{Proof of necessity: } Let's assume that $(A,B)$ not reachable and $\exists (\lambda_u , w_u^T)$ pair such that
-$w_u^T A = w_u^T \lambda_u $ and $w_u^T = 0$. Now check weather $w_u^T$ is a left eigenvector of $A_c$
+$w_u^T A = w_u^T \lambda_u $ and $w_u^T B = 0$. Now check weather $w_u^T$ is a left eigenvector of $A_c$
 %
 \begin{align*}
 	w_u^T A_c &= w_u^T (A - B K ) = w_u^T A - w_u^T B K = w_u^T \lambda_u - 0 = w_u^T \lambda_u
@@ -140,8 +140,8 @@ $w_u^T A = w_u^T \lambda_u $ and $w_u^T = 0$. Now check weather $w_u^T$ is a lef
 	w_u^T B_c &= w_u^T B \gamma = 0
 \end{align*} 
 %
-Here not only we showed that $\lambda_u$ can not be moved hence it is not possible to locate the poles
-arbitrary locations, we also showed that state-feedback rules does not affect the reachability.
+Here not only we showed that $\lambda_u$ could not be moved hence it is not possible to locate the poles
+arbitrary locations, we also showed that state-feedback rules do not affect reachability.
 
 \textbf{Proof of sufficiency:} We will only show the sufficiency for a multi-input case, i.e. $B \in \mathbb{R}^{n \times 1}$, 
 however, the reader should note that a complete proof multi-input case must be analyzed. 
