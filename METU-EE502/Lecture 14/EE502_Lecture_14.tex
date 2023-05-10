@@ -286,6 +286,87 @@ of $(A - B K)$ and eigenvalues of $(A - L C)$. Thus a separate
 pole-placement can be performed for the state-feedback controller
 and the observer. 
 
+\begin{exmp}
+Consider the following open-loop digital control systems
+\end{exmp}
+
+    \begin{center}
+  \begin{minipage}[h]{0.9\linewidth}
+    \begin{center}
+      \includegraphics[width=0.65\textwidth]{block_open-loop}
+    \end{center}
+  \end{minipage}
+    \end{center}
+
+\begin{enumerate}
+	\item Find the discrete-time state-space representation between the discrete time input signal, $u[k]$
+	and the discrete time output signal, $u[k]$, given that state definition is $x[k] = \begin{bmatrix} x_1[k]  \\ x_2[k] \end{bmatrix}$. Note that
+	sampling time is generic for this problem $T$.
+	
+\vspace{6pt}
+
+\textbf{Solution:} The state update equation of the continuous-time plant has the following form
+%
+\begin{align*}
+ \dot{x} &= A_{ct} x + B_{ct} u \ , \  x(t) = \begin{bmatrix} x_1(t)  \\ x_2(t) \end{bmatrix}
+ \\
+ A_{ct} &= \begin{bmatrix} 0 & 1 \\ 0 & 0 \end{bmatrix} \ , \ B_{ct} = \begin{bmatrix} 0 \\ 1 \end{bmatrix}
+\end{align*}
+%
+Since the ADC block is a simple ZOH operator we can find the system matrix of the discritized system 
+using the state-transitions matrix of the CT-Plant
+%
+\begin{align*}
+ A_{dt} &= e^{A_{ct} T} = I + A_{ct} T + 0 + \cdots
+ \\
+ &= \begin{bmatrix} 1 & 0 \\ 0 & 1 \end{bmatrix} + \begin{bmatrix} 0 & T \\ 0 & 0 \end{bmatrix} =  \begin{bmatrix} 1 & T \\ 0 & 1 \end{bmatrix}
+\end{align*}
+%
+Since $A_{ct}$ is not invsertable, we need to derive $B_{dt}$ using the following relation
+%
+%
+\begin{align*}
+ B_{dt} &= \int\limits_{0}^{T} e^{A_{ct} \tau} B_{ct} d\tau = 
+ \int\limits_{0}^{T}  \begin{bmatrix} 1 & \tau \\ 0 & 1 \end{bmatrix} \begin{bmatrix} 0 \\ 1 \end{bmatrix}  d\tau = 
+ \int\limits_{0}^{T}  \begin{bmatrix} \tau \\ 1 \end{bmatrix}  d\tau = 
+ \begin{bmatrix} T^2/2 \\ T \end{bmatrix} 
+\end{align*}
+%
+Output equation is simply equal to $y[k] = x_1[k]$, and thus $C_{dt} = C_{ct} = C = \begin{bmatrix} 1 & 0 \end{bmatrix} $
+and $D_{dt} = D_{ct} = CD= \begin{bmatrix} 0 \end{bmatrix} $.
+
+\item Show that following closed-loop PD type controller is indeed a form of state-feedback rule
+		
+\begin{center}
+  \begin{minipage}[h]{0.9\linewidth}
+    \begin{center}
+      \includegraphics[width=0.9\textwidth]{block_PD}
+    \end{center}
+  \end{minipage}
+    \end{center}
+		
+\textbf{Solution:} Let's explicitly write $u[k]$
+%
+\begin{align*}
+u[k] &= K_P (r[k] - x_1[k]) + K_D x_2[k] = K_P r[k] - \begin{bmatrix} K_P \\ K_D \end{bmatrix} \\
+K &= \begin{bmatrix} K_P \\ K_D \end{bmatrix} \ , \ \alpha = K_P
+\end{align*}
+%
+\item Show that we can always find a $(K_P,K_D)$ pair such that closed-loop poles are located
+at arbitrary desired locations. 
+
+\textbf{Solution:} We need to simply show that $(A_{dt} , B_{dt})$ pair is reachable
+%
+\begin{align*}
+\mathbf{R} = \left[ \begin{array}{c|c} A_{dt} B_{dt} & B_{dt} \end{array} \right] = 
+\left[ \begin{array}{c|c} 3 T^2 /2 & T^2/2 \\ T & T \end{array} \right] \, \Rightarrow \, \mathrm{rank}[\mathbf{R}] = 2  
+\end{align*}
+%
+thus $(A_{dt} , B_{dt})$ reachable and it implies that we can always find a $(K_P,K_D)$ pair such that closed-loop poles are located
+at arbitrary desired locations. 
+
+\end{enumerate}
+
 
 % **** This ENDS THE EXAMPLES. DON'T DELETE THE FOLLOWING LINE:
 \end{document}
