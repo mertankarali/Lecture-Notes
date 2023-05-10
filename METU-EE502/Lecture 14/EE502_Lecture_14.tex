@@ -211,5 +211,81 @@ $\forall \lambda \in \mathbb{C}$ s.t. $\mathrm{Re}\lbrace \lambda_i \rbrace \geq
 \item $\exists L$ such that $(A - L C)$ is asymptotically stable
 \end{itemize}
 
+\newpage
+
+\section{Model Based Controllers: Closing the loop between the observer and state-feedback control low} 
+
+In the state-feedback control policy, we defined the control
+law as
+%
+\begin{align*}
+ u[k] = \alpha r[k] - K x[k]
+\end{align*}
+%
+However, as mentioned in the Observer section, in general, we don't have direct access to all states of the system. In this case, we learned how to design an Observer/Estimator that predicts the states of the system. In this respect, it is natural to assume that in a closed-loop system, the control policy that defines the input should depend on the estimated states.
+%
+\begin{align*}
+ u[k] = \alpha r[k] - K \hat{x}[k]
+\end{align*}
+%
+However, the critical question is how this coupling affects the closed-loop behavior, and an even deeper question is can we even use such a policy. The advantage of LTI systems is that state-feedback gain and observer gain can be separately designed, and we guarantee a stable closed-loop performance. In this section, we will analyze the coupled system.
+%
+Equations of motion for the closed-loop observer \& state-feedback
+based control system is given below
+%
+\begin{align*}
+   x[k+1] &= A x[k] + B u[k]
+  \\ 
+   y[k] &= C x[k] + D u[k]
+  \\
+  \hat{x}[k+1] &= A \hat{x}[k] + B u[k] + L \left( y[k] - \hat{y}[k] \right) 
+  \\
+  \hat{y}[k] &= C \hat{x}[k] + D u[k]
+  \\
+   u[k] &= -K \hat{x}[k]
+\end{align*}
+%
+If we eliminate $u[k]$ and $\hat{y}[k]$ we obtain following 
+dynamical representation
+%
+\begin{align*}
+   x[k+1] &= A x[k] - B K \hat{x}[k] + B \alpha r[k]
+  \\
+  \hat{x}[k+1] &= A \hat{x}[k] - B K \hat{x}[k] + L C \left( x[k] -
+                 \hat{x}[k] \right) + B \alpha r[k]
+  \\ 
+   y[k] &= C x[k] - D K \hat{x}[k] + D \alpha r[k]
+\end{align*}
+%
+Now let's replace $\hat{x}[k]$ with $e[k] = x[k] - \hat{x}[k]$
+%
+\begin{align*}
+   x[k+1] &= ( A - B K ) x[k] + B K e[k] + B \alpha r[k]
+  \\
+  e[k+1] &= ( A - LC ) e[k]
+  \\ 
+   y[k] &= (C - D K) x[k] + D K e[k] + D \alpha r[k]
+\end{align*}
+%
+Now let's define a state for the whole system, 
+$z[k] = \left[ \begin{array}{c} x[k] \\ e[k] \end{array} \right]$
+then the state-space representation is given by
+%
+\begin{align*}
+  z[k+1] = \left[ \begin{array}{cc} (A - B K) & B K\\ 0_{n \times n}
+                                              & (A - LC) \end{array}
+                                                \right] z[k] + \left[ \begin{array}{c} \alpha B \\ 0 \end{array} \right] r[k]
+\\
+ y[k] = \left[ \begin{array}{cc} (C - D K) & D K \end{array}
+                                                \right] z[k] + [\alpha D] r[k]
+\end{align*}
+%
+The system matrix is in block diagonal form, and the eigenvalues
+of this new system, the matrix is found by taking the union of eigenvalues
+of $(A - B K)$ and eigenvalues of $(A - L C)$. Thus a separate
+pole-placement can be performed for the state-feedback controller
+and the observer. 
+
+
 % **** This ENDS THE EXAMPLES. DON'T DELETE THE FOLLOWING LINE:
 \end{document}
