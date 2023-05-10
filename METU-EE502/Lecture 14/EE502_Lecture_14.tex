@@ -348,8 +348,8 @@ and $D_{dt} = D_{ct} = CD= \begin{bmatrix} 0 \end{bmatrix} $.
 \textbf{Solution:} Let's explicitly write $u[k]$
 %
 \begin{align*}
-u[k] &= K_P (r[k] - x_1[k]) + K_D x_2[k] = K_P r[k] - \begin{bmatrix} K_P \\ K_D \end{bmatrix} \\
-K &= \begin{bmatrix} K_P \\ K_D \end{bmatrix} \ , \ \alpha = K_P
+u[k] &= K_P (r[k] - x_1[k]) + K_D x_2[k] = K_P r[k] - \begin{bmatrix} K_P & K_D \end{bmatrix} x[k] \\
+K &= \begin{bmatrix} K_P & K_D \end{bmatrix} \ , \ \alpha = K_P
 \end{align*}
 %
 \item Show that we can always find a $(K_P,K_D)$ pair such that closed-loop poles are located
@@ -364,6 +364,22 @@ at arbitrary desired locations.
 %
 thus $(A_{dt} , B_{dt})$ reachable and it implies that we can always find a $(K_P,K_D)$ pair such that closed-loop poles are located
 at arbitrary desired locations. 
+
+\item Find $(K_P,K_D)$ such that closed-loop systems shows dead-beat behavior
+
+\textbf{Solution:} In such a case, we need to place the closed-loop eigenvalues at the origin 
+%
+\begin{align*}
+	A_{cl} &= A_{dt} - B_{dt} K =  \begin{bmatrix} 1 & T \\ 0 & 1 \end{bmatrix} - \begin{bmatrix} T^2/2 \\ T \end{bmatrix} 
+	\begin{bmatrix} K_P & K_D \end{bmatrix} 
+	=  \begin{bmatrix} 1 & T \\ 0 & 1 \end{bmatrix} -  \begin{bmatrix} K_P T^2/2  & K_D T^2/2 \\ K_P T & K_D T \end{bmatrix}  
+	\\
+	&=  \begin{bmatrix} 1 - K_P T^2/2  & T - K_D T^2/2 \\ - K_P T & 1 - K_D T \end{bmatrix}
+	\\
+	\lambda I - A_{cl} &= \begin{bmatrix} \lambda - 1 + K_P T^2/2  & - T + K_D T^2/2 \\  K_P T & \lambda -  1+ K_D T \end{bmatrix}
+	\\
+	\mathrm{det}\left( \lambda I - A_{cl} \right) &= \lambda^2 + \left( K_P T^2/2 + K_D T - 2 \right) \lambda + \left( K_P T^2/2 - K_D T + 1 \right)
+\end{align*}
 
 \end{enumerate}
 
