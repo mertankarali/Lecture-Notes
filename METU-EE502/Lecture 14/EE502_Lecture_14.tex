@@ -379,6 +379,15 @@ at arbitrary desired locations.
 	\lambda I - A_{cl} &= \begin{bmatrix} \lambda - 1 + K_P T^2/2  & - T + K_D T^2/2 \\  K_P T & \lambda -  1+ K_D T \end{bmatrix}
 	\\
 	\mathrm{det}\left( \lambda I - A_{cl} \right) &= \lambda^2 + \left( K_P T^2/2 + K_D T - 2 \right) \lambda + \left( K_P T^2/2 - K_D T + 1 \right)
+	\\
+	\begin{bmatrix} 2 \\ -1 \end{bmatrix} 
+	&= \begin{bmatrix} T^2/2 & T \\ T^2/2 & -T \end{bmatrix} \begin{bmatrix} K_P \\ K_D \end{bmatrix} 
+	\, \Rightarrow \, \begin{bmatrix} K_P \\ K_D \end{bmatrix} = \frac{1}{T} \begin{bmatrix} T/2 & 1 \\ T/2 & -1 \end{bmatrix}^{-1}  \begin{bmatrix} 2 \\ -1 \end{bmatrix} =  \frac{1}{T} \begin{bmatrix} 1/T & 1/T \\ 1/2 & -1/2 \end{bmatrix} \begin{bmatrix} 2 \\ -1 \end{bmatrix} 
+	\\
+	\begin{bmatrix} K_P \\ K_D \end{bmatrix} &= \begin{bmatrix} 1/T^2 \\ 3/(2 T) \end{bmatrix}
+	\, \Rightarrow \, K =  \begin{bmatrix} 1/T^2 & 3/(2 T) \end{bmatrix}
+	\\
+	A_{cl} &= \begin{bmatrix} 1/2 & T/4 \\ -1/T & -1/2  \end{bmatrix}
 \end{align*}
 
 \end{enumerate}
