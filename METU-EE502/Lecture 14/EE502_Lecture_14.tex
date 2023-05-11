@@ -454,9 +454,12 @@ and comment on the transient behavior of the dynamics
 \ , \
  y[k] = \left[ \begin{array}{cc} C & 0  \end{array}
                                                 \right] z[k]  
+                                                \\ \\
+  z[k+1] &= \left[ \begin{array}{cc|cc} 1/2 & T/4 & 1/2 & 3T/4 \\ -1/T & -1/2 & 1/T & 3/2 \\ \hline 0 & 0 & -1 & T \\ 0 & 0 & -1/T & 1 \end{array}
+                                                \right] z[k] + \left[ \begin{array}{c} 1/2 \\ 1/T \\ \hline 0 \\ 0 \end{array} \right] r[k]  
                                                 \\
-  z[k+1] &= \left[ \begin{array}{cc|cc} 1/2 & T/4 & K_P T^2/2 & K_D T^2/2 \\ -1/T & -1/2 & K_P T & K_D T \\ \hline 0 & 0 & -1 & T \\ 0 & 0 & -1/T & 1 \end{array}
-                                                \right] z[k] + \left[ \begin{array}{c} K_P T^2/2 \\ K_P T \\ \hline 0 \\ 0 \end{array} \right] r[k]                                              
+                                                y[k] & = y[k] = \left[ \begin{array}{cc|cc} 1 & 0 & 0 & 0  \end{array}
+                                                \right] z[k]                                              
 \end{align*}
 %
 
