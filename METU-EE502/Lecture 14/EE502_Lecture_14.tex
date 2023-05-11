@@ -390,6 +390,57 @@ at arbitrary desired locations.
 	A_{cl} &= \begin{bmatrix} 1/2 & T/4 \\ -1/T & -1/2  \end{bmatrix}
 \end{align*}
 
+\item Now design observer as shown in the figure below such that the observer states converge the actual state in a deadbeat fashion.
+		
+\begin{center}
+  \begin{minipage}[h]{0.9\linewidth}
+    \begin{center}
+      \includegraphics[width=0.75\textwidth]{block_open-loop-obs}
+    \end{center}
+  \end{minipage}
+    \end{center}
+
+\textbf{Solution:} We know that observer's state-space model has the following form
+%
+\begin{align*}
+  \hat{x}[k+1] &= A \hat{x}[k] + B u[k] + L \left( y[k] - C \hat{x}[k] \right) 
+\end{align*}
+%
+and the error dynamics between the actual and predicted states has the following autonomous structure
+%
+\begin{align*}
+  e[k+1] &= ( A_{dt} - LC ) e[k]
+\end{align*}
+%
+In order to obtain dead-beat behavior in error dynamics 
+%
+\begin{align*}
+  \mathrm{det}( \lambda I -  A_o ) &= \lambda^2 \ , \ A_{o} = ( A_{dt} - LC )
+  \\
+  ( \lambda I -  A_o ) &= \begin{bmatrix} \lambda & 0 \\ 0 & \lambda \end{bmatrix} - \begin{bmatrix} 1 & T \\ 0 & 1 \end{bmatrix} 
+  + \begin{bmatrix} l_1 \\ l_2 \end{bmatrix} \begin{bmatrix} 1 & 0 \end{bmatrix} 
+  = \begin{bmatrix} \lambda - 1 + l_1 & -T \\ l_2 & \lambda - 1 \end{bmatrix} 
+  \\
+   \mathrm{det}( \lambda I -  A_o ) &= \lambda^2 + ( l_1 - 2 ) \lambda + ( -l_1 + T l_2 + 1 ) 
+   \\
+   L &= \begin{bmatrix} l_1 \\ l_2 \end{bmatrix} = \begin{bmatrix} 2 \\ 1/T \end{bmatrix} \, \Rightarrow \, A_o = \begin{bmatrix} -1 & T \\ -1/T & 1 \end{bmatrix} 
+\end{align*}
+
+\item Now close the loop using the observers estimated states as shown i the figure below. Fine the state-space representation of the whole closed-loop system 
+and comment on the transient behavior of the dynamics
+
+\begin{center}
+  \begin{minipage}[h]{0.9\linewidth}
+    \begin{center}
+      \includegraphics[width=0.95\textwidth]{block_PD_obs}
+    \end{center}
+  \end{minipage}
+    \end{center}
+
+
+
+
+
 \end{enumerate}
 
 
