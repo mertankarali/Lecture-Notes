@@ -400,10 +400,18 @@ at arbitrary desired locations.
   \end{minipage}
     \end{center}
 
-\textbf{Solution:} We know that observer's state-space model has the following form
+\textbf{Solution:} Let's first check weather the system is observable or not
 %
 \begin{align*}
-  \hat{x}[k+1] &= A \hat{x}[k] + B u[k] + L \left( y[k] - C \hat{x}[k] \right) 
+\mathbf{O} = \left[ \begin{array}{cc} C \\ \hline C A_{dt} \end{array} \right] =
+\left[ \begin{array}{cc} 1 & 0 \\ \hline 1 & T \end{array} \right]
+\ , \ \mathrm{rank}( \mathbf{O} ) = 2 \, \Rightarrow \, \mathrm{observable}
+\end{align*}
+%
+Now let's design the observer. We know that observer's state-space model has the following form
+%
+\begin{align*}
+  \hat{x}[k+1] &= A_{dt} \hat{x}[k] + B_{dt} u[k] + L \left( y[k] - C \hat{x}[k] \right) 
 \end{align*}
 %
 and the error dynamics between the actual and predicted states has the following autonomous structure
@@ -437,7 +445,20 @@ and comment on the transient behavior of the dynamics
   \end{minipage}
     \end{center}
 
-
+\textbf{Solution:} In the lecture notes for a closed-loop observer and state-feedback structure, we already derived the full state-space form
+ %
+\begin{align*}
+  z[k+1] &= \left[ \begin{array}{cc} (A_{dt} - B_{dt} K) & B_{dt} K\\ 0_{n \times n}
+                                              & (A_{dt} - LC) \end{array}
+                                                \right] z[k] + \left[ \begin{array}{c} \alpha B_{dt} \\ 0 \end{array} \right] r[k]
+\ , \
+ y[k] = \left[ \begin{array}{cc} C & 0  \end{array}
+                                                \right] z[k]  
+                                                \\
+  z[k+1] &= \left[ \begin{array}{cc|cc} 1/2 & T/4 & K_P T^2/2 & K_D T^2/2 \\ -1/T & -1/2 & K_P T & K_D T \\ \hline 0 & 0 & -1 & T \\ 0 & 0 & -1/T & 1 \end{array}
+                                                \right] z[k] + \left[ \begin{array}{c} K_P T^2/2 \\ K_P T \\ \hline 0 \\ 0 \end{array} \right] r[k]                                              
+\end{align*}
+%
 
 
 
