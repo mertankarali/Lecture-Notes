@@ -142,7 +142,7 @@ vectors to the infinite dimensional case, i.e. DT and CtT signals. Let's remembe
 the $\infty$-norm of an $n$-dimensional vector, 
 %
 \begin{align*}
-|| v ||_{\infty} \triangleq \underset{i\in[1,n]}{\max} | v_i | \ , \ \mathrm{where} v \in \mathbb{R}^n , 
+|| v ||_{\infty} \triangleq \underset{i\in[1,n]}{\max} | v_i | \ , \ \mathrm{where} \, v \in \mathbb{R}^n , 
 \end{align*}
 % 
 A scalar signal, $f(.)$ is called \textit{bounded} if $|| f ||_{\infty} = M < \infty$ and that is the
@@ -172,7 +172,7 @@ and $k \geq 0)$
 		\\
 	f(t) = e^t \, , \, || f ||_{\infty} = \infty \quad &- \quad g[k] = 2^k \, , \, || g ||_{\infty} = \infty
 			\\
-	f(t) = 1 - e^t \, , \, || f ||_{\infty} = 1 \quad &- \quad g[k] = 1 - 0.5^k \, , \, || g ||_{\infty} = 1
+	f(t) = 1 - e^{-t} \, , \, || f ||_{\infty} = 1 \quad &- \quad g[k] = 1 - 0.5^k \, , \, || g ||_{\infty} = 1
 				\\
 	f(t) = \delta(t) \, , \, || f ||_{\infty} = \infty \quad &- \quad g[k] = \delta[k] \, , \, || g ||_{\infty} = 1
 \end{align*}
@@ -185,9 +185,11 @@ considered as the square root of the ``energy'' of the signal. For scalar signal
 \begin{align*}
 	|| f ||_{2} &\triangleq \left[ \sum\limits_k (f[k])^2 \right]^{\frac{1}{2}} \quad (\mathrm{DT})
 	\\
-	&\triangleq \left[ \int\limits_t (f[t])^2 dt \right]^{\frac{1}{2}}  \quad (\mathrm{CT})
+	&\triangleq \left[ \int\limits ( f(t) )^2 dt \right]^{\frac{1}{2}}  \quad (\mathrm{CT})
 \end{align*}
 %
+The space of all signals with finite $2$-norm are generally denoted by 
+$\ell_{2}$ and $\mathcal{L}_{2}$ for DT and CT signals respectively.
 For multivariate signals, we adopt the inner product and obtain
 %
 \begin{align*}
@@ -195,11 +197,166 @@ For multivariate signals, we adopt the inner product and obtain
 	\left[ \sum\limits_k || f[k] ||_2^2 \right]^{\frac{1}{2}} 
 	\quad (\mathrm{DT})
 	\\
-	&\triangleq \left[ \int\limits_t (f(t))^T f(t)  dt \right]  = 
-	\left[ \sum\limits_k || f(t) ||_2^2 \right]^{\frac{1}{2}} 
+	&\triangleq \left[ \int\limits (f(t))^T f(t)  dt \right]  = 
+	\left[ \int\limits || f(t) ||_2^2 \right]^{\frac{1}{2}} 
 	\quad (\mathrm{CT})
 \end{align*}
 %
+$2$-norms of some example CT and DT uni-lateral signals (i.e. $t \geq 0$
+and $k \geq 0)$
+%
+\begin{align*}
+	f(t) = 1 \, , \, || f ||_{2} = \infty  \quad &- \quad g[k] = 1 \, , \, || g ||_{2} = \infty
+	\\
+	f(t) = t \, , \, || f ||_{2} = \infty \quad &- \quad g[k] = k \, , \, || g ||_{2} = \infty
+		\\
+	f(t) = e^t \, , \, || f ||_{2} = \infty \quad &- \quad g[k] = 2^k \, , \, || g ||_{2} = \infty
+			\\
+	f(t) = e^{-t} \, , \, || f ||_{2} = 1/\sqrt{2} \quad &- \quad g[k] = 0.5^k \, , \, || g ||_{2} = 2/\sqrt{3}
+				\\
+	f(t) = \delta(t) \, , \, || f ||_{2} = 1 \quad &- \quad g[k] = \delta[k] \, , \, || g ||_{2} = 1
+\end{align*}
+
+\subsubsection*{$1$-norm}
+
+$1$-norm of a signal is refered as the ``action'' of the signal and for 
+scalar signals $1$-norm is defined as
+%
+\begin{align*}
+	|| f ||_{1} &\triangleq \left[ \sum\limits_k | f[k] | \right] \quad (\mathrm{DT})
+	\\
+	&\triangleq \left[ \int\limits | f(t) | dt \right] \quad (\mathrm{CT})
+\end{align*}
+%
+The space of all signals with finite $1$-norm are generally denoted by 
+$\ell_{1}$ and $\mathcal{L}_{1}$ for DT and CT signals respectively.
+In order to generalize the $1$-norm for multi-variate signals, we adopt the $1$-norm
+definition of the vectors 
+%
+\begin{align*}
+	|| f ||_{1} &\triangleq 
+	\left[ \sum\limits_k || f[k] ||_1 \right]
+	\quad (\mathrm{DT})
+	\\
+	&\triangleq \left[ \int\limits || f(t) ||_1 dt \right]  = 
+	\quad (\mathrm{CT})
+\\
+|| v ||_{1} &\triangleq \sum\limits_{i=1}^{n}  | v_i | \ , \ \mathrm{where} \, v \in \mathbb{R}^n , 
+\end{align*}
+
+$1$-norms of some example CT and DT uni-lateral signals (i.e. $t \geq 0$
+and $k \geq 0)$
+%
+\begin{align*}
+	f(t) = 1 \, , \, || f ||_{1} = \infty  \quad &- \quad g[k] = 1 \, , \, || g ||_{1} = \infty
+	\\
+	f(t) = t \, , \, || f ||_{1} = \infty \quad &- \quad g[k] = k \, , \, || g ||_{1} = \infty
+		\\
+	f(t) = e^t \, , \, || f ||_{1} = \infty \quad &- \quad g[k] = 2^k \, , \, || g ||_{1} = \infty
+			\\
+	f(t) = e^{-t} \, , \, || f ||_{1} = 1 \quad &- \quad g[k] = 0.5^k \, , \, || g ||_{1} = 2
+				\\
+	f(t) = \delta(t) \, , \, || f ||_{1} = 1 \quad &- \quad g[k] = \delta[k] \, , \, || g ||_{1} = 1
+\end{align*}
+
+\subsubsection*{$p$-norm} 
+
+$p$-norm is technically generalization of the previous norms define in the Lecture Notes. Let $p > 0$, 
+$p$-norm for vector valued signals are defined as
+%
+\begin{align*}
+	|| f ||_{p} &\triangleq 
+	\left[ \sum\limits_k || f[k] ||_p^p \right]^{1/p}
+	\quad (\mathrm{DT})
+	\\
+	&\triangleq \left[ \int\limits || f(t) ||_p^p dt \right]^{1/p}  = 
+	\quad (\mathrm{CT})
+\\
+|| v ||_{p} &\triangleq \left[ \sum\limits_{i=1}^{n}  | v_i |^p \right]^{1/p} \ , \ \mathrm{where} \, v \in \mathbb{R}^n , 
+\end{align*}
+
+\newpage
+
+\subsection{Input-Output Stability}
+
+The most important notion of input-output stability in the analysis of dynamical systems is 
+termed $\ell_p$ (or $\mathcal{L}_p$) stability or $p$-stability. 
+
+\textbf{Definition:} A system with input signal, $u$, and output signal, $y$, is $\ell_p$ stable (or $p$-stable)
+if $\exists M \in \mathbb{R}$ such that 
+%
+\begin{align*}
+	|| y ||_p \leq M || u ||_p \, , \forall u \in \ell_{p} \, (\mathrm{or} \, \mathcal{L}_{p})
+\end{align*}
+%
+In other words a $p$-stable system is characterized by the requirement that for every input, $u$,
+with finite $p$-norm, $p$-norm of the output has also has to be finite. 
+
+\subsubsection*{BIBO Stability \& $\infty$-stability for LTI Systems}
+
+If we directly follow the definition of $\ell_p$ stability or $p$-stability and signal norm
+definitions, we can see that BIBO stability definition is indeed a special case of $p$-stability 
+where $p = \infty$. Lets first remember BIBO stability or $\infty$-stability for SISO LTI systems.
+
+\textbf{Theorem:} Let, $S_{h}$, be a CT-LTI SISO system where $h(t)$ is its impulse response, i.e.
+%
+\begin{align*}
+y(t) = h(t) * u(t) = \int\limits_{-\infty}^{\infty} h(t - \tau) u(\tau) d\tau = \int\limits_{-\infty}^{\infty} h(\tau) u(t - \tau) d\tau 
+\end{align*}
+%
+$S_{h}$ is BIBO stable (or $\infty$-stable) if and only if $\exists M < \infty$ such that 
+%
+\begin{align*}
+	|| h ||_1 = \int\limits_{-\infty}^{\infty} | h(t) | dt = M
+\end{align*}
+%
+\textbf{Proof:} \textit{Sufficiency} - Let $|| h ||_{1} = M < \infty$ and  $|| u ||_{\infty} = C < \infty$
+%
+\begin{align*}
+	y(t) &= \int\limits_{-\infty}^{\infty} h(\tau) u(t - \tau) d\tau 
+	\\
+	| y(t) |  &= \left| \int\limits_{-\infty}^{\infty} h(\tau) u(t - \tau) d\tau \right| \leq
+	\int\limits_{-\infty}^{\infty} | h(\tau) u(t - \tau) | d\tau
+	\leq 	\int\limits_{-\infty}^{\infty} | h(\tau) | | u(t - \tau) | d\tau
+	\leq \left[ \int\limits_{-\infty}^{\infty} | h(\tau) | d\tau \right] || u ||_{\infty} \, , \forall t
+	\\
+	|| y ||_{\infty} &\leq || h ||_1 || u ||_{\infty} \leq M C < \infty
+\end{align*}
+
+\textit{Neccesity} - Let $ || h ||_1 = \infty $, and for any $t$ we can choose $u(t - \tau) = \mathrm{sign}( h( \tau )$, then
+
+\begin{align*}
+	y(t) &= \int\limits_{-\infty}^{\infty} h(\tau) u(t - \tau) d\tau = 
+	\int\limits_{-\infty}^{\infty} h(\tau) \mathrm{sign}( h( \tau ) d\tau = 
+	\int\limits_{-\infty}^{\infty} | h(\tau) |  d\tau = \infty
+\end{align*}
+
+Thus a SISO CT-LTI system is  BIBO stable (or $\infty$-stable) $\iff$ $|| h ||_{1} = \int\limits_{-\infty}^{\infty} | h(t) | dt < \infty$.
+Furthermore, the least upper bound of the infinity norm of the output given that $ || u ||_{\infty}$ simply given by 
+%
+\begin{align*}
+	\underset{|| u ||_{\infty} = 1}{\sup} || y ||_{\infty} = || h ||_{1} = \int\limits_{-\infty}^{\infty} | h(t) | dt
+\end{align*}
+%
+and this constant is is called the $\mathcal{L}_1$-norm (or $\mathcal{L}_{\infty-\mathrm{ind}}$-norm) of the system and showed as
+%
+\begin{align*}
+	|| S_h ||_1 =  \underset{|| u ||_{\infty} = 1}{\sup} || y ||_{\infty} 
+\end{align*}
+%
+\textbf{Theorem:} Let, $S_{g}$, be a DT-LTI SISO system where $g[k]$ is its impulse response, i.e.
+%
+\begin{align*}
+y[k] = g[k] * u[k] = \sum\limits_{n=-\infty}^{\infty} g[k - n] u[n]  =  \sum\limits_{n=-\infty}^{\infty} g[n] u[k - n]  
+\end{align*}
+%
+$S_{g}$ is BIBO stable (or $\infty$-stable) if and only if $\exists M < \infty$ such that 
+%
+\begin{align*}
+	|| g ||_1 =  \sum\limits_{n=-\infty}^{\infty} | g[n] | = M
+\end{align*}
+%
+\textbf{Proof:} Steps of the proof is very similar to the CT case. 
 
 % **** This ENDS THE EXAMPLES. DON'T DELETE THE FOLLOWING LINE:
 \end{document}
