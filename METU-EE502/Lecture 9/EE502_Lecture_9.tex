@@ -358,5 +358,66 @@ $S_{g}$ is BIBO stable (or $\infty$-stable) if and only if $\exists M < \infty$ 
 %
 \textbf{Proof:} Steps of the proof is very similar to the CT case. 
 
+Now let's generalize the BIBO stability for MIMO systems. 
+
+\textbf{Theorem:} Let, $S_{\mathcal{H}}$, be a CT-LTI MIMO system where $\mathcal{H}(t)$ is its impulse response matrix
+with $m$ inputs and $p$ outputs, i.e.
+%
+\begin{align*}
+y(t) = \mathcal{H}(t) * u(t) = \int\limits_{-\infty}^{\infty} \mathcal{H}(t - \tau) u(\tau) d\tau = \int\limits_{-\infty}^{\infty} \mathcal{H}(\tau) u(t - \tau) d\tau 
+\end{align*}
+%
+$S_{\mathcal{H}}$ is BIBO stable (or $\infty$-stable) if and only if $\exists M < \infty$ such that 
+%
+\begin{align*}
+	\underset{i \in [1,p]}{\max} \sum\limits || h_{ij} ||_1 = M
+\end{align*}
+%
+we can see that for multivariate BIBO stability all possible SISO input--output terminals has to be BIBO stability.
+It is enough to the sufficiency for the multi-variate case, since proof in SISO case covers necessity condition. 
+Let $y_i(t)$ is the $i^{th}$ output terminal then
+%
+\begin{align*}
+	y_i(t) &= \sum\limits_{j=1}^m \left[ \int h_{ij}(\tau) u_j(t - \tau) d\tau \right]
+	\\
+	| y_i(t) | &= \left| \sum\limits_{j=1}^m  \left[ \int h_{ij}(\tau) u_j(t - \tau) d\tau \right] \right| 
+	\leq  \sum\limits_{j=1}^m  \left[ \int \left| h_{ij}(\tau) u_j(t - \tau) \right|  d\tau \right]
+		\leq  \sum\limits_{j=1}^m \left[ \int \left| h_{ij}(\tau) \right| \left| u_j(t - \tau) \right|  d\tau \right]
+		\\
+		&\leq  \sum\limits_{j=1}^m \left[ \int \left| h_{ij}(\tau) \right| || u(t - \tau) ||_{\infty}  d\tau \right]
+		\leq  \sum\limits_{j=1}^m \left[ \int \left| h_{ij}(\tau) \right| d\tau \right] || u ||_{\infty} 
+		\leq  \left[ \sum\limits_{j=1}^m || h_{ij} ||_1 \right] || u ||_{\infty} 
+\end{align*}
+% 
+Noe let's focus on all output variables
+\begin{align*}
+	|| y ||_{\infty} = \underset{t}{\sup}|| y(t) ||_{\infty} = \underset{t}{\sup} \underset{i \in [1,p]}{\max} | y_i(t) |
+	\leq \underset{i \in [1,p]}{\max}  \left[ \sum\limits_{j=1}^m || h_{ij} ||_1 \right] || u ||_{\infty} 
+\end{align*}
+%
+thus if $\underset{i \in [1,p]}{\max}  \left[ \sum\limits_{j=1}^m || h_{ij} ||_1 \right] = M < \infty$, then 
+$|| y ||_{\infty}$ is finite for all finite $|| u ||_{\infty}$. The constant $M$ derived in this proof is called the 
+called the $\mathcal{L}_1$-norm (or $\mathcal{L}_{\infty-\mathrm{ind}}$-norm) of the system and showed as
+%
+\begin{align*}
+	|| S_\mathcal{H} ||_1 =  \underset{i \in [1,p]}{\max}  \left[ \sum\limits_{j=1}^m || h_{ij} ||_1 \right]
+\end{align*}
+%
+
+\textbf{Theorem:} Let, $S_{\mathcal{G}}$, be a DT-LTI MIMO system where $\mathcal{G}[k]$ is its impulse response matrix
+with $m$ inputs and $p$ outputs, i.e.
+%
+\begin{align*}
+y[k] = \mathcal{G}[k] * u[k] = \sum\limits_{n=-\infty}^{\infty} \mathcal{G}[k - n] u[k] 
+\end{align*}
+%
+$S_{\mathcal{G}}$ is BIBO stable (or $\infty$-stable) if and only if $\exists M < \infty$ such that 
+%
+\begin{align*}
+	|| S_{\mathcal{G}} ||_1 =\underset{i \in [1,p]}{\max} \sum\limits || h_{ij} ||_1 = M
+\end{align*}
+%
+Steps of the proof is very similar to the CT case.
+
 % **** This ENDS THE EXAMPLES. DON'T DELETE THE FOLLOWING LINE:
 \end{document}
