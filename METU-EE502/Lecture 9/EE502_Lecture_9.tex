@@ -292,7 +292,14 @@ if $\exists M \in \mathbb{R}$ such that
 In other words a $p$-stable system is characterized by the requirement that for every input, $u$,
 with finite $p$-norm, $p$-norm of the output has also has to be finite. 
 
-\subsubsection*{BIBO Stability \& $\infty$-stability for LTI Systems}
+In this context we can also define a induced system norm definition.
+%
+\begin{align*}
+	|| S ||_{p-ind} = \underset{u \neq 0}{\sup} \frac{|| y ||_p}{|| u ||_p}
+\end{align*}
+%
+
+\subsubsection*{BIBO stability \& $\mathcal{L}_{\infty}$-stability for LTI Systems}
 
 If we directly follow the definition of $\ell_p$ stability or $p$-stability and signal norm
 definitions, we can see that BIBO stability definition is indeed a special case of $p$-stability 
@@ -341,7 +348,7 @@ Furthermore, the least upper bound of the infinity norm of the output given that
 and this constant is is called the $\mathcal{L}_1$-norm (or $\mathcal{L}_{\infty-\mathrm{ind}}$-norm) of the system and showed as
 %
 \begin{align*}
-	|| S_h ||_1 =  \underset{|| u ||_{\infty} = 1}{\sup} || y ||_{\infty} 
+	|| S_h ||_1 = || S_h ||_{\infty-ind} =  \underset{|| u ||_{\infty} = 1}{\sup} || y ||_{\infty} = || h ||_{1} 
 \end{align*}
 %
 \textbf{Theorem:} Let, $S_{g}$, be a DT-LTI SISO system where $g[k]$ is its impulse response, i.e.
@@ -400,7 +407,7 @@ $|| y ||_{\infty}$ is finite for all finite $|| u ||_{\infty}$. The constant $M$
 called the $\mathcal{L}_1$-norm (or $\mathcal{L}_{\infty-\mathrm{ind}}$-norm) of the system and showed as
 %
 \begin{align*}
-	|| S_\mathcal{H} ||_1 =  \underset{i \in [1,p]}{\max}  \left[ \sum\limits_{j=1}^m || h_{ij} ||_1 \right]
+	|| S_\mathcal{H} ||_1 = 	|| S_\mathcal{H} ||_{\infty-ind} =  \underset{i \in [1,p]}{\max}  \left[ \sum\limits_{j=1}^m || h_{ij} ||_1 \right]
 \end{align*}
 %
 
@@ -414,7 +421,7 @@ y[k] = \mathcal{G}[k] * u[k] = \sum\limits_{n=-\infty}^{\infty} \mathcal{G}[k - 
 $S_{\mathcal{G}}$ is BIBO stable (or $\infty$-stable) if and only if $\exists M < \infty$ such that 
 %
 \begin{align*}
-	|| S_{\mathcal{G}} ||_1 =\underset{i \in [1,p]}{\max} \sum\limits || h_{ij} ||_1 = M
+	|| S_{\mathcal{G}} ||_1 = || S_{\mathcal{G}} ||_{\infty-ind} = \underset{i \in [1,p]}{\max} \sum\limits || h_{ij} ||_1 = M
 \end{align*}
 %
 Steps of the proof is very similar to the CT case.
@@ -424,6 +431,44 @@ Steps of the proof is very similar to the CT case.
 \item poles of $\mathcal{H}(s)$ (or $\mathcal{G}(z)$ for DT case) are located in the O.L.P (or unit circle for DT systems) $\iff$
 \item eigenvalues associated with reachable and observable modes are located in the O.L.P (or unit circle for DT systems)
 \end{itemize}
+
+\subsubsection*{$\mathcal{L}_1$-stability of SISO LTI Systems}
+
+Let's focus on only CT SISO systems. In this part, we will attempt to find a conservative bound, $C < \infty$, such that 
+%
+\begin{align*}
+	|| y ||_1 \leq C || u ||_1 \, , \forall u \in \mathcal{L}_{1}
+\end{align*}
+% 
+From the $\infty$-stability derivation we know that
+%
+%
+\begin{align*}
+	| y(t) | = | h(t) * u(t) | \leq \int\limits_{-\infty}^{\infty} | h(t - \tau ) | | u(\tau) | d\tau
+\end{align*}
+%  
+Mow let's analyze the $|| y ||_1$
+\begin{align*}
+	|| y ||_1 &= \int\limits_{-\infty}^{\infty} | y(t) | dt = \int\limits_{-\infty}^{\infty} | h(t) * u(t) | dt 
+	\leq \int\limits_{-\infty}^{\infty} \left( \int\limits_{-\infty}^{\infty} | h(t - \tau ) | | u(\tau) | d\tau \right) dt
+	\\
+	&\leq \int\limits_{-\infty}^{\infty} | u(\tau) | \left( \int\limits_{-\infty}^{\infty} | h(t - \tau ) | dt \right) d\tau 
+	= \int\limits_{-\infty}^{\infty} | u(\tau) | \left( \int\limits_{-\infty}^{\infty} | h(\gamma) | d\gamma \right) d\tau 
+	= || h ||_1 \int\limits_{-\infty}^{\infty} | u(\tau) d\tau 
+	\\
+	|| y ||_1 &\leq || h ||_1 || u ||_1
+\end{align*}
+%
+This implies that if $ || h ||_1 = M < \infty $ then system is $p$-stable for $p = 1$ and $C \leq M$. Indeed this is a conservative upper bound 
+for general LTI systems, but inequality becomes equality (i.e. $|| h ||_1 = M = C$) for finite dimensional LTI systems. Same derivation can
+be easily adopted for DT-LTI SISO systems. 
+
+
+Indeed, we can generalize this derivation for any $p > 0$ such that
+
+\textbf{Theorem:} If $|| h_1 || = M < \infty$ and $|| u ||_p < \infty$, then $|| y ||_p < \infty$. 
+
+Proof of this theorem requires the adoption of Minkowski's inequalities, thus it is omitted from these lecture notes. 
 
 
 
