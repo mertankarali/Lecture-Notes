@@ -154,8 +154,8 @@ $q$ outputs. $z_0$ is a zero of the system if $H(s)$ drops rank at $s = z_0$.
 
 Naturally let's assume that $G(s)$ is full rank, then we can also observe that
 \begin{itemize}
-\item if $m \leq p$, $G(s)$ drops rank at $s = z_0$ $\iff$ $\exists u_0 \in \mathbb{R}^{m} \, \& \, u_0 \neq 0$ such that $H(z_0) u_0 = 0$
-\item if $q \leq m$, $G(s)$ drops rank at $s = z_0$ $\iff$ $\exists u_0^T \in \mathbb{R}^{q} \, \& \, u_0 \neq 0$ such that $u_0^T H(z_0) = 0$
+\item if $m \leq p$, $G(s)$ drops rank at $s = z_0$ $\iff$ $\exists u_0 \in \mathbb{R}^{m} \, \& \, u_0 \neq 0$ such that $G(z_0) u_0 = 0$
+\item if $q \leq m$, $G(s)$ drops rank at $s = z_0$ $\iff$ $\exists u_0^T \in \mathbb{R}^{q} \, \& \, u_0 \neq 0$ such that $u_0^T G(z_0) = 0$
 \end{itemize}
 
 These definitions provide us the zeros that are different from poles of the system. 
@@ -170,6 +170,41 @@ These definitions provide us the zeros that are different from poles of the syst
 In this example we can see that $G(s)$ is full rank for \textit{most} $s \in \mathbb{C}$. The matrix drops rank at locations
 $z_0 \in \lbrace 0 , -1 \rbrace$, however rank is preserved for $-3$ even if $G_{12}(-3) = 0$. Thus zeros of the system 
 are $\lbrace 0 , -1 \rbrace$.
+
+The major limitation of this definition is that it is limited to zeros that are different from the poles of the system. So we 
+need a more general definition of zeros 
+
+\textbf{Definition} Let's assume that $G(s)$ is a full rank (for \textit{most} $s \in mathbb{C}$ transfer function matrix with $m$
+inputs and $q$ outputs. $z_0 \in \mathbb{C}$ is a zero of the system if
+\begin{itemize}
+\item if $m \leq p$, $\exists u(s) \neq 0$ such that $\lim_{s \to z_0} [ G(s) u(s) ] = 0$
+\item if $p \leq m$, $\exists u(s) \neq 0$ such that $\lim_{s \to z_0} [ u(s)^T G(s) ] = 0$
+\end{itemize}
+
+\begin{exmp}
+	\begin{align*}
+	G(s) = \left[ \begin{array}{ccc} 1 & \frac{s+1}{s+2}  \\  
+	0 & 1  \end{array} \right]
+	\end{align*}
+\end{exmp}
+
+Let $u(s) = \begin{bmatrix} 1 \\ s+2 \end{bmatrix}$, then
+\begin{align*}
+\lim_{s \to -2} [ G(s) u(s) ] = \lim_{s \to -2} \begin{bmatrix} s+2 \\ s+2 \end{bmatrix} = \begin{bmatrix} 0 \\ 0 \end{bmatrix}
+\end{align*}
+this $s = -2$ is both a pole and zero location for $G(s)$
+
+\textbf{Corollary:} Let $G(s)$ be square transfer function matrix and it is invertible for \textit{most} $s \in \mathbb{C}$, then zeros of the systems
+are the poles of $G(s)^{-1}$. 
+
+Let's analyse the previous example 
+
+\begin{align*}
+G(s)^{-1} &= \left[ \begin{array}{ccc} 1 & -\frac{s+1}{s+2}  \\  
+	0 & 1  \end{array} \right]
+	\\
+\lim_{s \to -2} || G(s) || &= \infty \, \Rightarrow \, z_0 = - 2 \ \mathrm{is} \, \mathrm{zero} \, \mathrm{of} \, G(s)
+\end{align*}
 
 
 
