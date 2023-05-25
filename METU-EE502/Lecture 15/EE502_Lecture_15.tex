@@ -134,13 +134,47 @@ geometric multiplicity of a pole based on Jordan decomposition of $A$ provided t
 \begin{exmp}
 	\begin{align*}
 	G(s) = \left[ \begin{array}{ccc} \frac{s+1}{(s+2)^2} & 0 & 0 \\  
-	0 & \frac{s}{(s+1)(s+2)} & 0 \\  \end{array} \right]
+	0 & \frac{s}{(s+1)(s+2)} & 0 \\ 0 & 0 & 1  \end{array} \right]
 	\end{align*}
 \end{exmp}
 %
 We can clearly see that $p_1 = -2$ and $p_2 = -2$ are the poles of the system. Note that $z = -1$ also a zero of the 
 firs entry of the transfer function matrix (and indeed it is a zero of the system). This states that a MIMO system can have 
 a pole and a zero at the same location. 
+
+\subsection{Zeros of MISO Systems}
+
+If we generalised the definition of zero in SISO systems to the MIMO systems using the same logic with MIMO poles, we can see that
+resultant definition would not be useful and somewhat unsatisfactory. Let's consider the transfer function matrix in the previous example. 
+In this example all non-diagonal elements are zero and hence if we define a zero such that $\exists (i,j)$ s.t. $\lim_{s \to z_0}G_{ij}(s) = 0$,
+then any $z_0 \in \mathbb{C}$ would be a zero of the system. In that context, we need more useful and satisfactory definition(s) for MIMO zeros.
+
+\textbf{Definition:} Let $z_0 \neq p_i , \, \forall p_i \in \mathcal{P}$ , where $\mathcal{P}$ is teh set of all poles of the MIMO system $G(s)$ with $m$ inputs and
+$q$ outputs. $z_0$ is a zero of the system if $H(s)$ drops rank at $s = z_0$.
+
+Naturally let's assume that $G(s)$ is full rank, then we can also observe that
+\begin{itemize}
+\item if $m \leq p$, $G(s)$ drops rank at $s = z_0$ $\iff$ $\exists u_0 \in \mathbb{R}^{m} \, \& \, u_0 \neq 0$ such that $H(z_0) u_0 = 0$
+\item if $q \leq m$, $G(s)$ drops rank at $s = z_0$ $\iff$ $\exists u_0^T \in \mathbb{R}^{q} \, \& \, u_0 \neq 0$ such that $u_0^T H(z_0) = 0$
+\end{itemize}
+
+These definitions provide us the zeros that are different from poles of the system. 
+
+\begin{exmp}
+	\begin{align*}
+	G(s) = \left[ \begin{array}{ccc} \frac{s+1}{(s+2)^2} & \frac{s+3}{s+4}  \\  
+	0 & \frac{s}{s+2}  \end{array} \right]
+	\end{align*}
+\end{exmp}
+
+In this example we can see that $G(s)$ is full rank for \textit{most} $s \in \mathbb{C}$. The matrix drops rank at locations
+$z_0 \in \lbrace 0 , -1 \rbrace$, however rank is preserved for $-3$ even if $G_{12}(-3) = 0$. Thus zeros of the system 
+are $\lbrace 0 , -1 \rbrace$.
+
+
+
+
+
 
 
 % **** This ENDS THE EXAMPLES. DON'T DELETE THE FOLLOWING LINE:
