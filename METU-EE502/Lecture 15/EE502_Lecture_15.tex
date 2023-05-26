@@ -105,16 +105,31 @@ $z_0$ is a pole of the system if
 %
 \begin{itemize}
  \item $\lim_{s \to z_0}G(s) = 0$
- \item steady-state part of the zero state response to $u(t) = e^{z_0 t}$
- \begin{align*}
- y_{ss}(t) = C (z_0 I - A)^{-1} B e^{z_0 t} = 0 
- \end{align*} 
+ \item $\exists x_0$ such that output response to $u(t) = e^{z_0 t}$ and $x(t) = x_0$ satisfies $y(t) = 0$
 \end{itemize}
 %
+Let's remember the structure of the response for input types in the form of $u(t) = e^{z_0 t}$
+%
+\begin{align*}
+  y(t) &= \underbrace{C e^{A t} \left[ \bar{x}_0 + x_0 \right] }_{transient}  \, + \, \underbrace{G(s_0) e^{s_0 t}}_{steady-state} \, , \, \mathrm{where}
+   \\
+   \bar{x}_0 &=  \left[ - (z_o I - A)^{-1} B \right] \ , \ 
+   G(z_0) = C (z_0 I - A)^{-1} B + D 
+\end{align*}
+%
+Thus $z_0$ is a zero if 
+\begin{align*}
+   x_0 &= -\bar{x}_0 = (z_o I - A)^{-1} B  \\ 
+   G(z_0) &= C (z_0 I - A)^{-1} B + D = 0
+\end{align*}
 
-\subsection{Poles of MISO Systems}
+Note that these definitions and conditions directly hold for DT SISO LTI systems.
 
-Unlike MIMO zeros, definition and derivation of MIMO poles is much more straightforward 
+\newpage
+
+\subsection{Poles of MIMO Systems}
+
+Unlike MIMO zeros, the definition and derivation of MIMO poles are much more straightforward. 
 
 Let $G(s)$ (or $G(z)$ in DT case) and $\left( \begin{array}{c|c} A & B \\ \hline C & D  \end{array} \right)$ are the transfer function matrix and a \textit{minimal} state-space representation of a MIMO LTI system.
 
@@ -126,10 +141,10 @@ $p_0$ is a pole of the system if
  \item $p_0$ is an eigenvalue of $A$
 \end{itemize}
 %
-in other words in the context of transfer function matrix $p_0$ is a pole of the system if it is a pole of any entry of
-$G(s)$. Understanding and derivation of the multiplicities of a pole based on transfer function matrix is a little bit tricky 
-and not very intuitive for the context and scope of the class. Thus, we can simply state that we can find the algebraic and
-geometric multiplicity of a pole based on Jordan decomposition of $A$ provided that state-space representation is minimal. 
+in other words, in the context of the transfer function matrix, $p_0$ is a pole of the system if it is a pole of any entry of
+$G(s)$. Understanding and derivation of the multiplicities of a pole based on the transfer function matrix is a little bit tricky 
+and not very intuitive for the context and scope of the class. Thus, we can simply state that we can find a pole's algebraic and
+geometric multiplicity based on Jordan decomposition of $A$ provided that state-space representation is minimal. 
 %
 \begin{exmp}
 	\begin{align*}
@@ -138,16 +153,13 @@ geometric multiplicity of a pole based on Jordan decomposition of $A$ provided t
 	\end{align*}
 \end{exmp}
 %
-We can clearly see that $p_1 = -2$ and $p_2 = -2$ are the poles of the system. Note that $z = -1$ also a zero of the 
-firs entry of the transfer function matrix (and indeed it is a zero of the system). This states that a MIMO system can have 
-a pole and a zero at the same location. 
+We can clearly see that $p_1 = -2$ and $p_2 = -2$ are the system's poles. Note that $z = -1$ is also a zero of the 
+first entry of the transfer function matrix (and indeed, it is a zero of the system). This states that a MIMO system can have 
+a pole and a zero at the exact location. 
 
 \subsection{Zeros of MISO Systems}
 
-If we generalised the definition of zero in SISO systems to the MIMO systems using the same logic with MIMO poles, we can see that
-resultant definition would not be useful and somewhat unsatisfactory. Let's consider the transfer function matrix in the previous example. 
-In this example all non-diagonal elements are zero and hence if we define a zero such that $\exists (i,j)$ s.t. $\lim_{s \to z_0}G_{ij}(s) = 0$,
-then any $z_0 \in \mathbb{C}$ would be a zero of the system. In that context, we need more useful and satisfactory definition(s) for MIMO zeros.
+Suppose we generalize the definition of a zero in SISO systems to the MIMO systems using the same logic with MIMO poles. In that case, we can see that the resultant definition would not be helpful and somewhat unsatisfactory. Let's consider the transfer function matrix in the previous example. In this example, all non-diagonal elements are zero, and hence if we define a zero such that $\exists (i,j)$ s.t. $\lim_{s \to z_0}G_{ij}(s) = 0$, then any $z_0 \in \mathbb{C}$ would be a zero of the system. In that context, we need a more useful and satisfactory definition(s) for MIMO zeros.
 
 \textbf{Definition:} Let $z_0 \neq p_i , \, \forall p_i \in \mathcal{P}$ , where $\mathcal{P}$ is teh set of all poles of the MIMO system $G(s)$ with $m$ inputs and
 $q$ outputs. $z_0$ is a zero of the system if $H(s)$ drops rank at $s = z_0$.
@@ -155,31 +167,114 @@ $q$ outputs. $z_0$ is a zero of the system if $H(s)$ drops rank at $s = z_0$.
 Naturally let's assume that $G(s)$ is full rank, then we can also observe that
 \begin{itemize}
 \item if $m \leq p$, $G(s)$ drops rank at $s = z_0$ $\iff$ $\exists u_0 \in \mathbb{R}^{m} \, \& \, u_0 \neq 0$ such that $G(z_0) u_0 = 0$
-\item if $q \leq m$, $G(s)$ drops rank at $s = z_0$ $\iff$ $\exists u_0^T \in \mathbb{R}^{q} \, \& \, u_0 \neq 0$ such that $u_0^T G(z_0) = 0$
+\item if $q \leq m$, $G(s)$ drops rank at $s = z_0$ $\iff$ $\exists w_0^T \in \mathbb{R}^{q} \, \& \, w_0 \neq 0$ such that $w_0^T G(z_0) = 0$
 \end{itemize}
 
-These definitions provide us the zeros that are different from poles of the system. 
-
+These definitions provide us the zeros different from the system's poles. $u_0$ and $w_0$ are called the direction of MIMO zeros in their respective cases. 
+%
 \begin{exmp}
 	\begin{align*}
 	G(s) = \left[ \begin{array}{ccc} \frac{s+1}{(s+2)^2} & \frac{s+3}{s+4}  \\  
 	0 & \frac{s}{s+2}  \end{array} \right]
 	\end{align*}
 \end{exmp}
-
-In this example we can see that $G(s)$ is full rank for \textit{most} $s \in \mathbb{C}$. The matrix drops rank at locations
+%
+\textbf{Solution:} In this example, we can see that $G(s)$ is full rank for \textit{most} $s \in \mathbb{C}$. The matrix drops rank at locations
 $z_0 \in \lbrace 0 , -1 \rbrace$, however rank is preserved for $-3$ even if $G_{12}(-3) = 0$. Thus zeros of the system 
 are $\lbrace 0 , -1 \rbrace$.
+
+Let's solve some non-square examples.
+%
+\begin{exmp}
+	\begin{align*}
+	G(s) = \left[ \begin{array}{ccc} \frac{s+1}{(s+2)^2} & \frac{s+3}{s+4}  \\  
+	0 & \frac{s}{s+2}  
+        \\
+        \frac{s(s+3)}{(s+4)^2}  & 0
+        \end{array} \right]
+	\end{align*}
+\end{exmp}
+%
+\textbf{Solution:} Let's test if $s = -1$ is a zero and if it is let's find $u_{-1}$ such that $G(-1) u_{-1} = 0$
+%
+\begin{align*}
+	G(-1) = \left[ \begin{array}{ccc} 0 & \frac{2}{3}  \\  
+	0 & -1  
+        \\
+        \frac{-2}{9}  & 0
+        \end{array} \right] \, \Rightarrow \, \mathrm{rank}[G(-1)] = 2  
+\end{align*}
+%
+Thus for this system, $s = -1$ is not a zero. Let's test if $s = -3$ is a zero and if it is let's find $u_{-3}$ such that $G(-3) u_{-3} = 0$
+%
+\begin{align*}
+	G(-3) = \left[ \begin{array}{ccc} -2 & 0 \\  
+	0 & 3  
+        \\
+        0  & 0
+        \end{array} \right] \, \Rightarrow \, \mathrm{rank}[G(-3)] = 2  
+\end{align*}
+%
+Thus, also for this system, $s = -3$ is not a zero. Let's test if $s = 0$ is a zero and if it is let's find $u_{0}$ such that $G(0) u_{0} = 0$
+%
+\begin{align*}
+	G(0) = \left[ \begin{array}{ccc} \frac{1}{4} & \frac{3}{4}  \\  
+	0 & 0
+        \\
+        0  & 0
+        \end{array} \right] \, \Rightarrow \, \mathrm{rank}[G(0)] = 1  
+        \\
+        u_0 = \begin{bmatrix} -12 \\ 4 \end{bmatrix} \, \Rightarrow \, G(0) u_0 = \begin{bmatrix} 0 \\ 0 \end{bmatrix}
+\end{align*}
+%
+Thus $s = 0$ is a zero of the system and \textit{direction} of the zero is $u_0 = \begin{bmatrix} -12 \\ 4 \end{bmatrix} $
+%
+\begin{exmp}
+	\begin{align*}
+	G(s) = \left[ \begin{array}{ccc} \frac{s+1}{(s+2)^2} & \frac{s+3}{s+4} & 0 \\  
+	0 & \frac{s}{s+2} & \frac{(s+1)(s+3)}{(s-1)^2}
+        \end{array} \right]
+	\end{align*}
+\end{exmp}
+%
+\textbf{Solution:} Let's test if $s = -1$ is a zero and if it is let's find $w_{-1}$ such that $w_{-1}^T G(-1) = 0$
+%
+\begin{align*}
+	G(-1) &= \left[ \begin{array}{ccc} 0 & \frac{2}{3} & 0 \\  
+	0 & -1 & 0
+        \end{array} \right] \, \Rightarrow \, \mathrm{rank}[G(-1)] = 1
+        \\
+        w_{-1} &= \begin{bmatrix} 3 \\ 1 \end{bmatrix} \, \Rightarrow \, w_{-1}^T G(-1) = \begin{bmatrix} 0 & 0 \end{bmatrix}
+\end{align*}
+%
+Thus $s = -1$ is a zero of the system and \textit{direction} of the zero is $w_{-1} = \begin{bmatrix} 3 \\ 1 \end{bmatrix} $.
+Now let's test if $s = -3$ and $s=0$ are zeros f of the system.
+%
+\begin{align*}
+	G(-3) &= \left[ \begin{array}{ccc} -2 & 0 & 0 \\  
+	0 & 3 & 0
+        \end{array} \right] \, \Rightarrow \, \mathrm{rank}[G(-3)] = 2
+        \\
+        G(0) &= \left[ \begin{array}{ccc} \frac{1}{4} & \frac{3}{4} & 0 \\  
+	0 & 0 & 3
+        \end{array} \right] \, \Rightarrow \, \mathrm{rank}[G(0)] = 0
+\end{align*}
+%
+Thus neither $s=-3$ nor $s=0$ is a zero of the system.
+
+\vspace{12pt}
 
 The major limitation of this definition is that it is limited to zeros that are different from the poles of the system. So we 
 need a more general definition of zeros 
 
-\textbf{Definition} Let's assume that $G(s)$ is a full rank (for \textit{most} $s \in mathbb{C}$ transfer function matrix with $m$
+\textbf{Definition} Let's assume that $G(s)$ is a full rank (for \textit{most} $s \in \mathbb{C}$ transfer function matrix with $m$
 inputs and $q$ outputs. $z_0 \in \mathbb{C}$ is a zero of the system if
 \begin{itemize}
 \item if $m \leq p$, $\exists u(s) \neq 0$ such that $\lim_{s \to z_0} [ G(s) u(s) ] = 0$
-\item if $p \leq m$, $\exists u(s) \neq 0$ such that $\lim_{s \to z_0} [ u(s)^T G(s) ] = 0$
+\item if $p \leq m$, $\exists w(s) \neq 0$ such that $\lim_{s \to z_0} [ w(s)^T G(s) ] = 0$
 \end{itemize}
+%
+
 
 \begin{exmp}
 	\begin{align*}
