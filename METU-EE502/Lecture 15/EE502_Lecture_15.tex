@@ -118,10 +118,13 @@ Let's remember the structure of the response for input types in the form of $u(t
 \end{align*}
 %
 Thus $z_0$ is a zero if 
+%
 \begin{align*}
    x_0 &= -\bar{x}_0 = (z_o I - A)^{-1} B  \\ 
    G(z_0) &= C (z_0 I - A)^{-1} B + D = 0
 \end{align*}
+%
+where $x_0$ is called \textit{state-zero-direction} associated with $z_0$.
 
 Note that these definitions and conditions directly hold for DT SISO LTI systems.
 
@@ -141,10 +144,7 @@ $p_0$ is a pole of the system if
  \item $p_0$ is an eigenvalue of $A$
 \end{itemize}
 %
-in other words, in the context of the transfer function matrix, $p_0$ is a pole of the system if it is a pole of any entry of
-$G(s)$. Understanding and derivation of the multiplicities of a pole based on the transfer function matrix is a little bit tricky 
-and not very intuitive for the context and scope of the class. Thus, we can simply state that we can find a pole's algebraic and
-geometric multiplicity based on Jordan decomposition of $A$ provided that state-space representation is minimal. 
+in other words, in the context of the transfer function matrix, $p_0$ is a pole of the system if it is a pole of any entry of $G(s)$. Understanding and derivation of the multiplicities of a pole based on the transfer function matrix is a little bit tricky and not very intuitive for the context and scope of the class. Thus, we can state that we can find a pole's algebraic and geometric multiplicity based on Jordan decomposition of $A$ provided that state-space representation is minimal. 
 %
 \begin{exmp}
 	\begin{align*}
@@ -153,7 +153,7 @@ geometric multiplicity based on Jordan decomposition of $A$ provided that state-
 	\end{align*}
 \end{exmp}
 %
-We can clearly see that $p_1 = -2$ and $p_2 = -2$ are the system's poles. Note that $z = -1$ is also a zero of the 
+We can see that $p_1 = -2$ and $p_2 = -2$ are the system's poles. Note that $z = -1$ is also a zero of the 
 first entry of the transfer function matrix (and indeed, it is a zero of the system). This states that a MIMO system can have 
 a pole and a zero at the exact location. 
 
@@ -170,7 +170,7 @@ Naturally let's assume that $G(s)$ is full rank, then we can also observe that
 \item if $q \leq m$, $G(s)$ drops rank at $s = z_0$ $\iff$ $\exists w_0^T \in \mathbb{R}^{q} \, \& \, w_0 \neq 0$ such that $w_0^T G(z_0) = 0$
 \end{itemize}
 
-These definitions provide us the zeros different from the system's poles. $u_0$ and $w_0$ are called the direction of MIMO zeros in their respective cases. 
+These definitions provide us the zeros different from the system's poles. $u_0$ and $w_0$ are called the \textit{input-zero-direction} of a MIMO zero in their respective cases. 
 %
 \begin{exmp}
 	\begin{align*}
