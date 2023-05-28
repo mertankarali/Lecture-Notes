@@ -166,8 +166,8 @@ $q$ outputs. $z_0$ is a zero of the system if $H(s)$ drops rank at $s = z_0$.
 
 Naturally let's assume that $G(s)$ is full rank, then we can also observe that
 \begin{itemize}
-\item if $m \leq p$, $G(s)$ drops rank at $s = z_0$ $\iff$ $\exists u_0 \in \mathbb{R}^{m} \, \& \, u_0 \neq 0$ such that $G(z_0) u_0 = 0$
-\item if $q \leq m$, $G(s)$ drops rank at $s = z_0$ $\iff$ $\exists w_0^T \in \mathbb{R}^{q} \, \& \, w_0 \neq 0$ such that $w_0^T G(z_0) = 0$
+\item if $m \leq p$, $G(s)$ drops rank at $s = z_0$ $\iff$ $\exists u_0 \in \mathbb{R}^{m} \, \& \, u_0 \neq 0$ such that $G(z_0) u_0 = 0$ (Right Zeros)
+\item if $q \leq m$, $G(s)$ drops rank at $s = z_0$ $\iff$ $\exists w_0^T \in \mathbb{R}^{q} \, \& \, w_0 \neq 0$ such that $w_0^T G(z_0) = 0$ (Left Zeros)
 \end{itemize}
 
 These definitions provide us the zeros different from the system's poles. $u_0$ and $w_0$ are called the \textit{input-zero-direction} of a MIMO zero in their respective cases. 
@@ -272,8 +272,8 @@ need a more general definition of zeros
 \textbf{Definition} Let's assume that $G(s)$ is a full rank (for \textit{most} $s \in \mathbb{C}$) transfer function matrix with $m$
 inputs and $q$ outputs. $z_0 \in \mathbb{C}$ is a zero of the system if
 \begin{itemize}
-\item if $m \leq p$, $\exists u(s) \neq 0$ such that $\lim_{s \to z_0} [ G(s) u(s) ] = 0$
-\item if $p \leq m$, $\exists w(s) \neq 0$ such that $\lim_{s \to z_0} [ w(s)^T G(s) ] = 0$
+\item if $m \leq p$, $\exists u(s) \neq 0$  such that $\lim_{s \to z_0} [ G(s) u(s) ] = 0$ (Right Zeros)
+\item if $p \leq m$, $\exists w(s) \neq 0$ such that $\lim_{s \to z_0} [ w(s)^T G(s) ] = 0$ (Left Zeros)
 \end{itemize}
 %
 \begin{exmp}
@@ -293,14 +293,12 @@ thus $s = -2$ is both a pole and zero location for $G(s)$. If you bother with th
 %
 %
 \begin{align*}
-u_{causal}(s) &= \frac{u(s)}{s+b} = \begin{bmatrix} \frac{1}{s+b} \\ \frac{1}{(s+b)(s+2)} \end{bmatrix}
+\bar{u}(s) &= \frac{u(s)}{s+b} = \begin{bmatrix} \frac{1}{s+b} \\ \frac{1}{(s+b)(s+2)} \end{bmatrix}
 \\
-\lim_{s \to -2} [ G(s) u_{causal}(s) ] = \lim_{s \to -2} \begin{bmatrix} \frac{s+2}{s+b} \\ \frac{s+2}{s+b} \end{bmatrix} = \begin{bmatrix} 0 \\ 0 \end{bmatrix}
+\lim_{s \to -2} [ G(s) \bar{u}(s) ] &= \lim_{s \to -2} \begin{bmatrix} \frac{s+2}{s+b} \\ \frac{s+2}{s+b} \end{bmatrix} = \begin{bmatrix} 0 \\ 0 \end{bmatrix}
 \end{align*}
 %
-
-
-\textbf{Corollary:} Let $G(s)$ be square transfer function matrix and it is invertible for \textit{most} $s \in \mathbb{C}$, then zeros of the systems
+\textbf{Corollary:} Let $G(s)$ be square transfer function matrix and it is invertable for \textit{most} $s \in \mathbb{C}$, then zeros of the systems
 are the poles of $G(s)^{-1}$. 
 
 Let's analyze the previous example 
@@ -341,9 +339,9 @@ Nota that for SISO systems zeros can not be located at the pole locations, hence
 &C \left[ z_0 I - A \right]^{-1} B  + D = G(z_0) =  0 
 \end{align*}
 %
-Note that these are minimal state-space representation based the conditions that provide the zeros of a SISO system. In other words if $x(t) = x_0 = \left[ z_0 I - A \right]^{-1} B$ and $u(t) = e^{z_0 t}$, then $y(t) = 0 \, , \, \forall t \geq 0$. 
+Note that these are minimal state-space representation-based conditions that provide the zeros of a SISO system. In other words if $x(t) = x_0 = \left[ z_0 I - A \right]^{-1} B$ and $u(t) = e^{z_0 t}$, then $y(t) = 0 \, , \, \forall t \geq 0$. 
 
-Now, let's verify that this condition correctly gives the zeros of a MISO system that are different from the poles. 
+Now, let's verify that this condition correctly gives the zeros of a MIMO system that are different from the poles. 
 
 Let's first focus on the case $m \leq q$, where the number of the inputs is less then or equal to the number of the outputs. 
 Let's assume that  $\mathbf{S}$ drops rank at $z_0$, then we know that $\exists v_0 = [x_0 \, u_0]$, where $x_0 \in \mathbb{R}^{n}$ and $u_0 \in \mathbb{R}^m$ such that 
@@ -362,7 +360,7 @@ Let's assume that  $\mathbf{S}$ drops rank at $z_0$, then we know that $\exists 
 %
 Note that for a MIMO system with $m \leq q$, $z_0$ is a zero of the system that are different from the poles, 
 if $\exists u_0 \in \mathbb{R}^m$ such that $G(z_0) u_0 $ which the condition that we derived above. Moreover, if we 
-assume $x(0) = x_0$ and $u(t) = u_0 e^{z_0 t}$ we will see that $y(t) = 0 \, \forall t \geq 0$. This is indeed another more general definition of a MIMO zero (which also holds for zeros located at the poles of the system).
+assume $x(0) = x_0$ and $u(t) = u_0 e^{z_0 t}$ we will see that $y(t) = 0 \, \forall t \geq 0$. $x_0$ and $u_0$ are called \textit{state-zero-direction} and \textit{input-zero-direction} respectively associated with \textit{right-zero} $z_0$. This is ineed another more general definition of a MIMO zero (which also holds for zeros located at the system's poles).
 
 Let's focus on the case $q \leq m$, where the number of the outputs is less then or equal to the number of the inputs. 
 Let's assume that  $\mathbf{S}$ drops rank at $z_0$, then we know that $\exists v_0^T = [x_0^T \, w_0^T]$, where $x_0 \in \mathbb{R}^{n}$ and $w_0 \in \mathbb{R}^q$ such that 
@@ -384,7 +382,8 @@ Let's assume that  $\mathbf{S}$ drops rank at $z_0$, then we know that $\exists 
 %
 Note that for a MIMO system with $q \leq m$, $z_0$ is a zero of the system that are different from the poles, 
 if $\exists w_0 \in \mathbb{R}^q$ such that $w_0^T G(z_0) $ which is the condition that we derived above. Moreover, if we 
-assume $x(0) = x_0$ and $w(t) = w_0 e^{z_0 t}$ for a system where the state-space matrices has the form $(A^T,C^T,B^T,D^T)$, we will see that $y(t) = 0 \, \forall t \geq 0$. This is indeed another more general definition of a MIMO zero (which also holds for zeros located at the poles of the system).
+assume $x(0) = x_0$ and $w(t) = w_0 e^{z_0 t}$ for a system where the state-space matrices has the form $(A^T,C^T,B^T,D^T)$, we will see that $y(t) = 0 \, \forall t \geq 0$. $x_0$ and $u_0$ are called 
+\textit{state-zero-direction} and \textit{input-zero-direction} respectively associated with \textit{left-zero} $z_0$. This is indeed another more general definition of a MIMO zero (which also holds for zeros located at the poles of the system).
 
 \begin{exmp}
 	\begin{align*}
@@ -418,13 +417,14 @@ Let's construct the system matrix
 \, \Rightarrow \, \mathrm{rank}S(s)_{s-1} = 2 
 \end{align*}
 %
-which verifies that system has a single zero at $s = -2$. Now let's find the direction of the zero 
+which verifies that the system has a single zero at $s = -2$. Now let's find the direction of the zero. 
 %
 \begin{align*}
 &\mathbf{S}(-2) \left[ \begin{array}{c} x_0 \\ u_0 \end{array} \right] = 0
 \\
-&\left[ \begin{array}{ccc} 0 & 0 & - 1 \\ -1 & 1 & 1 \\ 0 & 0 & 1 \end{array} \right] \left[ \begin{array}{c} x_0 \\ \hline u_0 \end{array} \right] = 0 \, \Rightarrow \, x_0 = 1 \, , \, u_0 
- \left[ \begin{array}{c} 1 \\  0 \end{array} \right] 
+&\left[ \begin{array}{ccc} 0 & 0 & - 1 \\ -1 & 1 & 1 \\ 0 & 0 & 1 \end{array} \right] \left[ \begin{array}{c} x_0 \\ \hline u_0 \end{array} \right] = 0 \, \Rightarrow \, 
+\left[ \begin{array}{c} x_0 \\ \hline u_0 \end{array} \right] = 
+\left[ \begin{array}{c} 1 \\ \hline 1 \\ 0 \end{array} \right]
 \end{align*}
 %
 
