@@ -157,7 +157,7 @@ We can clearly see that $p_1 = -2$ and $p_2 = -2$ are the system's poles. Note t
 first entry of the transfer function matrix (and indeed, it is a zero of the system). This states that a MIMO system can have 
 a pole and a zero at the exact location. 
 
-\subsection{Zeros of MISO Systems}
+\subsection{Zeros of MIMO Systems}
 
 Suppose we generalize the definition of a zero in SISO systems to the MIMO systems using the same logic with MIMO poles. In that case, we can see that the resultant definition would not be helpful and somewhat unsatisfactory. Let's consider the transfer function matrix in the previous example. In this example, all non-diagonal elements are zero, and hence if we define a zero such that $\exists (i,j)$ s.t. $\lim_{s \to z_0}G_{ij}(s) = 0$, then any $z_0 \in \mathbb{C}$ would be a zero of the system. In that context, we need a more useful and satisfactory definition(s) for MIMO zeros.
 
@@ -267,15 +267,15 @@ Thus neither $s=-3$ nor $s=0$ is a zero of the system.
 The major limitation of this definition is that it is limited to zeros that are different from the poles of the system. So we 
 need a more general definition of zeros 
 
-\textbf{Definition} Let's assume that $G(s)$ is a full rank (for \textit{most} $s \in \mathbb{C}$ transfer function matrix with $m$
+\vspace{12pt}
+
+\textbf{Definition} Let's assume that $G(s)$ is a full rank (for \textit{most} $s \in \mathbb{C}$) transfer function matrix with $m$
 inputs and $q$ outputs. $z_0 \in \mathbb{C}$ is a zero of the system if
 \begin{itemize}
 \item if $m \leq p$, $\exists u(s) \neq 0$ such that $\lim_{s \to z_0} [ G(s) u(s) ] = 0$
 \item if $p \leq m$, $\exists w(s) \neq 0$ such that $\lim_{s \to z_0} [ w(s)^T G(s) ] = 0$
 \end{itemize}
 %
-
-
 \begin{exmp}
 	\begin{align*}
 	G(s) = \left[ \begin{array}{ccc} 1 & \frac{s+1}{s+2}  \\  
@@ -284,28 +284,149 @@ inputs and $q$ outputs. $z_0 \in \mathbb{C}$ is a zero of the system if
 \end{exmp}
 
 Let $u(s) = \begin{bmatrix} 1 \\ s+2 \end{bmatrix}$, then
+%
 \begin{align*}
 \lim_{s \to -2} [ G(s) u(s) ] = \lim_{s \to -2} \begin{bmatrix} s+2 \\ s+2 \end{bmatrix} = \begin{bmatrix} 0 \\ 0 \end{bmatrix}
 \end{align*}
-this $s = -2$ is both a pole and zero location for $G(s)$
+%
+thus $s = -2$ is both a pole and zero location for $G(s)$. If you bother with the fact that selected $u(s)$ is non-causal you can simple multiple $u(s)$ with $\frac{1}{s+b}$ where $b$ is not a zero or pole of the system, then we will still have 
+%
+%
+\begin{align*}
+u_{causal}(s) &= \frac{u(s)}{s+b} = \begin{bmatrix} \frac{1}{s+b} \\ \frac{1}{(s+b)(s+2)} \end{bmatrix}
+\\
+\lim_{s \to -2} [ G(s) u_{causal}(s) ] = \lim_{s \to -2} \begin{bmatrix} \frac{s+2}{s+b} \\ \frac{s+2}{s+b} \end{bmatrix} = \begin{bmatrix} 0 \\ 0 \end{bmatrix}
+\end{align*}
+%
+
 
 \textbf{Corollary:} Let $G(s)$ be square transfer function matrix and it is invertible for \textit{most} $s \in \mathbb{C}$, then zeros of the systems
 are the poles of $G(s)^{-1}$. 
 
-Let's analyse the previous example 
+Let's analyze the previous example 
 
 \begin{align*}
 G(s)^{-1} &= \left[ \begin{array}{ccc} 1 & -\frac{s+1}{s+2}  \\  
 	0 & 1  \end{array} \right]
 	\\
-\lim_{s \to -2} || G(s) || &= \infty \, \Rightarrow \, z_0 = - 2 \ \mathrm{is} \, \mathrm{zero} \, \mathrm{of} \, G(s)
+\lim_{s \to -2} || G(s)^{-1} || &= \infty \, \Rightarrow \, z_0 = - 2 \ \mathrm{is} \, \mathrm{zero} \, \mathrm{of} \, G(s)
 \end{align*}
 
+\subsubsection{Determining Zeros from a Minimal Realization}
 
+Given a minimal state realization of a MIMO system with quadruple $(A,B,C,D)$, $z_0$ is a zero
+of the system if it drops rank of the system matrix given below
+%
+\begin{align*}
+\mathbf{S} = \left[ \begin{array}{cc} s I - A & -B \\ C & D \end{array} \right]
+\end{align*}
+%
+Notice that for a observable and reachable system $\mathbf{S}$ is full rank for \textit{most} $s \in \mathbb{C}$. 
+Let's first verify that this condition correctly gives the zeros of a SISO system. Let's assume that 
+$\mathbf{S}$ drops rank at $z_0$, then we know that $\exists v_0 = [x_0 \, u_0]$, where $x_0 \in \mathbb{R}^{n}$
+and $u_0 \in \mathbb{R}$ such that 
+%
+\begin{align*}
+\mathbf{S} v_0 &= 0
+\, \Rightarrow \,
+\left[ \begin{array}{cc} z_0 I - A & -B \\ C & D \end{array} \right] \left[ \begin{array}{c} x_0 \\ u_0 \end{array} \right] = 0
+\, \Rightarrow \,
+ \begin{array}{cc} \left[ z_0 I - A \right] x_0 - B u_0 = 0 \\ C x_0 + D u_0 = 0 \end{array}
+\end{align*}
+%
+Nota that for SISO systems zeros can not be located at the pole locations, hence $ \left[ z_0 I - A \right] x_0 \neq 0$, which implies that $u_0 \neq 0$. Let $u_0 = 1$, then 
+%
+\begin{align*}
+&x_0 =  \left[ z_0 I - A \right]^{-1} B  \\
+&C \left[ z_0 I - A \right]^{-1} B  + D = G(z_0) =  0 
+\end{align*}
+%
+Note that these are minimal state-space representation based the conditions that provide the zeros of a SISO system. In other words if $x(t) = x_0 = \left[ z_0 I - A \right]^{-1} B$ and $u(t) = e^{z_0 t}$, then $y(t) = 0 \, , \, \forall t \geq 0$. 
 
+Now, let's verify that this condition correctly gives the zeros of a MISO system that are different from the poles. 
 
+Let's first focus on the case $m \leq q$, where the number of the inputs is less then or equal to the number of the outputs. 
+Let's assume that  $\mathbf{S}$ drops rank at $z_0$, then we know that $\exists v_0 = [x_0 \, u_0]$, where $x_0 \in \mathbb{R}^{n}$ and $u_0 \in \mathbb{R}^m$ such that 
+%
+%
+\begin{align*}
+\mathbf{S} v_0 &= 0
+\, \Rightarrow \,
+\left[ \begin{array}{cc} z_0 I - A & -B \\ C & D \end{array} \right] \left[ \begin{array}{c} x_0 \\ u_0 \end{array} \right] = 0
+\, \Rightarrow \,
+ \begin{array}{cc} \left[ z_0 I - A \right] x_0 - B u_0 = 0 \\ C x_0 + D u_0 = 0 \end{array}
+ \\
+ &x_0 =  \left[ z_0 I - A \right]^{-1} B u_0 \\
+&\left[ C \left[ z_0 I - A \right]^{-1} B  + D \right] u_0 = G(z_0) u_0 =  0 
+\end{align*}
+%
+Note that for a MIMO system with $m \leq q$, $z_0$ is a zero of the system that are different from the poles, 
+if $\exists u_0 \in \mathbb{R}^m$ such that $G(z_0) u_0 $ which the condition that we derived above. Moreover, if we 
+assume $x(0) = x_0$ and $u(t) = u_0 e^{z_0 t}$ we will see that $y(t) = 0 \, \forall t \geq 0$. This is indeed another more general definition of a MIMO zero (which also holds for zeros located at the poles of the system).
 
+Let's focus on the case $q \leq m$, where the number of the outputs is less then or equal to the number of the inputs. 
+Let's assume that  $\mathbf{S}$ drops rank at $z_0$, then we know that $\exists v_0^T = [x_0^T \, w_0^T]$, where $x_0 \in \mathbb{R}^{n}$ and $w_0 \in \mathbb{R}^q$ such that 
+%
+\begin{align*}
+&v_0 ^T \mathbf{S} = 0
+\, \Rightarrow \,
+\left[ \begin{array}{cc} x_0^T & w_0^T \end{array} \right] \left[ \begin{array}{cc} z_0 I - A & -B \\ C & D \end{array} \right] = 0
+\, \Rightarrow \,
+ \begin{array}{cc} x_0^T \left[ z_0 I - A \right] + w_0^T C = 0 \\ x_0^T B + w_0^T D = 0 \end{array}
+ \\
+ &\left[ z_0 I - A \right]^T x_0 + C^T w_0 = 0 \, \Rightarrow \, x_0 =  \left( \left[ z_0 I - A \right]^T \right)^{-1} C^T w_0
+\\
+&x_0^T B + w_0^T D = 0 \, \Rightarrow \, B^T x_0 + D^T w_0 = 0  \, \Rightarrow \, 
+\left[ B^T \left( \left[ z_0 I - A \right]^T \right)^{-1} C^T + D^T \right] w_0 = 0
+\\
+&G(z_0)^T w_0 =  0 \iff w_0^T G(z_0) = 0
+\end{align*}
+%
+Note that for a MIMO system with $q \leq m$, $z_0$ is a zero of the system that are different from the poles, 
+if $\exists w_0 \in \mathbb{R}^q$ such that $w_0^T G(z_0) $ which is the condition that we derived above. Moreover, if we 
+assume $x(0) = x_0$ and $w(t) = w_0 e^{z_0 t}$ for a system where the state-space matrices has the form $(A^T,C^T,B^T,D^T)$, we will see that $y(t) = 0 \, \forall t \geq 0$. This is indeed another more general definition of a MIMO zero (which also holds for zeros located at the poles of the system).
 
+\begin{exmp}
+	\begin{align*}
+	G(s) = \left[ \begin{array}{ccc} 1 & \frac{s+1}{s+2}  \\  
+	0 & 1  \end{array} \right]
+	\end{align*}
+\end{exmp}
+
+Previously we found that, $G(s)$ has a pole and a zero at $s = -2$. Let's verify this based on the
+state-space condition. We can find a minimal realization using Gilbert's method 
+\begin{align*}
+     G(s) &= \left[ \begin{array}{cc} 1 & 1 - \frac{1}{s+2}  \\  
+	0 & 1  \end{array} \right]
+	= \left[ \begin{array}{cc} 1 & 1   \\  
+	0 & 1  \end{array} \right] +  \left[ \begin{array}{cc} 0 & -1 \\  
+	0 & 0  \end{array} \right] \frac{1}{s+1}
+	= \left[ \begin{array}{cc} 1 & 1   \\  
+	0 & 1  \end{array} \right] +  \left[ \begin{array}{c} -1 \\ 0 \end{array} \right]   
+       \left[ \begin{array}{cc} 0 & 1 \end{array} \right]    \frac{1}{s+1}
+       \\
+       A &= -1 \, , \, B = \left[ \begin{array}{cc} 0 & 1 \end{array} \right] \ , \ C = \left[ \begin{array}{c} -1 \\ 0 \end{array} \right]
+       \, , \, D = \left[ \begin{array}{cc} 1 & 1   \\  
+	0 & 1  \end{array} \right]
+\end{align*}
+%
+Let's construct the system matrix 
+%
+\begin{align*}
+\mathbf{S} = \left[ \begin{array}{cc} s I - A & -B \\ C & D \end{array} \right]
+= \left[ \begin{array}{ccc} s + 1 & 0 & - 1 \\ -1 & 1 & 1 \\ 0 & 0 & 1 \end{array} \right]
+\, \Rightarrow \, \mathrm{rank}S(s)_{s-1} = 2 
+\end{align*}
+%
+which verifies that system has a single zero at $s = -2$. Now let's find the direction of the zero 
+%
+\begin{align*}
+&\mathbf{S}(-2) \left[ \begin{array}{c} x_0 \\ u_0 \end{array} \right] = 0
+\\
+&\left[ \begin{array}{ccc} 0 & 0 & - 1 \\ -1 & 1 & 1 \\ 0 & 0 & 1 \end{array} \right] \left[ \begin{array}{c} x_0 \\ \hline u_0 \end{array} \right] = 0 \, \Rightarrow \, x_0 = 1 \, , \, u_0 
+ \left[ \begin{array}{c} 1 \\  0 \end{array} \right] 
+\end{align*}
+%
 
 % **** This ENDS THE EXAMPLES. DON'T DELETE THE FOLLOWING LINE:
 \end{document}
