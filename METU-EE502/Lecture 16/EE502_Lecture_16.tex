@@ -91,7 +91,7 @@
 
 In this section we shall examine the conditions under which minimality is lost when minimal subsystems are interconnected in various configurations,
 
-\section{Series - Cascade Connection}
+\subsection{Series - Cascade Connection}
 		
 Consider the following system structure where two sub systems, with transfer functions 
 $G_1(s)$ and $G_2(s)$ and associated minimal representations $\left( \begin{array}{c|c} A_1 & B_1 \\ \hline
@@ -101,7 +101,7 @@ C_2 & D_2 \end{array} \right)$, connected in series/cascade configuration.
 \begin{center}
   \begin{minipage}[h]{0.9\linewidth}
     \begin{center}
-      \includegraphics[width=0.9\textwidth]{cascade}
+      \includegraphics[width=0.8\textwidth]{cascade}
     \end{center}
   \end{minipage}
     \end{center}
@@ -118,8 +118,121 @@ A = \left[ \begin{array}{c|c} A_1 & 0 \\ \hline B_2 C_1  & A_2 \end{array} \righ
 \, , \, D = \left[ \begin{array}{c} D_2  D_2  \end{array} \right]
 \end{align*}
 %
+Clearly eigenvalues of A are the combination of the eigenvalues of $A_1$ and $A_2$ and the poles of the system 
 Let's analyze the observability of the connection via PBH test. 
+%
+\begin{align*}
+	\left[ \begin{array}{c} \lambda I - A \\ \hline C \end{array} \right]
+	= 
+	\left[ \begin{array}{c|c} \lambda I - A_1 & 0 \\ \hline -B_2 C_1 &  \lambda I - A_2 \\ \hline 
+	D_2 C_1 & C_2
+	\end{array} \right]
+\end{align*}
+%
+If we remember from the observability lecture that $(A,C)$ (whole state-space model) pair 
+is unobservable if and only if $\left[ \begin{array}{c} \lambda I - A \\ \hline C \end{array} \right]$
+losses rank for some $\lambda$, which can only happen if $\lambda$ is an eigenvalue of $A$.
+Let's assume that $\lambda_2$ is an eigenvalue of $A_2$ but not eigenvalue of $A_1$. 
+Then $\left[ \begin{array}{c} \lambda I - A \\ \hline C \end{array} \right]_{\lambda = \lambda_2}$ 
+looses rank, if $\exists v = \begin{bmatrix} v_1 \\ v_2 \end{bmatrix}$ such that 
+%
+\begin{align*}
+	&\left[ \begin{array}{c} \lambda_2 I - A \\ \hline C \end{array} \right] v = 0
+	\, \Rightarrow \, 
+	\left[ \begin{array}{c|c} \lambda_2 I - A_1 & 0 \\ \hline -B_2 C_1 &  \lambda_2 I - A_2 \\ \hline 
+	D_2 C_1 & C_2
+	\end{array} \right]  \begin{bmatrix} v_1 \\ v_2 \end{bmatrix} = 0
+		\, \Rightarrow \, v_1 = 0 \, \& \, \left[ \begin{array}{c} \lambda_2 I - A \\ \hline C_2 \end{array} \right] v_2 = 0
+\end{align*}
+%
+which contradicts with the fact that $(A_2,C_2)$ is observable since both individual sub-system representations are minimal. 
+In that respect $\left[ \begin{array}{c} \lambda I - A \\ \hline C \end{array} \right]$ can loose rank only at an eigenvalue
+of $A_1$ (i.e. a pole of $A_2$). Let's $\lambda_1$ is an eigenvalue of $A_1$.
+Then $\left[ \begin{array}{c} \lambda I - A \\ \hline C \end{array} \right]_{\lambda = \lambda_1}$ 
+looses rank, if $\exists v = \begin{bmatrix} v_1 \\ v_2 \end{bmatrix}$ such that 
+%
+\begin{align*}
+	&\left[ \begin{array}{c} \lambda_1 I - A \\ \hline C \end{array} \right] v = 0
+	\, \Rightarrow \, 
+	\left[ \begin{array}{c|c} \lambda_1 I - A_1 & 0 \\ \hline -B_2 C_1 &  \lambda_1 I - A_2 \\ \hline 
+	D_2 C_1 & C_2
+	\end{array} \right]  \begin{bmatrix} v_1 \\ v_2 \end{bmatrix} = 0
+		\, \Rightarrow \, v_1 \neq 0 \, \& \, A v_1 = \lambda_1 v_1 \, \mathrm{and}
+		\\
+	&\left[ \begin{array}{c|c} \lambda_1 I - A_2 & -B_2 C_1 \\ \hline 
+	  C_2 & D_2 C_1
+	\end{array} \right]  \begin{bmatrix} v_2 \\ v_1 \end{bmatrix} = 0	
+	\, \Rightarrow \, 
+	\left[ \begin{array}{c|c} \lambda_1 I - A_2 & -B_2  \\ \hline 
+	  C_2 & D_2 
+	\end{array} \right]  \begin{bmatrix} v_2 \\ C_1 v_1 \end{bmatrix} = 0	
+\end{align*}
+%
+Note that $\left[ \begin{array}{c|c} \lambda_1 I - A_2 & -B_2  \\ \hline 
+	  C_2 & D_2 
+	\end{array} \right]  \begin{bmatrix} v_2 \\ C_1 v_1 \end{bmatrix} = 0$
+implies that $\lambda_1$ is a \textbf{right} zero of $G_2(s)$ where $v_2$ and $C_1 v_1$ 
+is the associated \text{state-zero-direction} and \textit{input-zero-direction}
+respectively. 
 
+If we summarize the results, cascaded system is unobservable if $\exists (\lambda_1 , v_1)$ and $v_2 \neq 0$
+such that $(\lambda_1 , v_1)$ is an eigenvalue-eigenvector pair of $A_1$ and $\lambda_1$ is a \textbf{right} zero of 
+$G_2(s)$ with $v_2$ and $C_1 v_1$ as the \text{state-zero-direction} and \textit{input-zero-direction} respectively. 
+
+Now let's analyze the reachability of the connection via PBH test. 
+%
+\begin{align*}
+	\left[ \begin{array}{c|c} \lambda I - A & B \end{array} \right]
+	= 
+	\left[ \begin{array}{c|c|c} \lambda I - A_1 & 0 & B_1 \\ \hline -B_2 C_1 & \lambda I - A_2 & B_2 D_1 
+	\end{array} \right]
+\end{align*}
+%
+If we remember from the reachability lecture that $(A,B)$ (whole state-space model) pair 
+is unreachable if and only if $\left[ \begin{array}{c|c} \lambda I - A & B \end{array} \right]$
+losses rank for some $\lambda$, which can only happen if $\lambda$ is an eigenvalue of $A$.
+Let's assume that $\lambda_1$ is an eigenvalue of $A_1$ but not eigenvalue of $A_2$. 
+Then $\left[ \begin{array}{c|c} \lambda I - A & B \end{array} \right]_{\lambda = \lambda_1}$ 
+looses rank, if $\exists w = \begin{bmatrix} w_1 \\ w_2 \end{bmatrix}$ such that 
+%
+\begin{align*}
+	&\begin{bmatrix} w_1^T & w_2^T \end{bmatrix} \left[ \begin{array}{c|c} \lambda_1 I - A & B \end{array} \right]
+	= 0 \, \Rightarrow \, 
+	\begin{bmatrix} w_1^T & w_2^T \end{bmatrix} \left[ \begin{array}{c|c|c} \lambda_1 I - A_1 & 0 & B_1 \\ \hline -B_2 C_1 & \lambda_1 I - A_2 & B_2 D_1 
+	\end{array} \right] = 0
+	\\
+	&\Rightarrow \, w_2^T = 0 \, \& \, w_1^T \left[ \begin{array}{c|c} \lambda_1 I - A_1 & B_1 \end{array} \right] = 0
+\end{align*}
+%
+which contradicts with the fact that $(A_1,B_1)$ is reachable since both individual sub-system representations are minimal. 
+Now let $\lambda_2$ is an eigenvalue of $A_2$.
+Then $\left[ \begin{array}{c|c} \lambda I - A & B \end{array} \right]_{\lambda = \lambda_2}$ 
+looses rank, if $\exists w = \begin{bmatrix} w_1 \\ w_2 \end{bmatrix}$ such that 
+%
+\begin{align*}
+	&\begin{bmatrix} w_1^T & w_2^T \end{bmatrix} \left[ \begin{array}{c|c} \lambda_2 I - A & B \end{array} \right]
+	= 0 \, \Rightarrow \, 
+	\begin{bmatrix} w_1^T & w_2^T \end{bmatrix} \left[ \begin{array}{c|c|c} \lambda_2 I - A_1 & 0 & B_1 \\ \hline -B_2 C_1 & \lambda_2 I - A_2 & B_2 D_1 
+	\end{array} \right] = 0
+	\\
+	&\Rightarrow \, w_2 \neq 0 \, \& \, w_2^T A_2 = w_2^T \lambda_2 
+	\, \mathrm{and} \, \begin{bmatrix} w_1^T & w_2^T \end{bmatrix} \left[ \begin{array}{c|c} \lambda_2 I - A_1 & B_1 \\ \hline -B_2 C_1 & B_2 D_1 
+	\end{array} \right] = 0 \, \Rightarrow \,
+	\\
+	&\begin{bmatrix} w_1^T & -(B_2^T w_2)^T \end{bmatrix} \left[ \begin{array}{c|c} \lambda_2 I - A_1 & B_1 \\ \hline C_1 & -D_1 
+	\end{array} \right] = 0 \, \Rightarrow \,
+	\begin{bmatrix} w_1^T & -(B_2^T w_2)^T \end{bmatrix} \left[ \begin{array}{c|c} \lambda_2 I - A_1 & -B_1 \\ \hline C_1 & D_1 
+	\end{array} \right] = 0
+\end{align*}
+%
+Note that $\begin{bmatrix} w_1^T & (-B_2^T w_2)^T \end{bmatrix} \left[ \begin{array}{c|c} \lambda_2 I - A_1 & -B_1 \\ \hline C_1 & D_1 
+	\end{array} \right] = 0$
+implies that $\lambda_2$ is a \textbf{left} zero of $G_1(s)$ where $w_1$ and $(-B_2^T w_2)$ 
+are the associated \text{state-zero-direction} and \textit{input-zero-direction} respectively. 
+
+If we summarize the results, cascaded system is unreachable if $\exists (\lambda_2 , w_2)$ and $w_1 \neq 0$
+such that $(\lambda_2 , v_2)$ is a left eigenvalue-eigenvector pair of $A_2$ and $\lambda_2$ is a \textbf{left} zero of 
+$G_1(s)$ with $w_1$ and $(-B_2^T w_2)$ as the \text{state-zero-direction} and \textit{input-zero-direction} respectively. 
 
 % **** This ENDS THE EXAMPLES. DON'T DELETE THE FOLLOWING LINE:
 \end{document}
