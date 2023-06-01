@@ -234,5 +234,101 @@ If we summarize the results, cascaded system is unreachable if $\exists (\lambda
 such that $(\lambda_2 , v_2)$ is a left eigenvalue-eigenvector pair of $A_2$ and $\lambda_2$ is a \textbf{left} zero of 
 $G_1(s)$ with $w_1$ and $(-B_2^T w_2)$ as the \text{state-zero-direction} and \textit{input-zero-direction} respectively. 
 
+\subsection{Parallel Connection}
+		
+Consider the following system structure where two sub systems, with transfer functions 
+$G_1(s)$ and $G_2(s)$ and associated minimal representations $\left( \begin{array}{c|c} A_1 & B_1 \\ \hline
+C_1 & D_1 \end{array} \right)$ and $\left( \begin{array}{c|c} A_2 & B_2 \\ \hline
+C_2 & D_2 \end{array} \right)$, connected in parallel configuration. 
+		
+\begin{center}
+  \begin{minipage}[h]{0.9\linewidth}
+    \begin{center}
+      \includegraphics[width=0.70\textwidth]{parallel}
+    \end{center}
+  \end{minipage}
+    \end{center}
+		
+The transfer function of the connection is simply equal to $G(s) = G_1(s) + G_2(s)$. Let $x_1$ and $x_2$
+state-variables of the sub-systems, then natural choice of the state variable for the series connection is 
+$x = \begin{bmatrix} x_1 \\ x_2 \end{bmatrix}$. Under this definition the state-space representation for the whole system 
+can be found as
+%
+\begin{align*}
+A = \left[ \begin{array}{c|c} A_1 & 0 \\ \hline 0  & A_2 \end{array} \right]
+\, , \, B = \left[ \begin{array}{c} B_1 \\ \hline B_2   \end{array} \right]
+\, , \, C = \left[ \begin{array}{c|c} C_1 & C_2  \end{array} \right]
+\, , \, D = \left[ \begin{array}{c} D_1 +  D_2  \end{array} \right]
+\end{align*}
+%
+Clearly eigenvalues of A are the combination of the eigenvalues of $A_1$ and $A_2$ and the poles of the system 
+Let's analyze the observability of the connection via one of the modal reachability tests. 
+%
+\begin{align*}
+	\left[ \begin{array}{c} \lambda I - A \\ \hline C \end{array} \right]
+	= 
+	\left[ \begin{array}{c|c} \lambda I - A_1 & 0 \\ \hline 0 &  \lambda I - A_2 \\ \hline 
+	 C_1 & C_2
+	\end{array} \right]
+\end{align*}
+%
+It is easy to observe that combined system is always observable if $A_o1$ 
+and $A_2$ does not share any common eigenvalue. Thus a necessary (but not sufficient) condition 
+such that parallel connection loses observability is that $A_1$ and $A_2$ will have at least 1 
+common eigenvalue. Let's assume that $\lambda_c$ is a common eigenvalue/pole of both sub-systems
+Then $\left[ \begin{array}{c} \lambda I - A \\ \hline C \end{array} \right]_{\lambda = \lambda_c}$ 
+looses rank, if $\exists v = \begin{bmatrix} v_1 \\ v_2 \end{bmatrix}$ such that 
+%
+%
+\begin{align*}
+	&\left[ \begin{array}{c} \lambda I - A \\ \hline C \end{array} \right] v  = 0 
+	\, \iff \,  \left[ \begin{array}{c|c} \lambda I - A_1 & 0 \\ \hline 0 &  \lambda I - A_2 \\ \hline  C_1 & C_2 \end{array} \right] \begin{bmatrix} v_1 \\ v_2 \end{bmatrix} = 0
+	\, \iff \, 
+	\\
+	&A_1 v_1 = \lambda_c v_1 \, , \, A_2 v_2 = \lambda_c v_2 \, , \& \, C_1 v_1 + C_2 v_2 = 0
+\end{align*}
+%
+In other words combined system looses observability if and only if $\exists \, \lambda_c  \, , \, v_1 \, ,\& \, v_2$ such that 
+$\lambda_c$ is a common eigenvalue of both systems, and there exists an $(v_1,v_2)$ eigenvector pair ($v_i$ is an eigenvector of $A_i$ associated with $\lambda_c$)
+such that $C_1 v_1 + C_2 v_2 = 0$.
+
+Now analyze the reachability of the connection via one of the modal reachability tests. 
+%
+\begin{align*}
+	\left[ \begin{array}{c|c} \lambda I - A & B \end{array} \right]
+	= 
+	\left[ \begin{array}{c|c|c} \lambda I - A_1 & 0 & B_1 \\ \hline 0 &  \lambda I - A_2 & B_2 
+	\end{array} \right]
+\end{align*}
+%
+It is easy to observe that combined system is always reachable if $A_1$ 
+and $A_2$ does not share any common eigenvalue. Thus a necessary (but not sufficient) condition 
+such that parallel connection loses reahcability is that $A_1$ and $A_2$ will have at least 1 
+common eigenvalue. Let's assume that $\lambda_c$ is a common eigenvalue/pole of both sub-systems
+Then $\left[ \begin{array}{c|c} \lambda I - A & B \end{array} \right]_{\lambda = \lambda_c}$ 
+looses rank, if $\exists w = \begin{bmatrix} w_1 \\ w_2 \end{bmatrix}$ such that 
+%
+%
+\begin{align*}
+	&w^T \left[ \begin{array}{c|c} \lambda_c I - A & B \end{array} \right] = 0 
+	\, \iff \,  \begin{bmatrix} w_1^T & w_2^T \end{bmatrix} \left[ \begin{array}{c|c|c} \lambda_c I - A_1 & 0 & B_1  \\ \hline 0 &  \lambda_c I - A_2 & B_2 \end{array} \right]  = 0
+	\, \iff \, 
+	\\
+	&w_1^T A_1 = \lambda_c w_1^T \, , \, w_2^T A_2 = \lambda_c w_2^T \, , \& \, w_1^T B_1 + w_2^T B_2 = 0
+\end{align*}
+%
+In other words combined system looses reachability if and only if $\exists \, \lambda_c  \, , \, w_1 \, ,\& \, w_2$ such that 
+$\lambda_c$ is a common eigenvalue of both systems, and there exists an $(w_1,w_2)$ left-eigenvector pair ($w_i$ is a left eigenvector of $A_i$ associated with $\lambda_c$)
+such that $w_1^T B_1 + w_2^T B_2 = 0$.
+
+
+
+
+
+
+
+
+
+
 % **** This ENDS THE EXAMPLES. DON'T DELETE THE FOLLOWING LINE:
 \end{document}
