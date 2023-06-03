@@ -321,8 +321,74 @@ In other words combined system looses reachability if and only if $\exists \, \l
 $\lambda_c$ is a common eigenvalue of both systems, and there exists an $(w_1,w_2)$ left-eigenvector pair ($w_i$ is a left eigenvector of $A_i$ associated with $\lambda_c$)
 such that $w_1^T B_1 + w_2^T B_2 = 0$.
 
+\subsection{Feedback Connection (Unity)}
+		
+Consider the following system structure where two sub systems, with transfer functions 
+$G_1(s)$ and $G_2(s)$ and associated minimal representations $\left( \begin{array}{c|c} A_1 & B_1 \\ \hline
+C_1 & D_1 \end{array} \right)$ and $\left( \begin{array}{c|c} A_2 & B_2 \\ \hline
+C_2 & D_2 \end{array} \right)$, connected in a unity feedback configuration. 
+		
+\begin{center}
+  \begin{minipage}[h]{0.9\linewidth}
+    \begin{center}
+      \includegraphics[width=0.8\textwidth]{feedback}
+    \end{center}
+  \end{minipage}
+    \end{center}
 
+The transfer function of the connection from the reference signal to the output signal is equal to 
+$G(s) = \left( I + G_1(s) G_2(s) \right)^{-1} G_1(s) G_2(s)$. Let $x_1$ and $x_2$
+state-variables of the sub-systems, then natural choice of the state variable for the series connection is 
+$x = \begin{bmatrix} x_1 \\ x_2 \end{bmatrix}$. Let's also assume that $D_1 = 0$ and $D_2 = 0$, under this assumption the state-space representation for the whole system can be found as
+%
+\begin{align*}
+A_{CL} = \left[ \begin{array}{c|c} A_1 & -B_1 C_2 \\ \hline B_2 C_1  & A_2 \end{array} \right]
+\, , \, B_{CL} = \left[ \begin{array}{c} B_1 \\ \hline 0  \end{array} \right]
+\, , \, C_{CL} = \left[ \begin{array}{c|c} 0 & C_2  \end{array} \right]
+\, , \, D = \left[ \begin{array}{c} 0 \end{array} \right]
+\end{align*}
+%
+Unfortunately it is not straightforward to inspect the eigenvalues of the closed-loop system, since
+output feedback potentially moves the closed-loop eigenvalue locations. Note that in this topology, 
+feedforward system, is the cascade configuration that we analyzed in the first part. In that respect, we
+can re-write the closed-loop matrices as
+\begin{align*}
+A_{CL} &= \left[ \begin{array}{c|c} A_1 & -B_1 C_2 \\ \hline B_2 C_1  & A_2 \end{array} \right]
+= \left[ \begin{array}{c|c} A_1 & 0 \\ \hline B_2 C_1  & A_2 \end{array} \right] - \left[ \begin{array}{c} B_1 \\ \hline 0  \end{array} \right] \left[ \begin{array}{c|c} 0 & C_2  \end{array} \right] = A_{OL} - B_{OL} C_{OL}
+\\ 
+B_{CL} &= \left[ \begin{array}{c} B_1 \\ \hline 0  \end{array} \right] = B_{OL}
+\\
+C_{CL} &= \left[ \begin{array}{c|c} 0 & C_2  \end{array} \right] = C_{OL}
+\end{align*}
+%
+Note that $(A_{OL},B_{OL},C_{OL})$ is the state-space representation of the cascade configuration. 
+Let's assume that $(A_{CL} , B_{CL})$ pair is unreachable, then $\exists w$ such that 
+%
+\begin{align*}
+	w^T B_{CL} &= 0 \, \iff \, w^T B_{OL} = 0 
+	\\
+	\lambda w^T  &= w^T A_{CL} = w^T \left[ A_{OL} - B_{OL} C_{OL} \right] = w^T A_{OL}
+	\\
+	\lambda w^T &= w^T A_{OL}
+\end{align*}
+%
+This proves that $(A_{CL} , B_{CL})$ is unreachable if and only if $(A_{OL} , B_{OL})$ is unreachable. 
+In that respect the feedback configuration looses reachability if and only if cascade configuration in the 
+feed-forward path looses reachability.
 
+Now let's analyze the observability of the feedback connection. Let's assume that $(A_{CL} , C_{CL})$ pair is unobservable, then $\exists v$ such that 
+%
+\begin{align*}
+	C_{CL} v &= 0 \, \iff \, C_{OL} = 0 
+	\\
+	\lambda v  &= A_{CL} v = \left[ A_{OL} - B_{OL} C_{OL} \right] v = A_{OL} v
+	\\
+	\lambda v &= A_{OL} v
+\end{align*}
+%
+This proves that $(A_{CL} , C_{CL})$ is unobservable if and only if $(A_{OL} , C_{OL})$ is unobservable.
+In that respect the feedback configuration looses observability if and only if cascade configuration in the 
+feed-forward path looses observability.
 
 
 
