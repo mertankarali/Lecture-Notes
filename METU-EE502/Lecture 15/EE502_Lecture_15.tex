@@ -161,7 +161,7 @@ a pole and a zero at the exact location.
 
 Suppose we generalize the definition of a zero in SISO systems to the MIMO systems using the same logic with MIMO poles. In that case, we can see that the resultant definition would not be helpful and somewhat unsatisfactory. Let's consider the transfer function matrix in the previous example. In this example, all non-diagonal elements are zero, and hence if we define a zero such that $\exists (i,j)$ s.t. $\lim_{s \to z_0}G_{ij}(s) = 0$, then any $z_0 \in \mathbb{C}$ would be a zero of the system. In that context, we need a more useful and satisfactory definition(s) for MIMO zeros.
 
-\textbf{Definition:} Let $z_0 \neq p_i , \, \forall p_i \in \mathcal{P}$ , where $\mathcal{P}$ is teh set of all poles of the MIMO system $G(s)$ with $m$ inputs and
+\textbf{Definition:} Let $z_0 \neq p_i , \, \forall p_i \in \mathcal{P}$ , where $\mathcal{P}$ is the set of all poles of the MIMO system $G(s)$ with $m$ inputs and
 $q$ outputs. $z_0$ is a zero of the system if $H(s)$ drops rank at $s = z_0$.
 
 Naturally let's assume that $G(s)$ is full rank, then we can also observe that
@@ -244,10 +244,10 @@ Thus $s = 0$ is a zero of the system and \textit{direction} of the zero is $u_0 
 	0 & -1 & 0
         \end{array} \right] \, \Rightarrow \, \mathrm{rank}[G(-1)] = 1
         \\
-        w_{-1} &= \begin{bmatrix} 3 \\ 1 \end{bmatrix} \, \Rightarrow \, w_{-1}^T G(-1) = \begin{bmatrix} 0 & 0 \end{bmatrix}
+        w_{-1} &= \begin{bmatrix} 3 \\ 2 \end{bmatrix} \, \Rightarrow \, w_{-1}^T G(-1) = \begin{bmatrix} 0 & 0 \end{bmatrix}
 \end{align*}
 %
-Thus $s = -1$ is a zero of the system and \textit{direction} of the zero is $w_{-1} = \begin{bmatrix} 3 \\ 1 \end{bmatrix} $.
+Thus $s = -1$ is a zero of the system and \textit{direction} of the zero is $w_{-1} = \begin{bmatrix} 3 \\ 2 \end{bmatrix} $.
 Now let's test if $s = -3$ and $s=0$ are zeros f of the system.
 %
 \begin{align*}
@@ -257,7 +257,7 @@ Now let's test if $s = -3$ and $s=0$ are zeros f of the system.
         \\
         G(0) &= \left[ \begin{array}{ccc} \frac{1}{4} & \frac{3}{4} & 0 \\  
 	0 & 0 & 3
-        \end{array} \right] \, \Rightarrow \, \mathrm{rank}[G(0)] = 0
+        \end{array} \right] \, \Rightarrow \, \mathrm{rank}[G(0)] = 2
 \end{align*}
 %
 Thus neither $s=-3$ nor $s=0$ is a zero of the system.
