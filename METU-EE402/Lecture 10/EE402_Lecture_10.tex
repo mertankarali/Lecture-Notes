@@ -149,13 +149,13 @@ to this from.
 \end{minipage}
 \end{center}
 
-The closed loop transfer function of this basic control system is
+The closed-loop transfer function of this basic control system is
 %
 \begin{align*}
 \frac{Y(z)}{R(z)} = \frac{K G_{OL}(z)}{1 + K G_{OL}(z)}
 \end{align*}
 %
-where the poles of the closed loop system are
+where the poles of the closed-loop system are
 the roots of the characteristic equation 
 %
 \begin{align*}
@@ -404,17 +404,17 @@ system below for $T = 0.5 s$, $T = 1 s$, and $T = 2 s$.
 \end{minipage}
 \end{center}
 
-Open-loop pulse transfer functions cane be obtained as
+Open-loop pulse transfer functions can be obtained as
 
 \begin{align*}
-G_{0.5} &= K \ 0.3935 \frac{z}{(z-1) (z - 0.6065)}
+G_{0.5} &= K \ \frac{ 0.1065 z + 0.0902 }{(z-1) (z - 0.6065)}
 \\
-G_{1} &= K \ 0.6321 \frac{z}{(z-1) (z - 0.3679)}
+G_{1} &= K \ \frac{0.3679 z + 0.2642 }{(z-1) (z - 0.3679)}
 \\
-G_{2} &= K \ 0.8647 \frac{z}{(z-1) (z - 0.1353)}
+G_{2} &= K \ \frac{1.135 z + 0.594}{(z-1) (z - 0.1353)}
 \end{align*}
 
-Root-locus plots for all there cases are illustrated in the Figure
+Root-locus plots for all three cases are illustrated in the Figure
 below.
 
 \begin{center}
@@ -425,9 +425,19 @@ below.
 \end{minipage}
 \end{center}
 
-This Figure below compares DT step responses of
-all three sampling time cases, where x-axis is the actual 
-time. 
+Let's first focus on the critically damped location of all three sampling time values. Purely from root-locus one may assume that $T = 2 s$ has the faster response, whereas $T = 0.5 s$ has the slowest response time. While that may be true if we purely measure the speed in terms of the number of samples/ticks, we have to consider the actual time domain response measured in seconds. The figure below compares DT step responses of all three sampling time cases if we choose the gain where the response is critically damped (the x-axis is the actual time.) The step response shows that, indeed, $T = 0.5 s$ has the best settling time performance, and it is also clear from the figure that the rise time and overall speed of response are better than the higher sampling time values. We know that the settling time for a CT-system mainly depends on the real part of the dominant pole, i.e. $\sigma = \mathrm{Re} \lbrace s \rbrace$. 
+Let's compute $\sigma_{0.5}$, $\sigma_{1}$,and $\sigma_2$ by taking 
+into account the $e^{Ts} = z$ mapping.
+%
+\begin{align*}
+\sigma_{0.5} &= \frac{\mathrm{ln}(|z|) }{0.5} \approx -0.469
+\\
+\sigma_{1} &= \frac{\mathrm{ln}(|z|) }{1} \approx -0.434
+\\
+\sigma_{2} &= \frac{\mathrm{ln}(|z|) }{2} \approx -0.367
+\end{align*}
+%
+We can now again see that $T = 0.5 s$ has the fastest convergence speed in the actual time domain response. 
 
 \begin{center}
 \begin{minipage}[h]{\linewidth}
@@ -437,33 +447,6 @@ time.
 \end{minipage}
 \end{center}
 
-If we compare three different responses, we can clearly see that
-in terms of over-shoot, $T=2s$ has the worst performance,
-where as $T = 1 s$ seems to be a little better than $T = 0.5 \ s$. 
-However, if one ``draws'' the CT-response by simulating the
-whole hybrid system, he/she can see that the over-shoot for $T=1 \ s$
-indeed larger than $T = 0.5 s$. Due to the ``sampling rate''
-we can not capture the over-shoot difference clearly between $T = 0.5 \ s$
-and $T = 1 \ s$. We will talk about it in the next section.
-
-Another similarity between these responses is that settling times
-of DT-system responses seem to be very close. We know that settling 
-time for a CT-system mainly depends on the real part of the
-dominant pole, i.e. $\sigma = \mathrm{Re} \lbrace s \rbrace$. 
-Let's compute $\sigma_{0.5}$, $\sigma_{1}$,and $\sigma_2$ by taking 
-into account the $e^{Ts} = z$ mapping.
-%
-\begin{align*}
-\sigma_{0.5} &= \frac{\mathrm{ln}(|z|) }{0.5} \approx -0.5
-\\
-\sigma_{1} &= \frac{\mathrm{ln}(|z|) }{1} \approx -0.5
-\\
-\sigma_{2} &= \frac{\mathrm{ln}(|z|) }{2} \approx -0.5
-\end{align*}
-%
-It can be seen that indeed the real part of the mapped CT
-pole locations are approximately same for same gain $K=2$.
-
 Now let's evaluate the steady-state error performances for both
 sampling times. All three open-loop transfer functions are Type 1
 systems and thus for unit step response $e_{ss} = 0$, which is also
@@ -471,16 +454,12 @@ observable from the step response plots. Let's compute $e_{ss}$
 for unit ramp response.
 %
 \begin{align*}
-  e_{0.5} &= \frac{1}{2} \\
-  e_{1} &= \frac{1}{2} \\
-  e_{2} &= \frac{1}{2}
+  e_{0.5} &= \frac{1}{K_v} = \frac{1}{0.11} \approx 9 \\
+  e_{1} &= \frac{1}{K_v} = \frac{1}{0.196} \approx 5.1 \\
+  e_{2} &= \frac{1}{K_v} = \frac{1}{0.315} \approx 3.2
 \end{align*}
 %
-This can give an illusion that they have the same performance. However
-we evaluated response to the discrete time unit ramp input which is 
-$r[k] = k u[k]$. However, in order to compare fairly, we need to compute the
-steady state error to sampled continuous time unit ramp function. 
-$r(t) = t$ \& $r(kT) = kT$, thus we have
+This can give the illusion that as we increase sampling time steady-state performance also increases. However we evaluated the response to the discrete-time unit ramp input,  $r[k] = k u[k]$. However, to compare fairly, we need to compute the steady state error to the sampled continuous time unit ramp function.  $r(t) = t$ \& $r(kT) = kT$, thus we have
 %
 \begin{align*}
   r_{0.5}[k] &= 0.5 k \\
@@ -490,66 +469,35 @@ $r(t) = t$ \& $r(kT) = kT$, thus we have
 %
 If we re-evaluate the steady-state errors, we obtain
 %
+\begin{align*}
+  e_{0.5} &= \frac{0.5}{K_v} = \frac{1}{0.11} \approx 4.5 \\
+  e_{1} &= \frac{1}{K_v} = \frac{1}{0.196} \approx 5.1 \\
+  e_{2} &= \frac{2}{K_v} = \frac{1}{0.315} \approx 6.4
+\end{align*}
+%
+Now, it is clear that as $T$ increases, the steady-state error also increases. 
+
+Let's compare a different scenario, where we choose the same gain $K = 1$ for all three sampling time cases. We can indeed see that under $r(t) = t$ \& $r(kT) = kT$ type ramp input all three systems have equal steady-state performance, i.e. $e_{0.5} = e_{1} = e_{0.5} = 1$. Based on the root-locus plot, we can observe that as sampling time increases. For the same gain, the value phase of the closed-loop pole increases, increasing the discrete oscillation frequency. We can then suspect that as sampling time increases, over-shoot also increases. Let's repeat the analysis we performed for the previous scenario to compare the speed of responses.
 %
 \begin{align*}
-  e_{0.5} &= \frac{1}{4} \\
-  e_{1} &= \frac{1}{2} \\
-  e_{2} &= 1
+\sigma_{0.5} &= \frac{\mathrm{ln}(|z|) }{0.5} \approx -0.36
+\\
+\sigma_{1} &= \frac{\mathrm{ln}(|z|) }{1} \approx -0.22
+\\
+\sigma_{2} &= \frac{\mathrm{ln}(|z|) }{2} \approx -0.079
 \end{align*}
 %
-Now it is clear that as $T$ increases the steady-state error 
-also increases. 
+This analysis suggests that as we increase sampling time, the speed of response degrades. 
 
+The figure below compares DT step responses of all three sampling time cases if we choose the same gain $K = 1$. Simulated step-response verifies that transient performance (both over-shoot and settling time) degrades as we increase sampling time.
 
-Now let's compare different cases, where each response
-show a critically damped
-behavior. Critically damped locations are obtained for
-the following $K$ values. 
-%
-\begin{align*}
-  K_{0.5} &= 0.124 \\
-  K_{1} &= 0.245 \\
-  K_{2} &= 0.462
-\end{align*}
-%
-Now let's compare responses using different specifications
-%
-\begin{itemize}
-  \item Obviously no oscillations and $0 \%$ overs-shoot for all three
-    cases
-  \item The CT-time mapped pole locations can be computed as
-   \begin{align*}
-  \sigma_{0.5} \approx \sigma_{1} \approx \sigma_{2} \approx -0.5
-\end{align*}
-    which implies that settling time performance is similar.
-
-   \item Since all systems are Type 1, the steady-state errors to unit
-     step is zero for all cases.
-
-   \item If we compute the steady-state errors to sampled CT 
-    unit ramp input for all three cases we obtain
-%
-\begin{align*}
-e_{0.5} \approx e_{1} \approx e_{2} \approx 4
-\end{align*}
-%
-Quite interestingly even the steady-state errors are
-approximately similar. 
-%
-\end{itemize}
-%
-This shows that for the specific location where all
-systems show a critically damped behavior
-the response performance (stability, overshoot, steady-state error) 
-is quite similar and almost independent on $T$. 
-
-However if one needs to improve the steady-state
-error performance (to ramp like inputs) obviously
-lower $T$ (or higher sampling rate) is better
-both from the perspective of stability and steady-state
-error performance.
-
-
+\begin{center}
+\begin{minipage}[h]{\linewidth}
+    \begin{center}
+      \includegraphics[width=\textwidth]{stepUnderDamoed}
+    \end{center}
+\end{minipage}
+\end{center}
 
 \subsubsection*{Specs for discrete time pole locations}
 
