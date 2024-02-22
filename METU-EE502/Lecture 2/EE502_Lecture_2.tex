@@ -90,9 +90,9 @@
 For a causal dynamical system, in order to compute output at a given
 time, $t_0$ (or $k_o$ for DT systems), we need to know ``only'' the
 input signal over $(-\infty , t_o]$ (or $(-\infty , k_o]$ for DT
-systems). This requires a lot of data/information (indeed infinite
-amount of data), can we summarize it with something more manageable ?
-For example using some latent variables stored in a vector, a.k.a. \textit{state-vector}.
+systems). This requires a lot of data/information (indeed an infinite
+amount of data), can we summarize it with something more manageable?
+For example, using some latent variables stored in a vector, a.k.a. \textit{state-vector}.
 
 \textbf{State property of DT state-space models:} 
 Given the state vector $x[k_0]$ and input $u[k_0]$ at an arbitrary time $k_0$, 
@@ -109,15 +109,11 @@ whole input history, $t\in(-\infty , t_0)$ (or $k \in (-\infty ,
 k_0)$) in a compact (most probably \textit{finite-dimensional}) memory package,
 for the purpose of predicting the future output (and states)
 
-Note that both definitions are not limited to LTI state-space models. 
+Note that neither definition is limited to LTI state-space models. 
 Nonlinear and time-varying state-space models also are based on this 
 definition. CT state-property is more and also applies for DT state-space models. 
 
-Note that the choice of state-variables is not unique (and there exist
-infinite possible of \textit{realizations}), however, there are some
-options that are preferable to others (minimal representations,
-canonical forms, practical benefits etc.). When a state-space representation includes minimum possible of number of state 
-variables, the representation is called minimal. 
+Note that the choice of state variables is not unique (and there exist infinite possible of \textit{realizations}); however, there are some options that are preferable to others (minimal representations, canonical forms, practical benefits, etc.). When a state-space representation includes the minimum possible number of state variables, the representation is called minimal. 
 
 \vspace{-12pt}
 
@@ -126,7 +122,7 @@ variables, the representation is called minimal.
 
 \textbf{LTI Systems}
 
-State-space representation of a (causal \& finite dimensional) LTI CT system is given by
+State-space representation of a (causal \& finite-dimensional) LTI CT system is given by
 %
 \begin{align*}
   \mathrm{Let} \ x(t) &\in \mathbb{R}^n \ , \ y(t) \in \mathbb{R}^m \ ,\  u(t) \in
@@ -352,10 +348,10 @@ find a state-space model of the pendulum dynamics.
 
 \textbf{Ex 4: Predator-Prey Model}
 %
-Consider an island populated primaraly by goats and foxes. Goat's
+Consider an island populated primarily by goats and foxes. Goat's
 survive and breed by consuming the island's sources, while foxes
 survive and breed by consuming goats. To build a DT state-space model
-(based on behavioral obseervations) let's defined following state
+(based on behavioral observations) let's define following state
 variables
 %
   \begin{align*}
@@ -375,7 +371,7 @@ effect of fox population on goat population. On the other hand
 state-equation for the population of fox can be modeled as
 %
   \begin{align*}
-    x_2[k+1] = f x_2[k] - c_{gf} x_1[k] x_2[k] 
+    x_2[k+1] = f x_2[k] + c_{gf} x_1[k] x_2[k] 
   \end{align*}
 %
 where $0 < f < 1$ (which models geometric decay rate of foxes), and
