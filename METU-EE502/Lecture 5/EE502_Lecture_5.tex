@@ -88,7 +88,7 @@
 
 \section{Functions of a Matrix}
 
-In linear systems theory course, we are interested in matrix polynomials, specifically
+In the linear systems theory course, we are interested in matrix polynomials, specifically.
 %
 \begin{itemize}
 	\item Matrix Exponential in CT Systems:  $e^{A t}$ 
@@ -149,7 +149,7 @@ Let $n = k + j$ and $j = n - k$, then
     \left( \begin{array}{c} n \\ k \end{array} \right) 
 \end{align*}
 %
-Note that if $A B \neq B A$ we has to stop at this point. However, since $A B = B A$, we can adopt binomial theorem 
+Note that if $A B \neq B A$, we has to stop at this point. However, since $A B = B A$, we can adopt binomial theorem 
 %
 \begin{align*}
 	e^{A} e^{B} &= \sum\limits_{n=0}^{\infty} \frac{1}{n!} (A+B)^{n} = e^{A+B} = e^{B} e^{A}
@@ -252,7 +252,7 @@ Now let's focus on $A^k$. An LTI DT state-space representation of an autonomous 
   x[k+1] &= A x[k] 
 \end{align*}
 %
-Unlike CT systems we can compute the response iteratively easily
+Unlike CT systems we can compute the response iteratively easily.
 %
 \begin{align*}
   x[1] &= G x[0] 
@@ -285,7 +285,7 @@ G^k &= \mathcal{Z}^{-1} \lbrace z \left( z I - G \right)^{-1} \rbrace
 
 \subsection{Computation via Diagonalization}
 
-\textbf{Theorem:} $A \in \mathbb{C}^{n \times n}$ is diagonalizable, if and only if there exists a (nonsingular) similarity transformation, 
+\textbf{Theorem:} $A \in \mathbb{C}^{n \times n}$ is diagonalizable if and only if there exists a (nonsingular) similarity transformation, 
 $V \in \mathbb{C}^{n \times n}$, such that $A = V \Lambda V^{-1}$ where $\Lambda$ is a diagonal matrix, 
 %
 \begin{align*}
@@ -430,7 +430,7 @@ A_2 &=   \left[ \begin{array}{cc} -1 & 1  \\ 0 & -1 \end{array} \right] \ \right
 
 \subsection{Computation via Jordan Form}
 
-When a matrix $A$ is not diagonalizable, i.e. does not satisfy necessary and sufficient conditions listed above, there exists a similarity transformation, $A = G^{-1} J G$, such that $J$  
+When a matrix $A$ is not diagonalizable, i.e. does not satisfy the necessary and sufficient conditions listed above, there exists a similarity transformation, $A = G^{-1} J G$, such that $J$  
 is Jordan canonical form (as close as possible to a diagonal form). Note that each $A \in \mathbb{R}^{n \times n}$ is similar to only one such J (except for a reordering of the blocks):
 %
 \begin{align*}
@@ -538,7 +538,7 @@ A = \left[ \begin{array}{ccc} 1 & 1 & 1 \\ 0 & 1 & 1 \\ 0 & 0 & 1
 \end{align*}
 \end{exmp}
 %
-compute $d(\lambda)$, $m(\lambda)$, algebraic multiplicity eigenvalues, geometric multiplicity eigenvalues, Jordan canonical form, and transformation matrix, $G$.
+compute $d(\lambda)$, $m(\lambda)$, algebraic multiplicity of the eigenvalues, geometric multiplicity of the eigenvalues, Jordan canonical form, and transformation matrix, $G$.
 
 \textbf{Solution:} Let's start with  $d(\lambda)$
 %

@@ -98,7 +98,7 @@ u         \setlength{\labelwidth}{1.6truecm}}}
 \section{Realization Theory}
 
 \textbf{Definition:} A transfer function (matrix) $G(s)$ is said to be
-realizable if there exist a (finite-dimensional) state-space
+realizable if there exists a (finite-dimensional) state-space
 realization of it. 
 
 \textbf{Theorem:} A Transfer-Function (matrix) $G(s)$ is realizable
@@ -151,11 +151,11 @@ G_1(s) &= \frac{H(s)}{U(s)} = \frac{1}{ s^3 + a_2 s^2 + a_1 s + a_0 }
 G_2(s) &= \frac{Y(z)}{H(z)} = b_3 s^3 + b_2 s^2  + b_1 s + b_0
 \end{align*}
 %
-As you can see we introduced an intermediate variable $h(t)$ or with a
-Laplace transform of $H(s)$. First transfer function has static input
+As you can see, we introduced an intermediate variable $h(t)$ or with a
+Laplace transform of $H(s)$. The first transfer function has static input
 dynamics, operates on $u(t)$, and produces an output, i.e. $h(t)$. 
-Second transfer function is a ``non-causal'' system and operates on $h(t)$ and produces output
-$y(t)$. If we write the ODEs of both systems we obtain
+The second transfer function is a ``non-causal'' system and operates on $h(t)$ and produces output
+$y(t)$. If we write the ODEs of both systems, we obtain
 %
 \begin{align*}
 \dddot{h} &= -a_2 \ddot{h} - a_1 \dot{h} - a_0 h + u
@@ -176,7 +176,7 @@ individual state equations take the form
 \dot{x_3} &= -a_2 x_3 - a_1 x_2 - a_0 x_1 + u
 \end{align*}
 %
-and the output equation take the form
+and the output equation takes the form
 %
 \begin{align*}
 y &= b_3\left( -a_2 x_3 - a_1 x_2 - a_0 x_1 + u \right) + b_2 x_3 +
@@ -185,7 +185,7 @@ y &= b_3\left( -a_2 x_3 - a_1 x_2 - a_0 x_1 + u \right) + b_2 x_3 +
 &= ( b_0 - b_3 a_0 ) x_1 + ( b_1 - b_3 a_1 ) x_2 + ( b_2 - b_3 a_2 ) x_3 + b_3 u
 \end{align*}
 %
-If we re-write the equations in matrix form we obtain the state-space representation as
+If we re-write the equations in matrix form, we obtain the state-space representation as
 %
 \begin{align*}
 	\dot{x} &= \left[ \begin{array}{ccc} 0 & 1 & 0  \\  0 & 0 & 1 \\  -a_0 & -a_1 & -a_2 \end{array} \right] x 
@@ -238,11 +238,11 @@ G_1(z) &= \frac{H(z)}{U(z)} = \frac{1}{1+ a_2
 G_2(z) &= \frac{Y(z)}{H(z)} = b_3 + b_2 z^{-1} + b_1 z^{-2} + b_0 z^{-3} 
 \end{align*}
 %
-As you can see we introduced an intermediate variable $h[k]$ with a
-Z-transform of $H(z)$, First transfer function, which is a system
-with static input dynamics operates on $u[n]$ and produces an output. 
-Second transfer function operates on $h[n]$ and produces output
-$y[n]$. If we write the difference equations of both systems we obtain
+As you can see, we introduced an intermediate variable $h[k]$ with a
+Z-transform of $H(z)$, the First transfer function, which is a system
+with static input dynamics, operates on $u[n]$ and produces an output. 
+The second transfer function operates on $h[n]$ and produces output
+$y[n]$. If we write the difference equations of both systems, we obtain
 %
 \begin{align*}
 h[k] &= -a_2 h[k-1] - a_1 h[k-2] - a_0 h[k-3] + u[k] 
@@ -250,7 +250,7 @@ h[k] &= -a_2 h[k-1] - a_1 h[k-2] - a_0 h[k-3] + u[k]
 y[k] &= b_3 h[k] + b_2 h[k-1] + b_1 h[k-2] + b_0 h[k-3] 
 \end{align*}
 %
-As it can be seen that the delay/shifting operations are only
+As it can be seen the delay/shifting operations are only
 performed on the signal $h[k]$. Now let the state-variables be 
 $x = \left[ \begin{array}{c} x_1 \\ x_2 \\ x_3 \end{array} \right] 
 = \left[ \begin{array}{c} h[k-3] \\ h[k-2] \\ h[k-1]\end{array} \right]$. Then,
@@ -264,7 +264,7 @@ x_2[k+1] &= x_3[k]
 x_3[k+1] &= -a_2 x_1[k] - a_1 x_2[k] - a_0 x_3[k] + u
 \end{align*}
 %
-and the output equation take the form
+and the output equation takes the form
 %
 \begin{align*}
 y[k] &= b_3\left( -a_2 x_3[k] - a_1 x_2[k] - a_0 x_1[k] + u[k] \right) + b_2 x_3[k] +
@@ -273,7 +273,7 @@ y[k] &= b_3\left( -a_2 x_3[k] - a_1 x_2[k] - a_0 x_1[k] + u[k] \right) + b_2 x_3
 &= ( b_0 - b_3 a_0 ) x_1[k] + ( b_1 - b_3 a_1 ) x_2[k] + ( b_2 - b_3 a_2 ) x_3[k] + b_3 u[k]
 \end{align*}
 %
-If we re-write the equations in matrix form we obtain the state-space representation as
+If we re-write the equations in matrix form, we obtain the state-space representation as
 %
 \begin{align*}
 	x[k+1] &= \left[ \begin{array}{ccc} 0 & 1 & 0  \\  0 & 0 & 1 \\  -a_0 & -a_1 & -a_2 \end{array} \right] x[k] 
@@ -283,8 +283,8 @@ If we re-write the equations in matrix form we obtain the state-space representa
 	+ \left[ b_3 \right] u[k]
 \end{align*}
 
-It can be seet that reachability/controllability canonical forms for
-DT and CT systems are exactly same.  For a general $n^{th}$ order transfer function controllable
+It can be seen that reachability/controllability canonical forms for
+DT and CT systems are exactly the same.  For a general $n^{th}$ order transfer function controllable
 canonical form has the following $A \ ,  B \ ,  C \ , \& \ D$
 matrices
 

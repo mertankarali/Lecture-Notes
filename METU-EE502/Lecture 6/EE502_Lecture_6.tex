@@ -107,7 +107,7 @@ then find the solution for both systems
 	x[k] &= A^k x_0 = \alpha \lambda_i^{k} v_i
 \end{align*}
 %
-Now let's assume that $A$ is diagonalizable, then we now that there exist a set of $n$ linearly independent eigenvectors 
+Now let's assume that $A$ is diagonalizable, then we know that there exists a set of $n$ linearly independent eigenvectors 
 $\mathcal{V} = \lbrace v_i  \ , \ \cdots \ , \ v_n \rbrace$. Thus, we can write any initial condition, $x_0 \in \mathbb{R}^n$,
 as a linear combination of eigenvectors, i.e.
 %
@@ -262,7 +262,7 @@ $\mathrm{Span} \lbrace g_1 \ , \ g_2 \rbrace = \mathcal{N}(A - \lambda I)^2$. No
 of order $i$, then we can find the responses as
 %
 \begin{align*}
-x(t) &= G e^{J t} G^{-1} g_2 \alpha_2 = \alpha_i e^{\lambda t} \sum\limits_{j=1}^{i}  g_j \frac{t^{i-j}}{(i-j)!}
+x(t) &= G e^{J t} G^{-1} g_i \alpha_i = \alpha_i e^{\lambda t} \sum\limits_{j=1}^{i}  g_j \frac{t^{i-j}}{(i-j)!}
 \\
 x[k] &= G J^k G^{-1} g_i \alpha_i = \alpha_i \sum\limits_{j=1}^{i}  g_j \begin{pmatrix} k \\ i-j \end{pmatrix} \lambda^{k-i+j}  
 \end{align*}
