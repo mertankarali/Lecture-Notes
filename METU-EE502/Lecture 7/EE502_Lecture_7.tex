@@ -131,7 +131,7 @@ undriven system at time $k$ to the state at an earlier time $m$
 \begin{align*}
   x[k] &= \Phi[k,m] x[m] \ , \  k \geq m \ , \  \mathrm{where}
   \\
-  \Phi[k,m] &= \left\lbrace \begin{array}{l} \prod_{i=0}^{k-1} A[k-1-i] \ , \ k > m 
+  \Phi[k,m] &= \left\lbrace \begin{array}{l} \prod_{i=m}^{k-1} A[k-1-i] \ , \ k > m 
   \\ I \quad \quad \quad \quad  \quad \quad  \quad \ \ , \ k = m 
   \end{array} \right.
 \end{align*}
