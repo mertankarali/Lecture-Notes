@@ -495,7 +495,7 @@ the total mechanical energy can be adopted as a Lyapunov candidate
 \begin{align*}
 V(x) &= E(x) = \frac{1}{2} x_2^2 + 1 - \cos{x_1}  \\ 
 V(0) &= 0 \\
-V(x) &> 0 \ , \ \forall x \neq 0
+V(x) &> 0 \ , \ \forall x s.t. \lbrace x \neq 0 \, \& \, x \in (-\pi , \pi)  \rbrace
 \end{align*}
 %
 Now let's test if $V(x)$ is a Lyapunov function.
@@ -503,22 +503,21 @@ Now let's test if $V(x)$ is a Lyapunov function.
 \begin{align*}
 \frac{d}{dt} V(x) &= - x_2 \sin x_1 + \sin(x_1) x_2 = 0
 \\
-\dot{V}(x) &\geq 0 \ \forall x 
+\dot{V}(x) &\leq 0 \ \forall x 
 \end{align*}
 %
 Thus we can conclude that $E(x)$ is a Lyapunov function and $x_e = 0$
-is a stable equilibrium point in the sense of Lyapunov (globally). We know that since 
-$x_{e,k} = \begin{bmatrix} k \pi \\ 0 \end{bmatrix} \forall k \in \mathbb{Z}$
-is an equilibrium point, $x_e = 0$ is not globally asymptotically stable. 
-Indeed, since $\dot{V}(x) = 0 \, \forall x $, we also know 
-that $x_e = 0$ is not even locally asymptotically stable. However, one should
-know the fact that Lyapunov's direct method, in general, does not imply 
+is a stable equilibrium point in the sense of Lyapunov. 
+
+We already know that since the system conserves its initial energy, thus 
+$\dot{V}(x) = 0 \ \forall x $, $x_e = 0$ is not  asymptotically stable. 
+However, one should know the fact that Lyapunov's direct method, in general, does not imply 
 un-stability.
 
 \begin{exmp}
     Now let's add a linear damping term to the pendulum dynamics
     \begin{align*}
-    \dot{x} = \begin{bmatrix} x_2 \\ -\sin(x_1) - x_2 \end{bmatrix} \ , \ \mathrm{where} \ b > 0
+    \dot{x} = \begin{bmatrix} x_2 \\ -\sin(x_1) - x_2 \end{bmatrix}
 \end{align*}
 \end{exmp}
 Analyze the stability of the dynamics around $x_e = \begin{bmatrix} 0 \\ 0 \end{bmatrix}$ using Lyapunov's direct method.
@@ -531,15 +530,15 @@ V(x) &= E(x) = \frac{1}{2} x_2^2 + 1 - \cos{x_1}  \\
 V(0) &= 0 \ , \ V(x) > 0 \ , \ \forall x \neq 0
 \\
 \\
-\frac{d}{dt} V(x) &= - x_2^2 - x_2 \sin x_1 + \sin(x_1) x_2 = - x_2^2 \geq 0
+\frac{d}{dt} V(x) &= - x_2^2 - x_2 \sin x_1 + \sin(x_1) x_2 = - x_2^2 \leq 0
 \\
 \dot{V}(x) &= 0 ,\ \forall x \in \lbrace x | \begin{bmatrix}0 & 1\end{bmatrix} x = 0 \rbrace
 \\
-\dot{V}(x) &> 0 ,\ \forall x \in \lbrace x | \begin{bmatrix}0 & 1\end{bmatrix} x \neq 0 \rbrace
+\dot{V}(x) &< 0 ,\ \forall x \in \lbrace x | \begin{bmatrix}0 & 1\end{bmatrix} x \neq 0 \rbrace
 \end{align*}
 %
 In this case we can again conclude that $E(x)$ is a Lyapunov function and $x_e = 0$
-is a stable equilibrium point in the sense of Lyapunov (globally). However, we can still not 
+is a stable equilibrium point in the sense of Lyapunov . However, we can still not 
 conclude that the system is asymptotically stable (even though intuitively, we know that it is 
 at least locally asymptotically stable), since $\dot{V}(x)$ is a \textit{nsd} function 
 (locally and globally). Let's try another candidate $V(x)$
