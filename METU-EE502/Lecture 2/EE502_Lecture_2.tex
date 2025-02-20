@@ -38,7 +38,7 @@
    \framebox{
       \vbox{\vspace{2mm}
     \hbox to 6.28in { {\bf EE502 - Linear Systems Theory II
-	\hfill Spring 2032} }
+	\hfill Spring 2024} }
        \vspace{4mm}
        \hbox to 6.28in { {\Large \hfill Lecture #1 \hfill} }
        \vspace{2mm}
@@ -80,7 +80,7 @@
 \begin{document}
  
 % Lecture Details
-\lecture{12}{Assoc. Prof. M. Mert Ankarali}
+\lecture{2}{Assoc. Prof. M. Mert Ankarali}
 
 
 \vspace{-12pt}
@@ -365,8 +365,8 @@ State-equation for the population of goats can be modeled as
     x_1[k+1] = g x_1[k] - c_{fg} x_1[k] x_2[k] 
   \end{align*}
 %
-where $g > 1$ (which models geometric growth rate of gots), and
-$c_{fg} > 0$. Note that $- c_{fg} x_1[k] x_2[k] $ models the negatif
+where $g > 1$ (which models geometric growth rate of goats), and
+$c_{fg} > 0$. Note that $- c_{fg} x_1[k] x_2[k] $ models the negative
 effect of fox population on goat population. On the other hand 
 state-equation for the population of fox can be modeled as
 %
@@ -375,7 +375,7 @@ state-equation for the population of fox can be modeled as
   \end{align*}
 %
 where $0 < f < 1$ (which models geometric decay rate of foxes), and
-$c_{gf} > 0$. Note that $c_{gf} x_2[k] x_1[k] $ models the pozitif
+$c_{gf} > 0$. Note that $c_{gf} x_2[k] x_1[k] $ models the positive
 effect of goat population on fox population. If we combine both of the 
 state equations we obtain
 %
@@ -398,7 +398,7 @@ Consider a non-linear CT dynamical system represented in state-space form
   y(t) &= H(x(t),u(t)) , 
 \end{align*}
 %
-Suppose that we are intersted in finding an approximate linear
+Suppose that we are interested in finding an approximate linear
 dynamical system model around a nominal point (equilibrium),
 $(x_o,u_o,y_o))$ that solves the equation constraints, i.e.
 %
@@ -407,11 +407,11 @@ $(x_o,u_o,y_o))$ that solves the equation constraints, i.e.
   y(t) &= H(x_o,u_o) , 
 \end{align*}
 %
-Since we are intersted in the dynamics around the nominal solution, we
+Since we are interested in the dynamics around the nominal solution, we
 define set of ``small'' \textit{perturbation} variables; $\delta x(t)
 = x(t) - x_o \ , \ \delta u(t) = u(t) - u_o \ \& \ \delta y(t) = y(t)
 - x_o \ , \ $. If we perform a (multivariate) first order Taylor
-series expansion, we can find the linerized state-space model as
+series expansion, we can find the linearized state-space model as
 %
 \begin{align*}
   \dot{\delta x} &\approx \left( \left[ \frac{\partial F(x,u)}{\partial x}
@@ -489,7 +489,7 @@ A &= \left( \left[ \frac{\partial F(x,u)}{\partial x}
 C &= \left[ \begin{array}{cc} 1 & 0 \end{array}  \right]
 \end{align*}
 
-Now suppuse that we are intersted in finding an apprximate liner
+Now suppose that we are interested in finding an approximate linear
 dynamical system model for a non-linear discrete-time dynamical
 system. Actually the process is exactly same (since we are still
 utilizing Taylor series expansion around a nominal point), except that 
@@ -502,7 +502,7 @@ we know that
   y_o &= H(x_o,u_o) , 
 \end{align*}
 %
-Cumputation of state-space matrices and definition of perturbation
+Computation of state-space matrices and definition of perturbation
 variables are completely same for the CT case. 
 %
 
@@ -520,7 +520,7 @@ equilibrium point of the dynamical system
   \rightarrow \ x_0 = \left[ \begin{array}{c} 10 \\ 10 \end{array} \right] 
 \end{align*}
 %
-Now linarize the dynamics around the equilibrium and derive the
+Now linearize the dynamics around the equilibrium and derive the
 approximate DT linear state-space representation
 %
 \begin{align*}
@@ -539,9 +539,9 @@ A &= \left( \left[ \frac{\partial F(x)}{\partial x}
 
 Let's go back to non-linear CT time dynamical models. Sometimes, 
 we want to obtain a \textit{Linear} dynamical system model 
-around a nominal trajecotry (not a point) which still satisfies the
+around a nominal trajectory (not a point) which still satisfies the
 constraints of the dynamical system. In such a case nominal solution 
-takwa the form $(x_o(t),u_o(t),y_o(t)))$ ans still satisfies the equation constraints, i.e.
+takes the form $(x_o(t),u_o(t),y_o(t)))$ ans still satisfies the equation constraints, i.e.
 %
 \begin{align*}
   \dot{x_o}(t) &= F(x_o(t),u_o(t)) \ , \  y_o(t) = H(x_o(t),u_o(t)) , \ \forall
@@ -552,7 +552,7 @@ We define set of ``small'' \textit{perturbation} variables in a
 similar way; $\delta x(t)
 = x(t) - x_o(t) \ , \ \delta u(t) = u(t) - u_o(t) \ \& \ \delta y(t) = y(t)
 - y_o(t)$. Indeed formulation of the (multivariate) first order Taylor
-series expansion is (almost) exactly same, and we can find the linerized state-space model as
+series expansion is (almost) exactly same, and we can find the linearized state-space model as
 %
 \begin{align*}
   \dot{\delta x}(t) &\approx \left( \left[ \frac{\partial F(x,u)}{\partial x}
@@ -574,7 +574,7 @@ C(t) &= \left( \left[ \frac{\partial H(x,u)}{\partial x}
 \end{align*}
 %
 Note that in such a case state-space matrices (almost surely) potentially becomes
-time-dependent and hence linearitzation leads to a LTV
+time-dependent and hence linearization leads to a LTV
 (Linear-Time-Varying) state-space model. 
 
 \vspace{12pt}
