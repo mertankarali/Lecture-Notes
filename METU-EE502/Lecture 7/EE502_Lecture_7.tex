@@ -427,10 +427,10 @@ Suppose that $\exists \ \bar{t}$ such that $\det( X(\bar{t}) ) = 0$, then we kno
 	\mathrm{dim} \mathcal{N}\left( X(\bar{t}) \right) > 0 \ \rightarrow \ \exists \ \bar{v}\neq0 \ s.t. \ X(\bar{t}) \bar{v} = 0
 \end{align*}
 %
-now let $\zeta(t) = X(\bar{t}) \bar{v}$ and take the derivate of $\zeta(t)$
+now let $\zeta(t) = X(t) \bar{v}$ and take the derivate of $\zeta(t)$
 %
 \begin{align*}
-	\dot{\zeta}(t) &= \dot{X}(\bar{t}) \bar{v} = A(t) \left[ X(\bar{t}) \bar{v} \right] = A(t) \zeta(t)
+	\dot{\zeta}(t) &= \dot{X}(t) \bar{v} = A(t) \left[ X(t) \bar{v} \right] = A(t) \zeta(t)
 	\\
 	\dot{\zeta}(t) &= A(t) \zeta(t)
 \end{align*}
@@ -438,7 +438,7 @@ now let $\zeta(t) = X(\bar{t}) \bar{v}$ and take the derivate of $\zeta(t)$
 Since we assumed that $X(\bar{t}) \bar{v} = 0$
 %
 \begin{align*}
-	\zeta(\bar{t}) &= 0 \ \rightarrow \ \zeta(t) = 0 \ \mathrm{for} \ t < \bar{t} \ \mathrm{(CT-Linear-System)}
+	\zeta(\bar{t}) &= 0 \ \& \ \dot{\zeta}(\bar{t}) = 0 \rightarrow \ \zeta(t) = 0 \ \mathrm{for} \ t < \bar{t} \ \mathrm{(CT-Linear-System)}
 	\\
 	\zeta(t_0) &= 0 \ \rightarrow \ X(t_0) \bar{v} = 0 \ \rightarrow \ \mathrm{det}[X(t_0)]=0 \ \rightarrow \ \mathrm{contrdiction}
 \end{align*}
