@@ -1,5 +1,3 @@
-
-
 \documentclass[twoside]{article}
 \setlength{\oddsidemargin}{0.25 in}
 \setlength{\evensidemargin}{-0.25 in}
@@ -13,8 +11,8 @@
 %
 % ADD PACKAGES here:
 %
-
-\usepackage{amsmath,amsfonts,graphicx}
+\usepackage{amsmath,amsfonts}
+\usepackage{graphicx} 
 
 %
 \newcounter{lecnum}
@@ -128,7 +126,7 @@ $t_0 \leq t \leq t_f$ and the state $x(t)$ for $t_0 \leq t \leq t_f$.
 
 \textbf{State property of DT state-space models:} 
 Given the state vector $x[k]$ and input $u[k]$ at an arbitrary time $k$, 
-we can compute the the present output, $y[k]$, and next state $x[k+1]$.
+we can compute the present output, $y[k]$, and next state $x[k+1]$.
 
 Note that both definitions are not limited to LTI state-space models. 
 Nonlinear and time-varying state-space models also are based on this 
@@ -147,12 +145,12 @@ and transfer function
 
 \begin{align*}
 y[k] &=  -a_1 y[k-1] - a_2 y[k-2] - a_3 y[k-3] 
-+ b_0 x[k] + b_1 x[k-1] + b_2 x[k-2] + b_3 x[k-3] \\ 
-Y(z) &= \frac{b_0 + b_1 z^{-1} + b_2 z^{-2} + b_3 z^{-3}}{1+ a_1 z^{-1} + a_2 z^{-2} + a_3 z^{-3}} X(z)
++ b_0 u[k] + b_1 u[k-1] + b_2 u[k-2] + b_3 u[k-3] \\ 
+Y(z) &= \frac{b_0 + b_1 z^{-1} + b_2 z^{-2} + b_3 z^{-3}}{1+ a_1 z^{-1} + a_2 z^{-2} + a_3 z^{-3}} U(z)
 \end{align*}
 
 We know that following block 
-ram realizes this system structure
+diagram realizes this system structure
 with minimum number of delay elements and it is a canonical
 realization. Delay operation is directly
 related with state and state evolution concept.
@@ -178,7 +176,7 @@ X_3(z) = \left( U(z)  - \left( X_1(z) a_3 + X_2(z) a_2 + X_3(z) a_1 \right) \rig
 x_3[k+1] =  u[k] + x_1[k] (-a_3) + x_2[k] (-a_2) + x_3[k] (-a_1)
 \end{align*}
 %
-where as output equation can be derived as
+whereas output equation can be derived as
 %
 \begin{align*}
 y[k] &= b_1 x_3[k] + b_2 x_2[k] + b_3 x_1[k]
@@ -198,7 +196,7 @@ If we gather these equations, we can obtain the state space form
     \\ 1 \end{array} \right] u[k]
 \\
 y[k] &= \left[ \begin{array}{ccc} (b_3 - b_0 a_3) &  (b_2 - b_0 a_2) &
-                                                                       (b_1 - b_0 a_1) \end{array} \right]
+                                                   (b_1 - b_0 a_1) \end{array} \right]
 + b_0 u[k]
 \end{align*}
 %
@@ -227,7 +225,7 @@ matrices
 %
 \begin{align*}
 A &= \left[ \begin{array}{ccccc} 0 & 1 & 0 & \cdots & 0 \\ 0 & 0 & 1 &
-                                                                      \cdots & 0
+                                                          \cdots & 0
 \\ \vdots & \vdots & \vdots & & \vdots
 \\ 0 & 0 & 0 & \cdots & 1
     \\ -a_n & -a_{n-1} & -a_{n-2} & \cdots & -a_1 \end{array} \right]
@@ -272,7 +270,7 @@ X_3(z) = \left( b_1 U(z) + X_2(z) - a_1 \left( U(z) b_0 + X_3(z) \right) \right)
         x_3[k] \right)
 \end{align*}
 %
-where as output equation can be derived as
+whereas output equation can be derived as
 %
 \begin{align*}
 y[k] &= b_0 u[k] + x_3[k]
@@ -333,6 +331,8 @@ B = \left[ \begin{array}{c} (b_n - b_0 a_n)  \\ (b_{n-1} - b_0
 D = b_0
 \end{align*}
 %
+Notice that the $A$ matrix of the Observable form is the transpose of the Reachable form's $A$ matrix (with indices reversed), and the $B$ vector corresponds to the Reachable $C$ vector. This illustrates the principle of duality between controllability and observability.
+
 \subsubsection*{Diagonal Canonical Form}
 
 If the pulse transfer function of the system 
@@ -372,7 +372,7 @@ X_3(z) &= \frac{1}{z - p_3} U(z) \quad \rightarrow \quad x_3[k+1] = p_3
   x_3[k] + u[k]
 \end{align*}
 %
-where as output equation can be derived as
+whereas output equation can be derived as
 %
 \begin{align*}
 y[k] &= b_0 u[k] + c_1 x_1[k] + c_2 x_2[k] + c_3 x_3[k]
@@ -436,7 +436,7 @@ D = b_0
 \subsubsection*{Jordan Canonical Form}
 
 Generalization of diagonal canonical
-farm is called Jordan canonical form
+form is called Jordan canonical form
 which handles repeated roots.
 
 In Jordan form the distinct roots has the 
@@ -481,7 +481,7 @@ X_3(z) &= \frac{1}{z - p} U(z) \quad \rightarrow \quad x_3[k+1] = p \
   x_3[k] + u[k]
 \end{align*}
 %
-where as output equation can be derived as
+whereas output equation can be derived as
 %
 \begin{align*}
 y[k] &= b_0 u[k] + c_1 x_1[k] + c_2 x_2[k] + c_3 x_3[k]
@@ -520,7 +520,7 @@ D = b_0
 $A, \ B, \ \& \ C$ forms a Jordan block. 
 
 For a general $n^{th}$ order system a Jordan block 
-with $m$ repeated roots inside a stat-space representation
+with $m$ repeated roots inside a state-space representation
 in Jordan canonical form looks like
 %
 \begin{align*}
@@ -813,7 +813,7 @@ Given that $\Psi[k] = G^k$
 &= \sum\limits_{j = 0}^{k-1} \Psi[j] H u[k-j-1]
 \end{align*}
 %
-If we combine homegeneous and driven responses we can simply obtain
+If we combine homogeneous and driven responses we can simply obtain
 %
 \begin{align*}
     x[k] &= \Psi[k] x[0] + \sum\limits_{j = 0}^{k-1} \Psi[k-j-1] H u[j]
@@ -869,7 +869,7 @@ We can also observe that
 \end{align*}
 %
 If we expand $z \left( z I - G \right)^{-1}$ by long ``division'' we
-can also observe the relation in z-domain and time doman expressions
+can also observe the relation in z-domain and time domain expressions
 from a different perspective
 %
      \begin{center}
@@ -945,9 +945,9 @@ solution
   x[k] &= G^{k-1} H u[0] \quad \mathrm{for} \  k > 0 \\
   y[k] &= C G^{k-1} H \quad \mathrm{for} \ k > 0 \\ 
          &= \left[ \begin{array}{ccc} 1 & 2 & 3 \end{array} \right] 
-                \left[ \begin{array}{ccc} 1 & 0 & 0\\ 0 & (1/2)^{k-1} & 0
+                 \left[ \begin{array}{ccc} 1 & 0 & 0\\ 0 & (1/2)^{k-1} & 0
     \\ 0 & 0 & (-1)^{k-1} \end{array} \right]
-      \left[ \begin{array}{c} 1 \\ 1 \\ 1\end{array} \right] 
+       \left[ \begin{array}{c} 1 \\ 1 \\ 1\end{array} \right] 
 \\
 &= \left[ \begin{array}{ccc} 1 & 2 & 3 \end{array} \right] 
 \left[ \begin{array}{c} 1 \\ (1/2)^{k-1} \\ (-1)^{k-1} \end{array}
@@ -964,18 +964,18 @@ y[k] &= 1 + 2 (1/2)^{k-1} + 3 (-1)^{k-1} \quad \mathrm{for} \ k > 0
   T(z) &= C \left( z I - G \right)^{-1} H \\
          &= \left[ \begin{array}{ccc} 1 & 2 & 3 \end{array} \right] 
 \left[ \begin{array}{ccc} z-1 & 0 & 0\\ 0 & z-1/2 & 0
-    \\ 0 & 0 & z+1 \end{array} \right]^{-1}           
+    \\ 0 & 0 & z+1 \end{array} \right]^{-1}            
 \left[ \begin{array}{c} 1 \\ 1 \\ 1\end{array} \right]
 \\
 &= \left[ \begin{array}{ccc} 1 & 2 & 3 \end{array} \right] 
 \left[ \begin{array}{ccc} \frac{1}{z-1} & 0 & 0\\ 0 & \frac{1}{z-1/2} & 0
-    \\ 0 & 0 & \frac{1}{z+1} \end{array} \right]           
-\left[ \begin{array}{c} 1 \\ 1 \\ 1\end{array} \right]                                   
+    \\ 0 & 0 & \frac{1}{z+1} \end{array} \right]            
+\left[ \begin{array}{c} 1 \\ 1 \\ 1\end{array} \right]                                        
 \\
 &= 
 \left[ \begin{array}{ccc} 1 & 2 & 3 \end{array} \right] 
 \left[ \begin{array}{c} \frac{1}{z-1} \\ \frac{1}{z-1/2} \\
-         \frac{1}{z+1}\end{array} \right]         
+         \frac{1}{z+1}\end{array} \right]          
 \\
   T(z) &= \frac{1}{z-1} + \frac{2}{z-1/2} + \frac{3}{z+1}
 \end{align*}    
