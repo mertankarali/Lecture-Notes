@@ -1,0 +1,471 @@
+\documentclass[twoside]{article}
+\setlength{\oddsidemargin}{0.25 in}
+\setlength{\evensidemargin}{-0.25 in}
+\setlength{\topmargin}{-0.6 in}
+\setlength{\textwidth}{6.5 in}
+\setlength{\textheight}{8.5 in}
+\setlength{\headsep}{0.75 in}
+\setlength{\parindent}{0 in}
+\setlength{\parskip}{0.1 in}
+
+%
+% ADD PACKAGES here:
+%
+
+\usepackage{amsmath,amsfonts,graphicx,mathdots}
+\usepackage{tcolorbox}
+\usepackage{enumitem}
+
+\newcounter{lecnum}
+\renewcommand{\thepage}{\thelecnum-\arabic{page}}
+\renewcommand{\thesection}{\thelecnum.\arabic{section}}
+\renewcommand{\theequation}{\thelecnum.\arabic{equation}}
+\renewcommand{\thefigure}{\thelecnum.\arabic{figure}}
+\renewcommand{\thetable}{\thelecnum.\arabic{table}}
+\newcommand{\N}{\operatorname{\mathcal{N}}}
+\renewcommand{\t}{^\mathrm{T}{}}
+\newcommand{\E}{\mathrm{E}{}}
+\newcommand{\tr}{\mathrm{tr}{}}
+\renewcommand{\k}{_k{}}
+\newcommand{\kp}{_{k+1}{}}
+\newcommand{\kpk}{_{k+1\mid k}{}}
+\newcommand{\kpkp}{_{k+1\mid k+1}{}}
+\newcommand{\kk}{_{k\mid k}{}}
+\newcommand{\xp}{{x^-}}
+\newcommand{\up}{{u^-}}
+\DeclareMathOperator*{\argmin}{argmin}
+
+%
+% The following macro is used to generate the header.
+%
+\newcommand{\lecture}[4]{
+   \pagestyle{myheadings}
+   \thispagestyle{plain}
+   \newpage
+   \setcounter{lecnum}{#1}
+   \setcounter{page}{1}
+   \noindent
+   \begin{center}
+   \framebox{
+      \vbox{\vspace{2mm}
+    \hbox to 6.28in { {\bf EE402 - Discrete Time Systems
+	\hfill Fall 2025} }
+       \vspace{4mm}
+       \hbox to 6.28in { {\Large \hfill Lecture #1 \hfill} }
+       \vspace{2mm}
+       \hbox to 6.28in { {\it Lecturer: #2 \hfill } }
+      \vspace{2mm}}
+   }
+   \end{center}
+   \markboth{Lecture #1}{Lecture #1}
+
+   \vspace*{4mm}
+}
+
+\renewcommand{\cite}[1]{[#1]}
+\def\beginrefs{\begin{list}%
+        {[\arabic{equation}]}{\usecounter{equation}
+         \setlength{\leftmargin}{2.0truecm}\setlength{\labelsep}{0.4truecm}%
+         \setlength{\labelwidth}{1.6truecm}}}
+\def\endrefs{\end{list}}
+\def\bibentry#1{\item[\hbox{[#1]}]}
+
+
+\newcommand{\fig}[3]{
+			\vspace{#2}
+			\begin{center}
+			Figure \thelecnum.#1:~#3
+			\end{center}
+	}
+
+% Use these for theorems, lemmas, proofs, etc.
+\newtheorem{theorem}{Theorem}[lecnum]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{claim}[theorem]{Claim}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{definition}[theorem]{Definition}
+\newenvironment{proof}{{\bf Proof:}}{\hfill\rule{2mm}{2mm}}
+
+% **** IF YOU WANT TO DEFINE ADDITIONAL MACROS FOR YOURSELF, PUT THEM HERE:
+
+\begin{document}
+
+% Lecture Details
+\lecture{19}{Eminalp Koyuncu}
+
+\par
+
+\section*{Discrete Time Linear Quadratic Regulator}
+
+Linear Quadratic Regulator control policy is one of the most used state feedback laws in the literature. The name of the control policy well defines its purpose. That is, 
+
+\begin{itemize}
+    \item \textbf{Linear} in the sense that it applies to the control of linear systems.
+    \item \textbf{Quadratic} in the sense that it solves an optimal control problem with a quadratic cost function.
+    \item \textbf{Regulator} in the sense that originally it applies to the regulation class of problems in the field of control theory.
+\end{itemize}
+
+\subsection*{Regulation vs. Tracking Problems}
+    
+In the control theory, the feedback control can be applied to a system for two different purposes, namely, regulation and tracking. For the regulation problems, there is no reference input and the system tries to cancel any disturbance acting on it. Note that, the initial condition of the system can also be modeled as a disturbance and the regulator is expected to cancel the effect of the initial condition and drive the states into the origin. The performance of a regulator can be quantified by the asymptotic stability properties of the closed loop system. Let us define the discrete time system,
+
+\begin{subequations}
+\begin{align}
+        x[k+1] &= Ax[k]+Bu[k]\\ 
+        y[k] &= \underbrace{I}_{C}x[k] = x[k] 
+\end{align}
+\end{subequations}
+with the regulator state feedback law $u[k] = -Ky[k] = -Kx[k]$. So that, we obtain the autonomous system 
+
+\begin{equation}
+\label{eq:auto}
+    x[k+1] = A_cx[k]
+\end{equation}
+
+with the closed loop state transition matrix $A_c=(A-BK)$.
+
+\definition{The autonomous system given by (\ref{eq:auto}) is asymptotically stable if the following conditions hold.
+
+\begin{itemize}
+    \item For each $\epsilon>0$, there exists $\delta >0$ such that,
+    \begin{equation}
+    ||x[0]||<\delta \implies ||x[k]|| < \epsilon \quad \text{for all} \; \; k\geq0
+    \end{equation}
+    \item $\delta$ can be chosen so that, 
+    \begin{equation}
+    ||x[0]||<\delta \implies \lim_{k \to \infty} ||x[k]|| = 0  
+    \end{equation}
+\end{itemize}
+}
+\normalfont
+The meaning of the asymptotic stability is that for any initial condition $x[0]$, the state should be bounded and it eventually converges to the origin. In fact, for linear systems, it is sufficient to show this property for a single initial condition and the result can be generalizable.
+
+\textbf{Example:} Consider the following closed loop system.
+
+\begin{equation}
+    x[k+1]=A_cx[k]
+\end{equation}
+
+For any initial condition $x[0]$, we can write the system solution as
+
+\begin{equation}
+    x[k]=A_c^kx[0]
+\end{equation}
+
+We know that the norm of the states is $||x[k]|| = x[k]^Tx[k] = x[0]^T(A_c^TA_c)^kx[0]$, which is bounded if all the eigenvalues of $A_c^TA_c$ are either on the unit circle or inside the unit circle. In fact, it is the case when the eigenvalues of $A_c$ satisfies the same condition (proof left as an exercise). Moreover, if the eigenvalues are strictly inside the unit circle, then the closed loop system is asymptotically stable. 
+
+\begin{equation}
+    \lim_{k\to\infty}A_c^kx[0] = 0 \implies \lim_{k \to \infty}||x[k]|| = 0
+\end{equation}
+
+\par 
+
+On the other hand, a tracking problem is the case when a nonzero reference trajectory is tried to be tracked autonomously with the feedback control. We can convert this problem into a regularization problem by defining the error state. 
+
+\begin{equation}
+    e[k] = x[k]-x_{ref}[k]
+\end{equation}
+
+Next, we define an integrator state to cancel the steady state error for constant reference.
+
+\begin{equation}
+    z[k+1] = z[k] + e[k]
+\end{equation}
+
+Next, we redefine the state and the state transitions in terms of the error and the integrator state. Also, we define the state feedback law.
+
+\begin{subequations}
+\begin{align}
+\bar{x}[k] &= \begin{bmatrix}
+    e_k\\
+    z_k
+\end{bmatrix}\\
+e[k+1]&= x[k+1] - x_{ref}[k+1]\\
+&= Ax[k] +Bu[k] -x_{ref}[k+1]\\
+&= Ae[k] +Bu_k +(Ax_{ref}[k]-x_{ref}[k+1])\\
+u[k] &= -\begin{bmatrix}
+    K_e & K_z
+\end{bmatrix}\bar{x}[k]\\
+\label{lqi}
+\bar{x}[k+1] &= \underbrace{\begin{bmatrix}
+    A-BK_e & -BK_z\\
+    I & I
+\end{bmatrix}}_{A_c}\bar{x}[k] + \begin{bmatrix}
+    I\\0
+\end{bmatrix}\underbrace{(Ax_{ref}[k]-x_{ref}[k+1])}_{d[k]}
+\end{align}
+\end{subequations}
+
+If the reference is constant, then we have a constant $d[k]$. In this case, if the error state is asymptotically stable, our system can perfectly track the reference input. Note that the stability definition for the reference input that varies over time is not trivial, which is not within the scope of this lecture. However, if the rate of change of the reference input is much slower than the error state dynamics, you can assume constant reference. Also, if the full state information is not available, you can reconstruct the state with an observer like the Luanberger Observer or the Kalman Filter if (A,C) is observable and use the observer output as the state.
+
+\subsection*{Lyapunov Stability for Linear Systems}
+
+Before moving on to the LQR problem, we need another tool to establish the asymptotic stability of the closed loop system, which will be used to analyze the performance of LQR control law. 
+This tool will be the Lyapunov's method applied to the linear systems. Note that Lyapunov's method is a vast topic that applies all kinds of systems; however, we will focus on linear systems for this lecture. Before moving on to the theory, lets focus on some useful definitions.
+
+\definition{Definiteness of Matrices:} \normalfont A matrix G is said to be;
+\begin{itemize}
+    \item Positive definite (shown as $G>0$), if it satisfies $x^TGx>0$ for all $x$. This condition is satisfied if all the eigenvalues $\lambda_i$ are strictly positive, i.e., $\lambda_i >0 \; \forall i$.
+    \item Positive semi-definite (shown as $G\geq0$), if it satisfies $x^TGx\geq0$ for all $x$. This condition is satisfied if all the eigenvalues $\lambda_i$ are non-negative, i.e., $\lambda_i \geq 0 \; \forall i$. 
+    \item Negative definite (shown as $G<0$), if it satisfies $x^TGx<0$ for all $x$. This condition is satisfied if all the eigenvalues $\lambda_i$ are strictly negative, i.e., $\lambda_i <0 \; \forall i$. 
+    \item Negative semi-definite (shown as $G\leq0$), if it satisfies $x^TGx\leq0$ for all $x$. This condition is satisfied if all the eigenvalues $\lambda_i$ are non-positive, i.e., $\lambda_i \leq 0 \; \forall i$. 
+    \item Indefinite if neither of the above conditions hold.
+\end{itemize}
+
+Also, there are some useful identities.
+\begin{itemize}
+    \item For some symmetric positive (or negative) definite matrix $G=G^T$, we have, $\lambda_{min}(G)||x||^2 \leq x^TGx \leq \lambda_{max}(G)||x||^2$.
+    \item For some symmetric positive definite matrix $G=G^T>0$, the 2-norm can be expressed as, $||G|| = \max|\lambda_i(G)|=\lambda_{max}(G)$
+    \item For some symmetric positive definite matrix $G=G^T>0$, we have $x^TGx\leq ||x||\;||G||\;||x|| \leq \lambda_{max}(G)||x||^2$
+    \item If $G$ is a negative definite matrix, since $\max |\lambda_i| = |\lambda_{min}|$, we have $||G||=\max |\lambda_i| = |\lambda_{min}|$ and all the other relevant identities are modified respectively.
+    \item For some symmetric positive definite matrix $G=G^T>0$, $A^TGA$ is also positive definite given $A$ is full column rank.
+    \item For some symmetric positive definite matrix $G=G^T>0$, $-G$ is negative definite.
+\end{itemize}
+
+Consider the autonomus discrete time system below.
+\begin{subequations}
+\begin{align}
+        x[k+1] &= A_cx[k]\\ 
+        y[k] & = x[k] 
+\end{align}
+\end{subequations}
+\theorem{Lyapunov Stability for Linear Systems:} \normalfont Let $V_k(x)=x[k]^TPx[k]$ be the "Lyapunov Function" candidate of the system with a positive definite symmetric matrix $P=P^T>0$. That is, $V_k(x)>0$ for all $x[k]$. Then, the system is asymptotically stable if there exists a positive definite symmetric matrix $L=L^T >0$ such that $A_cPA_c-P = -L$. Note that, the existance of a single $(P,L)$ pair guarantees the asymptotic stability of the system.\\ \\
+\begin{proof}
+    We know $V_k(x)=x[k]^TPx[k]$. Then,
+    \begin{subequations}
+    \begin{align}
+        V_{k+1}(x) &= x[k+1]^TPx[k+1] = x[k]^TA_c^TPA_cx[x]\\
+        \Delta V= V_{k+1}-V_{k}&= x[k]^T(A_c^TPA_c-P)x[k]\\
+        &= -x[k]^TLx[k]
+    \end{align} 
+    \end{subequations}
+    If $\Delta V$ is negative for all $x[k]$, we have a monotonically decreasing $V_k(x)$. Combining with the fact that $V_k(x)>0$, we have
+    \begin{equation}
+        \Delta V < 0 \implies \lim_{k \to \infty}V_k(x) = 0\implies \lim_{k\to\infty}x[k] =0
+    \end{equation}
+    Which implies the system is asymptotically stable. From this point, we also have a decay rate bound for the norm of the state vector $||x[k]||$ following from the matrix identities.
+
+    \begin{subequations}
+    \begin{align}
+         V_{k+1}-V_k=-x[k]^TLx[k]&\leq -\lambda_{min}(L)||x[k]||^2\\
+         &\leq-\frac{\lambda_{min}(L)}{\lambda_{max}(P)}V_k(x)
+    \end{align}
+    \end{subequations}
+    \begin{subequations}
+    \begin{align}
+         &V_{k+1} \leq \underbrace{\left[1-\frac{\lambda_{min}(L)}{\lambda_{max}(P)}\right]}_{\beta<1}V_k(x)\\
+         &\implies V_k(x)\leq\beta^kV_0(x)\\
+         &\implies ||x[k]||^2\leq \frac{1}{\lambda_{min}(P)}V_k(x)\leq\frac{\beta^k}{\lambda_{min}(P)}V_0(x)\\
+         &\implies ||x[k]||^2\leq \frac{\lambda_{max}(P)}{\lambda_{min}(P)}\beta^k||x[0]||^2\\
+         &\implies||x[k]|| \leq \sqrt{\frac{\lambda_{max}(P)}{\lambda_{min}(P)}}\left[\sqrt{1-\frac{\lambda_{min}(L)}{\lambda_{max}(P)}}\right]^k||x[0]||
+    \end{align}
+    \end{subequations}
+Here, the term 
+
+\begin{equation}
+    \sqrt{1-\frac{\lambda_{min}(L)}{\lambda_{max}(P)}}
+\end{equation}
+
+is the bound on the decay rate of the norm of the state vector. 
+
+\end{proof}
+\corollary If all the eigenvalues of $A_c$ is strictly inside the unit circle, there exists a positive definite symmetric matrix pair $(P,L)$ such that $x^TPx>0$ and $A_c^TPA_c-P = -L$. \normalfont
+
+\subsection*{The LQR Policy}
+
+Remember the previously mentioned state feedback regulation problem.
+
+\begin{equation}
+    x[k+1] = (A-BK)x[k] = A_cx[k]
+\end{equation}
+
+If the pair $(A,B)$ is reachable, we have an infinite number of state feedback constant $K$ to stabilize the closed loop system. With the LQR problem, we are aiming to choose the "optimal" state feedback policy $K$ with respect to some cost function. 
+
+\subsubsection*{LQR Optimal Control Problem}
+With LQR, we will select the inputs to the system that solves the following optimization problem.
+
+\begin{subequations}
+\begin{align}
+    \min_{u[.]} &\sum_{k=0}^{N-1}(x[k]^TQx[k] + u[k]^tRu[k])+x[N]^TQ_fx[N]\\
+    \text{s.t.} \quad &x[k+1] = Ax[k]+Bu[k]\\
+    &x[0] = x_0
+\end{align}    
+\end{subequations}
+
+In this problem, $N$ is the control horizon. The optimization problem is solved and the resulting optimal input sequence $u^*[k]$ is applied to the system for one control horizon. After the horizon ends, the initial condition is updated and the problem is solved again. The resulting control policy is a time-varying policy that minimizes the state $x[k]$ and the control effort $u[k]$. The tradeoff between the state decay rate and the input effort is determined by the positive semi-definite symmetric cost matrix $Q$ and positive definite cost matrix $R$. $Q_f $ is the final state cost function not necessarily equal to $Q$ and might be important for some LQR applications, however, we will assume it is equal to the $Q$. Note that the cost function is a quadratic function and its minimum value is zero. So, if (A,B) are reachable, the LQR problem will drive the state to the origin eventually. We will prove this property in the following sections. 
+
+\subsection*{The Solution of the LQR Problem}
+\subsubsection{Solution with Least Squares}
+One naive approach to solve the LQR problem is to use a least squares formulation. We know that the system difference equation has the solution of,
+\begin{equation}
+    x[N] = A^Nx[0]+ \sum_{k=0}^{N-1} A^{N-1-k}Bu[k]
+\end{equation}
+In matrix form, 
+\begin{equation}
+    \underbrace{\begin{bmatrix}
+        x[0]\\
+        x[1]\\
+        \vdots\\
+        x[N-1]\\
+        x[N]
+    \end{bmatrix}}_X = \underbrace{\begin{bmatrix}
+        0 & 0 & 0 &\dots&0\\
+        B & 0 & 0 & \dots & 0\\
+        AB & B & 0 & \dots & 0\\
+        \vdots&\vdots&\vdots&\vdots&\vdots\\
+        A^{N-1}B & A^{N-2}B & \dots & \dots&B
+    \end{bmatrix}}_G\underbrace{\begin{bmatrix}
+        u[0]\\
+        u[1]\\
+        \vdots\\
+        u[N-1]\\
+        \end{bmatrix}}_U+\underbrace{\begin{bmatrix}
+        I\\
+        A\\
+        \vdots\\
+        A^{N}\\
+        \end{bmatrix}}_H + x_0 
+\end{equation}
+
+Also, assume that $\bar{Q} = diag_N(Q,Q,\dots,Q)$ and $\bar{R} = diag_{N-1}(R,R,\dots,R)$. So the LQR problem becomes,
+\begin{subequations}
+\begin{align}
+    &\min_{U} \quad X^T\bar{Q}X+U^T\bar{R}U\\
+    =& \min_{U} \quad U^T\underbrace{(G^T\bar{Q}G+\bar{R})}_MU + 2\underbrace{x_0H^TG}_\alpha U+\underbrace{x_0^2 H^T\bar{Q}H}_\beta\\
+    =& \min_{U} \quad U^TMU + 2\alpha U+\beta
+\end{align}    
+\end{subequations}
+
+Rewriting this problem to separate the constant part and $U$ dependent part,
+
+\begin{subequations}
+\begin{align}
+    =& \min_{U} \quad (U+M^{-1}\alpha)^TM(U+M^{-1}\alpha) + \underbrace{\beta - \alpha^TM^{-1}\alpha}_{Constant}
+\end{align}    
+\end{subequations}
+
+The constant term has no effect on the solution of the optimization problem. So,
+
+\begin{subequations}
+\begin{align}
+    =& \min_{U} \quad (U+M^{-1}\alpha)^TM(U+M^{-1}\alpha)\\
+    U^*& = -M^{-1}\alpha
+\end{align}    
+\end{subequations}
+
+With this least squares solution, we need to invert the $M$ matrix, which becomes huge as the control horizon increases. So, solving the LQR problem using the least squares formulation is not recommended. Next, we will see a recursive solution to the LQR problem, which is much more efficient and leads to the "infinite horizon" solution, which is not possible to get with the least squares solution.
+
+\subsection*{Solution with Dynamic Programming}
+
+Dynamic programming is an optimization method that solves the optimization problem backwards in time. In this case, we define a so called cost-to-go function $J_{k}(x,u)$. This function represents the total future cost at timestep $k$. So, we can write any optimization problem as the cost at the current timestep plus the cost-to-go. This fact is illustrated below.
+
+\begin{subequations}
+\begin{align}
+    J_0(x,u) &=\sum_{k=0}^{N-1}(x[k]^TQx[k] + u[k]^TRu[k])+x[N]^TQ_fx[N]\\
+    &J_k(x,u)=x[k]^TQx[k]+u^T[k]Ru[k] + J_{k+1}(x,u)
+\end{align}    
+\end{subequations}
+
+If we have a terminal cost, we can compute the cost-to-go backwards in time in an optimal way. By taking the optimal action at each timestep, we minimize the overall cost function $J_0$. This fact is called "Bellman Recursion" and Bellman himself explains this fact as: “An optimal policy has the property that, whatever the initial state and initial decision are, the remaining decisions must constitute an optimal policy with regard to the state resulting from the first decision.” 
+
+Now lets assume our optimal cost-to-go has the form of $J_k^*=x[k]^TS_kx[k]$. We know that our terminal cost (the cost at final timestep) is $J_N=x[N]^TQ_fx[N]$. So, we can let $S_N=Q_F$. Then the recursion takes the form below.
+
+\begin{subequations}
+\begin{align}
+    J_{N-1} &= x[N-1]^TQx[N-1]+u[N-1]^TRu[N-1]+x[N]^TS_Nx[N]\\&=x[N-1]^TQx[N-1]+u[N-1]^TRu[N-1]+(Ax[N-1]+Bu[N-1])^TS_N(Ax[N-1]+Bu[N-1])
+\end{align}
+\end{subequations}
+For the sake of notational simplicity, we will use $x[N-1] = x^-$,
+and $u[N-1] = u^-$, so that,
+\begin{equation}
+    J_{N-1} =\xp^TQ\xp+\up^TR\up+(A\xp+B\up)^TS_N(A\xp+B\up)
+\end{equation}
+To find the optimal input $\up^*$ that minimizes the cost-to-go at timestep $N-1$, we take the derivative of the expression with respect to $\up$ and equate it to zero.
+
+\begin{equation}
+    \frac{\partial J_{N-1}}{\partial \up} =2R\up^*+2B^TS_NA\xp+2B^TS_NB\up^*=0
+\end{equation}
+\begin{equation}
+    \up^* = -\underbrace{(R+B^TS_NB)^{-1}B^TS_NA}_{K_{N-1}}\xp
+\end{equation}
+
+We know $J_{N-1}^*=\xp^TS_{N-1}\xp$. If we plug-in the optimal input $\up^*$, we obtain, 
+
+\begin{equation}
+    \xp^TS_{N-1}\xp =\xp^TQ\xp+\xp^TK_N^TRK_N\xp+\xp(A-BK_N)^TS_N(A-BK_N)\xp
+\end{equation}
+
+\begin{equation}
+\label{dikkat}
+    \xp^TS_{N-1}\xp =\xp^T(Q+K_{N-1}^TRK_{N-1}+A^TS_NA-2A^TS_NBK_{N-1}+K_{N-1}^TB^TS_NBK_{N-1})\xp
+\end{equation}
+
+We write plug-in the expression for $K_N$ and make cancellations to obtain,
+
+\begin{equation}
+    S_{N-1} =Q+A^TS_NA-A^TS_NBK_N
+\end{equation}
+
+We can generalize this procedure to obtain the backwards LQR recursion.
+
+\begin{subequations}
+\begin{align}
+u^*[k] &= -\underbrace{(R+B^TS_{k+1}B)^{-1}B^TS_{k+1}A}_{K_k}x[k]\\
+S_{k}&=Q+A^TS_{k+1}A-A^TS_{k+1}BK_k\\
+&=Q+A^TS_{k+1}A-A^TS_{k+1}B(R+B^TS_{k+1}B)^{-1}B^TS_{k+1}A
+\end{align}
+\end{subequations}
+
+The cost-to-go function $J_k^*=x[k]^TS_kx[k]$ is actually derived from the famous Hamilton-Jacobi-Bellman equation, however, the derivation is out of the scope of this course. The finite horizon LQR problem can be solved backward in time by letting $S_N=Q_f$ and using the recursion.
+
+\subsection*{Infinite Horizon Case}
+The recursive nature of the dynamic programming procedure allows us to define an infinite horizon problem to obtain a time-independent feedback law. The intuition behind the infinite horizon case is that it minimizes the average effort to drive the state to the origin. In fact, it is guaranteed that the cost-to-go matrix $S_k$ and the feedback law $K_k$ converge to a stationary value $S_{\infty}$ and $K_\infty$ eventually, which can stabilize any system given $(A,B)$ pair is reachable. After $S_{\infty}$ and $K_\infty$ converges, the Bellman Recursion takes the form, 
+
+\begin{equation}
+S_{\infty}=Q+A^TS_{\infty}A-A^TS_{\infty}B(R+B^TS_{\infty}B)^{-1}B^TS_{\infty}A
+\end{equation}
+Which is called the Discrete Time Algebraic Riccati Equation (DARE). Solving DARE, we obtain $S_{\infty}$ and use it to find the infinite horizon gain $K_\infty$.
+
+\begin{equation}
+    u^*[k] = -\underbrace{(R+B^TS_{\infty} B)^{-1}B^TS_{\infty} A}_{K_\infty}x[k]
+\end{equation}
+
+\subsubsection*{The Asymptotic Stability of Infinite Horizon LQR Feedback Law}
+
+From previous sections, we know the closed loop system is asymptotically stable if there exist a positive definite (P,L) pair such that $A_cPA_c-P=-L$. If we let $P=S_{\infty}$ and $L = Q + K_\infty RK\infty $, 
+
+\begin{subequations}
+    \begin{align}
+        &(A-BK_\infty)^TS_\infty(A-BK)-S_\infty=-Q-K_\infty^TRK_\infty\\
+        \implies&A^TS_\infty A-2A^TS_\infty BK_\infty+K_\infty^TB^TS_\infty BK_\infty -S_\infty= -Q-K_\infty^TRK_\infty\\
+        \implies&S_\infty=Q+K_\infty^TRK_\infty+A^TS_\infty A-2A^TS_\infty BK_\infty+K_\infty^TB^TS_\infty BK_\infty
+    \end{align}
+\end{subequations}
+
+With a similar arrangement of the equation done in Equation (\ref{dikkat}), we obtain,
+
+\begin{equation}
+S_{\infty}=Q+A^TS_{\infty}A-A^TS_{\infty}B(R+B^TS_{\infty}B)^{-1}B^TS_{\infty}A
+\end{equation}
+
+which is the Discrete Time Algebraic Riccati Equation. Thus, we can say that, for a system with controllable $(A,B)$ pair, the solution of DARE $P_\infty$ and the resulting feedback law $K_\infty$ makes the closed loop system asymptotically stable with a decay rate of 
+
+\begin{equation}
+    \sqrt{1-\frac{\lambda_{min}(Q+K_\infty^TRK_\infty)}{\lambda_{max}(S_\infty)}}
+\end{equation}
+
+\subsubsection*{Rules of Thumb for LQR Design}
+\begin{itemize}
+    \item If full state information is not available, using $Q=CC^T$ gives a satisfactory performance by minimizing the output signal.
+    \item LQR is originally a regulator. To apply LQR to a tracking problem, consider the system given in Equation (\ref{lqi}) and use the cost function 
+    \begin{equation}
+        \sum_{k=0}^{N-1}\left[\bar{x}[k]^TQ\bar{x}[k]+u[k]^TRu[k]\right] + \bar{x}[N]^TQ_f\bar{x}[N]
+    \end{equation}
+    You can use the same DARE equation with the augmented $A$ and $B$ matrix of the integrator system. In this case, the control policy takes the name "Linear Quadratic Integrator (LQI)" instead of LQR. In this case, the addition of the integrator can make the system unreachable, especially for MIMO systems. Check the system's reachability before attempting to solve DARE.
+\end{itemize}
+
+
+
+% **** This ENDS THE EXAMPLES. DON'T DELETE THE FOLLOWING LINE:
+\end{document}
