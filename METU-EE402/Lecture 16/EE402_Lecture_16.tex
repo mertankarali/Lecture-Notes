@@ -257,7 +257,7 @@ Let $p^*(z) = z^n + a_1^* z^{n-1} + \cdots + a_{n-1}^* z + a_n^*$, then $K$
 can be computed as
 %
 \begin{align*}
-  K = \left[ \begin{array}{ccc} (a^*_n - a_n) & \cdots & (a^*_1 - a_1) \end{array} \right]
+  \hat{K} = \left[ \begin{array}{ccc} (a^*_n - a_n) & \cdots & (a^*_1 - a_1) \end{array} \right]
 \end{align*}
 
 However, what if the system is not in Reachable canonical form. We can
@@ -333,7 +333,7 @@ $u[k]$ is given as
 \begin{align*}
   u[k] &= -\hat{K} \hat{x}[k]
 \\ 
-&= - \hat{K} T^{-1} \hat{x}[k]
+&= - \hat{K} T^{-1} x[k]
 \\
 K &= \hat{K} T^{-1}
 \end{align*}
