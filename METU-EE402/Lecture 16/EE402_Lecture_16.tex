@@ -253,11 +253,11 @@ x[k+1] &= \left[ \begin{array}{ccccc} 0 & 1 & 0 & \cdots & 0 \\ 0 & 0 & 1 &
                                                          & -(a_1 + k_1) \end{array} \right] x[k]
 \end{align*}
 %
-Let $p^*(z) = z^2 + a_1^* z + \cdots + a_{n-1}^* z + a_n^*$, then $K$
+Let $p^*(z) = z^2 + a_1^* z + \cdots + a_{n-1}^* z + a_n^*$, then $\hat{K}$
 can be computed as
 %
 \begin{align*}
-  K = \left[ \begin{array}{ccc} (a^*_n - a_n) & \cdots & (a^*_1 - a_1) \end{array} \right]
+  \hat{K} = \left[ \begin{array}{ccc} (a^*_n - a_n) & \cdots & (a^*_1 - a_1) \end{array} \right]
 \end{align*}
 
 However, what if the system is not in Reachable canonical form. We can
@@ -333,7 +333,7 @@ $u[k]$ is given as
 \begin{align*}
   u[k] &= -\hat{K} \hat{x}[k]
 \\ 
-&= - \hat{K} T^{-1} \hat{x}[k]
+&= - \hat{K} T^{-1} x[k]
 \\
 K &= \hat{K} T^{-1}
 \end{align*}
