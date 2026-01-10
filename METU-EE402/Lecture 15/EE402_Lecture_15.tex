@@ -167,7 +167,7 @@ For LTI a discrete time state-space representation
   $x[k]$ from the origin (i.e. $x[0] = 0$) to the state $x_d$ in finite
   number of steps, i.e. $x[k] = x_d$ for some $k \in \mathbb{Z}^+$.
  
-  \item A state $x_d$ is said ti be \textbf{controllable},
+  \item A state $x_d$ is said to be \textbf{controllable},
   if there exist an input sequence, $u[k]$, that transfers the state vector 
   $x[k]$ from the initial state $x_d$ (i.e. $x[0] = x_d$) to the origin
   in finite number of steps, i.e. $x[k] = 0$ for some $k \in \mathbb{Z}^+$ 
@@ -180,7 +180,7 @@ For LTI a discrete time state-space representation
 (sub)space: $\mathcal{C} \subset \mathbb{R}^n$
 \end{itemize}
 
-Unlike from CT systems the Reachability and Controllability conditions 
+Unlike CT systems the Reachability and Controllability conditions 
 are not equivalent. 
 
 \begin{itemize}
@@ -190,7 +190,7 @@ are not equivalent.
 \end{itemize}
 
 Thus Reachability implies Controllability but Controllability does not
-necessarily implies Reachability. For this reason, the term of Reachability 
+necessarily imply Reachability. For this reason, the term of Reachability 
 is generally preferred for DT systems.
 
 \begin{itemize}
@@ -217,7 +217,7 @@ system.
  B &= \left[ \begin{array}{c} 0 \\ 0 \end{array} \right] 
 \end{align*}
 %
-Thus input has no affect on the states. If $x[0] = 0$, then
+Thus input has no effect on the states. If $x[0] = 0$, then
 $x[k] = 0 , \ \forall k > 0$. Thus the system is obviously 
 NOT Reachable. 
 
@@ -243,7 +243,7 @@ When $x[0] = 0$, the solution of $x[k]$ is given by
          \left[ \begin{array}{c|c|c|c|c} G^{k-1} H & G^{k-2} H &
          \cdots & G H & H \end{array} \right]
          \left[ \begin{array}{c}
-                  u[0] \\ u[1] \\ \vdots \\ u[k-2] \\ u[k-1]
+                   u[0] \\ u[1] \\ \vdots \\ u[k-2] \\ u[k-1]
          \end{array} \right]
 \end{align*}
 
@@ -255,7 +255,7 @@ Let
 \\
  \mathbf{U}_k &=
          \left[ \begin{array}{c}
-                  u[0] \\ u[1] \\ \vdots \\ u[k-2] \\ u[k-1]
+                   u[0] \\ u[1] \\ \vdots \\ u[k-2] \\ u[k-1]
          \end{array} \right]
 \end{align*}
 %
@@ -378,7 +378,7 @@ It turns out that it is more natural to think in terms of
    $\mathrm{dim} = \left( \bar{\mathcal{O}} \right) = 0$,
   %
  \item If any initial condition, $x(0)$ or $x[0]$, can be uniquely 
- determined from input-output measurement,
+  determined from input-output measurement,
 %
 \end{itemize} 
 then the system is called Observable. 
@@ -524,7 +524,7 @@ and only if,
 %
 However we don't need to test all $k \in \mathbb{Z}$. First of all
 it should be obvious that we should take $k$ as large as possible
-to guarantee weather $x_0$ is unobservable ot not. Formally speaking,
+to guarantee whether $x_0$ is unobservable or not. Formally speaking,
 %
 \begin{align*}
  \mathcal{N} \left( \mathbf{O}_{k+1} \right) \subset \mathcal{N} \left( \mathbf{O}_{k} \right)
@@ -586,7 +586,7 @@ x[k]
 +
 \left[ \begin{array}{c} 0 \\ 1 \end{array} \right] u[k]
 \\
-y[k] &= \left[ \begin{array}{cc} 1 & -1 \end{array} \right] x(t)
+y[k] &= \left[ \begin{array}{cc} 1 & -1 \end{array} \right] x[k]
 \end{align*}
 
 Is this system fully reachable and observable ?
@@ -604,7 +604,7 @@ is fully reachable. Now, let's compute the observability matrix
   \mathbf{O} = \left[ \begin{array}{cc} 1 & -1 \\ -1 & 1 \end{array} \right]
 \end{align*} 
 
-$\mathrm{rank}( \mathbf{M} ) = 1$, thus the state-space representation
+$\mathrm{rank}( \mathbf{O} ) = 1$, thus the state-space representation
 is not fully observable.
 
 In order to gain some insight regarding the reason of the lack of
@@ -612,32 +612,19 @@ observability, let's find the eigenvalues, as well as, closed-loop
 transfer function
 
 \begin{align*}
-\mathrm{det} \left( \left[ \begin{array}{cc} \lambda & -1 \\ -1 &
-                                                                  \lambda \end{array}
-                                                                  \right]
-                                                                  \right)
-                                                                  &=
-                                                                  \lambda^2
-                                                                  - 1
+\mathrm{det} \left( \left[ \begin{array}{cc} \lambda & -1 \\ -1 & \lambda \end{array} \right] \right)
+ &= \lambda^2 - 1
 \quad \rightarrow \quad \lambda_{1,2} = \pm 1
 \end{align*}
 %
 \begin{align*}
   H(z) &= \left[ \begin{array}{cc} 1 & -1 \end{array} \right]
-\left[ \begin{array}{cc} z & -1 \\ -1 & z\end{array}
-                                                                  \right]^{-1}
+\left[ \begin{array}{cc} z & -1 \\ -1 & z\end{array} \right]^{-1}
 \left[ \begin{array}{c} 0 \\ 1 \end{array} \right]
 \\
 &=
 \left[ \begin{array}{cc} 1 & -1 \end{array} \right]
-\left[ \begin{array}{cc} z & 1 \\ 1 & z\end{array}
-                                                                  \right]
-\left[ \begin{array}{c} 0 \\ 1 \end{array} \right] \frac{1}{z^2 - 1}
-\\
-&=
-\left[ \begin{array}{cc} 1 & -1 \end{array} \right]
-\left[ \begin{array}{cc} z & 1 \\ 1 & z\end{array}
-                                                                  \right]
+\left[ \begin{array}{cc} z & 1 \\ 1 & z\end{array} \right]
 \left[ \begin{array}{c} 0 \\ 1 \end{array} \right] \frac{1}{z^2 - 1}
 \\
 &=
@@ -652,9 +639,8 @@ transfer function
 We can see that even if $\lambda = 1$ is an eigenvalue of the
 state-space representation, it is not a pole of the transfer
 function. This implies that the mode of the system associated 
-with $\lambda = 1$ is reachable bot not observable. For this
+with $\lambda = 1$ is reachable but not observable. For this
 reason original state-space representation is not a minimal
 state-space representation. 
 
-% **** This ENDS THE EXAMPLES. DON'T DELETE THE FOLLOWING LINE:
 \end{document}

@@ -1,5 +1,3 @@
-
-
 \documentclass[twoside]{article}
 \setlength{\oddsidemargin}{0.25 in}
 \setlength{\evensidemargin}{-0.25 in}
@@ -136,8 +134,7 @@ undriven system at time $k$ to the state at an earlier time $m$
   \end{array} \right.
 \end{align*}
 %
-Note that state-transition matrix satisfies following important properties
-undriven system at time $k$ to the state at an earlier time $m$
+Note that the state transition matrix satisfies the following important properties of the undriven system at time $k$ to the state at an earlier time $m$
 %
 \begin{align*}
   \Phi[k,k] &= I
@@ -202,7 +199,7 @@ Let's consider following SISO LTP system
  \end{align*}
 \end{exmp}
 %
-convert this SISO LTP system into a MISO LTI system
+Convert this SISO LTP system into a MISO LTI system
 
 \textbf{Solution:} Let's derive $x[4]$ in terms of $x[0] , u[0] , u[1], u[2] , u[3]$
 
@@ -234,7 +231,7 @@ Let $\mathcal{X}[m] = x[4k]$,  $\mathcal{U}[m] = \begin{bmatrix} u[4k] & u[4k + 
 &= \mathcal{C} \mathcal{X}[m]
 \end{align*}
 %
-which is a multi input single output LTI state-space representation. Note that in this representation we technically perform periodic sampling and analyze the mapping between two sampling instants. However, in this representation we technically loose some information, e.g. measurements/outputs between to sampling instants at i.e. $y[4k+1] \ , \ y[4k+2] \, \ y[4k+3] \ k > 0$.
+which is a multi-input single-output LTI state-space representation. Note that in this representation we technically perform periodic sampling and analyze the mapping between two sampling instants. However, in this representation, we technically lose some information, e.g. measurements/outputs between to sampling instants, that is, $y[4k+1] \ , \ y[4k+2] \, \ y[4k+3] \ k > 0$.
 
 \begin{exmp}
 	Obtain a new state-space representation (still LTI) such that it also includes these measurements, i.e. $y[4k+1] \ , \ y[4k+2] \, \ y[4k+3] \ k > 0$.
@@ -252,8 +249,7 @@ State-space representation of a (causal \& finite dimensional) LTV CT system is 
   y(t) &= C(t) x(t) + D(t) u(t) , 
 \end{align*}
 %
-If we assume that the mapping, $t \mapsto A(t)$ is sufficiently well behaved (if $\forall (i,j) \ , \ a_{ij}(t)$ is piecewise continuous, with a fnite number of discontinuities in any nite interval)
-there exist a unique solution for the differential equation. In such a case we can describe the solution of the system of equations via a matrix function, $\Phi(t , \tau)$, that ha the following 
+If we assume that the mapping, $t \mapsto A(t)$ is sufficiently well behaved (if $\forall (i,j) \ , \ a_{ij}(t)$ is piecewise continuous, with a fnite number of discontinuities in any nite interval) there exist a unique solution for the differential equation. In such a case we can describe the solution of the system of equations via a matrix function, $\Phi(t , \tau)$, that the following 
 two fundamental properties
 %
 \begin{align*}
@@ -292,13 +288,13 @@ It is relatively easy to show that
 
 \subsection{Solution of Scalar LTV Models}
 
-State-evolution equation of a scalar LTV CT system is given by
+The state-evolutiontion equation of a scalar LTV CT system is given by
 %
 \begin{align*}
   \dot{x}(t) &= a(t) x(t) + b(t) u(t) , \ x(t) \in \mathbb{R} , \ y(t) \in \mathbb{R} \ ,\  u(t) \in \mathbb{R} , 
 \end{align*}
 %
-Let's try to find $x(t)$ and $\Phi(t,\tau)$ for zero-input response
+Let us try to find $x(t)$ and $\Phi(t,\tau)$ for a zero-input response.
 %
 \begin{align*}
   &\dot{x}(t) = a(t) x(t) \ \rightarrow \ \frac{1}{x} dx = a(t) dt \ \rightarrow \int\limits_{x(t_0)}^{x(t)} \frac{1}{x} dx = \int\limits_{t_0}^{t} a(\gamma) d\gamma \ \rightarrow \
@@ -307,7 +303,7 @@ Let's try to find $x(t)$ and $\Phi(t,\tau)$ for zero-input response
 &x(t) = e^{ \int\limits_{t_0}^{t} a(\gamma) d\gamma  }  x_0 \ \rightarrow \ \Phi(t,\tau) = e^{ \int\limits_{\tau}^{t} a(\gamma) d\gamma  } 
 \end{align*}
 %
-General solution then can be expressed as
+The generaleral solution then can be expressed as
 %
 \begin{align*}
 x(t) &= \Phi(t , t_0) x_0 +  \int\limits_{t_0}^{t} \Phi(t , \tau) B(\tau) u(\tau) d\tau
@@ -387,7 +383,7 @@ Thus similar to constant $A$ case if $\begin{pmatrix} \int\limits_{0}^{t} A(\gam
 \frac{d}{dt} \Psi(t,t_0) &= \frac{d}{dt} e^{ \int\limits_{t_0}^{t} A(\gamma) d\gamma }  = A(t) e^{ \int\limits_{t_0}^{t} A(\gamma) d\gamma } = e^{ \int\limits_{t_0}^{t} A(\gamma) d\gamma } A(t)
 \end{align*}
 % 
-Now let's check if $\Psi(t,t_0) = \Phi(t,t_0)$, i.e. control weather $e^{ \int\limits_{t_0}^{t} A(\gamma) d\gamma }$ is a state transition matrix of the given LTV system
+Now let us check if $\Psi(t,t_0) = \Phi(t,t_0)$, i.e. control weather $e^{ \int\limits_{t_0}^{t} A(\gamma) d\gamma }$ is a state transition matrix of the given LTV system
 %
 \begin{align*}
 \Psi(t_0,t_0) = e^{ \int\limits_{0}^{0} A(\gamma) d\gamma } = I \ , \ \checkmark
@@ -395,10 +391,10 @@ Now let's check if $\Psi(t,t_0) = \Phi(t,t_0)$, i.e. control weather $e^{ \int\l
 \frac{d}{dt} \Psi(t,\tau) &= A(t) \Psi(t,\tau) \ , \ \checkmark
 \end{align*}
 %
-Thus $\Phi(t,t_0)  = e^{ \int\limits_{t_0}^{t} A(\gamma) d\gamma }$ is the state-transition matrix of the system under the condition that 
-$\begin{pmatrix} \int\limits_{0}^{t} A(\gamma) d\gamma \end{pmatrix}$ and $A(t)$ commutes.
+Thus, $\Phi(t,t_0)  = e^{ \int\limits_{t_0}^{t} A(\gamma) d\gamma }$ is the state transition matrix of the system under the condition that
+$\begin{pmatrix} \int\limits_{0}^{t} A(\gamma) d\gamma \end{pmatrix}$ and $A(t)$ commute.
 
-Two special cases for which $\begin{pmatrix} \int\limits_{0}^{t} A(\gamma) d\gamma \end{pmatrix}$ and $A(t)$ commutes
+Two special cases for which $\begin{pmatrix} \int\limits_{0}^{t} A(\gamma) d\gamma \end{pmatrix}$ and $A(t)$ commute
 %
 \begin{itemize}
 	\item $A(t)$ is a diagonal matrix $\forall t \in \mathbb{R}$
@@ -431,10 +427,10 @@ Suppose that $\exists \ \bar{t}$ such that $\det( X(\bar{t}) ) = 0$, then we kno
 	\mathrm{dim} \mathcal{N}\left( X(\bar{t}) \right) > 0 \ \rightarrow \ \exists \ \bar{v}\neq0 \ s.t. \ X(\bar{t}) \bar{v} = 0
 \end{align*}
 %
-now let $\zeta(t) = X(\bar{t}) \bar{v}$ and take the derivate of $\zeta(t)$
+now let $\zeta(t) = X(t) \bar{v}$ and take the derivate of $\zeta(t)$
 %
 \begin{align*}
-	\dot{\zeta}(t) &= \dot{X}(\bar{t}) \bar{v} = A(t) \left[ X(\bar{t}) \bar{v} \right] = A(t) \zeta(t)
+	\dot{\zeta}(t) &= \dot{X}(t) \bar{v} = A(t) \left[ X(t) \bar{v} \right] = A(t) \zeta(t)
 	\\
 	\dot{\zeta}(t) &= A(t) \zeta(t)
 \end{align*}
@@ -442,7 +438,7 @@ now let $\zeta(t) = X(\bar{t}) \bar{v}$ and take the derivate of $\zeta(t)$
 Since we assumed that $X(\bar{t}) \bar{v} = 0$
 %
 \begin{align*}
-	\zeta(\bar{t}) &= 0 \ \rightarrow \ \zeta(t) = 0 \ \mathrm{for} \ t < \bar{t} \ \mathrm{(CT-Linear-System)}
+	\zeta(\bar{t}) &= 0 \ \& \ \dot{\zeta}(\bar{t}) = 0 \rightarrow \ \zeta(t) = 0 \ \mathrm{for} \ t < \bar{t} \ \mathrm{(CT-Linear-System)}
 	\\
 	\zeta(t_0) &= 0 \ \rightarrow \ X(t_0) \bar{v} = 0 \ \rightarrow \ \mathrm{det}[X(t_0)]=0 \ \rightarrow \ \mathrm{contrdiction}
 \end{align*}
@@ -553,7 +549,7 @@ Compute the unit step response for the same system given that
 	\\
 \end{align*}
 %
-Now we can find the solution
+Now we can find the solution.
 %
 \begin{align*}
 	y(t) &= C(t) \int\limits_{t_0}^{t} \Phi(t , \tau) B(\tau) u(\tau) d\tau 
