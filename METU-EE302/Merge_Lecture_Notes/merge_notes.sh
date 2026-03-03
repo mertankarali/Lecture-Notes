@@ -26,18 +26,16 @@ fi
 
 
 cd $PWD
-rm -r $PWD/_outputs_/*
+# Create the output directory if it doesn't exist and remove any existing merged files
 mkdir -p $PWD/_outputs_
+rm -rf $PWD/_outputs_/*
 
-let "page_number=$(pdfinfo ../Lecture\ 1/EE302_Lecture_1.pdf  | grep Pages | awk '{print $2}')+1"
-echo "1 $page_number Lecture 2">>/$PWD/_outputs_/outliner.txt
+# We add the first lecture file as merged so that loop works 
 pdfunite ../Lecture\ 1/EE302_Lecture_1.pdf  ../Lecture\ 2/EE302_Lecture_2.pdf _outputs_/merged.pdf
 # Keep these in for magical experience
 echo "Merging Lecture 1"
 echo "Merging Lecture 2"
 
-
-# We add the first lecture file as merged so that loop works 
 cp ../Lecture\ 1/EE302_Lecture_1.pdf $PWD/_outputs_/merged.pdf
 for ((c=2; c<=$number_of_lectures; c++))
 do
@@ -47,6 +45,7 @@ rm $PWD/_outputs_/merged.pdf
 mv $PWD/_outputs_/temp.pdf $PWD/_outputs_/merged.pdf
 
 done
+# Move the merged file to the output directory with the desired name 
 mv $PWD/_outputs_/merged.pdf $PWD/_outputs_/$output_name.pdf
 echo The merged file is located at $PWD/_outputs_/$output_name.pdf
 
