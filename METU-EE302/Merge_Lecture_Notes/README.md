@@ -13,9 +13,14 @@ and the run the script by using terminal
 
 `./merge_notes.sh`
 
+
+compile_notes option flag inside merge_notes.sh allows you to compile the pdf files again. Set it to 1 if you want to compile. 
+Defaults to 0.
+
 ##### Dependencies:
 
 I use pdfunite and pdfinfo commands which use "poppler-utils" package. 
+If you also want to compile the pdf files you should have "tex-live" packages. 
 
 To install it;
 
@@ -23,13 +28,12 @@ To install it;
 
 `sudo apt-get install poppler-utils`
 
+`sudo apt-get install texlive-full`
+You may not need the full texlive suit currently it needs a disk space around 7GB however I didn't test the other variations.
+
 ##### Outputs
 
-Script has two two final output and one intermediate output stored in _outputs\_
-
 1. MertAnkaraliEE302_Complete.pdf: This is one of the final outputs. This is the merged and outlined PDF file. Note that name of this file can be configured inside the script. 
-2. outliner.txt: This is the second final outputs. During merge process this file stores page numbers of the Lectures so that it can be used  for outlining process.
-3. temp.pdf: This is temporary PDF file to merge files.
 
 ##### Parameters
 
@@ -42,3 +46,7 @@ There are two parameters to configure. One can configure them by just edit the s
 
 The script searches the PDF files in name format "[EE]...[.pdf]"  in Lecture folders. Therefore to use the script please don't add any other pdf file starts with "EE" inside Lecture folders and don't change the names of the Lecture PDF files.
 
+In the previous versions there was a way for generating the outline which can be used to navigate the document however currently poppler package does not provide it as far as I can see to solve the problem there is an experimental (vibecoded) generate_merged.py file. 
+`python ./generate_merged.py` 
+then run 
+`pdflatex ./Merged_lecture_notes.tex` 
