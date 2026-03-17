@@ -122,7 +122,7 @@ A PID controller has the following forms in time and Laplace domain
    U(s) &= \left[ K_P + K_D s + K_I \frac{1}{s} \right] E(s)
   \end{align*}
   
-In this lecture we will analyze the the effects of PID coefficients on 
+In this lecture we will analyze the effects of PID coefficients on 
 the transient and steady-state performance on a $2^{nd}$ order plant.
 %
 
@@ -143,7 +143,7 @@ SInce $C(s) = K_P$, let's first analyze the steady-state error performance
  Type \ 0 \quad K_p = K_P
 \end{align*}
 % 
-Thus steady-state error for unit-step and unit-ramp inputs can be find
+Thus steady-state error for unit-step and unit-ramp inputs can be found
 as
 \begin{itemize}
 \item Unit step: $e_{ss} = \frac{1}{1 + K_P}$, i.e. $K_p \nearrow \
@@ -203,7 +203,7 @@ axis. From previous lectures we kow that in this scenario
   \end{align*}
 %
 In conclusion, If the plant is an under-damped system (i.e. $\zeta <
-1$), them increasing the P gains has an negative effect on 
+1$), them increasing the P gains has a negative effect on 
 the closed-loop performance (transient). 
 
 \textbf{Example 1:} Let $G(s) = \frac{1}{(s+0.5)(s+5)}$ (and over-damp
@@ -215,7 +215,7 @@ plant), then compute the unit-step steady state error for $K_p = 2$ and $K_P = 5
   e_{5} &= \frac{1}{1 + 5 / 2.5} \approx 0.33 \ , (\%33) 
 \end{align*}
 %
-Obviously, stead-state performance is better with $K_p = 5$
+Obviously, steady-state performance is better with $K_p = 5$
 compared to $K_p = 1$. Now compute the closed-loop poles
 for $K_p = 1$ and $K_P = 5$, and estimate associated 
 settling times ($\%2$).
@@ -260,7 +260,7 @@ plant), then compute the unit-step steady state error for $K_p = 3$ and $K_P = 8
   e_{8} &= \frac{1}{1 + 8 / 5} \approx 0.385 \ , (\%38.5) 
 \end{align*}
 %
-Obviously, stead-state performance is better with $K_p = 8$
+Obviously, steady-state performance is better with $K_p = 8$
 compared to $K_p = 3$. Now compute the closed-loop poles
 for $K_p = 3$ and $K_P = 8$, and estimate associated 
 maximum overshoots
@@ -290,7 +290,7 @@ verify these observations.
 
 \vspace{12 pt}
 
-We verify that stead-state performance is better with a larger
+We verify that steady-state performance is better with a larger
 P gain. However, transent performance is worse with a
 larger P-gain. This implies that if the plant is an under-damped
 plant, then P controller has some serious limitations. 
@@ -304,7 +304,7 @@ In the classical form of PD controller, $C(s)$, takes the form
  C(s) = K_P + K_D s
 \end{align*}
 %
-Let's first analyze the affect of $K_D$ term on steady-state 
+Let's first analyze the effect of $K_D$ term on steady-state 
 performance on the same case ($2^{nd}$ order plant in standard form) 
 %
 \begin{align*}
@@ -355,7 +355,7 @@ term can be used to suppress oscillations and overshoot.
 Note that in the closed-loop transfer function, numerator part
 has a zero due to $K_D \omega_n^2 s$ term, which implies that
 the closed-loop transfer function is not in standard $2^{nd}$ order
-form. One should note the fact that, the existing of closed-loop
+form. One should note the fact that, the existance of closed-loop
 zero can affect the accuracy of our closed-loop transient performance
 metric calculations (most probably deviations will be minor).
 %
@@ -410,8 +410,8 @@ can meet the specifications.
 We can observe that the computed over-shoot is $\% 5$, and indeed
 higher than the requirement. Moreover, the gap between estimated
 and numerically computed over-shoot is around $\%3.5$. Obviously,
-the $K_D s = 4 s$ term in the numerator affects the output behavior and
-its affect should be maximum when $0 < t < t_s$. In order see how
+the $K_D s = 4 s$ term in the numerator effects the output behavior and
+its effect should be maximum when $0 < t < t_s$. In order see how
 $K_D s = 4 s$, let's compre step responses of following transfer
 functions
 %
@@ -437,7 +437,7 @@ $\hat{T}(s)$ is in standard form, thus has no zeros.
 We can see that there exist non-negligible differences
 between two transfer functions, which clearly shows that
 the numerator dynamics can substantially affect the response.
-In this context, we should think as the transient performance
+In this context, we should think of the transient performance
 metrics and associated approximate estimation formulas 
 as heuristics which guides the design of controllers. 
 
@@ -672,9 +672,9 @@ and the closed-loop system with PI controller with $K_P = 4 \ , K_I = 8$.
 In this illustration, we can see that settling time for both
 I controllers is around $4 s$, however settling time for the
 PI controller is $1 s$ which is even better than our estimation. 
-The gap between settling time estimates come form the affect
-of zero introduced by the PI controller. If one carefully, analyzes
-the closed-loop transfer function he/she can see that a pole-zero
+The gap between settling time estimates come form the effect
+of zero introduced by the PI controller. If one carefully analyzes
+the closed-loop transfer function, he/she can see that a pole-zero
 cancellation occurs (which may not be a good feature for practical
 reasons). Technically, the closed-loop transfer function 
 is reduced to a first order system in this case (????). 
@@ -724,7 +724,7 @@ We can see that the closed-loop transfer function has three poles, and
 we have three parameters to tune. If we have no limits on gains, we
 can place the closed-loop poles to any desired location. However,
 numerator has now two zeros, thus it is now harder to predict the
-affect of closed-loop zeros on the output behavior. 
+effect of closed-loop zeros on the output behavior. 
 
 \textbf{Example 4:} Let $G(s) = \frac{1}{s^2 + 4 s + 5}$, Design a
 PID controller such that we observe zero unit-step steady state error, 
