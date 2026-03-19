@@ -1,22 +1,23 @@
 %
-
-
+% This is a borrowed LaTeX template file for lecture notes for CS267,
+% Applications of Parallel Computing, UCBerkeley EECS Department.
+% Now being used for CMU's 10725 Fall 2012 Optimization course
+% taught by Geoff Gordon and Ryan Tibshirani. When preparing 
+% LaTeX notes for this class, please use this template.
+%
 \documentclass[twoside]{article}
-\setlength{\oddsidemargin}{0.25 in}
-\setlength{\evensidemargin}{-0.25 in}
-\setlength{\topmargin}{-0.6 in}
-\setlength{\textwidth}{6.5 in}
-\setlength{\textheight}{8.5 in}
-\setlength{\headsep}{0.75 in}
+
+\usepackage[a4paper, top=2.5cm, bottom=2.5cm, left=2cm, right=2cm]{geometry}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta, positioning, shapes.geometric}
+\usepackage[most]{tcolorbox}
+
 \setlength{\parindent}{0 in}
 \setlength{\parskip}{0.1 in}
 
-%
 % ADD PACKAGES here:
-%
-
 \usepackage{amsmath,amsfonts,graphicx,amssymb,mathtools}
-
 
 \newcounter{lecnum}
 \renewcommand{\thepage}{\thelecnum-\arabic{page}}
@@ -25,9 +26,17 @@
 \renewcommand{\thefigure}{\thelecnum.\arabic{figure}}
 \renewcommand{\thetable}{\thelecnum.\arabic{table}}
 
-%
+% --- TCOLORBOX STYLES ---
+\newtcolorbox{conceptbox}[1]{
+  colback=blue!5!white,
+  colframe=blue,
+  fonttitle=\bfseries,
+  title=#1,
+  arc=2mm,
+  boxrule=0.5mm
+}
+
 % The following macro is used to generate the header.
-%
 \newcommand{\lecture}[4]{
    \pagestyle{myheadings}
    \thispagestyle{plain}
@@ -39,7 +48,7 @@
    \framebox{
       \vbox{\vspace{2mm}
     \hbox to 6.28in { {\bf EE502 - Linear Systems Theory II
-	\hfill Spring 2032} }
+    \hfill Spring 2032} }
        \vspace{4mm}
        \hbox to 6.28in { {\Large \hfill Lecture #1 \hfill} }
        \vspace{2mm}
@@ -60,13 +69,12 @@
 \def\endrefs{\end{list}}
 \def\bibentry#1{\item[\hbox{[#1]}]}
 
-
 \newcommand{\fig}[3]{
-			\vspace{#2}
-			\begin{center}
-			Figure \thelecnum.#1:~#3
-			\end{center}
-	}
+            \vspace{#2}
+            \begin{center}
+            Figure \thelecnum.#1:~#3
+            \end{center}
+    }
 
 % Use these for theorems, lemmas, proofs, etc.
 \newtheorem{theorem}{Theorem}[lecnum]
@@ -78,13 +86,10 @@
 \newenvironment{proof}{{\bf Proof:}}{\hfill\rule{2mm}{2mm}}
 \newtheorem{exmp}[theorem]{Ex}
 
-% **** IF YOU WANT TO DEFINE ADDITIONAL MACROS FOR YOURSELF, PUT THEM HERE:
-
 \begin{document}
 
 % Lecture Details
-\lecture{6}{Assoc. Prof. M. Mert Ankarali}
-
+\lecture{6}{Assoc. Prof. M. Mert Ankarali}{}{}
 
 \section{Modal Decomposition of State-Space Models}
 
@@ -95,16 +100,16 @@ Let's consider autonomous LTI CT and DT state-space models
 \begin{align*}
        \dot{x} &= A x
        \\
-	x[k+1] &= A x[k]
+    x[k+1] &= A x[k]
 \end{align*}
 %
 Let $x_0 = \alpha v_i$, where $v_i$ is an eigenvector of $A$ associated with eigenvalue $\lambda_i$, we can 
 then find the solution for both systems
 %
 \begin{align*}
-	x(t) &= e^{A t} x_0 = \alpha e^{\lambda_i t} v_i
+    x(t) &= e^{A t} x_0 = \alpha e^{\lambda_i t} v_i
        \\
-	x[k] &= A^k x_0 = \alpha \lambda_i^{k} v_i
+    x[k] &= A^k x_0 = \alpha \lambda_i^{k} v_i
 \end{align*}
 %
 Now let's assume that $A$ is diagonalizable, then we know that there exists a set of $n$ linearly independent eigenvectors 
@@ -112,210 +117,204 @@ $\mathcal{V} = \lbrace v_i  \ , \ \cdots \ , \ v_n \rbrace$. Thus, we can write 
 as a linear combination of eigenvectors, i.e.
 %
 \begin{align*}
-	x_0 = \sum\limits_{i=1}^n \alpha_i v_i
+    x_0 = \sum\limits_{i=1}^n \alpha_i v_i
 \end{align*}
 %
-if we use this (modal) decomposition we can find the solutions of DT and CT equations as
-%
+If we use this (modal) decomposition we can find the solutions of DT and CT equations as
 %
 \begin{align*}
-	x(t) &= e^{A t} x_0 = \sum\limits_{i=1}^n \alpha_i e^{\lambda_i t} v_i
+    x(t) &= e^{A t} x_0 = \sum\limits_{i=1}^n \alpha_i e^{\lambda_i t} v_i
        \\
-	x[k] &= A^k x_0 = \sum\limits_{i=1}^n \alpha_i \lambda_i^{k} v_i
+    x[k] &= A^k x_0 = \sum\limits_{i=1}^n \alpha_i \lambda_i^{k} v_i
 \end{align*}
 %
 where $e^{\lambda_i t} v_i$ ($\lambda_i^{k} v_i$ in DT case) is called a ``mode'' of the system. Now let's try to 
-find $\lbrace \alpha_i \ ,  \ \cdots \ , \ \alpha_n \rbrace$ via diagonalizition of $A$
+find $\lbrace \alpha_i \ ,  \ \cdots \ , \ \alpha_n \rbrace$ via diagonalization of $A$
 %
 \begin{align*}
-	A &= V \Lambda V^{-1} = V \left[ \begin{array}{ccccc} \lambda_1 &  & & &  \\  & \lambda_2  &  & 0 &  \\ &  & \ddots & \\ & 0 & & \ddots & \\ & &  & &  \lambda_n \end{array} \right] V^{-1} \ , \mathrm{where}
-	\\
-	 V &= \left[ \begin{array}{ccc} v_1 & \cdots & v_n \end{array} \right] \ , \ \mathrm{where} \ A v_i = \lambda_i v_i 
- \\
- V^{-1} &= \bar{V} =  \left[ \begin{array}{c} \bar{v}_1^T \\ \vdots \\ \bar{v}_n^T \end{array} \right] \ , \ \mathrm{where} \ \bar{v}_i^T A = \lambda_i \bar{v}_i^T
-  \\
+    A &= V \Lambda V^{-1} = V \begin{bmatrix} \lambda_1 & & & & \\ & \lambda_2 & & 0 & \\ & & \ddots & & \\ & 0 & & \ddots & \\ & & & & \lambda_n \end{bmatrix} V^{-1} \ , \mathrm{where}
+    \\[1ex]
+     V &= \begin{bmatrix} v_1 & \cdots & v_n \end{bmatrix} \ , \ \mathrm{where} \ A v_i = \lambda_i v_i 
+ \\[1ex]
+ V^{-1} &= \bar{V} =  \begin{bmatrix} \bar{v}_1^T \\ \vdots \\ \bar{v}_n^T \end{bmatrix} \ , \ \mathrm{where} \ \bar{v}_i^T A = \lambda_i \bar{v}_i^T
+  \\[1ex]
 \bar{V} V &= V \bar{V} = I \ , \ \bar{v}_i^T v_i = 1 \ , \  \bar{v}_i^T v_j = 0 \ \mathrm{for} \, i \neq j
 \end{align*}
 %
 Now let's compute the zero-input responses for an arbitrary $x_0$
 %
-%
 \begin{align*}
-	x(t) &= e^{A t} x_0 = V e^{\Lambda t} V^{-1} x_0 = \left[ \begin{array}{ccc} v_1 & \cdots v_n \end{array} \right] 
-	\left[ \begin{array}{c} e^{\lambda_1 t} \bar{v}_1^T x_0 \\  \vdots \\ e^{\lambda_n t} \bar{v}_n^T x_0 \end{array} \right] 
-	= \sum\limits_{i=1}^n v_i e^{\lambda_i t} \left( \bar{v}_i^T x_0 \right) \ \rightarrow \ \alpha_i = \bar{v}_i^T x_0
-       \\
-	x[k] &= V \Lambda^k V^{-1} x_0 = \left[ \begin{array}{ccc} v_1 & \cdots v_n \end{array} \right] 
-	\left[ \begin{array}{c} \lambda_1^k \bar{v}_1^T x_0 \\  \vdots \\ \lambda_n^k \bar{v}_n^T x_0 \end{array} \right] 
-	= \sum\limits_{i=1}^n v_i \lambda_i^k \left( \bar{v}_i^T x_0 \right) \ \rightarrow \ \alpha_i = \bar{v}_i^T x_0
+    x(t) &= e^{A t} x_0 = V e^{\Lambda t} V^{-1} x_0 = \begin{bmatrix} v_1 & \cdots & v_n \end{bmatrix} 
+    \begin{bmatrix} e^{\lambda_1 t} \bar{v}_1^T x_0 \\  \vdots \\ e^{\lambda_n t} \bar{v}_n^T x_0 \end{bmatrix} 
+    = \sum\limits_{i=1}^n v_i e^{\lambda_i t} \left( \bar{v}_i^T x_0 \right) \ \rightarrow \ \alpha_i = \bar{v}_i^T x_0
+       \\[1ex]
+    x[k] &= V \Lambda^k V^{-1} x_0 = \begin{bmatrix} v_1 & \cdots & v_n \end{bmatrix} 
+    \begin{bmatrix} \lambda_1^k \bar{v}_1^T x_0 \\  \vdots \\ \lambda_n^k \bar{v}_n^T x_0 \end{bmatrix} 
+    = \sum\limits_{i=1}^n v_i \lambda_i^k \left( \bar{v}_i^T x_0 \right) \ \rightarrow \ \alpha_i = \bar{v}_i^T x_0
 \end{align*}
 %
-Based on these results, we can see that in order to excite the $i^{th}$ mode the system, we need $\bar{v}_i^T x_0 \neq 0$. If we treat initial conditions 
-as inputs this generates a reachability/controllability argument. Let's also analyze the output response
+Based on these results, we can see that in order to excite the $i^{th}$ mode of the system, we need $\bar{v}_i^T x_0 \neq 0$. If we treat initial conditions 
+as inputs this generates a reachability/controllability argument. 
+
+\begin{conceptbox}{Key Intuition: The Mode}
+If the initial condition $x_0$ lies exactly on an eigenvector $v_i$, the system state never leaves the line spanned by that vector. It simply grows or decays along that line according to the eigenvalue $\lambda_i$.
+\end{conceptbox}
+
+Let's also analyze the output response
 %
 \begin{align*}
-	y(t) &= C x(t) = C e^{A t} x_0 = \sum\limits_{i=1}^n (C v_i) e^{\lambda_i t} \left( \bar{v}_i^T x_0 \right) 
-       \\
-	y[k] &= C x[k] 
-	= \sum\limits_{i=1}^n (C v_i) \lambda_i^k \left( \bar{v}_i^T x_0 \right) 
+    y(t) &= C x(t) = C e^{A t} x_0 = \sum\limits_{i=1}^n (C v_i) e^{\lambda_i t} \left( \bar{v}_i^T x_0 \right) 
+       \\[1ex]
+    y[k] &= C x[k] 
+    = \sum\limits_{i=1}^n (C v_i) \lambda_i^k \left( \bar{v}_i^T x_0 \right) 
 \end{align*}
 %
 We can see that if $C v_i = 0$, then we can not observe the $i^{th}$ mode at the output $\forall x_0 \in \mathbb{R}^{n}$. Thus we can conclude that in order to have a fully 
-observable system all modes needs to be observable, i.e. i.e. $C v_i \neq 0 \ \forall i \in \lbrace 1 , \cdots , n \rbrace$.
+observable system all modes need to be observable, i.e. $C v_i \neq 0 \ \forall i \in \lbrace 1 , \cdots , n \rbrace$.
 
 Now let's try to find a similar solution for systems where matrix $A$ can not be diagonalizable. For the sake of clarity let's focus on 
-matrices that is composed of a single Jordan block
+matrices that are composed of a single Jordan block
 %
 \begin{align*}
-A &= G J G^{-1} = G \left[  \begin{array}{ccccc} \lambda & 1 & 0 & \cdots & 0  \\ 0 & \lambda & 1 & 0 & \cdots  \\ 
-\vdots &  & \ddots &  \\ & & & \ddots & 1 \\
-0 &  &  & 0 & \lambda \end{array} \right] G^{-1} 
+A &= G J G^{-1} = G \begin{bmatrix} \lambda & 1 & 0 & \cdots & 0 \\ 0 & \lambda & 1 & 0 & \cdots \\ \vdots & \vdots & \ddots & \vdots & \vdots \\ 0 & 0 & \cdots & \lambda & 1 \\ 0 & 0 & \cdots & 0 & \lambda \end{bmatrix} G^{-1} 
 \end{align*}
 %
 \noindent where
 %
 \begin{align*}
-	 G &= \left[ \begin{array}{ccc} g_1 & \cdots & g_n \end{array} \right]
-	 \\
+     G &= \begin{bmatrix} g_1 & \cdots & g_n \end{bmatrix}
+     \\[1ex]
  A g_1 &= \lambda g_1 \ \rightarrow \ (A - \lambda I) g_1 = 0
-	\\
-	A g_2 &= \lambda g_2 + g_1 \ \rightarrow \ (A - \lambda I) g_2 = g_1 \ , \ \mathrm{note} \ (A - \lambda I)^2 g_2 = 0 \ \& \ (A - \lambda I) g_2 \neq 0
-		\\
-	A g_3 &= \lambda g_3 + g_2 \ \rightarrow \ (A - \lambda I) g_3 = g_2 \ , \ \mathrm{note} \ (A - \lambda I)^3 g_3 = 0 \ \& \ (A - \lambda I)^2 g_3 \neq 0
-	\\
-	&\vdots
-	\\
-	A g_{n} &= \lambda g_{n} + g_{n-1} \ \rightarrow \ (A - \lambda I) g_n = g_{n-1} \ , \ \mathrm{note} \ (A - \lambda I)^n g_n = 0 \ \& \ (A - \lambda I)^{n-1} g_{n} \neq 0
+    \\[1ex]
+    A g_2 &= \lambda g_2 + g_1 \ \rightarrow \ (A - \lambda I) g_2 = g_1 \ , \ \mathrm{note} \ (A - \lambda I)^2 g_2 = 0 \ \& \ (A - \lambda I) g_2 \neq 0
+        \\[1ex]
+    A g_3 &= \lambda g_3 + g_2 \ \rightarrow \ (A - \lambda I) g_3 = g_2 \ , \ \mathrm{note} \ (A - \lambda I)^3 g_3 = 0 \ \& \ (A - \lambda I)^2 g_3 \neq 0
+    \\[1ex]
+    &\vdots
+    \\[1ex]
+    A g_{n} &= \lambda g_{n} + g_{n-1} \ \rightarrow \ (A - \lambda I) g_n = g_{n-1} \ , \ \mathrm{note} \ (A - \lambda I)^n g_n = 0 \ \& \ (A - \lambda I)^{n-1} g_{n} \neq 0
 \end{align*}
 and we also know that
 \begin{align*}
- G^{-1} &= \bar{G} =  \left[ \begin{array}{c} \bar{g}_1^T \\ \vdots \\ \bar{g}_n^T \end{array} \right] 
-  \\
+ G^{-1} &= \bar{G} =  \begin{bmatrix} \bar{g}_1^T \\ \vdots \\ \bar{g}_n^T \end{bmatrix} 
+  \\[1ex]
 \bar{G} G &= G \bar{G} = I \ , \ \bar{g}_i^T g_i = 1 \ , \  \bar{g}_i^T g_j = 0 \ \mathrm{for} \, i \neq j
 \end{align*}
 %
 Let $x_0 = \alpha_1 g_1$, i.e. the eigenvector of $A$, then we can find the responses as
- %
-\begin{align*}
-	x(t) &= e^{A t} g_1 = G e^{J t} G^{-1} g_1 \alpha_1
-	\\ &= \left[ \begin{array}{ccc} g_1 & \cdots g_n \end{array} \right] 
-	%
-\left[  \begin{array}{cccccc} e^{\lambda t} & t e^{\lambda t} & \frac{t^2}{2 !} e^{\lambda t} 
-& \cdots & \frac{t^{n-2}}{(n-2) !} e^{\lambda t}  & \frac{t^{n-1}}{(n-1) !} e^{\lambda t}
-\\ 0 & e^{\lambda t} & t e^{\lambda t} & \frac{t^2}{2 !} e^{\lambda t} & \cdots  & \frac{t^{n-2}}{(n-2) !} e^{\lambda t}
-\\  \vdots &  & \ddots &  &  & \vdots \\ 
-& & & e^{\lambda t} & t e^{\lambda t} & \frac{t^2}{2 !} e^{\lambda t}
-\\ 0 &  & \cdots  &  & e^{\lambda t} & t e^{\lambda t} \\
-0 &  & \cdots &  & 0 & e^{\lambda t} \end{array} \right] 
 %
-	\left[ \begin{array}{c} \alpha_1 \\ 0 \\ \vdots \\ 0 \end{array} \right] 
-	\\ &= \alpha_1 e^{\lambda t} g_1  
-       \\
-       \\
-	x[k] &= G J^k G^{-1} x_0 = \alpha_1 \lambda^k g_1   
+\begin{align*}
+    x(t) &= e^{A t} g_1 = G e^{J t} G^{-1} g_1 \alpha_1
+    \\ &= \begin{bmatrix} g_1 & \cdots & g_n \end{bmatrix} 
+    %
+\begin{bmatrix} e^{\lambda t} & t e^{\lambda t} & \frac{t^2}{2 !} e^{\lambda t} & \cdots & \frac{t^{n-2}}{(n-2) !} e^{\lambda t}  & \frac{t^{n-1}}{(n-1) !} e^{\lambda t} \\
+0 & e^{\lambda t} & t e^{\lambda t} & \frac{t^2}{2 !} e^{\lambda t} & \cdots  & \frac{t^{n-2}}{(n-2) !} e^{\lambda t} \\
+\vdots & & \ddots & & & \vdots \\
+& & & e^{\lambda t} & t e^{\lambda t} & \frac{t^2}{2 !} e^{\lambda t} \\
+0 & & \cdots & & e^{\lambda t} & t e^{\lambda t} \\
+0 & & \cdots & & 0 & e^{\lambda t} \end{bmatrix}
+%
+    \begin{bmatrix} \alpha_1 \\ 0 \\ \vdots \\ 0 \end{bmatrix} 
+    \\ &= \alpha_1 e^{\lambda t} g_1  
+       \\[1ex]
+    x[k] &= G J^k G^{-1} x_0 = \alpha_1 \lambda^k g_1   
 \end{align*}
 %
-the format of the solution associated with $g_1$ seems to be exactly same with diagonal case (since $g_1$ is an eigenvector). 
-This implies that, if we choose an initial condition inside the eigenvector space, the response stays in this space and acts like a 
+The format of the solution associated with $g_1$ seems to be exactly the same as the diagonal case (since $g_1$ is an eigenvector). 
+This implies that, if we choose an initial condition inside the eigenspace, the response stays in this space and acts like a 
 ``first-order'' system. Now, let $x_0 = \alpha_2 g_2$, i.e. a first order generalized eigenvector of $A$, then we can find the responses as
- %
-\begin{align*}
-	x(t) &= G e^{J t} G^{-1} g_2 \alpha_2
-	\\ &= \left[ \begin{array}{ccc} g_1 & g_2 & \cdots g_n \end{array} \right] 
-	%
-\left[  \begin{array}{cccccc} e^{\lambda t} & t e^{\lambda t} & \frac{t^2}{2 !} e^{\lambda t} 
-& \cdots & \frac{t^{n-2}}{(n-2) !} e^{\lambda t}  & \frac{t^{n-1}}{(n-1) !} e^{\lambda t}
-\\ 0 & e^{\lambda t} & t e^{\lambda t} & \frac{t^2}{2 !} e^{\lambda t} & \cdots  & \frac{t^{n-2}}{(n-2) !} e^{\lambda t}
-\\  \vdots &  & \ddots &  &  & \vdots \\ 
-& & & e^{\lambda t} & t e^{\lambda t} & \frac{t^2}{2 !} e^{\lambda t}
-\\ 0 &  & \cdots  &  & e^{\lambda t} & t e^{\lambda t} \\
-0 &  & \cdots &  & 0 & e^{\lambda t} \end{array} \right] 
 %
-	\left[ \begin{array}{c} 0 \\ \alpha_2 \\ \vdots \\ 0 \end{array} \right] 
-	\\ 
-	&= \left[ \begin{array}{ccc} g_1 & g_2 & \cdots g_n \end{array} \right] \left[ \begin{array}{c} \alpha_2 t e^{\lambda t} \\ \alpha_2 e^{\lambda t} \\ \vdots \\ 0 \end{array} \right] = \alpha_2 \left( t e^{\lambda t} g_1  + e^{\lambda t} g_2 \right)
+\begin{align*}
+    x(t) &= G e^{J t} G^{-1} g_2 \alpha_2
+    \\ &= \begin{bmatrix} g_1 & g_2 & \cdots & g_n \end{bmatrix} 
+    %
+\begin{bmatrix} e^{\lambda t} & t e^{\lambda t} & \frac{t^2}{2 !} e^{\lambda t} & \cdots & \frac{t^{n-2}}{(n-2) !} e^{\lambda t}  & \frac{t^{n-1}}{(n-1) !} e^{\lambda t} \\
+0 & e^{\lambda t} & t e^{\lambda t} & \frac{t^2}{2 !} e^{\lambda t} & \cdots  & \frac{t^{n-2}}{(n-2) !} e^{\lambda t} \\
+\vdots & & \ddots & & & \vdots \\
+& & & e^{\lambda t} & t e^{\lambda t} & \frac{t^2}{2 !} e^{\lambda t} \\
+0 & & \cdots & & e^{\lambda t} & t e^{\lambda t} \\
+0 & & \cdots & & 0 & e^{\lambda t} \end{bmatrix}
+%
+    \begin{bmatrix} 0 \\ \alpha_2 \\ \vdots \\ 0 \end{bmatrix} 
+    \\[1ex] 
+    &= \begin{bmatrix} g_1 & g_2 & \cdots & g_n \end{bmatrix} \begin{bmatrix} \alpha_2 t e^{\lambda t} \\ \alpha_2 e^{\lambda t} \\ \vdots \\ 0 \end{bmatrix} = \alpha_2 \left( t e^{\lambda t} g_1  + e^{\lambda t} g_2 \right)
 \end{align*}
 %
 \begin{align*}
-	x[k] &= G J^k G^{-1} g_2 \alpha_2 
-	\\
-	&= \left[ \begin{array}{ccc} g_1 & g_2 & \cdots g_n \end{array} \right] 
-	%
-\left[  \begin{array}{cccccc} \lambda^k & \begin{pmatrix} k \\ 1 \end{pmatrix} \lambda^{k-1} & \begin{pmatrix} k \\ 2 \end{pmatrix}  \lambda^{k-2} 
-& \cdots & \begin{pmatrix} k \\ n\mathrm{-}2 \end{pmatrix} \lambda^{k-n+2} & \begin{pmatrix} k \\ n\mathrm{-}1 \end{pmatrix} \lambda^{k-n+1}
-\\ 0 & \lambda^k & \begin{pmatrix} k \\ 1 \end{pmatrix}  \lambda^{k-1} & \begin{pmatrix} k \\ 2 \end{pmatrix} \lambda^{k-2} & \cdots  & \begin{pmatrix} k \\ n\mathrm{-}2 \end{pmatrix} \lambda^{k-n+2}
-\\ 
-\\  \vdots &  & \ddots &  &  & \vdots \\ 
-\\ 
-& & & \lambda^k & \begin{pmatrix} k \\ 1 \end{pmatrix}  \lambda^{k-1} & \begin{pmatrix} k \\ 2 \end{pmatrix}  \lambda^{k-2} 
-\\ 0 &  & \cdots  &  & \lambda^k & \begin{pmatrix} k \\ 1 \end{pmatrix}  \lambda^{k-1} \\
-0 &  & \cdots &  & 0 & \lambda^k \end{array} \right]  
+    x[k] &= G J^k G^{-1} g_2 \alpha_2 
+    \\
+    &= \begin{bmatrix} g_1 & g_2 & \cdots & g_n \end{bmatrix} 
+    %
+\begin{bmatrix} \lambda^k & \binom{k}{1} \lambda^{k-1} & \binom{k}{2}  \lambda^{k-2} & \cdots & \binom{k}{n-2} \lambda^{k-n+2} & \binom{k}{n-1} \lambda^{k-n+1} \\
+0 & \lambda^k & \binom{k}{1}  \lambda^{k-1} & \binom{k}{2} \lambda^{k-2} & \cdots  & \binom{k}{n-2} \lambda^{k-n+2} \\
+\vdots & & \ddots & & & \vdots \\
+& & & \lambda^k & \binom{k}{1} \lambda^{k-1} & \binom{k}{2} \lambda^{k-2} \\
+0 & & \cdots & & \lambda^k & \binom{k}{1} \lambda^{k-1} \\
+0 & & \cdots & & 0 & \lambda^k \end{bmatrix}
 %
-	\left[ \begin{array}{c} 0 \\ \alpha_2 \\ \vdots \\ 0 \end{array} \right] 
-	\\ 
-	&= \left[ \begin{array}{ccc} g_1 & g_2 & \cdots g_n \end{array} \right] \left[ \begin{array}{c} \alpha_2 k \lambda^{k-1} \\ \alpha_2 \lambda^k \\ \vdots \\ 0 \end{array} \right] = \alpha_2 \left( k \lambda^{k-1} g_1  + \lambda^k g_2 \right)
+    \begin{bmatrix} 0 \\ \alpha_2 \\ \vdots \\ 0 \end{bmatrix} 
+    \\[1ex] 
+    &= \begin{bmatrix} g_1 & g_2 & \cdots & g_n \end{bmatrix} \begin{bmatrix} \alpha_2 k \lambda^{k-1} \\ \alpha_2 \lambda^k \\ \vdots \\ 0 \end{bmatrix} = \alpha_2 \left( k \lambda^{k-1} g_1  + \lambda^k g_2 \right)
 \end{align*}
 %
-We can observe that the response acts like a ``second-order'' (critically-damped) response. Moreover, the response does not stays inside the span of the 
-generalized eigenvector, i.e. $\mathrm{Span} \lbrace g_2 \rbrace$, instead it navigates inside the span of the eigenvector and $g_2$, i.e. 
-$\mathrm{Span} \lbrace g_1 \ , \ g_2 \rbrace = \mathcal{N}(A - \lambda I)^2$. Now, let $x_0 = \alpha_i g_i \ , \ 0 \leq i \leq n$, i.e. order generalized eigenvector
+We can observe that the response acts like a ``second-order'' (critically-damped) response. Moreover, the response does not stay inside the span of the 
+generalized eigenvector, i.e. $\mathrm{Span} \lbrace g_2 \rbrace$; instead, it navigates inside the span of the eigenvector and $g_2$, i.e. 
+$\mathrm{Span} \lbrace g_1 \ , \ g_2 \rbrace = \mathcal{N}(A - \lambda I)^2$. Now, let $x_0 = \alpha_i g_i \ , \ 1 \leq i \leq n$, i.e. a generalized eigenvector
 of order $i$, then we can find the responses as
 %
 \begin{align*}
 x(t) &= G e^{J t} G^{-1} g_i \alpha_i = \alpha_i e^{\lambda t} \sum\limits_{j=1}^{i}  g_j \frac{t^{i-j}}{(i-j)!}
-\\
-x[k] &= G J^k G^{-1} g_i \alpha_i = \alpha_i \sum\limits_{j=1}^{i}  g_j \begin{pmatrix} k \\ i-j \end{pmatrix} \lambda^{k-i+j}  
+\\[1ex]
+x[k] &= G J^k G^{-1} g_i \alpha_i = \alpha_i \sum\limits_{j=1}^{i}  g_j \binom{k}{i-j} \lambda^{k-i+j}  
 \end{align*}
 %
-Similar to the second-order case, we can see that response acts like an $i^{th}$ order dynamical system, and trajectories stays inside,
-$\mathrm{Span} \lbrace g_1 \ , \ cdots \, \ g_i \rbrace = \mathcal{N}(A - \lambda I)^i$. In this context, in order to excite all higher order modes 
-of the system projection of the initial condition to the sub-space spanned highest order generalized eigenvector has to be non-zero. Now, 
-let's try to find general solution for an arbitrary $x_0$. We can write any $x_0 \in \mathbb{R}^{n}$ as a linear combination of 
+Similar to the second-order case, we can see that the response acts like an $i^{th}$ order dynamical system, and trajectories stay inside
+$\mathrm{Span} \lbrace g_1 \ , \ \cdots \, \ g_i \rbrace = \mathcal{N}(A - \lambda I)^i$. In this context, in order to excite all higher order modes 
+of the system, the projection of the initial condition onto the sub-space spanned by the highest order generalized eigenvector has to be non-zero. Now, 
+let's try to find a general solution for an arbitrary $x_0$. We can write any $x_0 \in \mathbb{R}^{n}$ as a linear combination of 
 $\mathcal{G} = \lbrace g_1 \ , \ g_2 \ , \ \cdots \ , \ g_n \rbrace$, thus we have
 %
 \begin{align*}
-\\
 x_0 &= \sum\limits_{i=1}^n \alpha_i g_i
-\\
+\\[1ex]
 x(t) &= \sum\limits_{i=1}^n \alpha_i e^{\lambda t} \sum\limits_{j=1}^{i}  g_j \frac{t^{i-j}}{(i-j)!}
-\\
-x[k] &= \sum\limits_{i=1}^n \alpha_i \sum\limits_{j=1}^{i}  g_j \begin{pmatrix} k \\ i-j \end{pmatrix} \lambda^{k-i+j}  
+\\[1ex]
+x[k] &= \sum\limits_{i=1}^n \alpha_i \sum\limits_{j=1}^{i}  g_j \binom{k}{i-j} \lambda^{k-i+j}  
 \end{align*}
 %
 where 
 \begin{align*}
-\left[ \begin{array}{c} \alpha_1 \\ \alpha_2 \\ \vdots \\ \alpha_n \end{array} \right] = G^{-1} x_0 
-= \left[ \begin{array}{c} \bar{g}_1^T \\ \bar{g}_2^T \\ \vdots \\ \bar{g}_n^T \end{array} \right] x_0 \ \rightarrow \ \alpha_i = \bar{g}_i^T x_0
+\begin{bmatrix} \alpha_1 \\ \alpha_2 \\ \vdots \\ \alpha_n \end{bmatrix} = G^{-1} x_0 
+= \begin{bmatrix} \bar{g}_1^T \\ \bar{g}_2^T \\ \vdots \\ \bar{g}_n^T \end{bmatrix} x_0 \ \rightarrow \ \alpha_i = \bar{g}_i^T x_0
 \end{align*}
 
 Based on these results, we can see that in order to excite all of the modes associated with a Jordan block of size $n$, 
-we need $\alpha_n \bar{g}_n^T x_0 \neq 0$. If we treat initial conditions as inputs this generates a reachability/controllability argument. 
-Thus in order for this Jordan block to be reachable/controllable, we need to excite highest order mode (generalized eigenvector).
+we need $\alpha_n = \bar{g}_n^T x_0 \neq 0$. If we treat initial conditions as inputs this generates a reachability/controllability argument. 
+Thus in order for this Jordan block to be reachable/controllable, we need to excite the highest order mode (generalized eigenvector).
 
 \begin{exmp}
-	Let 
+    Let 
 \begin{align*}
-\dot{x} = A x \ \mathrm{where} \  A = \left[ \begin{array}{ccc} 1 & 0 & 1 \\ 0 & 1 & 1 \\ 0 & 0 & 1
-\end{array} \right] , 
+\dot{x} = A x \ \mathrm{where} \  A = \begin{bmatrix} 1 & 0 & 1 \\ 0 & 1 & 1 \\ 0 & 0 & 1 \end{bmatrix} , 
 \end{align*}
 \end{exmp}
 %
-derive the solution of $x(t)$ using modal decomposition for an arbitrary $x_0 \in \mathbb{R}^3$ 
+Derive the solution of $x(t)$ using modal decomposition for an arbitrary $x_0 \in \mathbb{R}^3$.
 
-\textbf{Solution:} We know that Jordan canonical form of matrix $A$ has the form
+\textbf{Solution:} We know that the Jordan canonical form of matrix $A$ has the form
 %
 \begin{align*}
-  J = \left[ \begin{array}{ccc} 1 & 1 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 1 \end{array} \right] 
+  J = \begin{bmatrix} 1 & 1 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 1 \end{bmatrix} 
 \end{align*}
 % 
-and the transformation matrices that leads to this Jordan form are
+and the transformation matrices that lead to this Jordan form are
 %
 \begin{align*}
- G &= \left[ \begin{array}{cccc} g_1 & g_2 & v  \end{array} \right]
+ G &= \begin{bmatrix} g_1 & g_2 & v \end{bmatrix}
  \ , \ 
- G = \left[ \begin{array}{ccc} 1 & 0 & 1 \\ 1 & 0 & 0  \\ 0 & 1 & 0  \end{array} \right]
+ G = \begin{bmatrix} 1 & 0 & 1 \\ 1 & 0 & 0 \\ 0 & 1 & 0 \end{bmatrix}
  \  , \ 
- G^{-1} = \left[ \begin{array}{ccc} 0 & 1 & 0 \\ 0 & 0 & 1  \\ 1 & -1 & 0 \end{array} \right]
+ G^{-1} = \begin{bmatrix} 0 & 1 & 0 \\ 0 & 0 & 1 \\ 1 & -1 & 0 \end{bmatrix}
 \end{align*}
 %
 where $g_1$ and $v$ are eigenvectors and $g_2$ is the single generalized eigenvector associated with $g_1$.
@@ -323,9 +322,9 @@ If we follow the derivation in this lecture note, we can first find all individu
 %
 \begin{align*}
  x_{g_1}(t) &= \alpha_{g_1} e^{t} g_1  
- \\
+ \\[1ex]
  x_{g_2}(t) &= \alpha_{g_2} \left( t e^{t} g_1  + e^{t} g_2 \right)
- \\
+ \\[1ex]
  x_{v}(t) &= \alpha_{v} e^{t} v  
 \end{align*}
 %
@@ -333,45 +332,43 @@ where the combined solution and $\alpha_{*}$'s can be derived using
 %
 \begin{align*}
 x(t) &=  x_{g_1}(t) +  x_{g_2}(t) +  x_{v}(t)  = e^{t} \left( (\alpha_{g_1} + t \alpha_{g_2})g_1 + \alpha_{g_2}  g_2 + \alpha_{v} v  \right) 
-\\
-\left[ \begin{array}{ccc} \alpha_{g_1} \\ \alpha_{g_2} \\ \alpha_{v} \end{array} \right] &= G^{-1} x_0 = \left[ \begin{array}{ccc} 0 & 1 & 0 \\ 0 & 0 & 1  \\ 1 & -1 & 0 \end{array} \right] x_0
+\\[1ex]
+\begin{bmatrix} \alpha_{g_1} \\ \alpha_{g_2} \\ \alpha_{v} \end{bmatrix} &= G^{-1} x_0 = \begin{bmatrix} 0 & 1 & 0 \\ 0 & 0 & 1 \\ 1 & -1 & 0 \end{bmatrix} x_0
 \end{align*}
 
 \subsection{Zero State Response \& Modal Decomposition}
 
-Let's consider input driven LTI CT and DT state-space models where $x_0 = 0$
+Let's consider input-driven LTI CT and DT state-space models where $x_0 = 0$
 %
 \begin{align*}
-  x(t) &= \int\limits_{0}^{t} e^{A ( t - \tau ) } B u(\tau) d
-                  \tau
-\\
-  y(t) &= \int\limits_{0}^{t} C e^{A ( t - \tau ) } B u(\tau) d
-                  \tau + D u(t)
-       \\ \\
+  x(t) &= \int\limits_{0}^{t} e^{A ( t - \tau ) } B u(\tau) d\tau
+\\[1ex]
+  y(t) &= \int\limits_{0}^{t} C e^{A ( t - \tau ) } B u(\tau) d\tau + D u(t)
+       \\[1ex]
   x[k]  &= \left[ \begin{array}{c|c|c|c|c} A^{k-1} B & A^{k-2} B &
          \cdots & A B & B \end{array} \right]
-         \left[ \begin{array}{c}
+         \begin{bmatrix}
                   u[0] \\ u[1] \\ \vdots \\ u[k-2] \\ u[k-1]
-         \end{array} \right]
+         \end{bmatrix}
          = \sum\limits_{j = 0}^{k-1} A^{k-j-1} B u[j]
-\\
+\\[1ex]
   y[k]  &= \left[ \begin{array}{c|c|c|c|c} C A^{k-1} B & C A^{k-2} B &
          \cdots & C A B & C B \end{array} \right]
-         \left[ \begin{array}{c}
+         \begin{bmatrix}
                   u[0] \\ u[1] \\ \vdots \\ u[k-2] \\ u[k-1]
-         \end{array} \right]
+         \end{bmatrix}
          = \sum\limits_{j = 0}^{k-1} C A^{k-j-1} B u[j]
 \end{align*}
 %
 Now let's assume that $A$ is diagonalizable, 
 %
 \begin{align*}
-	A &= V \Lambda V^{-1} = V \left[ \begin{array}{ccccc} \lambda_1 &  & & &  \\  & \lambda_2  &  & 0 &  \\ &  & \ddots & \\ & 0 & & \ddots & \\ & &  & &  \lambda_n \end{array} \right] V^{-1} \ , \mathrm{where}
-	\\
-	 V &= \left[ \begin{array}{ccc} v_1 & \cdots & v_n \end{array} \right] \ , \ \mathrm{where} \ A v_i = \lambda_i v_i 
- \\
- V^{-1} &= \bar{V} =  \left[ \begin{array}{c} \bar{v}_1^T \\ \vdots \\ \bar{v}_n^T \end{array} \right] \ , \ \mathrm{where} \ \bar{v}_i^T A = \lambda_i \bar{v}_i^T
-  \\
+    A &= V \Lambda V^{-1} = V \begin{bmatrix} \lambda_1 & & & & \\ & \lambda_2 & & 0 & \\ & & \ddots & & \\ & 0 & & \ddots & \\ & & & & \lambda_n \end{bmatrix} V^{-1} \ , \mathrm{where}
+    \\[1ex]
+     V &= \begin{bmatrix} v_1 & \cdots & v_n \end{bmatrix} \ , \ \mathrm{where} \ A v_i = \lambda_i v_i 
+ \\[1ex]
+ V^{-1} &= \bar{V} =  \begin{bmatrix} \bar{v}_1^T \\ \vdots \\ \bar{v}_n^T \end{bmatrix} \ , \ \mathrm{where} \ \bar{v}_i^T A = \lambda_i \bar{v}_i^T
+  \\[1ex]
 \bar{V} V &= V \bar{V} = I \ , \ \bar{v}_i^T v_i = 1 \ , \  \bar{v}_i^T v_j = 0 \ \mathrm{for} \, i \neq j
 \end{align*}
 %
@@ -379,106 +376,105 @@ and derive the zero-state responses in modal coordinates (for CT
 systems first)
 %
 \begin{align*}
-	x(t) &= \int\limits_{0}^{t} e^{A ( t - \tau ) } B u(\tau) d \tau = \left[ \begin{array}{ccc} v_1 & \cdots v_n \end{array} \right] \int\limits_{0}^{t} 
-	\left[ \begin{array}{c} e^{\lambda_1 (t - \tau)} \bar{v}_1^T \\  \vdots \\ e^{\lambda_n (t - \tau)} \bar{v}_n^T \end{array} \right]  B u(\tau) d \tau
-\\
-&= \left[ \begin{array}{ccc} v_1 & \cdots v_n \end{array} \right] 
-	\left[ \begin{array}{c} \int\limits_{0}^{t}  e^{\lambda_1 (t - \tau)} \bar{v}_1^T B u(\tau) d \tau \\  \vdots \\ \int\limits_{0}^{t} e^{\lambda_n (t - \tau)} \bar{v}_n^T B u(\tau) d \tau \end{array} \right]  
-	=  \sum\limits_{i=1}^n v_i \int\limits_{0}^{t} e^{\lambda_i (t - \tau)} \beta_i u(\tau) d \tau \ \mathrm{where} \ \beta_i = \bar{v}_i^T B
-	\\
-	&= \sum\limits_{i=1}^n v_i \beta_i \int\limits_{0}^{t} e^{\lambda_i (t - \tau)} u(\tau) d \tau 
-	\\
-	y(t) &= C x(t) + D u(t) = \left[ \sum\limits_{i=1}^n C v_i \beta_i \int\limits_{0}^{t} e^{\lambda_i (t - \tau)} u(\tau) d \tau \right] + D u(t)
-	\\ &= \left[ \sum\limits_{i=1}^n \gamma_i  \beta_i \int\limits_{0}^{t} e^{\lambda_i (t - \tau)} u(\tau) d \tau \right] + D u(t) \ \mathrm{where} \ \gamma_i = C v_i
+    x(t) &= \int\limits_{0}^{t} e^{A ( t - \tau ) } B u(\tau) d \tau = \begin{bmatrix} v_1 & \cdots & v_n \end{bmatrix} \int\limits_{0}^{t} 
+    \begin{bmatrix} e^{\lambda_1 (t - \tau)} \bar{v}_1^T \\ \vdots \\ e^{\lambda_n (t - \tau)} \bar{v}_n^T \end{bmatrix}  B u(\tau) d \tau
+\\[1ex]
+&= \begin{bmatrix} v_1 & \cdots & v_n \end{bmatrix} 
+    \begin{bmatrix} \int\limits_{0}^{t} e^{\lambda_1 (t - \tau)} \bar{v}_1^T B u(\tau) d \tau \\ \vdots \\ \int\limits_{0}^{t} e^{\lambda_n (t - \tau)} \bar{v}_n^T B u(\tau) d \tau \end{bmatrix}  
+    =  \sum\limits_{i=1}^n v_i \int\limits_{0}^{t} e^{\lambda_i (t - \tau)} \beta_i u(\tau) d \tau \ \mathrm{where} \ \beta_i = \bar{v}_i^T B
+    \\[1ex]
+    &= \sum\limits_{i=1}^n v_i \beta_i \int\limits_{0}^{t} e^{\lambda_i (t - \tau)} u(\tau) d \tau 
+    \\[1ex]
+    y(t) &= C x(t) + D u(t) = \left[ \sum\limits_{i=1}^n C v_i \beta_i \int\limits_{0}^{t} e^{\lambda_i (t - \tau)} u(\tau) d \tau \right] + D u(t)
+    \\ &= \left[ \sum\limits_{i=1}^n \gamma_i  \beta_i \int\limits_{0}^{t} e^{\lambda_i (t - \tau)} u(\tau) d \tau \right] + D u(t) \ \mathrm{where} \ \gamma_i = C v_i
 \end{align*}
 %
-We can see that in order to observe \& excite a mode associated with $\lambda_i$, we need $\gamma_i = C v_i \neq 0$ and $\beta_i = \bar{v}_i^T B \neq 0$ (only necessary conditions).
+We can see that in order to observe and excite a mode associated with $\lambda_i$, we need $\gamma_i = C v_i \neq 0$ and $\beta_i = \bar{v}_i^T B \neq 0$ (only necessary conditions).
 %
 \begin{exmp}
-	Derive $x[k]$ and $y[k]$ using modal decomposition following the derivation details explained for CT systems. (Take-home example)
+    Derive $x[k]$ and $y[k]$ using modal decomposition following the derivation details explained for CT systems. (Take-home example)
 \end{exmp}
 
-Now let's try to find a similar solution for systems where matrix $A$ can not be diagonalizable. For the sake of clarity let's focus on $A \in \mathbb{R}^{4 \times 4}$
-matrices that is composed of a single Jordan block
+Now let's try to find a similar solution for systems where matrix $A$ cannot be diagonalized. For the sake of clarity, let's focus on an $A \in \mathbb{R}^{4 \times 4}$
+matrix that is composed of a single Jordan block
 %
 \begin{align*}
-A &= G J G^{-1} = G \left[  \begin{array}{ccccc} \lambda & 1 & 0 & 0  \\ 0 & \lambda & 1 & 0  \\ 
-0 & 0 & \lambda & 1 \\  0 & 0  & 0  & \lambda \end{array} \right] G^{-1} 
+A &= G J G^{-1} = G \begin{bmatrix} \lambda & 1 & 0 & 0 \\ 0 & \lambda & 1 & 0 \\ 0 & 0 & \lambda & 1 \\ 0 & 0 & 0 & \lambda \end{bmatrix} G^{-1} 
 \end{align*}
 %
 \noindent where
 %
 \begin{align*}
-	 G &= \left[ \begin{array}{ccc} g_1 & \cdots & g_n \end{array} \right]
-	 \\
+     G &= \begin{bmatrix} g_1 & \cdots & g_4 \end{bmatrix}
+     \\[1ex]
  A g_1 &= \lambda g_1 \ \rightarrow \ (A - \lambda I) g_1 = 0
-	\\
-	A g_2 &= \lambda g_2 + g_1 \ \rightarrow \ (A - \lambda I) g_2 = g_1 \ , \ \mathrm{note} \ (A - \lambda I)^2 g_2 = 0 \ \& \ (A - \lambda I) g_2 \neq 0
-		\\
-	A g_3 &= \lambda g_3 + g_2 \ \rightarrow \ (A - \lambda I) g_3 = g_2 \ , \ \mathrm{note} \ (A - \lambda I)^3 g_3 = 0 \ \& \ (A - \lambda I)^2 g_3 \neq 0
-	\\
-	A g_{4} &= \lambda g_{4} + g_{3} \ \rightarrow \ (A - \lambda I) g_4 = g_{3} \ , \ \mathrm{note} \ (A - \lambda I)^4 g_4 = 0 \ \& \ (A - \lambda I)^{3} g_{4} \neq 0
+    \\[1ex]
+    A g_2 &= \lambda g_2 + g_1 \ \rightarrow \ (A - \lambda I) g_2 = g_1 \ , \ \mathrm{note} \ (A - \lambda I)^2 g_2 = 0 \ \& \ (A - \lambda I) g_2 \neq 0
+        \\[1ex]
+    A g_3 &= \lambda g_3 + g_2 \ \rightarrow \ (A - \lambda I) g_3 = g_2 \ , \ \mathrm{note} \ (A - \lambda I)^3 g_3 = 0 \ \& \ (A - \lambda I)^2 g_3 \neq 0
+    \\[1ex]
+    A g_4 &= \lambda g_4 + g_3 \ \rightarrow \ (A - \lambda I) g_4 = g_3 \ , \ \mathrm{note} \ (A - \lambda I)^4 g_4 = 0 \ \& \ (A - \lambda I)^3 g_4 \neq 0
 \end{align*}
 %
 and we also know that
 \begin{align*}
- G^{-1} &= \bar{G} =  \left[ \begin{array}{c} \bar{g}_1^T \\ \vdots \\ \bar{g}_n^T \end{array} \right] 
-  \\
+ G^{-1} &= \bar{G} =  \begin{bmatrix} \bar{g}_1^T \\ \vdots \\ \bar{g}_4^T \end{bmatrix} 
+  \\[1ex]
 \bar{G} G &= G \bar{G} = I \ , \ \bar{g}_i^T g_i = 1 \ , \  \bar{g}_i^T g_j = 0 \ \mathrm{for} \, i \neq j
 \end{align*}
 %
 %
 \begin{align*}
-	x(t) =& \int\limits_{0}^{t} e^{A ( t - \tau ) } B u(\tau) d \tau 
-	\\
-	=& \left[ \begin{array}{ccc} g_1 & \cdots g_n \end{array} \right] \int\limits_{0}^{t} 
-	%
+    x(t) &= \int\limits_{0}^{t} e^{A ( t - \tau ) } B u(\tau) d \tau 
+    \\[1ex]
+    &= \begin{bmatrix} g_1 & \cdots & g_4 \end{bmatrix} \int\limits_{0}^{t} 
+    %
 \begin{bmatrix} e^{\lambda (t - \tau)} & (t-\tau) e^{\lambda (t-\tau)} & \frac{(t-\tau)^2}{2 !} e^{\lambda (t-\tau)} & \frac{(t-\tau)^3}{3 !} e^{\lambda (t-\tau)}
 \\ 0 & e^{\lambda (t-\tau)} & (t-\tau) e^{\lambda (t-\tau)} & \frac{(t-\tau)^2}{2 !} e^{\lambda (t-\tau)} \\ 0 & 0 & e^{\lambda (t-\tau)} & (t-\tau) e^{\lambda (t-\tau)} \\ 0 & 0 & 0 & e^{\lambda (t-\tau)} \end{bmatrix} 
 %
-	\left[ \begin{array}{c} \bar{g}_1^T \\  \vdots \\ \bar{g}_4^T \end{array} \right]  B u(\tau) d \tau
-\\
-=& \left[ \begin{array}{ccc} g_1 & \cdots g_n \end{array} \right] \int\limits_{0}^{t} 
-	%
+    \begin{bmatrix} \bar{g}_1^T \\ \vdots \\ \bar{g}_4^T \end{bmatrix}  B u(\tau) d \tau
+\\[1ex]
+&= \begin{bmatrix} g_1 & \cdots & g_4 \end{bmatrix} \int\limits_{0}^{t} 
+    %
 e^{\lambda (t - \tau)} \begin{bmatrix} 1 & (t-\tau)  & \frac{(t-\tau)^2}{2 !}  & \frac{(t-\tau)^3}{3 !} 
 \\ 0 & 1 & (t-\tau)  & \frac{(t-\tau)^2}{2 !}  \\ 0 & 0 & 1 & (t-\tau)  \\ 0 & 0 & 0 & 1 \end{bmatrix} 
 %
-	\left[ \begin{array}{c} \beta_1 \\  \vdots \\ \beta_4 \end{array} \right] u(\tau) d \tau \ , \ \beta_i = \bar{g}_i^T B
-\\
-=& \left[ \begin{array}{ccc} g_1 & \cdots g_n \end{array} \right] \int\limits_{0}^{t} 
-	%
+    \begin{bmatrix} \beta_1 \\ \vdots \\ \beta_4 \end{bmatrix} u(\tau) d \tau \ , \ \beta_i = \bar{g}_i^T B
+\\[1ex]
+&= \begin{bmatrix} g_1 & \cdots & g_4 \end{bmatrix} \int\limits_{0}^{t} 
+    %
 \begin{bmatrix} \beta_1 + \beta_2 (t-\tau) +  \beta_3 \frac{(t-\tau)^2}{2 !} + \beta_4 \frac{(t-\tau)^3}{3 !} 
 \\  \beta_2 + \beta_3 (t-\tau)  + \beta_4 \frac{(t-\tau)^2}{2 !}  \\ \beta_3 + \beta_4 (t-\tau)  \\ \beta_4  \end{bmatrix} 
 e^{\lambda (t - \tau)} u(\tau) d \tau 
-\\
-=& \int\limits_{0}^{t} g_1 \left( \beta_1 + \beta_2 (t-\tau) +  \beta_3 \frac{(t-\tau)^2}{2 !} + \beta_4 \frac{(t-\tau)^3}{3 !} \right)  e^{\lambda (t - \tau)} u(\tau) d \tau 
-\\
+\\[1ex]
+&= \int\limits_{0}^{t} g_1 \left( \beta_1 + \beta_2 (t-\tau) +  \beta_3 \frac{(t-\tau)^2}{2 !} + \beta_4 \frac{(t-\tau)^3}{3 !} \right)  e^{\lambda (t - \tau)} u(\tau) d \tau 
+\\[1ex]
 &+ \int\limits_{0}^{t} g_2 \left( \beta_2 + \beta_3 (t-\tau) +  \beta_4 \frac{(t-\tau)^2}{2 !}  \right)  e^{\lambda (t - \tau)} u(\tau) d \tau 
-\\
+\\[1ex]
 &+ \int\limits_{0}^{t} g_3 \left( \beta_3 + \beta_4 (t-\tau) \right)  e^{\lambda (t - \tau)} u(\tau) d \tau 
-\\
+\\[1ex]
 &+ \int\limits_{0}^{t} g_4 \left( \beta_4 \right)  e^{\lambda (t - \tau)} u(\tau) d \tau 
 \end{align*}
-whereas the output equation takes the form
+The output equation takes the form:
 %
 \begin{align*}
-	y(t) =& C x(t) + D u(t) 
-	\\
-	=& \int\limits_{0}^{t} (C g_1) \left( \beta_1 + \beta_2 (t-\tau) +  \beta_3 \frac{(t-\tau)^2}{2 !} + \beta_4 \frac{(t-\tau)^3}{3 !} \right)  e^{\lambda (t - \tau)} u(\tau) d \tau 
-\\
+    y(t) &= C x(t) + D u(t) 
+    \\[1ex]
+    &= \int\limits_{0}^{t} (C g_1) \left( \beta_1 + \beta_2 (t-\tau) +  \beta_3 \frac{(t-\tau)^2}{2 !} + \beta_4 \frac{(t-\tau)^3}{3 !} \right)  e^{\lambda (t - \tau)} u(\tau) d \tau 
+\\[1ex]
 &+ \int\limits_{0}^{t} (C g_2) \left( \beta_2 + \beta_3 (t-\tau) +  \beta_4 \frac{(t-\tau)^2}{2 !}  \right)  e^{\lambda (t - \tau)} u(\tau) d \tau 
-\\
+\\[1ex]
 &+ \int\limits_{0}^{t} (C g_3) \left( \beta_3 + \beta_4 (t-\tau) \right)  e^{\lambda (t - \tau)} u(\tau) d \tau 
-\\
+\\[1ex]
 &+ \int\limits_{0}^{t} (C g_4) \left( \beta_4 \right)  e^{\lambda (t - \tau)} u(\tau) d \tau 
-\\
+\\[1ex]
 &+ D u(t)
 \end{align*}
 %
 We can see that in order to observe \& excite all of the modes associated with $\lambda$, we need $\gamma_1 = C g_1 \neq 0$ and $\beta_4 = \bar{g}_4^T B \neq 0$.
 
 \begin{exmp}
-	Derive $x[k]$ and $y[k]$ using modal decomposition for a $A \in \mathbb{R}^{4 \times 4}$ matrice that is composed of a single Jordan block
+    Derive $x[k]$ and $y[k]$ using modal decomposition for an $A \in \mathbb{R}^{4 \times 4}$ matrix that is composed of a single Jordan block
          following the derivation details explained for CT systems. (Take-home example)
 \end{exmp}
 
@@ -490,16 +486,16 @@ Let's first focus on single-input CT systems
        \dot{x} &= A x + B u \ , \ y = C x + D u
 \end{align*}
 %
-Fundamental test signal for the analysis of LTI CT systems is $u(t) = e^{s_0 t}$ where $s_0 \in \mathbb{C}$. Note that for a multi-input system, $u(t) \in \mathbb{C}^q$ the test signal becomes $u(t) = u_0 s_0 t$ where $u_0 \in \mathbb{C}^q$ and $u_o \neq 0$. However as you may guess, in such a case we may need to explore more than one $u_0$.
+The fundamental test signal for the analysis of LTI CT systems is $u(t) = e^{s_0 t}$ where $s_0 \in \mathbb{C}$. Note that for a multi-input system, $u(t) \in \mathbb{C}^q$ the test signal becomes $u(t) = u_0 e^{s_0 t}$ where $u_0 \in \mathbb{C}^q$ and $u_o \neq 0$. However as you may guess, in such a case we may need to explore more than one $u_0$.
 %
 \begin{align*}
-  y(t) &= C \int\limits_{0}^{t} e^{A ( t - \tau ) } B u(\tau) d \tau + D u(t) = C \int\limits_{0}^{t} e^{A ( t - \tau ) } B e^{s_o \tau} d \tau + D e^{s_0 t} = 
-  C \int\limits_{0}^{t} e^{A ( t - \tau ) } e^{I   s_o \tau} B d \tau + D e^{s_0 t}
-  \\
-  &=   C e^{A t} \int\limits_{0}^{t} e^{(s_o I - A)  \tau} B d \tau + D e^{s_0 t}
+  y(t) &= C \int\limits_{0}^{t} e^{A ( t - \tau ) } B u(\tau) d \tau + D u(t) = C \int\limits_{0}^{t} e^{A ( t - \tau ) } B e^{s_0 \tau} d \tau + D e^{s_0 t} = 
+  C \int\limits_{0}^{t} e^{A ( t - \tau ) } e^{I s_0 \tau} B d \tau + D e^{s_0 t}
+  \\[1ex]
+  &=   C e^{A t} \int\limits_{0}^{t} e^{(s_0 I - A)  \tau} B d \tau + D e^{s_0 t}
 \end{align*}
 %
-Let's assume that $s_0$ is not an eigenvalue, then $\mathrm{det}(s_o I - A) \neq 0$, which implies that $(s_o I - A)^{-1}$ exists. Note that
+Let's assume that $s_0$ is not an eigenvalue, then $\mathrm{det}(s_0 I - A) \neq 0$, which implies that $(s_0 I - A)^{-1}$ exists. Note that
 %
 \begin{align*}
 \int e^{B \lambda} d \lambda = B^{-1} e^{B \lambda} = e^{B \lambda} B^{-1} \ , \ \mathrm{if} \ \mathrm{det}(B) \neq 0
@@ -507,20 +503,19 @@ Let's assume that $s_0$ is not an eigenvalue, then $\mathrm{det}(s_o I - A) \neq
 %
 then we can write the output equation as
 \begin{align*}
-  y(t) &= C e^{A t} \left[ e^{(s_o I - A)  \tau} \right]_{\tau = 0}^{\tau = t} (s_o I - A)^{-1} B + D e^{s_0 t}
-  = C e^{A t} \left[ e^{(s_o I - A)  t} - I \right] (s_o I - A)^{-1} B + D e^{s_0 t}
-  \\
-  &= C \left[ e^{I s_o t} - e^{A t} \right] (s_o I - A)^{-1} B + D e^{s_0 t} 
-  \\
-  &=  C e^{A t} \left[ - (s_o I - A)^{-1} B \right] +
-  \left[ C (s_o I - A)^{-1} B + D \right] e^{s_0 t}
-  \\
+  y(t) &= C e^{A t} \left[ e^{(s_0 I - A)  \tau} \right]_{\tau = 0}^{\tau = t} (s_0 I - A)^{-1} B + D e^{s_0 t}
+  = C e^{A t} \left[ e^{(s_0 I - A)  t} - I \right] (s_0 I - A)^{-1} B + D e^{s_0 t}
+  \\[1ex]
+  &= C \left[ e^{I s_0 t} - e^{A t} \right] (s_0 I - A)^{-1} B + D e^{s_0 t} 
+  \\[1ex]
+  &=  C e^{A t} \left[ - (s_0 I - A)^{-1} B \right] +
+  \left[ C (s_0 I - A)^{-1} B + D \right] e^{s_0 t}
+  \\[1ex]
   &= \quad \quad  \quad  \underbrace{C e^{A t} \bar{x}_0}_{transient}  \quad \quad \quad \ \ \, +
    \quad \quad \quad \underbrace{G(s_0) e^{s_0 t}}_{steady-state} \ , \ \mathrm{where}
-   \\
-   \\
-   \bar{x}_0 &=  \left[ - (s_o I - A)^{-1} B \right] \ , \ \mathrm{quasi} \ \mathrm{initial-condition}
-   \\
+   \\[1ex]
+   \bar{x}_0 &=  \left[ - (s_0 I - A)^{-1} B \right] \ , \ \mathrm{quasi} \ \mathrm{initial-condition}
+   \\[1ex]
    G(s) &= C (s I - A)^{-1} B + D \ , \ \mathrm{TF-matrix} 
 \end{align*}
 
@@ -534,23 +529,23 @@ Now let's focus on single-input DT systems
        x[k+1] &= A x[k] + B u[k] \ , \ y = C x[k] + D u[k]
 \end{align*}
 %
-Fundamental test signal for the analysis of LTI DT systems is $u(t) = z_0^{k}$ where $z_0 \in \mathbb{C}$. Note that for a multi-input system, $u[k] \in \mathbb{C}^q$ the test signal becomes $u[k] = u_0 z_0^{k}$ where $u_0 \in \mathbb{C}^q$ and $u_o \neq 0$. However as you may guess, in such a case we may need to explore more than one $u_0$.
+The fundamental test signal for the analysis of LTI DT systems is $u[k] = z_0^{k}$ where $z_0 \in \mathbb{C}$. Note that for a multi-input system, $u[k] \in \mathbb{C}^q$ the test signal becomes $u[k] = u_0 z_0^{k}$ where $u_0 \in \mathbb{C}^q$ and $u_o \neq 0$. However as you may guess, in such a case we may need to explore more than one $u_0$.
 %
 \begin{align*}
  y[k] &= \left[ \sum\limits_{j = 0}^{k-1} C A^{k-j-1} B u[j] \right] + D u[k] = \left[ \sum\limits_{j = 0}^{k-1} C A^{j} B u[k-j-1] \right] + D u[k] 
- \\
- &= C \left[ \sum\limits_{j = 0}^{k-1} A^{j} z^{-j}_0 \right] B z^{k-1} + D z_0^k = C \left[ \sum\limits_{j = 0}^{k-1} \left( \frac{A}{z_0} \right)^j \right] z^{k-1} B + D z_0^k 
+ \\[1ex]
+ &= C \left[ \sum\limits_{j = 0}^{k-1} A^{j} z^{-j}_0 \right] B z_0^{k-1} + D z_0^k = C \left[ \sum\limits_{j = 0}^{k-1} \left( \frac{A}{z_0} \right)^j \right] z_0^{k-1} B + D z_0^k 
 \end{align*}
 %
 Let $M = \left( \frac{A}{z_0} \right)$, then 
 %
 \begin{align*}
 \sum\limits_{j = 0}^{k-1} M^j &= I + M + M^2 + \cdots + M^{n-1}
-\\
+\\[1ex]
 M^k + \sum\limits_{j = 0}^{k-1} M^j &= \sum\limits_{j = 0}^{k} M^j = I + M \sum\limits_{j = 0}^{k-1} M^j
-\\
+\\[1ex]
 (I - M) \sum\limits_{j = 0}^{k-1} M^j &= I - M^k 
-\\
+\\[1ex]
 \sum\limits_{j = 0}^{k-1} M^j &= (I - M)^{-1} \left( I - M^k  \right) = \left( I - M^k  \right) (I - M)^{-1}
 \end{align*}
 %
@@ -559,15 +554,14 @@ we can then find $y[k]$ as
 \begin{align*}
  y[k] &= C \left[ \left( I - A^k z_0^{-k}  \right) \left(I - A z_0^{-1} \right)^{-1} \right] z_0^{k-1} B + D z_0^k
  = C \left[ \left( z_0^k I - A^k \right) \left(z_0 I - A \right)^{-1} \right] B + D z_0^k
- \\
+ \\[1ex]
  &= C A^k \left( - \left(z_0 I - A \right)^{-1} B \right) + \left( C \left(z_0 I - A \right)^{-1} B + D \right) z_0^k
- \\
+ \\[1ex]
   &= \quad \quad  \quad  \underbrace{C A^k \bar{x}_0}_{transient}  \quad \quad \quad \ \ \, +
    \quad \quad \quad \underbrace{G(z_0) z_0^k}_{steady-state} \ , \ \mathrm{where}
-   \\
-   \\
+   \\[1ex]
    \bar{x}_0 &= \left( - \left(z_0 I - A \right)^{-1} B \right) \ , \ \mathrm{quasi} \ \mathrm{initial-condition}
-   \\
+   \\[1ex]
    G(z) &= C (z I - A)^{-1} B + D \ , \ \mathrm{TF-matrix} 
 \end{align*}
 
@@ -584,20 +578,20 @@ Compute (zero-state) steady-state and transient responses for $u_1(t) = 1$ and $
 \begin{align*} 
 y_1^{ss}(t) &= \left( C \left(s_0 I - A \right)^{-1} B + D \right)_{s_0 = 0} e^{0 t} =
 C (-A)^{-1} B =  \begin{bmatrix} -1 & 1 \end{bmatrix}  \begin{bmatrix} 1/2 & 1/4 \\ 0 & 1/2 \end{bmatrix}  \begin{bmatrix} 0 \\ 4 \end{bmatrix} = 1
-\\
+\\[1ex]
  y_2^{ss}(t) &= C \left(-I - A \right)^{-1} B e^{- t} = \begin{bmatrix} -1 & 1 \end{bmatrix}  \begin{bmatrix} 1 & 1 \\ 0 & 1 \end{bmatrix}  \begin{bmatrix} 0 \\ 4 \end{bmatrix} = \textbf{0} \ ???
 \end{align*}
 
 Now let's analyze transient response
 \begin{align*} 
 y_1^{tr}(t) &= C e^{A t} \bar{x}_0 \ , \ \mathrm{where} \ , \  \bar{x}_0 = A^{-1} B = \begin{bmatrix} -1/2 & -1/4 \\ 0 & -1/2 \end{bmatrix}  \begin{bmatrix} 0 \\ 4 \end{bmatrix} = \begin{bmatrix} -1 \\ -2 \end{bmatrix} 
-\\
+\\[1ex]
 &= \begin{bmatrix} -1 & 1 \end{bmatrix} \begin{bmatrix} e^{-2 t} & t e^{-2 t} \\ 0 &e^{-2 t} \end{bmatrix} \begin{bmatrix} -1 \\ -2 \end{bmatrix} 
 = \begin{bmatrix} -e^{-2 t} & -t e^{-2 t} + e^{-2 t} \end{bmatrix} \begin{bmatrix} -1 \\ -2 \end{bmatrix}  
 = (2 t - 1) e^{-2 t} 
-\\
+\\[1ex]
 y_2^{tr}(t) &= C e^{A t} \bar{x}_0 \ , \ \mathrm{where} \ , \  \bar{x}_0 = (I+A)^{-1} B = \begin{bmatrix} -1 & -1 \\ 0 & -1 \end{bmatrix}  \begin{bmatrix} 0 \\ 4 \end{bmatrix} = \begin{bmatrix} -4 \\ -4 \end{bmatrix} 
-\\
+\\[1ex]
 &= \begin{bmatrix} -1 & 1 \end{bmatrix} \begin{bmatrix} e^{-2 t} & t e^{-2 t} \\ 0 &e^{-2 t} \end{bmatrix} \begin{bmatrix} -4 \\ -4 \end{bmatrix} 
 = \begin{bmatrix} -e^{-2 t} & -t e^{-2 t} + e^{-2 t} \end{bmatrix} \begin{bmatrix} -4 \\ -4 \end{bmatrix}  
 = 4 t e^{-2 t} 
@@ -610,11 +604,12 @@ Now, let $u_3(t) = e^{j t}$ and compute (zero-state) steady-state responses
 \textbf{Solution:}
 \begin{align*} 
 y_3^{ss}(t) &= \left( C \left(s_0 I - A \right)^{-1} B \right)_{s_0 = j} e^{j t} = G(j) e^{j t} = |G( j)| e^{j t + \angle [G(j)]}
-\\ 
-G(j) &= C (j I -A)^{-1} B =  \begin{bmatrix} -1 & 1 \end{bmatrix}  \begin{bmatrix} j+2 & -1 \\ 0 & j+2 \end{bmatrix}^{-1}  \begin{bmatrix} 0 \\ 4 \end{bmatrix} = 
-\begin{bmatrix} -1 & 1 \end{bmatrix}  \begin{bmatrix} 0.4 - 0.2 j & 0.12 - 0.16 j \\ 0 & 0.4 - 0.2 j \end{bmatrix}^{-1}  \begin{bmatrix} 0 \\ 4 \end{bmatrix} 
-\\
-&= \begin{bmatrix} -1 & 1 \end{bmatrix} \begin{bmatrix} 0.48 - 0.64 j \\ 1.6 - 0.8 j \end{bmatrix} = 1.12 - 0.16 j = 1.1314 \angle[ -8.1301^o ]
+\\[1ex]
+G(j) &= C (j I -A)^{-1} B =  \begin{bmatrix} -1 & 1 \end{bmatrix}  \begin{bmatrix} j+2 & -1 \\ 0 & j+2 \end{bmatrix}^{-1}  \begin{bmatrix} 0 \\ 4 \end{bmatrix} 
+\\[1ex]
+&= \begin{bmatrix} -1 & 1 \end{bmatrix}  \begin{bmatrix} 0.4 - 0.2 j & 0.12 - 0.16 j \\ 0 & 0.4 - 0.2 j \end{bmatrix}  \begin{bmatrix} 0 \\ 4 \end{bmatrix} 
+\\[1ex]
+&= \begin{bmatrix} -1 & 1 \end{bmatrix} \begin{bmatrix} 0.48 - 0.64 j \\ 1.6 - 0.8 j \end{bmatrix} = 1.12 - 0.16 j = 1.1314 \angle[ -8.1301^\circ ]
 \end{align*}
 
 \subsection{Response to Real Sinusoidal Inputs}
@@ -622,51 +617,44 @@ G(j) &= C (j I -A)^{-1} B =  \begin{bmatrix} -1 & 1 \end{bmatrix}  \begin{bmatri
 We can write CT and DT cosine/sine signals as a sum of two complex exponential functions
 %
 \begin{align*} 
- 	\cos(\omega t) &= \frac{1}{2} e^{j \omega t} + \frac{1}{2} e^{-j \omega t} \ , \ \sin(\omega t) = \frac{1}{2 j} e^{j \omega t} - \frac{1}{2 j} e^{-j \omega t} \ , \ \omega \in \mathbb{R} 
-	\\
-	\cos(\omega_d k) &= \frac{1}{2} e^{j \omega_d k} + \frac{1}{2} e^{-j \omega_d k} \ , \ 	\sin(\omega_d k) = \frac{1}{2 j} e^{j \omega_d k} - \frac{1}{2 j} e^{-j \omega t} \ , \ \omega_d \in \left[ -\pi , \pi \right] 
+    \cos(\omega t) &= \frac{1}{2} e^{j \omega t} + \frac{1}{2} e^{-j \omega t} \ , \ \sin(\omega t) = \frac{1}{2 j} e^{j \omega t} - \frac{1}{2 j} e^{-j \omega t} \ , \ \omega \in \mathbb{R} 
+    \\[1ex]
+    \cos(\omega_d k) &= \frac{1}{2} e^{j \omega_d k} + \frac{1}{2} e^{-j \omega_d k} \ , \  \sin(\omega_d k) = \frac{1}{2 j} e^{j \omega_d k} - \frac{1}{2 j} e^{-j \omega_d k} \ , \ \omega_d \in \left[ -\pi , \pi \right] 
 \end{align*}
 %
-Using linearity (and assuming $A, B, C, D$ are all matrices with real entires) we can find the CT response to $\cos(\omega t)$ signal as
+Using linearity (and assuming $A, B, C, D$ are all matrices with real entries) we can find the CT response to $\cos(\omega t)$ signal as
 %
 \begin{align*}
    y_c(t) &= \frac{1}{2} \left[ C e^{A t} \bar{x}_0^+ + G(j \omega) e^{j \omega t} \right] + \frac{1}{2} \left[ C e^{A t} \bar{x}_0^- + G(-j \omega) e^{-j \omega t} \right] \ \mathrm{where} \ 
-   \\
+   \\[1ex]
    \bar{x}_0^+ &= \left[ - (j \omega I - A)^{-1} B \right]  \ , \ \bar{x}_0^- = \left[ - (-j \omega I - A)^{-1} B \right] \ , \ \left( \bar{x}_0^+ \right)^* = \bar{x}_0^- 
-   \\
+   \\[1ex]
    G(j \omega) &= \left[ C (j \omega I - A)^{-1} B + D \right] = \left( G(-j \omega) \right)^*
-   \\
-   \\
+   \\[1ex]
    y_c(t) &= C e^{A t} \left[ \frac{1}{2} \bar{x}_0^+ + \frac{1}{2} \bar{x}_0^- \right] +
    \frac{1}{2} \left[ G(j \omega) e^{j \omega t} \right] + \frac{1}{2} \left[ G(j \omega) e^{j \omega t} \right]^* \ \mathrm{note} 
-   \\
-   G(j \omega) e^{j \omega t} &= |G(j \omega)| e^{j \phi} e^{j \omega t} \left( \cos (\omega t + \phi) + j \sin (\omega t + \phi) \right) \ \phi = \angle [G(j \omega)]
-   \\
-   \\
+   \\[1ex]
+   G(j \omega) e^{j \omega t} &= |G(j \omega)| e^{j \phi} e^{j \omega t} = |G(j \omega)| \left( \cos (\omega t + \phi) + j \sin (\omega t + \phi) \right) \ \phi = \angle [G(j \omega)]
+   \\[1ex]
    y_c(t) &=  \underbrace{C e^{A t} \mathrm{Re}\left\lbrace \bar{x}_0^+ \right\rbrace}_{transient}  \ +  \  \underbrace{| G(j \omega) | \cos \left( \omega t + \angle [G(j \omega)] \right)}_{sinusoidal \ steady-state} \ , \ \mathrm{where}
-   \\
-   \\
+   \\[1ex]
    y_s(t) &=  \underbrace{C e^{A t} \mathrm{Im}\left\lbrace \bar{x}_0^+ \right\rbrace}_{transient}  \ +  \  \underbrace{| G(j \omega) | \sin \left( \omega t + \angle [G(j \omega)] \right)}_{sinusoidal \ steady-state}
 \end{align*}
 
-Now let's apply the some process on DT systems with discrete-time cosine input signal
+Now let's apply the same process on DT systems with discrete-time cosine input signal
 %
 \begin{align*}
    y_c[k] &= \frac{1}{2} \left[ C A^k \bar{x}_0^+ + G(e^{j \omega_d}) e^{j \omega_d k} \right] + \frac{1}{2} \left[ C A^k \bar{x}_0^- + G(e^{-j \omega_d}) e^{-j \omega_d k}  \right] \ \mathrm{where} \ 
-   \\
-   \bar{x}_0^+ &= \left[ - (e^{j \omega_d } I - A)^{-1} B \right]  = \left(  \bar{x}_0^- \right)^* 
-   \\
+   \\[1ex]
+   \bar{x}_0^+ &= \left[ - (e^{j \omega_d } I - A)^{-1} B \right]  = \left(  \bar{x}_0^- \right)^* \\[1ex]
    G(e^{j \omega_d }) &= \left[ C (e^{j \omega_d } I - A)^{-1} B + D \right] = \left( G(e^{-j \omega_d }) \right)^*
-   \\
-   \\
+   \\[1ex]
    y_c[k] &= C A^k \left[ \frac{1}{2} \bar{x}_0^+ + \frac{1}{2} \bar{x}_0^- \right] +
-   \frac{1}{2} \left[ G(e^{j \omega_d k}) e^{j \omega_d k} \right] + \frac{1}{2} \left[G(e^{j \omega_d k}) e^{j \omega_d k}  \right]^* \ \mathrm{note} 
-   \\
-   \\
-   y_c[k] &=  \underbrace{C A^k \mathrm{Re}\left\lbrace \bar{x}_0^+ \right\rbrace}_{transient}  \ +  \  \underbrace{| G(e^{j \omega_d k}) \cos \left( \omega_d k + \angle [G(j \omega)] \right)}_{sinusoidal \ steady-state} \ , \ \mathrm{where}
-   \\
-   \\
-   y_s[k] &=  \underbrace{C A^k \mathrm{Im}\left\lbrace \bar{x}_0^+ \right\rbrace}_{transient}  \ +  \  \underbrace{| G(e^{j \omega_d k}) \sin \left( \omega_d k + \angle [G(j \omega)] \right)}_{sinusoidal \ steady-state}
+   \frac{1}{2} \left[ G(e^{j \omega_d}) e^{j \omega_d k} \right] + \frac{1}{2} \left[G(e^{j \omega_d}) e^{j \omega_d k}  \right]^* \ \mathrm{note} 
+   \\[1ex]
+   y_c[k] &=  \underbrace{C A^k \mathrm{Re}\left\lbrace \bar{x}_0^+ \right\rbrace}_{transient}  \ +  \  \underbrace{| G(e^{j \omega_d})| \cos \left( \omega_d k + \angle [G(e^{j \omega_d})] \right)}_{sinusoidal \ steady-state} \ , \ \mathrm{where}
+   \\[1ex]
+   y_s[k] &=  \underbrace{C A^k \mathrm{Im}\left\lbrace \bar{x}_0^+ \right\rbrace}_{transient}  \ +  \  \underbrace{| G(e^{j \omega_d})| \sin \left( \omega_d k + \angle [G(e^{j \omega_d})] \right)}_{sinusoidal \ steady-state}
 \end{align*}
 
 \begin{exmp}
@@ -676,90 +664,84 @@ x[k+1] = \begin{bmatrix} 0 & 1 \\ 0 & 0 \end{bmatrix} x + \begin{bmatrix} 0 \\ 1
 \end{align*}
 \end{exmp}
 %
-Compute (zero-state) the transient and steady-state responses for $u[k] = \cos (\omega_d k)$ for $\omega_d \in \lbrace 0 , \pi / 2  , \pi \rbrace$
+Compute the (zero-state) transient and steady-state responses for $u[k] = \cos (\omega_d k)$ for $\omega_d \in \lbrace 0 , \pi / 2  , \pi \rbrace$.
 
-\textbf{Solution:} Let's start with $\omega = 0$
+\textbf{Solution:} Let's start with $\omega_d = 0$
 %
 \begin{align*} 
-	\omega &= 0 \ \rightarrow \ u[k] = 1
-	\\
- 	\bar{x}_0 &= \bar{x}_0^+ = \left[ - (I - A)^{-1} B \right] = - \begin{bmatrix} 1 & -1 \\ 0 & 1 \end{bmatrix}^{-1} \begin{bmatrix} 0 \\ 1 \end{bmatrix} = 
-	 \begin{bmatrix} 1 & 1 \\ 0 & 1 \end{bmatrix} \begin{bmatrix} 0 \\ -1 \end{bmatrix} = \begin{bmatrix} -1 \\ -1 \end{bmatrix} 
-	 \\
-	 y^{tr}[k] &= C A^k \bar{x}_0 = \begin{bmatrix} 1 & 0 \end{bmatrix} A^k \begin{bmatrix} -1 \\ -1 \end{bmatrix} \ ,  \mathrm{note} \  A^0 = I \ \& \ A^k = 0 \ , \ k > 1 ,
-	 \\
-	 y^{tr}[k] &= - \delta[k]  - \delta[k-1]
-	 \\
-	 \\
-	 G(e^{j 0 }) &= G(1) = \left[ C (I - A)^{-1} B \right] = \begin{bmatrix} 1 & 0 \end{bmatrix} \begin{bmatrix} 1 & 1 \\ 0 & 1 \end{bmatrix} \begin{bmatrix} 0 \\ 1 \end{bmatrix} = 1
-	 \\
-	 y^{ss}[k] &= 1
-	 \\
-	 \\
-	 y[k] &= 1 - \delta[k]  - \delta[k-1]
+    \omega_d &= 0 \ \rightarrow \ u[k] = 1
+    \\[1ex]
+    \bar{x}_0 &= \bar{x}_0^+ = \left[ - (I - A)^{-1} B \right] = - \begin{bmatrix} 1 & -1 \\ 0 & 1 \end{bmatrix}^{-1} \begin{bmatrix} 0 \\ 1 \end{bmatrix} = 
+     \begin{bmatrix} 1 & 1 \\ 0 & 1 \end{bmatrix} \begin{bmatrix} 0 \\ -1 \end{bmatrix} = \begin{bmatrix} -1 \\ -1 \end{bmatrix} 
+     \\[1ex]
+     y^{tr}[k] &= C A^k \bar{x}_0 = \begin{bmatrix} 1 & 0 \end{bmatrix} A^k \begin{bmatrix} -1 \\ -1 \end{bmatrix} \ ,  \mathrm{note} \  A^0 = I \ \& \ A^k = 0 \ , \ k > 1 ,
+     \\[1ex]
+     y^{tr}[k] &= - \delta[k]  - \delta[k-1]
+     \\[1ex]
+     G(e^{j 0 }) &= G(1) = \left[ C (I - A)^{-1} B \right] = \begin{bmatrix} 1 & 0 \end{bmatrix} \begin{bmatrix} 1 & 1 \\ 0 & 1 \end{bmatrix} \begin{bmatrix} 0 \\ 1 \end{bmatrix} = 1
+     \\[1ex]
+     y^{ss}[k] &= 1
+     \\[1ex]
+     y[k] &= 1 - \delta[k]  - \delta[k-1]
 \end{align*}
 %
-Now let's analyze the case  $\omega = \pi/2$
+Now let's analyze the case  $\omega_d = \pi/2$
 \begin{align*} 
-	\omega &= \pi/2 \ \rightarrow \ u[k] = \cos \left( \frac{\pi}{2} k \right)
-	\\
- 	\bar{x}_0^+ &= \left[ - (j I - A)^{-1} B \right] = - \begin{bmatrix} j & -1 \\ 0 & j \end{bmatrix}^{-1} \begin{bmatrix} 0 \\ 1 \end{bmatrix} = 
-	 \begin{bmatrix} j & 1 \\ 0 & j \end{bmatrix} \begin{bmatrix} 0 \\ 1 \end{bmatrix} = \begin{bmatrix} 1 \\ j \end{bmatrix} 
-	 \\
-	 y^{tr}[k] &= C A^k \mathrm{Re} \left( \bar{x}_0^+ \right) = \begin{bmatrix} 1 & 0 \end{bmatrix} A^k \begin{bmatrix} 1 \\ 0 \end{bmatrix} \ ,  \mathrm{note} \  A^0 = I \ \& \ A^k = 0 \ , \ k > 1 ,
-	 \\
-	 y^{tr}[k] &= \delta[k]
-	 \\
-	 \\
-	 G(e^{j \pi/2 }) &= G(j) = \left[ C (j I - A)^{-1} B \right] = \begin{bmatrix} 1 & 0 \end{bmatrix} \begin{bmatrix} -j & -1 \\ 0 & -j \end{bmatrix} \begin{bmatrix} 0 \\ 1 \end{bmatrix} = -1
-	 \\
-	 y^{ss}[k] &= \cos\left( \frac{\pi}{2} k + \pi \right) = - \cos\left( \frac{\pi}{2} k \right)
-	 \\
-	 \\
-	 y[k] &= - \cos\left( \frac{\pi}{2} k \right) + \delta[k]
+    \omega_d &= \pi/2 \ \rightarrow \ u[k] = \cos \left( \frac{\pi}{2} k \right)
+    \\[1ex]
+    \bar{x}_0^+ &= \left[ - (j I - A)^{-1} B \right] = - \begin{bmatrix} j & -1 \\ 0 & j \end{bmatrix}^{-1} \begin{bmatrix} 0 \\ 1 \end{bmatrix} = 
+     \begin{bmatrix} j & 1 \\ 0 & j \end{bmatrix} \begin{bmatrix} 0 \\ 1 \end{bmatrix} = \begin{bmatrix} 1 \\ j \end{bmatrix} 
+     \\[1ex]
+     y^{tr}[k] &= C A^k \mathrm{Re} \left( \bar{x}_0^+ \right) = \begin{bmatrix} 1 & 0 \end{bmatrix} A^k \begin{bmatrix} 1 \\ 0 \end{bmatrix} \ ,  \mathrm{note} \  A^0 = I \ \& \ A^k = 0 \ , \ k > 1 ,
+     \\[1ex]
+     y^{tr}[k] &= \delta[k]
+     \\[1ex]
+     G(e^{j \pi/2 }) &= G(j) = \left[ C (j I - A)^{-1} B \right] = \begin{bmatrix} 1 & 0 \end{bmatrix} \begin{bmatrix} -j & -1 \\ 0 & -j \end{bmatrix} \begin{bmatrix} 0 \\ 1 \end{bmatrix} = -1
+     \\[1ex]
+     y^{ss}[k] &= \cos\left( \frac{\pi}{2} k + \pi \right) = - \cos\left( \frac{\pi}{2} k \right)
+     \\[1ex]
+     y[k] &= - \cos\left( \frac{\pi}{2} k \right) + \delta[k]
 \end{align*}
 
-Solution for $\omega = \pi$ is take-home problem. 
+The solution for $\omega_d = \pi$ is a take-home problem. 
 
 \subsection{Response to Inputs of the Form, $u(t) = t^i e^{s_0 t}$ and
 $u[k] = k^i z_0^{k-i}$}
 
-Let $y_0(t)$ and $y_0[k]$ be the inputs for $u(t) = t^i e^{s_0 t}$ and
-$u_0[k] = k^i z_0^{k}$ 
+Let $y_0(t)$ and $y_0[k]$ be the responses for $u_0(t) = e^{s_0 t}$ and
+$u_0[k] = z_0^{k}$ 
 %
 \begin{align*} 
-y_0(t) &= \int\limits_{0}^t C e^{t-\tau} u(\tau) d \tau =
-         \int\limits_{0}^t C e^{t-\tau} e^{s_0 \tau} d \tau
-\\
+y_0(t) &= \int\limits_{0}^t C e^{A(t-\tau)} u_0(\tau) d \tau =
+         \int\limits_{0}^t C e^{A(t-\tau)} e^{s_0 \tau} d \tau
+\\[1ex]
 y_0[k] &= \sum\limits_{j = 0}^{k-1} C A^{k-j-1} B z_0^{j}
 \end{align*}
 %
-Let's take de derivative of the expressions with respect to $s_0$ and
-$z_0$ respectively
+Let's take the derivative of the expressions with respect to $s_0$ and
+$z_0$, respectively:
 %  
 %
 \begin{align*} 
 \frac{\partial}{\partial s_0}y_0(t) &= 
-         \frac{\partial}{\partial s_0} \int\limits_{0}^t C e^{t-\tau}
-                                     \left( \tau e^{s_0 \tau} \right)
-                                      d \tau = \frac{\partial}{\partial s_0} \int\limits_{0}^t C e^{t-\tau}
-                                    u_1 ( \tau) d \tau = y_1(t)
-\\
-\frac{\partial}{\partial z_0} y_0[k] &= \frac{\partial}{\partial z_0}
-                                       \sum\limits_{j = 0}^{k-1} C
-                                       A^{k-j-1} B \left( j z_0^{j-1}
+         \int\limits_{0}^t C e^{A(t-\tau)} \frac{\partial}{\partial s_0}
+                                     \left( e^{s_0 \tau} \right)
+                                      d \tau = \int\limits_{0}^t C e^{A(t-\tau)}
+                                    \left( \tau e^{s_0 \tau} \right) d \tau = y_1(t)
+\\[1ex]
+\frac{\partial}{\partial z_0} y_0[k] &= \sum\limits_{j = 0}^{k-1} C
+                                       A^{k-j-1} B \frac{\partial}{\partial z_0} \left( z_0^{j}
                                        \right) 
-= \frac{\partial}{\partial z_0}
-                                       \sum\limits_{j = 0}^{k-1} C
-                                       A^{k-j-1} B u_1[k]= y_1[k]
+= \sum\limits_{j = 0}^{k-1} C
+                                       A^{k-j-1} B \left( j z_0^{j-1} \right) = y_1[k]
 \end{align*}
 %
 It is straightforward to extend the result for higher order inputs of
-the form $u(t) = t^i e^{s_0 t}$ and $u[k] = k^i z_0^{k-1}$. Let's
+the form $u(t) = t^i e^{s_0 t}$ and $u[k] = k^i z_0^{k-i}$. Let's
 explore $y_1(t)$ 
 %
 \begin{align*} 
-y_1(t) =& \frac{\partial}{\partial s_0}y_0(t) = C e^{A t} \left[ -
+y_1(t) &= \frac{\partial}{\partial s_0}y_0(t) = C e^{A t} \left[ -
                                              \left\lbrace
                                                \frac{\partial}{\partial
                                                s_0} (s_o I - A)^{-1} \right\rbrace B
@@ -774,14 +756,14 @@ Let's derive $\left\lbrace \frac{\partial}{\partial s_0} (s_o I -
 %
 \begin{align*} 
 (s_o I - A)^{-1} (s_o I - A) & = I
-\\
+\\[1ex]
 \frac{\partial}{\partial s_0} \left[ (s_o I - A)^{-1} (s_o I - A)
   \right] &= 0
-\\
+\\[1ex]
 \frac{\partial}{\partial s_0} \left[ (s_o I - A)^{-1} \right] (s_o I - A)
 + (s_o I - A)^{-1} &= 0
-\\
-\frac{\partial}{\partial s_0} \left[ (s_o I - A)^{-1} \right] = - (s_o I - A)^2
+\\[1ex]
+\frac{\partial}{\partial s_0} \left[ (s_o I - A)^{-1} \right] &= - (s_o I - A)^{-2}
 \end{align*}
 %
 then we can express $y_1(t)$ as
@@ -790,13 +772,11 @@ then we can express $y_1(t)$ as
 y_1(t) &= C e^{A t} \left[ (s_o I - A)^{-2} B \right] + \left[ -C (s_o
          I - A)^{-2} B \right] e^{s_0 t} + \left[ C (s_o I -
          A)^{-1} B + D \right] t e^{s_0 t}
-\\
-\\
+\\[1ex]
 \bar{x}_{0,1} &= \left[ (s_o I - A)^{-2} B \right]                 
-\\
+\\[1ex]
 G'(s_0) &= -C (s_o I - A)^{-2} B 
-\\
-\\
+\\[1ex]
 y_1(t) &= \underbrace{C e^{A t} \bar{x}_{0,1}}_{transient} \ + \ \underbrace{ G'(s_0) e^{s_0 t} + G(s_0) t e^{s_0 t}}_{steady-state}
 \end{align*}
 %
@@ -816,22 +796,24 @@ t$
 %
 \begin{align*} 
 y^{ss}(t) &= \left( C \left(- A \right)^{-1} B \right) t  - \left( C \left(- A \right)^{-2} B \right) 
-\\ &=  \begin{bmatrix} -1 & 1 \end{bmatrix}  \begin{bmatrix} 1/2 & 1/4 \\ 0 & 1/2 \end{bmatrix}  \begin{bmatrix} 0 \\ 4 \end{bmatrix} t 
+\\[1ex]
+ &=  \begin{bmatrix} -1 & 1 \end{bmatrix}  \begin{bmatrix} 1/2 & 1/4 \\ 0 & 1/2 \end{bmatrix}  \begin{bmatrix} 0 \\ 4 \end{bmatrix} t  
 +  \begin{bmatrix} -1 & 1 \end{bmatrix}  \begin{bmatrix} 1/2 & 1/4 \\ 0 & 1/2 \end{bmatrix}^2  \begin{bmatrix} 0 \\ 4 \end{bmatrix}
-\\ &= t + \begin{bmatrix} -1 & 1 \end{bmatrix}  \begin{bmatrix} 1/4 & 1/4 \\ 0 & 1/4 \end{bmatrix}  \begin{bmatrix} 0 \\ 4 \end{bmatrix} = t - 0
-\\ &= t
+\\[1ex]
+ &= t + \begin{bmatrix} -1 & 1 \end{bmatrix}  \begin{bmatrix} 1/4 & 1/4 \\ 0 & 1/4 \end{bmatrix}  \begin{bmatrix} 0 \\ 4 \end{bmatrix} = t - 0
+\\[1ex]
+ &= t
 \end{align*}
 
 Now let's analyze transient response
 \begin{align*} 
 y^{tr}(t) &= C e^{A t} \bar{x}_{0,1} \ , \ \mathrm{where} \ , \  \bar{x}_0 = \left(-A \right)^{-2} B = \begin{bmatrix} 1/4 & 1/4 \\ 0 & -1/4 \end{bmatrix}  \begin{bmatrix} 0 \\ 4 \end{bmatrix} = \begin{bmatrix} 1 \\ 1 \end{bmatrix} 
-\\
+\\[1ex]
 &= \begin{bmatrix} -1 & 1 \end{bmatrix} \begin{bmatrix} e^{-2 t} & t e^{-2 t} \\ 0 &e^{-2 t} \end{bmatrix} \begin{bmatrix} 1 \\ 1 \end{bmatrix} 
 = \begin{bmatrix} -e^{-2 t} & -t e^{-2 t} + e^{-2 t} \end{bmatrix} \begin{bmatrix} 1 \\ 1 \end{bmatrix}  
 = - t e^{-2 t} 
 \end{align*}
 %
 General solution takes the form $y(t) = t \left(1 - e^{-2 t} \right)$
-
 
 \end{document}
