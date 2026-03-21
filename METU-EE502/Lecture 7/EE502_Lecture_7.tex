@@ -1,4 +1,9 @@
 \documentclass[twoside]{article}
+
+% --- UNIVERSAL PREAMBLE BLOCK ---
+\usepackage[letterpaper, top=1in, bottom=1in, left=1in, right=1in]{geometry}
+
+% Re-applying the user's specific text dimensions overriding geometry where necessary
 \setlength{\oddsidemargin}{0.25 in}
 \setlength{\evensidemargin}{-0.25 in}
 \setlength{\topmargin}{-0.6 in}
@@ -11,8 +16,10 @@
 %
 % ADD PACKAGES here:
 %
-
 \usepackage{amsmath,amsfonts,graphicx,mathtools}
+% [NEW STYLISTIC ADDITION: Added xcolor and mdframed for highlighted concept boxes]
+\usepackage{xcolor}
+\usepackage{mdframed}
 
 %
 \newcounter{lecnum}
@@ -24,8 +31,9 @@
 
 %
 % The following macro is used to generate the header.
+% Fixed from [4] arguments to [2] to prevent swallowing subsequent document text.
 %
-\newcommand{\lecture}[4]{
+\newcommand{\lecture}[2]{
    \pagestyle{myheadings}
    \thispagestyle{plain}
    \newpage
@@ -48,7 +56,6 @@
 
    \vspace*{4mm}
 }
-
 
 \renewcommand{\cite}[1]{[#1]}
 \def\beginrefs{\begin{list}%
@@ -76,56 +83,58 @@
 \newenvironment{proof}{{\bf Proof:}}{\hfill\rule{2mm}{2mm}}
 \newtheorem{exmp}[theorem]{Ex}
 
-% **** IF YOU WANT TO DEFINE ADDITIONAL MACROS FOR YOURSELF, PUT THEM HERE:
-
 \begin{document}
 
 % Lecture Details
 \lecture{7}{Assoc. Prof. M. Mert Ankarali}
 
-
-
 \section{Discrete-Time Linear Time Varying State Space Models} 
 
-State-space representation of a (causal \& finite dimensional) LTV DT system is given by
+% [NEW PEDAGOGICAL ADDITION: Motivational context for students]
+\begin{mdframed}[backgroundcolor=blue!5, linecolor=blue!20, roundcorner=5pt]
+\textbf{Motivation:} Linear Time-Varying (LTV) models frequently arise in engineering. The most common scenario is the linearization of a nonlinear system along a non-constant nominal trajectory (such as a rocket's ascent or a robot arm's movement). Unlike Linear Time-Invariant (LTI) systems, LTV systems require more careful treatment of the time index, as the system matrices change at each time step.
+\end{mdframed}
+\vspace{6pt}
+
+The state-space representation of a (causal and finite-dimensional) LTV DT system is given by:
 %
 \begin{align*}
   \mathrm{Let} \ x[k] &\in \mathbb{R}^n \ , \ y[k] \in \mathbb{R}^m \ ,\  u[k] \in
   \mathbb{R}^r , \\
   x[k+1] &= A[k] x[k] + B[k] u[k] , \\
-  y[k] &= C[l] x[k] + D u[k] , \\
+  y[k] &= C[k] x[k] + D[k] u[k] , \\
   \mathrm{where} \ A[k] &\in \mathbb{R}^{n \times n} \ , \ 
-    B[k] \in \mathbb{R}^{n \times r} \ ,\  C[k] \in \mathbb{R}^{m \times n} \ , \ D[d] \in \mathbb{R}^{m \times r}
+    B[k] \in \mathbb{R}^{n \times r} \ ,\  C[k] \in \mathbb{R}^{m \times n} \ , \ D[k] \in \mathbb{R}^{m \times r}
 \end{align*}
 %
-Let's first assume that $u[k] = 0$, and find un-driven 
-response.
+Let's first assume that $u[k] = 0$, and find the un-driven response.
 %
 \begin{align*}
   x[k+1] &= A[k] x[k] \\ y[k] &= C[k] x[k]
 \end{align*}
 %
-Unlike LTV-CT systems we easily can compute the response iteratively
+Unlike LTV-CT systems, we can easily compute the response iteratively:
 %
 \begin{align*}
    x[0] &= I x[0] \quad , \quad y[0] = C[0] x[0]
    \\
   x[1] &= A[0] x[0] \quad , \quad y[1] = C[1] x[1]
   \\
-  x[2] &= A[0] x[1] = A[1] A[0] x[0] \quad , \quad y[2] = C[2] x[2]
+  x[2] &= A[1] x[1] = A[1] A[0] x[0] \quad , \quad y[2] = C[2] x[2]
   \\
-  x[3] &= A[2] x[2] = A[3] A[1] A[0] x[0] \quad , \quad y[3] = C[3] x[3]
+  x[3] &= A[2] x[2] = A[2] A[1] A[0] x[0] \quad , \quad y[3] = C[3] x[3]
   \\
   \vdots
   \\
-  x[k] &= A[k-1] x[k-1] = A[k-1] A[k-2] \cdots A[1] A[0] x[0]  \quad , \quad y[k] = \quad , \quad y[k] = C[k] x[k]
+  x[k] &= A[k-1] x[k-1] = A[k-1] A[k-2] \cdots A[1] A[0] x[0]  \quad , \quad y[k] = C[k] x[k]
   \\
-  x[k] &= \prod_{i=0}^{k-1} A[k-1-i] 
+  x[k] &= \left( \prod_{i=0}^{k-1} A[k-1-i] \right) x[0]
 \end{align*}
 %
-Motivated by the LTI case, we define the \textbf{state transition matrix}, which relates the state of the
-undriven system at time $k$ to the state at an earlier time $m$
+Motivated by the LTI case, we define the \textbf{state transition matrix}, which relates the state of the undriven system at time $k$ to the state at an earlier time $m$:
 %
+% [NEW STYLISTIC ADDITION: Boxed the core definition for visual emphasis]
+\begin{mdframed}[backgroundcolor=black!5, linecolor=black!20]
 \begin{align*}
   x[k] &= \Phi[k,m] x[m] \ , \  k \geq m \ , \  \mathrm{where}
   \\
@@ -133,8 +142,9 @@ undriven system at time $k$ to the state at an earlier time $m$
   \\ I \quad \quad \quad \quad  \quad \quad  \quad \ \ , \ k = m 
   \end{array} \right.
 \end{align*}
+\end{mdframed}
 %
-Note that the state transition matrix satisfies the following important properties of the undriven system at time $k$ to the state at an earlier time $m$
+Note that the state transition matrix satisfies the following important properties:
 %
 \begin{align*}
   \Phi[k,k] &= I
@@ -144,8 +154,8 @@ Note that the state transition matrix satisfies the following important properti
   \Phi[k+1,m] &= A[k] \Phi[k,m] 
 \end{align*}
 %
-as you can see, the state-transition matrix satisfies the discrete dynamical state equations. 
-Now let's consider input-only state response (i.e. $x[0] = 0$).
+As you can see, the state-transition matrix satisfies the discrete dynamical state equations. 
+Now let's consider the input-only state response (i.e., $x[0] = 0$).
 %
 \begin{align*}
   x[k+1] &= A[k] x[k] + B[k] u[k] 
@@ -182,7 +192,7 @@ Now let's consider input-only state response (i.e. $x[0] = 0$).
          &= \Gamma[k,0] \mathcal{U}[k,0]
 \end{align*}
 %
-where
+where $\Gamma[k,0]$ is the convolution matrix mapping the input sequence to the state:
 %
 \begin{align*}
     \Gamma[k,0] &= \left[ \begin{array}{c|c|c|c|c} \Phi[k,1] B[0] & \Phi[k,2] B[1]  & \cdots & \Phi[k,k-1] B[k-2]  & \Phi[k,k] B[k-1] \end{array} \right]
@@ -192,16 +202,16 @@ where
 %
 
 \begin{exmp}
-Let's consider following SISO LTP system
+Let's consider the following SISO LTP (Linear Time-Periodic) system:
  \begin{align*}
   x[k+1] &= A[k] x[k] + B[k] u[k] , \ , y[k] = C[k] x[k]  \ , \   \mathrm{where} \\
   A[k] &= A[k+4]  \ , \  B[k] = B[k+4]  \ , \ C[k] = C[k+4]
  \end{align*}
 \end{exmp}
 %
-Convert this SISO LTP system into a MISO LTI system
+Convert this SISO LTP system into a MISO LTI system.
 
-\textbf{Solution:} Let's derive $x[4]$ in terms of $x[0] , u[0] , u[1], u[2] , u[3]$
+\textbf{Solution:} Let's derive $x[4]$ in terms of $x[0] , u[0] , u[1], u[2] , u[3]$.
 
 \begin{align*}
  x[4] &= A[3] A[2] A[1] A[0] x[0] +  A[3] A[2] A[1] B[0] u[0] + A[3] A[2] B[1] u[1] + A[3] B[2] u[2] + B[3] u[3]
@@ -211,14 +221,14 @@ Convert this SISO LTP system into a MISO LTI system
  \begin{bmatrix} u[0] \\ u[1] \\ u[2] \\ u[3] \end{bmatrix} 
 \end{align*}
 %
-Now let's find $x[8]$ in terms of $x[4] , u[4] , u[5], u[6] , u[7]$
+Now let's find $x[8]$ in terms of $x[4] , u[4] , u[5], u[6] , u[7]$.
 %
 \begin{align*}
  x[8] &= \begin{bmatrix} A[3] A[2] A[1] A[0] \end{bmatrix} x[4] + \begin{bmatrix} A[3] A[2] A[1] B[0] & A[3] A[2] B[1] & A[3] B[2] &  B[3] \end{bmatrix} 
  \begin{bmatrix} u[4] \\ u[5] \\ u[6] \\ u[7] \end{bmatrix} 
 \end{align*}
 %
-Let $\mathcal{X}[m] = x[4k]$,  $\mathcal{U}[m] = \begin{bmatrix} u[4k] & u[4k + 1] & u[4k + 2] & u[4k + 3] \end{bmatrix}^T$, and $\mathcal{Y}[m] = y[4k]$, then we have 
+Let $\mathcal{X}[m] = x[4k]$,  $\mathcal{U}[m] = \begin{bmatrix} u[4k] & u[4k + 1] & u[4k + 2] & u[4k + 3] \end{bmatrix}^T$, and $\mathcal{Y}[m] = y[4k]$, then we have:
 %
 \begin{align*}
  \mathcal{X}[m+1] &= \begin{bmatrix} A[3] A[2] A[1] A[0] \end{bmatrix} \mathcal{X}[m] + \begin{bmatrix} A[3] A[2] A[1] B[0] & A[3] A[2] B[1] & A[3] B[2] &  B[3] \end{bmatrix} 
@@ -231,17 +241,20 @@ Let $\mathcal{X}[m] = x[4k]$,  $\mathcal{U}[m] = \begin{bmatrix} u[4k] & u[4k + 
 &= \mathcal{C} \mathcal{X}[m]
 \end{align*}
 %
-which is a multi-input single-output LTI state-space representation. Note that in this representation we technically perform periodic sampling and analyze the mapping between two sampling instants. However, in this representation, we technically lose some information, e.g. measurements/outputs between to sampling instants, that is, $y[4k+1] \ , \ y[4k+2] \, \ y[4k+3] \ k > 0$.
+which is a multi-input single-output LTI state-space representation. Note that in this representation we technically perform periodic sampling and analyze the mapping between two sampling instants. However, in this representation, we technically lose some information, e.g., measurements/outputs between two sampling instants, that is, $y[4k+1] \ , \ y[4k+2] \, \ y[4k+3] \ k > 0$.
 
 \begin{exmp}
-	Obtain a new state-space representation (still LTI) such that it also includes these measurements, i.e. $y[4k+1] \ , \ y[4k+2] \, \ y[4k+3] \ k > 0$.
+	Obtain a new state-space representation (still LTI) such that it also includes these measurements, i.e., $y[4k+1] \ , \ y[4k+2] \, \ y[4k+3] \ k > 0$.
 \end{exmp}
+
+% [NEW PEDAGOGICAL ADDITION: Brief hint for the exercise to guide independent learning]
+\textit{Hint for independent study:} To capture the intermediate outputs, consider augmenting the output matrix $\mathcal{C}$ so that $\mathcal{Y}[m]$ becomes a vector containing $y[4k]$, $y[4k+1]$, $y[4k+2]$, and $y[4k+3]$. You will need to express each intermediate $y$ in terms of $\mathcal{X}[m]$ and the inputs up to that sub-step.
 
 \newpage
 
 \section{Continuous-Time Linear Time Varying State Space Models} 
 
-State-space representation of a (causal \& finite dimensional) LTV CT system is given by
+The state-space representation of a (causal and finite-dimensional) LTV CT system is given by:
 %
 \begin{align*}
   \mathrm{Let} \ x(t) &\in \mathbb{R}^n \ , \ y(t) \in \mathbb{R}^q \ ,\  u(t) \in \mathbb{R}^r , \\
@@ -249,16 +262,17 @@ State-space representation of a (causal \& finite dimensional) LTV CT system is 
   y(t) &= C(t) x(t) + D(t) u(t) , 
 \end{align*}
 %
-If we assume that the mapping, $t \mapsto A(t)$ is sufficiently well behaved (if $\forall (i,j) \ , \ a_{ij}(t)$ is piecewise continuous, with a fnite number of discontinuities in any nite interval) there exist a unique solution for the differential equation. In such a case we can describe the solution of the system of equations via a matrix function, $\Phi(t , \tau)$, that the following 
-two fundamental properties
+If we assume that the mapping, $t \mapsto A(t)$ is sufficiently well-behaved (if $\forall (i,j) \ , \ a_{ij}(t)$ is piecewise continuous, with a finite number of discontinuities in any finite interval), there exists a unique solution for the differential equation. In such a case, we can describe the solution of the system of equations via a matrix function, $\Phi(t , \tau)$, that satisfies the following two fundamental properties:
 %
+\begin{mdframed}[backgroundcolor=black!5, linecolor=black!20]
 \begin{align*}
-	\frac{d}{dt} \Phi(t , \tau) &= A(t) \Phi(t , \tau) ,
+	\frac{d}{dt} \Phi(t , \tau) &= A(t) \Phi(t , \tau) , \quad \text{(Evolution)}
 	\\
-	\Phi(\tau , \tau) &= I
+	\Phi(\tau , \tau) &= I \quad \text{(Initial Condition)}
 \end{align*}
+\end{mdframed}
 %
-First let's show that $x(t) = \Phi(t , t_0) x_0$ for the solution of zero-input response with $x(t_0) = x_0$
+First, let's show that $x(t) = \Phi(t , t_0) x_0$ is the solution for the zero-input response with $x(t_0) = x_0$.
 %
 \begin{align*}
 	x(t_0) = \Phi(t_0 , t_0) x_0 = I x_0 = x_0 \ \checkmark
@@ -266,7 +280,7 @@ First let's show that $x(t) = \Phi(t , t_0) x_0$ for the solution of zero-input 
 	\frac{d}{dt} x(t) = \frac{d}{dt} \left[ \Phi(t , t_0) x_0 \right] = A(t) \Phi(t , t_0 ) x_0 = A(t) x(t) , \ \checkmark
 \end{align*}
 %
-Now let's show that $x(t) = \int\limits_{t_0}^{t} \Phi(t , \tau) B(\tau) u(\tau) d\tau$ for the solution of zero-state response 
+Now, let's show that $x(t) = \int\limits_{t_0}^{t} \Phi(t , \tau) B(\tau) u(\tau) d\tau$ is the solution for the zero-state response.
 %
 \begin{align*}
 	\frac{d}{dt} x(t) &= \frac{d}{dt} \left[ \int\limits_{t_0}^{t} \Phi(t , \tau) B(\tau) u(\tau) d\tau \right]
@@ -280,7 +294,7 @@ Now let's show that $x(t) = \int\limits_{t_0}^{t} \Phi(t , \tau) B(\tau) u(\tau)
 	\frac{d}{dt} x(t) &= A(t) x(t) + B(t) u(t) \ \checkmark
 \end{align*}
 %
-It is relatively easy to show that 
+It is relatively easy to show that the composition property holds:
 %
 \begin{align*}
 	\Phi(t_2 , t_0) = \Phi(t_2 , t_1) \Phi(t_1 , t_0) \ , \ t_2 \geq t_1 \geq t_0
@@ -288,7 +302,7 @@ It is relatively easy to show that
 
 \subsection{Solution of Scalar LTV Models}
 
-The state-evolutiontion equation of a scalar LTV CT system is given by
+The state-evolution equation of a scalar LTV CT system is given by:
 %
 \begin{align*}
   \dot{x}(t) &= a(t) x(t) + b(t) u(t) , \ x(t) \in \mathbb{R} , \ y(t) \in \mathbb{R} \ ,\  u(t) \in \mathbb{R} , 
@@ -298,36 +312,36 @@ Let us try to find $x(t)$ and $\Phi(t,\tau)$ for a zero-input response.
 %
 \begin{align*}
   &\dot{x}(t) = a(t) x(t) \ \rightarrow \ \frac{1}{x} dx = a(t) dt \ \rightarrow \int\limits_{x(t_0)}^{x(t)} \frac{1}{x} dx = \int\limits_{t_0}^{t} a(\gamma) d\gamma \ \rightarrow \
-  \left[ \mathrm{ln} x \right]_{x_0}^{x(t)} = \int\limits_{t_0}^{t} a(\gamma) d\gamma \ \rightarrow \   \mathrm{ln} (x / x_0 ) = \int\limits_{t_0}^{t} a(\gamma) d\gamma 
+  \left[ \mathrm{ln} x \right]_{x_0}^{x(t)} = \int\limits_{t_0}^{t} a(\gamma) d\gamma \ \rightarrow \  \mathrm{ln} (x / x_0 ) = \int\limits_{t_0}^{t} a(\gamma) d\gamma 
   \\
 &x(t) = e^{ \int\limits_{t_0}^{t} a(\gamma) d\gamma  }  x_0 \ \rightarrow \ \Phi(t,\tau) = e^{ \int\limits_{\tau}^{t} a(\gamma) d\gamma  } 
 \end{align*}
 %
-The generaleral solution then can be expressed as
+The general solution then can be expressed as:
 %
 \begin{align*}
-x(t) &= \Phi(t , t_0) x_0 +  \int\limits_{t_0}^{t} \Phi(t , \tau) B(\tau) u(\tau) d\tau
+x(t) &= \Phi(t , t_0) x_0 +  \int\limits_{t_0}^{t} \Phi(t , \tau) b(\tau) u(\tau) d\tau
 \\
-&= e^{ \int\limits_{t_0}^{t} a(\gamma) d\gamma  }  x_0 +  \int\limits_{t_0}^{t} \begin{pmatrix} e^{ \int\limits_{\tau}^{t} a(\gamma) d\gamma  } \end{pmatrix} B(\tau) u(\tau) d\tau
+&= e^{ \int\limits_{t_0}^{t} a(\gamma) d\gamma  }  x_0 +  \int\limits_{t_0}^{t} \begin{pmatrix} e^{ \int\limits_{\tau}^{t} a(\gamma) d\gamma  } \end{pmatrix} b(\tau) u(\tau) d\tau
 \end{align*}
 
 \begin{exmp}
-	Let
+	Let:
 	\begin{align*}	
 		\frac{d}{dt} x(t) = \begin{bmatrix} - t & 0 \\ 0 & \cos t \end{bmatrix} x(t) + \begin{bmatrix} 1 \\ 1  \end{bmatrix} u(t)
 	\end{align*}	
 \end{exmp}
 %
-First find the state-transition matrix
+First, find the state-transition matrix.
 
-\textbf{Solution:} Even though the system is not a scalar LTV system since it is in diagonal form, we can use the same derivation on the scalar case
+\textbf{Solution:} Even though the system is not a scalar LTV system, since it is in diagonal form, we can use the same derivation as in the scalar case:
 %
 \begin{align*}	
 	\Phi(t , t_0) = \begin{bmatrix} e^{ \int\limits_{t_0}^{t} -\gamma d\gamma  } & 0 \\ 0 & e^{ \int\limits_{t_0}^{t} \cos(\gamma) d\gamma  } \end{bmatrix} 
 	= \begin{bmatrix} e^{ \frac{t_0^2 - t^2}{2} } & 0 \\ 0 & e^{ \sin(t) - \sin(t_0)  } \end{bmatrix} 
 \end{align*}	
 %
-Now let $x(0) = 0$ and $u(t) = 1$, find $x(t)$
+Now let $x(0) = 0$ and $u(t) = 1$, and find $x(t)$.
 %
 \begin{align*}
 x(t) &= \int\limits_{0}^{t} \Phi(t , \tau) B(\tau) u(\tau) d\tau = \int\limits_{0}^{t} \begin{bmatrix} e^{ \frac{\tau^2 - t^2}{2} } & 0 \\ 0 & e^{ \sin(t) - \sin(\tau)  } \end{bmatrix}  \begin{bmatrix} 1 \\ 1  \end{bmatrix} d\tau
@@ -338,13 +352,13 @@ x(t) &= \int\limits_{0}^{t} \Phi(t , \tau) B(\tau) u(\tau) d\tau = \int\limits_{
 
 \subsection{Solution of Vector LTV Models}
 
-\textbf{Question:} For the vector LTV systems, can we express the zero input solution and the state-transition matrix as
+\textbf{Question:} For vector LTV systems, can we express the zero-input solution and the state-transition matrix as:
 %
 \begin{align*}
 x(t) &\overset{?}{=}  e^{ \int\limits_{t_0}^{t} A(\gamma) d\gamma  }  x_0 \ , \ \Phi(t,\tau) \overset{?}{=}  e^{ \int\limits_{\tau}^{t} A(\gamma) d\gamma  } 
 \end{align*}
 %
-Let $\Psi(t,0) = e^{ \int\limits_{0}^{t} A(\gamma) d\gamma  } $ and expand the matrix exponential 
+Let $\Psi(t,0) = e^{ \int\limits_{0}^{t} A(\gamma) d\gamma  } $ and expand the matrix exponential:
 %
 \begin{align*}
 \Psi(t,0) &= e^{ \int\limits_{0}^{t} A(\gamma) d\gamma }  = I + \begin{pmatrix} \int\limits_{0}^{t} A(\gamma) d\gamma \end{pmatrix} + \frac{1}{2 !} \begin{pmatrix} \int\limits_{0}^{t} A(\gamma) d\gamma \end{pmatrix}^2  
@@ -353,7 +367,7 @@ Let $\Psi(t,0) = e^{ \int\limits_{0}^{t} A(\gamma) d\gamma  } $ and expand the m
 &= \sum\limits_{i=0}^{\infty} \frac{1}{i !} \begin{pmatrix} \int\limits_{0}^{t} A(\gamma) d\gamma \end{pmatrix}^i  
 \end{align*}
 %
-Let's focus on the derivates of the individual elements in the expansion of $\Psi(t,0)$
+Let's focus on the derivatives of the individual elements in the expansion of $\Psi(t,0)$:
 %
 \begin{align*}
 \frac{d}{dt} I &= 0 \ , \ \checkmark
@@ -365,25 +379,25 @@ Let's focus on the derivates of the individual elements in the expansion of $\Ps
 +  \frac{1}{2} \left[ \begin{pmatrix} \int\limits_{0}^{t} A(\gamma) d\gamma \end{pmatrix} A(t) \right] 
 \end{align*}
 %
-If $\begin{pmatrix} \int\limits_{0}^{t} A(\gamma) d\gamma \end{pmatrix}$ and $A(t)$ does not commute, we can go further from here. However, if $\begin{pmatrix} \int\limits_{0}^{t} A(\gamma) d\gamma \end{pmatrix}$ and $A(t)$ commutes then 
+If $\begin{pmatrix} \int\limits_{0}^{t} A(\gamma) d\gamma \end{pmatrix}$ and $A(t)$ do not commute, we cannot go further from here. However, if $\begin{pmatrix} \int\limits_{0}^{t} A(\gamma) d\gamma \end{pmatrix}$ and $A(t)$ commute, then:
 %
 \begin{align*}
 \frac{d}{dt} \frac{1}{2} \begin{pmatrix} \int\limits_{0}^{t} A(\gamma) d\gamma \end{pmatrix}^2 &=  A(t) \begin{pmatrix} \int\limits_{0}^{t} A(\gamma) d\gamma \end{pmatrix} 
 = \begin{pmatrix} \int\limits_{0}^{t} A(\gamma) d\gamma \end{pmatrix} A(t) 
 \\
-\frac{d}{dt} \frac{1}{2 !} \begin{pmatrix} \int\limits_{0}^{t} A(\gamma) d\gamma \end{pmatrix}^3 &= \frac{1}{2 !}  A(t) \begin{pmatrix} \int\limits_{0}^{t} A(\gamma) d\gamma \end{pmatrix}^2
+\frac{d}{dt} \frac{1}{3 !} \begin{pmatrix} \int\limits_{0}^{t} A(\gamma) d\gamma \end{pmatrix}^3 &= \frac{1}{2 !}  A(t) \begin{pmatrix} \int\limits_{0}^{t} A(\gamma) d\gamma \end{pmatrix}^2
 = \frac{1}{2 !} \begin{pmatrix} \int\limits_{0}^{t} A(\gamma) d\gamma \end{pmatrix}^2 A(t) 
 \\
 &\vdots
 \end{align*}
 %
-Thus similar to constant $A$ case if $\begin{pmatrix} \int\limits_{0}^{t} A(\gamma) d\gamma \end{pmatrix}$ and $A(t)$ commutes, we can express the derivative of the matrix exponential as
+Thus, similar to the constant $A$ case, if $\begin{pmatrix} \int\limits_{0}^{t} A(\gamma) d\gamma \end{pmatrix}$ and $A(t)$ commute, we can express the derivative of the matrix exponential as:
 %
 \begin{align*}
 \frac{d}{dt} \Psi(t,t_0) &= \frac{d}{dt} e^{ \int\limits_{t_0}^{t} A(\gamma) d\gamma }  = A(t) e^{ \int\limits_{t_0}^{t} A(\gamma) d\gamma } = e^{ \int\limits_{t_0}^{t} A(\gamma) d\gamma } A(t)
 \end{align*}
 % 
-Now let us check if $\Psi(t,t_0) = \Phi(t,t_0)$, i.e. control weather $e^{ \int\limits_{t_0}^{t} A(\gamma) d\gamma }$ is a state transition matrix of the given LTV system
+Now let us check if $\Psi(t,t_0) = \Phi(t,t_0)$, i.e., check whether $e^{ \int\limits_{t_0}^{t} A(\gamma) d\gamma }$ is a state-transition matrix of the given LTV system:
 %
 \begin{align*}
 \Psi(t_0,t_0) = e^{ \int\limits_{0}^{0} A(\gamma) d\gamma } = I \ , \ \checkmark
@@ -391,43 +405,56 @@ Now let us check if $\Psi(t,t_0) = \Phi(t,t_0)$, i.e. control weather $e^{ \int\
 \frac{d}{dt} \Psi(t,\tau) &= A(t) \Psi(t,\tau) \ , \ \checkmark
 \end{align*}
 %
-Thus, $\Phi(t,t_0)  = e^{ \int\limits_{t_0}^{t} A(\gamma) d\gamma }$ is the state transition matrix of the system under the condition that
+Thus, $\Phi(t,t_0)  = e^{ \int\limits_{t_0}^{t} A(\gamma) d\gamma }$ is the state-transition matrix of the system under the condition that
 $\begin{pmatrix} \int\limits_{0}^{t} A(\gamma) d\gamma \end{pmatrix}$ and $A(t)$ commute.
 
-Two special cases for which $\begin{pmatrix} \int\limits_{0}^{t} A(\gamma) d\gamma \end{pmatrix}$ and $A(t)$ commute
+Two special cases for which $\begin{pmatrix} \int\limits_{0}^{t} A(\gamma) d\gamma \end{pmatrix}$ and $A(t)$ commute:
 %
 \begin{itemize}
 	\item $A(t)$ is a diagonal matrix $\forall t \in \mathbb{R}$
 	\item $A(t) = A_c f(t)$ where $A_c \in \mathbb{R}^{n \times n}$ is a constant matrix and $f(t) \in \mathbb{R}$ is a scalar function.
 \end{itemize}
 
+% [NEW PEDAGOGICAL ADDITION: Highlighting the Peano-Baker series to give a name to the general non-commuting case]
+\begin{mdframed}[backgroundcolor=yellow!10, linecolor=yellow!50!black, roundcorner=5pt]
+\textbf{Remark (The General Case):} What happens when $A(t)$ and its integral do \textit{not} commute? In such cases, the simple matrix exponential fails. The exact solution for $\Phi(t,t_0)$ is instead given by an infinite sum of nested integrals, famously known as the \textbf{Peano-Baker series}:
+\begin{equation*}
+\Phi(t,t_0) = I + \int_{t_0}^t A(\sigma_1) d\sigma_1 + \int_{t_0}^t A(\sigma_1) \int_{t_0}^{\sigma_1} A(\sigma_2) d\sigma_2 d\sigma_1 + \dots
+\end{equation*}
+Because calculating this infinite series is rarely feasible by hand, we rely on the fundamental matrix approach and numerical integration in practice.
+\end{mdframed}
+\vspace{6pt}
+
+
 \subsubsection{General Theory for CT LTV Systems}
 
-Previously we showed that if $\begin{pmatrix} \int\limits_{0}^{t} A(\gamma) d\gamma \end{pmatrix}$ and $A(t)$ commutes we can write an ``analytical'' expression (for which we generally still adopt numerical integration techniques) for the state transition matrix, $\Phi(t,\tau) = e^{ \int\limits_{t_0}^{\tau} A(\gamma) d\gamma }$
-For a general linear time-varying system, there is no analytical expression that expresses $\Phi(t,\tau)$ analytically as a function of $A(t)$. Instead, we are essentially limited to numerical solutions, how ever we still need a theoretical framework. 
+Previously we showed that if $\begin{pmatrix} \int\limits_{0}^{t} A(\gamma) d\gamma \end{pmatrix}$ and $A(t)$ commute, we can write an ``analytical'' expression (for which we generally still adopt numerical integration techniques) for the state-transition matrix, $\Phi(t,\tau) = e^{ \int\limits_{t_0}^{\tau} A(\gamma) d\gamma }$.
+For a general linear time-varying system, there is no analytical expression that expresses $\Phi(t,\tau)$ analytically as a function of $A(t)$. Instead, we are essentially limited to numerical solutions; however, we still need a theoretical framework. 
 
-\textbf{Definition:} Consider $\dot{x} = A(t) x$, where $A(t)$ is a sufficiently well behaved matrix of functions of $t$. Then for every initial state, 
-$x(t_0)_i \ , \ i = 1, \ 2, \ \cdots n $, there exists a unique solution $x(t)_i \ , \ i = 1, \ 2, \ \cdots n $. Let's define a matrix 
+\textbf{Definition:} Consider $\dot{x} = A(t) x$, where $A(t)$ is a sufficiently well-behaved matrix of functions of $t$. Then for every initial state, 
+$x(t_0)_i \ , \ i = 1, \ 2, \ \cdots n $, there exists a unique solution $x(t)_i \ , \ i = 1, \ 2, \ \cdots n $. Let's define a matrix:
 %
 \begin{align*}
-X(t) \vcentcolon= \left[ \begin{array}{c|c|c|c} x(t)_1 & x(t)_2 & \cdots & x(t)_n \end{array} \right] \ , \ X(t) \in \mathbb{C}^{n}
+X(t) \vcentcolon= \left[ \begin{array}{c|c|c|c} x(t)_1 & x(t)_2 & \cdots & x(t)_n \end{array} \right] \ , \ X(t) \in \mathbb{R}^{n \times n}
 \end{align*}
 %
-The matrix $X(t)$ satisfies the matrix differential equation, $\dot{X}(t) = A(t) X(t)$. If $X(t_0)$ is full rank (and hence invertible), then $X(t)$ is called ``a fundamental matrix''. Note that $X(t)$ is not unique and there exists infinitely many fundamental matrices. 
+The matrix $X(t)$ satisfies the matrix differential equation, $\dot{X}(t) = A(t) X(t)$. If $X(t_0)$ is full rank (and hence invertible), then $X(t)$ is called ``a fundamental matrix''. Note that $X(t)$ is not unique and there exist infinitely many fundamental matrices. 
 
 \vspace{6pt}
 
-\textbf{Theorem:} A fundamental matrix $X(t)$ is invertible $\forall \ t$
+\begin{mdframed}[backgroundcolor=black!5, linecolor=black!20]
+\textbf{Theorem:} A fundamental matrix $X(t)$ is invertible $\forall \ t$.
+\end{mdframed}
 
-\textbf{Proof:} Let's try proof by contradiction. 
+\textbf{Proof:} Let's try a proof by contradiction. 
 
-Suppose that $\exists \ \bar{t}$ such that $\det( X(\bar{t}) ) = 0$, then we know that 
+Suppose that $\exists \ \bar{t}$ such that $\det( X(\bar{t}) ) = 0$; then we know that:
 %
 \begin{align*}
 	\mathrm{dim} \mathcal{N}\left( X(\bar{t}) \right) > 0 \ \rightarrow \ \exists \ \bar{v}\neq0 \ s.t. \ X(\bar{t}) \bar{v} = 0
 \end{align*}
 %
-now let $\zeta(t) = X(t) \bar{v}$ and take the derivate of $\zeta(t)$
+Now let $\zeta(t) = X(t) \bar{v}$ and take the derivative of $\zeta(t)$:
 %
 \begin{align*}
 	\dot{\zeta}(t) &= \dot{X}(t) \bar{v} = A(t) \left[ X(t) \bar{v} \right] = A(t) \zeta(t)
@@ -435,21 +462,77 @@ now let $\zeta(t) = X(t) \bar{v}$ and take the derivate of $\zeta(t)$
 	\dot{\zeta}(t) &= A(t) \zeta(t)
 \end{align*}
 %
-Since we assumed that $X(\bar{t}) \bar{v} = 0$
+Since we assumed that $X(\bar{t}) \bar{v} = 0$:
 %
 \begin{align*}
 	\zeta(\bar{t}) &= 0 \ \& \ \dot{\zeta}(\bar{t}) = 0 \rightarrow \ \zeta(t) = 0 \ \mathrm{for} \ t < \bar{t} \ \mathrm{(CT-Linear-System)}
 	\\
-	\zeta(t_0) &= 0 \ \rightarrow \ X(t_0) \bar{v} = 0 \ \rightarrow \ \mathrm{det}[X(t_0)]=0 \ \rightarrow \ \mathrm{contrdiction}
+	\zeta(t_0) &= 0 \ \rightarrow \ X(t_0) \bar{v} = 0 \ \rightarrow \ \mathrm{det}[X(t_0)]=0 \ \rightarrow \ \mathrm{contradiction}
 \end{align*}
 %
-since, if $\mathrm{det}[X(t_0)]=0$ then $X(t)$ is not a fundamental matrix. 
+Since if $\det[X(t_0)]=0$, then $X(t)$ is not a fundamental matrix. 
 
+% [NEW MATHEMATICAL ADDITION: Abel-Jacobi-Liouville Formula to give students an alternative, constructive mathematical intuition for the determinant]
+\vspace{6pt}
+\begin{mdframed}[backgroundcolor=green!5, linecolor=green!30!black, roundcorner=5pt]
+\textbf{Alternative Constructive Proof (Abel-Jacobi-Liouville Formula):} \\
+The invertibility of $X(t)$ can be proven constructively and elegantly by looking at its determinant. The determinant of any fundamental matrix satisfies the scalar differential equation:
+\begin{equation*}
+    \frac{d}{dt} \det X(t) = \mathrm{trace}(A(t)) \cdot \det X(t)
+\end{equation*}
+Since this is a simple scalar linear differential equation, we know its exact solution is:
+\begin{equation*}
+    \det X(t) = \det X(t_0) \exp \left( \int_{t_0}^t \mathrm{trace}(A(\tau)) d\tau \right)
+\end{equation*}
+Because the real exponential function $\exp(\cdot)$ is strictly positive, the term $\det X(t)$ can never cross zero if it starts non-zero. Therefore, if the initial matrix is non-singular ($\det X(t_0) \neq 0$), then $X(t)$ is invertible for all $t \in \mathbb{R}$.
+\end{mdframed}
 \vspace{6pt}
 
-\textbf{Theorem:} Let $X(t)$ be any fundamental matrix of $\dot{x} = A(t) x(t)$, then $\Phi(t,t_0) = X(t) X(t_0)^{-1}$
+\textbf{Proof of the Determinant Derivative:} \\
+By definition of the derivative and the matrix differential equation $\dot{X}(t) = A(t)X(t)$, let us consider a small time step $\Delta t$:
+\begin{align*}
+    X(t + \Delta t) &= X(t) + \dot{X}(t) \Delta t + \mathcal{O}(\Delta t^2) \\
+    &= X(t) + A(t) X(t) \Delta t + \mathcal{O}(\Delta t^2) \\
+    &= \left( I + A(t) \Delta t \right) X(t) + \mathcal{O}(\Delta t^2)
+\end{align*}
+Taking the determinant of both sides and using the product rule for determinants ($\det(AB) = \det(A)\det(B)$):
+\begin{align*}
+    \det X(t + \Delta t) &= \det \left( I + A(t) \Delta t \right) \det X(t) + \mathcal{O}(\Delta t^2)
+\end{align*}
+For any square matrix $M$ and a small scalar $\epsilon$, expanding the characteristic polynomial gives the standard identity $\det(I + \epsilon M) = 1 + \epsilon \, \mathrm{trace}(M) + \mathcal{O}(\epsilon^2)$. Applying this identity yields:
+\begin{align*}
+    \det X(t + \Delta t) &= \left( 1 + \Delta t \, \mathrm{trace}(A(t)) \right) \det X(t) + \mathcal{O}(\Delta t^2) \\
+    \det X(t + \Delta t) - \det X(t) &= \Delta t \, \mathrm{trace}(A(t)) \det X(t) + \mathcal{O}(\Delta t^2)
+\end{align*}
+Dividing by $\Delta t$ and taking the limit as $\Delta t \to 0$ gives the exact derivative:
+\begin{align*}
+    \frac{d}{dt} \det X(t) &= \mathrm{trace}(A(t)) \cdot \det X(t) \ \ \checkmark
+\end{align*}
+\vspace{6pt}
 
-\textbf{Proof:} Let's show that $X(t) X(t_0)^{-1}$ is the state-transition matrix
+\textbf{Lemma (Determinant Identity used above):} For any square matrix $M \in \mathbb{R}^{n \times n}$ and a small scalar $\epsilon$, $\det(I + \epsilon M) = 1 + \epsilon \, \mathrm{trace}(M) + \mathcal{O}(\epsilon^2)$.
+
+\textbf{Proof of Lemma:} \\
+Let $\lambda_1, \lambda_2, \dots, \lambda_n$ be the (possibly complex) eigenvalues of $M$. By the properties of eigenvalues, the eigenvalues of the shifted and scaled matrix $(I + \epsilon M)$ are given by $(1 + \epsilon \lambda_1), (1 + \epsilon \lambda_2), \dots, (1 + \epsilon \lambda_n)$.
+
+Because the determinant of any matrix is equal to the product of its eigenvalues, we have:
+\begin{align*}
+    \det(I + \epsilon M) &= \prod_{i=1}^n (1 + \epsilon \lambda_i) \\
+    &= (1 + \epsilon \lambda_1)(1 + \epsilon \lambda_2) \cdots (1 + \epsilon \lambda_n) 
+\end{align*}
+Expanding this product, the constant term is $1$, the linear term in $\epsilon$ is the sum of the $\lambda_i$'s, and all other cross-terms involve $\epsilon^2$ or higher powers:
+\begin{align*}
+    \det(I + \epsilon M) &= 1 + \epsilon \left( \sum_{i=1}^n \lambda_i \right) + \mathcal{O}(\epsilon^2)
+\end{align*}
+Recall from linear algebra that the sum of the eigenvalues of a matrix is strictly equal to its trace ($\sum_{i=1}^n \lambda_i = \mathrm{trace}(M)$). Substituting this into our expansion yields:
+\begin{align*}
+    \det(I + \epsilon M) &= 1 + \epsilon \, \mathrm{trace}(M) + \mathcal{O}(\epsilon^2) \ \ \checkmark
+\end{align*}
+\vspace{6pt}
+
+\textbf{Theorem:} Let $X(t)$ be any fundamental matrix of $\dot{x} = A(t) x(t)$, then $\Phi(t,t_0) = X(t) X(t_0)^{-1}$.
+
+\textbf{Proof:} Let's show that $X(t) X(t_0)^{-1}$ is the state-transition matrix:
 %
 \begin{align*}
 \Phi(t_0,t_0) &= \left[ X(t) X(t_0)^{-1} \right]_{t=t_0} = X(t_0) X(t_0)^{-1}= I \ , \ \checkmark
@@ -461,22 +544,22 @@ since, if $\mathrm{det}[X(t_0)]=0$ then $X(t)$ is not a fundamental matrix.
 \end{align*}
 
 \begin{exmp}
-Let 
+Let:
 \begin{align*}
 	\dot{x}(t) = \begin{bmatrix} 0 & t & 0 \\ 0 & 0 & t \\ 0 & 0 & 0 \end{bmatrix} x(t)
 \end{align*}
 \end{exmp}
 %
-Compute $\Phi(t,0)$ via two different methods
+Compute $\Phi(t,0)$ via two different methods.
 
-\textbf{Solution:} Let's first find state-transition matrix via finding a fundamental matrix. Let $X(0) = I$ 
+\textbf{Solution:} Let's first find the state-transition matrix by finding a fundamental matrix. Let $X(0) = I$.
 %
 \begin{align*}
 	X(0) = \begin{bmatrix} 1 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 1 \end{bmatrix} 
 	= \begin{bmatrix} e_1 & e_2 & e_3  \end{bmatrix} 
 \end{align*}
 % 
-Let's start with $x(0) = e_1$. Let's write individual differential equations in the reverse order of the state numbering 
+Let's start with $x(0) = e_1$. Let's write the individual differential equations in the reverse order of the state numbering:
 %
 \begin{align*}
 	\dot{x}_3 &= 0 \ , \ x_3(0) = 0 \ \rightarrow \ x_3(t) = 0
@@ -500,7 +583,7 @@ Now apply the same process for $x(0) = e_2$.
 	x(t)_2 &= \begin{bmatrix} \frac{t^2}{2} \\ 1 \\ 0 \end{bmatrix}
 \end{align*}
 %
-Finally apply the same process for $x(0) = e_3$.
+Finally, apply the same process for $x(0) = e_3$.
 %
 \begin{align*}
 	\dot{x}_3 &= 0 \ , \ x_3(0) = 1 \ \rightarrow \ x_3(t) = 1
@@ -512,7 +595,7 @@ Finally apply the same process for $x(0) = e_3$.
 	x(t)_3 &= \begin{bmatrix} \frac{t^4}{8} \\ \frac{t^2}{2} \\ 1 \end{bmatrix}
 \end{align*}
 %
-We can then form the fundamental and state-transition matrices 
+We can then form the fundamental and state-transition matrices:
 %
 \begin{align*}
 	X(t) &= \begin{bmatrix} x(t)_1 & x(t)_2 & x(t)_3 \end{bmatrix}  = \begin{bmatrix} 1 & \frac{t^2}{2} & \frac{t^4}{8} \\ 0 & 1 & \frac{t^2}{2} \\ 0 & 0 & 1 \end{bmatrix} 
@@ -520,7 +603,7 @@ We can then form the fundamental and state-transition matrices
 	\Phi(t,0) &= X(t)X(0)^{-1} = \begin{bmatrix} 1 & \frac{t^2}{2} & \frac{t^4}{8} \\ 0 & 1 & \frac{t^2}{2} \\ 0 & 0 & 1 \end{bmatrix} 
 \end{align*}
 % 
-Now, let's find the state-transition matrix using the matrix exponential. Since $\begin{pmatrix} \int\limits_{0}^{t} A(\gamma) d\gamma \end{pmatrix}$ and $A(t)$ commutes, we can express the state-transition matrix as
+Now, let's find the state-transition matrix using the matrix exponential. Since $\begin{pmatrix} \int\limits_{0}^{t} A(\gamma) d\gamma \end{pmatrix}$ and $A(t)$ commute, we can express the state-transition matrix as:
 %
 \begin{align*}
 	\Phi(t,0) &= e^{ \int\limits_{0}^{t} A(\gamma) d\gamma } 
@@ -531,7 +614,7 @@ Now, let's find the state-transition matrix using the matrix exponential. Since 
 \end{align*}
 
 \begin{exmp}
-Compute the unit step response for the same system given that
+Compute the unit step response for the same system, given that:
 \begin{align*}
 	x(0) = 0 \ , \ B(t) = \begin{bmatrix} 0 \\ 0 \\ 1 \end{bmatrix} 
 	\ , \
@@ -539,7 +622,7 @@ Compute the unit step response for the same system given that
 \end{align*}
 \end{exmp}
 %
-\textbf{Solution:} First let's find $\Phi(t , \tau)$
+\textbf{Solution:} First, let's find $\Phi(t , \tau)$:
 %
 \begin{align*}
 	\Phi(t , \tau) &= X(t) X(\tau)^{-1} = \begin{bmatrix} 1 & \frac{t^2}{2} & \frac{t^4}{8} \\ 0 & 1 & \frac{t^2}{2} \\ 0 & 0 & 1 \end{bmatrix} 
@@ -557,13 +640,10 @@ Now we can find the solution.
 	&= \begin{bmatrix} 1 & 0 & 0 \end{bmatrix}  \int\limits_{0}^{t} \begin{bmatrix} 1 & \frac{t^2}{2} & \frac{t^4}{8} \\ 0 & 1 & \frac{t^2}{2} \\ 0 & 0 & 1 \end{bmatrix} 
 	\begin{bmatrix} 1 & -\frac{\tau^2}{2} & \frac{\tau^4}{8}  \\ 0 & 1 & -\frac{\tau^2}{2} \\ 0 & 0 & 1 \end{bmatrix} \begin{bmatrix} 0 \\ 0 \\ 1 \end{bmatrix}  d\tau 
 	\\
-	&= \begin{bmatrix} 1 & \frac{t^2}{2} & \frac{t^4}{8} \end{bmatrix}  \int\limits_{t_0}^{t} \begin{bmatrix} \frac{\tau^4}{8} \\ -\frac{\tau^2}{2} \\ 1 \end{bmatrix} d\tau 
+	&= \begin{bmatrix} 1 & \frac{t^2}{2} & \frac{t^4}{8} \end{bmatrix}  \int\limits_{0}^{t} \begin{bmatrix} \frac{\tau^4}{8} \\ -\frac{\tau^2}{2} \\ 1 \end{bmatrix} d\tau 
 	= \begin{bmatrix} 1 & \frac{t^2}{2} & \frac{t^4}{8} \end{bmatrix} \begin{bmatrix} \frac{t^5}{40} \\ -\frac{t^3}{6} \\ t \end{bmatrix} 
 	\\
 	&= \frac{t^5}{40} - \frac{t^5}{12} + \frac{t^5}{8} = \frac{t^5}{15}
 \end{align*}
-%
 
-
-% **** This ENDS THE EXAMPLES. DON'T DELETE THE FOLLOWING LINE:
 \end{document}
