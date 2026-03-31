@@ -299,22 +299,22 @@ $\iff \ \lim_{k \to \infty } J_i^k = 0 \ \forall i \ \iff \ | \lambda_i | < 1 \ 
 \begin{itemize}
 \item A CT LTI system is \textit{s.i.s.L} 
 
-$\iff \ \lim_{t \to \infty } e^{J_i t} = M_i < \infty \ \forall i \ \iff \lbrace \mathrm{Re}\lbrace \lambda_i \rbrace < 0 \ \mathrm{or} \ \left\lbrace \mathrm{Re}\lbrace \lambda_i \rbrace = 0 \ \mathrm{and} \ J_i \in \mathbb{R} \rbrace \right\rbrace \ \forall i$  
+$\iff \ \lim_{t \to \infty } e^{J_i t} = M_i < \infty \ \forall i \ \iff \lbrace \mathrm{Re}\lbrace \lambda_i \rbrace < 0 \ \mathrm{or} \ \left\lbrace \mathrm{Re}\lbrace \lambda_i \rbrace = 0 \ \mathrm{and} \ \text{size}(J_i) = 1 \rbrace \right\rbrace \ \forall i$  
 %
 \item A DT LTI system is \textit{s.i.s.L} 
 
-$\iff \ \lim_{k \to \infty } J_i^k = M_i < \infty \ \forall i \ \iff \lbrace | \lambda_i | < 1 \ \mathrm{or} \ \left\lbrace | \lambda_i | = 1 \ \mathrm{and} \ J_i \in \mathbb{R} \rbrace \right\rbrace \ \forall i$  
+$\iff \ \lim_{k \to \infty } J_i^k = M_i < \infty \ \forall i \ \iff \lbrace | \lambda_i | < 1 \ \mathrm{or} \ \left\lbrace | \lambda_i | = 1 \ \mathrm{and} \ \text{size}(J_i) = 1 \rbrace \right\rbrace \ \forall i$  
 \end{itemize}
 
 \item 
 \begin{itemize}
 \item A CT LTI system is \textit{unstable}
 
-$\iff \ \exists i \ \ \lim_{t \to \infty } e^{J_i t} = \infty \ \iff \exists i \lbrace \mathrm{Re}\lbrace \lambda_i \rbrace > 0 \ \mathrm{or} \ \left\lbrace \mathrm{Re}\lbrace \lambda_i \rbrace = 0 \ \mathrm{and} \ J_i \in \mathbb{R}^{n \times n} , n>1 \rbrace \right\rbrace$  
+$\iff \ \exists i \ \ \lim_{t \to \infty } e^{J_i t} = \infty \ \iff \exists i \lbrace \mathrm{Re}\lbrace \lambda_i \rbrace > 0 \ \mathrm{or} \ \left\lbrace \mathrm{Re}\lbrace \lambda_i \rbrace = 0 \ \mathrm{and} \ \text{size}(J_i) > 1 \rbrace \right\rbrace$  
 %
 \item A DT LTI system is \textit{unstable} 
 
-$\iff \ \exists i \ \lim_{k \to \infty } J_i^k = \infty \ \iff \exists i \lbrace | \lambda_i | > 1 \ \mathrm{or} \ \left\lbrace | \lambda_i | = 1 \ \mathrm{and} \ J_i \in \mathbb{R}^{n \times n} , n>1 \rbrace \right\rbrace$  
+$\iff \ \exists i \ \lim_{k \to \infty } J_i^k = \infty \ \iff \exists i \lbrace | \lambda_i | > 1 \ \mathrm{or} \ \left\lbrace | \lambda_i | = 1 \ \mathrm{and} \ \text{size}(J_i) > 1 \rbrace \right\rbrace$  
 \end{itemize}
 
 \end{enumerate}
@@ -762,7 +762,7 @@ $\dot{x} = A x$ is globally asymptotically stable.
 P = \int\limits_{0}^{\infty} e^{t A^T} Q e^{A t} dt
 \end{align*}
 %
-$P$ is well defined since all eigenvalues of $A$ are in the Open Left-Half Plane (OLP), and 
+$P$ is well defined since all eigenvalues of $A$ are in the Open Left-Half Plane (OLHP), and 
 $e^{A t}$ exponentially converges to $0$. Now:
 %
 \begin{align*}
