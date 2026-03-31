@@ -289,32 +289,32 @@ Based on this decomposition, we can derive the stability conditions.
 \begin{itemize}
 \item A CT LTI system is \textit{asymptotically \& exponentially stable} 
 
-$\iff \ \lim_{t \to \infty } e^{J_i t} = 0 \ \forall i \ \iff \ \mathrm{Re}\lbrace \lambda_i \rbrace < 0 \ \forall i$  
+$\iff \ \lim_{t \to \infty } e^{J_i t} = 0 \ \forall i \ \iff \ \mathrm{Re}(\lambda_i) < 0 \ \forall i$  
 \item A DT LTI system is \textit{asymptotically \& exponentially stable} 
 
-$\iff \ \lim_{k \to \infty } J_i^k = 0 \ \forall i \ \iff \ | \lambda_i | < 1 \ \forall i$  
+$\iff \ \lim_{k \to \infty } J_i^k = 0 \ \forall i \ \iff \ |\lambda_i| < 1 \ \forall i$  
 \end{itemize}
 %
 \item 
 \begin{itemize}
-\item A CT LTI system is \textit{s.i.s.L} 
+\item A CT LTI system is \textit{stable in the sense of Lyapunov (s.i.s.L.)} 
 
-$\iff \ \lim_{t \to \infty } e^{J_i t} = M_i < \infty \ \forall i \ \iff \lbrace \mathrm{Re}\lbrace \lambda_i \rbrace < 0 \ \mathrm{or} \ \left\lbrace \mathrm{Re}\lbrace \lambda_i \rbrace = 0 \ \mathrm{and} \ \text{size}(J_i) = 1 \rbrace \right\rbrace \ \forall i$  
+$\iff \ \exists M_i < \infty \text{ s.t. } \|e^{J_i t}\| \leq M_i \ \forall t \geq 0, \forall i \ \iff \big( \mathrm{Re}(\lambda_i) < 0 \text{ or } ( \mathrm{Re}(\lambda_i) = 0 \text{ and } \text{size}(J_i) = 1 ) \big) \ \forall i$  
 %
-\item A DT LTI system is \textit{s.i.s.L} 
+\item A DT LTI system is \textit{stable in the sense of Lyapunov (s.i.s.L.)} 
 
-$\iff \ \lim_{k \to \infty } J_i^k = M_i < \infty \ \forall i \ \iff \lbrace | \lambda_i | < 1 \ \mathrm{or} \ \left\lbrace | \lambda_i | = 1 \ \mathrm{and} \ \text{size}(J_i) = 1 \rbrace \right\rbrace \ \forall i$  
+$\iff \ \exists M_i < \infty \text{ s.t. } \|J_i^k\| \leq M_i \ \forall k \geq 0, \forall i \ \iff \big( |\lambda_i| < 1 \text{ or } ( |\lambda_i| = 1 \text{ and } \text{size}(J_i) = 1 ) \big) \ \forall i$  
 \end{itemize}
 
 \item 
 \begin{itemize}
 \item A CT LTI system is \textit{unstable}
 
-$\iff \ \exists i \ \ \lim_{t \to \infty } e^{J_i t} = \infty \ \iff \exists i \lbrace \mathrm{Re}\lbrace \lambda_i \rbrace > 0 \ \mathrm{or} \ \left\lbrace \mathrm{Re}\lbrace \lambda_i \rbrace = 0 \ \mathrm{and} \ \text{size}(J_i) > 1 \rbrace \right\rbrace$  
+$\iff \ \exists i \text{ s.t. } \lim_{t \to \infty } \|e^{J_i t}\| = \infty \ \iff \exists i \text{ s.t. } \big( \mathrm{Re}(\lambda_i) > 0 \text{ or } ( \mathrm{Re}(\lambda_i) = 0 \text{ and } \text{size}(J_i) > 1 ) \big)$  
 %
 \item A DT LTI system is \textit{unstable} 
 
-$\iff \ \exists i \ \lim_{k \to \infty } J_i^k = \infty \ \iff \exists i \lbrace | \lambda_i | > 1 \ \mathrm{or} \ \left\lbrace | \lambda_i | = 1 \ \mathrm{and} \ \text{size}(J_i) > 1 \rbrace \right\rbrace$  
+$\iff \ \exists i \text{ s.t. } \lim_{k \to \infty } \|J_i^k\| = \infty \ \iff \exists i \text{ s.t. } \big( |\lambda_i| > 1 \text{ or } ( |\lambda_i| = 1 \text{ and } \text{size}(J_i) > 1 ) \big)$  
 \end{itemize}
 
 \end{enumerate}
