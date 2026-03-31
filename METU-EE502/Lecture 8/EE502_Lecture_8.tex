@@ -1,18 +1,29 @@
-\documentclass[twoside]{article}
-\setlength{\oddsidemargin}{0.25 in}
-\setlength{\evensidemargin}{-0.25 in}
-\setlength{\topmargin}{-0.6 in}
-\setlength{\textwidth}{6.5 in}
-\setlength{\textheight}{8.5 in}
-\setlength{\headsep}{0.75 in}
-\setlength{\parindent}{0 in}
-\setlength{\parskip}{0.1 in}
+\documentclass[twoside, 11pt]{article}
 
-%
-% ADD PACKAGES here:
-%
+% --- CONDITIONAL COMPILER & FONT SETUP ---
+\usepackage{ifluatex, ifxetex}
+\newif\ifmodern
+\ifluatex\moderntrue\fi
+\ifxetex\moderntrue\fi
 
-\usepackage{amsmath,amsfonts,graphicx,mathtools}
+\ifmodern
+  % --- UNIVERSAL PREAMBLE BLOCK (For Canvas / XeLaTeX / LuaLaTeX) ---
+  \usepackage{fontspec}
+  \usepackage[english, bidi=basic, provide=*]{babel}
+  \babelprovide[import, onchar=ids fonts]{english}
+  \babelfont{rm}{Noto Serif}
+\else
+  % --- FALLBACK BLOCK (For local pdflatex) ---
+  % When compiled locally with pdflatex, this file will automatically
+  % skip the fontspec block and use the original Computer Modern font.
+\fi
+
+\usepackage[a4paper, top=2.5cm, bottom=2.5cm, left=2cm, right=2cm]{geometry}
+
+% --- MATH AND FORMATTING PACKAGES ---
+\usepackage{amsmath,amsfonts,mathtools}
+\usepackage{enumitem}
+\usepackage{graphicx}
 
 %
 \newcounter{lecnum}
@@ -24,8 +35,9 @@
 
 %
 % The following macro is used to generate the header.
+% Changed from [4] to [2] to prevent it from absorbing \section commands
 %
-\newcommand{\lecture}[4]{
+\newcommand{\lecture}[2]{
    \pagestyle{myheadings}
    \thispagestyle{plain}
    \newpage
@@ -48,7 +60,6 @@
 
    \vspace*{4mm}
 }
-
 
 \renewcommand{\cite}[1]{[#1]}
 \def\beginrefs{\begin{list}%
@@ -76,31 +87,30 @@
 \newenvironment{proof}{{\bf Proof:}}{\hfill\rule{2mm}{2mm}}
 \newtheorem{exmp}[theorem]{Ex}
 
-% **** IF YOU WANT TO DEFINE ADDITIONAL MACROS FOR YOURSELF, PUT THEM HERE:
+\setlength{\parindent}{0 in}
+\setlength{\parskip}{0.1 in}
 
 \begin{document}
 
 % Lecture Details
 \lecture{8}{Assoc. Prof. M. Mert Ankarali}
 
-
-
 \section{Internal (Lyapunov) Stability} 
 
-In internal stability, we are interested in un-driven (zero-input response) part of the dynamical system and solely 
-focus on state evolution dynamics, i.e. autonomous part of the dynamical system. CT and DT non-linear autonomous 
-systems can simply be expressed by 
+In internal stability, we are interested in the un-driven (zero-input response) part of the dynamical system and solely 
+focus on the state evolution dynamics, i.e., the autonomous part of the dynamical system. CT and DT non-linear autonomous 
+systems can simply be expressed as:
 %
 \begin{align*}
  x &\in \mathbb{D} \subset \mathbb{R}^n
  \\
  \dot{x} &= F(x , t) \\
-  x[k+1] &= F(x[k]], k) 
+  x[k+1] &= F(x[k], k) 
 \end{align*}
 %
 For non-linear systems, in order to define and analyze the stability of a dynamical system, we need to 
 define equilibrium points (or nominal solutions), since we will technically analyze the stability around 
-such points. An equilibrium point for CT and DT non-linear systems are defined as
+such points. An equilibrium point for CT and DT non-linear systems is defined as:
 %
 \begin{align*}
   &x_e \in \mathbb{D}
@@ -110,35 +120,35 @@ such points. An equilibrium point for CT and DT non-linear systems are defined a
   DT:& \ x_e = F(x_e , k) \ \forall k > k_0
 \end{align*}
 %
-Obviously if a dynamical system at time $t_0$ (or $k_0)$ starts from an an equilibrium point, $x(t_0) = x_e$ 
-(or $x[k_o] = x_e$), it will remain on the equilibrium point $\forall \ t \geq t_0$ (or $\forall \ k \geq k_0$). 
-A non-linear system can have a single equilibrium point, $x_e \in \mathcal{E}, \, \mathrm{card}(\mathcal{E}) = 1$, have multiple finite 
-number of equilibria, $x_e \in \mathcal{E}, \, \mathrm{card}(\mathcal{E}) = n_e < \infty$, or infinite number of equilibrium points, 
+Obviously, if a dynamical system at time $t_0$ (or $k_0$) starts from an equilibrium point, $x(t_0) = x_e$ 
+(or $x[k_0] = x_e$), it will remain on the equilibrium point $\forall \ t \geq t_0$ (or $\forall \ k \geq k_0$). 
+A non-linear system can have a single equilibrium point, $x_e \in \mathcal{E}, \, \mathrm{card}(\mathcal{E}) = 1$, have a multiple finite 
+number of equilibria, $x_e \in \mathcal{E}, \, \mathrm{card}(\mathcal{E}) = n_e < \infty$, or an infinite number of equilibrium points, 
 $x_e \in \mathcal{E}, \, \mathrm{card}(\mathcal{E}) = \infty$.
 
 \begin{exmp}
-	Show that for an LTI dynamical system, set of equilibrium points define a vector space. Then characterize this vector space. 
+	Show that for an LTI dynamical system, the set of equilibrium points defines a vector space. Then characterize this vector space. 
 \end{exmp}
 
-\textbf{Definition:} Without loss of generality, let's assume that the equilibrium point that is point of interest is located at the origin $x_e = 0$.
+\textbf{Definition:} Without loss of generality, let's assume that the equilibrium point that is the point of interest is located at the origin $x_e = 0$.
 %
 \begin{enumerate}
 %
-\item The system is called \textit{stable in the sense of Lyapunov (s.i.s.L)} around $x_e = 0$ if it satisfies
+\item The system is called \textit{stable in the sense of Lyapunov (s.i.s.L)} around $x_e = 0$ if it satisfies:
 %
 \begin{align*}
 	\forall \epsilon > 0 , \ \exists \delta_L(\epsilon) \ s.t. \ if \ || x(t_0) || < \delta_L \ \rightarrow || x(t) || < \epsilon \ \forall t \geq t_0
 \end{align*}
 %
-\item The system is called \textit{asymptotically stable} around  around $x_e = 0$ if it is 
-\textit{stable in the sense of Lyapunov (s.i.s.L)} around $x_e = 0$ and \textit{locally attractive}, i.e.
+\item The system is called \textit{asymptotically stable} around $x_e = 0$ if it is 
+\textit{stable in the sense of Lyapunov (s.i.s.L)} around $x_e = 0$ and \textit{locally attractive}, i.e.:
 %
 \begin{align*}
 	\exists \delta_a \ s.t. \ if \ || x(t_0) || < \delta_a \ \rightarrow \lim_{t \to \infty} || x(t) || = 0
 \end{align*}
 %
-\item The system is called \textit{exponentially stable} around  around $x_e = 0$ if it is 
-\textit{asymptotically stable} around $x_e = 0$ and satisfies 
+\item The system is called \textit{exponentially stable} around $x_e = 0$ if it is 
+\textit{asymptotically stable} around $x_e = 0$ and satisfies: 
 %
 \begin{align*}
 	\exists \delta_e > 0 , \, \alpha > 0 , \, \sigma >0 \ s.t. \ if \ || x(t_0) || < \delta_e \ \rightarrow || x(t) || \leq \alpha || x(t_0) || e^{- \sigma t} \ \forall t \geq t_0
@@ -146,84 +156,93 @@ $x_e \in \mathcal{E}, \, \mathrm{card}(\mathcal{E}) = \infty$.
 %
 \end{enumerate}
 
-\textbf{Remark:} If above stability conditions are satisfied $\forall \, t_0 \in \mathbb{R}$, then we call the system around the equilibrium \textit{uniformly s.i.s.L}, 
-\textit{uniformly asymptotically stable}, and \textit{uniformly exponentially stable} respectively. The difference between uniform and non-uniform
-stability is (slightly) important for only time-varying non-linear systems. Thus we will not use uniform stability definition in this course. 
+\textbf{Remark:} If the above stability conditions are satisfied $\forall \, t_0 \in \mathbb{R}$, then we call the system around the equilibrium \textit{uniformly s.i.s.L}, 
+\textit{uniformlyasymptotically stable}, and \textit{uniformly exponentially stable} respectively. The difference between uniform and non-uniform
+stability is important only for time-varying non-linear systems. Thus, we will not use the uniform stability definition in this course. 
 
-\textbf{Remark:} Note that as you can see the internal stability
+\textbf{Remark:} Note that, as you can see, the internal stability
 definitions, \textit{s.i.s.L}, \textit{asymptotic stability}, and
 \textit{exponentially stability}, are all local stability definitions
-defined in the neighborhood of $x_e$. If asymptotic and exponential stability definition holds
-for all initial conditions, i.e. $x(t_0) \in \mathbb{D}$, then we use the terms
+defined in the neighborhood of $x_e$. If the asymptotic and exponential stability definitions hold
+for all initial conditions, i.e., $x(t_0) \in \mathbb{D}$, then we use the terms
 \textit{globally asymptotically stable}, and \textit{globally exponentially stable}.
 
 \begin{exmp}
-    Consider the pendulum dynamics
+    Consider the pendulum dynamics:
     \begin{align*}
-    \dot{x} = \begin{bmatrix} x_2 \\ -sin(x_1)\end{bmatrix} \ , \ \mathrm{where} \ \begin{bmatrix} x_1 \\ x_2 \end{bmatrix} = \begin{bmatrix}  \theta \\ \dot{\theta} \end{bmatrix}
+    \dot{x} = \begin{bmatrix} x_2 \\ -\sin(x_1)\end{bmatrix} \ , \ \mathrm{where} \ \begin{bmatrix} x_1 \\ x_2 \end{bmatrix} = \begin{bmatrix}  \theta \\ \dot{\theta} \end{bmatrix}
 \end{align*}
 \end{exmp}
 Analyze the stability of the dynamics around $x_e = \begin{bmatrix} 0 \\ 0 \end{bmatrix}$ using Lyapunov's stability definitions.
 
-\textbf{Solution:} We know that a mechanical pendulum is an
-energy-conserving system since there is no dissipative or active element. In that respect, at any time instant, we can write total energy as 
+\textbf{Solution:} To prove stability in the sense of Lyapunov, we need to show that for any given $\epsilon > 0$, we can find a $\delta > 0$ such that if $|| x(0) ||_2 < \delta$, then $|| x(t) ||_2 < \epsilon$ for all $t \geq 0$.
+
+We know that a mechanical pendulum is an energy-conserving system. At any time instant, the total energy is: 
 %
 \begin{align*}
-E(x) &= \frac{1}{2} x_2^2 + 1 - \cos{x_1}  \ , \ \mathrm{note} \ E(0) = 0
+E(x) &= \frac{1}{2} x_2^2 + 1 - \cos(x_1) \ , \ \mathrm{note} \ E(0) = 0
 \end{align*}
-%
-Let $x(0) = \begin{bmatrix} x_1(0) \\ x_2(0) \end{bmatrix}$ and $|| x(0) ||_2 < \epsilon , \, \epsilon \in \mathbb{R}^+ $, then we know that $ (x_1(0)^2 + x_2(0)^2) < \epsilon^2 $. Due to the conservation of energy, we also know that
+Second, for the lower bound, we can use the exact analytical inequality $1 - \cos(x_1) \geq \frac{2}{\pi^2} x_1^2$, which strictly holds for all $x_1 \in [-\pi, \pi]$. Geometrically, if we plot $1 - \cos(x_1)$ and the parabola $\frac{2}{\pi^2} x_1^2$, both functions equal $0$ at the origin and $2$ at the boundaries ($\pm \pi$). Because the cosine curve is wider ("bows" out) compared to the specific parabola between these points, $1 - \cos(x_1)$ is always greater than or equal to $\frac{2}{\pi^2} x_1^2$ everywhere in that interval. 
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.7\textwidth]{comp.png}
+  \caption{Comparison of the potential energy term $1-\cos(x)$ with its quadratic upper bound $\frac{1}{2}x^2$ and lower bound $\frac{2}{\pi^2}x^2$.}
+  \label{fig:energy_bounds}
+\end{figure}
+
+Using this inequality, we can independently bound $x_1(t)$ and $x_2(t)$:
 %
 \begin{align*}
-&E(x(t)) = E(x(0)) \\
-&\frac{1}{2} x_2(t)^2 + 1 - \cos{x_1(t)} 
-= 
-\frac{1}{2} x_2(0)^2 + 1 - \cos{x_1(0)} < \frac{1}{2} x_2(0)^2 + \frac{1}{2} x_1(0)^2 < \frac{\epsilon^2}{2}
-\\
-&\frac{1}{2} x_2(t)^2 + 1 - \cos{x_1(t)} < \frac{\epsilon^2}{2} 
-\ \rightarrow \ x_2(t)^2 < \epsilon^2 + 4
+\frac{1}{2} x_2(t)^2 &\leq E(x(t)) < \frac{1}{2} \delta^2 \implies |x_2(t)| < \delta \\
+\frac{2}{\pi^2} x_1(t)^2 &\leq 1 - \cos(x_1(t)) \leq E(x(t)) < \frac{1}{2} \delta^2 \implies |x_1(t)| < \frac{\pi}{2} \delta
 \end{align*}
 %
-We already know that $x_1 = \theta$ and it is bounded since $\theta \in \mathbb{S}$, so 
+Now we can bound the overall state norm $||x(t)||_2$ entirely in terms of $\delta$:
 %
 \begin{align*}
-x_1(t)^2 \leq 1 \ \rightarrow \ ( x_1(t)^2 + x_2(t)^2 ) < \epsilon^2 + 5 \ \rightarrow \ || x(t) ||_2 < \sqrt{\epsilon^2 + 5} = \delta(\epsilon)
+||x(t)||_2^2 = x_1(t)^2 + x_2(t)^2 < \left(\frac{\pi^2}{4}\right) \delta^2 + \delta^2 = \delta^2 \left( 1 + \frac{\pi^2}{4} \right)
 \end{align*}
 %
-This shows that the dynamics around the equilibrium is \textit{stable in the sense of Lyapunov}. Note that 
-since $E(t) = E(0) \, \forall t >0$, $|| x(t) ||_2 \neq 0 \forall t >0$, thus the system around the equilibrium is not asymptotically stable (neither local nor global), and hence not exponentially stable. 
+To guarantee the Lyapunov condition $||x(t)||_2 < \epsilon$, we require $\delta \sqrt{1 + \frac{\pi^2}{4}} \leq \epsilon$. We simply set:
+%
+\begin{align*}
+\delta(\epsilon) = \frac{\epsilon}{\sqrt{1 + \frac{\pi^2}{4}}} 
+\end{align*}
+%
+Since we successfully demonstrated that we can find a strictly positive $\delta$ for any given $\epsilon > 0$, the dynamics around the equilibrium is \textit{stable in the sense of Lyapunov}. Note that since $E(t) = E(0) \, \forall t > 0$, the state does not converge to the origin over time, meaning the system is not asymptotically stable.
 
 \subsection{Internal Stability of LTI Systems}
 
 Lyapunov's stability definitions may not be very useful for analyzing
-the stability of non-linear systems, however we can easily derive
-necessary and sufficient conditions for stability. One should also note the 
+the stability of non-linear systems; however, we can easily derive
+necessary and sufficient conditions for stability. One should also note that 
 in LTI systems (and linear systems in general) we are interested in the
-stability of the origin $x_e = 0$. The following matrix differential and difference equations express autonomous CT and DT LTI systems
+stability of the origin $x_e = 0$. The following matrix differential and difference equations express autonomous CT and DT LTI systems:
 %
 \begin{align*}
 \dot{x} &= A x 
 \\
-x[k+1] =& A x[k]
+x[k+1] &= A x[k]
 \end{align*}
 %
-and we know the analytical solutions to the zero-input responses have the following forms
+and we know the analytical solutions to the zero-input responses have the following forms:
 %
 \begin{align*}
-x(t) = e^{A t} x_0
+x(t) &= e^{A t} x_0
 \\
-x[k] = A^k x_0
+x[k] &= A^k x_0
 \end{align*}
 %
 It is easier to analyze the internal stability using Jordan decomposition of the system matrix $A$, 
 %
 \begin{align*}
-x(t) = G e^{J t} G^{-1} x_0 \ \rightarrow \  \left[ G^{-1} x(t) \right] = e^{J t} \left[ G^{-1} x_0 \right] \ \rightarrow \ \alpha(t) = e^{J t} \alpha_0
+x(t) &= G e^{J t} G^{-1} x_0 \ \rightarrow \  \left[ G^{-1} x(t) \right] = e^{J t} \left[ G^{-1} x_0 \right] \ \rightarrow \ \alpha(t) = e^{J t} \alpha_0
 \\
-x[k] = G J^k G^{-1} x_0  \ \rightarrow \ \alpha[k] = J^k \alpha_0
+x[k] &= G J^k G^{-1} x_0  \ \rightarrow \ \alpha[k] = J^k \alpha_0
 \end{align*}
 %
-Note that since $G$ and $G^{-1}$ finite and invertible matrices, we know that 
+Note that since $G$ and $G^{-1}$ are finite and invertible matrices, we know that:
 %
 \begin{align*}
 || x || = 0 &\iff || G^{-1} x || = 0 \iff x = 0 
@@ -233,7 +252,7 @@ Note that since $G$ and $G^{-1}$ finite and invertible matrices, we know that
 || x || \to \infty &\iff || G^{-1} x || \to \infty 
 \end{align*}
 %
-We know that $e^{J t}$ and $J^k$ has the following block diagonal form
+We know that $e^{J t}$ and $J^k$ have the following block diagonal form:
 %
 \begin{align*}
 e^{J t} &= \left[ \begin{array}{ccccc} e^{J_1 t} &  & & &  \\  & e^{J_2 t}  &  & 0 &  \\ &  & \ddots & \\ & 0 & & \ddots & \\ & &  & &  e^{J_n t}  \end{array} \right]
@@ -241,10 +260,10 @@ e^{J t} &= \left[ \begin{array}{ccccc} e^{J_1 t} &  & & &  \\  & e^{J_2 t}  &  &
 J^k &= \left[ \begin{array}{ccccc} J_1^k &  & & &  \\  & J_2^k  &  & 0 &  \\ &  & \ddots & \\ & 0 & & \ddots & \\ & &  & &  J_n^k  \end{array} \right]
 \end{align*}
 %
-where an individual block associated with a Jordan block of $A$ has the following form
+where an individual block associated with a Jordan block of $A$ has the following form:
 %
 \begin{align*}
-e^{J_i t} &= \left[  \begin{array}{cccccc} e^{\lambda_i t} & t e^{\lambda t} & \frac{t^2}{2 !} e^{\lambda_i t} 
+e^{J_i t} &= \left[  \begin{array}{cccccc} e^{\lambda_i t} & t e^{\lambda_i t} & \frac{t^2}{2 !} e^{\lambda_i t} 
 & \cdots & \frac{t^{n-2}}{(n-2) !} e^{\lambda_i t}  & \frac{t^{n-1}}{(n-1) !} e^{\lambda_i t}
 \\ 0 & e^{\lambda_i t} & t e^{\lambda_i t} & \frac{t^2}{2 !} e^{\lambda_i t} & \cdots  & \frac{t^{n-2}}{(n-2) !} e^{\lambda_i t}
 \\  \vdots &  & \ddots &  &  & \vdots \\ 
@@ -253,8 +272,8 @@ e^{J_i t} &= \left[  \begin{array}{cccccc} e^{\lambda_i t} & t e^{\lambda t} & \
 0 &  & \cdots &  & 0 & e^{\lambda_i t} \end{array} \right] 
 \\
 J_i^k &= \left[  \begin{array}{cccccc} \lambda_i^k & \begin{pmatrix} k \\ 1 \end{pmatrix} \lambda_i^{k-1} & \begin{pmatrix} k \\ 2 \end{pmatrix}  \lambda_i^{k-2} 
-& \cdots & \begin{pmatrix} k \\ n\mathrm{-}2 \end{pmatrix} \lambda_i^{k-n+2} & \begin{pmatrix} k \\ n\mathrm{-}1 \end{pmatrix} \lambda_i^{k-n+1}
-\\ 0 & \lambda_i^k & \begin{pmatrix} k \\ 1 \end{pmatrix}  \lambda_i^{k-1} & \begin{pmatrix} k \\ 2 \end{pmatrix} \lambda_i^{k-2} & \cdots  & \begin{pmatrix} k \\ n\mathrm{-}2 \end{pmatrix} \lambda_i^{k-n+2}
+& \cdots & \begin{pmatrix} k \\ n-2 \end{pmatrix} \lambda_i^{k-n+2} & \begin{pmatrix} k \\ n-1 \end{pmatrix} \lambda_i^{k-n+1}
+\\ 0 & \lambda_i^k & \begin{pmatrix} k \\ 1 \end{pmatrix}  \lambda_i^{k-1} & \begin{pmatrix} k \\ 2 \end{pmatrix} \lambda_i^{k-2} & \cdots  & \begin{pmatrix} k \\ n-2 \end{pmatrix} \lambda_i^{k-n+2}
 \\ 
 \\  \vdots &  & \ddots &  &  & \vdots \\ 
 \\ 
@@ -268,10 +287,10 @@ Based on this decomposition, we can derive the stability conditions.
 \begin{enumerate}
 \item 
 \begin{itemize}
-\item A CT LTI system is \textit{asympotitically \& exponentially stable} 
+\item A CT LTI system is \textit{asymptotically \& exponentially stable} 
 
 $\iff \ \lim_{t \to \infty } e^{J_i t} = 0 \ \forall i \ \iff \ \mathrm{Re}\lbrace \lambda_i \rbrace < 0 \ \forall i$  
-\item A DT LTI system is \textit{asympotitically \& exponentially stable} 
+\item A DT LTI system is \textit{asymptotically \& exponentially stable} 
 
 $\iff \ \lim_{k \to \infty } J_i^k = 0 \ \forall i \ \iff \ | \lambda_i | < 1 \ \forall i$  
 \end{itemize}
@@ -280,26 +299,22 @@ $\iff \ \lim_{k \to \infty } J_i^k = 0 \ \forall i \ \iff \ | \lambda_i | < 1 \ 
 \begin{itemize}
 \item A CT LTI system is \textit{s.i.s.L} 
 
-$\iff \ \lim_{t \to \infty } e^{J_i t} = M_i < \infty \ \forall i \ \iff $ 
-$ \lbrace \mathrm{Re}\lbrace \lambda_i \rbrace < 0 \ \mathrm{or} \ \left\lbrace \mathrm{Re}\lbrace \lambda_i \rbrace = 0 \ \mathrm{and} \ J_i \in \mathbb{R} \rbrace \right\rbrace \ \forall i$  
+$\iff \ \lim_{t \to \infty } e^{J_i t} = M_i < \infty \ \forall i \ \iff \lbrace \mathrm{Re}\lbrace \lambda_i \rbrace < 0 \ \mathrm{or} \ \left\lbrace \mathrm{Re}\lbrace \lambda_i \rbrace = 0 \ \mathrm{and} \ J_i \in \mathbb{R} \rbrace \right\rbrace \ \forall i$  
 %
 \item A DT LTI system is \textit{s.i.s.L} 
 
-$\iff \ \lim_{k \to \infty } J_i^k = M_i < \infty \ \forall i \ \iff $ 
-$ \lbrace | \lambda_i | < 1 \ \mathrm{or} \ \left\lbrace | \lambda_i | = 1 \ \mathrm{and} \ J_i \in \mathbb{R} \rbrace \right\rbrace \ \forall i$  
+$\iff \ \lim_{k \to \infty } J_i^k = M_i < \infty \ \forall i \ \iff \lbrace | \lambda_i | < 1 \ \mathrm{or} \ \left\lbrace | \lambda_i | = 1 \ \mathrm{and} \ J_i \in \mathbb{R} \rbrace \right\rbrace \ \forall i$  
 \end{itemize}
 
 \item 
 \begin{itemize}
 \item A CT LTI system is \textit{unstable}
 
-$\iff \ \exists i \ \ \lim_{t \to \infty } e^{J_i t} = \infty \ \iff $ 
-$ \lbrace \mathrm{Re}\lbrace \lambda_i \rbrace > 0 \ \mathrm{or} \ \left\lbrace \mathrm{Re}\lbrace \lambda_i \rbrace = 0 \ \mathrm{and} \ J_i \in \mathbb{R}^{n \times n} , n>1 \rbrace \right\rbrace \ \forall i$  
+$\iff \ \exists i \ \ \lim_{t \to \infty } e^{J_i t} = \infty \ \iff \exists i \lbrace \mathrm{Re}\lbrace \lambda_i \rbrace > 0 \ \mathrm{or} \ \left\lbrace \mathrm{Re}\lbrace \lambda_i \rbrace = 0 \ \mathrm{and} \ J_i \in \mathbb{R}^{n \times n} , n>1 \rbrace \right\rbrace$  
 %
 \item A DT LTI system is \textit{unstable} 
 
-$\iff \ \exists i \ \lim_{k \to \infty } J_i^k = \infty \ \iff $ 
-$ \exists i \lbrace | \lambda_i | > 1 \ \mathrm{or} \ \left\lbrace | \lambda_i | = 1 \ \mathrm{and} \ J_i \in \mathbb{R}^{n \times n} , n>1 \rbrace \right\rbrace $  
+$\iff \ \exists i \ \lim_{k \to \infty } J_i^k = \infty \ \iff \exists i \lbrace | \lambda_i | > 1 \ \mathrm{or} \ \left\lbrace | \lambda_i | = 1 \ \mathrm{and} \ J_i \in \mathbb{R}^{n \times n} , n>1 \rbrace \right\rbrace$  
 \end{itemize}
 
 \end{enumerate}
@@ -310,7 +325,7 @@ Indeed, for LTI systems we derived the conditions of stability using the state-t
 which leads us to some conditions based on the eigenvalues of the system matrix. For general LTV systems,
 if we follow Lyapunov's stability definitions, we can construct the stability conditions.
 
-\textbf{Theroem:} The LTV system with the following state equation and state-transition matrix
+\textbf{Theorem:} The LTV system with the following state equation and state-transition matrix
 %
 \begin{align*}
  \dot{x}(t) = A(t) x(t) \ , \ x(t) = \Phi(t,t_0) x_0
@@ -320,11 +335,11 @@ if we follow Lyapunov's stability definitions, we can construct the stability co
 \item is \textit{s.i.s.L.} $\iff \ \exists M(t_0) \ s.t. \ || \Phi(t,t_0) || \leq M(t_0) < \infty \ , \ \forall t \geq t_0$
 \item is \textit{asymptotically stable} $\iff$ if it is \textit{s.i.s.L.} and $ \lim_{t \to \infty} \Phi(t,t_0) = 0$
 \item is \textit{exponentially stable} $\iff$ if it is \textit{asymptotically stable} and 
-$ \exists \sigma(t_0) , C(t_0) > 0 $ s.t. $ || \Phi(t,t_0) || \leq C(t_0) e^{-\sigma(t_0) (t - t_0} \ \forall t \geq t_0$
+$\exists \sigma(t_0) , C(t_0) > 0$ s.t. $ || \Phi(t,t_0) || \leq C(t_0) e^{-\sigma(t_0) (t - t_0)} \ \forall t \geq t_0$
 \end{enumerate}
 % 
 If these stability definitions hold $\forall t_0 \in \mathbb{R}$, then they become \textit{uniformly stable} in their respective 
-categories. Note that same conditions are valid for the stability of DT LTV systems if we replace time variables. 
+categories. Note that the same conditions are valid for the stability of DT LTV systems if we replace time variables. 
 
 \begin{exmp}
  Let 
@@ -332,17 +347,17 @@ categories. Note that same conditions are valid for the stability of DT LTV syst
   x[k+1] = \begin{bmatrix} 0 & \rho^k  \\ 0 & (1/2) \end{bmatrix} x[k]
  \end{align*}
 \end{exmp}
-Analyze the stability of the origin based on the value of $\rho$
+Analyze the stability of the origin based on the value of $\rho$.
 
-\textbf{Solution:} In LTI systems, we know that eigenvalues of the system matrix provide necessary and sufficient conditions on
-Lyapunov, asymptotic, and exponential stability. We can see that for this LTV system, eigenvalues are independent of $k$, and
-they satisfy LTI stability conditions, i.e.
+\textbf{Solution:} In LTI systems, we know that the eigenvalues of the system matrix provide necessary and sufficient conditions for
+Lyapunov, asymptotic, and exponential stability. We can see that for this LTV system, the eigenvalues are independent of $k$, and
+they satisfy LTI stability conditions, i.e.,
 %
 \begin{align*}
   \lambda(A[k]) \in \lbrace 0 \ , \ 1/2 \rbrace \& | \lambda_{1,2} | < 1
 \end{align*}
 %
-Let's try to find a solution to the initial value problem for the given LTV system and see if LTI intuition is valid or not for this LTV system. Let $x_{0,1} = \begin{bmatrix} 1 \\ 0 \end{bmatrix}$, then
+Let's try to find a solution to the initial value problem for the given LTV system and see if the LTI intuition is valid or not for this LTV system. Let $x_{0,1} = \begin{bmatrix} 1 \\ 0 \end{bmatrix}$, then
 %
 \begin{align*}
    x[k]_1 = \begin{bmatrix} 0 \\ 0 \end{bmatrix}
@@ -355,32 +370,32 @@ now let $x_{0,2} = \begin{bmatrix} 0 \\ 1 \end{bmatrix}$
    x[k]_2 = \begin{bmatrix} (\rho/2)^{k-1} \\ (1/2)^k \end{bmatrix} \ k>0
 \end{align*}
 %
-thus we can write $\Phi[k,0]$ as
+thus we can write $\Phi[k,0]$ as:
 %
 \begin{align*}
    \Phi[k,0] = \begin{bmatrix} x[k]_1 & x[k]_2 \end{bmatrix} = 
    \begin{bmatrix} 0 & (\rho/2)^{k-1} \\ 0 & (1/2)^{k} \end{bmatrix} \ k > 0 
 \end{align*}
 %
-Based on this result, we can conclude that.
+Based on this result, we can conclude that:
 %
 \begin{itemize}
-    \item LTV system around the origin is asymptotically \& exponentially stable if $|\rho| < 2$
+    \item The LTV system around the origin is asymptotically \& exponentially stable if $|\rho| < 2$
     %
-    \item LTV system around the origin is stable i.s.L if $|\rho| \leq 2$
+    \item The LTV system around the origin is stable i.s.L if $|\rho| \leq 2$
     %
-    \item LTV system around the origin is unstable if $|\rho| > 2$
+    \item The LTV system around the origin is unstable if $|\rho| > 2$
 \end{itemize}
 %
-As you can see in this example (and in general) for LTV systems, eigenvalues of the system matrix $A[k]$ do not imply stability.
+As you can see in this example (and in general) for LTV systems, the eigenvalues of the system matrix $A[k]$ do not imply stability.
 
 \begin{exmp}
  Let 
  \begin{align*}
-  \dot{x} = \begin{bmatrix} 0 & e^{-t}  \\ 0 & 0 \end{bmatrix}
+  \dot{x} = \begin{bmatrix} 0 & e^{-t}  \\ 0 & 0 \end{bmatrix} x
  \end{align*}
 \end{exmp}
-Analyze the stability of the origin 
+Analyze the stability of the origin.
 
 \textbf{Solution:} Since 
 \begin{align*}
@@ -388,34 +403,34 @@ Analyze the stability of the origin
   \begin{bmatrix} 0 & 1 \\ 0 & 0 \end{bmatrix} e^{-t} = \bar{A} f(t)
  \end{align*}
 %
-We can find the state transition matrix via
+We can find the state transition matrix via:
 \begin{align*}
-\Phi(t,t_0) = e^{\int\limits_{t_0}^t A(\tau) d\tau} = 
-  \mathrm{exp} \begin{pmatrix}
+\Phi(t,t_0) &= e^{\int\limits_{t_0}^t A(\tau) d\tau} = 
+  \mathrm{exp} \left(
       \int\limits_{t_0}^t \begin{bmatrix} 0 & e^{-\tau}  \\ 0 & 0 \end{bmatrix} d\tau
-  \end{pmatrix}
-  =  \mathrm{exp} \begin{pmatrix}  \begin{bmatrix} 0 & e^{-t_0} - e^{-t}  \\ 0 & 0 \end{bmatrix} 
-  \end{pmatrix}
+  \right) \\
+  &=  \mathrm{exp} \left(  \begin{bmatrix} 0 & e^{-t_0} - e^{-t}  \\ 0 & 0 \end{bmatrix} 
+  \right)
   = \begin{bmatrix} 1 & e^{-t_0} - e^{-t}  \\ 0 & 1 \end{bmatrix} 
 \end{align*}
 %
-We can see that $ || \Phi(t,t_0) || < M < \infty \ \forall \ (t,t_0)$ but $\lim_{t\to\infty} \neq 0$
-thus system around the origin is (only) stable in the sense of Lyapunov. However, if we had only 
+We can see that $ || \Phi(t,t_0) || < M < \infty \ \forall \ (t,t_0)$ but $\lim_{t\to\infty} \Phi(t,t_0) \neq 0$
+thus the system around the origin is (only) stable in the sense of Lyapunov. However, if we had only 
 checked the eigenvalues, we may have (wrongly) concluded that the system was unstable. 
 
 \subsection{Lyapunov's Direct Method}
 
-Consider an autonomous time-invariant CT or DT non-linear state-space mode;
+Consider an autonomous time-invariant CT or DT non-linear state-space model;
 %
 \begin{align*}
-    \dot{x} = F(x(t) \\
-    x[k+1] = F(x[k]) \\
+    \dot{x} &= F(x(t)) \\
+    x[k+1] &= F(x[k])
 \end{align*}
 %
 with an equilibrium point $x_e$. Without loss of generality, let's assume that $x_e = 0$. Consider a continuous
 scalar function $V : \mathbb{R}^{m} \mapsto \mathbb{R}$ (or  $V : D \mapsto F$ in general, where $D$ is the domain and $F$ is the field), where $V(0) = 0$ and $V(x) > 0$ for $x \neq 0$ inside some ``ball'' enclosing the equilibrium point. 
-In that context, $V(x)$ can be considered as a function of ``energy'' (indeed, for a mechanical system, it can be a very good choice), or mathematically $V(x)$ can be a norm. Then $\dot{V}(x)$ for CT systems and $\triangle V(x) := V(x[k+1]) - V(x[k])$ 
-DT systems can provide critical information regarding the internal stability of the dynamical system.
+In that context, $V(x)$ can be considered as an ``energy'' function (indeed, for a mechanical system, it can be a very good choice), or mathematically $V(x)$ can be a norm. Then $\dot{V}(x)$ for CT systems and $\Delta V(x) := V(x[k+1]) - V(x[k])$ 
+for DT systems can provide critical information regarding the internal stability of the dynamical system.
 
 \subsubsection*{Lyapunov Functions, Lyapunov Theorem for Local \& Global Stability}
 
@@ -434,14 +449,14 @@ DT systems can provide critical information regarding the internal stability of 
 \end{enumerate}
 %
 %
-\item We call $V(x)$ a \textit{locally positive semi definite (lpsd)} function around $x = 0$ if 
+\item We call $V(x)$ a \textit{locally positive semi-definite (lpsd)} function around $x = 0$ if 
 \begin{enumerate}
     \item $V(0) = 0$
     \item $V(x) \geq 0, \ || x || \in (0 , r)$ for some $0 < r$
 \end{enumerate}
 %
 %
-\item We call $V(x)$ a \textit{locally negative semi definite (lnsd)} function around $x = 0$ if 
+\item We call $V(x)$ a \textit{locally negative semi-definite (lnsd)} function around $x = 0$ if 
 \begin{enumerate}
     \item $V(0) = 0$
     \item $V(x) \leq 0, \ || x || \in (0 , r)$ for some $0 < r$
@@ -450,31 +465,31 @@ DT systems can provide critical information regarding the internal stability of 
 \end{itemize}
 
 \textbf{Definition:} Let $V(x)$ be a \textit{lpd} function, then we call it a ``candidate'' Lyapunov function. 
-If $\dot{V}(x)$ (or $\triangle V(x)$) for the dynamical system of interest is a \textit{lnsd} function, then 
+If $\dot{V}(x)$ (or $\Delta V(x)$) for the dynamical system of interest is an \textit{lnsd} function, then 
 $V(x)$ is called a \textbf{Lyapunov function} of the system.
 
-\textbf{Theorem:} If there exists a Lyapunov function of the system, $V(x)$, then
+\textbf{Theorem:} If there exists a Lyapunov function of the system, $V(x)$, then:
 \begin{enumerate}
-    \item Then $x_e = 0$ is a (locally) stable equilibrium point \textit{in the sense of Lyapunov}
-    \item and if $\dot{V}(x) < 0$ (or $\triangle V(x) < 0$) $\ || x || \in (0 , r_a)$ (i.e. \textit{lsd}), then 
+    \item Then $x_e = 0$ is a (locally) stable equilibrium point \textit{in the sense of Lyapunov}.
+    \item And if $\dot{V}(x) < 0$ (or $\Delta V(x) < 0$) for $\ || x || \in (0 , r_a)$ (i.e., \textit{lnd}), then 
     $x_e = 0$ is a (locally) asymptotically stable equilibrium point.
 \end{enumerate}
 
-\textbf{Theorem:} If there exists a Lyapunov function of the system, $V(x)$, defined on the entire state-space (or domain in general), i.e. 
+\textbf{Theorem:} If there exists a Lyapunov function of the system, $V(x)$, defined on the entire state-space (or domain in general), i.e.:
 \begin{align*}
     &\exists V: \mathbb{R}^n \to \mathbb{R} \ s.t. \ V(0) = 0 \ 
     \ , \
-    V(x) > 0, \ \forall x \in \mathbb{R}^n \ (i.e. nd) \ (i.e. \ pd) \ \mathrm{and}
+    V(x) > 0, \ \forall x \neq 0 \ (i.e., \ pd) \ \mathrm{and}
     \\
-    &\dot{V}(x) \leq 0, \ \forall x \in \mathbb{R}^n \ (i.e. \ nd)
+    &\dot{V}(x) \leq 0, \ \forall x \in \mathbb{R}^n \ (i.e., \ nsd)
 \end{align*}
-then 
+then:
 \begin{enumerate}
-    \item Then $x_e = 0$ is a stable equilibrium point \textit{in the sense of Lyapunov} (in a more global sense)
+    \item Then $x_e = 0$ is a stable equilibrium point \textit{in the sense of Lyapunov} (in a more global sense).
 %    
-    \item if $x_e = 0$ is a globally stable equilibrium point \textit{in the sense of Lyapunov} and if 
+    \item If $x_e = 0$ is a globally stable equilibrium point \textit{in the sense of Lyapunov} and if:
     \begin{align*}
-    &\dot{V}(x) < 0, \ \forall x \in \mathbb{R}^n
+    &\dot{V}(x) < 0, \ \forall x \neq 0
     \\
     &|| x || \to \infty \implies V(x) \to \infty
 \end{align*}
@@ -482,20 +497,20 @@ then $x_e = 0$ is a globally asymptotically stable equilibrium point.
 \end{enumerate}
 
 \begin{exmp}
-    Let's go back to the pendulum dynamics
+    Let's go back to the pendulum dynamics:
     \begin{align*}
-    \dot{x} = \begin{bmatrix} x_2 \\ -sin(x_1)\end{bmatrix} \ , \ \mathrm{where} \ \begin{bmatrix} x_1 \\ x_2 \end{bmatrix} = \begin{bmatrix}  \theta \\ \dot{\theta} \end{bmatrix}
+    \dot{x} = \begin{bmatrix} x_2 \\ -\sin(x_1)\end{bmatrix} \ , \ \mathrm{where} \ \begin{bmatrix} x_1 \\ x_2 \end{bmatrix} = \begin{bmatrix}  \theta \\ \dot{\theta} \end{bmatrix}
 \end{align*}
 \end{exmp}
 Analyze the stability of the dynamics around $x_e = \begin{bmatrix} 0 \\ 0 \end{bmatrix}$ using Lyapunov's direct method.
 
 \textbf{Solution:} We first need to find a candidate Lyapunov function. Let's test if
-the total mechanical energy can be adopted as a Lyapunov candidate
+the total mechanical energy can be adopted as a Lyapunov candidate:
 %
 \begin{align*}
 V(x) &= E(x) = \frac{1}{2} x_2^2 + 1 - \cos{x_1}  \\ 
 V(0) &= 0 \\
-V(x) &> 0 \ , \ \forall x s.t. \lbrace x \neq 0 \, \& \, x \in (-\pi , \pi)  \rbrace
+V(x) &> 0 \ , \ \forall x \ s.t. \ \lbrace x \neq 0 \, \& \, x \in (-\pi , \pi)  \rbrace
 \end{align*}
 %
 Now let's test if $V(x)$ is a Lyapunov function.
@@ -510,12 +525,12 @@ Thus we can conclude that $E(x)$ is a Lyapunov function and $x_e = 0$
 is a stable equilibrium point in the sense of Lyapunov. 
 
 We already know that since the system conserves its initial energy, thus 
-$\dot{V}(x) = 0 \ \forall x $, $x_e = 0$ is not  asymptotically stable. 
+$\dot{V}(x) = 0 \ \forall x $, $x_e = 0$ is not asymptotically stable. 
 However, one should know the fact that Lyapunov's direct method, in general, does not imply 
-un-stability.
+instability.
 
 \begin{exmp}
-    Now let's add a linear damping term to the pendulum dynamics
+    Now let's add a linear damping term to the pendulum dynamics:
     \begin{align*}
     \dot{x} = \begin{bmatrix} x_2 \\ -\sin(x_1) - x_2 \end{bmatrix}
 \end{align*}
@@ -523,7 +538,7 @@ un-stability.
 Analyze the stability of the dynamics around $x_e = \begin{bmatrix} 0 \\ 0 \end{bmatrix}$ using Lyapunov's direct method.
 
 \textbf{Solution:} Total mechanical energy can again be a good candidate as
-a Lyapunov function 
+a Lyapunov function:
 %
 \begin{align*}
 V(x) &= E(x) = \frac{1}{2} x_2^2 + 1 - \cos{x_1}  \\ 
@@ -538,10 +553,10 @@ V(0) &= 0 \ , \ V(x) > 0 \ , \ \forall x \neq 0
 \end{align*}
 %
 In this case we can again conclude that $E(x)$ is a Lyapunov function and $x_e = 0$
-is a stable equilibrium point in the sense of Lyapunov . However, we can still not 
+is a stable equilibrium point in the sense of Lyapunov. However, we still cannot 
 conclude that the system is asymptotically stable (even though intuitively, we know that it is 
-at least locally asymptotically stable), since $\dot{V}(x)$ is a \textit{nsd} function 
-(locally and globally). Let's try another candidate $V(x)$
+at least locally asymptotically stable), since $\dot{V}(x)$ is an \textit{nsd} function 
+(locally and globally). Let's try another candidate $V(x)$:
 %
 \begin{align*}
 V(x) &= \frac{1}{2} x_2^2 + a ( 1 - \cos{x_1} ) + \frac{b}{2} \begin{pmatrix} x_1 + x_2 \end{pmatrix}^2  ,
@@ -563,143 +578,142 @@ V(0) &= 0 \ , \ V(x) > 0 \ , \ \forall x \neq 0 \ \rightarrow \ pd \ \checkmark
 &= - x_2^2 + (a - b - 1) \sin(x_1) x_2 - b \sin(x_1) x_1 
 \end{align*}
 %
-Let $(a,b) = (2,1)$, then 
+Let $(a,b) = (2,1)$, then:
 \begin{align*}
-\frac{d}{dt} V(x) &= - \left( x_2^2  + \sin(x_1) x_1 \right) \geq 0
+\frac{d}{dt} V(x) &= - \left( x_2^2  + \sin(x_1) x_1 \right) \leq 0
 \\
 \frac{d}{dt} V(x) &= 0 \ \iff \ x_1 = k \pi \, k \in \mathbb{Z} \rightarrow \ l.n.d 
 \end{align*}
 %
-We can now see that when $x_1 \in (\pi , \pi)$, $\dot{V}(x)$ is a locally negative 
-definite function, the system around $x_e = 0$ is also locally asymptotically stable. 
+We can now see that when $x_1 \in (-\pi , \pi)$, $\dot{V}(x)$ is a locally negative 
+definite function; the system around $x_e = 0$ is also locally asymptotically stable. 
 
 \subsection{Lyapunov's Indirect Method}
 
-Consider an autonomous time-invariant CT or DT non-linear state-space mode;
+Consider an autonomous time-invariant CT or DT non-linear state-space model;
 %
 \begin{align*}
-    \dot{x} = F(x(t) \\
-    x[k+1] = F(x[k]) 
+    \dot{x} &= F(x(t)) \\
+    x[k+1] &= F(x[k]) 
 \end{align*}
 %
-with an equilibrium point $x_e$. Without loss of generality, let's assume that $x_e = 0$. Let the linearization of dynamics around the equilibrium yields
+with an equilibrium point $x_e$. Without loss of generality, let's assume that $x_e = 0$. Let the linearization of the dynamics around the equilibrium yield:
 %
 \begin{align*}
-    \dot{\delta x} = A x(t) \\
-    \delta x[k+1] = \delta x[k]) 
+    \dot{\delta x} &= A \delta x(t) \\
+    \delta x[k+1] &= A \delta x[k] 
 \end{align*}
 %
 
 \textbf{Theorem:} 
 \begin{enumerate}
     \item If the linearized system matrix, $A$, is asymptotically/exponentially stable, then the non-linear system
-    is also \textit{locally asymptotically stable} around the equilibrium point, $x_e$, inside a region locally defined around the equilibrium point
+    is also \textit{locally asymptotically stable} around the equilibrium point, $x_e$, inside a region locally defined around the equilibrium point.
     %
-    \item If the linearized system matrix, $A$, is asymptoticall/exponentially unstable, then the non-linear system
-    is also \textit{locally unstable} around the equilibrium point
+    \item If the linearized system matrix, $A$, is asymptotically/exponentially unstable, then the non-linear system
+    is also \textit{locally unstable} around the equilibrium point.
     %
-    \item If the linearized system matrix, $A$, is stable i.s.L., we can not comment on the stability of the non-linear system around the equilibrium 
+    \item If the linearized system matrix, $A$, is stable i.s.L., we cannot comment on the stability of the non-linear system around the equilibrium.
 \end{enumerate}
 
 \begin{exmp}
-    Consider the following scalar DT dynamical system
+    Consider the following scalar DT dynamical system:
     \begin{align*}
     x[k+1] = \frac{x[k]}{1 + (x[k])^2}
 \end{align*}
 \end{exmp}
 Analyze the stability of the dynamics around $x_e = \begin{bmatrix} 0 \\ 0 \end{bmatrix}$ using both Lyapunov's direct and indirect methods.
 
-\textbf{Solution:} Let's first start with the direct method and see if $V(x) = x^2$ is a Lyapunov function
+\textbf{Solution:} Let's first start with the direct method and see if $V(x) = x^2$ is a Lyapunov function:
 %
 \begin{align*}
 V(x) &= x^2 \ , \ V(0) = 0 \ , \ V(x) > 0 \ , \ \forall x \neq 0 \ \rightarrow \ pd \ \checkmark
 \\
-\triangle V(x) &= x^2 \left( \frac{1}{(1 + x^2)^2} - 1 \right)  \ , \ \triangle V(0) = 0 \ , \ \triangle V(x) < 0 \ , \ \forall x \neq 0 \ \rightarrow \ nd \ \checkmark
+\Delta V(x) &= x^2 \left( \frac{1}{(1 + x^2)^2} - 1 \right)  \ , \ \Delta V(0) = 0 \ , \ \Delta V(x) < 0 \ , \ \forall x \neq 0 \ \rightarrow \ nd \ \checkmark
 \end{align*}
 %
 Thus we can conclude that the system around the origin is globally asymptotically stable. Now
-let's adopt the indirect method
+let's adopt the indirect method:
 %
 \begin{align*}
- \delta x[k+1] &= \frac{\partial 
- }{\partial} \left(
+ \delta x[k+1] &= \frac{\partial}{\partial x} \left(
  \frac{x}{1 + (x)^2} \right)_{x=0} \delta x[k]
  \\
 \delta x[k+1] &= \delta x[k]
 \end{align*}
 %
-We can see that linearized dynamics has a single eigenvalue at $z = 1$, which implies that the linear dynamical system is stable i.s.L. However, based on only this result, we can not comment on the stability of the non-linear system. However, we know from the direct method that the system around the origin is, indeed, asymptotically stable.
+We can see that the linearized dynamics has a single eigenvalue at $z = 1$, which implies that the linear dynamical system is stable i.s.L. However, based on only this result, we cannot comment on the stability of the non-linear system. However, we know from the direct method that the system around the origin is, indeed, asymptotically stable.
 
 \subsection{Quadratic Lyapunov Functions and Lyapunov Stability for LTI Systems}
 
-Consider the function
+Consider the function:
 %
 \begin{align*}
 V(x) = x^T P x , \ x \in \mathbb{R}^{n} , P \in \mathbb{R}^{n \times n} , \& \ P^T = P
 \end{align*}
 %
 \textbf{Proposition:} $V(x)$ is a positive definite function if and only if all the eigenvalues of 
-$P$ are positive
+$P$ are positive.
 
 \textbf{Proof:} Since $P$ is a symmetric real matrix, we know that it can be diagonalized by an
-\textit{orthagonal matirx}, i.e.
+\textit{orthogonal matrix}, i.e.:
 %
 \begin{align*}
 P = U^T \Lambda U , \ U^T U = I , \& \ \Lambda = 
 \mathrm{diag}\begin{bmatrix} \lambda_1 , & \cdots , & \lambda_n  \end{bmatrix}
 \end{align*}
 %
-Let $y = U x \ \rightarrow \ || y ||_2 = || x ||_2$, then
+Let $y = U x \ \rightarrow \ || y ||_2 = || x ||_2$, then:
 %
 \begin{align*}
 V(x) = x^T P x  = y^T \Lambda y = \sum\limits_{i=1}^n \lambda_i y_i^2 
 \end{align*}
 %
-Thus
+Thus:
 %
 \begin{align*}
 V(x) > 0 \ \forall x \neq 0 \ \iff \ \lambda_i > 0 \ \forall i 
 \end{align*}
 %
-\textbf{Definition:} A symmetric matrix $P^T = P$ 
+\textbf{Definition:} A symmetric matrix $P^T = P$:
 \begin{itemize}
-    \item is called \textit{positive definite} if it satisfies 
+    \item is called \textit{positive definite} if it satisfies:
 %
 \begin{align*}
 x^T P x > 0 \ \forall x \neq 0
 \end{align*}
 %
-and use the notation, $P > 0$ for such matrices
+and we use the notation $P > 0$ for such matrices.
 %
-\item is called \textit{positive semi definite} if 
+\item is called \textit{positive semi-definite} if:
 %
 \begin{align*}
 x^T P x \geq 0 \ \forall x \neq 0
 \end{align*}
 %
-and use the notation, $P \geq 0$ for such matrices
+and we use the notation $P \geq 0$ for such matrices.
 \end{itemize}
 
 \textbf{Corollaries:} 
 \begin{itemize}
-\item For a symmetric positive definite or symmetric positive semi-definite matrix 
+\item For a symmetric positive definite or symmetric positive semi-definite matrix:
 %
 \begin{align*}
  \lambda_{min}(P) || x ||_2^2 \leq x^T P x \leq \lambda_{max}(P) || x ||_2^2
 \end{align*}
 %
-\item If $P \geq 0$ but $P \not> 0$, then $\lambda_{min} = 0$ 
+\item If $P \geq 0$ but $P \not> 0$, then $\lambda_{min} = 0$. 
 \end{itemize}
 
 \subsection{Quadratic Lyapunov Functions for LTI Systems}
 
-Consider defining a Lyapunov function candidate of the form
+Consider defining a Lyapunov function candidate of the form:
 %
 \begin{align*}
 V(x) = x^T P x  \ P > 0
 \end{align*}
 %
-for an LTI CT or DT system. Then for a CT-LTI system, $\dot{x} = A x$, we have
+for an LTI CT or DT system. Then for a CT-LTI system, $\dot{x} = A x$, we have:
 %
 \begin{align*}
 \dot{V}(x) &= \dot{x}^T P x + x^T P x = x^T A^T P x + x^T P A x 
@@ -709,87 +723,87 @@ for an LTI CT or DT system. Then for a CT-LTI system, $\dot{x} = A x$, we have
 Q &= - (A^T P + P A)
 \end{align*}
 %
-note that $Q^T = Q$. Based on Lyapunov's direct method, we conclude that
+note that $Q^T = Q$. Based on Lyapunov's direct method, we conclude that:
 \begin{itemize}
 \item $\dot{x} = A x$ is stable i.s.L. if $Q = -(A^T P + P A) \geq 0$ or 
 %
 \item $\dot{x} = A x$ is asymptotically stable if $Q = -(A^T P + P A) > 0$
 \end{itemize}
 %
-Similarly for a DT-LTI system, $x[k+1] = A x$, we have
+Similarly for a DT-LTI system, $x[k+1] = A x[k]$, we have:
 %
 \begin{align*}
-\triangle V(x) &= x^T A^T P A x - x^T P x 
+\Delta V(x) &= x^T A^T P A x - x^T P x 
 \\
 &= x^T (A^T P A - P) x = - x^T Q x
 \\
-Q &= - A^T ( P - I ) A
+Q &= - (A^T P A - P) = P - A^T P A
 \end{align*}
 %
-note that again $Q^T = Q$. Based on Lyapunov's direct method, we conclude that
+note that again $Q^T = Q$. Based on Lyapunov's direct method, we conclude that:
 \begin{itemize}
-\item $x[k+1] = A x[k]$ is stable i.s.L. if $Q = - A^T ( P - I ) A \geq 0$ or 
+\item $x[k+1] = A x[k]$ is stable i.s.L. if $Q = P - A^T P A \geq 0$ or 
 %
-\item $x[k+1] = A x[k]$ is asymptotically stable if $Q = - A^T ( P - I ) A \geq 0$
+\item $x[k+1] = A x[k]$ is asymptotically stable if $Q = P - A^T P A > 0$
 \end{itemize}
 %
 
 \textbf{Theorem:} Given a CT-LTI dynamic system, $\dot{x} = A x$, and 
-any $Q>0$, there exists a definite positive solution $P$ of the Lyapunov equation, $Q = - (A^T P + P A)$, if and only if $\dot{x} = A x$ is asymptotically stable. Solution $P$, in this case, is unique.
+any $Q>0$, there exists a definite positive solution $P$ of the Lyapunov equation, $Q = - (A^T P + P A)$, if and only if $\dot{x} = A x$ is asymptotically stable. The solution $P$, in this case, is unique.
 
 \textbf{Proof:} 
 \begin{enumerate}
 \item For a given $Q > 0$, if $P > 0$ is a solution of $Q = - (A^T P + P A)$, then $V(x) = x^T P x$ is p.d. and $\dot{V}(x)$ is n.d., hence
-$\dot{x} = A x$ globally asymptotically stable
+$\dot{x} = A x$ is globally asymptotically stable.
 %
-\item Now let's try to find ``a'' solution of $P > 0$, given $Q>0$. Let
+\item Now let's try to find ``a'' solution of $P > 0$, given $Q>0$. Let:
 %
 \begin{align*}
 P = \int\limits_{0}^{\infty} e^{t A^T} Q e^{A t} dt
 \end{align*}
 %
-$P$ is well defined since, all eigenvalues of $A$ is in O.L.P, and 
-$e^{A t}$ exponentially converges to $0$. Now
+$P$ is well defined since all eigenvalues of $A$ are in the Open Left-Half Plane (OLP), and 
+$e^{A t}$ exponentially converges to $0$. Now:
 %
 \begin{align*}
 A^T P + P A &= \int\limits_{0}^{\infty} A^T e^{t A^T} Q e^{A t} dt
 + \int\limits_{0}^{\infty} e^{t A^T} Q e^{A t} A dt 
-= \int\limits_{0}^{\infty} A^T e^{t A^T} Q e^{A t} + e^{t A^T} Q e^{A t} A \ dt
+= \int\limits_{0}^{\infty} \left( A^T e^{t A^T} Q e^{A t} + e^{t A^T} Q e^{A t} A \right) dt
 \\
-&= \int\limits_{0}^{\infty} \frac{d}{dt} \begin{bmatrix}
+&= \int\limits_{0}^{\infty} \frac{d}{dt} \left(
     e^{t A^T} Q e^{A t}
-\end{bmatrix} dt =  \begin{bmatrix}
+\right) dt =  \left[
     e^{t A^T} Q e^{A t} 
-\end{bmatrix}_{0}^{\infty} = 0 -Q 
+\right]_{0}^{\infty} = 0 - Q 
 \\
 A^T P + P A &= -Q
 \end{align*}
 %
-i.e., $P$ satisfies the Lyapunov equation
+i.e., $P$ satisfies the Lyapunov equation.
 %
-\item Let's show P is symmetric
+\item Let's show $P$ is symmetric:
 %
 \begin{align*}
-P^T = \int\limits_{0}^{\infty} \left[ e^{t A^T} Q e^{A t} \right]^T dt
-= \int\limits_{0}^{\infty} \left[ e^{A t} \right]^T Q 
-\left[ e^{t A^T}\right]^T dt
-= \int\limits_{0}^{\infty} e^{t A^T} Q e^{A t} dt = P
+P^T &= \int\limits_{0}^{\infty} \left[ e^{t A^T} Q e^{A t} \right]^T dt
+= \int\limits_{0}^{\infty} \left[ e^{A t} \right]^T Q^T 
+\left[ e^{t A^T}\right]^T dt \\
+&= \int\limits_{0}^{\infty} e^{t A^T} Q e^{A t} dt = P
 \end{align*}
 %
-\item Let's show $P > 0$. Let $x \in \mathbb{R}^n$
+\item Let's show $P > 0$. Let $x \in \mathbb{R}^n$:
 %
 \begin{align*}
 x^T P x = \int\limits_{0}^{\infty} x^T e^{t A^T} Q e^{A t} x dt =
 \int\limits_{0}^{\infty} z(t)^T Q z(t) dt \ , \  z(t) = e^{A t} x
 \end{align*}
 %
-Note that 
+Note that:
 %
 \begin{align*}
 z(t) = 0 \ \iff \ x = 0 \ , \  \forall t < \infty
 \end{align*}
 %
-Since $Q > 0$, 
+Since $Q > 0$:
 %
 \begin{align*}
 z(t)^T Q z(t) &= 0 \ \iff \ z(t) = 0 \ , \  \forall t 
@@ -797,57 +811,56 @@ z(t)^T Q z(t) &= 0 \ \iff \ z(t) = 0 \ , \  \forall t
 z(t)^T Q z(t) &> 0 \ \forall z(t) \neq 0
 \end{align*}
 %
-Thus 
+Thus:
 %
 \begin{align*}
-x^T P x &= \int\limits_{0}^{\infty} z(t)^T Q z(t) = 0 \ \iff z(t) \ \forall t 
+x^T P x &= \int\limits_{0}^{\infty} z(t)^T Q z(t) dt = 0 \ \iff z(t) = 0 \ \forall t 
 \ \iff \ x = 0
 \\
-x^T P x &= \int\limits_{0}^{\infty} z(t)^T Q z(t) > 0 \ , \ \forall x \neq 0
+x^T P x &= \int\limits_{0}^{\infty} z(t)^T Q z(t) dt > 0 \ , \ \forall x \neq 0
 \end{align*}
 %
 \item Let's show $P$ is unique. Let's prove this by contradiction.
 Let's assume that $\exists \, \bar{P} \neq P$ and $\bar{P}^T = \bar{P}$ 
-such that  
+such that:
 %
 \begin{align*}
 &A^T \bar{P} + \bar{P} A = - Q \ , \ A^T P + P A = - Q
 \end{align*}
 %
-Let $W(t) = e^{t A^T} \bar{P} e^{A t}$ and let's analyze the following integral  
+Let $W(t) = e^{t A^T} \bar{P} e^{A t}$ and let's analyze the following integral:
 %
 \begin{align*}
-\int_{0}^{\infty} - \dot{W}(t) dt &= \left[ W(t) \right]^{0}_{\infty} = W(0) - W(\infty) = \bar{P}
+\int_{0}^{\infty} - \dot{W}(t) dt &= \left[ -W(t) \right]_{0}^{\infty} = W(0) - W(\infty) = \bar{P} - 0 = \bar{P}
 \\
 \\
 \int_{0}^{\infty} - \dot{W}(t) dt &=
 \int_{0}^{\infty} - \left( e^{t A^T} A^T \bar{P} e^{A t} +
 e^{t A^T}\bar{P} A e^{A t} 
 \right) dt =
-\int_{0}^{\infty} e^{t A^T} ( - \left( A^T \bar{P} +
- \bar{P} A \right) ) e^{A t} dt
+\int_{0}^{\infty} e^{t A^T} \left( - \left( A^T \bar{P} + \bar{P} A \right) \right) e^{A t} dt
  \\
- &= \int_{0}^{\infty} e^{t A^T} Q e^{A t} dt = P = \bar{P}
+ &= \int_{0}^{\infty} e^{t A^T} Q e^{A t} dt = P
 \end{align*}
 %
-which is the contradiction to the assumption that $\exists \, \bar{P} \neq P$. This completes the proof
+which is the contradiction to the assumption that $\exists \, \bar{P} \neq P$. This completes the proof.
 \end{enumerate}
 
 \textbf{Theorem:} Given a DT-LTI dynamic system, $x[k+1] = A x[k]$, and 
-any $Q>0$, there exists a definite positive solution $P$ of the Lyapunov equation, $Q = P - A^T P A $, if and only if $x[k+1] = A x[k]$ is asymptotically stable. Solution $P$, in this case, is unique.
+any $Q>0$, there exists a definite positive solution $P$ of the Lyapunov equation, $Q = P - A^T P A $, if and only if $x[k+1] = A x[k]$ is asymptotically stable. The solution $P$, in this case, is unique.
 
 \textbf{Proof:} 
 \begin{enumerate}
-\item For a given $Q > 0$, if $P > 0$ is a solution of $Q = P - A^T P A$, then $V(x) = x^T P x$ is p.d. and $\dot{V}(x)$ is n.d., hence
-$x[k+1] = A x[k]$ globally asymptotically stable
+\item For a given $Q > 0$, if $P > 0$ is a solution of $Q = P - A^T P A$, then $V(x) = x^T P x$ is p.d. and $\Delta V(x)$ is n.d., hence
+$x[k+1] = A x[k]$ is globally asymptotically stable.
 %
-\item Now let's try to find ``a'' solution of $P > 0$, given $Q>0$. Let
+\item Now let's try to find ``a'' solution of $P > 0$, given $Q>0$. Let:
 %
 \begin{align*}
 P = \sum\limits_{k=0}^{\infty} {A^{k}}^T Q A^k \end{align*}
 %
-$P$ is well defined since, all eigenvalues of $A$ is in inside the unit circle, and 
-$A^k$ exponentially converges to $0$. Now
+$P$ is well defined since all eigenvalues of $A$ are inside the unit circle, and 
+$A^k$ exponentially converges to $0$. Now:
 %
 \begin{align*}
 P - Q &= \sum\limits_{k=1}^{\infty} {A^{k}}^T Q A^k = 
@@ -859,10 +872,9 @@ P - Q &= A^T P A
 -Q &= A^T P A - P
 \end{align*} 
 %
-i.e., $P$ satisfies the Lyapunov equation
+i.e., $P$ satisfies the Lyapunov equation.
 %
-\item Remaining parts of the proof are left to the student as a take-home problem
+\item The remaining parts of the proof are left to the student as a take-home problem.
 \end{enumerate}
 
-% **** This ENDS THE EXAMPLES. DON'T DELETE THE FOLLOWING LINE:
 \end{document}
