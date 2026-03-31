@@ -182,7 +182,14 @@ We know that a mechanical pendulum is an energy-conserving system. At any time i
 \begin{align*}
 E(x) &= \frac{1}{2} x_2^2 + 1 - \cos(x_1) \ , \ \mathrm{note} \ E(0) = 0
 \end{align*}
-Second, for the lower bound, we can use the exact analytical inequality $1 - \cos(x_1) \geq \frac{2}{\pi^2} x_1^2$, which strictly holds for all $x_1 \in [-\pi, \pi]$. Geometrically, if we plot $1 - \cos(x_1)$ and the parabola $\frac{2}{\pi^2} x_1^2$, both functions equal $0$ at the origin and $2$ at the boundaries ($\pm \pi$). Because the cosine curve is wider ("bows" out) compared to the specific parabola between these points, $1 - \cos(x_1)$ is always greater than or equal to $\frac{2}{\pi^2} x_1^2$ everywhere in that interval. 
+%
+First, let's find an upper bound for the initial energy $E(x(0))$ purely in terms of the initial state norm $||x(0)||_2$. We use the Taylor series expansion of cosine: $\cos(x_1) = 1 - \frac{x_1^2}{2!} + \frac{x_1^4}{4!} - \dots$. Since this is an alternating series, truncating it after the quadratic term provides an exact algebraic inequality $1 - \cos(x_1) \leq \frac{1}{2} x_1^2$ for all $x_1$. Thus, the initial energy is bounded by:
+%
+\begin{align*}
+E(x(0)) &= \frac{1}{2} x_2(0)^2 + 1 - \cos(x_1(0)) \leq \frac{1}{2} x_2(0)^2 + \frac{1}{2} x_1(0)^2 = \frac{1}{2} || x(0) ||_2^2 
+\end{align*}
+%
+Second, we find a lower bound for the running energy $E(x(t))$ in terms of $||x(t)||_2$. We can use the exact analytical inequality $1 - \cos(x_1) \geq \frac{2}{\pi^2} x_1^2$, which strictly holds for all $x_1 \in [-\pi, \pi]$. Geometrically, if we plot $1 - \cos(x_1)$ and the parabola $\frac{2}{\pi^2} x_1^2$, both functions equal $0$ at the origin and $2$ at the boundaries ($\pm \pi$). Because the cosine curve is wider ("bows" out) compared to the specific parabola between these points, $1 - \cos(x_1)$ is always greater than or equal to $\frac{2}{\pi^2} x_1^2$ everywhere in that interval. 
 
 \begin{figure}[htbp]
   \centering
@@ -191,23 +198,24 @@ Second, for the lower bound, we can use the exact analytical inequality $1 - \co
   \label{fig:energy_bounds}
 \end{figure}
 
-Using this inequality, we can independently bound $x_1(t)$ and $x_2(t)$:
+Applying this lower bound to the total energy, and noting that $\frac{1}{2} > \frac{2}{\pi^2}$, we get:
 %
 \begin{align*}
-\frac{1}{2} x_2(t)^2 &\leq E(x(t)) < \frac{1}{2} \delta^2 \implies |x_2(t)| < \delta \\
-\frac{2}{\pi^2} x_1(t)^2 &\leq 1 - \cos(x_1(t)) \leq E(x(t)) < \frac{1}{2} \delta^2 \implies |x_1(t)| < \frac{\pi}{2} \delta
+E(x(t)) &= \frac{1}{2} x_2(t)^2 + 1 - \cos(x_1(t)) \geq \frac{1}{2} x_2(t)^2 + \frac{2}{\pi^2} x_1(t)^2 \geq \frac{2}{\pi^2} \left( x_1(t)^2 + x_2(t)^2 \right) = \frac{2}{\pi^2} || x(t) ||_2^2
 \end{align*}
 %
-Now we can bound the overall state norm $||x(t)||_2$ entirely in terms of $\delta$:
+Now, because the system is energy-conserving, $E(x(t)) = E(x(0))$ for all $t \geq 0$. We can chain our lower and upper bounds together to directly relate $||x(t)||_2$ to $||x(0)||_2$:
 %
 \begin{align*}
-||x(t)||_2^2 = x_1(t)^2 + x_2(t)^2 < \left(\frac{\pi^2}{4}\right) \delta^2 + \delta^2 = \delta^2 \left( 1 + \frac{\pi^2}{4} \right)
+\frac{2}{\pi^2} || x(t) ||_2^2 \leq E(x(t)) &= E(x(0)) \leq \frac{1}{2} || x(0) ||_2^2 \\
+\frac{2}{\pi^2} || x(t) ||_2^2 &\leq \frac{1}{2} || x(0) ||_2^2 \\
+||x(t)||_2 &\leq \frac{\pi}{2} ||x(0)||_2
 \end{align*}
 %
-To guarantee the Lyapunov condition $||x(t)||_2 < \epsilon$, we require $\delta \sqrt{1 + \frac{\pi^2}{4}} \leq \epsilon$. We simply set:
+This elegant result explicitly shows how the running state is constrained by the initial state! To guarantee the Lyapunov condition $||x(t)||_2 < \epsilon$, we simply require $\frac{\pi}{2} ||x(0)||_2 < \epsilon$, which implies $||x(0)||_2 < \frac{2}{\pi} \epsilon$, i.e. 
 %
 \begin{align*}
-\delta(\epsilon) = \frac{\epsilon}{\sqrt{1 + \frac{\pi^2}{4}}} 
+\delta(\epsilon) = \min \left( 2, \frac{2}{\pi} \epsilon \right)
 \end{align*}
 %
 Since we successfully demonstrated that we can find a strictly positive $\delta$ for any given $\epsilon > 0$, the dynamics around the equilibrium is \textit{stable in the sense of Lyapunov}. Note that since $E(t) = E(0) \, \forall t > 0$, the state does not converge to the origin over time, meaning the system is not asymptotically stable.
