@@ -5,28 +5,28 @@
 % taught by Geoff Gordon and Ryan Tibshirani.  When preparing 
 % LaTeX notes for this class, please use this template.
 %
-% To familiarize yourself with this template, the body contains
-% some examples of its use.  Look them over.  Then you can
-% run LaTeX on this file.  After you have LaTeXed this file then
-% you can look over the result either by printing it out with
-% dvips or using xdvi. "pdflatex template.tex" should also work.
-%
 
-\documentclass[twoside]{article}
-\setlength{\oddsidemargin}{0.25 in}
-\setlength{\evensidemargin}{-0.25 in}
-\setlength{\topmargin}{-0.6 in}
-\setlength{\textwidth}{6.5 in}
-\setlength{\textheight}{8.5 in}
-\setlength{\headsep}{0.75 in}
-\setlength{\parindent}{0 in}
-\setlength{\parskip}{0.1 in}
+\documentclass[11pt, a4paper, twoside]{article}
+
+\usepackage[a4paper, top=2.5cm, bottom=2.5cm, left=2cm, right=2cm]{geometry}
 
 %
 % ADD PACKAGES here:
 %
+\usepackage{amsmath,amsfonts,amssymb,amsthm}
+\usepackage{graphicx} % For including external figures locally
+\usepackage{microtype} % Typographic enhancements (better justification)
+\usepackage{enumitem}  % Cleaner lists
+\usepackage{xcolor}    % Added for color support
+\usepackage[most]{tcolorbox} % Added for modern colored textboxes
+\usepackage[colorlinks=true, linkcolor=blue!70!black, urlcolor=blue!70!black]{hyperref}
 
-\usepackage{amsmath,amsfonts,graphicx,amssymb}
+% --- Custom Colors ---
+\definecolor{primary}{RGB}{30, 80, 150}
+
+% --- Custom Math Macros for better aesthetics ---
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\newcommand{\abs}[1]{\left\lvert#1\right\rvert}
 
 %
 % The following commands set up the lecnum (lecture number)
@@ -42,6 +42,7 @@
 
 %
 % The following macro is used to generate the header.
+% Redesigned for a cleaner, modern look.
 %
 \newcommand{\lecture}[4]{
    \pagestyle{myheadings}
@@ -50,28 +51,19 @@
    \setcounter{lecnum}{#1}
    \setcounter{page}{1}
    \noindent
+   \rule{\textwidth}{1.5pt}\vspace{2mm}
    \begin{center}
-   \framebox{
-      \vbox{\vspace{2mm}
-    \hbox to 6.28in { {\bf EE502 - Linear Systems Theory
-	\hfill Spring 2013} }
-       \vspace{4mm}
-       \hbox to 6.28in { {\Large \hfill Lecture #1 \hfill} }
-       \vspace{2mm}
-       \hbox to 6.28in { {\it Lecturer: #2 \hfill } }
-      \vspace{2mm}}
-   }
+       {\bfseries \Large EE502 - Linear Systems Theory \hfill Spring 2013} \\ \vspace{4mm}
+       {\huge \bfseries Lecture #1} \\ \vspace{2mm}
+       {\itshape Lecturer: #2 \hfill}
    \end{center}
+   \vspace{-2mm}\noindent\rule{\textwidth}{1.5pt}
+   \vspace{6mm}
    \markboth{Lecture #1}{Lecture #1}
-
-   \vspace*{4mm}
 }
+
 %
 % Convention for citations is authors' initials followed by the year.
-% For example, to cite a paper by Leighton and Maggs you would type
-% \cite{LM89}, and to cite a paper by Strassen you would type \cite{S69}.
-% (To avoid bibliography problems, for now we redefine the \cite command.)
-% Also commands that create a suitable format for the reference list.
 \renewcommand{\cite}[1]{[#1]}
 \def\beginrefs{\begin{list}%
         {[\arabic{equation}]}{\usecounter{equation}
@@ -80,24 +72,52 @@
 \def\endrefs{\end{list}}
 \def\bibentry#1{\item[\hbox{[#1]}]}
 
-%Use this command for a figure; it puts a figure in wherever you want it.
-%usage: \fig{NUMBER}{SPACE-IN-INCHES}{CAPTION}
+% Use this command for a figure; it puts a figure in wherever you want it.
 \newcommand{\fig}[3]{
-			\vspace{#2}
-			\begin{center}
-			Figure \thelecnum.#1:~#3
-			\end{center}
-	}
-% Use these for theorems, lemmas, proofs, etc.
+	\vspace{#2}
+	\begin{center}
+	Figure \thelecnum.#1:~#3
+	\end{center}
+}
+
+% Use these for theorems, lemmas, proofs, etc. (Enhanced with amsthm)
+\theoremstyle{plain}
 \newtheorem{theorem}{Theorem}[lecnum]
 \newtheorem{lemma}[theorem]{Lemma}
 \newtheorem{proposition}[theorem]{Proposition}
 \newtheorem{claim}[theorem]{Claim}
 \newtheorem{corollary}[theorem]{Corollary}
-\newtheorem{definition}[theorem]{Definition}
-\newenvironment{proof}{{\bf Proof:}}{\hfill\rule{2mm}{2mm}}
 
-% **** IF YOU WANT TO DEFINE ADDITIONAL MACROS FOR YOURSELF, PUT THEM HERE:
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+
+% --- tcolorbox environment wrappers ---
+% This automatically wraps your existing amsthm environments in colored boxes!
+\tcolorboxenvironment{theorem}{
+  enhanced,
+  colback=blue!5!white,
+  colframe=primary,
+  boxrule=0.5mm,
+  arc=2mm,
+  drop fuzzy shadow
+}
+\tcolorboxenvironment{definition}{
+  enhanced,
+  colback=green!5!white,
+  colframe=green!60!black,
+  boxrule=0.5mm,
+  arc=2mm,
+  drop fuzzy shadow
+}
+\tcolorboxenvironment{remark}{
+  enhanced,
+  colback=orange!5!white,
+  colframe=orange!80!black,
+  boxrule=0.5mm,
+  arc=2mm,
+  drop fuzzy shadow
+}
 
 \begin{document}
 
@@ -105,372 +125,375 @@
 \lecture{9}{Assoc. Prof. M. Mert Ankarali}
 
 
-\section{Externall Input-Output Stability} 
-
-\vspace{6pt}
+\section{External Input-Output Stability} 
 
 \subsection{Signal Norms}
 
-A continuous time bilateral signal is a mapping defined by $f:
-\mathbb{R} \mapsto \mathbb{R}^n$ (or for unilateral case $f:
-\mathbb{R}^{\geq0} \mapsto \mathbb{R}^n$), whereas discrete time 
-bilateral signal is a mapping defined by $g: \mathbb{Z} \mapsto \mathbb{R}$ (or for unilateral case $g:
-\mathbb{Z}^{\geq0} \mapsto \mathbb{R}$). Graphical Examples
+In the context of dynamical systems, we classify signals primarily based on their domain:
+\begin{itemize}[label=\textbullet]
+    \item \textbf{Continuous Time (CT)} bilateral signals are mappings defined by $f: \mathbb{R} \mapsto \mathbb{R}^n$ (or for the unilateral case $f: \mathbb{R}^{\geq0} \mapsto \mathbb{R}^n$).
+    \item \textbf{Discrete Time (DT)} bilateral signals are mappings defined by $g: \mathbb{Z} \mapsto \mathbb{R}^n$ (or for the unilateral case $g: \mathbb{Z}^{\geq0} \mapsto \mathbb{R}^n$). 
+\end{itemize}
 
-\begin{figure}[h]
-    \centering
-      \includegraphics[width=0.9\textwidth]{signals}
-    \caption{CT vs DT Signal}
+\textbf{Graphical Examples:}
+\vspace{2mm}
+
+% Replacing external image with self-contained placeholder
+\begin{figure}[htbp]
+  \centering
+  % --- Uncomment the line below when compiling locally ---
+   \includegraphics[width=0.9\textwidth]{signals} 
+  % --- Comment out the framebox below when using your image ---
+  \caption{CT vs DT Signal Concept}
 \end{figure}
 
-\subsubsection*{$\infty$-norm}
+\subsubsection*{$\infty$-norm (Peak Magnitude)}
 
-In the chacarterization and analysis of input-output stability of linear dynamical systems, most commonly 
-used norm concept is the $\infty$-norm which is technically e measure of peak magnitude over time.
-For scalar signals $\infty$-norm is defined as
+In the characterization and analysis of input-output stability of linear dynamical systems, the most commonly 
+used norm concept is the $\infty$-norm, which is technically a measure of peak magnitude over time. In practical engineering terms, this is often associated with \textbf{strict safety constraints} (e.g., maximum voltage, peak temperature, or physical limits).
+
+For scalar signals, the $\infty$-norm is defined as:
 %
 \begin{align*}
-	|| f ||_{\infty} &\triangleq \underset{k}{\sup}| f(k) | \quad (\mathrm{DT})
+	\norm{f}_{\infty} &\triangleq \sup_{k} \abs{f(k)} \quad (\mathrm{DT})
 	\\
-	&\triangleq \underset{t}{\sup}| f(t) | \quad (\mathrm{CT})
+	&\triangleq \sup_{t} \abs{f(t)} \quad (\mathrm{CT})
 \end{align*}
 %
 The ``sup'' denotes the \textit{supremum} or \textit{least upper bound}, the value
 that is approached arbitrarily closely but never (i.e.,\ at any finite time) exceeded.
-Note that this is the natural standard $\infty$-norm definition for finite-dimensional
-vectors to the infinite dimensional case, i.e. DT and CtT signals. Let's remember 
-the $\infty$-norm of an $n$-dimensional vector, 
+Note that this naturally extends the standard $\infty$-norm definition for finite-dimensional
+vectors applied to the infinite-dimensional case. Let's recall 
+the $\infty$-norm of an $n$-dimensional vector:
 %
 \begin{align*}
-|| v ||_{\infty} \triangleq \underset{i\in[1,n]}{\max} | v_i | \ , \ \mathrm{where} \, v \in \mathbb{R}^n , 
+\norm{v}_{\infty} \triangleq \max_{i\in[1,n]} \abs{v_i} \ , \ \mathrm{where} \ v \in \mathbb{R}^n 
 \end{align*}
 % 
-A scalar signal, $f(.)$ is called \textit{bounded} if $|| f ||_{\infty} = M < \infty$ and that is the
-fundamental signal measure adopted in BIBO stability. 
+A scalar signal, $f(\cdot)$, is called \textbf{bounded} if $\norm{f}_{\infty} = M < \infty$. This is the
+fundamental signal measure adopted in Bounded-Input Bounded-Output (BIBO) stability. 
 
-For multi-variate signals, we add a ned ``dimension'' in addition to the
-time dimension, thus in such a case we define $\infty$-norm as
+For multi-variate signals, we add a new ``dimension'' in addition to the
+time dimension. Thus, we evaluate the peak vector norm over all time:
 %
 \begin{align*}
-	|| f ||_{\infty} &\triangleq \underset{k}{\sup}|| f(k) ||_{\infty} \quad (\mathrm{DT})
+	\norm{f}_{\infty} &\triangleq \sup_{k} \norm{f(k)}_{\infty} \quad (\mathrm{DT})
 	\\
-	&\triangleq \underset{t}{\sup}|| f(t) ||_{\infty} \quad (\mathrm{CT})
+	&\triangleq \sup_{t} \norm{f(t)}_{\infty} \quad (\mathrm{CT})
 \end{align*}
 %
-The space of all signals with finite $\infty$-norm are generally denoted by 
-$\ell_{\infty}$ and $\mathcal{L}_{\infty}$ for DT and CT signals respectively.
-For multi-variate case, the dimension of the vector may be explicitly added 
-as $\ell^n_{\infty}$ and $\mathcal{L}^n_{\infty}$.
+The spaces of all signals with a finite $\infty$-norm are denoted by 
+$\ell_{\infty}$ and $\mathcal{L}_{\infty}$ for DT and CT signals, respectively.
 
-$\infty$-norms of some example CT and DT uni-lateral signals (i.e. $t \geq 0$
-and $k \geq 0)$
+\textbf{Examples:} $\infty$-norms of some CT and DT unilateral signals (i.e., $t \geq 0$, $k \geq 0$):
 %
 \begin{align*}
-	f(t) = 1 \, , \, || f ||_{\infty} = 1  \quad &- \quad g[k] = 1 \, , \, || g ||_{\infty} = 1
-	\\
-	f(t) = t \, , \, || f ||_{\infty} = \infty \quad &- \quad g[k] = k \, , \, || g ||_{\infty} = \infty
-		\\
-	f(t) = e^t \, , \, || f ||_{\infty} = \infty \quad &- \quad g[k] = 2^k \, , \, || g ||_{\infty} = \infty
-			\\
-	f(t) = 1 - e^{-t} \, , \, || f ||_{\infty} = 1 \quad &- \quad g[k] = 1 - 0.5^k \, , \, || g ||_{\infty} = 1
-				\\
-	f(t) = \delta(t) \, , \, || f ||_{\infty} = \infty \quad &- \quad g[k] = \delta[k] \, , \, || g ||_{\infty} = 1
+	f(t) &= 1 , \quad \norm{f}_{\infty} = 1  &\quad g[k] &= 1 , \quad \norm{g}_{\infty} = 1 \\
+	f(t) &= t , \quad \norm{f}_{\infty} = \infty &\quad g[k] &= k , \quad \norm{g}_{\infty} = \infty \\
+	f(t) &= e^t , \quad \norm{f}_{\infty} = \infty &\quad g[k] &= 2^k , \quad \norm{g}_{\infty} = \infty \\
+	f(t) &= 1 - e^{-t} , \quad \norm{f}_{\infty} = 1 &\quad g[k] &= 1 - 0.5^k , \quad \norm{g}_{\infty} = 1 \\
+	f(t) &= \delta(t) , \quad \norm{f}_{\infty} = \infty &\quad g[k] &= \delta[k] , \quad \norm{g}_{\infty} = 1
 \end{align*}
 
-\subsubsection*{$2$-norm}
+\subsubsection*{$2$-norm (Energy)}
 
-$2$-norm of a signal is the most fundamental measure of signal in optimal control theory and it can be
-considered as the square root of the ``energy'' of the signal. For scalar signals $2$-norm is defined as
+The $2$-norm is the most fundamental signal measure in optimal control theory ($\mathcal{H}_2$ control), and it represents the square root of the \textbf{``total energy''} of the signal. For scalar signals, the $2$-norm is defined as:
 %
 \begin{align*}
-	|| f ||_{2} &\triangleq \left[ \sum\limits_k (f[k])^2 \right]^{\frac{1}{2}} \quad (\mathrm{DT})
+	\norm{f}_{2} &\triangleq \left[ \sum_{k} (f[k])^2 \right]^{\frac{1}{2}} \quad (\mathrm{DT})
 	\\
-	&\triangleq \left[ \int\limits ( f(t) )^2 dt \right]^{\frac{1}{2}}  \quad (\mathrm{CT})
+	&\triangleq \left[ \int_{-\infty}^{\infty} (f(t))^2 dt \right]^{\frac{1}{2}}  \quad (\mathrm{CT})
 \end{align*}
 %
-The space of all signals with finite $2$-norm are generally denoted by 
-$\ell_{2}$ and $\mathcal{L}_{2}$ for DT and CT signals respectively.
-For multivariate signals, we adopt the inner product and obtain
+Signals belonging to the $\ell_{2}$ or $\mathcal{L}_{2}$ spaces are often called \textit{finite energy} signals. Note that many practical signals (like constant signals or persistent sine waves) have finite power but infinite energy, meaning they do not belong to this space.
+
+For multivariate signals, we adopt the standard vector 2-norm inner product:
 %
 \begin{align*}
-	|| f ||_{2} &\triangleq \left[ \sum\limits_k (f[k])^T f[k] \right]^{\frac{1}{2}} = 
-	\left[ \sum\limits_k || f[k] ||_2^2 \right]^{\frac{1}{2}} 
-	\quad (\mathrm{DT})
-	\\
-	&\triangleq \left[ \int\limits (f(t))^T f(t)  dt \right]  = 
-	\left[ \int\limits || f(t) ||_2^2 \right]^{\frac{1}{2}} 
+	\norm{f}_{2} &\triangleq \left[ \sum_{k} \norm{f[k]}_2^2 \right]^{\frac{1}{2}} 
+	\quad (\mathrm{DT}) \quad & \norm{f}_{2} &\triangleq \left[ \int_{-\infty}^{\infty} \norm{f(t)}_2^2 \, dt \right]^{\frac{1}{2}} 
 	\quad (\mathrm{CT})
 \end{align*}
-%
-$2$-norms of some example CT and DT uni-lateral signals (i.e. $t \geq 0$
-and $k \geq 0)$
+
+\textbf{Examples:}
 %
 \begin{align*}
-	f(t) = 1 \, , \, || f ||_{2} = \infty  \quad &- \quad g[k] = 1 \, , \, || g ||_{2} = \infty
-	\\
-	f(t) = t \, , \, || f ||_{2} = \infty \quad &- \quad g[k] = k \, , \, || g ||_{2} = \infty
-		\\
-	f(t) = e^t \, , \, || f ||_{2} = \infty \quad &- \quad g[k] = 2^k \, , \, || g ||_{2} = \infty
-			\\
-	f(t) = e^{-t} \, , \, || f ||_{2} = 1/\sqrt{2} \quad &- \quad g[k] = 0.5^k \, , \, || g ||_{2} = 2/\sqrt{3}
-				\\
-	f(t) = \delta(t) \, , \, || f ||_{2} = 1 \quad &- \quad g[k] = \delta[k] \, , \, || g ||_{2} = 1
+	f(t) &= 1 , \quad \norm{f}_{2} = \infty  &\quad g[k] &= 1 , \quad \norm{g}_{2} = \infty \\
+	f(t) &= e^{-t} , \quad \norm{f}_{2} = 1/\sqrt{2} &\quad g[k] &= 0.5^k , \quad \norm{g}_{2} = 2/\sqrt{3} \\
+	f(t) &= \delta(t) , \quad \norm{f}_{2} = 1 &\quad g[k] &= \delta[k] , \quad \norm{g}_{2} = 1
 \end{align*}
 
-\subsubsection*{$1$-norm}
+\subsubsection*{$1$-norm (Action/Total Accumulation)}
 
-$1$-norm of a signal is refered as the ``action'' of the signal and for 
-scalar signals $1$-norm is defined as
+The $1$-norm of a signal is referred to as the ``action'' of the signal. Practically, it measures absolute total accumulation over time. In control engineering, this often models cumulative quantities like \textbf{total fuel consumed} by thrusters or total absolute error.
 %
 \begin{align*}
-	|| f ||_{1} &\triangleq \left[ \sum\limits_k | f[k] | \right] \quad (\mathrm{DT})
-	\\
-	&\triangleq \left[ \int\limits | f(t) | dt \right] \quad (\mathrm{CT})
+	\norm{f}_{1} &\triangleq \left[ \sum_{k} \abs{f[k]} \right] \quad (\mathrm{DT}) \quad &
+	\norm{f}_{1} &\triangleq \left[ \int_{-\infty}^{\infty} \abs{f(t)} \, dt \right] \quad (\mathrm{CT})
 \end{align*}
 %
-The space of all signals with finite $1$-norm are generally denoted by 
-$\ell_{1}$ and $\mathcal{L}_{1}$ for DT and CT signals respectively.
-In order to generalize the $1$-norm for multi-variate signals, we adopt the $1$-norm
-definition of the vectors 
+In order to generalize the $1$-norm for multi-variate signals, we adopt the $1$-norm definition of vectors ($\norm{v}_{1} \triangleq \sum_{i=1}^{n} \abs{v_i}$):
 %
 \begin{align*}
-	|| f ||_{1} &\triangleq 
-	\left[ \sum\limits_k || f[k] ||_1 \right]
-	\quad (\mathrm{DT})
-	\\
-	&\triangleq \left[ \int\limits || f(t) ||_1 dt \right]  = 
+	\norm{f}_{1} &\triangleq \sum_{k} \norm{f[k]}_1 \quad (\mathrm{DT}) \quad &
+	\norm{f}_{1} &\triangleq \int_{-\infty}^{\infty} \norm{f(t)}_1 \, dt \quad (\mathrm{CT})
+\end{align*}
+
+\textbf{Examples:}
+%
+\begin{align*}
+	f(t) &= e^{-t} , \quad \norm{f}_{1} = 1 &\quad g[k] &= 0.5^k , \quad \norm{g}_{1} = 2 \\
+	f(t) &= \delta(t) , \quad \norm{f}_{1} = 1 &\quad g[k] &= \delta[k] , \quad \norm{g}_{1} = 1
+\end{align*}
+
+\subsubsection*{$p$-norm (Generalization)} 
+
+The $p$-norm generalizes the previous cases. Let $p \geq 1$; the $p$-norm for vector-valued signals is defined as:
+%
+\begin{align*}
+	\norm{f}_{p} &\triangleq 
+	\left[ \sum_{k} \norm{f[k]}_p^p \right]^{1/p}
+	\quad (\mathrm{DT}) \quad &
+	\norm{f}_{p} &\triangleq \left[ \int_{-\infty}^{\infty} \norm{f(t)}_p^p \, dt \right]^{1/p}
 	\quad (\mathrm{CT})
-\\
-|| v ||_{1} &\triangleq \sum\limits_{i=1}^{n}  | v_i | \ , \ \mathrm{where} \, v \in \mathbb{R}^n , 
 \end{align*}
-
-$1$-norms of some example CT and DT uni-lateral signals (i.e. $t \geq 0$
-and $k \geq 0)$
-%
-\begin{align*}
-	f(t) = 1 \, , \, || f ||_{1} = \infty  \quad &- \quad g[k] = 1 \, , \, || g ||_{1} = \infty
-	\\
-	f(t) = t \, , \, || f ||_{1} = \infty \quad &- \quad g[k] = k \, , \, || g ||_{1} = \infty
-		\\
-	f(t) = e^t \, , \, || f ||_{1} = \infty \quad &- \quad g[k] = 2^k \, , \, || g ||_{1} = \infty
-			\\
-	f(t) = e^{-t} \, , \, || f ||_{1} = 1 \quad &- \quad g[k] = 0.5^k \, , \, || g ||_{1} = 2
-				\\
-	f(t) = \delta(t) \, , \, || f ||_{1} = 1 \quad &- \quad g[k] = \delta[k] \, , \, || g ||_{1} = 1
-\end{align*}
-
-\subsubsection*{$p$-norm} 
-
-$p$-norm is technically generalization of the previous norms define in the Lecture Notes. Let $p > 0$, 
-$p$-norm for vector valued signals are defined as
-%
-\begin{align*}
-	|| f ||_{p} &\triangleq 
-	\left[ \sum\limits_k || f[k] ||_p^p \right]^{1/p}
-	\quad (\mathrm{DT})
-	\\
-	&\triangleq \left[ \int\limits || f(t) ||_p^p dt \right]^{1/p}  = 
-	\quad (\mathrm{CT})
-\\
-|| v ||_{p} &\triangleq \left[ \sum\limits_{i=1}^{n}  | v_i |^p \right]^{1/p} \ , \ \mathrm{where} \, v \in \mathbb{R}^n , 
-\end{align*}
-
-\newpage
 
 \subsection{Input-Output Stability}
 
-The most important notion of input-output stability in the analysis of dynamical systems is 
-termed $\ell_p$ (or $\mathcal{L}_p$) stability or $p$-stability. 
+The most important notion of input-output stability in the analysis of dynamical systems is termed $\ell_p$ (or $\mathcal{L}_p$) stability, or simply $p$-stability. 
 
-\textbf{Definition:} A system with input signal, $u$, and output signal, $y$, is $\ell_p$ stable (or $p$-stable)
-if $\exists M \in \mathbb{R}$ such that 
+\begin{definition}[$p$-stability]
+A system mapping an input signal $u$ to an output signal $y$ is $\ell_p$ stable (or $p$-stable) if there exists a finite constant $M \in \mathbb{R}$ such that:
 %
 \begin{align*}
-	|| y ||_p \leq M || u ||_p \, , \forall u \in \ell_{p} \, (\mathrm{or} \, \mathcal{L}_{p})
+	\norm{y}_p \leq M \norm{u}_p \, , \quad \forall u \in \ell_{p} \, (\mathrm{or} \, \mathcal{L}_{p})
+\end{align*}
+\end{definition}
+
+In other words, a $p$-stable system guarantees that an input with a finite $p$-norm will yield an output that also has a finite $p$-norm. In this context, the smallest possible bounding constant $M$ is defined as the \textbf{induced system norm}, which essentially represents the system's maximum ``gain'' or amplification factor:
+%
+\begin{align*}
+	\norm{S}_{p\text{-ind}} = \sup_{u \neq 0} \frac{\norm{y}_p}{\norm{u}_p}
+\end{align*}
+
+\subsubsection*{BIBO Stability \& $\mathcal{L}_{\infty}$-stability for LTI Systems}
+
+If we directly analyze the definition of $p$-stability, we can see that BIBO (Bounded-Input Bounded-Output) stability is exactly equivalent to $p$-stability where $p = \infty$. Let's formalize this for SISO LTI systems.
+
+\begin{theorem}
+Let $S_{h}$ be a CT-LTI SISO system characterized by its impulse response $h(t)$:
+%
+\begin{align*}
+y(t) = (h * u)(t) = \int_{-\infty}^{\infty} h(\tau) u(t - \tau) \, d\tau 
 \end{align*}
 %
-In other words a $p$-stable system is characterized by the requirement that for every input, $u$,
-with finite $p$-norm, $p$-norm of the output has also has to be finite. 
+$S_{h}$ is BIBO stable ($\infty$-stable) if and only if its impulse response is absolutely integrable. That is, $\exists M < \infty$ such that $\norm{h}_1 = \int_{-\infty}^{\infty} \abs{h(t)} \, dt = M$.
+\end{theorem}
 
-In this context we can also define a induced system norm definition.
+\begin{proof}
+\textit{Sufficiency ($\Rightarrow$):} Assume the impulse response is absolutely integrable ($\norm{h}_{1} = M < \infty$) and the input is bounded ($\norm{u}_{\infty} = C < \infty$). We need to show the output $y(t)$ is also bounded.
 %
 \begin{align*}
-	|| S ||_{p-ind} = \underset{u \neq 0}{\sup} \frac{|| y ||_p}{|| u ||_p}
-\end{align*}
-%
-
-\subsubsection*{BIBO stability \& $\mathcal{L}_{\infty}$-stability for LTI Systems}
-
-If we directly follow the definition of $\ell_p$ stability or $p$-stability and signal norm
-definitions, we can see that BIBO stability definition is indeed a special case of $p$-stability 
-where $p = \infty$. Lets first remember BIBO stability or $\infty$-stability for SISO LTI systems.
-
-\textbf{Theorem:} Let, $S_{h}$, be a CT-LTI SISO system where $h(t)$ is its impulse response, i.e.
-%
-\begin{align*}
-y(t) = h(t) * u(t) = \int\limits_{-\infty}^{\infty} h(t - \tau) u(\tau) d\tau = \int\limits_{-\infty}^{\infty} h(\tau) u(t - \tau) d\tau 
-\end{align*}
-%
-$S_{h}$ is BIBO stable (or $\infty$-stable) if and only if $\exists M < \infty$ such that 
-%
-\begin{align*}
-	|| h ||_1 = \int\limits_{-\infty}^{\infty} | h(t) | dt = M
-\end{align*}
-%
-\textbf{Proof:} \textit{Sufficiency} - Let $|| h ||_{1} = M < \infty$ and  $|| u ||_{\infty} = C < \infty$
-%
-\begin{align*}
-	y(t) &= \int\limits_{-\infty}^{\infty} h(\tau) u(t - \tau) d\tau 
+	\abs{y(t)} &= \abs{ \int_{-\infty}^{\infty} h(\tau) u(t - \tau) \, d\tau } \\
+    \intertext{By applying the triangle inequality for integrals, we move the absolute value inside:}
+	&\leq \int_{-\infty}^{\infty} \abs{h(\tau) u(t - \tau)} \, d\tau \\
+    \intertext{Because $u(t)$ is bounded, we know that $\abs{u(t - \tau)} \leq \norm{u}_{\infty}$ for all $t$ and $\tau$. Substituting this worst-case bound yields:}
+	&\leq \int_{-\infty}^{\infty} \abs{h(\tau)} \norm{u}_{\infty} \, d\tau \\
+	&= \norm{u}_{\infty} \left[ \int_{-\infty}^{\infty} \abs{h(\tau)} \, d\tau \right]  \, , \quad \forall t
 	\\
-	| y(t) |  &= \left| \int\limits_{-\infty}^{\infty} h(\tau) u(t - \tau) d\tau \right| \leq
-	\int\limits_{-\infty}^{\infty} | h(\tau) u(t - \tau) | d\tau
-	\leq 	\int\limits_{-\infty}^{\infty} | h(\tau) | | u(t - \tau) | d\tau
-	\leq \left[ \int\limits_{-\infty}^{\infty} | h(\tau) | d\tau \right] || u ||_{\infty} \, , \forall t
-	\\
-	|| y ||_{\infty} &\leq || h ||_1 || u ||_{\infty} \leq M C < \infty
+    \intertext{Recognizing the integral as $\norm{h}_1$, we obtain our final bound:}
+	\norm{y}_{\infty} &\leq \norm{h}_1 \norm{u}_{\infty} = M C < \infty
+\end{align*}
+Since this bound holds uniformly for all $t$, the output is guaranteed to be bounded.
+
+\textit{Necessity ($\Leftarrow$):} We must prove that if $\norm{h}_1 = \infty$, there exists at least one bounded input that produces an unbounded output. 
+
+Let $\norm{h}_1 = \infty$. We construct a malicious input $u$ designed specifically to drive the system to infinity at a given time $t$. We choose:
+$$u(t - \tau) = \mathrm{sign}( h(\tau) )$$
+
+\begin{remark}[Insight on the Malicious Input]
+Because the $\mathrm{sign}(\cdot)$ function only outputs values in $\{-1, 0, 1\}$, this specific input is strictly bounded, satisfying $\norm{u}_{\infty} \leq 1$. However, it perfectly aligns its phase with the impulse response, forcing every term in the convolution integral to become positive and act additively. It is the absolute ``worst-case'' scenario for the system.
+\end{remark}
+
+Applying this bounded input yields:
+\begin{align*}
+	y(t) &= \int_{-\infty}^{\infty} h(\tau) \mathrm{sign}( h(\tau) ) \, d\tau \\
+	&= \int_{-\infty}^{\infty} \abs{h(\tau)} \, d\tau \\
+    &= \infty
+\end{align*}
+The output diverges to infinity, proving the system is unstable.
+\end{proof}
+
+Consequently, the least upper bound of the infinity norm of the output (the induced $\infty$-norm) is exactly the $1$-norm of the impulse response:
+%
+\begin{align*}
+	\norm{S_h}_{\infty\text{-ind}} = \sup_{\norm{u}_{\infty} \leq 1} \norm{y}_{\infty} = \norm{h}_{1} 
 \end{align*}
 
-\textit{Neccesity} - Let $ || h ||_1 = \infty $, and for any $t$ we can choose $u(t - \tau) = \mathrm{sign}( h( \tau )$, then
+\begin{theorem}
+Let $S_{\mathcal{H}}$ be a CT-LTI MIMO system with $m$ inputs, $p$ outputs, and an impulse response matrix $\mathcal{H}(t)$. $S_{\mathcal{H}}$ is BIBO stable if and only if:
+%
+\begin{align*}
+	\max_{i \in [1,p]} \sum_{j=1}^m \norm{h_{ij}}_1 = M < \infty
+\end{align*}
+\end{theorem}
 
-\begin{align*}
-	y(t) &= \int\limits_{-\infty}^{\infty} h(\tau) u(t - \tau) d\tau = 
-	\int\limits_{-\infty}^{\infty} h(\tau) \mathrm{sign}( h( \tau ) d\tau = 
-	\int\limits_{-\infty}^{\infty} | h(\tau) |  d\tau = \infty
-\end{align*}
-
-Thus a SISO CT-LTI system is  BIBO stable (or $\infty$-stable) $\iff$ $|| h ||_{1} = \int\limits_{-\infty}^{\infty} | h(t) | dt < \infty$.
-Furthermore, the least upper bound of the infinity norm of the output given that $ || u ||_{\infty}$ simply given by 
+\begin{proof}
+For a MIMO system, the entire system is only as stable as its internal pathways. Let $h_{ij}(t)$ denote the impulse response from the $j^{\text{th}}$ input to the $i^{\text{th}}$ output. We analyze an arbitrary output terminal $y_i(t)$:
 %
 \begin{align*}
-	\underset{|| u ||_{\infty} = 1}{\sup} || y ||_{\infty} = || h ||_{1} = \int\limits_{-\infty}^{\infty} | h(t) | dt
-\end{align*}
-%
-and this constant is is called the $\mathcal{L}_1$-norm (or $\mathcal{L}_{\infty-\mathrm{ind}}$-norm) of the system and showed as
-%
-\begin{align*}
-	|| S_h ||_1 = || S_h ||_{\infty-ind} =  \underset{|| u ||_{\infty} = 1}{\sup} || y ||_{\infty} = || h ||_{1} 
-\end{align*}
-%
-\textbf{Theorem:} Let, $S_{g}$, be a DT-LTI SISO system where $g[k]$ is its impulse response, i.e.
-%
-\begin{align*}
-y[k] = g[k] * u[k] = \sum\limits_{n=-\infty}^{\infty} g[k - n] u[n]  =  \sum\limits_{n=-\infty}^{\infty} g[n] u[k - n]  
-\end{align*}
-%
-$S_{g}$ is BIBO stable (or $\infty$-stable) if and only if $\exists M < \infty$ such that 
-%
-\begin{align*}
-	|| g ||_1 =  \sum\limits_{n=-\infty}^{\infty} | g[n] | = M
-\end{align*}
-%
-\textbf{Proof:} Steps of the proof is very similar to the CT case. 
-
-Now let's generalize the BIBO stability for MIMO systems. 
-
-\textbf{Theorem:} Let, $S_{\mathcal{H}}$, be a CT-LTI MIMO system where $\mathcal{H}(t)$ is its impulse response matrix
-with $m$ inputs and $p$ outputs, i.e.
-%
-\begin{align*}
-y(t) = \mathcal{H}(t) * u(t) = \int\limits_{-\infty}^{\infty} \mathcal{H}(t - \tau) u(\tau) d\tau = \int\limits_{-\infty}^{\infty} \mathcal{H}(\tau) u(t - \tau) d\tau 
-\end{align*}
-%
-$S_{\mathcal{H}}$ is BIBO stable (or $\infty$-stable) if and only if $\exists M < \infty$ such that 
-%
-\begin{align*}
-	\underset{i \in [1,p]}{\max} \sum\limits || h_{ij} ||_1 = M
-\end{align*}
-%
-we can see that for multivariate BIBO stability all possible SISO input--output terminals has to be BIBO stability.
-It is enough to the sufficiency for the multi-variate case, since proof in SISO case covers necessity condition. 
-Let $y_i(t)$ is the $i^{th}$ output terminal then
-%
-\begin{align*}
-	y_i(t) &= \sum\limits_{j=1}^m \left[ \int h_{ij}(\tau) u_j(t - \tau) d\tau \right]
-	\\
-	| y_i(t) | &= \left| \sum\limits_{j=1}^m  \left[ \int h_{ij}(\tau) u_j(t - \tau) d\tau \right] \right| 
-	\leq  \sum\limits_{j=1}^m  \left[ \int \left| h_{ij}(\tau) u_j(t - \tau) \right|  d\tau \right]
-		\leq  \sum\limits_{j=1}^m \left[ \int \left| h_{ij}(\tau) \right| \left| u_j(t - \tau) \right|  d\tau \right]
-		\\
-		&\leq  \sum\limits_{j=1}^m \left[ \int \left| h_{ij}(\tau) \right| || u(t - \tau) ||_{\infty}  d\tau \right]
-		\leq  \sum\limits_{j=1}^m \left[ \int \left| h_{ij}(\tau) \right| d\tau \right] || u ||_{\infty} 
-		\leq  \left[ \sum\limits_{j=1}^m || h_{ij} ||_1 \right] || u ||_{\infty} 
+	\abs{y_i(t)} &= \abs{\sum_{j=1}^m \int_{-\infty}^{\infty} h_{ij}(\tau) u_j(t - \tau) \, d\tau } \\
+    \intertext{Applying the triangle inequality to both the sum and the integral:}
+	&\leq \sum_{j=1}^m \int_{-\infty}^{\infty} \abs{h_{ij}(\tau)} \abs{u_j(t - \tau)} \, d\tau \\
+    \intertext{Bounding each input channel by the global input norm $\norm{u}_{\infty}$:}
+    &\leq \sum_{j=1}^m \int_{-\infty}^{\infty} \abs{h_{ij}(\tau)} \norm{u}_{\infty} \, d\tau \\
+	&= \left[ \sum_{j=1}^m \norm{h_{ij}}_1 \right] \norm{u}_{\infty} 
 \end{align*}
 % 
-Noe let's focus on all output variables
+This shows the $i^{\text{th}}$ output is bounded by the sum of the $1$-norms of its respective input pathways. Maximizing over all possible output branches $i \in [1,p]$ yields the induced norm for the MIMO system:
 \begin{align*}
-	|| y ||_{\infty} = \underset{t}{\sup}|| y(t) ||_{\infty} = \underset{t}{\sup} \underset{i \in [1,p]}{\max} | y_i(t) |
-	\leq \underset{i \in [1,p]}{\max}  \left[ \sum\limits_{j=1}^m || h_{ij} ||_1 \right] || u ||_{\infty} 
+	\norm{S_\mathcal{H}}_{\infty\text{-ind}} = \max_{i \in [1,p]} \left[ \sum_{j=1}^m \norm{h_{ij}}_1 \right]
 \end{align*}
-%
-thus if $\underset{i \in [1,p]}{\max}  \left[ \sum\limits_{j=1}^m || h_{ij} ||_1 \right] = M < \infty$, then 
-$|| y ||_{\infty}$ is finite for all finite $|| u ||_{\infty}$. The constant $M$ derived in this proof is called the 
-called the $\mathcal{L}_1$-norm (or $\mathcal{L}_{\infty-\mathrm{ind}}$-norm) of the system and showed as
-%
-\begin{align*}
-	|| S_\mathcal{H} ||_1 = 	|| S_\mathcal{H} ||_{\infty-ind} =  \underset{i \in [1,p]}{\max}  \left[ \sum\limits_{j=1}^m || h_{ij} ||_1 \right]
-\end{align*}
-%
+\end{proof}
 
-\textbf{Theorem:} Let, $S_{\mathcal{G}}$, be a DT-LTI MIMO system where $\mathcal{G}[k]$ is its impulse response matrix
-with $m$ inputs and $p$ outputs, i.e.
-%
-\begin{align*}
-y[k] = \mathcal{G}[k] * u[k] = \sum\limits_{n=-\infty}^{\infty} \mathcal{G}[k - n] u[k] 
-\end{align*}
-%
-$S_{\mathcal{G}}$ is BIBO stable (or $\infty$-stable) if and only if $\exists M < \infty$ such that 
-%
-\begin{align*}
-	|| S_{\mathcal{G}} ||_1 = || S_{\mathcal{G}} ||_{\infty-ind} = \underset{i \in [1,p]}{\max} \sum\limits || h_{ij} ||_1 = M
-\end{align*}
-%
-Steps of the proof is very similar to the CT case.
-
-\textbf{Theorem} A finite-dimensional CT-LTI (or DT-LTI) system is BIBO or $\infty$-stable $\iff$
-\begin{itemize}
-\item poles of $\mathcal{H}(s)$ (or $\mathcal{G}(z)$ for DT case) are located in the O.L.P (or unit circle for DT systems) $\iff$
-\item eigenvalues associated with reachable and observable modes are located in the O.L.P (or unit circle for DT systems)
+\begin{theorem}[Pole-Zero Interpretation]
+A finite-dimensional CT-LTI (or DT-LTI) system is BIBO ($\infty$-stable) $\iff$
+\begin{itemize}[label=\textbullet]
+\item Poles of the transfer function $\mathcal{H}(s)$ (or $\mathcal{G}(z)$) are located strictly in the Open Left-Half Plane (or strictly inside the unit circle for DT systems).
 \end{itemize}
+\end{theorem}
 
-\subsubsection*{$\mathcal{L}_1$-stability of SISO LTI Systems}
+\begin{remark}[Theoretical Link]
+Why does a finite $1$-norm ($\norm{h}_1 < \infty$) strictly require poles in the left-half plane? For a finite-dimensional LTI system, $h(t)$ is composed of linear combinations of natural modes such as $t^k e^{p_i t}$, where $p_i$ are the system poles. The integral $\int_0^\infty \abs{t^k e^{p_i t}} dt$ converges if and only if the real part of $p_i$ is strictly negative, forcing the impulse response to exponentially decay to zero over time.
+\end{remark}
 
-Let's focus on only CT SISO systems. In this part, we will attempt to find a conservative bound, $C < \infty$, such that 
+\subsubsection*{Example: Infinite-Dimensional System (Time-Delay)}
+
+Let us solidify the universality of the $\mathcal{L}_1$-norm condition with a system where simply checking a finite set of poles is insufficient. Consider an infinite-dimensional CT-LTI system representing an acoustic environment with an infinite series of echoes (a delay-feedback system). The dynamics are governed by:
 %
 \begin{align*}
-	|| y ||_1 \leq C || u ||_1 \, , \forall u \in \mathcal{L}_{1}
+    y(t) = u(t) + \alpha y(t - T_d)
 \end{align*}
+%
+where $T_d > 0$ is the time delay and $\alpha \in \mathbb{R}$ is the reflection/attenuation factor. 
+
+To find the corresponding impulse response $h(t)$, we can elegantly derive it in the $s$-domain. Taking the Laplace transform of the system equation (assuming zero initial conditions) gives:
+%
+\begin{align*}
+    Y(s) &= U(s) + \alpha e^{-s T_d} Y(s) \\
+    H(s) &= \frac{Y(s)}{U(s)} = \frac{1}{1 - \alpha e^{-s T_d}}
+\end{align*}
+%
+By expanding this transfer function using the infinite geometric series formula $\frac{1}{1-x} = \sum_{k=0}^{\infty} x^k$ (valid for the region of convergence), we get:
+%
+\begin{align*}
+    H(s) &= \sum_{k=0}^{\infty} \left( \alpha e^{-s T_d} \right)^k = \sum_{k=0}^{\infty} \alpha^k e^{-s k T_d}
+\end{align*}
+%
+Taking the inverse Laplace transform, and recalling the time-shift property $\mathcal{L}^{-1}\{e^{-as}\} = \delta(t-a)$, we arrive at the identical impulse response:
+%
+\begin{align*}
+    h(t) = \sum_{k=0}^{\infty} \alpha^k \delta(t - k T_d)
+\end{align*}
+%
+Now, we want to analyze the BIBO ($\infty$-) stability of this system by evaluating its impulse response $\mathcal{L}_1$-norm:
+%
+\begin{align*}
+    \norm{h}_1 &= \int_{-\infty}^{\infty} \abs{ \sum_{k=0}^{\infty} \alpha^k \delta(t - k T_d) } \, dt \\
+    &= \sum_{k=0}^{\infty} \abs{\alpha}^k \int_{-\infty}^{\infty} \delta(t - k T_d) \, dt \\
+    &= \sum_{k=0}^{\infty} \abs{\alpha}^k
+\end{align*}
+%
+\textbf{Case 1: $\abs{\alpha} < 1$ (Attenuating Echoes)} \\
+If the reflection coefficient is strictly less than $1$ (meaning the signal loses energy with each bounce), the geometric series converges:
+%
+\begin{align*}
+    \norm{h}_1 &= \frac{1}{1 - \abs{\alpha}} < \infty
+\end{align*}
+%
+Since $\norm{h}_1$ is finite, the system is \textbf{BIBO stable}. The induced $\infty$-norm (maximum peak amplification) is exactly $\frac{1}{1 - \abs{\alpha}}$.
+
+\textbf{Case 2: $\abs{\alpha} \geq 1$ (Sustained or Growing Echoes)} \\
+If the echoes do not decay, the geometric series diverges ($\norm{h}_1 = \infty$), and the system is \textbf{not BIBO stable}.
+
+\begin{remark}[Why finite-dimensional theorems fail here]
+Taking the Laplace transform of the impulse response yields the transfer function $H(s) = \frac{1}{1 - \alpha e^{-s T_d}}$. This is not a rational polynomial; it has an \textit{infinite} number of poles located at $s = \frac{\ln(\abs{\alpha}) + j(\angle \alpha + 2\pi m)}{T_d}$ for $m \in \mathbb{Z}$. Standard stability checks designed for finite-dimensional systems (like Routh-Hurwitz) do not directly apply to this transcendental equation, perfectly showcasing why the $\norm{h}_1 < \infty$ condition is the most fundamental and universally rigorous definition of BIBO stability.
+\end{remark}
+
+
+\subsubsection*{$\mathcal{L}_1$-stability and Young's Inequality}
+
+Let's focus again on CT SISO systems. Suppose we want to find a bound $C$ such that $\norm{y}_1 \leq C \norm{u}_1$ for all inputs $u \in \mathcal{L}_{1}$.
 % 
-From the $\infty$-stability derivation we know that
-%
-%
+From our previous derivation, we know that the absolute value of the output at any given time is bounded by the convolution of the absolute values:
 \begin{align*}
-	| y(t) | = | h(t) * u(t) | \leq \int\limits_{-\infty}^{\infty} | h(t - \tau ) | | u(\tau) | d\tau
+\abs{y(t)} \leq \int_{-\infty}^{\infty} \abs{h(t - \tau)} \abs{u(\tau)} \, d\tau
 \end{align*}
-%  
-Mow let's analyze the $|| y ||_1$
+To find the $\mathcal{L}_1$ norm of the output, we integrate both sides over all time $t$:
 \begin{align*}
-	|| y ||_1 &= \int\limits_{-\infty}^{\infty} | y(t) | dt = \int\limits_{-\infty}^{\infty} | h(t) * u(t) | dt 
-	\leq \int\limits_{-\infty}^{\infty} \left( \int\limits_{-\infty}^{\infty} | h(t - \tau ) | | u(\tau) | d\tau \right) dt
-	\\
-	&\leq \int\limits_{-\infty}^{\infty} | u(\tau) | \left( \int\limits_{-\infty}^{\infty} | h(t - \tau ) | dt \right) d\tau 
-	= \int\limits_{-\infty}^{\infty} | u(\tau) | \left( \int\limits_{-\infty}^{\infty} | h(\gamma) | d\gamma \right) d\tau 
-	= || h ||_1 \int\limits_{-\infty}^{\infty} | u(\tau) d\tau 
-	\\
-	|| y ||_1 &\leq || h ||_1 || u ||_1
+	\norm{y}_1 &= \int_{-\infty}^{\infty} \abs{y(t)} \, dt \leq \int_{-\infty}^{\infty} \left( \int_{-\infty}^{\infty} \abs{h(t - \tau)} \abs{u(\tau)} \, d\tau \right) dt \\
+    \intertext{By applying Tonelli's/Fubini's Theorem, we can safely swap the order of integration:}
+	&\leq \int_{-\infty}^{\infty} \abs{u(\tau)} \left( \int_{-\infty}^{\infty} \abs{h(t - \tau)} \, dt \right) d\tau \\
+    \intertext{We can use a change of variables in the inner integral ($\gamma = t - \tau$, $d\gamma = dt$). Due to time-invariance, the shift by $\tau$ does not change the integral over infinite bounds:}
+	&= \int_{-\infty}^{\infty} \abs{u(\tau)} \left( \int_{-\infty}^{\infty} \abs{h(\gamma)} \, d\gamma \right) d\tau \\
+	&= \norm{h}_1 \int_{-\infty}^{\infty} \abs{u(\tau)} \, d\tau \\
+	\norm{y}_1 &\leq \norm{h}_1 \norm{u}_1
 \end{align*}
 %
-This implies that if $ || h ||_1 = M < \infty $ then system is $p$-stable for $p = 1$ and $C \leq M$. Indeed this is a conservative upper bound 
-for general LTI systems, but inequality becomes equality (i.e. $|| h ||_1 = M = C$) for finite dimensional LTI systems. Same derivation can
-be easily adopted for DT-LTI SISO systems. 
+This elegant result implies that if $\norm{h}_1 = M < \infty$, the system is inherently $1$-stable, and its induced $1$-norm is bounded by $M$. 
 
+\begin{remark}[Tightness of the $1$-norm bound]
+The bound derived above, $\norm{y}_1 \leq \norm{h}_1 \norm{u}_1$, is actually a \textbf{tight bound} (the least upper bound). We can prove this by evaluating an input that achieves equality. If we apply a unit Dirac delta impulse $u(t) = \delta(t)$, which has a $1$-norm of $\norm{u}_1 = 1$, the output is exactly the impulse response $y(t) = h(t)$. Therefore, $\norm{y}_1 = \norm{h}_1$, perfectly satisfying the equality condition. Thus, the induced $1$-norm of the system is exactly $\norm{S}_{1\text{-ind}} = \norm{h}_1$.
+\end{remark}
 
-Indeed, we can generalize this derivation for any $p > 0$ such that
+\begin{theorem}[Young's Convolution Inequality]
+The property derived above is actually a specific instance of a broader and highly fundamental mathematical theorem known as \textbf{Young's Convolution Inequality}. It states that for any $p \geq 1$, if $\norm{h}_1 < \infty$ and $\norm{u}_p < \infty$, then the output $p$-norm is bounded by:
+$$\norm{y}_p = \norm{h * u}_p \leq \norm{h}_1 \norm{u}_p$$
+\end{theorem}
 
-\textbf{Theorem:} If $|| h_1 || = M < \infty$ and $|| u ||_p < \infty$, then $|| y ||_p < \infty$. 
+Thus, a system with an absolutely integrable impulse response ($\norm{h}_1 < \infty$) is not just BIBO ($\infty$) stable, but is guaranteed to be $\ell_p$-stable for \textit{any} choice of $p \geq 1$.
 
-Proof of this theorem requires the adoption of Minkowski's inequalities, thus it is omitted from these lecture notes. 
+\begin{remark}[Conservativeness of Young's Inequality]
+While Young's Convolution Inequality is a powerful mathematical tool to guarantee that stability exists, it generally provides a \textbf{conservative (loose) upper bound} for intermediate values of $p$ (i.e., $1 < p < \infty$). 
+%For example, when $p=2$, Young's inequality guarantees $\norm{y}_2 \leq \norm{h}_1 \norm{u}_2$. However, as we will explore in the next section, the true maximum energy gain (the exact induced $2$-norm) is governed by the peak of the frequency response ($\norm{H}_\infty$), which is usually strictly less than $\norm{h}_1$.
+\end{remark}
 
+\subsubsection*{$\mathcal{L}_2$-stability and the $\mathcal{H}_\infty$-Norm}
 
+Another crucially important induced norm in linear systems and optimal control theory is the induced $2$-norm, which measures the maximum \textbf{energy gain} of a system. By definition, for a stable LTI system:
+%
+\begin{align*}
+    \norm{S}_{2\text{-ind}} = \sup_{\norm{u}_2 \neq 0} \frac{\norm{y}_2}{\norm{u}_2}
+\end{align*}
+%
+While the induced $\infty$-norm ($\norm{S}_{\infty\text{-ind}}$) is computed in the time domain via the $1$-norm of the impulse response ($\norm{h}_1$), the induced $2$-norm is best understood and computed in the \textbf{frequency domain}. 
 
-% **** This ENDS THE EXAMPLES. DON'T DELETE THE FOLLOWING LINE:
+By applying Parseval's Theorem (which states that signal energy is conserved between the time and frequency domains, $\norm{f}_2^2 = \frac{1}{2\pi} \int_{-\infty}^{\infty} \abs{F(j\omega)}^2 \, d\omega$), we can easily analyze the energy transfer. For a SISO system, the output spectrum is $Y(j\omega) = H(j\omega)U(j\omega)$. The energy of the output is bounded by the peak magnitude of the frequency response:
+%
+\begin{align*}
+    \norm{y}_2^2 &= \frac{1}{2\pi} \int_{-\infty}^{\infty} \abs{H(j\omega) U(j\omega)}^2 \, d\omega \\
+    &\leq \left( \sup_{\omega} \abs{H(j\omega)}^2 \right) \frac{1}{2\pi} \int_{-\infty}^{\infty} \abs{U(j\omega)}^2 \, d\omega \\
+    &= \left( \sup_{\omega} \abs{H(j\omega)} \right)^2 \norm{u}_2^2
+\end{align*}
+%
+This inequality is tight (achievable by concentrating the input energy at the exact frequency where $\abs{H(j\omega)}$ is maximized). Therefore, the induced $2$-norm is exactly the supremum of the frequency response magnitude.
+
+\begin{theorem}[$\mathcal{H}_\infty$-Norm]
+For a stable CT-LTI SISO system with frequency response $H(j\omega)$, the induced $2$-norm is called the \textbf{$\mathcal{H}_\infty$-norm} (Hardy space infinity norm), defined as:
+%
+\begin{align*}
+    \norm{S}_{2\text{-ind}} = \norm{H}_{\infty} \triangleq \sup_{\omega \in \mathbb{R}} \abs{H(j\omega)}
+\end{align*}
+%
+For a MIMO system with frequency response matrix $\mathcal{H}(j\omega)$, the $\mathcal{H}_\infty$-norm is the supremum of the maximum singular value, $\bar{\sigma}$, over all frequencies:
+%
+\begin{align*}
+    \norm{\mathcal{H}}_{\infty} \triangleq \sup_{\omega \in \mathbb{R}} \bar{\sigma}(\mathcal{H}(j\omega))
+\end{align*}
+\end{theorem}
+
+\begin{remark}[Physical Interpretation]
+Physically, the $\mathcal{H}_\infty$-norm represents the worst-case steady-state gain of the system to harmonic inputs. On a standard Bode magnitude plot, $\norm{H}_{\infty}$ is simply the highest peak of the magnitude curve (the resonant peak). Minimizing this peak is the central objective of \textbf{$\mathcal{H}_\infty$ robust control}, as it limits the maximum amplification of finite-energy disturbances.
+\end{remark}
+
 \end{document}
