@@ -468,15 +468,41 @@ Another crucially important induced norm in linear systems and optimal control t
 %
 While the induced $\infty$-norm ($\norm{S}_{\infty\text{-ind}}$) is computed in the time domain via the $1$-norm of the impulse response ($\norm{h}_1$), the induced $2$-norm is best understood and computed in the \textbf{frequency domain}. 
 
-By applying Parseval's Theorem (which states that signal energy is conserved between the time and frequency domains, $\norm{f}_2^2 = \frac{1}{2\pi} \int_{-\infty}^{\infty} \abs{F(j\omega)}^2 \, d\omega$), we can easily analyze the energy transfer. For a SISO system, the output spectrum is $Y(j\omega) = H(j\omega)U(j\omega)$. The energy of the output is bounded by the peak magnitude of the frequency response:
+To bridge the time and frequency domains, we rely on a fundamental result in harmonic analysis that establishes the conservation of energy:
+
+\begin{theorem}[Parseval's Theorem]
+For any finite-energy CT signal $f \in \mathcal{L}_2$, the total energy computed in the time domain is equal to the total energy computed in the frequency domain (scaled by $1/2\pi$):
+\begin{align*}
+    \norm{f}_2^2 = \int_{-\infty}^{\infty} \abs{f(t)}^2 \, dt = \frac{1}{2\pi} \int_{-\infty}^{\infty} \abs{F(j\omega)}^2 \, d\omega
+\end{align*}
+where $F(j\omega)$ is the continuous Fourier transform of $f(t)$.
+\end{theorem}
+
+Using Parseval's Theorem, we can elegantly analyze the energy transfer of a CT-LTI SISO system. We know that convolution in the time domain, $y(t) = (h * u)(t)$, becomes multiplication in the frequency domain:
 %
 \begin{align*}
-    \norm{y}_2^2 &= \frac{1}{2\pi} \int_{-\infty}^{\infty} \abs{H(j\omega) U(j\omega)}^2 \, d\omega \\
-    &\leq \left( \sup_{\omega} \abs{H(j\omega)}^2 \right) \frac{1}{2\pi} \int_{-\infty}^{\infty} \abs{U(j\omega)}^2 \, d\omega \\
-    &= \left( \sup_{\omega} \abs{H(j\omega)} \right)^2 \norm{u}_2^2
+    Y(j\omega) = H(j\omega) U(j\omega)
 \end{align*}
 %
-This inequality is tight (achievable by concentrating the input energy at the exact frequency where $\abs{H(j\omega)}$ is maximized). Therefore, the induced $2$-norm is exactly the supremum of the frequency response magnitude.
+We want to find the maximum possible energy of the output, $\norm{y}_2^2$, for a given input energy, $\norm{u}_2^2$. Let us evaluate $\norm{y}_2^2$ step-by-step:
+%
+\begin{align*}
+    \norm{y}_2^2 &= \frac{1}{2\pi} \int_{-\infty}^{\infty} \abs{Y(j\omega)}^2 \, d\omega \quad &\text{(by Parseval's Theorem)} \\
+    &= \frac{1}{2\pi} \int_{-\infty}^{\infty} \abs{H(j\omega) U(j\omega)}^2 \, d\omega \quad &\text{(System dynamics)} \\
+    &= \frac{1}{2\pi} \int_{-\infty}^{\infty} \abs{H(j\omega)}^2 \abs{U(j\omega)}^2 \, d\omega \quad &\text{(Property of absolute values)} \\
+    \intertext{To bound this integral, we can pull the largest possible value of $\abs{H(j\omega)}^2$ outside the integral. We define this maximum amplification factor as the supremum over all frequencies:}
+    &\leq \left( \sup_{\omega \in \mathbb{R}} \abs{H(j\omega)}^2 \right) \frac{1}{2\pi} \int_{-\infty}^{\infty} \abs{U(j\omega)}^2 \, d\omega \\
+    \intertext{Recognizing the remaining integral as the input energy $\norm{u}_2^2$ via Parseval's Theorem, and pulling the square outside the supremum:}
+    &= \left( \sup_{\omega \in \mathbb{R}} \abs{H(j\omega)} \right)^2 \norm{u}_2^2
+\end{align*}
+%
+Taking the square root of both sides gives our final bound:
+%
+\begin{align*}
+    \norm{y}_2 \leq \left( \sup_{\omega \in \mathbb{R}} \abs{H(j\omega)} \right) \norm{u}_2
+\end{align*}
+%
+This inequality is strictly tight. It is achievable by concentrating the input energy $U(j\omega)$ in an infinitesimally narrow frequency band exactly centered around the frequency $\omega^*$ where the magnitude $\abs{H(j\omega)}$ reaches its maximum peak. Therefore, the induced $2$-norm is exactly the supremum of the frequency response magnitude.
 
 \begin{theorem}[$\mathcal{H}_\infty$-Norm]
 For a stable CT-LTI SISO system with frequency response $H(j\omega)$, the induced $2$-norm is called the \textbf{$\mathcal{H}_\infty$-norm} (Hardy space infinity norm), defined as:

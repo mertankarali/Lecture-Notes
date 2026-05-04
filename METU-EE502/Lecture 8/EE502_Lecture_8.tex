@@ -436,7 +436,7 @@ Consider an autonomous time-invariant CT or DT non-linear state-space model;
 \end{align*}
 %
 with an equilibrium point $x_e$. Without loss of generality, let's assume that $x_e = 0$. Consider a continuous
-scalar function $V : \mathbb{R}^{m} \mapsto \mathbb{R}$ (or  $V : D \mapsto F$ in general, where $D$ is the domain and $F$ is the field), where $V(0) = 0$ and $V(x) > 0$ for $x \neq 0$ inside some ``ball'' enclosing the equilibrium point. 
+scalar function $V : \mathbb{R}^{n} \mapsto \mathbb{R}$ (or $V : \mathcal{D} \mapsto \mathbb{R}$ in general, where $\mathcal{D}$ is the domain), where $V(0) = 0$ and $V(x) > 0$ for $x \neq 0$ inside some ``ball'' enclosing the equilibrium point. 
 In that context, $V(x)$ can be considered as an ``energy'' function (indeed, for a mechanical system, it can be a very good choice), or mathematically $V(x)$ can be a norm. Then $\dot{V}(x)$ for CT systems and $\Delta V(x) := V(x[k+1]) - V(x[k])$ 
 for DT systems can provide critical information regarding the internal stability of the dynamical system.
 
@@ -499,7 +499,7 @@ then:
     \begin{align*}
     &\dot{V}(x) < 0, \ \forall x \neq 0
     \\
-    &|| x || \to \infty \implies V(x) \to \infty
+    &|| x || \to \infty \implies V(x) \to \infty 
 \end{align*}
 then $x_e = 0$ is a globally asymptotically stable equilibrium point.
 \end{enumerate}
@@ -518,7 +518,7 @@ the total mechanical energy can be adopted as a Lyapunov candidate:
 \begin{align*}
 V(x) &= E(x) = \frac{1}{2} x_2^2 + 1 - \cos{x_1}  \\ 
 V(0) &= 0 \\
-V(x) &> 0 \ , \ \forall x \ s.t. \ \lbrace x \neq 0 \, \& \, x \in (-\pi , \pi)  \rbrace
+V(x) &> 0 \ , \ \forall x \ s.t. \ \lbrace x \neq 0 \, \& \, x_2 \in (-\pi , \pi)  \rbrace
 \end{align*}
 %
 Now let's test if $V(x)$ is a Lyapunov function.
@@ -567,21 +567,21 @@ at least locally asymptotically stable), since $\dot{V}(x)$ is an \textit{nsd} f
 (locally and globally). Let's try another candidate $V(x)$:
 %
 \begin{align*}
-V(x) &= \frac{1}{2} x_2^2 + a ( 1 - \cos{x_1} ) + \frac{b}{2} \begin{pmatrix} x_1 + x_2 \end{pmatrix}^2  ,
+V(x) &= \frac{1}{2} x_2^2 + a ( 1 - \cos(x_1) ) + \frac{b}{2} ( x_1 + x_2 )^2  ,
 \, a > 0 , \,  b > 0
 \\ 
 V(0) &= 0 \ , \ V(x) > 0 \ , \ \forall x \neq 0 \ \rightarrow \ pd \ \checkmark
 \\
 \\
-\frac{d}{dt} V(x) &= - x_2^2 - x_2 \sin(x_1) + a \sin(x_1) x_2 + b \begin{pmatrix} x_1 + x_2 \end{pmatrix} \dot{x_1} 
-+ b \begin{pmatrix} x_1 + x_2 \end{pmatrix} \dot{x_2}
+\frac{d}{dt} V(x) &= - x_2^2 - x_2 \sin(x_1) + a \sin(x_1) x_2 + b ( x_1 + x_2 ) \dot{x}_1 
++ b ( x_1 + x_2 ) \dot{x}_2
 \\
 &= (b - 1) x_2^2 + (a - 1) x_2 \sin(x_1) + b x_1 x_2 
-+ b \begin{pmatrix} x_1 + x_2 \end{pmatrix} \dot{x_2}
++ b ( x_1 + x_2 ) \dot{x}_2
 \\
 &= (b - 1) x_2^2 + (a - 1) \sin(x_1) x_2 + b x_1 x_2 
-- b \sin(x_1) \begin{pmatrix} x_1 + x_2 \end{pmatrix} 
-- b x_2\begin{pmatrix} x_1 + x_2 \end{pmatrix} 
+- b \sin(x_1) ( x_1 + x_2 ) 
+- b x_2 ( x_1 + x_2 ) 
 \\
 &= - x_2^2 + (a - b - 1) \sin(x_1) x_2 - b \sin(x_1) x_1 
 \end{align*}
@@ -644,8 +644,8 @@ Thus we can conclude that the system around the origin is globally asymptoticall
 let's adopt the indirect method:
 %
 \begin{align*}
- \delta x[k+1] &= \frac{\partial}{\partial x} \left(
- \frac{x}{1 + (x)^2} \right)_{x=0} \delta x[k]
+ \delta x[k+1] &= \left. \frac{\partial}{\partial x} \left(
+ \frac{x}{1 + x^2} \right) \right|_{x=0} \delta x[k]
  \\
 \delta x[k+1] &= \delta x[k]
 \end{align*}
@@ -724,7 +724,7 @@ V(x) = x^T P x  \ P > 0
 for an LTI CT or DT system. Then for a CT-LTI system, $\dot{x} = A x$, we have:
 %
 \begin{align*}
-\dot{V}(x) &= \dot{x}^T P x + x^T P x = x^T A^T P x + x^T P A x 
+\dot{V}(x) &= \dot{x}^T P x + x^T P \dot{x} = x^T A^T P x + x^T P A x 
 \\
 &= x^T (A^T P + P A) x = - x^T Q x
 \\
@@ -793,8 +793,8 @@ i.e., $P$ satisfies the Lyapunov equation.
 %
 \begin{align*}
 P^T &= \int\limits_{0}^{\infty} \left[ e^{t A^T} Q e^{A t} \right]^T dt
-= \int\limits_{0}^{\infty} \left[ e^{A t} \right]^T Q^T 
-\left[ e^{t A^T}\right]^T dt \\
+= \int\limits_{0}^{\infty} \left( e^{A t} \right)^T Q^T 
+\left( e^{t A^T} \right)^T dt \\
 &= \int\limits_{0}^{\infty} e^{t A^T} Q e^{A t} dt = P
 \end{align*}
 %
@@ -865,15 +865,16 @@ $x[k+1] = A x[k]$ is globally asymptotically stable.
 \item Now let's try to find ``a'' solution of $P > 0$, given $Q>0$. Let:
 %
 \begin{align*}
-P = \sum\limits_{k=0}^{\infty} {A^{k}}^T Q A^k \end{align*}
+P = \sum\limits_{k=0}^{\infty} (A^T)^k Q A^k 
+\end{align*}
 %
 $P$ is well defined since all eigenvalues of $A$ are inside the unit circle, and 
 $A^k$ exponentially converges to $0$. Now:
 %
 \begin{align*}
-P - Q &= \sum\limits_{k=1}^{\infty} {A^{k}}^T Q A^k = 
-\sum\limits_{n=0}^{\infty} {A^{n+1}}^T Q A^{n+1} 
-= A^T \left( \sum\limits_{n=0}^{\infty} {A^{n}}^T Q A^{n} \right) A
+P - Q &= \sum\limits_{k=1}^{\infty} (A^T)^k Q A^k = 
+\sum\limits_{n=0}^{\infty} (A^T)^{n+1} Q A^{n+1} 
+= A^T \left( \sum\limits_{n=0}^{\infty} (A^T)^n Q A^n \right) A
 \\
 P - Q &= A^T P A
 \\
@@ -884,5 +885,105 @@ i.e., $P$ satisfies the Lyapunov equation.
 %
 \item The remaining parts of the proof are left to the student as a take-home problem.
 \end{enumerate}
+
+\subsection*{Discussion: Why use Lyapunov's method for LTI systems?}
+
+At this point, a natural question arises: \textit{Why do we need Lyapunov's method for LTI systems when we can simply check the eigenvalues of the $A$ matrix?} 
+While it is true that eigenvalues perfectly determine LTI stability, Quadratic Lyapunov Functions are practically and theoretically indispensable for several key reasons:
+\begin{itemize}
+    \item \textbf{Numerical Computation:} Finding eigenvalues of very large matrices is computationally expensive and numerically sensitive. Solving the Lyapunov matrix equation ($A^T P + PA = -Q$) is a system of linear equations, which is computationally much faster and more numerically stable.
+    \item \textbf{Performance \& Optimal Control:} The solution matrix $P$ doesn't just tell us \textit{if} the system is stable, but gives us a measure of \textit{how} stable it is. In classical frequency-domain control, we use phase and gain margins to quantify \textit{relative stability}; in modern state-space control, the relationship between $Q$ and $P$ serves a similar purpose. Furthermore, $P$ allows us to directly compute the "energy" of the transient response. If we define a performance cost as the total accumulated state deviation over time, we can evaluate this infinite integral exactly. Recall that $\dot{V}(x) = -x(t)^T Q x(t)$. By integrating both sides from $t=0$ to $t=\infty$:
+%
+\begin{align*}
+    \int_{0}^{\infty} x(t)^T Q x(t) dt &= \int_{0}^{\infty} -\dot{V}(x(t)) dt \\
+    &= - \Big[ V(x(t)) \Big]_{0}^{\infty} \\
+    &= - \left( \lim_{t \to \infty} x(t)^T P x(t) - x(0)^T P x(0) \right)
+\end{align*}
+%
+    Since the system is asymptotically stable, $x(t) \to 0$ as $t \to \infty$. Thus, the integral evaluates perfectly to the initial condition's Lyapunov value:
+%
+\begin{align*}
+    \int_{0}^{\infty} x(t)^T Q x(t) dt = x(0)^T P x(0)
+\end{align*}
+%
+    Because it gives us this total accumulated cost algebraically---without having to simulate the system's differential equations over time---it forms the ultimate theoretical foundation for Optimal Control.
+    \item \textbf{Robust and Adaptive Control:} As we saw in Section 8.1.1, eigenvalues fail to guarantee stability for Time-Varying or uncertain systems. Quadratic Lyapunov functions provide a robust framework that extends naturally to LTV systems and systems with bounded uncertainties.
+    \item \textbf{Connecting Linear to Non-linear:} By Lyapunov's Indirect Method, if we linearize a non-linear system around an equilibrium, the quadratic Lyapunov function $V(x) = x^T P x$ derived from the linear approximation serves as a valid local Lyapunov function for the full non-linear system. The level sets of this $V(x)$ help us estimate the non-linear \textit{Region of Attraction}.
+\end{itemize}
+
+\begin{exmp}
+\textbf{Connecting Linear and Non-Linear Analysis.} Consider the following 2nd order non-linear dynamical system:
+\begin{align*}
+\dot{x}_1 &= x_2 \\
+\dot{x}_2 &= -2x_1 - 3x_2 + x_1 x_2
+\end{align*}
+\end{exmp}
+Analyze the local stability of the origin. First, attempt a naive Lyapunov function $V(x) = x_1^2 + x_2^2$. Then, systematically construct a quadratic Lyapunov function using the linearized system and estimate the region of attraction.
+
+\textbf{Solution:}
+
+\textbf{Step 1: The Naive Approach Fails.}
+A student might first try the simplest positive definite function: $V(x) = x_1^2 + x_2^2$ (which corresponds to $P = I$). Taking the derivative along the system trajectories:
+%
+\begin{align*}
+\dot{V}(x) &= 2x_1 \dot{x}_1 + 2x_2 \dot{x}_2 \\
+&= 2x_1(x_2) + 2x_2(-2x_1 - 3x_2 + x_1 x_2) \\
+&= 2x_1 x_2 - 4x_1 x_2 - 6x_2^2 + 2x_1 x_2^2 \\
+&= -2x_1 x_2 - 6x_2^2 + 2x_1 x_2^2
+\end{align*}
+%
+Is $\dot{V}(x)$ locally negative definite? Let's check a point very close to the origin, for example, $x_1 = -0.1, x_2 = 0.1$:
+$$ \dot{V}(-0.1, 0.1) = -2(-0.1)(0.1) - 6(0.1)^2 + 2(-0.1)(0.1)^2 = +0.02 - 0.06 - 0.002 = -0.042 < 0 $$
+Wait, what if we check $x_1 = -1$ and $x_2 = 0.1$:
+$$ \dot{V}(-1, 0.1) = -2(-1)(0.1) - 6(0.1)^2 + 2(-1)(0.1)^2 = +0.2 - 0.06 - 0.02 = +0.12 > 0 $$
+Since $\dot{V}(x) > 0$ for points arbitrarily close to the origin (specifically in the upper-left and lower-right quadrants), this naive $V(x)$ is \textit{inconclusive}. It fails to prove stability.
+
+\textbf{Step 2: Systematic LTI Approach (Indirect Method).}
+Let's approach this systematically. The Jacobian matrix evaluated at $x_e = 0$ is:
+%
+\begin{align*}
+A &= \left. \begin{bmatrix} 0 & 1 \\ -2 + x_2 & -3 + x_1 \end{bmatrix} \right|_{x=0} = \begin{bmatrix} 0 & 1 \\ -2 & -3 \end{bmatrix}
+\end{align*}
+%
+The eigenvalues of $A$ are $\lambda_{1} = -1$ and $\lambda_2 = -2$. Since the linear system is strictly stable, Lyapunov theory guarantees a valid quadratic Lyapunov function \textit{must} exist. 
+
+We solve the continuous-time Lyapunov equation $A^T P + P A = -Q$. To avoid fractions, let's select $Q = 4I = \begin{bmatrix} 4 & 0 \\ 0 & 4 \end{bmatrix}$:
+%
+\begin{align*}
+\begin{bmatrix} 0 & -2 \\ 1 & -3 \end{bmatrix} \begin{bmatrix} p_{11} & p_{12} \\ p_{12} & p_{22} \end{bmatrix} + \begin{bmatrix} p_{11} & p_{12} \\ p_{12} & p_{22} \end{bmatrix} \begin{bmatrix} 0 & 1 \\ -2 & -3 \end{bmatrix} = \begin{bmatrix} -4 & 0 \\ 0 & -4 \end{bmatrix}
+\end{align*}
+%
+Solving this linear system of equations yields a \textit{non-diagonal} matrix:
+%
+\begin{align*}
+P = \begin{bmatrix} 5 & 1 \\ 1 & 1 \end{bmatrix}
+\end{align*}
+%
+Check positive definiteness: $5 > 0$, and $\mathrm{det}(P) = 5(1) - 1(1) = 4 > 0$.
+Thus, our systematic Lyapunov function candidate is $V(x) = x^T P x = 5x_1^2 + 2x_1 x_2 + x_2^2$.
+
+\textbf{Step 3: Evaluate on the Full Non-Linear System.}
+We now apply this LTI-derived non-diagonal quadratic function to the original non-linear system. The time derivative $\dot{V}(x)$ is:
+%
+\begin{align*}
+\dot{V}(x) &= \frac{\partial V}{\partial x_1} \dot{x}_1 + \frac{\partial V}{\partial x_2} \dot{x}_2 \\
+&= (10x_1 + 2x_2) (x_2) + (2x_1 + 2x_2) (-2x_1 - 3x_2 + x_1 x_2) \\
+&= 10x_1 x_2 + 2x_2^2 - 4x_1^2 - 6x_1 x_2 + 2x_1^2 x_2 - 4x_1 x_2 - 6x_2^2 + 2x_1 x_2^2 \\
+&= -4x_1^2 + (10 - 6 - 4)x_1 x_2 + (2 - 6)x_2^2 + 2x_1^2 x_2 + 2x_1 x_2^2 \\
+&= -4x_1^2 - 4x_2^2 + 2x_1^2 x_2 + 2x_1 x_2^2
+\end{align*}
+%
+Thanks to our carefully computed $P$ matrix, the cross-terms ($x_1 x_2$) perfectly cancelled out! We can elegantly factor this result to analyze its sign:
+%
+\begin{align*}
+\dot{V}(x) &= -2x_1^2 (2 - x_2) - 2x_2^2 (2 - x_1)
+\end{align*}
+%
+For $V(x)$ to be a valid Lyapunov function, we need $\dot{V}(x) < 0$ for all $x \neq 0$. 
+Looking at the factored expression, $\dot{V}(x)$ is strictly negative as long as $(2 - x_2) > 0$ and $(2 - x_1) > 0$. 
+Therefore, $\dot{V}(x)$ is strictly locally negative definite inside the region where $x_1 < 2$ and $x_2 < 2$.
+
+\textbf{Conclusion \& Region of Attraction:}
+This proves local asymptotic stability! It clearly demonstrates the power of the LTI Lyapunov equation: without solving for the "skewed" non-diagonal $P$ matrix, we would have been stuck with the inconclusive naive guess. Furthermore, any level set of $V(x) = c$ that fits entirely inside the domain $\{x \in \mathbb{R}^2 \mid x_1 < 2 \text{ and } x_2 < 2\}$ forms a guaranteed trapping region (Region of Attraction) for the non-linear system.
 
 \end{document}
