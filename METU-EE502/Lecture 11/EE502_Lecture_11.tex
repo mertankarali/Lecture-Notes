@@ -326,14 +326,14 @@ Notice that the eigenvalues of $A_{22}$ govern the unobservable modes of the sys
 \begin{exmp}
 \textbf{Problem:} Consider a sparse $3 \times 3$ system that is already in the standard unobservable form:
 \begin{align*}
-    \dot{x} &= \begin{bmatrix} -1 & 0 & 0 \\ 1 & -2 & 1 \\ 0 & 0 & -3 \end{bmatrix} x \quad , \quad y = \begin{bmatrix} 1 & 0 & 0 \end{bmatrix} x
+    \dot{x} &= \begin{bmatrix} -1 & 0 & 0 \\ 1 & -2 & 0 \\ 1 & 0 & -3 \end{bmatrix} x \quad , \quad y = \begin{bmatrix} 1 & 0 & 0 \end{bmatrix} x
 \end{align*}
 (a) Determine the unobservable subspace.\\
 (b) Identify the unobservable mode(s).\\
 (c) Demonstrate that an initial condition inside the unobservable subspace yields identically zero output despite internal state evolution.
 
 \textbf{Solution:} \\
-\textbf{(a) Unobservable Subspace:} By partitioning, we have the observable part $A_{11} = -1$ and the unobservable block $A_{22} = \begin{bmatrix} -2 & 1 \\ 0 & -3 \end{bmatrix}$. The observability matrix is:
+\textbf{(a) Unobservable Subspace:} By partitioning, we have the observable part $A_{11} = -1$, the coupling block $A_{21} = \begin{bmatrix} 1 \\ 1 \end{bmatrix}$, and the unobservable block $A_{22} = \begin{bmatrix} -2 & 0 \\ 0 & -3 \end{bmatrix}$. The observability matrix is:
 \begin{align*}
     \mathbf{O} = \begin{bmatrix} C \\ C A \\ C A^2 \end{bmatrix} = \begin{bmatrix} 1 & 0 & 0 \\ -1 & 0 & 0 \\ 1 & 0 & 0 \end{bmatrix}
 \end{align*}
@@ -342,15 +342,22 @@ We can clearly see $\mathrm{rank}(\mathbf{O}) = 1 < 3$. The unobservable subspac
     \bar{\mathcal{O}} = \mathcal{N}[\mathbf{O}] = \mathrm{span}\left\{ \begin{bmatrix} 0 \\ 1 \\ 0 \end{bmatrix} , \begin{bmatrix} 0 \\ 0 \\ 1 \end{bmatrix} \right\}
 \end{align*}
 
-\textbf{(b) Unobservable Modes:} The unobservable block $A_{22}$ has eigenvalues $\lambda_2 = -2$ and $\lambda_3 = -3$. The corresponding right eigenvectors for the full matrix $A$ are $v_2 = \begin{bmatrix} 0 & 1 & 0 \end{bmatrix}^T$ and $v_3 = \begin{bmatrix} 0 & 1 & -1 \end{bmatrix}^T$. Because $v_2, v_3 \in \mathcal{N}[\mathbf{O}]$, we get $C v_2 = 0$ and $C v_3 = 0$. The modal responses $e^{-2t}$ and $e^{-3t}$ are completely unobservable. 
+\textbf{(b) Unobservable Modes:} The unobservable block $A_{22}$ is diagonal and has eigenvalues $\lambda_2 = -2$ and $\lambda_3 = -3$. The corresponding right eigenvectors for the full matrix $A$ are simply $v_2 = \begin{bmatrix} 0 & 1 & 0 \end{bmatrix}^T$ and $v_3 = \begin{bmatrix} 0 & 0 & 1 \end{bmatrix}^T$. Because $v_2, v_3 \in \mathcal{N}[\mathbf{O}]$, we get $C v_2 = 0$ and $C v_3 = 0$. The modal responses $e^{-2t}$ and $e^{-3t}$ are completely unobservable. 
 
-\textbf{(c) Zero-Output Demonstration:} If we start the system with an initial condition strictly in the unobservable subspace, say $x(0) = \begin{bmatrix} 0 \\ 0 \\ 1 \end{bmatrix}$ (which can be formed by $v_2 - v_3$), the internal state evolution is:
+\textbf{(c) Zero-Output Demonstration:} If we start the system with an initial condition strictly in the unobservable subspace, say $x(0) = \begin{bmatrix} 0 \\ 1 \\ 1 \end{bmatrix}$, we can calculate the state trajectory $x(t)$ without needing to compute the full matrix exponential $e^{At}$. 
+
+Since the first equation is $\dot{x}_1(t) = -x_1(t)$ and we start with $x_1(0) = 0$, we know $x_1(t) = 0$ for all $t \ge 0$. Substituting $x_1(t) = 0$ into the remaining rows completely decouples the ODEs:
 \begin{align*}
-    x(t) = e^{At} x(0) = e^{At} (v_2 - v_3) = e^{-2t} v_2 - e^{-3t} v_3 = \begin{bmatrix} 0 \\ e^{-2t} - e^{-3t} \\ e^{-3t} \end{bmatrix}
+    \dot{x}_2(t) &= 0 - 2x_2(t) \quad \Rightarrow \quad x_2(t) = e^{-2t} x_2(0) = e^{-2t} \\
+    \dot{x}_3(t) &= 0 - 3x_3(t) \quad \Rightarrow \quad x_3(t) = e^{-3t} x_3(0) = e^{-3t}
+\end{align*}
+The internal state evolution is therefore:
+\begin{align*}
+    x(t) = \begin{bmatrix} 0 \\ e^{-2t} \\ e^{-3t} \end{bmatrix}
 \end{align*}
 However, the measured zero-input output remains identically zero:
 \begin{align*}
-    y(t) = C x(t) = \begin{bmatrix} 1 & 0 & 0 \end{bmatrix} \begin{bmatrix} 0 \\ e^{-2t} - e^{-3t} \\ e^{-3t} \end{bmatrix} = 0 \quad \text{for all } t \ge 0
+    y(t) = C x(t) = \begin{bmatrix} 1 & 0 & 0 \end{bmatrix} \begin{bmatrix} 0 \\ e^{-2t} \\ e^{-3t} \end{bmatrix} = 0 \quad \text{for all } t \ge 0
 \end{align*}
 The dynamic behavior of these hidden modal states cannot be seen from the output.
 \end{exmp}
