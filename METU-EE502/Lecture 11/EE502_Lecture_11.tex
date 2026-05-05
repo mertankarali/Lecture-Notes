@@ -114,74 +114,53 @@ Note that for linear dynamical systems, the observability of a state and
 system is independent of $u(t)$; in that respect, we will 
 only analyze the zero-input response of the system in our derivations.
 
-\textbf{Theorem:} $x_u \in \bar{\mathcal{O}}_T \, \iff \, 
-x_u \in \bar{\mathcal{O}}_{\tau} , \, \forall \tau > 0 \, \iff \, 
-x_u \in \mathcal{N}[ \mathbf{O} ]$, where 
-%
-\begin{align*}
-  \mathbf{O} = \left[ 
-  \begin{array}{c}
-    C 
-    \\ \hdashline
-    C A 
-    \\ \hdashline
-    C A^2
-    \\ \hdashline
-    \vdots
-    \\ \hdashline
-    C A^{n-1}
-  \end{array}
-  \right]
-\end{align*}
-%
-Let's first show that $x_u \in \mathcal{N}[ \mathbf{O} ] \, \iff \, x_u \in \bar{\mathcal{O}}_{\tau} , \, \forall \tau > 0$. Let $x_u \in \mathcal{N}[ \mathbf{O} ]$, then  
-%
-\begin{align*}
-  \mathbf{O} x_u &= 0
-  \, 
-    \rightarrow
-  \,
-  \begin{array}{c}
-    C x_u = 0
-    \\ \hdashline
-    C A x_u = 0
-    \\ \hdashline
-    C A^2 x_u = 0
-    \\ \hdashline
-    \vdots
-    \\ \hdashline
-    C A^{n-1} x_u = 0
-  \end{array}
-\end{align*}
-%
-Moreover, by the Cayley-Hamilton theorem, we can also conclude that $C A^{l} x_u = 0, \ \forall l \in \mathbb{Z}^{\geq 0}$. Now let's analyze the zero-input response of the system with $x(0) = x_u$:
-%
-\begin{align*}
-  x(\tau) = C e^{A \tau} x_u = 0 \, \Rightarrow \, x_u \in \bar{\mathcal{O}}_{\tau}
-\end{align*}
-%
-and indeed it is true for all $\tau \in \mathbb{R}$. 
+\textbf{Theorem:} The following statements regarding an initial state $x_u$ are equivalent:
+\begin{enumerate}
+    \item $x_u \in \bar{\mathcal{O}}_T$ (Unobservable over $t \in [0, T)$)
+    \item $x_u \in \bar{\mathcal{O}}_{\tau}$ for all $\tau > 0$
+    \item $x_u \in \mathcal{N}[ \mathbf{O} ]$, where the observability matrix is
+    \begin{align*}
+      \mathbf{O} = \begin{bmatrix}
+        C \\ C A \\ C A^2 \\ \vdots \\ C A^{n-1}
+      \end{bmatrix}
+    \end{align*}
+\end{enumerate}
 
-Now let's show that $x_u \in \bar{\mathcal{O}}_T \, \Rightarrow \, 
-x_u \in \mathcal{N}[ \mathbf{O} ]$. If $x_u \in \bar{\mathcal{O}}_T$, then the zero-input output response is
+\textbf{Proof:} \\
+\textit{Step 1: (3) $\implies$ (2).}\\ 
+Let $x_u \in \mathcal{N}[ \mathbf{O} ]$, then  
 %
 \begin{align*}
-  y_{zi}(t) = C e^{A t} x_u = 0 , \, \forall t \in [0,T] \, 
-  \Rightarrow \, \begin{array}{c} 
-  y_{zi}(0) = 0 \, \Rightarrow \, C x_u = 0
-  \\
-  \left[\frac{d}{dt}y_{zi}(t) \right]_{t=0} = 0 \, \Rightarrow \, C A x_u = 0
-  \\
-  \left[\frac{d^2}{dt^2}y_{zi}(t) \right]_{t=0} = 0 \, \Rightarrow \, C A^2 x_u = 0
-  \\
-  \vdots
-  \\
-  \left[\frac{d^{n-1}}{dt^{n-1}}y_{zi}(t) \right]_{t=0} = 0 \, \Rightarrow \, C A^{n-1} x_u = 0
-  \end{array}
-  \, \Rightarrow \, \mathbf{O} x_u = 0 
-  \, \iff \, x_u \in \mathcal{N}[ \mathbf{O} ]
+  \mathbf{O} x_u = 0 \implies C x_u = 0, \ C A x_u = 0, \ \dots \ , C A^{n-1} x_u = 0
 \end{align*}
 %
+By the Cayley-Hamilton theorem, we can conclude that $C A^{l} x_u = 0$ for all integers $l \ge 0$. 
+Evaluating the zero-input output response of the system with $x(0) = x_u$:
+%
+\begin{align*}
+  y_{zi}(\tau) = C e^{A \tau} x_u = \sum_{l=0}^{\infty} \frac{\tau^l}{l!} C A^l x_u = 0
+\end{align*}
+%
+This holds for all $\tau > 0$, implying $x_u \in \bar{\mathcal{O}}_{\tau}$.
+
+\textit{Step 2: (2) $\implies$ (1).}\\ 
+This is trivially true. If the state is unobservable for all $\tau > 0$, it is certainly unobservable for any specific $T > 0$.
+
+\textit{Step 3: (1) $\implies$ (3).}\\ 
+If $x_u \in \bar{\mathcal{O}}_T$, then the zero-input output response is identically zero over the interval:
+%
+\begin{align*}
+  y_{zi}(t) = C e^{A t} x_u = 0 , \quad \forall t \in [0,T]
+\end{align*}
+Taking successive derivatives with respect to $t$ and evaluating at $t=0$ yields:
+\begin{align*} 
+  y_{zi}(0) &= 0 \implies C x_u = 0 \\
+  \left[\frac{d}{dt}y_{zi}(t) \right]_{t=0} &= 0 \implies C A x_u = 0 \\
+  &\vdots \\
+  \left[\frac{d^{n-1}}{dt^{n-1}}y_{zi}(t) \right]_{t=0} &= 0 \implies C A^{n-1} x_u = 0
+\end{align*}
+This means $\mathbf{O} x_u = 0$, or equivalently, $x_u \in \mathcal{N}[ \mathbf{O} ]$.
+
 Similar to reachability, we show that for CT-LTI systems,
 observability and the unobservable (and observable) subspace
 are independent of time. 
@@ -207,46 +186,44 @@ This tells us that the initial condition of the first state variable, $x_1(0)$, 
 
 \subsection{CT Observability Grammian}
 
-For a CT-LTI system, the observability Grammian is defined as
+For a CT-LTI system, the observability Grammian over the interval $[0, t]$ is defined as
 %
 \begin{align*}
-    \textbf{Q}(t) = \int\limits_{0}^{t} e^{A^T (t - \tau)} C^T C e^{A (t - \tau)}  d \tau 
+    \mathbf{Q}(t) = \int\limits_{0}^{t} e^{A^T \tau} C^T C e^{A \tau} d\tau 
 \end{align*}
 %
-\textbf{Theorem:} $\mathcal{N}[ \textbf{Q}(t) ] = \mathcal{N}[ \mathbf{O} ] \ \forall t > 0$. 
+\textbf{Theorem:} $\mathcal{N}[ \mathbf{Q}(t) ] = \mathcal{N}[ \mathbf{O} ] \ \forall t > 0$. 
 
-\textbf{Proof:} Let's first show that $\mathcal{N}[ \mathbf{O} ] \subset \mathcal{N}[ \textbf{Q}(t) ] \ \forall t > 0$. 
-If $x_u \in \mathcal{N}[ \mathbf{O} ]$, then we know that $C A^{l} x_u = 0, \ \forall l \in \mathbb{Z}^{\geq 0}$. Let's analyze 
-if $x_u$ is in the null-space of $\textbf{Q}(t)$:
+\textbf{Proof:} \\
+\textit{Part 1: Show $\mathcal{N}[ \mathbf{O} ] \subset \mathcal{N}[ \mathbf{Q}(t) ]$ for all $t > 0$.}\\ 
+If $x_u \in \mathcal{N}[ \mathbf{O} ]$, then we know from our previous theorem that $C e^{A \tau} x_u = 0$ for all $\tau \ge 0$. 
+Let's analyze if $x_u$ is in the null-space of $\mathbf{Q}(t)$:
 %
 \begin{align*}
-    \textbf{Q}(t) x_u = \int\limits_{0}^{t} e^{A^T (t - \tau)} C^T C e^{A (t - \tau)} x_u d \tau
-    = 0 \, \Rightarrow \, x_u \in \mathcal{N}[ \textbf{Q}(t) ] \ \forall t > 0
+    \mathbf{Q}(t) x_u = \int\limits_{0}^{t} e^{A^T \tau} C^T \underbrace{(C e^{A \tau} x_u)}_{0} d \tau
+    = 0 \implies x_u \in \mathcal{N}[ \mathbf{Q}(t) ]
 \end{align*}
 %
-Now let's show that $\mathcal{N}[ \textbf{Q}(t) ] \subset \mathcal{N}[ \mathbf{O} ], \, \forall t > 0$.
-Let $x_u \in \mathcal{N}[ \textbf{Q}(t) ]$, then
+
+\textit{Part 2: Show $\mathcal{N}[ \mathbf{Q}(t) ] \subset \mathcal{N}[ \mathbf{O} ]$ for all $t > 0$.}\\
+Let $x_u \in \mathcal{N}[ \mathbf{Q}(t) ]$, which implies $\mathbf{Q}(t) x_u = 0$. Pre-multiplying by $x_u^T$ gives:
 \begin{align*}
-    \textbf{Q}(t) x_u = 0 \, \Rightarrow \, x_u^T \textbf{Q}(t) x_u = 0 \, \iff \, \int\limits_{0}^{t} x_u^T e^{A^T (t - \tau)} C^T C e^{A (t - \tau)} x_u d \tau
-    = 0 \, \iff \, C e^{A (t - \tau)} x_u = 0 \, \forall \tau \in [0 , t]
+    x_u^T \mathbf{Q}(t) x_u = 0 \iff \int\limits_{0}^{t} x_u^T e^{A^T \tau} C^T C e^{A \tau} x_u d \tau = \int\limits_{0}^{t} \| C e^{A \tau} x_u \|_2^2 d \tau = 0
 \end{align*}
 %
-Then we know that 
+Since the integrand is the squared Euclidean norm (which is strictly non-negative) and is continuous, the integral can only evaluate to zero if the integrand is identically zero:
 %
 \begin{align*}
-  [ C e^{A \eta} x_u]_{\eta = 0} = 0 \, &\Rightarrow \, C x_u = 0
-  \\
-  \frac{d}{d\eta}[ C e^{A \eta} x_u ]_{\eta = 0} = 0 \, &\rightarrow \, C A x_u = 0
-  \\
-  \frac{d^2}{d\eta^2}[ C e^{A \eta} x_u ]_{\eta = 0} = 0 \, &\Rightarrow \, C A^2 x_u = 0
-  \\
-  &\vdots
-    \\
-    \frac{d^{n-1}}{d\eta^{n-1}}[ C e^{A \eta} x_u ]_{\eta = 0} = 0 \, &\Rightarrow \, C A^{n-1} x_u = 0
-    \\
-    &\Rightarrow \, \mathbf{O} x_u = 0 \, \Rightarrow \, x_u \in \mathcal{N}[ \mathbf{O} ]
-    \, \Rightarrow \, \mathcal{N}[ \textbf{Q}(t) ] \subset \mathcal{N}[ \mathbf{O} ] \, \forall t > 0
+  C e^{A \tau} x_u = 0 \quad \forall \tau \in [0 , t]
 \end{align*}
+Taking successive derivatives with respect to $\tau$ and evaluating at $\tau = 0$:
+\begin{align*}
+  [ C e^{A \tau} x_u]_{\tau = 0} &= 0 \implies C x_u = 0 \\
+  \left[\frac{d}{d\tau}( C e^{A \tau} x_u )\right]_{\tau = 0} &= 0 \implies C A x_u = 0 \\
+  &\vdots \\
+  \left[\frac{d^{n-1}}{d\tau^{n-1}}( C e^{A \tau} x_u )\right]_{\tau = 0} &= 0 \implies C A^{n-1} x_u = 0
+\end{align*}
+Thus, $\mathbf{O} x_u = 0 \implies x_u \in \mathcal{N}[ \mathbf{O} ]$. We conclude $\mathcal{N}[ \mathbf{Q}(t) ] \subset \mathcal{N}[ \mathbf{O} ]$.
 
 \begin{exmp}
 Show that if $\dot{x} = A x$ is asymptotically stable, then the observability Grammian at $t \to \infty$, $Q := \mathbf{Q}_{\infty}$,
@@ -270,55 +247,59 @@ derive the following results, theorems, and claims by referring to the dual resu
 
 \textbf{Result 1:} The unobservable sub-space, $\mathcal{N} [\mathbf{O}] $ is $A$ invariant, i.e. $x\in \mathcal{N} [\mathbf{O}]  \ \Rightarrow \ A x \in \mathcal{N} [\mathbf{O}] $. 
 
-\textbf{Result 2:} $(A,C)$ pair is unobservable $\iff$ $C v = 0$ for some right eigenvector of $A$, i.e. $A v = \lambda v$ $\iff$
+\textbf{Result 2 (Modal Test for Unobservability):} The pair $(A,C)$ is \textit{unobservable} $\iff$ there exists a right eigenvector $v \neq 0$ of $A$ (where $A v = \lambda v$) such that $C v = 0$. In this case, $\lambda$ is called an unobservable mode.
+
+\textbf{Result 3 (PBH Rank Test for Observability):} The pair $(A,C)$ is \textit{fully observable} $\iff$ the Popov-Belevitch-Hautus (PBH) observability matrix has full column rank for all complex numbers:
 \begin{align*}
 \mathrm{rank} \left[ \begin{array}{c} \lambda I - A \\ \hline C \end{array} \right] = n , \ \forall \lambda \in \mathbb{C}
 \end{align*}
 
-\textbf{Result 3:} Observability is invariant under state/similarity transformation. 
+\textbf{Result 4:} Observability is invariant under state/similarity transformation. 
 
 \subsection{Standard Form of Unobservable Systems}
 
-Let $\dot{x} = A x + B u \ , \ y = C x + D u$ be an unobservable system; then it can be convenient and practical to choose coordinates (via similarity transformation)
-to highlight unobservable and observable ``spaces''. Let 
+Let $\dot{x} = A x + B u \ , \ y = C x + D u$ be a system that is not fully observable; then it is convenient and practical to choose coordinates (via similarity transformation) to highlight the unobservable and observable ``spaces''. Let 
 %
 \begin{align*}
    \mathrm{dim}(\bar{\mathcal{O}}) &= \bar{o} 
    \ \& \
-   T = \left[ \begin{array}{c|c} T_2 & T_{\bar{o}}  \end{array} \right] \ \mathrm{where} \ T_{\bar{o}} \in \mathbb{R}^{n \times \bar{o}} \ , 
-   T_2 \in \mathbb{R}^{n \times (n-\bar{o})} \ , 
+   T = \left[ \begin{array}{c|c} T_1 & T_2  \end{array} \right] \ \mathrm{where} \ T_2 \in \mathbb{R}^{n \times \bar{o}} \ , 
+   T_1 \in \mathbb{R}^{n \times (n-\bar{o})} \ , 
    \\
-   T^{-1} A T &= \bar{A} \ , \ C T = \bar{C}
+   \bar{A} &= T^{-1} A T \ , \ \bar{C} = C T
 \end{align*}
 %
-Let's choose a $T_{\bar{o}}$ such that $\mathrm{Ra}(T_{\bar{o}}) = \mathcal{N}(\mathbf{O}) = \bar{\mathcal{O}}$, in other words columns of $T_{\bar{o}}$
-span the null-space of the observability matrix (i.e. non-observable subspace).
-Similarly, let's choose $T_2$ such that columns of $T$ are linearly independent. Let's analyze the similarity transformation. 
+Let's choose $T_2$ such that $\mathrm{Ra}(T_2) = \mathcal{N}(\mathbf{O}) = \bar{\mathcal{O}}$. In other words, the columns of $T_2$
+span the null-space of the observability matrix (the unobservable subspace).
+Similarly, let's choose $T_1$ such that the columns of $T$ are linearly independent. Let's analyze the similarity transformation on $A$:
 %
 \begin{align*}
-    A T &=  A \left[ \begin{array}{c|c} T_2 & T_{\bar{o}} \end{array} \right] = T \bar{A} = \left[ \begin{array}{c|c} T_2 & T_{\bar{o}} \end{array} \right]
+    A T &=  A \left[ \begin{array}{c|c} T_1 & T_2 \end{array} \right] = T \bar{A} = \left[ \begin{array}{c|c} T_1 & T_2 \end{array} \right]
     \left[ \begin{array}{c|c} A_{11} & A_{12} \\ \hline A_{21} & A_{22}  \end{array} \right]
     \\
-    A T_{\bar{o}} &= T_2 A_{12} + T_{\bar{o}} A_{22}
+    \implies A T_2 &= T_1 A_{12} + T_2 A_{22}
 \end{align*}
 %
-Note that since the unobservable sub-space is $A$ invariant, $A T_{\bar{o}}$ must remain in $\mathrm{Ra}(T_{\bar{o}}) = \mathcal{N}(\mathbf{O}) = \bar{\mathcal{O}}$. 
-Since the columns of $T_2$ are linearly independent from $T_{\bar{o}}$, for $T_2 A_{12} + T_{\bar{o}} A_{22}$ to remain in $\mathrm{Ra}(T_{\bar{o}})$, we must have $A_{12} = \mathbf{0}$.
-Now let's analyze the effect of transformation on the output matrix.
+Note that since the unobservable sub-space is $A$-invariant, $A T_2$ must remain in $\mathrm{Ra}(T_2) = \mathcal{N}(\mathbf{O}) = \bar{\mathcal{O}}$. 
+Because the columns of $T_1$ are linearly independent from $T_2$, for $T_1 A_{12} + T_2 A_{22}$ to remain entirely in $\mathrm{Ra}(T_2)$, the component along $T_1$ must be zero. Therefore, we must have $A_{12} = \mathbf{0}$.
+
+Now let's analyze the effect of the transformation on the output matrix:
 %
 \begin{align*}
-    \bar{C} &= C T = C \left[ \begin{array}{c|c} T_2 & T_{\bar{o}} \end{array} 
-    \right] = \left[ \begin{array}{c|c} C_1 & C_2  \end{array} \right]
-    \\
-    C_2 &= C T_{\bar{o}} = 0
+    \bar{C} &= C T = C \left[ \begin{array}{c|c} T_1 & T_2 \end{array} \right] = \left[ \begin{array}{c|c} C T_1 & C T_2  \end{array} \right] = \left[ \begin{array}{c|c} C_1 & C_2  \end{array} \right]
 \end{align*}
 %
-thus a standard unobservable form takes the form
+Because $T_2$ spans the null-space of the observability matrix $\mathbf{O}$, and $C$ is simply the first block-row of $\mathbf{O}$, any vector in $\mathrm{Ra}(T_2)$ is trivially in the null-space of $C$. Thus:
+\begin{align*}
+    C_2 &= C T_2 = \mathbf{0}
+\end{align*}
+%
+Therefore, the standard unobservable form takes the structure:
 %
 \begin{align*}
-\dot{\bar{x}} &= \left[ \begin{array}{c|c} A_{11} & 0 \\ \hline A_{21} & A_{22}  \end{array} \right] \bar{x} + \left[ \begin{array}{c} B_1 \\ B_2 \end{array} \right] u
+\dot{\bar{x}} &= \left[ \begin{array}{c|c} A_{11} & \mathbf{0} \\ \hline A_{21} & A_{22}  \end{array} \right] \bar{x} + \left[ \begin{array}{c} B_1 \\ B_2 \end{array} \right] u
 \\
-y &= \left[ \begin{array}{c|c} C_1 & 0 \end{array} \right] \bar{x} + D u
+y &= \left[ \begin{array}{c|c} C_1 & \mathbf{0} \end{array} \right] \bar{x} + D u
 \end{align*}
 %
 Notice that the eigenvalues of $A_{22}$ govern the unobservable modes of the system. These modes are completely ``hidden'' from the output $y(t)$, meaning their dynamic behavior does not affect the measurements at all. We will formalize this decomposition and structure further when we cover the Kalman Decomposition in an upcoming lecture.
@@ -381,31 +362,27 @@ The set, $\bar{\mathcal{O}}_m$, of all $m$-step unobservable states forms a vect
 Similar to the CT-LTI case, we will only analyze the zero-input response of the system in our 
 observability-related derivations. 
 
-If $x_u \in \bar{\mathcal{O}}_m$, then 
+If $x_u \in \bar{\mathcal{O}}_m$, then the zero-input response is exactly zero for the first $m$ steps:
 %
 \begin{align*}
-y[k] = C A^k x_u = 0 \ , \ \forall k \in [0,m)
-\, \Rightarrow \, \begin{array}{c} C x_u = 0 
-\\
-C A x_u = 0
-\\
-\vdots
-\\
-C A^{m-1} x_u = 0
-\end{array}
-\, \Rightarrow \, 
-\left[ \begin{array}{c} C 
-\\
-C A 
-\\
-\vdots
-\\
-C A^{m-1} 
-\end{array} \right] x_u = \mathbf{O}_m x_u = 0
+    y[k] = C A^k x_u = 0 \ , \ \forall k \in [0,m)
+\end{align*}
+%
+Expanding this condition step-by-step yields:
+%
+\begin{align*}
+    \begin{array}{c} 
+        k = 0 \implies C x_u = 0 \\
+        k = 1 \implies C A x_u = 0 \\
+        \vdots \\
+        k = m-1 \implies C A^{m-1} x_u = 0
+    \end{array}
+    \quad \Rightarrow \quad
+    \underbrace{\begin{bmatrix} C \\ C A \\ \vdots \\ C A^{m-1} \end{bmatrix}}_{\mathbf{O}_m} x_u = 0
 \end{align*}
 %
 This implies that $x_u$ is $m$-step unobservable if and only if
-$x_u \in \mathcal{N}[ \mathbf{O}_m ]$
+$x_u \in \mathcal{N}[ \mathbf{O}_m ]$.
 
 \textbf{Theorem:} $\mathcal{N}[ \mathbf{O}_i ] = \mathcal{N}[ \mathbf{O}_n ] \subset \mathcal{N}[ \mathbf{O}_m ]$ for $m < n < i$.
 
@@ -439,15 +416,15 @@ if and only if, $(A,C)$ is fully observable.
 
 \vspace{6pt}
 
-\textbf{Corollary:} Total observability theorem
+\textbf{Corollary:} Total Observability Theorem \\
+The following statements are mathematically equivalent for a discrete-time system:
 \begin{itemize}
- \item System is fully observable $\iff$ $(A,C)$ pair is observable $\iff$
- \item $\mathrm{rank}[\mathbf{O}] = n$, where $\mathbf{O} = \mathbf{O}_n$ $\iff$ 
- \item $C v \neq 0 \, , \, \forall v \in \lbrace v | v \neq 0 \, , \, A v = \lambda v , \, \lambda \in \mathbb{C} \rbrace$ $\iff$ 
- \item $\mathrm{rank} \left[ \begin{array}{c} \lambda I - A \\ \hline C \end{array} \right] = n , \ \forall \lambda \in \mathbb{C}$
+ \item The system is fully observable.
+ \item The pair $(A,C)$ is observable.
+ \item The observability matrix has full rank: $\mathrm{rank}[\mathbf{O}_n] = n$.
+ \item \textbf{Modal Test:} $C v \neq 0$ for all right eigenvectors $v$ of $A$ (i.e., $\forall v \neq 0$ such that $A v = \lambda v$).
+ \item \textbf{PBH Test:} $\mathrm{rank} \left[ \begin{array}{c} \lambda I - A \\ \hline C \end{array} \right] = n , \ \forall \lambda \in \mathbb{C}$.
 \end{itemize}
-
-
 
 % **** This ENDS THE EXAMPLES. DON'T DELETE THE FOLLOWING LINE:
 \end{document}
