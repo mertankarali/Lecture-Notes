@@ -1,22 +1,16 @@
 % 
+\documentclass[twoside, 11pt, a4paper]{article}
 
+\usepackage[a4paper, top=2.5cm, bottom=2.5cm, left=2cm, right=2cm]{geometry}
+\usepackage[english]{babel}
 
-\documentclass[twoside]{article}
-\setlength{\oddsidemargin}{0.25 in}
-\setlength{\evensidemargin}{-0.25 in}
-\setlength{\topmargin}{-0.6 in}
-\setlength{\textwidth}{6.5 in}
-\setlength{\textheight}{8.5 in}
-\setlength{\headsep}{0.75 in}
 \setlength{\parindent}{0 in}
 \setlength{\parskip}{0.1 in}
 
 %
 % ADD PACKAGES here:
 %
-
-\usepackage{amsmath,amsfonts,graphicx,arydshln}
-
+\usepackage{amsmath,amsfonts,graphicx}
 
 \newcounter{lecnum}
 \renewcommand{\thepage}{\thelecnum-\arabic{page}}
@@ -28,7 +22,7 @@
 %
 % The following macro is used to generate the header.
 %
-\newcommand{\lecture}[4]{
+\newcommand{\lecture}[2]{
    \pagestyle{myheadings}
    \thispagestyle{plain}
    \newpage
@@ -89,90 +83,87 @@
 
 \section{State Feedback}
 
-The state-feedback based control-policies for LTI systems start with the assumption that 
-we have ``access'' to all of the states of the systems either via direct measurement 
-or through some observer/estimator/tracker. In that context a family of state-feedback 
-controllers for CT- and DT-LTI systems can be constructed as
+\textbf{Intuition \& Insight:} By feeding back the state variables into the input, we are fundamentally altering the system's internal vector field. The primary goal of state feedback is to reshape the transient response of the system (e.g., settling time, overshoot, damping) and ensure asymptotic stability by strategically relocating the closed-loop poles (eigenvalues). 
+
+State-feedback-based control policies for LTI systems start with the assumption that 
+we have ``access'' to all of the states of the system, either via direct measurement 
+or through some observer/estimator/tracker. In that context, a family of state-feedback 
+controllers for CT and DT LTI systems can be constructed as:
 %
 \begin{align*}
- u(t) = \gamma r(t) - K x(t) \ \& \   u[k] = \gamma r[k] - K x[k]
+ u(t) = \gamma r(t) - K x(t) \quad \& \quad   u[k] = \gamma r[k] - K x[k]
 \end{align*}
 %
 where $r(t)$ can be considered as the reference signal (most of the time it is), 
-$\gamma$ is a feed-forward scaling factor, and $K$ is the state-feedback gain. 
-Now let's find a state-space representation for dynamics of the closed-loop system
-for both CT- and DT-LTI systems under state-feedback rule proposed above
+$\gamma$ is a feed-forward scaling factor, and $K$ is the state-feedback gain matrix. 
+Now let's find a state-space representation for the dynamics of the closed-loop system
+for both CT and DT LTI systems under the state-feedback rule proposed above:
 %
 \begin{align*}
-	\dot{x} &= A x + B \left( \gamma r(t) - K x(t) \right) \, \Rightarrow \, \dot{x} = \left( A - B K \right) x + \gamma B r
+	\dot{x} &= A x + B \left( \gamma r(t) - K x(t) \right) \implies \dot{x} = \left( A - B K \right) x + \gamma B r(t)
 	\\
-	x[k+1] &= A x + B \left( \gamma r[k] - K x[k] \right) \, \Rightarrow \, x[k+1] = \left( A - B K \right) x[k] + \gamma B r[k]
+	x[k+1] &= A x[k] + B \left( \gamma r[k] - K x[k] \right) \implies x[k+1] = \left( A - B K \right) x[k] + \gamma B r[k]
 \end{align*}
 %
-In both cases the closed loop system and input matrices take the following form.
+In both cases, the closed-loop system matrix and input matrix take the following form:
 %
 \begin{align*}
-	A_c = A - B K \ , \  B_c = \gamma B r
+	A_c = A - B K \ , \  B_c = \gamma B
 \end{align*}
 %
-A key question in this domain is whether we can find a $K$ such that eigenvalues of $A_c$ is located at arbitrary 
-desired locations. 
+A key theoretical question in this domain is whether we can find a gain matrix $K$ such that the eigenvalues of $A_c$ are located at \textit{arbitrary} desired locations in the complex plane (subject to complex conjugate pairing). 
 
-\textbf{Theorem: (Eigenvalue/Pole Placement)} Given $(A,B)$, $\exists K$ s.t. 
+\textbf{Theorem: (Eigenvalue/Pole Placement)} Given the pair $(A,B)$, there exists a feedback gain $K$ such that the closed-loop characteristic polynomial matches any arbitrarily chosen desired polynomial:
 %
 \begin{align*}
-	\mathrm{det}\left[ \lambda I - (A - B K ) \right] &= \lambda^n + a_{n-1}^*  \lambda^{n-1}
+	\mathrm{det}\left[ \lambda I - (A - B K ) \right] &= \lambda^n + a_{n-1}^* \lambda^{n-1}
 	+ \cdots + a_{1}^* \lambda + a_0^*
 	\\
-	\forall \mathcal{A} &= \lbrace a_0^* , \, a_1^* \, \cdots \, a_{n-1}^* \rbrace , \, a_i^* \in \mathbb{R}
+	\forall \mathcal{A}^* &= \lbrace a_0^* , \, a_1^* \, \dots \, a_{n-1}^* \rbrace \subset \mathbb{R}
 \end{align*} 
 %
 if and only if $(A,B)$ is reachable. 
 
-\textbf{Proof:} For a general complete proof, we need to show that reachability of $(A,B)$ is necessary and sufficient. 
+\textbf{Proof:} For a general complete proof, we need to show that the reachability of $(A,B)$ is both necessary and sufficient. 
 
-\textbf{Proof of necessity: } Let's assume that $(A,B)$ not reachable and $\exists (\lambda_u , w_u^T)$ pair such that
-$w_u^T A = w_u^T \lambda_u $ and $w_u^T B = 0$. Now check weather $w_u^T$ is a left eigenvector of $A_c$
+\textbf{Proof of Necessity:} Let's assume that $(A,B)$ is \textit{not} reachable. By the PBH test for reachability, there exists a left eigenvector $w_u^T \neq 0$ associated with an unreachable eigenvalue $\lambda_u$ such that
+$w_u^T A = \lambda_u w_u^T $ and $w_u^T B = 0$. 
+
+Now let's check whether $w_u^T$ remains a left eigenvector for the closed-loop matrix $A_c$:
 %
 \begin{align*}
-	w_u^T A_c &= w_u^T (A - B K ) = w_u^T A - w_u^T B K = w_u^T \lambda_u - 0 = w_u^T \lambda_u
+	w_u^T A_c &= w_u^T (A - B K ) = w_u^T A - w_u^T B K = \lambda_u w_u^T - 0 \cdot K = \lambda_u w_u^T
 	\\
 	w_u^T B_c &= w_u^T B \gamma = 0
 \end{align*} 
 %
-Here not only we showed that $\lambda_u$ could not be moved hence it is not possible to locate the poles
-arbitrary locations, we also showed that state-feedback rules do not affect reachability.
+Here, not only have we shown that the unreachable mode $\lambda_u$ cannot be moved (hence it is impossible to place the poles at arbitrary locations, proving necessity), but we have also shown that state-feedback rules do not alter the system's fundamental reachability properties.
 
-\textbf{Proof of sufficiency:} We will only show the sufficiency for a multi-input case, i.e. $B \in \mathbb{R}^{n \times 1}$, 
-however, the reader should note that a complete proof multi-input case must be analyzed. 
+\textbf{Proof of Sufficiency:} We will constructively prove sufficiency for a single-input single-output (SISO) case, i.e., $B \in \mathbb{R}^{n \times 1}$; however, the reader should note that for a complete general proof, the multi-input case must be analyzed (typically utilizing Luenberger controllable canonical forms). 
 
-Let's assume that $(A,B)$ is reachable, and we know that reachability is invariant under similarity transformations, i.e.
+Let's assume that $(A,B)$ is reachable. We know that reachability is invariant under similarity transformations. Let's apply a transformation $z = T^{-1} x$ (where $\mathrm{det}(T) \neq 0$), yielding:
 %
 \begin{align*}
-	z &= T^{-1} x \, , \, \mathrm{det}(T) \neq 0 \, \Rightarrow \, \dot{z} = \bar{A} z + \bar{B} u \\
-	\bar{A} &= T^{-1} A T \ , \ T^{-1} B 
+	\dot{z} = \bar{A} z + \bar{B} u \quad \text{where} \quad \bar{A} = T^{-1} A T \ , \ \bar{B} = T^{-1} B 
 \end{align*}
 %
-and $(\bar{A}, \bar{B})$ is reachable. Noe let's choose $T$ such that
+Since $(A,B)$ is reachable, its reachability matrix $\mathbf{R}$ is full rank. Let's intentionally choose our transformation matrix $T$ to be this reachability matrix:
 %
 \begin{align*}
 T = \mathbf{R} = \left[ \begin{array}{c|c|c|c|c} A^{n-1} B & A^{n-2} B & \cdots & A B &  B \end{array} \right]
 \end{align*}
 %
-then $\bar{B}$ can be derived as
+Then the transformed input matrix $\bar{B}$ can be isolated:
 % 
 \begin{align*}
-B = T \bar{B} = \left[ \begin{array}{c|c|c|c|c} A^{n-1} B & A^{n-2} B & \cdots & A B &  B \end{array} \right] \bar{B} 
-\, \Rightarrow \, B = \begin{bmatrix} 0 \\ 0 \\ \vdots \\ 0 \\ 1 \end{bmatrix}
+B = T \bar{B} = \mathbf{R} \bar{B} \implies \bar{B} = \mathbf{R}^{-1} B = \begin{bmatrix} 0 \\ 0 \\ \vdots \\ 0 \\ 1 \end{bmatrix}
 \end{align*}
 %
-and similarly $\bar{A}$ can be expressed as
+(Since $B$ is exactly the last column of $\mathbf{R}$, multiplying $\mathbf{R}^{-1}$ by $B$ plucks out the last canonical basis vector). Similarly, $\bar{A}$ can be expressed by analyzing $A \mathbf{R} = \mathbf{R} \bar{A}$:
 \begin{align*}
-A \mathbf{R} &= \mathbf{R} \bar{A}
-\\
 A \left[ \begin{array}{c|c|c|c|c} A^{n-1} B & A^{n-2} B & \cdots & A B &  B \end{array} \right] &= \left[ \begin{array}{c|c|c|c|c} A^{n-1} B & A^{n-2} B & \cdots & A B &  B \end{array} \right] \bar{A}
 \\
-\left[ \begin{array}{c|c|c|c|c} A^{n} B & A^{n-1} B & \cdots & A B &  B \end{array} \right] &= \left[ \begin{array}{c|c|c|c|c} A^{n-1} B & A^{n-2} B & \cdots & A B &  B \end{array} \right] \left[ \begin{array}{c|c|c|c|c|c} 
+\left[ \begin{array}{c|c|c|c|c} A^{n} B & A^{n-1} B & \cdots & A B &  B \end{array} \right] &= \mathbf{R} \left[ \begin{array}{c|c|c|c|c|c} 
 \bar{a}_{11} & 1 & 0 & 0 & \cdots & 0 \\
 \bar{a}_{12} & 0 & 1 &  0 & \cdots & 0 \\
 \vdots & \vdots & \vdots & \ddots &  & \vdots \\
@@ -183,17 +174,16 @@ A \left[ \begin{array}{c|c|c|c|c} A^{n-1} B & A^{n-2} B & \cdots & A B &  B \end
 \right] 
 \end{align*}
 %
-We can find $a_{1i}$'s using Cayley-Hamilton theorem
+The first column coefficients $\bar{a}_{1i}$ are found by expressing $A^n B$ as a linear combination of the lower powers using the Cayley-Hamilton theorem:
 %
 \begin{align*}
-A^{n} B &= \bar{a}_{11} A^{n-1} B + \bar{a}_{12} A^{n-2} B + \cdots + \bar{a}_{1(n-1)} A B + \bar{a}_{1(n)} B
-\\
-A^{n} &= - \left( a_{n-1} A^{n-1} + a_{n-1} A^{n-2} + \cdots + a_1 A + a_ I \right) \, \mathrm{where}
-\\
-\mathrm{det}[\lambda I - A] &= \lambda^n + a_{n-1}  \lambda^{n-1}
-	+ \cdots + a_{1} \lambda + a_0
+A^{n} &= - \left( a_{n-1} A^{n-1} + a_{n-2} A^{n-2} + \cdots + a_1 A + a_0 I \right) 
 \end{align*}
-then $\bar{A}$ takes the form
+where $a_i$ are the coefficients of the open-loop characteristic polynomial:
+\begin{align*}
+\mathrm{det}[\lambda I - A] &= \lambda^n + a_{n-1}  \lambda^{n-1} + \cdots + a_{1} \lambda + a_0
+\end{align*}
+Substituting this, $\bar{A}$ takes a block companion form:
 \begin{align*}
 \bar{A} &= \left[ \begin{array}{c|c|c|c|c|c} 
 -a_{n-1} & 1 & 0 & 0 & \cdots & 0 \\
@@ -206,8 +196,9 @@ then $\bar{A}$ takes the form
 \right] 
 \end{align*}
 %
-Note that this similarity transformation is in a companion form however we will transform this into (more useful) 
-reachable canonical form
+\textbf{Transformation to Reachable Canonical Form: A Graphical Intuition}
+
+Note that the transformation $T = \mathbf{R}$ yielded a specific companion form $(\bar{A}, \bar{B})$. While mathematically valid, we want to transform this into the (more useful) \textbf{reachable canonical form} $(\tilde{A}, \tilde{B})$, which cleanly exposes the characteristic polynomial coefficients entirely in the \textit{last row}:
 %
 \begin{align*}
 \tilde{A} = \left[ \begin{array}{c|c|c|c|c|c} 
@@ -222,32 +213,50 @@ reachable canonical form
 \ , \ \tilde{B} = \begin{bmatrix} 0 \\ 0 \\ \vdots \\ 0 \\ 1 \end{bmatrix}
 \end{align*}
 %
-Let's $\tilde{\mathbf{R}}$ be the reachability matrix of $(\tilde{A} , \tilde{B})$ then we know that 
-%
+To understand how we build a transformation bridge from $(A,B)$ directly to $(\tilde{A}, \tilde{B})$, we can visualize a common intermediate destination. Instead of guessing the direct transformation $T$, we route both systems through the \textbf{Intermediate Companion Form} $(\bar{A}, \bar{B})$:
+
+\vspace{0.15in}
+\begin{equation*}
+\begin{array}{ccc}
+\text{\textbf{Original System}} & & \text{\textbf{Reachable Canonical Form}} \\[1ex]
+(A, B) & \xrightarrow{\qquad \qquad T \ = \ \mathbf{R} \tilde{\mathbf{R}}^{-1} \qquad \qquad} & (\tilde{A}, \tilde{B}) \\[2ex]
+\mathbf{R} \searrow & & \swarrow \tilde{\mathbf{R}} \\[2ex]
+& \text{\textbf{Intermediate Companion Form}} & \\
+& (\bar{A}, \bar{B}) &
+\end{array}
+\end{equation*}
+\vspace{0.15in}
+
+Here is how the logic follows the diagram:
+\begin{enumerate}
+    \item We established that applying the reachability matrix $\mathbf{R}$ to the original system $(A,B)$ brings it to the intermediate form $(\bar{A}, \bar{B})$. 
+    \begin{align*}
+        \bar{A} = \mathbf{R}^{-1} A \mathbf{R} \quad \text{and} \quad \bar{B} = \mathbf{R}^{-1} B 
+    \end{align*}
+    \item Now, what happens if we take the reachable canonical form $(\tilde{A}, \tilde{B})$ and apply \textit{its own} reachability matrix $\tilde{\mathbf{R}}$ as a transformation? Because of the strictly shifting structure of canonical forms, it naturally results in the exact same intermediate companion form! 
+    \begin{align*}
+        \bar{A} = \tilde{\mathbf{R}}^{-1} \tilde{A} \tilde{\mathbf{R}} \quad \text{and} \quad \bar{B} = \tilde{\mathbf{R}}^{-1} \tilde{B} 
+    \end{align*}
+    \item By equating the two paths meeting at $(\bar{A}, \bar{B})$, we successfully bridge the gap to find the direct similarity transformation $T$:
+    \begin{align*}
+        \mathbf{R}^{-1} A \mathbf{R} = \tilde{\mathbf{R}}^{-1} \tilde{A} \tilde{\mathbf{R}} \implies \tilde{A} = (\mathbf{R} \tilde{\mathbf{R}}^{-1})^{-1} A (\mathbf{R} \tilde{\mathbf{R}}^{-1})
+    \end{align*}
+\end{enumerate}
+
+Thus, if we define the overall coordinate transformation matrix as $T_{\mathbf{R} \tilde{\mathbf{R}}^{-1}} = \mathbf{R} \tilde{\mathbf{R}}^{-1}$ (mapping the original system directly to the reachable canonical form), we obtain the new coordinates:
 %
 \begin{align*}
-	\bar{A} &= \tilde{\mathbf{R}}^{-1} A \tilde{\mathbf{R}} \ , \ \bar{B} = \tilde{\mathbf{R}}^{-1} B 
-\end{align*}
-%
-where $(\bar{A},\bar{B})$ are the matrices of the companion form derived above. Thus if we let 
-$T_{\mathbf{R} \tilde{\mathbf{R}}^{-1}} = \mathbf{R} \tilde{\mathbf{R}}^{-1}$, where $\mathbf{R}$ is the reachability matrix of the
-original representation and $\tilde{\mathbf{R}}$ is the reachability matrix of the reachable
-canonical form and adopt $T$ for similarity transformation we obtain
-%
-\begin{align*}
-	q &= \left( T_{\mathbf{R} \tilde{\mathbf{R}}^{-1}} \right)^{-1} x \, \Rightarrow \, \dot{q} = \tilde{A} q + \tilde{B} u \\
+	q &= \left( T_{\mathbf{R} \tilde{\mathbf{R}}^{-1}} \right)^{-1} x \implies \dot{q} = \tilde{A} q + \tilde{B} u \\
 	\tilde{A} &= \left( T_{\mathbf{R} \tilde{\mathbf{R}}^{-1}} \right)^{-1} \, A \, T_{\mathbf{R} \tilde{\mathbf{R}}^{-1}} \ , \ \tilde{B} = \left(  T_{\mathbf{R} \tilde{\mathbf{R}}^{-1}} \right)^{-1} B 
 \end{align*}
 %
-Now let's apply the state feedback rule in the transformed coordinates.
-%
+Now let's apply the state feedback rule in these transformed coordinates $u = \gamma r - \tilde{K} q$:
 %
 \begin{align*}
-	\dot{q} &= \tilde{A} q + \tilde{B} u \ , \ u = \alpha r - \tilde{K} q 
- \\
- \dot{q} &= ( \tilde{A} - \tilde{B} \tilde{K} ) q + \alpha \tilde{B} u 
- \\
- \\
+ \dot{q} &= ( \tilde{A} - \tilde{B} \tilde{K} ) q + \gamma \tilde{B} r 
+\end{align*}
+Because of the elegant structure of $\tilde{B}$, the product $\tilde{B} \tilde{K}$ only affects the \textit{last row} of $\tilde{A}$:
+\begin{align*}
  ( \tilde{A} - \tilde{B} \tilde{K} ) &= 
  \left[ \begin{array}{c|c|c|c|c|c} 
 0 & 1 & 0 & 0 & \cdots & 0 \\
@@ -262,102 +271,85 @@ Now let's apply the state feedback rule in the transformed coordinates.
 &=  \left[ \begin{array}{c|c|c|c|c|c} 
 0 & 1 & 0 & 0 & \cdots & 0 \\
 0 & 0 & 1 &  0 & \cdots & 0 \\
- &  &  &   &  &  
-\\ 
 \vdots & \vdots & \vdots & \ddots &  & \vdots \\
-&  &  &   &  & 
-\\ 
 0 & 0 & 0 & \cdots  & 1 & 0 \\
 0 & 0 & 0 & \cdots  & 0 & 1 \\
--a_{0}-\tilde{k}_0 & -a_{1}-\tilde{k}_1 & -a_{2}-\tilde{k}_2 & \cdots  & -a_{n-2}-\tilde{k}_{n-2} & -a_{n-1} - \tilde{k}_{n-1}
+-(a_{0}+\tilde{k}_0) & -(a_{1}+\tilde{k}_1) & -(a_{2}+\tilde{k}_2) & \cdots  & -(a_{n-2}+\tilde{k}_{n-2}) & -(a_{n-1} + \tilde{k}_{n-1})
 \end{array} \right]
-\\
-\mathrm{det}\left( \tilde{A} - \tilde{B} \tilde{K} \right) &=
-\lambda^n + ( a_{n-1} + \tilde{k}_{n-1}  \lambda^{n-1}
+\end{align*}
+%
+Reading the coefficients directly from the last row, the closed-loop characteristic equation becomes:
+\begin{align*}
+\mathrm{det}\left( \lambda I - (\tilde{A} - \tilde{B} \tilde{K}) \right) &=
+\lambda^n + ( a_{n-1} + \tilde{k}_{n-1} ) \lambda^{n-1}
 	+ \cdots + ( a_{1} + \tilde{k}_1 )  \lambda + ( a_0 + \tilde{k}_0 )
 \end{align*}
 %
-It is evident that $\exists \tilde{K}$ s.t. 
+It is now glaringly evident that to match the desired polynomial coefficients $a_i^*$, we simply choose $\tilde{k}_i$:
 %
 \begin{align*}
-	\mathrm{det}\left( \tilde{A} - \tilde{B} \tilde{K} \right) &= \lambda^n + a_{n-1}^*  \lambda^{n-1}
-	+ \cdots + a_{1}^* \lambda + a_0^*
-	\\
-	\forall \mathcal{A} &= \lbrace a_0^* , \, a_1^* \, \cdots \, a_{n-1}^* \rbrace , \, a_i^* \in \mathbb{R}
+	\tilde{k}_i = a_i^* - a_i \quad \forall i \in \{0, \dots, n-1\}
 \end{align*} 
 %
-Now we need to find the state-feedback gain and rule in the original coordinate frame
+Finally, we map this feedback gain back to the original coordinate frame:
 \begin{align*}
- u = \alpha r - \tilde{K} q = \alpha r - \tilde{K} \left( T_{\mathbf{R} \tilde{\mathbf{R}}^{-1}} \right)^{-1} x     
- \\
- \dot{x} = \left( A - B \tilde{K} \left( T_{\mathbf{R} \tilde{\mathbf{R}}^{-1}} \right)^{-1} \right) + \alpha B r \ , \ K = \tilde{K} \left( T_{\mathbf{R} \tilde{\mathbf{R}}^{-1}} \right)^{-1}
+ u &= \gamma r - \tilde{K} q = \gamma r - \tilde{K} \left( T_{\mathbf{R} \tilde{\mathbf{R}}^{-1}} \right)^{-1} x  \implies K = \tilde{K} \left( T_{\mathbf{R} \tilde{\mathbf{R}}^{-1}} \right)^{-1}
 \end{align*} 
 %
-Now let's verify that $(A - B K)$ and $( \tilde{A} - \tilde{B} \tilde{K} )$ has the same characteristic equations
-%
+Since similarity transformations preserve eigenvalues, $(A - B K)$ and $( \tilde{A} - \tilde{B} \tilde{K} )$ share the exact same characteristic polynomial. This completes the proof for the SISO case.
+
+\vspace{0.2in}
+\textbf{Key Insight - Connection to Ackermann's Formula:} 
+The derivation above provides an explicit algorithm to calculate $K$. If we substitute the algebra, this exact process simplifies gracefully into \textbf{Ackermann's Formula}, a famous direct computation method for pole placement in SISO systems:
 \begin{align*}
- \mathrm{det}( \lambda I - \left[ A - B K \right] ) &=
- \mathrm{det}\left( \lambda I - \left[ A - B \tilde{K} \left( T_{\mathbf{R} \tilde{\mathbf{R}}^{-1}} \right)^{-1} \right] \right) 
- \\
- &= \mathrm{det}\left( \lambda I - \left( T_{\mathbf{R} \tilde{\mathbf{R}}^{-1}} \right)^{-1} 
- \left[ A - B \tilde{K} \left( T_{\mathbf{R} \tilde{\mathbf{R}}^{-1}} \right)^{-1} \right] 
-T_{\mathbf{R} \tilde{\mathbf{R}}^{-1}} 
- \right) 
- \\
- &= \mathrm{det}\left( \lambda I -
- \left[ \left( T_{\mathbf{R} \tilde{\mathbf{R}}^{-1}} \right)^{-1}  A T_{\mathbf{R} \tilde{\mathbf{R}}^{-1}} - \left( T_{\mathbf{R} \tilde{\mathbf{R}}^{-1}} \right)^{-1}  B \tilde{K}  \right] 
- \right) 
- \\
- &= \mathrm{det}\left( \lambda I - \left[ \tilde{A} - \tilde{B} \tilde{K} \right] \right)
-\end{align*} 
-%
-this completes the proof for SISO case.
+    K = \begin{bmatrix} 0 & 0 & \dots & 0 & 1 \end{bmatrix} \mathcal{R}^{-1} \phi_d(A)
+\end{align*}
+where $\mathcal{R}$ is the reachability matrix and $\phi_d(A)$ is the desired closed-loop characteristic polynomial evaluated at the matrix $A$.
 
  \section{Stabilizability}
 
- \textbf{Definition:} An LTI system is called stabilizable, if 
+ \textbf{Intuition \& Insight:} Reachability is a very strong condition; it demands total authority to drive the system to \textit{any} arbitrary state. \textbf{Stabilizability} is a more practical, relaxed condition. It recognizes that if we lack control over certain parts of the state space, the system is still viable \textit{if and only if} those uncontrollable parts naturally decay to the origin on their own.
+
+ \textbf{Definition:} An LTI system is called stabilizable if 
  $\forall x_0 \in \mathbb{R}^{n}$, $\exists \, u(t)$ (or $u[k]$) such that
  $\lim_{t\to\infty} x(t) = 0$ (or $\lim_{k\to\infty} x[k] = 0$).
 
- An obvious \textbf{sufficient} condition on stabilizability for CT-LTI and DT-LTI systems is that, if $(A,B)$ is reachable then $(A,B)$ stabilizable, since
+ An obvious \textbf{sufficient} condition on stabilizability for CT-LTI and DT-LTI systems is that if $(A,B)$ is reachable, then $(A,B)$ is stabilizable, since
  in such a case $\forall x_0 \in \mathbb{R}^{n}$, $\exists \, u(t)$ or $u[k]$
- such that $x(T) = 0 \, \forall T < 0$ for CT systems, and $x[k] = 0 \, \forall  k > n$. 
+ such that $x(T) = 0 \, \forall T > 0$ for CT systems, and $x[k] = 0 \, \forall  k \geq n$ for DT systems. 
 
-Another \textbf{sufficient} (but weaker) condition on stabilizability for DT-LTI systems is that if $(A,B)$ is controllable then $(A,B)$ stabilizable, since
- in such a case $\forall x_0 \in \mathbb{R}^{n}$, $\exists \, u[k]$
- such that $x[k] = 0 \, \forall  k > n$. 
+Another \textbf{sufficient} (but weaker) condition on stabilizability for DT-LTI systems is that if $(A,B)$ is controllable (can reach the origin, even if it can't reach everywhere else), then $(A,B)$ is stabilizable. 
 
-\textbf{Theorem} The following statements are equal 
+\textbf{Theorem:} The following statements are rigorously equivalent:
 \begin{itemize}
 \item $(A,B)$ is stabilizable $\iff$
-\item if unreachable modes of $(A,B)$ are asymptotically stable $\iff$
-\item $\forall (\lambda_i , w_i)$ s.t. $w_i^T A = \lambda_i w_i^T$ $\iff$
-and $\mathrm{Re}\lbrace \lambda_i \rbrace \geq 0$ (or $|\lambda_i|\geq0$),
-$w_i \notin \mathcal{N}(B)$ $\iff$
-\item $\mathrm{rank}\left[ A - \lambda I \, | \, B \right] = n$,
-$\forall \lambda \in \mathbb{C}$ s.t. $\mathrm{Re}\lbrace \lambda_i \rbrace \geq 0$ for CT systems (or $\forall \lambda \in \mathbb{C}$ s.t. $|\lambda|  \geq 1$ for DT systems)
+\item Unreachable modes of $(A,B)$ are strictly asymptotically stable $\iff$
+\item \textbf{PBH Eigenvector Test:} $\forall (\lambda_i , w_i)$ such that $w_i^T A = \lambda_i w_i^T$
+and $\mathrm{Re}\lbrace \lambda_i \rbrace \geq 0$ (or $|\lambda_i| \geq 1$ for DT), we must have $w_i^T B \neq 0$ $\iff$
+\item \textbf{PBH Rank Test:} $\mathrm{rank}\left[ A - \lambda I \, | \, B \right] = n$,
+$\forall \lambda \in \mathbb{C}$ such that $\mathrm{Re}\lbrace \lambda \rbrace \geq 0$ for CT systems (or $\forall \lambda \in \mathbb{C}$ such that $|\lambda|  \geq 1$ for DT systems).
 \end{itemize}
 
-\textbf{Proof:} Given $(A,B)$ that is not necessarily reachable, we can transform it into the standard unreachable form
+\textbf{Proof:} Given $(A,B)$ that is not necessarily reachable, we can utilize the Kalman standard unreachable form to isolate the reachable and unreachable dynamics:
 %
 \begin{align*}
 \dot{x} = \left[ \begin{array}{c} \dot{x}_r \\ \dot{x}_{\bar{r}} \end{array} \right]  = \left[ \begin{array}{c|c} A_{r} & A_{12} \\ \hline 0 & A_{\bar{r}} \end{array} \right] \left[ \begin{array}{c} x_r \\ x_{\bar{r}} \end{array} \right]  
 + \left[ \begin{array}{c} B_r \\ 0 \end{array} \right] u
 \end{align*}
 %
-Let $\dot{x}_{\bar{r}} = A_{\bar{r}} x_{\bar{r}}$ is not asymptotically stable then obviously 
-the whole system is unstable; thus, the system is not stabilizable .
+If the unforced subsystem $\dot{x}_{\bar{r}} = A_{\bar{r}} x_{\bar{r}}$ is \textit{not} asymptotically stable, then obviously the whole system is unstable regardless of $u(t)$ because the input has no pathway to influence $x_{\bar{r}}$; thus, the system is not stabilizable.
 %
-Now let $\dot{x}_{\bar{r}} = A\bar{r} x_{\bar{r}}$ is asymptotically stable, then 
-let $u = - K_{r} x_{r}$ then the closed-loop system takes the form
+Now, assume $\dot{x}_{\bar{r}} = A_{\bar{r}} x_{\bar{r}}$ \textit{is} asymptotically stable. Let us apply a state feedback control relying only on the reachable states, $u = - K_{r} x_{r}$. The closed-loop system takes the form:
 %
 \begin{align*}
-\dot{x} = \left[ \begin{array}{c} \dot{x}_r \\ \dot{x}_{\bar{r}} \end{array} \right]  = \left[ \begin{array}{c|c} A_{r} - B_r K_r & A_{12} \\ \hline 0 & A_{\bar{r}} \end{array} \right] \left[ \begin{array}{c} x_r \\ x_{\bar{r}} \end{array} \right]  
+\dot{x} = \left[ \begin{array}{c} \dot{x}_r \\ \dot{x}_{\bar{r}} \end{array} \right]  = \underbrace{\left[ \begin{array}{c|c} A_{r} - B_r K_r & A_{12} \\ \hline 0 & A_{\bar{r}} \end{array} \right]}_{A_{cl}} \left[ \begin{array}{c} x_r \\ x_{\bar{r}} \end{array} \right]  
 \end{align*}
 %
-Since $(A_r,B_r)$ pair is reachable we can find $K$ such that eigenvalues of  $(A_{r} - B_r K_r)$ are located in the
-open-left-half of the complex plane, thus the system is stabilizable. The same logic can be adopted for DT systems.
-
+Because $A_{cl}$ is block upper-triangular, its closed-loop spectrum (eigenvalues) is simply the union of the block diagonal spectra:
+\begin{align*}
+    \sigma(A_{cl}) = \sigma(A_{r} - B_r K_r) \cup \sigma(A_{\bar{r}})
+\end{align*}
+Since the pair $(A_r,B_r)$ is fully reachable by definition, we can find a gain $K_r$ such that the eigenvalues of $(A_{r} - B_r K_r)$ are located deep in the open left-half of the complex plane. Since $\sigma(A_{\bar{r}})$ is already stable, the union $\sigma(A_{cl})$ is entirely stable. Thus, the system is stabilizable. The exact same logic applies to DT systems.
 
 % **** This ENDS THE EXAMPLES. DON'T DELETE THE FOLLOWING LINE:
 \end{document}
