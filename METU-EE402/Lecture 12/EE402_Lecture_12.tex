@@ -112,7 +112,7 @@ Depending on the values of $m$ and $r$ we have
 %
 \begin{itemize}
   \item $m = r = 1$, the system represents a SISO system 
-  \item $m > 1 \ , \  r < 1$, the system represents a MIMO system 
+  \item $m > 1 \ , \  r > 1$, the system represents a MIMO system 
   \item $m = 1 \ , \ r > 1$, the system represents a MISO system 
   \item $m > 1  \ , \ r = 1$, the system represents a SIMO system 
 \end{itemize}
@@ -196,7 +196,7 @@ If we gather these equations, we can obtain the state space form
     \\ 1 \end{array} \right] u[k]
 \\
 y[k] &= \left[ \begin{array}{ccc} (b_3 - b_0 a_3) &  (b_2 - b_0 a_2) &
-                                                   (b_1 - b_0 a_1) \end{array} \right]
+                                                   (b_1 - b_0 a_1) \end{array} \right] x[k] 
 + b_0 u[k]
 \end{align*}
 %
@@ -287,7 +287,7 @@ can obtain the state space form as
   \left[ \begin{array}{c} b_3 - b_0 a_3 \\ b_2 - b_0 a_2
     \\ b_1 - b_0 a_1 \end{array} \right] u[k]
 \\
-y[k] &= \left[ \begin{array}{ccc} 0 & 0 & 1 \end{array} \right]
+y[k] &= \left[ \begin{array}{ccc} 0 & 0 & 1 \end{array} \right] x[k]
 + b_0 u[k]
 \end{align*}
 %
