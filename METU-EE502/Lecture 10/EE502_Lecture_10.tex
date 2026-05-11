@@ -16,7 +16,8 @@
 %
 
 \usepackage{amsmath,amsfonts,graphicx}
-
+\usepackage{xcolor}
+\usepackage{tcolorbox}
 
 \newcounter{lecnum}
 \renewcommand{\thepage}{\thelecnum-\arabic{page}}
@@ -78,6 +79,10 @@
 \newenvironment{proof}{{\bf Proof:}}{\hfill\rule{2mm}{2mm}}
 \newtheorem{exmp}[theorem]{Ex}
 
+\newtcolorbox{intuition}{colback=blue!5!white,colframe=blue!75!black,title=Intuition \& Insight, arc=1mm, fonttitle=\bfseries}
+\newtcolorbox{takeaway}{colback=red!5!white,colframe=red!75!black,title=Key Takeaway, arc=1mm, fonttitle=\bfseries}
+
+
 % **** IF YOU WANT TO DEFINE ADDITIONAL MACROS FOR YOURSELF, PUT THEM HERE:
 
 \begin{document}
@@ -90,7 +95,7 @@
 
 \section{Reachability \& Controllability of DT-LTI Systems}
 
-For LTI a discrete-time state-space representation
+For a discrete-time LTI state-space representation
 %
 \begin{align*}
   x[k+1] &= A x[k] + B u[k]
@@ -99,15 +104,15 @@ For LTI a discrete-time state-space representation
 \end{align*}
 %
 \begin{itemize}
-  \item A state $x_r$ is said to be $m$-step \textbf{reachable}, if there exist
+  \item A state $x_r$ is said to be $m$-step \textcolor{blue}{\textbf{reachable}}, if there exist
   an input sequence, $u[k] , k \in \lbrace 0 , 1, \cdots m-1 \rbrace$, that transfers the state vector 
-  $x[k]$ from the origin (i.e. $x[0] = 0$) to the state $x_r$ in m 
-  number of steps, i.e. $x[m] = x_r$.
+  $x[k]$ from the origin (i.e. $x[0] = 0$) to the state $x_r$ in $m$ 
+  steps, i.e. $x[m] = x_r$.
  
-  \item A state $x_d$ is said to be $m$-step \textbf{controllable},
+  \item A state $x_d$ is said to be $m$-step \textcolor{red}{\textbf{controllable}},
   if there exist an input sequence, $u[k] , k \in \lbrace 0 , 1, \cdots m-1 \rbrace$, that transfers the state vector 
   $x[k]$ from the initial state $x_c$ (i.e. $x[0] = x_c$) to the origin
-  in $m$ number of steps, i.e. $x[m] = 0$.
+  in $m$ steps, i.e. $x[m] = 0$.
 \end{itemize}
 
 Note that
@@ -141,21 +146,21 @@ Let
          \end{array} \right]
 \end{align*}
 %
-then if a state $x_r$ is reachable at $k$ steps, it should 
+then if a state $x_r$ is reachable at $m$ steps, it should 
 satisfy the following equation for some $\mathbf{U}_m$.
 %
 \begin{align*}
- \mathbf{M}_m \mathbf{U}_m &= x_m
+ \mathbf{R}_m \mathbf{U}_m &= x_r
 \end{align*}
 %
-In order this matrix equation to have a solution $x_r$
-should be in the range space of $\mathbf{M}_m$.
+In order for this matrix equation to have a solution, $x_r$
+should be in the range space of $\mathbf{R}_m$.
 %
 \begin{align*}
-  x_r \in \mathrm{Ra} ( \mathbf{M}_m ) 
+  x_r \in \mathrm{Ra} ( \mathbf{R}_m ) 
 \end{align*}
 %
-Thus $m$-step reachable sub-space is simply equal to range space of $\mathcal{R}_k$
+Thus the $m$-step reachable sub-space is simply equal to the range space of $\mathbf{R}_m$
 \begin{align*}
   \mathrm{Ra} ( \mathbf{R}_m ) = \mathcal{R}_m
 \end{align*}
@@ -185,7 +190,7 @@ since we add a new column (or columns for multi-input systems) to $ \mathbf{R}_i
   \mathrm{Ra} ( \mathbf{R}_k ) &\subset \mathrm{Ra} ( \mathbf{R}_{n} ) \subset \mathrm{Ra} ( \mathbf{R}_{l} )
 \end{align*}
 %
-In order prove $\mathcal{R}_{n} = \mathcal{R}_{l} $, we simply use the Cayley-Hamilton theorem. 
+In order to prove $\mathcal{R}_{n} = \mathcal{R}_{l} $, we simply use the Cayley-Hamilton theorem. 
 Based on Cayley-Hamilton theorem 
 %
 \begin{align*}
@@ -229,18 +234,18 @@ An alternative characterization of $\mathbf{R}$ is using reachability Gramian (w
 $m$-step reachability Gramian, $\mathbf{P}_m$, is defined as
 %
 \begin{align}
- \mathbf{P}_m &= \mathbf{R}_m {\mathbf{R}_m}^T =\sum\limits_{i=0}^{k-1} A^i B B^T \begin{pmatrix} A^T \end{pmatrix}^i
+ \mathbf{P}_m &= \mathbf{R}_m {\mathbf{R}_m}^T =\sum\limits_{i=0}^{m-1} A^i B B^T \begin{pmatrix} A^T \end{pmatrix}^i
 \end{align}
 %
-Note that $\mathcal{P}_m$ is a symmetric positive semi-definite matrix.
+Note that $\mathbf{P}_m$ is a symmetric positive semi-definite matrix.
 
 \textbf{Lemma:} $\mathcal{R}_m = \mathrm{Ra}( \mathbf{R}_m ) = \mathrm{Ra} ( \mathbf{P}_m )$
 
-\textbf{Proof:} Let's fits show that $\mathrm{Ra}( \mathbf{P}_m ) \subset \mathrm{Ra}( \mathbf{R}_m )$. 
+\textbf{Proof:} Let's first show that $\mathrm{Ra}( \mathbf{P}_m ) \subset \mathrm{Ra}( \mathbf{R}_m )$. 
 If $x \in \mathrm{Ra} (\mathbf{P}_m)$, then $\exists v \in \mathbb{R}^n$ s.t. $x = \mathbf{P}_m v$ then
 %
 \begin{align*}
- x = \mathbf{P}_m v &= \mathbf{R}_m {\mathbf{R}_m}^T v = \mathbf{R}_m y \ \Rightarrow \ x \in \mathrm{Ra}( \mathbf{R}_m ) \ \Rightarrow \ \mathrm{Ra}( \mathbf{P}_m ) \subset \mathrm{Ra}( \mathbf{R}_m )
+ x = \mathbf{P}_m v &= \mathbf{R}_m {\mathbf{R}_m}^T v = \mathbf{R}_m y \ ( \text{where } y = {\mathbf{R}_m}^T v ) \ \Rightarrow \ x \in \mathrm{Ra}( \mathbf{R}_m ) \ \Rightarrow \ \mathrm{Ra}( \mathbf{P}_m ) \subset \mathrm{Ra}( \mathbf{R}_m )
 \end{align*}
 
 Now let's show that $\mathrm{Ra}( \mathbf{R}_m ) \subset \mathrm{Ra}( \mathbf{P}_m )$. We know that
@@ -257,11 +262,11 @@ Let $q \in \mathrm{Ra}^\perp( \mathbf{P}_m )$, then
 \begin{align*}
     q^T \mathbf{P}_m = \mathbf{0} \ \Rightarrow \ q^T \mathbf{P}_m q = 0 \ &\iff \ q^T \mathbf{R}_m {\mathbf{R}_m}^T q = 0
     \ \iff \ ( {\mathbf{R}_m}^T q )^T ( {\mathbf{R}_m}^T q ) = 0
-    \\ \ &\iff \ {\mathbf{R}_m}^T q = \mathbf{0} \ \iff \ q^T {\mathbf{R}_m} = \mathbf{0}^T = \mathbf{0}  
+    \ \iff \ {\mathbf{R}_m}^T q = \mathbf{0} \ \iff \ q^T {\mathbf{R}_m} = \mathbf{0}^T = \mathbf{0}  
     \\ \ &\Rightarrow \ q \in \mathrm{Ra}^\perp( \mathbf{R}_m ) \ \Rightarrow \ \mathrm{Ra}^\perp( \mathbf{P}_m ) \subset \mathrm{Ra}^\perp( \mathbf{R}_m )
 \end{align*}
 %
-This completes the proof. As a result of this lemma, full reachable subspace $\mathcal{R} = \mathrm{Ra}( \mathbf{P}_l )$ for any $l \geq 0$.
+This completes the proof. As a result of this lemma, full reachable subspace $\mathcal{R} = \mathrm{Ra}( \mathbf{P}_l )$ for any $l \geq n$.
 As a result we can make the following conclusions 
 \begin{itemize}
 \item $(A,B)$ pair is fully reachable $\iff$ $\mathrm{dim} \left [\mathrm{Ra}( \mathbf{P}_l ) \right] = n$ for any $l \geq n$
@@ -314,7 +319,7 @@ Using Cayley-Hamilton theorem, we reach that
  \\
  A^n B &= -a_{n-1} A^{n-1} B - \cdots - a_1 A B - a_0 B
  \\
- A x &= \left[ \begin{array}{c|c|c|c|c} \sum\limits_{i=0}^{n-1} A^{i} B & A^{n-2} B &
+ A x &= \left[ \begin{array}{c|c|c|c|c} \sum\limits_{i=0}^{n-1} -a_i A^{i} B & A^{n-2} B &
          \cdots & A^2 B & A B \end{array} \right] \textbf{U}_n 
  \\
  A x &\in \mathrm{Span} \left\lbrace \begin{array}{ccccc} A^{n-1} B , & A^{n-2} B , &
@@ -337,7 +342,7 @@ $w^T A = \lambda w^T$.
          \cdots & \lambda w^T  B & w^T B \end{array} \right] = 0 \ \rightarrow \ (A,B) \ \mathrm{unreachable} 
 \end{align*}
 %
-Now let's show that if $(A,B)$ is not reachable, then $\exists w$ s.t. $w^T A = \lambda w^T$ and $w^T B = 0$.  if $(A,B)$ is not reachable, then there exist $q \in \mathbb{R}^n$ such that
+Now let's show that if $(A,B)$ is not reachable, then $\exists w$ s.t. $w^T A = \lambda w^T$ and $w^T B = 0$.  If $(A,B)$ is not reachable, then there exists $q \in \mathbb{R}^n$ such that
 %
 \begin{align*}
 q^T \mathbf{R} &= 0 \ \Rightarrow \ \mathbf{R}^T q = 0 
@@ -355,7 +360,7 @@ matrix, $\Gamma \in \mathbb{R}^{j \times j}$ such that
 A^T V = V \Gamma
 \end{align*}
 %
-Let $\nu$ be an eigenvector of $V$, i.e. $\Gamma \nu = \alpha \nu , \, \alpha \in \mathcal{C}$, then 
+Let $\nu$ be an eigenvector of $\Gamma$, i.e. $\Gamma \nu = \alpha \nu , \, \alpha \in \mathbb{C}$, then 
 %
 \begin{align*}
 A^T V \nu = V \Gamma \nu = \alpha V \nu \ \rightarrow \ z = V \nu \in \mathbb{C}^n
@@ -363,14 +368,21 @@ A^T V \nu = V \Gamma \nu = \alpha V \nu \ \rightarrow \ z = V \nu \in \mathbb{C}
 %
 where $z$ is an eigenvector of $A^T$, moreover $z \in \mathcal{S} = \mathcal{N}(B^T)$. This completes the proof. 
 
-\textbf{Theorem:} \textit{PBH Rechability Test} - $(A,B)$ is reachable if and only if 
+\textbf{Theorem:} \textit{PBH Reachability Test} - $(A,B)$ is reachable if and only if 
 %
 \begin{align*}
-    \mathrm{rank} \left[ \begin{array}{c|c} \lambda I - A & B \end{array} \right] = n , \ \forall \lambda \in \mathcal{C}
+    \mathrm{rank} \left[ \begin{array}{c|c} \lambda I - A & B \end{array} \right] = n , \ \forall \lambda \in \mathbb{C}
 \end{align*}
 %
 \textbf{Proof:} Technically, it is the same argument as the eigenvector/modal reachability test proposed above. The same proof can be adapted for
 the PBH test.
+
+\begin{intuition}
+\textbf{Physical Meaning of Modal Tests:} 
+A left eigenvector $w^T$ corresponds to a specific "mode" (dynamic behavior or natural frequency) of the system. The matrix product $w^T B$ represents how the input $u$ "couples" into or excites that specific mode. 
+
+If $w^T B = 0$, the input has absolutely no channel to influence that mode. The mode will simply evolve on its own, rendering those states out of our control (unreachable).
+\end{intuition}
 
 \textbf{Definition:} If $\lambda, w^T$ (eigenvalue, left-eigenvector) pair fails in one of the modal reachability tests, we call this 
 pair an unreachable mode of the system. 
@@ -383,7 +395,7 @@ We know that system and input matrices under such a transformation take the form
     \bar{A} = P A P^{-1} \ , \ \bar{B} = P B
 \end{align*}
 %
-Reachability matrix for the $(\bar{A},\bar{B)}$ can be written as
+Reachability matrix for the $(\bar{A},\bar{B})$ can be written as
 %
 \begin{align*}
    \bar{\mathbf{R}} &= \left[ \begin{array}{c|c|c|c|c} \bar{A}^{n-1} \bar{B} & \bar{A}^{n-2} \bar{B} & \cdots & \bar{A} \bar{B} & \bar{B} \end{array} \right] 
@@ -396,7 +408,7 @@ Reachability matrix for the $(\bar{A},\bar{B)}$ can be written as
 \end{align*}
 %
 Let $x[k+1] = A x[k] + B u[k]$ be an unreachable system; then it can be convenient and practical to choose coordinates (via similarity transformation)
-to highlight reachable and reachable ``spaces''. Let 
+to highlight reachable and unreachable ``spaces''. Let 
 %
 \begin{align*}
    \mathrm{dim}({\mathbf{R}}) &= r 
@@ -417,7 +429,7 @@ columns of $T$ are linearly independent. Let's analyze the similarity transforma
 \end{align*}
 %
 Note that the reachable sub-space is $A$ invariant $A T_1$ must remain in $\mathrm{Ra}(T_1) = \mathrm{Ra}(\mathbf{R}) = \mathcal{R}$,
-since $T_2$ is composed of linearly independent columns, in order $T_1 A_{11} + T_2 A_{22}$ remain in $\mathrm{Ra}(T_1)$, $A_{21} = \mathbf{0}$.
+since $T_2$ is composed of linearly independent columns, in order for $T_1 A_{11} + T_2 A_{21}$ to remain in $\mathrm{Ra}(T_1)$, $A_{21} = \mathbf{0}$.
 Now let's analyze the effect of transformation on the input matrix.
 %
 \begin{align*}
@@ -459,13 +471,13 @@ For LTI a continuous-time state-space representation
 
 Note that
 \begin{itemize}
-  \item the set $\mathcal{R}_{t_f}$ of all states that reachable in time $t_f$ is a linear
+  \item the set $\mathcal{R}_{t_f}$ of all states that are reachable in time $t_f$ is a linear
 (sub)space: $\mathcal{R}_{t_f} \subset \mathbb{R}^n$
-  \item the set $\mathcal{R}_{t_f}$ of all states that controllable in time $t_f$ is a linear
-(sub)space: $\mathcal{R}_{t_f} \subset \mathbb{R}^n$
+  \item the set $\mathcal{C}_{t_f}$ of all states that are controllable in time $t_f$ is a linear
+(sub)space: $\mathcal{C}_{t_f} \subset \mathbb{R}^n$
 \end{itemize}
 
-Let's characterize $\mathcal{R}_{t_f}$. In CT derivation of the reachability 
+Let's characterize $\mathcal{R}_{t_f}$. In CT, the derivation of the reachability 
 matrix is not as intuitive as the case in DT systems. Instead, we construct the
 main concepts using the reachability Gramian for CT systems. Note that 
 for a CT-LTI system $x(t_f)$ for a zero-state response written as
@@ -474,7 +486,7 @@ for a CT-LTI system $x(t_f)$ for a zero-state response written as
   x(t_f) = \int\limits_{0}^{t_f} e^{A (t_f - \tau)} B u(\tau) d \tau
 \end{align*}
 %
-Obviously if a $x_r \in \mathbb{R}$ is reachable in time $t_f$, 
+Obviously if an $x_r \in \mathbb{R}^n$ is reachable in time $t_f$, 
 then $\exists u(t), \ t \in [0 , t_f]$ such that $x(t_f) = x_r$. In this context,
 the reachability Grammian is defined as
 %
@@ -482,6 +494,12 @@ the reachability Grammian is defined as
     \textbf{P}(t) = \int\limits_{0}^{t} e^{A (t - \tau)} B B^T e^{A^T (t - \tau)}  d \tau 
 \end{align}
 %
+
+\begin{intuition}
+\textbf{Why use the Gramian?} 
+While the Reachability Matrix $\mathbf{R}$ tells us \textit{if} a system is reachable (a binary yes/no), the Reachability Gramian $\textbf{P}(t_f)$ provides a quantitative measure of \textit{how} reachable the states are. The eigenvectors of $\textbf{P}(t_f)$ indicate the easiest/hardest spatial directions to reach, and its eigenvalues relate to the control energy $\int ||u(t)||^2 dt$ required to get there.
+\end{intuition}
+
 \textbf{Theorem:} $\mathcal{R}_{t_f} = \mathrm{Ra}[ \textbf{P}(t_f) ]$, i.e. reachable in time $t_f$ sub-space is characterized by the range-space of the reachability Gramian.
 
 \textbf{Proof:} Let's first show that $\mathrm{Ra}[ \textbf{P}(t_f) ] \subset \mathcal{R}_{t_f}$.
@@ -491,7 +509,7 @@ Let $x^* \in \mathrm{Ra}[ \textbf{P}(t_f) ]$, then $\exists v \in \mathbb{R}^n$ 
     x^* = \textbf{P}(t_f) v
 \end{align}
 %
-Let $u(t) = B^T e^{A (t_f - t)} v$, then
+Let $u(t) = B^T e^{A^T (t_f - t)} v$, then
 %
 \begin{align*}
   x(t_f) &= \int\limits_{0}^{t_f} e^{A (t_f - \tau)} B u(\tau) d \tau
@@ -544,22 +562,22 @@ and the reachability matrix, $\mathbf{R} = \left[ \begin{array}{c|c|c|c|c} A^{n-
   \, \iff \, \mathrm{Ra}^\perp [ \textbf{P}(t_f) ] = \mathrm{Ra}^\perp [ \mathbf{R} ]
 \end{align*}
 %
-Firs show that if $\mathrm{Ra}^\perp [ \mathbf{R} ] \subset \mathrm{Ra}^\perp [ \textbf{P}(t_f) ]$.
+Let's first show that $\mathrm{Ra}^\perp [ \mathbf{R} ] \subset \mathrm{Ra}^\perp [ \textbf{P}(t_f) ]$.
 Let $q \in \mathrm{Ra}^\perp [ \mathbf{R} ] $, then 
 %
 \begin{align*}
-  q^T \mathbf{R} = 0 \, &\iff \, q^T \left[ \begin{array}{c|c|c|c|c} A^{n-1} B & A^{n-2} B & \cdots & A B & B \end{array} \right] = 0 \ \iff \, q^T A^i B = 0 \forall i \in \mathbb{Z^+}
+  q^T \mathbf{R} = 0 \, &\iff \, q^T \left[ \begin{array}{c|c|c|c|c} A^{n-1} B & A^{n-2} B & \cdots & A B & B \end{array} \right] = 0 \ \iff \, q^T A^i B = 0 \, \forall i \ge 0
 \end{align*}
 %
 Note that for $i \geq n$, we referred to the Cayley-Hamilton theorem. Now let's check if 
-$q \in \mathrm{Ra}^\perp [ \mathbf{P}_{t_f} ] $
+$q \in \mathrm{Ra}^\perp [ \mathbf{P}(t_f) ] $
 %
 \begin{align*}
-  q^T \mathbf{P}_{t_f} &= \int\limits_{0}^{t_f} q^T e^{A (t_f - \tau)} B B^T e^{A^T (t_f - \tau)}  d \tau 
+  q^T \mathbf{P}(t_f) &= \int\limits_{0}^{t_f} q^T e^{A (t_f - \tau)} B B^T e^{A^T (t_f - \tau)}  d \tau 
   \\
-  q^T A^i B &= 0 \forall i \in \mathbb{Z^+} \, \Rightarrow \, q^T e^{A (t_f - \tau)} = 0 \, \forall t_f \geq 0
+  q^T A^i B &= 0 \, \forall i \ge 0 \, \Rightarrow \, q^T e^{A (t_f - \tau)} = 0 \, \forall t_f \geq 0
   \\
-  &\Rightarrow \, q^T \mathbf{P}_{t_f} = 0 \, \Rightarrow \, q \in \mathrm{Ra}^\perp [ \mathbf{P}_{t_f} ]
+  &\Rightarrow \, q^T \mathbf{P}(t_f) = 0 \, \Rightarrow \, q \in \mathrm{Ra}^\perp [ \mathbf{P}(t_f) ]
   \, \Rightarrow \, \mathrm{Ra}^\perp [ \mathbf{R} ] \subset \mathrm{Ra}^\perp [ \textbf{P}(t_f) ]
 \end{align*}
 %
@@ -567,28 +585,28 @@ Now let's show that if $\mathrm{Ra}^\perp [ \textbf{P}(t_f) ] \subset \mathrm{Ra
 Let $q \in \mathrm{Ra}^\perp [ \mathbf{R} ] $, from (\ref{eq:orthGram}) we know that 
 %
 \begin{align*}
-  q e^{A (t_f - \tau)} B = 0 \, \forall \, \tau \in [0 , t_f]
+  q^T e^{A (t_f - \tau)} B = 0 \, \forall \, \tau \in [0 , t_f]
 \end{align*}
 %
 Then we know that 
 %
 \begin{align*}
-  [ q e^{A \eta} B]_{\eta = 0} = 0 \, &\Rightarrow \, q^T B = 0
+  [ q^T e^{A \eta} B]_{\eta = 0} = 0 \, &\Rightarrow \, q^T B = 0
   \\
-  \frac{d}{dt}[ q e^{A \eta} B]_{\eta = 0} = 0 \, &\rightarrow \, q^T A B = 0
+  \frac{d}{d\eta}[ q^T e^{A \eta} B]_{\eta = 0} = 0 \, &\Rightarrow \, q^T A B = 0
   \\
-  \frac{d^2}{dt^2}[ q e^{A \eta} B]_{\eta = 0} = 0 \, &\Rightarrow \, q^T A^2 B = 0
+  \frac{d^2}{d\eta^2}[ q^T e^{A \eta} B]_{\eta = 0} = 0 \, &\Rightarrow \, q^T A^2 B = 0
   \\
   &\vdots
     \\
-    \frac{d^{n-1}}{dt^{n-1}}[ q e^{A \eta} B]_{\eta = 0} = 0 \, &\Rightarrow \, q^T A^{n-1} B = 0
+    \frac{d^{n-1}}{d\eta^{n-1}}[ q^T e^{A \eta} B]_{\eta = 0} = 0 \, &\Rightarrow \, q^T A^{n-1} B = 0
     \\
     &\Rightarrow \, q^T \mathbf{R} = 0 \, \Rightarrow \, q \in \mathrm{Ra}^\perp [ \mathbf{R} ]
     \, \Rightarrow \, \mathrm{Ra}^\perp [ \textbf{P}(t_f) ] \subset \mathrm{Ra}^\perp [ \mathbf{R} ]
 \end{align*}
 %
 This completes the proof. This theorem indicates that similar to the DT systems range space of the
-reachability matrix, $\mathbf{R}$, characterizes the whole reachable space, and this space independent
+reachability matrix, $\mathbf{R}$, characterizes the whole reachable space, and this space is independent
 of the time interval. In that respect 
 
 \textbf{Corollary:} $(A,B)$ is fully reachable if and only if $\mathrm{dim} \left( \mathrm{Ra} [ \mathbf{R} ] \right) = \mathrm{dim} \left( \mathrm{Ra} [ \textbf{P}(t_f) ] \right)$
@@ -629,7 +647,7 @@ Let
 % 
 Analyze the reachability of the $(A,B)$ pair and
 find the necessary and sufficient conditions such that 
-$(A,B)$ fully reachable.
+$(A,B)$ is fully reachable.
 
 \textbf{Solution:} Since $A$ is already in diagonal Canonical 
 form, the most convenient way to analyze reachability is the PBH's modal
@@ -638,10 +656,10 @@ test
 \begin{align*}
   \left[ \begin{array}{c|c} A - \lambda I & B \end{array} \right]
   &= \left[ \begin{array}{ccc|c} 
-  \lambda_1 & & 0 & b_1 \\
+  \lambda_1 - \lambda & & 0 & b_1 \\
     & \ddots &
     \\
-    0 & &  \lambda_n & b_n \end{array} \right]
+    0 & &  \lambda_n - \lambda & b_n \end{array} \right]
 \end{align*}
 %
 \textit{Necessary Condition:} Let $\lambda = \lambda_i$, if $b_i = 0$,
@@ -649,7 +667,7 @@ then $\left[ \begin{array}{c|c} A - \lambda I & B \end{array} \right]$
 drops rank. Thus, if $\exists \lambda_i$ such that $b_i = 0$, then the system 
 is unreachable. 
 
-\textit{Sufficient Condition:} Not that if $\lambda_i \neq \lambda_j$ for $i \neq j$,
+\textit{Sufficient Condition:} Note that if $\lambda_i \neq \lambda_j$ for $i \neq j$,
 the condition above also becomes sufficient. Now analyze the general case, without loss 
 of generality let's assume $\lambda_1 = \lambda_2 = \cdots = \lambda_p$ and all other 
 eigenvalues are different. Let $\lambda = \lambda_1$ in the PBH test, then first $p$-rows of the
@@ -659,28 +677,24 @@ PBH matrix takes the form
   \left[ \begin{array}{c|c} A - \lambda_1 I & B \end{array} \right]
   &= \left[ \begin{array}{c|c} 
   0_{1 \times n} & b_1 \\
-  0_{1 \times n}  & b_2 \\
-  \\
-  \vdots
-  \\
-  0_{1 \times n}  & b_p \\
+  0_{1 \times n} & b_2 \\
+  \vdots & \vdots \\
+  0_{1 \times n} & b_p \\
      \end{array} \right]
 \end{align*}
 %
 PBH matrix does not drop rank, if and only if, $\lbrace b_1^T , b_2^T , \cdots , b_p^T \rbrace$ 
-is a linearly independent set. We can see that number of inputs of the system has to be larger than 
+is a linearly independent set. We can see that the number of inputs of the system has to be larger than 
 or equal to $p$ (indeed $\mathrm{max}(p)$ for system-wide reachability). Moreover, the rank of the 
-following sub-matrix matrix has to be equal to the algebraic multiplicity of the eigenvalue, i.e.
+following sub-matrix has to be equal to the algebraic multiplicity of the eigenvalue, i.e.
 %
 \begin{align*}
   B_{\lambda_1}
   &= \left[ \begin{array}{c} 
   b_1 \\
-   b_2 \\
-  \\
-  \vdots
-  \\
-   b_p \\
+  b_2 \\
+  \vdots \\
+  b_p \\
      \end{array} \right] \ , \ \mathrm{rank}(B_{\lambda_1}) = p  
 \end{align*}
 %
@@ -705,13 +719,11 @@ Let
   \end{array} \right] u
 \end{align*}
 % 
-Analyze the reachability of the $(A,B)$ pair for $\lambda_1 
-neq \lambda_2$ and $\lambda_1 = \lambda_2$
+Analyze the reachability of the $(A,B)$ pair for $\lambda_1 \neq \lambda_2$ and $\lambda_1 = \lambda_2$
 and find the necessary and sufficient conditions such that 
 $(A,B)$ fully reachable.
 
-\textbf{Solution:} Let's first assume that $\lambda_1 
-neq \lambda_2$, we can analyze each mode separately using the BPH test. Let's start with $\lambda = \lambda_1$
+\textbf{Solution:} Let's first assume that $\lambda_1 \neq \lambda_2$, we can analyze each mode separately using the PBH test. Let's start with $\lambda = \lambda_1$
 %
 \begin{align*}
   \left[ \begin{array}{c|c} A - \lambda_1 I & B \end{array} \right]
@@ -721,12 +733,11 @@ neq \lambda_2$, we can analyze each mode separately using the BPH test. Let's st
     0 & 0 & 0 &  0 & 0 & b_{1,3 }\\
     \hline
     0 & 0 & 0 & \lambda_2 - \lambda_1 & 1 & b_{2,1} \\
-    0 & 0 & 0 & 0 & \lambda_2 - \lambda_2 & b_{2,2}   \\
+    0 & 0 & 0 & 0 & \lambda_2 - \lambda_1 & b_{2,2}   \\
     \end{array} \right]
 \end{align*}
 %
-The matrix above is full rank if and only if $b_{1,3}  
-\neq 0$,
+The matrix above is full rank if and only if $b_{1,3} \neq 0$,
 this implies that $b_{1,1}$ and $b_{1,2}$ do not affect
 the reachability condition. Similarly for $\lambda = \lambda_2$
 we can find that $b_{2,2} \neq 0$ is a necessary condition for 
@@ -762,6 +773,6 @@ The matrix has full rank if and only if
  \right\rbrace = \mathbb{R}^2
 \end{align*}
 %
+Since $B$ is a single column vector (single-input system), it is impossible for its components to span $\mathbb{R}^2$. Therefore, the matrix drops rank, and the system is strictly unreachable when $\lambda_1 = \lambda_2$.
 
-% **** This ENDS THE EXAMPLES. DON'T DELETE THE FOLLOWING LINE:
 \end{document}
