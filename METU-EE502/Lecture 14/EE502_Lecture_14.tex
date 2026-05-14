@@ -16,7 +16,10 @@
 %
 
 \usepackage{amsmath,amsfonts,graphicx,arydshln}
+\usepackage{xcolor} % Added for highlighting
 
+% Custom command to highlight edits in blue
+\newcommand{\edit}[1]{\textcolor{blue}{#1}}
 
 \newcounter{lecnum}
 \renewcommand{\thepage}{\thelecnum-\arabic{page}}
@@ -89,9 +92,9 @@
 
 \section{State Observer}
 
-Generally the full state measurment,$x(t)$ or $x[k]$, of a system is not accessible and \textit{observers, estimators, filters})
+Generally the full state \edit{measurement}, $x(t)$ or $x[k]$, of a system is not accessible and \edit{(observers, estimators, filters)}
 have to be used to extract this information. The output, $y(t)$ or $y[k]$, represents the actual measurements
-which is a function of the input and the output. We will mainly focus on DT systems in this lecture however, 
+which is a function of the input and the output. We will mainly focus on DT systems in this lecture; however, 
 all of the derivations and concepts are either same with the CT case or can be easily adopted with minor modifications. Let 
 %
 \begin{align*}
@@ -115,15 +118,17 @@ synthetic system takes the form
   \hat{y}[k] &= C \hat{x}[k] + D u[k]
 \end{align*}
 %
+%
 Note that since $u[k]$ is the input that is supplied by the 
-controller, we assume that it is known apriori. If $x[0] = \hat{x}[0]$ and
-when there is no model mismatch or uncertainty in the system
-then we expect that $x[k] = \hat{x}[k]$ and $y[k] = \hat{y}[k]$ 
+controller, we assume that it is known a priori. If $x[0] = \hat{x}[0]$ and
+when there is no model mismatch or uncertainty in the system, then
+we expect that $x[k] = \hat{x}[k]$ and $y[k] = \hat{y}[k]$ 
 for all $k$. When $x[0] \neq \hat{x}[0]$, then we should observe a 
 difference between the measured and predicted output
-$y[k] \neq \hat{y}[k]$. The core idea in Luenberger observer
+$y[k] \neq \hat{y}[k]$. The core idea in a Luenberger observer
 is feeding the error in the output prediction 
 $y[k] - \hat{y}[k]$ to the simulated system via a linear feedback gain.
+%
 %
 \begin{align*}
   \hat{x}[k+1] &= A \hat{x}[k] + B u[k] + L \left( y[k] - \hat{y}[k] \right) 
@@ -166,7 +171,7 @@ convergence should be sufficiently fast.
 if and only if $(A,C)$ is observable. 
 
 \textbf{Proof of necessity: } Let's assume that $(A,C)$ not observable and $\exists (\lambda_u , v_u)$ pair such that
-$A v_u = v_u \lambda_u $ and $C v_u = 0$. Now check weather $v_u$ is a right eigenvector of $(A - L C)$
+$A v_u = v_u \lambda_u $ and $C v_u = 0$. Now check whether $v_u$ is a right eigenvector of $(A - L C)$
 %
 \begin{align*}
 	 (A - L C ) v_u &= A v_u - L C v_U = A v_u = \lambda_u v_U
@@ -199,10 +204,10 @@ which completes the proof.
 
 The dual of stabilizability in the observability domain is called detectability. 
 
-\textbf{Theorem} The following statements are equal 
+\textbf{Theorem} The following statements are equivalent 
 \begin{itemize}
 \item $(A,C)$ is detectable $\iff$
-\item if unobservable modes of $(A,C)$ are asymptotically stable $\iff$
+\item If unobservable modes of $(A,C)$ are asymptotically stable $\iff$
 \item $\forall (\lambda_i , v_i)$ s.t. $A v_i = \lambda_i v_i$ $\iff$
 and $\mathrm{Re}\lbrace \lambda_i \rbrace \geq 0$ (or $|\lambda_i|\geq0$),
 $v_i \notin \mathcal{N}(C)$ $\iff$
