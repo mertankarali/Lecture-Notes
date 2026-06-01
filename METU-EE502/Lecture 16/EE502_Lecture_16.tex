@@ -1,7 +1,49 @@
 % 
 
-
 \documentclass[twoside]{article}
+
+% --- pdflatex Compatible Preamble ---
+\usepackage[english]{babel}
+% ------------------------------------
+
+% --- Smart Image Handler ---
+\usepackage{graphicx}
+\let\oldincludegraphics\includegraphics
+\renewcommand{\includegraphics}[2][]{%
+  \IfFileExists{#2}{%
+    \oldincludegraphics[#1]{#2}%
+  }{%
+    \IfFileExists{#2.pdf}{%
+      \oldincludegraphics[#1]{#2}%
+    }{%
+      \IfFileExists{#2.png}{%
+        \oldincludegraphics[#1]{#2}%
+      }{%
+        \IfFileExists{#2.jpg}{%
+          \oldincludegraphics[#1]{#2}%
+        }{%
+          \framebox{\parbox{0.8\textwidth}{\centering \vspace{1.5cm} \textbf{Image Placeholder} \\ \small\textit{File: #2} \vspace{1.5cm}}}%
+        }%
+      }%
+    }%
+  }%
+}
+% ---------------------------
+
+% --- Stylistic Enhancements for Learning ---
+\usepackage{tcolorbox}
+\tcbset{
+    takeawaybox/.style={
+        colback=blue!3!white,
+        colframe=blue!60!black,
+        fonttitle=\bfseries,
+        boxrule=0.5mm,
+        arc=2mm,
+        top=3mm, bottom=3mm, left=3mm, right=3mm
+    }
+}
+% -------------------------------------------
+
 \setlength{\oddsidemargin}{0.25 in}
 \setlength{\evensidemargin}{-0.25 in}
 \setlength{\topmargin}{-0.6 in}
@@ -14,8 +56,7 @@
 %
 % ADD PACKAGES here:
 %
-
-\usepackage{amsmath,amsfonts,graphicx,arydshln}
+\usepackage{amsmath,amsfonts,arydshln}
 
 
 \newcounter{lecnum}
@@ -89,7 +130,7 @@
 
 \section{Minimality of Interconnected Systems}
 
-In this section we shall examine the conditions under which minimality is lost when minimal subsystems are interconnected in various configurations,
+In this section we shall examine the conditions under which minimality is lost when minimal subsystems are interconnected in various configurations. \textit{When connecting two minimal state-space systems, one might intuitively expect the overall system to remain minimal. However, internal dynamics can become ``hidden'' from the input or output depending on the structure.}
 
 \subsection{Series - Cascade Connection}
 		
@@ -98,16 +139,13 @@ $G_1(s)$ and $G_2(s)$ and associated minimal representations $\left( \begin{arra
 C_1 & D_1 \end{array} \right)$ and $\left( \begin{array}{c|c} A_2 & B_2 \\ \hline
 C_2 & D_2 \end{array} \right)$, connected in series/cascade configuration. 
 		
-\begin{center}
-  \begin{minipage}[h]{0.9\linewidth}
-    \begin{center}
-      \includegraphics[width=0.8\textwidth]{cascade}
-    \end{center}
-  \end{minipage}
-    \end{center}
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.8\textwidth]{cascade}
+\end{figure}
 		
 The transfer function of the connection is simply equal to $G(s) = G_2(s) G_1(s)$. Let $x_1$ and $x_2$
-state-variables of the sub-systems, then natural choice of the state variable for the series connection is 
+be the state-variables of the sub-systems, then the natural choice of the state variable for the series connection is 
 $x = \begin{bmatrix} x_1 \\ x_2 \end{bmatrix}$. Under this definition the state-space representation for the whole system 
 can be found as
 %
@@ -115,11 +153,11 @@ can be found as
 A = \left[ \begin{array}{c|c} A_1 & 0 \\ \hline B_2 C_1  & A_2 \end{array} \right]
 \, , \, B = \left[ \begin{array}{c} B_1 \\ \hline B_2 D_1  \end{array} \right]
 \, , \, C = \left[ \begin{array}{c|c} D_2 C_1 & C_2  \end{array} \right]
-\, , \, D = \left[ \begin{array}{c} D_2  D_2  \end{array} \right]
+\, , \, D = \left[ \begin{array}{c} D_2  D_1  \end{array} \right]
 \end{align*}
 %
-Clearly eigenvalues of A are the combination of the eigenvalues of $A_1$ and $A_2$ and the poles of the system 
-Let's analyze the observability of the connection via PBH test. 
+Clearly eigenvalues of $A$ are the combination of the eigenvalues of $A_1$ and $A_2$ and the poles of the system.
+Let's analyze the observability of the connection via the PBH test. 
 %
 \begin{align*}
 	\left[ \begin{array}{c} \lambda I - A \\ \hline C \end{array} \right]
@@ -131,10 +169,10 @@ Let's analyze the observability of the connection via PBH test.
 %
 If we remember from the observability lecture that $(A,C)$ (whole state-space model) pair 
 is unobservable if and only if $\left[ \begin{array}{c} \lambda I - A \\ \hline C \end{array} \right]$
-losses rank for some $\lambda$, which can only happen if $\lambda$ is an eigenvalue of $A$.
+loses rank for some $\lambda$, which can only happen if $\lambda$ is an eigenvalue of $A$.
 Let's assume that $\lambda_2$ is an eigenvalue of $A_2$ but not eigenvalue of $A_1$. 
 Then $\left[ \begin{array}{c} \lambda I - A \\ \hline C \end{array} \right]_{\lambda = \lambda_2}$ 
-looses rank, if $\exists v = \begin{bmatrix} v_1 \\ v_2 \end{bmatrix}$ such that 
+loses rank, if $\exists v = \begin{bmatrix} v_1 \\ v_2 \end{bmatrix}$ such that 
 %
 \begin{align*}
 	&\left[ \begin{array}{c} \lambda_2 I - A \\ \hline C \end{array} \right] v = 0
@@ -146,10 +184,10 @@ looses rank, if $\exists v = \begin{bmatrix} v_1 \\ v_2 \end{bmatrix}$ such that
 \end{align*}
 %
 which contradicts with the fact that $(A_2,C_2)$ is observable since both individual sub-system representations are minimal. 
-In that respect $\left[ \begin{array}{c} \lambda I - A \\ \hline C \end{array} \right]$ can loose rank only at an eigenvalue
-of $A_1$ (i.e. a pole of $A_2$). Let's $\lambda_1$ is an eigenvalue of $A_1$.
+In that respect $\left[ \begin{array}{c} \lambda I - A \\ \hline C \end{array} \right]$ can lose rank only at an eigenvalue
+of $A_1$ (i.e. a pole of $A_2$). Let $\lambda_1$ be an eigenvalue of $A_1$.
 Then $\left[ \begin{array}{c} \lambda I - A \\ \hline C \end{array} \right]_{\lambda = \lambda_1}$ 
-looses rank, if $\exists v = \begin{bmatrix} v_1 \\ v_2 \end{bmatrix}$ such that 
+loses rank, if $\exists v = \begin{bmatrix} v_1 \\ v_2 \end{bmatrix}$ such that 
 %
 \begin{align*}
 	&\left[ \begin{array}{c} \lambda_1 I - A \\ \hline C \end{array} \right] v = 0
@@ -157,7 +195,7 @@ looses rank, if $\exists v = \begin{bmatrix} v_1 \\ v_2 \end{bmatrix}$ such that
 	\left[ \begin{array}{c|c} \lambda_1 I - A_1 & 0 \\ \hline -B_2 C_1 &  \lambda_1 I - A_2 \\ \hline 
 	D_2 C_1 & C_2
 	\end{array} \right]  \begin{bmatrix} v_1 \\ v_2 \end{bmatrix} = 0
-		\, \Rightarrow \, v_1 \neq 0 \, \& \, A v_1 = \lambda_1 v_1 \, \mathrm{and}
+		\, \Rightarrow \, v_1 \neq 0 \, \& \, A_1 v_1 = \lambda_1 v_1 \, \mathrm{and}
 		\\
 	&\left[ \begin{array}{c|c} \lambda_1 I - A_2 & -B_2 C_1 \\ \hline 
 	  C_2 & D_2 C_1
@@ -168,18 +206,23 @@ looses rank, if $\exists v = \begin{bmatrix} v_1 \\ v_2 \end{bmatrix}$ such that
 	\end{array} \right]  \begin{bmatrix} v_2 \\ C_1 v_1 \end{bmatrix} = 0	
 \end{align*}
 %
-Note that $\left[ \begin{array}{c|c} \lambda_1 I - A_2 & -B_2  \\ \hline 
+Note that the block matrix $\left[ \begin{array}{c|c} \lambda_1 I - A_2 & -B_2  \\ \hline C_2 & D_2 \end{array} \right]$ is the \textbf{Rosenbrock System Matrix}. Therefore, the relationship $\left[ \begin{array}{c|c} \lambda_1 I - A_2 & -B_2  \\ \hline 
 	  C_2 & D_2 
 	\end{array} \right]  \begin{bmatrix} v_2 \\ C_1 v_1 \end{bmatrix} = 0$
-implies that $\lambda_1$ is a \textbf{right} zero of $G_2(s)$ where $v_2$ and $C_1 v_1$ 
-is the associated \text{state-zero-direction} and \textit{input-zero-direction}
+implies that $\lambda_1$ is a \textbf{right zero} of $G_2(s)$ where $v_2$ and $C_1 v_1$ 
+is the associated \textit{state-zero-direction} and \textit{input-zero-direction}
 respectively. 
 
-If we summarize the results, cascaded system is unobservable if $\exists (\lambda_1 , v_1)$ and $v_2 \neq 0$
-such that $(\lambda_1 , v_1)$ is an eigenvalue-eigenvector pair of $A_1$ and $\lambda_1$ is a \textbf{right} zero of 
-$G_2(s)$ with $v_2$ and $C_1 v_1$ as the \text{state-zero-direction} and \textit{input-zero-direction} respectively. 
+\begin{tcolorbox}[takeawaybox, title=Key Takeaway: Observability in Cascade]
+If we summarize the results, a cascaded system is unobservable if $\exists (\lambda_1 , v_1)$ and $v_2 \neq 0$
+such that $(\lambda_1 , v_1)$ is an eigenvalue-eigenvector pair of $A_1$ and $\lambda_1$ is a \textbf{right zero} of 
+$G_2(s)$ with $v_2$ and $C_1 v_1$ as the \textit{state-zero-direction} and \textit{input-zero-direction} respectively. 
 
-Now let's analyze the reachability of the connection via PBH test. 
+\vspace{2mm}
+\textbf{In simpler terms, observability is lost when a pole of the first system is exactly canceled by a transmission zero of the second system.}
+\end{tcolorbox}
+
+Now let's analyze the reachability of the connection via the PBH test. 
 %
 \begin{align*}
 	\left[ \begin{array}{c|c} \lambda I - A & B \end{array} \right]
@@ -190,10 +233,10 @@ Now let's analyze the reachability of the connection via PBH test.
 %
 If we remember from the reachability lecture that $(A,B)$ (whole state-space model) pair 
 is unreachable if and only if $\left[ \begin{array}{c|c} \lambda I - A & B \end{array} \right]$
-losses rank for some $\lambda$, which can only happen if $\lambda$ is an eigenvalue of $A$.
+loses rank for some $\lambda$, which can only happen if $\lambda$ is an eigenvalue of $A$.
 Let's assume that $\lambda_1$ is an eigenvalue of $A_1$ but not eigenvalue of $A_2$. 
 Then $\left[ \begin{array}{c|c} \lambda I - A & B \end{array} \right]_{\lambda = \lambda_1}$ 
-looses rank, if $\exists w = \begin{bmatrix} w_1 \\ w_2 \end{bmatrix}$ such that 
+loses rank, if $\exists w = \begin{bmatrix} w_1 \\ w_2 \end{bmatrix}$ such that 
 %
 \begin{align*}
 	&\begin{bmatrix} w_1^T & w_2^T \end{bmatrix} \left[ \begin{array}{c|c} \lambda_1 I - A & B \end{array} \right]
@@ -205,9 +248,9 @@ looses rank, if $\exists w = \begin{bmatrix} w_1 \\ w_2 \end{bmatrix}$ such that
 \end{align*}
 %
 which contradicts with the fact that $(A_1,B_1)$ is reachable since both individual sub-system representations are minimal. 
-Now let $\lambda_2$ is an eigenvalue of $A_2$.
+Now let $\lambda_2$ be an eigenvalue of $A_2$.
 Then $\left[ \begin{array}{c|c} \lambda I - A & B \end{array} \right]_{\lambda = \lambda_2}$ 
-looses rank, if $\exists w = \begin{bmatrix} w_1 \\ w_2 \end{bmatrix}$ such that 
+loses rank, if $\exists w = \begin{bmatrix} w_1 \\ w_2 \end{bmatrix}$ such that 
 %
 \begin{align*}
 	&\begin{bmatrix} w_1^T & w_2^T \end{bmatrix} \left[ \begin{array}{c|c} \lambda_2 I - A & B \end{array} \right]
@@ -227,12 +270,17 @@ looses rank, if $\exists w = \begin{bmatrix} w_1 \\ w_2 \end{bmatrix}$ such that
 %
 Note that $\begin{bmatrix} w_1^T & (-B_2^T w_2)^T \end{bmatrix} \left[ \begin{array}{c|c} \lambda_2 I - A_1 & -B_1 \\ \hline C_1 & D_1 
 	\end{array} \right] = 0$
-implies that $\lambda_2$ is a \textbf{left} zero of $G_1(s)$ where $w_1$ and $(-B_2^T w_2)$ 
-are the associated \text{state-zero-direction} and \textit{input-zero-direction} respectively. 
+implies that $\lambda_2$ is a \textbf{left zero} of $G_1(s)$ where $w_1$ and $(-B_2^T w_2)$ 
+are the associated \textit{state-zero-direction} and \textit{input-zero-direction} respectively. 
 
-If we summarize the results, cascaded system is unreachable if $\exists (\lambda_2 , w_2)$ and $w_1 \neq 0$
-such that $(\lambda_2 , v_2)$ is a left eigenvalue-eigenvector pair of $A_2$ and $\lambda_2$ is a \textbf{left} zero of 
-$G_1(s)$ with $w_1$ and $(-B_2^T w_2)$ as the \text{state-zero-direction} and \textit{input-zero-direction} respectively. 
+\begin{tcolorbox}[takeawaybox, title=Key Takeaway: Reachability in Cascade]
+If we summarize the results, a cascaded system is unreachable if $\exists (\lambda_2 , w_2)$ and $w_1 \neq 0$
+such that $(\lambda_2 , w_2)$ is a left eigenvalue-eigenvector pair of $A_2$ and $\lambda_2$ is a \textbf{left zero} of 
+$G_1(s)$ with $w_1$ and $(-B_2^T w_2)$ as the \textit{state-zero-direction} and \textit{input-zero-direction} respectively. 
+
+\vspace{2mm}
+\textbf{In simpler terms, reachability is lost when a transmission zero of the first system cancels a pole of the second system.}
+\end{tcolorbox}
 
 \subsection{Parallel Connection}
 		
@@ -241,16 +289,13 @@ $G_1(s)$ and $G_2(s)$ and associated minimal representations $\left( \begin{arra
 C_1 & D_1 \end{array} \right)$ and $\left( \begin{array}{c|c} A_2 & B_2 \\ \hline
 C_2 & D_2 \end{array} \right)$, connected in parallel configuration. 
 		
-\begin{center}
-  \begin{minipage}[h]{0.9\linewidth}
-    \begin{center}
-      \includegraphics[width=0.70\textwidth]{parallel}
-    \end{center}
-  \end{minipage}
-    \end{center}
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.70\textwidth]{parallel}
+\end{figure}
 		
 The transfer function of the connection is simply equal to $G(s) = G_1(s) + G_2(s)$. Let $x_1$ and $x_2$
-state-variables of the sub-systems, then natural choice of the state variable for the series connection is 
+be the state-variables of the sub-systems, then the natural choice of the state variable for the parallel connection is 
 $x = \begin{bmatrix} x_1 \\ x_2 \end{bmatrix}$. Under this definition the state-space representation for the whole system 
 can be found as
 %
@@ -261,8 +306,8 @@ A = \left[ \begin{array}{c|c} A_1 & 0 \\ \hline 0  & A_2 \end{array} \right]
 \, , \, D = \left[ \begin{array}{c} D_1 +  D_2  \end{array} \right]
 \end{align*}
 %
-Clearly eigenvalues of A are the combination of the eigenvalues of $A_1$ and $A_2$ and the poles of the system 
-Let's analyze the observability of the connection via one of the modal reachability tests. 
+Clearly eigenvalues of $A$ are the combination of the eigenvalues of $A_1$ and $A_2$ and the poles of the system.
+Let's analyze the observability of the connection via the PBH test. 
 %
 \begin{align*}
 	\left[ \begin{array}{c} \lambda I - A \\ \hline C \end{array} \right]
@@ -272,12 +317,12 @@ Let's analyze the observability of the connection via one of the modal reachabil
 	\end{array} \right]
 \end{align*}
 %
-It is easy to observe that combined system is always observable if $A_o1$ 
-and $A_2$ does not share any common eigenvalue. Thus a necessary (but not sufficient) condition 
+It is easy to observe that combined system is always observable if $A_1$ 
+and $A_2$ do not share any common eigenvalue. Thus a necessary (but not sufficient) condition 
 such that parallel connection loses observability is that $A_1$ and $A_2$ will have at least 1 
-common eigenvalue. Let's assume that $\lambda_c$ is a common eigenvalue/pole of both sub-systems
+common eigenvalue. Let's assume that $\lambda_c$ is a common eigenvalue/pole of both sub-systems.
 Then $\left[ \begin{array}{c} \lambda I - A \\ \hline C \end{array} \right]_{\lambda = \lambda_c}$ 
-looses rank, if $\exists v = \begin{bmatrix} v_1 \\ v_2 \end{bmatrix}$ such that 
+loses rank, if $\exists v = \begin{bmatrix} v_1 \\ v_2 \end{bmatrix}$ such that 
 %
 %
 \begin{align*}
@@ -285,14 +330,21 @@ looses rank, if $\exists v = \begin{bmatrix} v_1 \\ v_2 \end{bmatrix}$ such that
 	\, \iff \,  \left[ \begin{array}{c|c} \lambda I - A_1 & 0 \\ \hline 0 &  \lambda I - A_2 \\ \hline  C_1 & C_2 \end{array} \right] \begin{bmatrix} v_1 \\ v_2 \end{bmatrix} = 0
 	\, \iff \, 
 	\\
-	&A_1 v_1 = \lambda_c v_1 \, , \, A_2 v_2 = \lambda_c v_2 \, , \& \, C_1 v_1 + C_2 v_2 = 0
+	& A_1 v_1 = \lambda_c v_1 \\
+	& A_2 v_2 = \lambda_c v_2 \\
+	& C_1 v_1 + C_2 v_2 = 0
 \end{align*}
 %
-In other words combined system looses observability if and only if $\exists \, \lambda_c  \, , \, v_1 \, ,\& \, v_2$ such that 
+\begin{tcolorbox}[takeawaybox, title=Key Takeaway: Observability in Parallel]
+The combined system loses observability if and only if $\exists \, \lambda_c  \, , \, v_1 \, ,\& \, v_2$ such that 
 $\lambda_c$ is a common eigenvalue of both systems, and there exists an $(v_1,v_2)$ eigenvector pair ($v_i$ is an eigenvector of $A_i$ associated with $\lambda_c$)
-such that $C_1 v_1 + C_2 v_2 = 0$.
+such that $C_1 v_1 + C_2 v_2 = 0$. 
 
-Now analyze the reachability of the connection via one of the modal reachability tests. 
+\vspace{2mm}
+\textbf{Physically, this means the natural responses of the two subsystems associated with the common pole $\lambda_c$ completely cancel each other out at the output. The internal modes are excited, but their sum is identically zero.}
+\end{tcolorbox}
+
+Now let's analyze the reachability of the connection via the PBH test. 
 %
 \begin{align*}
 	\left[ \begin{array}{c|c} \lambda I - A & B \end{array} \right]
@@ -302,11 +354,11 @@ Now analyze the reachability of the connection via one of the modal reachability
 \end{align*}
 %
 It is easy to observe that combined system is always reachable if $A_1$ 
-and $A_2$ does not share any common eigenvalue. Thus a necessary (but not sufficient) condition 
-such that parallel connection loses reahcability is that $A_1$ and $A_2$ will have at least 1 
-common eigenvalue. Let's assume that $\lambda_c$ is a common eigenvalue/pole of both sub-systems
+and $A_2$ do not share any common eigenvalue. Thus a necessary (but not sufficient) condition 
+such that parallel connection loses reachability is that $A_1$ and $A_2$ will have at least 1 
+common eigenvalue. Let's assume that $\lambda_c$ is a common eigenvalue/pole of both sub-systems.
 Then $\left[ \begin{array}{c|c} \lambda I - A & B \end{array} \right]_{\lambda = \lambda_c}$ 
-looses rank, if $\exists w = \begin{bmatrix} w_1 \\ w_2 \end{bmatrix}$ such that 
+loses rank, if $\exists w = \begin{bmatrix} w_1 \\ w_2 \end{bmatrix}$ such that 
 %
 %
 \begin{align*}
@@ -314,12 +366,19 @@ looses rank, if $\exists w = \begin{bmatrix} w_1 \\ w_2 \end{bmatrix}$ such that
 	\, \iff \,  \begin{bmatrix} w_1^T & w_2^T \end{bmatrix} \left[ \begin{array}{c|c|c} \lambda_c I - A_1 & 0 & B_1  \\ \hline 0 &  \lambda_c I - A_2 & B_2 \end{array} \right]  = 0
 	\, \iff \, 
 	\\
-	&w_1^T A_1 = \lambda_c w_1^T \, , \, w_2^T A_2 = \lambda_c w_2^T \, , \& \, w_1^T B_1 + w_2^T B_2 = 0
+	& w_1^T A_1 = \lambda_c w_1^T \\
+	& w_2^T A_2 = \lambda_c w_2^T \\
+	& w_1^T B_1 + w_2^T B_2 = 0
 \end{align*}
 %
-In other words combined system looses reachability if and only if $\exists \, \lambda_c  \, , \, w_1 \, ,\& \, w_2$ such that 
+\begin{tcolorbox}[takeawaybox, title=Key Takeaway: Reachability in Parallel]
+The combined system loses reachability if and only if $\exists \, \lambda_c  \, , \, w_1 \, ,\& \, w_2$ such that 
 $\lambda_c$ is a common eigenvalue of both systems, and there exists an $(w_1,w_2)$ left-eigenvector pair ($w_i$ is a left eigenvector of $A_i$ associated with $\lambda_c$)
-such that $w_1^T B_1 + w_2^T B_2 = 0$.
+such that $w_1^T B_1 + w_2^T B_2 = 0$. 
+
+\vspace{2mm}
+\textbf{This implies that the input excites the common mode in both subsystems in equal and opposite ways, resulting in zero net excitation of that mode.}
+\end{tcolorbox}
 
 \subsection{Feedback Connection (Unity)}
 		
@@ -328,18 +387,15 @@ $G_1(s)$ and $G_2(s)$ and associated minimal representations $\left( \begin{arra
 C_1 & D_1 \end{array} \right)$ and $\left( \begin{array}{c|c} A_2 & B_2 \\ \hline
 C_2 & D_2 \end{array} \right)$, connected in a unity feedback configuration. 
 		
-\begin{center}
-  \begin{minipage}[h]{0.9\linewidth}
-    \begin{center}
-      \includegraphics[width=0.8\textwidth]{feedback}
-    \end{center}
-  \end{minipage}
-    \end{center}
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.8\textwidth]{feedback}
+\end{figure}
 
 The transfer function of the connection from the reference signal to the output signal is equal to 
 $G(s) = \left( I + G_1(s) G_2(s) \right)^{-1} G_1(s) G_2(s)$. Let $x_1$ and $x_2$
-state-variables of the sub-systems, then natural choice of the state variable for the series connection is 
-$x = \begin{bmatrix} x_1 \\ x_2 \end{bmatrix}$. Let's also assume that $D_1 = 0$ and $D_2 = 0$, under this assumption the state-space representation for the whole system can be found as
+be the state-variables of the sub-systems, then the natural choice of the state variable for the feedback connection is 
+$x = \begin{bmatrix} x_1 \\ x_2 \end{bmatrix}$. Let's also assume that $D_1 = 0$ and $D_2 = 0$\footnote{Note: We assume $D_1=D_2=0$ to ensure the feedback loop is strictly proper and well-posed, preventing algebraic loops. Even if $D_i \neq 0$, the core results hold as long as $(I + D_1 D_2)$ is invertible.}, under this assumption the state-space representation for the whole system can be found as
 %
 \begin{align*}
 A_{CL} = \left[ \begin{array}{c|c} A_1 & -B_1 C_2 \\ \hline B_2 C_1  & A_2 \end{array} \right]
@@ -350,7 +406,7 @@ A_{CL} = \left[ \begin{array}{c|c} A_1 & -B_1 C_2 \\ \hline B_2 C_1  & A_2 \end{
 %
 Unfortunately it is not straightforward to inspect the eigenvalues of the closed-loop system, since
 output feedback potentially moves the closed-loop eigenvalue locations. Note that in this topology, 
-feedforward system, is the cascade configuration that we analyzed in the first part. In that respect, we
+the feedforward system is exactly the cascade configuration that we analyzed in the first part. In that respect, we
 can re-write the closed-loop matrices as
 \begin{align*}
 A_{CL} &= \left[ \begin{array}{c|c} A_1 & -B_1 C_2 \\ \hline B_2 C_1  & A_2 \end{array} \right]
@@ -372,29 +428,18 @@ Let's assume that $(A_{CL} , B_{CL})$ pair is unreachable, then $\exists w$ such
 	\lambda w^T &= w^T A_{OL}
 \end{align*}
 %
-This proves that $(A_{CL} , B_{CL})$ is unreachable if and only if $(A_{OL} , B_{OL})$ is unreachable. 
-In that respect the feedback configuration looses reachability if and only if cascade configuration in the 
-feed-forward path looses reachability.
+\begin{tcolorbox}[takeawaybox, title=Key Takeaway: Minimality in Feedback Loops]
+This proves that $(A_{CL} , B_{CL})$ is unreachable if and only if $(A_{OL} , B_{OL})$ is unreachable. In that respect, the feedback configuration loses reachability if and only if the cascade configuration in the feedforward path loses reachability.
 
-Now let's analyze the observability of the feedback connection. Let's assume that $(A_{CL} , C_{CL})$ pair is unobservable, then $\exists v$ such that 
-%
+\vspace{2mm}
+Similarly, for observability, let's assume that $(A_{CL} , C_{CL})$ pair is unobservable, then $\exists v$ such that:
 \begin{align*}
-	C_{CL} v &= 0 \, \iff \, C_{OL} = 0 
-	\\
-	\lambda v  &= A_{CL} v = \left[ A_{OL} - B_{OL} C_{OL} \right] v = A_{OL} v
-	\\
+	C_{CL} v &= 0 \, \iff \, C_{OL} = 0 \\
+	\lambda v  &= A_{CL} v = \left[ A_{OL} - B_{OL} C_{OL} \right] v = A_{OL} v \\
 	\lambda v &= A_{OL} v
 \end{align*}
-%
-This proves that $(A_{CL} , C_{CL})$ is unobservable if and only if $(A_{OL} , C_{OL})$ is unobservable.
-In that respect the feedback configuration looses observability if and only if cascade configuration in the 
-feed-forward path looses observability.
-
-
-
-
-
-
+This proves that $(A_{CL} , C_{CL})$ is unobservable if and only if $(A_{OL} , C_{OL})$ is unobservable. The feedback configuration loses observability if and only if the cascade configuration in the feedforward path loses observability.
+\end{tcolorbox}
 
 % **** This ENDS THE EXAMPLES. DON'T DELETE THE FOLLOWING LINE:
 \end{document}
