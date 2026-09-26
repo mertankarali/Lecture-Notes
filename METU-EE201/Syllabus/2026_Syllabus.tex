@@ -1,0 +1,274 @@
+%==============================================================
+%  EE201  Circuit Theory I  --  Fall 2026/27
+%  Common syllabus (departmental) + Section 2 specific additions
+%  Instructor of Section 2: Mert Ankaralı
+%
+%  Compile:  pdflatex 2026_Syllabus.tex  (twice, for hyperref)
+%==============================================================
+\documentclass[10pt,a4paper]{article}
+
+%-------------------- packages --------------------------------
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{lmodern}
+\usepackage[margin=1.8cm,top=1.9cm,bottom=1.7cm,headheight=13pt,headsep=8pt,footskip=20pt]{geometry}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{enumitem}
+\usepackage[table]{xcolor}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage[most]{tcolorbox}
+\usepackage[colorlinks=true,allcolors=metured,breaklinks=true]{hyperref}
+
+%-------------------- colours ---------------------------------
+\definecolor{metured}{RGB}{155,27,48}   % METU maroon
+\definecolor{metugray}{RGB}{88,89,91}
+\definecolor{lightgray}{RGB}{242,242,242}
+
+%-------------------- course-wide macros ----------------------
+% Change these in ONE place if anything moves.
+\newcommand{\coursecode}{EE201}
+\newcommand{\coursename}{Circuit Theory I}
+\newcommand{\term}{Fall 2026--2027}
+\newcommand{\mysection}{Section 2}
+\newcommand{\myname}{Mert Ankaralı}
+\newcommand{\myoffice}{A-410/D-104}
+\newcommand{\mymail}{mertan@metu.edu.tr}
+% >>> Public repository that hosts the lecture notes of Section 2 <<<
+% Repo: mertankarali/Lecture-Notes (public), course folder: METU-EE201
+\newcommand{\notesrepo}{https://github.com/mertankarali/Lecture-Notes/tree/master/METU-EE201}
+\newcommand{\notesrepotext}{github.com/mertankarali/Lecture-Notes}
+\newcommand{\odtuclass}{https://odtuclass.metu.edu.tr}
+\newcommand{\coordinator}{Prof. T. Engin Tuncer}
+\newcommand{\coordinatormail}{etuncer@metu.edu.tr}
+\newcommand{\tunanotes}{https://users.metu.edu.tr/etuna/ee201/}
+\newcommand{\tunanotestext}{users.metu.edu.tr/etuna/ee201}
+
+%-------------------- compact layout --------------------------
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\scriptsize\textcolor{metugray}{\coursecode\ -- Syllabus}}
+\rhead{\scriptsize\textcolor{metugray}{METU EEE, \term}}
+\cfoot{\scriptsize\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\titleformat{\section}{\normalsize\bfseries\color{metured}}{\thesection.}{0.5em}{}
+\titleformat{\subsection}[runin]
+  {\small\bfseries\color{metugray}}{}{0pt}{}[\,---\,]
+\titlespacing*{\section}{0pt}{0.9ex plus .2ex}{0.35ex}
+\titlespacing*{\subsection}{0pt}{0.7ex plus .1ex}{0.5em}
+
+\setlist[itemize]{itemsep=0.5pt,topsep=1.5pt,parsep=0pt,partopsep=0pt,leftmargin=1.4em}
+\setlist[enumerate]{itemsep=0.5pt,topsep=1.5pt,parsep=0pt,partopsep=0pt,leftmargin=1.6em}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.45ex plus .1ex}
+\renewcommand{\arraystretch}{1.05}
+\setlength{\tabcolsep}{5pt}
+
+\newtcolorbox{notebox}[1][]{
+  enhanced, colback=lightgray, colframe=metured,
+  boxrule=0.7pt, left=7pt, right=7pt, top=4pt, bottom=4pt,
+  before skip=4pt, after skip=4pt, arc=2pt, #1}
+
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+
+%==============================================================
+\begin{document}
+
+%-------------------- title block -----------------------------
+\begin{center}
+  {\small\scshape Middle East Technical University \quad\textbar\quad
+   Department of Electrical and Electronics Engineering}\\[3pt]
+  {\Large\bfseries\color{metured} \coursecode: \coursename}\\[2pt]
+  {\small \term\ \quad\textbar\quad Course Syllabus}
+\end{center}
+\vspace{-0.3em}
+{\color{metured}\hrule height 0.8pt}
+\vspace{0.4em}
+
+%==============================================================
+\section{Instructor Information}
+
+\begin{center}
+\small
+{\setlength{\tabcolsep}{4pt}\begin{tabular}{c L{3.6cm} c L{4.3cm} @{\hskip 0.8em} c L{3.2cm}}
+\toprule
+\textbf{Sec.} & \textbf{Instructor} & \textbf{Office} & \textbf{e-mail} & \textbf{Sec.} & \textbf{Instructor}\\
+\midrule
+1 & T. Engin Tuncer & E109  & \href{mailto:etuncer@metu.edu.tr}{etuncer@metu.edu.tr} & 4 & Emre Tuna (E113)\\
+\rowcolor{lightgray}
+\textbf{2} & \textbf{\myname} & \textbf{\myoffice} & \href{mailto:\mymail}{\mymail} & 5 & Yunus Aslan (C-103)\\
+3 & Emre Tuna & E113 & \href{mailto:etuna@metu.edu.tr}{etuna@metu.edu.tr} & &\\
+\bottomrule
+\end{tabular}}
+\end{center}
+\vspace{-0.4em}
+
+\textbf{Course coordinator:} \coordinator\
+(\href{mailto:\coordinatormail}{\coordinatormail}).
+
+\subsection*{Teaching assistants}
+\textbf{\coursecode\ (theory):} Anıl Gülbeden (\href{mailto:gulbeden@metu.edu.tr}{gulbeden@metu.edu.tr}).\\
+\textbf{\coursecode/EE213 --- laboratory:} Alp Gürsoy, Eda Özkaynar, Orhun Koç, Civan Serhat Çevik,
+Elif Çağla Tay, Enfal Çabuk, Adem Utku Atasayar, Özgür Gülsuna, Alper Alka.
+
+%==============================================================
+\section{Textbooks, References and Other Resources}
+
+\begin{enumerate}
+  \item Alexander, C.~K., \& Sadiku, M.~N.~O. (2016). \emph{Fundamentals of Electric Circuits.}
+        McGraw-Hill. \hfill \textit{(main textbook)}
+  \item Chua, L.~O., Desoer, C.~A., \& Kuh, E.~S. (1987). \emph{Linear and Nonlinear Circuits.}
+        McGraw-Hill. \hfill \textit{(reference)}
+  \item Lecture notes and videos by Emre Tuna, \href{\tunanotes}{\texttt{\tunanotestext}}.
+\end{enumerate}
+
+\textbf{ODTÜCLASS} (\href{\odtuclass}{odtuclass.metu.edu.tr}) is the official channel for all
+sections: announcements, the detailed course outline, grades, exam and laboratory information,
+and the common course material listed above.
+
+%==============================================================
+\section{Course Materials for \mysection}
+
+In addition to the common resources above, the lecture notes and supplementary material
+\emph{specific to \mysection} are maintained in a public repository:
+
+\begin{notebox}
+\begin{center}
+  \textbf{\mysection\ lecture notes and course material}\\[2pt]
+  {\ttfamily\href{\notesrepo}{\notesrepotext}}\;\;$\rightarrow$\;\;{\ttfamily METU-EE201}
+\end{center}
+\vspace{-0.2em}
+\scriptsize
+Public: no account is required to read or download. Updated \emph{during} the semester,
+typically before each lecture --- refresh it regularly rather than downloading once.
+Corrections and typo reports (issues or e-mail) are very welcome.
+\end{notebox}
+\vspace{-0.2em}
+
+\textbf{What is where:} \emph{repository} $\rightarrow$ \mysection\ lecture notes and
+supplementary material; \emph{ODTÜCLASS} $\rightarrow$ everything official and everything
+common to all sections.
+Announcements are always made on ODTÜCLASS.
+
+%==============================================================
+\section{Grading}
+
+\begin{center}
+\small
+\begin{tabular}{l c c c c c @{\hskip 1.4em} c}
+\toprule
+\textbf{Component} & Attendance & Midterm 1 & Midterm 2 & Final Exam & Laboratory & \textbf{Total}\\
+\midrule
+\textbf{Weight} & 5\,\% & 20\,\% & 20\,\% & 35\,\% & 20\,\% & \textbf{100\,\%}\\
+\bottomrule
+\end{tabular}
+\end{center}
+\vspace{-0.3em}
+
+%==============================================================
+\section{Attendance \normalfont\small\color{metugray}(\mysection)}
+
+Attendance is worth 5\,\% of the grade, and attendance below 40\,\% means \textbf{NA}
+(see Section~6). In \mysection\ it is collected as follows.
+
+\begin{itemize}
+  \item Attendance is taken with a \textbf{QR code through ODTÜCLASS}. Come with a device that
+        can read it.
+  \item It is taken \textbf{once per class meeting} --- once in a one-hour meeting and once in a
+        two-hour meeting, \emph{not} once per lecture hour.
+  \item It is normally opened \textbf{at the beginning} of the meeting. In a two-hour meeting,
+        if I give a break, I may open it \textbf{at the break} instead.
+  \item Meetings are not always run the same way: I sometimes teach two hours as a single block,
+        sometimes finish early, and I do not always open attendance at the break.
+  \item Therefore there is \textbf{no pattern to rely on}. Missing the first hour and arriving at
+        the break --- or any similar strategy --- is entirely at your own risk: if attendance was
+        taken while you were not in the room, that meeting is lost and it is not repeated.
+\end{itemize}
+
+%==============================================================
+\section{\coursecode\ Final Examination Policy}
+
+A student (i)~whose attendance is below 40\,\%, (ii)~missing any midterm examination without a
+valid excuse, (iii)~missing any laboratory experiment without a valid excuse, or (iv)~missing the
+Laboratory Final Exam without a valid excuse, will \textbf{not} be admitted to the final
+examination and will receive the \textbf{NA} grade.
+
+%==============================================================
+\section{Make-up Policy}
+
+A make-up compensates for a \emph{single} missing exam or missing laboratory. Students missing
+more than one exam or laboratory have to take multiple make-ups. Make-up exams can take place
+before or after the final exam; please follow the announcements on \href{\odtuclass}{ODTÜCLASS}.
+The laboratory make-up is announced separately.
+
+%==============================================================
+\section{Previous Students of \coursecode\ and EE213}
+
+\begin{itemize}
+  \item Students who have taken \textbf{EE213}, have a grade for it in their transcript, and are
+        registered to the new \coursecode\ will get their course grade from the \coursecode\
+        theoretical part (100\,\%); previous laboratory grades will \emph{not} be included.
+  \item Students who \textbf{failed} EE213 and take only the EE213 laboratory will take their
+        grades from the laboratory work only, as before.
+  \item The new \coursecode\ (which includes laboratory work) is opened only for new students
+        who take this course for the first time.
+  \item If you are not sure which case applies to you, send an e-mail to the course coordinator,
+        \coordinator\ (\href{mailto:\coordinatormail}{\coordinatormail}).
+\end{itemize}
+
+%==============================================================
+\section{Course Outline}
+
+\begin{enumerate}[leftmargin=1.5em,labelsep=0.4em]
+  \item \textbf{Basic Concepts} \hfill \textit{(6 hrs)}\\
+        Introduction; lumped elements and lumped circuits; interconnection equations;
+        branch relations; basic lumped elements; circuit analysis.
+  \item \textbf{Linear Time-Invariant Resistive Circuits} \hfill \textit{(10 hrs)}\\
+        LTI resistive elements (resistors, dependent sources, ideal transformers);
+        analysis methods; one-port circuits; two-ports.
+  \item \textbf{Nonlinear Resistive Circuits} \hfill \textit{(3 hrs)}\\
+        Nonlinear resistive elements and circuits; load-line analysis;
+        piecewise-linear resistive circuits.
+  \item \textbf{Operational Amplifier Circuits} \hfill \textit{(7 hrs)}\\
+        Operational amplifiers; basic op-amp circuits; more realistic op-amp models;
+        miscellaneous resistive op-amp circuits; op-amp with piecewise-linear elements.
+  \item \textbf{Dynamic Elements} \hfill \textit{(5 hrs)}\\
+        Ramp, step and impulse functions; capacitors; inductors.
+  \item \textbf{First Order Circuits} \hfill \textit{(11 hrs)}\\
+        First order linear differential equations with constant coefficients; simple LTI RC
+        circuit; simple LTI RL circuit; analysis of miscellaneous LTI first order circuits;
+        piecewise-linear first order circuits.
+\end{enumerate}
+
+\vspace{-0.2em}
+{\footnotesize A more detailed course outline is available on \href{\odtuclass}{ODTÜCLASS}.}
+
+%==============================================================
+\section{Laboratory Outline}
+
+\begin{center}
+\small
+\begin{tabular}{l L{5.4cm} @{\hskip 1.6em} l L{5.4cm}}
+\toprule
+\textbf{Exp.} & \textbf{Title} & \textbf{Exp.} & \textbf{Title}\\
+\midrule
+\#1 & Introduction to Voltage, Current and Resistance Measurements & \#4 & Resistive Circuits\\
+\#2 & Signal Generators and Oscilloscopes   & \#5 & Operational Amplifiers\\
+\#3 & LTspice Workshop \textit{(computer)}  & \#6 & First Order Circuits\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+%==============================================================
+\vspace{0.2em}
+{\color{metugray}\hrule height 0.4pt}
+\vspace{0.3em}
+{\scriptsize\color{metugray}%
+\coursecode\ \coursename\ --- \term\ --- \mysection\ (\myname).
+Common syllabus prepared by the \coursecode\ teaching team;
+section-specific material at \href{\notesrepo}{\notesrepotext}.\par}
+
+\end{document}
