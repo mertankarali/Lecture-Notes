@@ -1,0 +1,1012 @@
+%==============================================================
+%  EE201 -- Circuit Theory I          Fall 2026/27, Section 2
+%  Lecture 1 : Basic Concepts   --   presentation slides
+%  M. Mert Ankaralı, METU EEE
+%
+%  Compile:  ./build.sh      (or: pdflatex EE201_Lecture_1_slides.tex, twice)
+%  Same colour code as the handout:
+%      charge = purple, current = blue, voltage = orange, power = green
+%==============================================================
+\documentclass[11pt,aspectratio=169]{beamer}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{colortbl}
+\usepackage{tikz}
+\usepackage[american,siunitx]{circuitikz}
+\usetikzlibrary{arrows.meta,positioning,calc}
+
+%-------------------- plain METU-flavoured theme --------------
+\usetheme{default}
+\usecolortheme{default}
+\useinnertheme{rectangles}
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{itemize items}[square]
+\setbeamerfont{frametitle}{size=\large,series=\bfseries}
+\setbeamerfont{title}{size=\LARGE,series=\bfseries}
+
+\definecolor{metured}{RGB}{155,27,48}
+\definecolor{metugray}{RGB}{88,89,91}
+\definecolor{metulight}{RGB}{243,240,241}
+\definecolor{ccur}{RGB}{0,102,170}
+\definecolor{cvolt}{RGB}{214,120,0}
+\definecolor{cpow}{RGB}{23,128,74}
+\definecolor{ccharge}{RGB}{124,60,160}
+
+\setbeamercolor{structure}{fg=metured}
+\setbeamercolor{frametitle}{fg=metured,bg=}
+\setbeamercolor{title}{fg=metured}
+\setbeamercolor{normal text}{fg=black!88}
+\setbeamercolor{block title}{fg=white,bg=metured}
+\setbeamercolor{block body}{bg=metulight}
+\setbeamercolor{alerted text}{fg=metured}
+
+\setbeamertemplate{frametitle}{%
+  \vspace{0.55em}%
+  \usebeamerfont{frametitle}\usebeamercolor[fg]{frametitle}\insertframetitle\par
+  \vspace{-0.2em}{\color{metured}\rule{\textwidth}{1pt}}\par\vspace{-0.2em}}
+
+\setbeamertemplate{footline}{%
+  \hbox{\begin{beamercolorbox}[wd=\paperwidth,ht=2.4ex,dp=1.4ex,leftskip=1.2em,rightskip=1.2em]{}%
+  \tiny\color{metugray}\coursecode\ \textbar\ Lecture 1: Basic Concepts \textbar\ \term
+  \hfill \insertframenumber/\inserttotalframenumber
+  \end{beamercolorbox}}}
+
+%-------------------- macros ----------------------------------
+\newcommand{\coursecode}{EE201}
+\newcommand{\term}{Fall 2026--2027}
+\newcommand{\Icol}[1]{\textcolor{ccur}{#1}}
+\newcommand{\Vcol}[1]{\textcolor{cvolt}{#1}}
+\newcommand{\Pcol}[1]{\textcolor{cpow}{#1}}
+\newcommand{\Qcol}[1]{\textcolor{ccharge}{#1}}
+\newcommand{\uni}[1]{\,\mathrm{#1}}
+\newcommand{\A}{\uni{A}} \newcommand{\V}{\uni{V}}
+\newcommand{\W}{\uni{W}} \newcommand{\J}{\uni{J}}
+\newcommand{\Cb}{\uni{C}} \newcommand{\s}{\uni{s}}
+
+\ctikzset{bipoles/length=0.9cm}
+\tikzset{
+  curarr/.style={-{Stealth[length=2.6mm]}, ccur, very thick},
+  blk/.style={draw=metugray, fill=metulight, rounded corners=2pt,
+              minimum height=1.25cm, text width=2.45cm, align=center, font=\scriptsize},
+  flowarr/.style={-{Stealth[length=3mm]}, metured, very thick},
+}
+
+\hypersetup{colorlinks=true,allcolors=metured}
+
+\title{Lecture 1: Basic Concepts}
+\subtitle{EE201 -- Circuit Theory I}
+\author{M. Mert Ankaralı}
+\institute{\small Department of Electrical and Electronics Engineering\\
+           Middle East Technical University}
+\date{\small \term\ \textbar\ Section 2}
+
+%==============================================================
+\begin{document}
+
+%--------------------------------------------------------------
+\begin{frame}[plain]
+  \titlepage
+  \begin{center}\small\color{metugray}
+    charge \Qcol{$\blacksquare$}\quad current \Icol{$\blacksquare$}\quad
+    voltage \Vcol{$\blacksquare$}\quad power \Pcol{$\blacksquare$}\\[2pt]
+    {\scriptsize these colours mean the same thing on every slide and in the notes}
+  \end{center}
+\end{frame}
+
+%==============================================================
+\section{Modelling}
+%--------------------------------------------------------------
+\begin{frame}{Circuit theory is not about wires}
+  \vfill
+  \begin{center}
+  \begin{tikzpicture}[node distance=0.7cm]
+    \node[blk] (a) {Real system};
+    \node[blk, right=of a] (b) {Graphical model};
+    \node[blk, right=of b] (c) {Mathematical model};
+    \node[blk, right=of c] (d) {Analysis \& design};
+    \draw[flowarr] (a) -- (b);
+    \draw[flowarr] (b) -- (c);
+    \draw[flowarr] (c) -- (d);
+    \node[below=2pt of b, font=\scriptsize\itshape, text=metured] {the art};
+    \node[below=2pt of c, font=\scriptsize\itshape, text=metured] {the mathematics};
+  \end{tikzpicture}
+  \end{center}
+  \vfill
+  \begin{itemize}
+    \item A real resistor has inductance, a temperature coefficient, a size, a price.
+    \item We keep \alert{one number}, $R$, and throw the rest away.
+    \item Whether that is brilliant or foolish depends on the question you are asking.
+  \end{itemize}
+  \vfill
+  \begin{center}
+    {\large\itshape ``All models are wrong, but some are useful.''}\\[3pt]
+    {\small\color{metugray} George E. P. Box, 1976}
+  \end{center}
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{The same pipeline, other domains}
+  \begin{center}
+  \small
+  \begin{tabular}{l l l}
+    \toprule
+    \textbf{Domain} & \textbf{``Across'' quantity} & \textbf{``Through'' quantity}\\
+    \midrule
+    electrical & \Vcol{electric potential} & \Icol{current}\\
+    hydraulic  & pressure                  & volumetric flow\\
+    thermal    & temperature               & heat flow\\
+    mechanical & velocity                  & force\\
+    \bottomrule
+  \end{tabular}
+  \end{center}
+  \vfill
+  \begin{block}{Every ``across'' quantity is a difference}
+    It is always measured between two points --- and in every domain the word
+    ``difference'' is usually dropped. We say \Vcol{voltage}, not ``potential
+    difference''; a plumber says ``pressure'', not ``pressure difference''. The
+    difference is still there, hidden in the name.
+  \end{block}
+\end{frame}
+
+%==============================================================
+\section{Charge}
+%--------------------------------------------------------------
+\begin{frame}{\Qcol{Charge}}
+  \begin{block}{Definition}
+    \textbf{Charge} is the property of matter that makes it feel a force in an
+    electromagnetic field. Symbol \Qcol{$q$}, unit \textbf{coulomb (C)}.
+  \end{block}
+  \vspace{0.3em}
+  \begin{columns}[c,onlytextwidth]
+    \column{0.52\textwidth}
+      \begin{center}
+      \begin{tikzpicture}[scale=0.9]
+        % --- an atom
+        \draw[ccharge!55, thick] (0,0) ellipse (1.05 and 0.42);
+        \begin{scope}[rotate=60]  \draw[ccharge!55, thick] (0,0) ellipse (1.05 and 0.42); \end{scope}
+        \begin{scope}[rotate=-60] \draw[ccharge!55, thick] (0,0) ellipse (1.05 and 0.42); \end{scope}
+        \node[circle, fill=ccharge, text=white, inner sep=2.2pt, font=\tiny] at (0,0) {$+$};
+        \foreach \p in {(1.05,0), (-0.52,0.91), (-0.52,-0.91)}{
+          \node[circle, fill=ccur, text=white, inner sep=1.7pt, font=\tiny] at \p {$-$};}
+        \node[font=\scriptsize, text=metugray] at (0,-1.55) {one atom: as many $-$ as $+$};
+      \end{tikzpicture}
+      \end{center}
+    \column{0.44\textwidth}
+      \[ e = 1.602\times10^{-19}\Cb \]
+      \[ 1\Cb \approx 6.24\times10^{18}\ \text{electron charges} \]
+      \vspace{0.2em}
+      \begin{itemize}
+        \item electron: $-e$ \quad proton: $+e$
+        \item \textbf{Charge is conserved} --- never created or destroyed, only moved.
+              (This will become KCL.)
+      \end{itemize}
+  \end{columns}
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{A wire is already \alert{full} of charge}
+  \begin{columns}[c,onlytextwidth]
+    \column{0.46\textwidth}
+      \begin{center}
+      \begin{tikzpicture}[scale=0.92]
+        \fill[gray!8] (-0.55,-0.55) rectangle (3.35,2.35);
+        \foreach \i in {0,1,2,3}{\foreach \j in {0,1,2}{
+          \node[circle, draw=ccharge, fill=ccharge!20, inner sep=2.0pt, font=\tiny]
+               at (\i*0.93,\j*0.93) {$+$};}}
+        \foreach \p in {(0.45,0.3),(1.4,0.75),(2.3,0.25),(0.7,1.5),(1.75,1.7),
+                        (2.75,1.25),(0.25,2.0),(2.1,1.05),(1.15,0.15)}{
+          \node[circle, fill=ccur, text=white, inner sep=1.5pt, font=\tiny] at \p {$-$};}
+        \node[font=\scriptsize, text=metugray, align=center] at (1.4,-1.1)
+             {copper: fixed $+$ ions,\\ electrons free to wander};
+      \end{tikzpicture}
+      \end{center}
+    \column{0.50\textwidth}
+      $1\ \mathrm{cm^3}$ of copper contains about
+      \[ 8.5\times10^{22}\ \text{free electrons} \;\approx\; \Qcol{13\,600\Cb} \]
+      of \emph{mobile} charge --- and its net charge is \alert{zero}.
+      \vspace{0.5em}
+      \begin{block}{So what is a current?}
+        \small Every free electron left a $+$ ion behind. The metal stays neutral;
+        current is that charge \emph{drifting}, not charge being poured in.
+      \end{block}
+  \end{columns}
+\end{frame}
+
+%==============================================================
+\section{Current}
+%--------------------------------------------------------------
+\begin{frame}{\Icol{Current}: charge in motion}
+  \begin{block}{Definition}
+    \[
+      \Icol{i(t)} = \frac{dq(t)}{dt}
+      \qquad\Longleftrightarrow\qquad
+      q(t) = q(t_0) + \int_{t_0}^{t} i(\tau)\,d\tau
+    \]
+    Unit: \textbf{ampere (A)}, $1\A = 1\Cb/\s$.
+  \end{block}
+  \vfill
+  \begin{center}
+  \begin{tikzpicture}[scale=0.95]
+    \fill[gray!12] (0,-0.5) rectangle (6,0.5);
+    \draw[gray!55, thick] (0,-0.5) -- (6,-0.5);
+    \draw[gray!55, thick] (0,0.5) -- (6,0.5);
+    \draw[metured, very thick, dashed] (3.6,-0.8) -- (3.6,0.8);
+    \node[metured, font=\scriptsize, above] at (3.6,0.8) {cross-section};
+    \foreach \x/\y in {0.6/0.2, 1.3/-0.2, 2.0/0.1, 2.7/-0.25, 4.4/0.2, 5.1/-0.15, 5.7/0.25}{
+      \node[circle, draw=ccharge, fill=ccharge!25, inner sep=1.2pt, font=\tiny] at (\x,\y) {$+$};}
+    \draw[curarr] (1.0,1.25) -- (3.0,1.25) node[midway, above, font=\small] {$\Icol{i}$};
+  \end{tikzpicture}
+  \end{center}
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{The arrow is a \alert{choice}, not a fact}
+  \vfill
+  \begin{center}
+  \begin{tikzpicture}
+    \begin{scope}
+      \draw[thick] (0,0) -- (1,0); \draw[thick] (2,0) -- (3,0);
+      \draw[thick, fill=gray!10] (1,-0.4) rectangle (2,0.4);
+      \draw[curarr] (0.15,0.55) -- (0.95,0.55) node[midway,above,font=\small]{$\Icol{i_1 = 2\A}$};
+    \end{scope}
+    \begin{scope}[xshift=6.5cm]
+      \draw[thick] (0,0) -- (1,0); \draw[thick] (2,0) -- (3,0);
+      \draw[thick, fill=gray!10] (1,-0.4) rectangle (2,0.4);
+      \draw[curarr] (0.95,0.55) -- (0.15,0.55) node[midway,above,font=\small]{$\Icol{i_2 = -2\A}$};
+    \end{scope}
+  \end{tikzpicture}
+  \end{center}
+  \vfill
+  \begin{center}
+    \textbf{Same physical situation.} The arrow says which way we call positive;\\
+    the sign of the number says which way the charge really goes.
+  \end{center}
+  \vfill
+  {\small A negative answer is not a mistake --- it is the model telling you something.}
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{Two numbers worth knowing}
+  \begin{columns}[T,onlytextwidth]
+    \column{0.47\textwidth}
+      \begin{block}{How much is a coulomb?}
+        A $4000$ mAh phone battery:
+        \[ Q = 4\A \times 3600\s = 14\,400\Cb \]
+        \[ \approx 9\times10^{22}\ \text{elementary charges} \]
+      \end{block}
+      \small
+      At $10^{22}$ charges, the lumpiness of charge is invisible. We may treat
+      \Qcol{$q(t)$} as a \alert{smooth} quantity --- which is what lets us write
+      $dq/dt$ at all.
+    \column{0.47\textwidth}
+      \begin{block}{How fast do the charges move?}
+        $1\A$ in a $1\ \mathrm{mm^2}$ copper wire:
+        \begin{center}
+          each electron drifts at about\\[3pt]
+          \alert{$0.07$ mm/s} $\;\approx\;$ 1 metre in 4 hours
+        \end{center}
+      \end{block}
+      \small
+      Yet the lamp lights the instant you flip the switch. The carriers crawl;
+      the \emph{signal} that starts them travels near the speed of light.
+  \end{columns}
+  \vfill
+  \begin{center}\small\color{metugray}
+    We come back to that gap when we define a \emph{lumped} circuit.
+  \end{center}
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{Two footnotes that matter}
+  \begin{block}{Conventional current}
+    The arrow points the way \emph{positive} charge would move. In a copper wire the
+    carriers are electrons, so they actually move \emph{against} the arrow.\\[3pt]
+    This changes no equation in this course: a current only counts the \alert{net rate at
+    which charge crosses a section}, and one electron moving left counts exactly the same
+    as one positive charge moving right.
+  \end{block}
+  \vfill
+  \begin{block}{Notation}
+    \[
+      i(t),\ v(t),\ q(t),\ p(t) \quad\text{(may vary in time)}
+      \qquad
+      I,\ V,\ Q,\ P \quad\text{(constant)}
+    \]
+  \end{block}
+  \vfill
+  \begin{center}
+  \begin{tikzpicture}[scale=0.72]
+   \foreach \dx/\ttl in {0/{constant (DC)}, 5.0/{sinusoidal (AC)}, 10.0/{pulsed}}{
+     \begin{scope}[xshift=\dx cm]
+       \draw[->,gray!70] (-0.15,0) -- (3.6,0) node[right,font=\scriptsize,black] {$t$};
+       \draw[->,gray!70] (0,-0.9) -- (0,1.15) node[above,font=\scriptsize,black] {$i$};
+       \node[font=\scriptsize, text=metugray] at (1.7,-1.35) {\ttl};
+     \end{scope}}
+   \draw[ccur, very thick] (0,0.75) -- (3.4,0.75);
+   \begin{scope}[xshift=5.0cm]
+     \draw[ccur, very thick, domain=0:3.4, samples=120, smooth]
+          plot (\x, {0.8*sin(deg(2.2*\x))});
+   \end{scope}
+   \begin{scope}[xshift=10.0cm]
+     \draw[ccur, very thick] (0,0)--(0.5,0)--(0.5,0.8)--(1.3,0.8)--(1.3,0)
+          --(2.0,0)--(2.0,0.8)--(2.8,0.8)--(2.8,0)--(3.4,0);
+   \end{scope}
+  \end{tikzpicture}
+  \end{center}
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{Example: charging a phone}
+  The last part of a charge cycle: the charge \emph{stored in the battery} approaches its
+  full value, $q(t) = Q_f\left(1 - e^{-t/\tau}\right)$, with $Q_f = 3600\Cb$ and
+  $\tau = 20$ min.
+  \vspace{-0.2em}
+  \begin{columns}[c,onlytextwidth]
+    \column{0.57\textwidth}
+      \begin{center}
+      \begin{tikzpicture}[scale=0.63]
+        % q(t)
+        \draw[->,gray!70] (-0.15,0) -- (4.2,0) node[right,font=\scriptsize,black] {$t$};
+        \draw[->,gray!70] (0,-0.2) -- (0,2.0);
+        \draw[ccharge, very thick, domain=0:4.0, samples=120, smooth]
+             plot (\x, {1.6*(1-exp(-\x))});
+        \draw[ccharge!45, dashed] (0,1.6) -- (4.0,1.6);
+        \node[ccharge, font=\scriptsize, right] at (2.6,1.15) {$\Qcol{q(t)}$};
+        \node[ccharge, font=\scriptsize, left] at (-0.05,1.6) {$Q_f$};
+        % i(t)
+        \begin{scope}[xshift=4.9cm]
+          \draw[->,gray!70] (-0.15,0) -- (4.0,0) node[right,font=\scriptsize,black] {$t$};
+          \draw[->,gray!70] (0,-0.2) -- (0,2.0);
+          \draw[ccur, very thick, domain=0:4.0, samples=120, smooth]
+               plot (\x, {1.6*exp(-\x)});
+          \node[ccur, font=\scriptsize, right] at (1.5,0.75) {$\Icol{i(t)}$};
+          \node[ccur, font=\scriptsize, left] at (-0.05,1.6) {$3\A$};
+        \end{scope}
+      \end{tikzpicture}
+      \end{center}
+    \column{0.40\textwidth}
+      \[ \Icol{i(t)} = \frac{dq}{dt} = \frac{Q_f}{\tau}\,e^{-t/\tau} \]
+      \begin{itemize}
+        \item $i(0) = 3600/1200 = 3\A$
+        \item after $20$ min: $i = 3/e \approx 1.1\A$
+        \item the fuller it gets, the slower it fills
+      \end{itemize}
+  \end{columns}
+  \vfill
+  \begin{center}\small
+    \Qcol{Charge} is what accumulates; \Icol{current} is how fast it accumulates.
+  \end{center}
+\end{frame}
+
+%==============================================================
+\section{Voltage}
+%--------------------------------------------------------------
+\begin{frame}{\Vcol{Voltage}: why the charge moves}
+  Charge does not move by itself. Pushing it through an element \alert{costs or releases
+  energy} --- and that is what voltage measures.
+  \vfill
+  \begin{center}
+  \begin{tikzpicture}[scale=1.0]
+    \draw[thick] (0,0) -- (1.1,0); \draw[thick] (2.9,0) -- (4.0,0);
+    \draw[thick, fill=gray!10] (1.1,-0.55) rectangle (2.9,0.55);
+    \node[font=\small] at (2.0,0) {element};
+    \node[font=\small, text=metured] at (0.85,-0.45) {$a$};
+    \node[font=\small, text=metured] at (3.15,-0.45) {$b$};
+    \fill[metured] (1.1,0) circle (2.2pt); \fill[metured] (2.9,0) circle (2.2pt);
+    \draw[curarr] (0.1,0.75) -- (1.0,0.75);
+    \node[font=\small, text=metugray] at (0.55,1.15) {\Qcol{$dq$} in};
+    \draw[curarr] (3.0,0.75) -- (3.9,0.75);
+    \node[font=\small, text=metugray] at (3.45,1.15) {\Qcol{$dq$} out};
+    \node[font=\small, text=metugray] at (2.0,-1.15) {energy \Pcol{$dw$} exchanged};
+    \draw[-{Stealth[length=2.2mm]}, cpow, very thick] (2.0,-0.65) -- (2.0,-0.95);
+  \end{tikzpicture}
+  \end{center}
+  \vfill
+  \begin{block}{Definition}
+    \[ \Vcol{v_{ab}} \;=\; \frac{\Pcol{dw}}{\Qcol{dq}}
+       \qquad\text{unit: \textbf{volt (V)}}, \quad 1\V = 1\J/\Cb \]
+    the energy exchanged \emph{per unit of charge} carried from $a$ to $b$ through the
+    element.
+  \end{block}
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{What that definition does --- and does not --- say}
+  \begin{itemize}
+    \item It is a \alert{ratio}. Carry twice the charge, exchange twice the energy: the
+          ratio is the same. So voltage belongs to the \textbf{pair of points}, not to the
+          charge you used to probe it.
+    \item It is defined even when \alert{nothing is moving}. A $1.5\V$ battery on the
+          shelf has $1.5\V$ across it with $i = 0$ --- just as a closed tap still has
+          pressure behind it.
+    \item Order matters: $v_{ab} = -v_{ba}$. There is no ``voltage at a point'' until we
+          fix a reference (Section: ground).
+    \item In a \emph{lumped} circuit the energy per charge depends only on the two
+          endpoints, \alert{not on the path} taken between them. That is what makes
+          ``the voltage between $a$ and $b$'' a meaningful phrase --- and it becomes KVL.
+  \end{itemize}
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{Voltage is an electrical \alert{height}}
+  \begin{columns}[c,onlytextwidth]
+    \column{0.52\textwidth}
+      \begin{center}
+      \begin{tikzpicture}[scale=0.95]
+        \fill[gray!12] plot[domain=0:5, samples=100] (\x, {0.35+1.5*exp(-(\x-1.2)^2/1.6)})
+              -- (5,0) -- (0,0) -- cycle;
+        \draw[gray!60, thick] plot[domain=0:5, samples=100]
+              (\x, {0.35+1.5*exp(-(\x-1.2)^2/1.6)});
+        \node[circle, fill=cvolt, inner sep=3pt] at (1.2,1.95) {};
+        \node[circle, fill=cvolt!45, inner sep=3pt] at (4.3,0.4) {};
+        \draw[cvolt, thick, dashed] (1.2,1.85) -- (5.6,1.85);
+        \draw[cvolt, thick, dashed] (4.3,0.35) -- (5.6,0.35);
+        \draw[{Stealth[length=2.2mm]}-{Stealth[length=2.2mm]}, cvolt, very thick]
+              (5.45,1.85) -- (5.45,0.35);
+        \node[cvolt, font=\small, right] at (5.55,1.1) {$h$};
+        \node[font=\scriptsize, text=metugray] at (2.5,-0.45)
+             {energy per unit \emph{mass} to lift: $g\,h$};
+      \end{tikzpicture}
+      \end{center}
+    \column{0.44\textwidth}
+      \begin{itemize}
+        \item Only the height \alert{difference} matters.
+        \item ``Sea level'' is a \alert{choice} --- and changing it changes no physics.
+        \item A heavier ball gains more energy, but energy \emph{per kilogram} is the
+              same: that is why $g h$, like voltage, is a property of the two places.
+      \end{itemize}
+      \vspace{0.4em}
+      {\small Voltage is the electrical version of this, with charge in place of mass.}
+  \end{columns}
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{Charge is the \alert{amount}, voltage is the \alert{level}}
+  \begin{columns}[c,onlytextwidth]
+    \column{0.50\textwidth}
+      \begin{center}
+      \begin{tikzpicture}[scale=0.78]
+        \draw[gray!60, very thick] (0,0) -- (0,3.1);
+        \draw[gray!60, very thick] (0.75,0) -- (0.75,3.1);
+        \draw[gray!60, very thick] (0,0) -- (0.75,0);
+        \fill[ccur!30] (0.05,0.05) rectangle (0.70,2.45);
+        \draw[ccur, thick] (0.05,2.45) -- (0.70,2.45);
+        \draw[{Stealth[length=2mm]}-{Stealth[length=2mm]}, cvolt, very thick] (1.15,0) -- (1.15,2.45);
+        \node[font=\scriptsize, text=metugray] at (0.37,-0.5) {small $C$};
+        \begin{scope}[xshift=2.7cm]
+          \draw[gray!60, very thick] (0,0) -- (0,3.1);
+          \draw[gray!60, very thick] (2.95,0) -- (2.95,3.1);
+          \draw[gray!60, very thick] (0,0) -- (2.95,0);
+          \fill[ccur!30] (0.05,0.05) rectangle (2.90,0.60);
+          \draw[ccur, thick] (0.05,0.60) -- (2.90,0.60);
+          \draw[{Stealth[length=2mm]}-{Stealth[length=2mm]}, cvolt, very thick] (3.3,0) -- (3.3,0.60);
+          \node[font=\scriptsize, text=metugray] at (1.47,-0.5) {large $C$};
+        \end{scope}
+        \node[font=\scriptsize, text=ccur] at (2.9,3.5) {the same amount of water};
+      \end{tikzpicture}
+      \end{center}
+    \column{0.46\textwidth}
+      \[ q = C\,v \]
+      \begin{itemize}
+        \item \Qcol{charge} --- the amount poured in
+        \item \Vcol{voltage} --- the level it reaches
+        \item $C$ --- the cross-section of the container
+      \end{itemize}
+      \vspace{0.4em}
+      {\small The same charge between \emph{another} pair of points gives a different
+       voltage, because $C$ is different. We define $C$ properly in Lecture~5.}
+  \end{columns}
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{Charge is \alert{not} energy}
+  \begin{columns}[T,onlytextwidth]
+    \column{0.47\textwidth}
+      \begin{block}{Energy goes with the \emph{square}}
+        \[ W = \int_0^{q}\! \frac{q'}{C}\,dq' = \frac{q^2}{2C} = \tfrac{1}{2}Cv^2 \]
+        \small The first coulomb is nearly free (the level is still $\approx 0$); the last
+        one is expensive. The price of a coulomb \emph{is} the voltage --- and it rises
+        as you fill.
+      \end{block}
+    \column{0.47\textwidth}
+      \begin{center}
+      \small
+      \begin{tabular}{@{}l r r@{}}
+        \toprule
+         & \textbf{charge} & \textbf{energy}\\
+        \midrule
+        carpet shock  & $1.5\ \mu\mathrm{C}$ & $7$ mJ\\
+        phone battery & $14\,400\Cb$ & $55$ kJ\\
+        \bottomrule
+      \end{tabular}
+      \end{center}
+      \vspace{0.4em}
+      {\small Ten billion times the charge --- and you feel nothing touching the
+       terminals. The carpet shock hurts with a charge you can hardly measure.}
+  \end{columns}
+  \vfill
+  \begin{center}
+    \alert{Around a loop the charge comes back to the source. The energy does not.}
+  \end{center}
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{Reference polarity}
+  Exactly as for current, we mark $+$ and $-$ \alert{before} we know the answer.
+  \vfill
+  \begin{center}
+  \begin{tikzpicture}[scale=1.0]
+    \begin{scope}
+      \draw[thick] (0,0) -- (0.8,0); \draw[thick] (2.2,0) -- (3.0,0);
+      \draw[thick, fill=gray!10] (0.8,-0.42) rectangle (2.2,0.42);
+      \node[font=\small] at (1.5,0) {$A$};
+      \node[cvolt, font=\small] at (0.55,0.68) {$+$};
+      \node[cvolt, font=\small] at (2.45,0.68) {$-$};
+      \node[cvolt, font=\small] at (1.5,1.05) {$\Vcol{v = 5\V}$};
+      \node[font=\scriptsize, text=metugray] at (1.5,-0.9) {left terminal $5\V$ above the right one};
+    \end{scope}
+    \begin{scope}[xshift=6.6cm]
+      \draw[thick] (0,0) -- (0.8,0); \draw[thick] (2.2,0) -- (3.0,0);
+      \draw[thick, fill=gray!10] (0.8,-0.42) rectangle (2.2,0.42);
+      \node[font=\small] at (1.5,0) {$A$};
+      \node[cvolt, font=\small] at (0.55,0.68) {$-$};
+      \node[cvolt, font=\small] at (2.45,0.68) {$+$};
+      \node[cvolt, font=\small] at (1.5,1.05) {$\Vcol{v = -5\V}$};
+      \node[font=\scriptsize, text=metugray] at (1.5,-0.9) {\emph{same} element, \emph{same} state};
+    \end{scope}
+  \end{tikzpicture}
+  \end{center}
+  \vfill
+  \begin{center}\small
+    Same physical situation, two bookkeeping choices --- exactly like the current arrow.
+  \end{center}
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{The hydraulic analogy}
+  \vfill
+  \begin{center}
+  \begin{tikzpicture}[scale=1.08, transform shape]
+    \node[font=\bfseries\small, text=metugray] at (2.0,3.6) {Hydraulic};
+    \draw[line width=4pt, gray!35] (0,0) -- (0,2.4);
+    \draw[line width=4pt, gray!35] (4,0) -- (4,2.4);
+    \draw[line width=4pt, gray!35] (0,0) -- (4,0);
+    \draw[line width=4pt, gray!35] (0,2.4) -- (2.1,2.4);
+    \draw[line width=1.4pt, gray!55] (2.1,2.4) -- (2.9,2.4);
+    \draw[line width=4pt, gray!35] (2.9,2.4) -- (4,2.4);
+    \node[font=\scriptsize, text=metugray, align=center] at (2.5,3.05) {narrow pipe};
+    \draw[gray!60] (2.5,2.9) -- (2.5,2.55);
+    \fill[cvolt!22] (0,1.2) circle (0.42);
+    \draw[cvolt, very thick] (0,1.2) circle (0.42);
+    \node[font=\scriptsize, text=cvolt] at (0,1.2) {pump};
+    \node[font=\scriptsize, text=cvolt, align=center] at (0,-0.8) {pressure\\ difference};
+    \draw[curarr] (2.9,-0.4) -- (1.9,-0.4);
+    \node[font=\scriptsize, text=ccur] at (2.4,-0.85) {flow rate};
+    \begin{scope}[xshift=7.6cm]
+      \node[font=\bfseries\small, text=metugray] at (1.7,3.6) {Electrical};
+      \draw (0,0) to[battery1, l_={\color{cvolt}$v$}] (0,2.4);
+      \draw (0,2.4) to[R, l={$R$}] (3.4,2.4);
+      \draw (3.4,2.4) -- (3.4,0) -- (0,0);
+      \draw[curarr] (2.4,-0.4) -- (1.4,-0.4);
+      \node[font=\scriptsize, text=ccur] at (1.9,-0.85) {current $i$};
+    \end{scope}
+  \end{tikzpicture}
+  \end{center}
+  \vfill
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{Across and through}
+  \begin{center}
+  \small
+  \begin{tabular}{l l l}
+    \toprule
+    \textbf{Hydraulic} & \textbf{Electrical} & \\
+    \midrule
+    pressure (difference)  & \Vcol{voltage $v$} & \textbf{across}: a difference between two points\\
+    volumetric flow rate   & \Icol{current $i$} & \textbf{through}: needs a direction\\
+    pipe restriction       & resistance $R$     & opposes flow, dissipates energy\\
+    pump                   & voltage source     & supplies energy\\
+    \bottomrule
+  \end{tabular}
+  \end{center}
+  \vfill
+  \begin{block}{Where the analogy breaks --- and a warning}
+    Water can leak out and pile up in a bucket; charge in a lumped circuit cannot.
+    And \alert{``the current across the resistor''} or
+    \alert{``the voltage through the resistor''} is not a slip of the tongue ---
+    it is a conceptual error.
+  \end{block}
+\end{frame}
+
+%==============================================================
+\section{Ground}
+%--------------------------------------------------------------
+\begin{frame}{Ground: the node we \alert{choose} to call zero}
+  \begin{columns}[T,onlytextwidth]
+    \column{0.46\textwidth}
+      \begin{block}{Reference node}
+        Only differences matter, so we are free to declare one node to be $0\V$. Then
+        \[
+          v_{ab} = v_a - v_b .
+        \]
+      \end{block}
+      \vspace{0.3em}
+      {\small Move the reference and \emph{every} node voltage shifts by the same
+       constant. No two-point voltage, current or power changes.}
+    \column{0.50\textwidth}
+      \begin{center}
+      \begin{circuitikz}[scale=0.8, transform shape]
+        \draw (0,0) to[battery1, l={$12\V$}] (0,2.4);
+        \draw (0,2.4) -- (1.2,2.4);
+        \draw (1.2,2.4) to[R, l_=$R_1$] (3.4,2.4);
+        \draw (3.4,2.4) to[R, l=$R_2$] (3.4,0);
+        \draw (3.4,0) -- (0,0);
+        \draw (0,0) node[ground]{};
+        \fill[cvolt] (1.2,2.4) circle (2.4pt);
+        \fill[cvolt] (3.4,2.4) circle (2.4pt);
+        \node[font=\small, text=cvolt, above] at (1.2,2.5) {$a$};
+        \node[font=\small, text=cvolt, above] at (3.4,2.55) {$b$};
+      \end{circuitikz}
+      \end{center}
+  \end{columns}
+  \vfill
+  {\footnotesize\color{metugray} Pick the node that the most elements touch --- your
+   equations get shorter.}
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{Three different things are called ``ground''}
+  \begin{columns}[T,onlytextwidth]
+    \column{0.31\textwidth}
+      \begin{block}{Earth ground}
+        \small A physical connection to the planet. Safety.
+      \end{block}
+    \column{0.31\textwidth}
+      \begin{block}{Chassis ground}
+        \small The metal enclosure of the instrument.
+      \end{block}
+    \column{0.31\textwidth}
+      \begin{block}{Signal ground}
+        \small The analysis reference. \alert{This is ours.}
+      \end{block}
+  \end{columns}
+  \vfill
+  \begin{center}
+    In EE201 we always mean the third one.\\[3pt]
+    {\small In the laboratory, confusing them is how you blow a fuse.}
+  \end{center}
+\end{frame}
+
+%==============================================================
+\section{Power}
+%--------------------------------------------------------------
+\begin{frame}{\Pcol{Power} falls out of the definitions}
+  \vfill
+  \[
+    \Pcol{p(t)} = \frac{dw}{dt}
+                = \underbrace{\frac{dw}{dq}}_{\Vcol{v(t)}}\cdot
+                  \underbrace{\frac{dq}{dt}}_{\Icol{i(t)}}
+                = \Vcol{v(t)}\,\Icol{i(t)}
+  \]
+  \vfill
+  \begin{columns}[T,onlytextwidth]
+    \column{0.48\textwidth}
+      \begin{block}{Power}
+        unit \textbf{watt (W)}, $1\W = 1\J/\s$
+      \end{block}
+    \column{0.48\textwidth}
+      \begin{block}{Energy}
+        \[ w = \int_{t_0}^{t} v(\tau)i(\tau)\,d\tau \]
+      \end{block}
+  \end{columns}
+  \vfill
+  \begin{center}\small
+    $p = vi$ was \alert{not postulated} --- it is a consequence of defining $v$ as energy
+    per charge and $i$ as charge per time.
+  \end{center}
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{Power that changes in time}
+  A resistive element with $v(t) = 10\cos\omega t\V$ and $i(t) = 2\cos\omega t\A$:
+  \[
+    p(t) = v i = 20\cos^{2}\omega t = 10\left(1 + \cos 2\omega t\right)\W
+  \]
+  \vfill
+  \begin{center}
+  \begin{tikzpicture}[scale=0.85]
+    \draw[->,gray!70] (-0.2,0) -- (7.4,0) node[right,font=\scriptsize,black] {$t$};
+    \draw[->,gray!70] (0,-1.15) -- (0,1.6);
+    \draw[cvolt, very thick, domain=0:7.1, samples=200, smooth]
+         plot (\x, {1.0*sin(deg(2*\x))});
+    \draw[cpow, very thick, domain=0:7.1, samples=200, smooth]
+         plot (\x, {1.3*sin(deg(2*\x))*sin(deg(2*\x))});
+    \draw[cpow, dashed] (0,0.65) -- (7.1,0.65);
+    \node[cpow, font=\scriptsize, right] at (7.15,0.65) {$\overline{p} = 10\W$};
+    \node[cpow, font=\small] at (1.15,1.45) {$\Pcol{p(t)}$};
+    \node[cvolt, font=\small] at (6.55,-1.05) {$\Vcol{v(t)}$};
+  \end{tikzpicture}
+  \end{center}
+  \vfill
+  \begin{itemize}
+    \item $p(t) \ge 0$: a resistor never gives energy back.
+    \item The power ripples at \alert{twice} the frequency, around $\overline{p} = 10\W$.
+  \end{itemize}
+\end{frame}
+
+%==============================================================
+\section{Passive sign convention}
+%--------------------------------------------------------------
+\begin{frame}{The passive sign convention}
+  \begin{block}{PSC}
+    Draw the current arrow so that it \alert{enters the $+$ terminal}. Then
+    \[ p = vi = \text{power \emph{absorbed} by the element}. \]
+    $p > 0$: the element absorbs. \qquad $p < 0$: it delivers.
+  \end{block}
+  \vfill
+  \begin{center}
+  \begin{tikzpicture}[scale=0.95]
+    \begin{scope}
+      \draw[thick] (0,0) -- (0.7,0); \draw[thick] (2.1,0) -- (2.8,0);
+      \draw[thick, fill=gray!10] (0.7,-0.4) rectangle (2.1,0.4);
+      \node[cvolt, font=\small] at (0.45,0.62) {$+$};
+      \node[cvolt, font=\small] at (2.35,0.62) {$-$};
+      \node[cvolt, font=\small] at (1.4,0.92) {$\Vcol{v}$};
+      \draw[curarr] (0.0,-0.7) -- (0.65,-0.7);
+      \node[ccur, font=\small] at (1.3,-0.72) {$\Icol{i}$};
+      \node[font=\small\bfseries, text=cpow] at (1.4,-1.35) {absorbs $p = vi$};
+    \end{scope}
+    \begin{scope}[xshift=6.6cm]
+      \draw[thick] (0,0) -- (0.7,0); \draw[thick] (2.1,0) -- (2.8,0);
+      \draw[thick, fill=gray!10] (0.7,-0.4) rectangle (2.1,0.4);
+      \node[cvolt, font=\small] at (0.45,0.62) {$+$};
+      \node[cvolt, font=\small] at (2.35,0.62) {$-$};
+      \node[cvolt, font=\small] at (1.4,0.92) {$\Vcol{v}$};
+      \draw[curarr] (0.65,-0.7) -- (0.0,-0.7);
+      \node[ccur, font=\small] at (1.3,-0.72) {$\Icol{i}$};
+      \node[font=\small\bfseries, text=cpow] at (1.4,-1.35) {delivers $p = vi$};
+    \end{scope}
+  \end{tikzpicture}
+  \end{center}
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{When the picture does not obey the PSC}
+  \vfill
+  \begin{center}
+    \alert{Do not memorise a second formula.}
+  \end{center}
+  \vfill
+  \begin{block}{Flip one reference and change that variable's sign}
+    \[ p_{\text{absorbed}} = v\,(-i) = -vi \]
+  \end{block}
+  \vfill
+  \begin{center}
+    One convention, applied consistently,\\ beats four memorised cases.
+  \end{center}
+  \vfill
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{Conservation of power}
+  \begin{block}{In any circuit, at every instant}
+    \[ \sum_{k=1}^{N} p_k(t) = 0 \]
+  \end{block}
+  \vfill
+  Sources ($p_k < 0$) supply exactly what the rest ($p_k > 0$) consume.
+  \vfill
+  \begin{center}
+    \textbf{Use it.} If the powers in your solution do not cancel, your solution is wrong
+    --- and you found out without looking at the answer key.
+  \end{center}
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{Example: a power balance}
+  \begin{columns}[T,onlytextwidth]
+    \column{0.46\textwidth}
+      \begin{center}
+      \begin{circuitikz}[scale=0.85, transform shape]
+        \draw (0,0) to[battery1, l={$12\,$V}] (0,2.6);
+        \node[font=\small, text=cvolt] at (-0.33,2.05) {$+$};
+        \node[font=\small, text=cvolt] at (-0.33,0.55) {$-$};
+        \draw (0,2.6) to[short, i>^={\color{ccur}$2\,$A}] (1.1,2.6);
+        \draw (1.1,2.6) to[R, l_={$R_1$}, v^={\color{cvolt}$8\,$V}] (3.9,2.6);
+        \draw (3.9,2.6) to[R, l={$R_2$}, v_={\color{cvolt}$4\,$V}] (3.9,0);
+        \draw (3.9,0) -- (0,0);
+      \end{circuitikz}
+      \end{center}
+    \column{0.50\textwidth}
+      \begin{align*}
+        p_{R_1} &= 8 \times 2 = +16\W\\
+        p_{R_2} &= 4 \times 2 = +8\W\\
+        p_{\text{src}} &= 12 \times (-2) = -24\W
+      \end{align*}
+      \vspace{-0.4em}
+      \begin{center}
+        $16 + 8 - 24 = 0$ \checkmark
+      \end{center}
+      {\small The source current \emph{leaves} its $+$ terminal --- hence $-2\A$.}
+  \end{columns}
+\end{frame}
+
+%==============================================================
+\section{Lumped circuits}
+%--------------------------------------------------------------
+\begin{frame}{What exactly is a circuit?}
+  \begin{block}{Electric circuit}
+    An interconnection of electrical elements through which charge can flow along closed
+    paths.
+  \end{block}
+  \vfill
+  \begin{block}{The lumped model --- the assumption behind all of EE201}
+    \begin{enumerate}
+      \item no net charge accumulates inside an element;
+      \item no magnetic flux links any region outside the elements;
+      \item the circuit is small compared with the wavelength:
+            $\; d \ll \lambda = c/f$.
+    \end{enumerate}
+  \end{block}
+  \vfill
+  \begin{center}\small
+    Then: \alert{ordinary} differential equations in time.\quad
+    Otherwise: Maxwell's equations. A different course.
+  \end{center}
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{Lumped or not? It depends on the \alert{signal}}
+  \vfill
+  \begin{center}
+  \begin{tikzpicture}[node distance=0.8cm]
+    \node[draw=cpow, very thick, fill=cpow!6, rounded corners=3pt,
+          text width=5.0cm, align=center, inner sep=8pt, font=\small] (L)
+         {\textbf{\textcolor{cpow}{LUMPED}}\\[4pt]
+          mains, $f = 50$ Hz\\ $\lambda = 6000$ km\\[3pt]
+          {\footnotesize a $30$ cm board: $d/\lambda \sim 10^{-7}$}};
+    \node[draw=cvolt, very thick, fill=cvolt!6, rounded corners=3pt,
+          text width=5.0cm, align=center, inner sep=8pt, font=\small, right=of L] (R)
+         {\textbf{\textcolor{cvolt}{NOT LUMPED}}\\[4pt]
+          Wi-Fi, $f = 2.4$ GHz\\ $\lambda = 12.5$ cm\\[3pt]
+          {\footnotesize a $3$ cm trace: $d/\lambda \sim 1/4$}};
+  \end{tikzpicture}
+  \end{center}
+  \vfill
+  \begin{center}
+    A phone motherboard is a lumped circuit for its battery\\
+    and a transmission line for its antenna.\\[4pt]
+    \alert{The model is chosen by the question, not by the object.}
+  \end{center}
+\end{frame}
+
+%==============================================================
+\section{Topology}
+%--------------------------------------------------------------
+\begin{frame}{Terminals, nodes, branches, loops}
+  \begin{columns}[T,onlytextwidth]
+    \column{0.52\textwidth}
+      \begin{itemize}
+        \item \textbf{Terminal} --- a point where an element connects. R, L, C: two.
+              Transistor: three.
+        \item \textbf{Node} --- a connection point. Everything joined by ideal wire is
+              \alert{one} node, however long the wire.
+        \item \textbf{Branch} --- one element between two nodes.
+        \item \textbf{Loop} --- a closed path through no node twice.
+      \end{itemize}
+      \vspace{0.4em}
+      \[ \#\text{branches} = \#\text{loops} + \#\text{nodes} - 1 \]
+    \column{0.44\textwidth}
+      \begin{center}
+      \begin{circuitikz}[scale=0.75, transform shape]
+        \draw (0,0) to[battery1, l={$V_s$}] (0,2.4);
+        \draw (0,2.4) -- (1.0,2.4);
+        \draw (1.0,2.4) to[R, l_=$R_1$] (3.4,2.4);
+        \draw (3.4,2.4) to[R, l=$R_2$] (3.4,0);
+        \draw (3.4,2.4) -- (5.0,2.4);
+        \draw (5.0,2.4) to[R, l=$R_3$] (5.0,0);
+        \draw (5.0,0) -- (0,0);
+        \draw (0,0) node[ground]{};
+        \foreach \p in {(1.0,2.4),(3.4,2.4),(5.0,2.4)}{\fill[metured] \p circle (2.6pt);}
+        \fill[metured] (0,0) circle (2.6pt);
+        \node[font=\small, text=metured, above] at (0.7,2.5) {$n_1$};
+        \node[font=\small, text=metured, above] at (3.4,2.6) {$n_2$};
+        \node[font=\small, text=metured, below] at (1.7,-0.1) {$n_3$};
+      \end{circuitikz}
+      \end{center}
+      \begin{center}\small $4 = 2 + 3 - 1$\end{center}
+  \end{columns}
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{The same circuit, drawn twice}
+  \begin{columns}[c,onlytextwidth]
+    \column{0.50\textwidth}
+      \begin{center}
+      \begin{circuitikz}[scale=0.62, transform shape]
+        \draw (0,0) to[battery1, l={$V_s$}] (0,2.8);
+        \draw (0,2.8) -- (1.6,2.8);
+        \draw (1.6,2.8) to[R, l_={$R_1$}] (1.6,1.0);
+        \draw (3.6,2.8) to[R, l={$R_2$}] (3.6,1.0);
+        \draw (1.6,2.8) -- (3.6,2.8);
+        \draw (1.6,1.0) -- (3.6,1.0);
+        \draw (1.6,1.0) -- (1.6,0.5);
+        \draw (3.6,1.0) -- (3.6,0.5);
+        \draw (1.6,0.5) -- (5.8,0.5);
+        \draw (5.8,0.5) to[R, l={$R_3$}] (5.8,2.8);
+        \draw (5.8,2.8) -- (6.9,2.8) -- (6.9,0) -- (0,0);
+        \draw (0,0) node[ground]{};
+      \end{circuitikz}\\[2pt]
+      {\scriptsize\color{metugray} drawing (a)}
+      \end{center}
+    \column{0.46\textwidth}
+      \begin{center}
+      \begin{circuitikz}[scale=0.72, transform shape]
+        \draw (0,0) to[battery1, l={$V_s$}] (0,2.6);
+        \draw (0,2.6) -- (1.2,2.6);
+        \draw (1.2,2.6) to[R, l_={$R_1$}] (3.0,2.6);
+        \draw (1.2,1.5) to[R, l_={$R_2$}] (3.0,1.5);
+        \draw (1.2,2.6) -- (1.2,1.5);
+        \draw (3.0,2.6) -- (3.0,1.5);
+        \draw (3.0,2.05) -- (4.0,2.05);
+        \draw (4.0,2.05) to[R, l={$R_3$}] (4.0,0);
+        \draw (4.0,0) -- (0,0);
+        \draw (0,0) node[ground]{};
+      \end{circuitikz}\\[2pt]
+      {\scriptsize\color{metugray} drawing (b)}
+      \end{center}
+  \end{columns}
+  \vfill
+  \begin{center}
+    Same circuit. \alert{Drawing is not topology.}\\
+    {\small When a problem looks impossible, redraw it with the nodes lined up.}
+  \end{center}
+\end{frame}
+
+%==============================================================
+%--------------------------------------------------------------
+\begin{frame}{Summary}
+  \begin{center}
+  \small
+  \begin{tabular}{l c l l}
+    \toprule
+    \textbf{Quantity} & \textbf{Symbol} & \textbf{Definition} & \textbf{Unit}\\
+    \midrule
+    charge  & \Qcol{$q$} & ---              & C\\
+    current & \Icol{$i$} & $i = dq/dt$      & A $=$ C/s\\
+    voltage & \Vcol{$v$} & $v = dw/dq$      & V $=$ J/C\\
+    power   & \Pcol{$p$} & $p = vi$         & W $=$ J/s\\
+    energy  & \Pcol{$w$} & $w = \int p\,dt$ & J\\
+    \bottomrule
+  \end{tabular}
+  \end{center}
+  \vfill
+  \begin{itemize}
+    \item References (arrow, polarity) are \alert{choices}; signs carry the physics.
+    \item PSC: current into $+$ $\Rightarrow$ $p = vi$ is absorbed, and $\sum_k p_k = 0$.
+    \item Across vs through. Ground is a choice.
+    \item Lumped $\Rightarrow$ ODEs. That is what makes this course possible.
+  \end{itemize}
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{Next lecture}
+  \begin{block}{Interconnection laws}
+    Kirchhoff's current law (conservation of charge) and Kirchhoff's voltage law
+    (conservation of energy), then the branch relations of the basic elements.
+  \end{block}
+  \vfill
+  \begin{center}
+    \Large\color{metured}\textbf{Questions?}\\[6pt]
+    \normalsize\normalcolor
+    Notes for this lecture: see the Section 2 repository.
+  \end{center}
+\end{frame}
+
+\end{document}
