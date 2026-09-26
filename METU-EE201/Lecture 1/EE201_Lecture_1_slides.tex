@@ -303,22 +303,33 @@
 \end{frame}
 
 %--------------------------------------------------------------
-\begin{frame}{Two footnotes that matter}
-  \begin{block}{Conventional current}
-    The arrow points the way \emph{positive} charge would move. In a copper wire the
-    carriers are electrons, so they actually move \emph{against} the arrow.\\[3pt]
-    This changes no equation in this course: a current only counts the \alert{net rate at
-    which charge crosses a section}, and one electron moving left counts exactly the same
-    as one positive charge moving right.
+\begin{frame}{Conventional current}
+  \vfill
+  \begin{block}{The arrow points the way \emph{positive} charge would move}
+    In a copper wire the carriers are electrons, so they actually move \emph{against}
+    the arrow.
   \end{block}
   \vfill
-  \begin{block}{Notation}
-    \[
-      i(t),\ v(t),\ q(t),\ p(t) \quad\text{(may vary in time)}
-      \qquad
-      I,\ V,\ Q,\ P \quad\text{(constant)}
-    \]
-  \end{block}
+  \begin{center}
+    No equation in this course changes because of it.
+  \end{center}
+  \vfill
+  A current counts only the \alert{net rate at which charge crosses a section}: one
+  electron moving left transports exactly as much charge to the right as one positive
+  charge moving right. The model never asks what the carriers are --- and it had better
+  not, because in a semiconductor they are electrons \emph{and} holes, and in a battery
+  they are ions.
+  \vfill
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{Notation}
+  \begin{center}
+    \begin{tabular}{c c}
+      \textbf{may vary in time} & \textbf{constant} \\[3pt]
+      $i(t),\ v(t),\ q(t),\ p(t)$ & $I,\ V,\ Q,\ P$\\
+    \end{tabular}
+  \end{center}
   \vfill
   \begin{center}
   \begin{tikzpicture}[scale=0.72]
@@ -338,6 +349,10 @@
           --(2.0,0)--(2.0,0.8)--(2.8,0.8)--(2.8,0)--(3.4,0);
    \end{scope}
   \end{tikzpicture}
+  \end{center}
+  \vfill
+  \begin{center}\small
+    Only the first deserves the symbol $I$. Most of EE201 is about the other two.
   \end{center}
 \end{frame}
 
@@ -499,42 +514,12 @@
         \item $C$ --- the cross-section of the container
       \end{itemize}
       \vspace{0.4em}
-      {\small The same charge between \emph{another} pair of points gives a different
-       voltage, because $C$ is different. We define $C$ properly in Lecture~5.}
+      {\small The \alert{shape of the circuit} plays the part of the shape of the tank:
+       the same charge poured between \emph{another} pair of points reaches a different
+       level, because $C$ is different. We define $C$ properly in Lecture~5.}
   \end{columns}
 \end{frame}
 
-%--------------------------------------------------------------
-\begin{frame}{Charge is \alert{not} energy}
-  \begin{columns}[T,onlytextwidth]
-    \column{0.47\textwidth}
-      \begin{block}{Energy goes with the \emph{square}}
-        \[ W = \int_0^{q}\! \frac{q'}{C}\,dq' = \frac{q^2}{2C} = \tfrac{1}{2}Cv^2 \]
-        \small The first coulomb is nearly free (the level is still $\approx 0$); the last
-        one is expensive. The price of a coulomb \emph{is} the voltage --- and it rises
-        as you fill.
-      \end{block}
-    \column{0.47\textwidth}
-      \begin{center}
-      \small
-      \begin{tabular}{@{}l r r@{}}
-        \toprule
-         & \textbf{charge} & \textbf{energy}\\
-        \midrule
-        carpet shock  & $1.5\ \mu\mathrm{C}$ & $7$ mJ\\
-        phone battery & $14\,400\Cb$ & $55$ kJ\\
-        \bottomrule
-      \end{tabular}
-      \end{center}
-      \vspace{0.4em}
-      {\small Ten billion times the charge --- and you feel nothing touching the
-       terminals. The carpet shock hurts with a charge you can hardly measure.}
-  \end{columns}
-  \vfill
-  \begin{center}
-    \alert{Around a loop the charge comes back to the source. The energy does not.}
-  \end{center}
-\end{frame}
 
 %--------------------------------------------------------------
 \begin{frame}{Reference polarity}
@@ -565,6 +550,39 @@
   \vfill
   \begin{center}\small
     Same physical situation, two bookkeeping choices --- exactly like the current arrow.
+  \end{center}
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{A first element: the \alert{resistor}}
+  We have defined the variables. To talk about a circuit we also need an
+  \emph{element} --- a rule tying $v$ and $i$ together. Here is the simplest one.
+  \vfill
+  \begin{columns}[c,onlytextwidth]
+    \column{0.46\textwidth}
+      \begin{block}{Ohm's law}
+        \[ \Vcol{v} = R\,\Icol{i} \]
+        \centering\small $R$ in ohms ($\Omega$), \quad $1\,\Omega = 1\V/\A$
+      \end{block}
+      \begin{center}
+      \begin{circuitikz}[scale=0.9, transform shape]
+        \draw (0,0) to[R, l_=$R$, v^=\mbox{\color{cvolt}$v$}, i>_=\mbox{\color{ccur}$i$}] (3,0);
+      \end{circuitikz}
+      \end{center}
+    \column{0.50\textwidth}
+      \begin{itemize}
+        \item \textbf{Algebraic, no memory:} the current \emph{now} depends only on the
+              voltage \emph{now} --- no derivatives, no history.
+        \item \textbf{Geometry sets $R$:} for a uniform bar,
+              \[ R = \rho\,\frac{L}{A} \]
+              long and thin $\Rightarrow$ large $R$; short and fat $\Rightarrow$ small $R$.
+              Exactly like a pipe.
+      \end{itemize}
+  \end{columns}
+  \vfill
+  \begin{center}\small\color{metugray}
+    The full family of elements --- and the sign convention that goes with them ---
+    comes in Lecture~2.
   \end{center}
 \end{frame}
 
@@ -619,9 +637,11 @@
   \vfill
   \begin{block}{Where the analogy breaks --- and a warning}
     Water can leak out and pile up in a bucket; charge in a lumped circuit cannot.
-    And \alert{``the current across the resistor''} or
-    \alert{``the voltage through the resistor''} is not a slip of the tongue ---
-    it is a conceptual error.
+    \\[3pt]
+    And if you say \alert{``the current across the resistor''} or
+    \alert{``the voltage through the resistor''}, you have not just picked the wrong
+    word --- you have swapped the two quantities. Voltage is measured \emph{between two
+    points}; current is measured \emph{through one point}.
   \end{block}
 \end{frame}
 
@@ -749,6 +769,9 @@
     Draw the current arrow so that it \alert{enters the $+$ terminal}. Then
     \[ p = vi = \text{power \emph{absorbed} by the element}. \]
     $p > 0$: the element absorbs. \qquad $p < 0$: it delivers.
+    \\[4pt]
+    If the picture you are given does \emph{not} obey the PSC, do not memorise a second
+    formula: flip one reference, change that variable's sign, and use $p = vi$ as always.
   \end{block}
   \vfill
   \begin{center}
@@ -774,37 +797,6 @@
       \node[font=\small\bfseries, text=cpow] at (1.4,-1.35) {delivers $p = vi$};
     \end{scope}
   \end{tikzpicture}
-  \end{center}
-\end{frame}
-
-%--------------------------------------------------------------
-\begin{frame}{When the picture does not obey the PSC}
-  \vfill
-  \begin{center}
-    \alert{Do not memorise a second formula.}
-  \end{center}
-  \vfill
-  \begin{block}{Flip one reference and change that variable's sign}
-    \[ p_{\text{absorbed}} = v\,(-i) = -vi \]
-  \end{block}
-  \vfill
-  \begin{center}
-    One convention, applied consistently,\\ beats four memorised cases.
-  \end{center}
-  \vfill
-\end{frame}
-
-%--------------------------------------------------------------
-\begin{frame}{Conservation of power}
-  \begin{block}{In any circuit, at every instant}
-    \[ \sum_{k=1}^{N} p_k(t) = 0 \]
-  \end{block}
-  \vfill
-  Sources ($p_k < 0$) supply exactly what the rest ($p_k > 0$) consume.
-  \vfill
-  \begin{center}
-    \textbf{Use it.} If the powers in your solution do not cancel, your solution is wrong
-    --- and you found out without looking at the answer key.
   \end{center}
 \end{frame}
 
@@ -835,57 +827,40 @@
       \end{center}
       {\small The source current \emph{leaves} its $+$ terminal --- hence $-2\A$.}
   \end{columns}
+  \vfill
+  \begin{center}\small
+    In \emph{any} circuit, at \emph{every} instant, $\sum_k p_k(t) = 0$. If the powers in
+    your solution do not cancel, your solution is wrong --- \alert{a free check, every time}.
+  \end{center}
 \end{frame}
 
 %==============================================================
 \section{Lumped circuits}
 %--------------------------------------------------------------
 \begin{frame}{What exactly is a circuit?}
-  \begin{block}{Electric circuit}
-    An interconnection of electrical elements through which charge can flow along closed
-    paths.
-  \end{block}
-  \vfill
-  \begin{block}{The lumped model --- the assumption behind all of EE201}
+  An \textbf{electric circuit} is an interconnection of elements through which charge can
+  flow along closed paths. Everything in EE201 also assumes it is \alert{lumped}:
+  \vspace{0.3em}
+  \begin{block}{Three things we assume}
     \begin{enumerate}
-      \item no net charge accumulates inside an element;
-      \item no magnetic flux links any region outside the elements;
-      \item the circuit is small compared with the wavelength:
-            $\; d \ll \lambda = c/f$.
+      \item \textbf{Nothing piles up.} The current leaving an element equals the current
+            entering it, at every instant.\\
+            {\footnotesize Charge may \emph{separate} inside --- that is what a capacitor
+             does --- but the element as a whole never gains or loses charge.}
+      \item \textbf{Nothing leaks out.} The fields stay inside the elements: the loops of
+            wire in your diagram are neither antennas nor transformers.
+      \item \textbf{Nothing is late.} The circuit is small compared with $\lambda = c/f$,
+            so a change at one point is felt everywhere at once.
     \end{enumerate}
   \end{block}
-  \vfill
-  \begin{center}\small
-    Then: \alert{ordinary} differential equations in time.\quad
-    Otherwise: Maxwell's equations. A different course.
+  \vspace{0.2em}
+  \begin{center}\footnotesize
+    $50$ Hz: $\lambda = 6000$ km, any board is lumped. \quad
+    $2.4$ GHz: $\lambda = 12.5$ cm, a $3$ cm track is not.
   \end{center}
 \end{frame}
 
 %--------------------------------------------------------------
-\begin{frame}{Lumped or not? It depends on the \alert{signal}}
-  \vfill
-  \begin{center}
-  \begin{tikzpicture}[node distance=0.8cm]
-    \node[draw=cpow, very thick, fill=cpow!6, rounded corners=3pt,
-          text width=5.0cm, align=center, inner sep=8pt, font=\small] (L)
-         {\textbf{\textcolor{cpow}{LUMPED}}\\[4pt]
-          mains, $f = 50$ Hz\\ $\lambda = 6000$ km\\[3pt]
-          {\footnotesize a $30$ cm board: $d/\lambda \sim 10^{-7}$}};
-    \node[draw=cvolt, very thick, fill=cvolt!6, rounded corners=3pt,
-          text width=5.0cm, align=center, inner sep=8pt, font=\small, right=of L] (R)
-         {\textbf{\textcolor{cvolt}{NOT LUMPED}}\\[4pt]
-          Wi-Fi, $f = 2.4$ GHz\\ $\lambda = 12.5$ cm\\[3pt]
-          {\footnotesize a $3$ cm trace: $d/\lambda \sim 1/4$}};
-  \end{tikzpicture}
-  \end{center}
-  \vfill
-  \begin{center}
-    A phone motherboard is a lumped circuit for its battery\\
-    and a transmission line for its antenna.\\[4pt]
-    \alert{The model is chosen by the question, not by the object.}
-  \end{center}
-\end{frame}
-
 %==============================================================
 \section{Topology}
 %--------------------------------------------------------------
@@ -965,7 +940,8 @@
   \vfill
   \begin{center}
     Same circuit. \alert{Drawing is not topology.}\\
-    {\small When a problem looks impossible, redraw it with the nodes lined up.}
+    {\small When a problem looks impossible, redraw it so that everything joined to the
+     same node sits together --- the series and parallel connections then show themselves.}
   \end{center}
 \end{frame}
 

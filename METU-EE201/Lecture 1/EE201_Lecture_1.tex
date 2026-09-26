@@ -130,33 +130,6 @@
 \end{tabular}
 \end{center}
 
-\vspace{0.3em}
-
-These notes cover the first lecture of EE201. They are meant to be read
-\emph{next to} the lecture, not instead of it: the derivations are complete, but the
-discussion in class is where the ideas are questioned. Sections follow the order used in
-the recorded lecture of Prof.\ Emre Tuna on
-\href{https://ocw.metu.edu.tr/course/view.php?id=351}{METU OCW}, so you can jump between
-the two:
-
-\begin{center}
-\small
-\begin{tabular}{@{}l l l l@{}}
-\toprule
-\textbf{Section} & \textbf{Video} & \textbf{Section} & \textbf{Video}\\
-\midrule
-1.\ Why circuits? modelling        & 00:00 & 6.\ Power and energy          & 33:15\\
-2.\ Charge                          & 06:25 & 7.\ Passive sign convention   & 36:07\\
-3.\ Current                         & 13:12 & 8.\ Circuits, lumped circuits & 48:46\\
-4.\ Voltage                         & 21:21 & 9.\ Terminals and nodes       & 51:00\\
-5.\ Ground and node voltages        & 28:40 & &\\
-\bottomrule
-\end{tabular}
-\end{center}
-
-The complete set of course notes by Prof.\ Emre Tuna is at
-\href{https://users.metu.edu.tr/etuna/ee201/}{\texttt{users.metu.edu.tr/etuna/ee201}}.
-
 %==============================================================
 \section{Why circuits? From the world to a model}
 
@@ -609,9 +582,10 @@ called its \textbf{capacitance} $C$, and the relation is exactly the same one:
 \[
   q = C\,v .
 \]
-This is why moving a given amount of charge between one pair of points produces a
-different voltage than moving the same amount between another pair: the two pairs have
-different $C$. We define capacitance properly in Lecture~5; for now it is enough to know
+The \emph{shape of the circuit} plays the part of the shape of the tank. This is why
+moving a given amount of charge between one pair of points produces a different voltage
+than moving the same amount between another pair: the geometry --- and therefore $C$ ---
+is different. We define capacitance properly in Lecture~5; for now it is enough to know
 that the link between \emph{how much charge} and \emph{what voltage} is a property of the
 circuit, not a universal constant.
 
@@ -701,6 +675,53 @@ in the same physical state.
 \end{tikzpicture}
 \end{center}
 
+\subsection{A first element: the resistor}
+
+So far we have only defined \emph{variables}: charge, current, voltage. A circuit needs
+something more --- \emph{elements}, each of which imposes a rule between the voltage
+across it and the current through it. That rule is called the element's \textbf{branch
+relation}, and we build up the whole family of them starting in Lecture~2. It is worth
+meeting one of them now, because the analogies in the rest of this lecture need it.
+
+\begin{definitionbox}{The resistor and Ohm's law}
+A \textbf{resistor} is a two-terminal element whose voltage and current obey, at every
+instant, the algebraic relation
+\[
+  \boxed{\;\Vcol{v} = R\,\Icol{i}\;}
+\]
+where $R$ is the \textbf{resistance}, measured in \textbf{ohms} ($\Omega$), with
+$1\,\Omega = 1\V/\A$.
+\end{definitionbox}
+
+\begin{center}
+\begin{circuitikz}[scale=1.0, transform shape]
+  \draw (0,0) to[R, l_=$R$, v^=\mbox{\color{cvolt}$v$}, i>_=\mbox{\color{ccur}$i$}] (3.2,0);
+\end{circuitikz}
+\end{center}
+
+Two features of this relation matter more than the formula.
+
+\begin{itemize}
+  \item \textbf{It is algebraic, and it has no memory.} The current now is fixed by the
+        voltage now; no derivatives, no integrals, nothing about the past. Elements of
+        this kind are called \emph{resistive}, and Chapters~1--4 of the course live
+        entirely among them. Capacitors and inductors, which \emph{do} remember, arrive
+        in Lecture~5 and change the character of the problem completely.
+  \item \textbf{The resistance comes from geometry and material.} For a uniform bar of
+        length $L$ and cross-section $A$ made of a material of resistivity $\rho$,
+        \[
+          R = \rho\,\frac{L}{A} .
+        \]
+        Long and thin means large $R$; short and fat means small $R$. That is precisely
+        the behaviour of a pipe carrying water, which is why the analogy of the next
+        subsection works as well as it does. (Copper has
+        $\rho \approx 1.7\times10^{-8}\ \Omega\cdot\mathrm{m}$, which is why we make wires
+        out of it and assume they have no resistance at all.)
+\end{itemize}
+
+We will come back to the sign convention that accompanies $v = Ri$ in Section~7, and to
+the reason a resistor can only \emph{absorb} energy in Section~6.
+
 \subsection{The hydraulic analogy}
 
 Most people have better intuition for water than for electrons, and the analogy is
@@ -757,10 +778,14 @@ water in the pipes         & \Qcol{charge $q$}    & conserved: it does not disap
 
 \begin{cautionbox}[Where the analogy breaks]
 Water can leak out of a pipe and pile up in a bucket; charge in a lumped circuit cannot
-accumulate inside an element or a wire (Section~8). Also, ``across'' and ``through'' are
-not interchangeable: a sentence like \emph{``the current across the resistor''} or
-\emph{``the voltage through the resistor''} is not a slip of the tongue, it is a
-conceptual error, and it will cost you marks.
+accumulate inside an element or a wire (Section~8).
+
+\smallskip
+Also, ``across'' and ``through'' are not interchangeable. If you write \emph{``the current
+across the resistor''} or \emph{``the voltage through the resistor''}, you have not simply
+chosen the wrong preposition --- you have swapped the two quantities. Voltage is measured
+\emph{between two points}; current is measured \emph{through one point}. In an exam that
+sentence tells me you have not understood the difference, and it will cost you marks.
 \end{cautionbox}
 
 %==============================================================
@@ -828,6 +853,15 @@ and $t$ is
 Notice that $p = vi$ was not postulated: it fell out of the definitions of voltage
 (energy per charge) and current (charge per time). That is the whole point of defining
 them the way we did.
+
+For the one element we have met so far, substituting Ohm's law gives
+\[
+  p = vi = i^2 R = \frac{v^2}{R} ,
+\]
+which for $R > 0$ is never negative, whatever the signs of $v$ and $i$. A resistor can
+only \emph{absorb} energy --- it has no way of giving any back --- and that absorbed
+energy leaves the circuit as heat. This is also why resistors have a power rating printed
+on them, while capacitors and inductors do not.
 
 \begin{ideabox}[Units you will actually meet]
 Energy bills are written in kilowatt-hours: $1\ \mathrm{kWh} = 10^3 \times 3600 =
@@ -970,21 +1004,50 @@ Everything we do in EE201 rests on one further modelling assumption, and it dese
 be stated precisely rather than assumed silently.
 
 \begin{definitionbox}{The lumped circuit model}
-A circuit is \textbf{lumped} when we may assume that
-\begin{enumerate}[label=(\alph*)]
-  \item no net charge accumulates inside any element: the current entering an element
-        equals the current leaving it at every instant;
-  \item no magnetic flux links any region outside the elements;
-  \item signals propagate instantaneously --- the physical size $d$ of the circuit is
-        negligible compared with the wavelength of the highest frequency of interest,
-        \[
-           d \;\ll\; \lambda = \frac{c}{f}, \qquad c \approx 3\times 10^8\ \mathrm{m/s}.
-        \]
-\end{enumerate}
+A circuit is \textbf{lumped} when three things may be assumed.
+
+\medskip
+\textbf{(a) Nothing piles up.} At every instant, the current leaving an element equals the
+current entering it.
+
+\textbf{(b) Nothing leaks out.} Whatever fields the elements produce stay inside them; the
+space between the elements carries no changing magnetic flux.
+
+\textbf{(c) Nothing is late.} The physical size $d$ of the circuit is negligible compared
+with the wavelength of the fastest signal of interest,
+\[
+   d \;\ll\; \lambda = \frac{c}{f}, \qquad c \approx 3\times 10^8\ \mathrm{m/s},
+\]
+so a change at one point is felt everywhere else with no delay worth counting.
+
+\medskip
 When these hold, a circuit is described by \emph{ordinary} differential equations in
 time. When they do not, the same physics requires Maxwell's equations and partial
 differential equations in space and time --- which is a different, much harder course.
 \end{definitionbox}
+
+Each of the three deserves a sentence of translation.
+
+\begin{itemize}
+  \item \textbf{(a) does not forbid charge from moving \emph{inside} an element.} A
+        capacitor is the obvious case: it puts $+q$ on one plate and $-q$ on the other, so
+        charge certainly separates inside it. What (a) says is that the element as a
+        \emph{whole} never gains or loses charge --- the same current $i = dq/dt$ that
+        enters one terminal leaves the other. A wire, likewise, is a pipe and not a
+        bucket. Without this, ``the current through an element'' would not even be a
+        well-defined phrase, and Kirchhoff's current law would be false.
+  \item \textbf{(b) says the loops in your diagram are not antennas and not
+        transformers.} You drew a rectangle of wire; if a changing magnetic field passed
+        through that rectangle it would induce a voltage in it, and the voltage between
+        two nodes would depend on how you routed the wire. Assumption (b) rules that out,
+        which is what makes ``the voltage between $a$ and $b$'' independent of the path
+        --- and Kirchhoff's voltage law true.
+  \item \textbf{(c) says everything happens everywhere at once.} Signals travel at a
+        finite speed, so strictly the far end of a circuit learns about a change a little
+        later than the near end. If the circuit is tiny compared with $\lambda$, that
+        delay is not worth modelling, and we may use a single time variable $t$ for the
+        whole circuit rather than a function of position as well.
+\end{itemize}
 
 \begin{center}
 \begin{tikzpicture}[node distance=0.7cm]
@@ -1100,9 +1163,11 @@ that is the only skill being tested when a problem looks impossible at first sig
 
 \begin{cautionbox}[Drawing is not topology]
 Two circuits that look completely different on paper can be the same circuit. What
-matters is which terminals share a node, not where you placed the symbols. When a problem
-looks unfamiliar, redraw it with the nodes lined up --- half of the difficulty usually
-disappears.
+matters is which terminals share a node, not where you placed the symbols. So when a
+problem looks unfamiliar, redraw it: put every element that touches a given node so that
+it visibly touches the \emph{same point or the same line} as the others on that node, and
+straighten out the detours of wire. Series and parallel connections usually become obvious
+the moment you do this, and half of the difficulty disappears with them.
 \end{cautionbox}
 
 %==============================================================
