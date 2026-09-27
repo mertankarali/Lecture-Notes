@@ -1,5 +1,5 @@
 %==============================================================
-%  EE201 -- Circuit Theory I          Fall 2026/27, Section 2
+%  EE201 -- Circuit Theory I
 %  Lecture 1 : Basic Concepts   --   presentation slides
 %  M. Mert Ankaralı, METU EEE
 %
@@ -19,7 +19,7 @@
 \usepackage{colortbl}
 \usepackage{tikz}
 \usepackage[american,siunitx]{circuitikz}
-\usetikzlibrary{arrows.meta,positioning,calc}
+\usetikzlibrary{arrows.meta,positioning,calc,decorations.pathreplacing,decorations.pathmorphing}
 
 %-------------------- plain METU-flavoured theme --------------
 \usetheme{default}
@@ -53,7 +53,7 @@
 
 \setbeamertemplate{footline}{%
   \hbox{\begin{beamercolorbox}[wd=\paperwidth,ht=2.4ex,dp=1.4ex,leftskip=1.2em,rightskip=1.2em]{}%
-  \tiny\color{metugray}\coursecode\ \textbar\ Lecture 1: Basic Concepts \textbar\ \term
+  \tiny\color{metugray}\coursecode\ \textbar\ Lecture 1: Basic Concepts
   \hfill \insertframenumber/\inserttotalframenumber
   \end{beamercolorbox}}}
 
@@ -75,7 +75,21 @@
   blk/.style={draw=metugray, fill=metulight, rounded corners=2pt,
               minimum height=1.25cm, text width=2.45cm, align=center, font=\scriptsize},
   flowarr/.style={-{Stealth[length=3mm]}, metured, very thick},
+  thru/.style={-{Stealth[length=2.2mm]}, ccur, very thick},
+  acr/.style={{Stealth[length=2mm]}-{Stealth[length=2mm]}, cvolt, very thick},
+  pan/.style={draw=gray!35, fill=metulight, rounded corners=3pt,
+              minimum width=3.0cm, minimum height=2.3cm},
+  pcap/.style={font=\scriptsize\bfseries, text=metured},
 }
+
+% helpers for the four-domain across/through figure
+\newcommand{\dmacross}[1]{\draw[acr] (0.45,1.45) -- (2.55,1.45);
+  \node[cvolt, font=\scriptsize] at (1.5,1.76) {#1};
+  \draw[gray!45, dashed] (0.45,0.28) -- (0.45,1.40);
+  \draw[gray!45, dashed] (2.55,0.28) -- (2.55,1.40);}
+\newcommand{\dmthrough}[1]{\draw[thru] (0.15,0.05) -- (1.0,0.05);
+  \node[ccur, font=\scriptsize, anchor=west] at (1.12,0.05) {#1};}
+\newcommand{\dmpanel}[1]{\node[font=\small\bfseries, text=metured] at (1.5,2.30) {#1};}
 
 \hypersetup{colorlinks=true,allcolors=metured}
 
@@ -84,7 +98,7 @@
 \author{M. Mert Ankaralı}
 \institute{\small Department of Electrical and Electronics Engineering\\
            Middle East Technical University}
-\date{\small \term\ \textbar\ Section 2}
+\date{}
 
 %==============================================================
 \begin{document}
@@ -105,24 +119,59 @@
 \begin{frame}{Circuit theory is not about wires}
   \vfill
   \begin{center}
-  \begin{tikzpicture}[node distance=0.7cm]
-    \node[blk] (a) {Real system};
-    \node[blk, right=of a] (b) {Graphical model};
-    \node[blk, right=of b] (c) {Mathematical model};
-    \node[blk, right=of c] (d) {Analysis \& design};
-    \draw[flowarr] (a) -- (b);
-    \draw[flowarr] (b) -- (c);
-    \draw[flowarr] (c) -- (d);
-    \node[below=2pt of b, font=\scriptsize\itshape, text=metured] {the art};
-    \node[below=2pt of c, font=\scriptsize\itshape, text=metured] {the mathematics};
+  \begin{tikzpicture}[scale=0.93, transform shape]
+    \foreach \i/\t in {0/real system, 1/graphical model, 2/mathematical model, 3/analysis \& design}{
+      \node[pan] (P\i) at (\i*3.9,0) {};
+      \node[pcap] at (\i*3.9,1.52) {\t};
+    }
+    \foreach \i/\j/\l in {0/1/model, 1/2/write, 2/3/solve}{
+      \pgfmathsetmacro\xa{\i*3.9+1.55}\pgfmathsetmacro\xb{\j*3.9-1.55}
+      \draw[flowarr] (\xa,0) -- (\xb,0);
+      \pgfmathsetmacro\xm{(\i*3.9+\j*3.9)/2}
+      \node[font=\scriptsize\itshape, text=metured, above=1pt] at (\xm,0.06) {\l};
+    }
+    % --- real system: a loudspeaker in cross-section
+    \begin{scope}[shift={(-0.15,0)}]
+      \fill[gray!35] (-1.05,-0.42) rectangle (-0.58,0.42);
+      \draw[gray!60] (-1.05,-0.42) rectangle (-0.58,0.42);
+      \fill[gray!22] (-0.58,-0.26) rectangle (-0.30,0.26);
+      \draw[gray!60] (-0.58,-0.26) rectangle (-0.30,0.26);
+      \fill[gray!18] (-0.30,-0.26) -- (0.35,-0.80) -- (0.35,0.80) -- (-0.30,0.26) -- cycle;
+      \draw[gray!60] (-0.30,-0.26) -- (0.35,-0.80) -- (0.35,0.80) -- (-0.30,0.26) -- cycle;
+      \draw[gray!60] (0.35,-0.80) -- (0.35,0.80);
+      \foreach \r in {0.32,0.55,0.78}{
+        \draw[cvolt!70, line width=0.7pt] ([shift=(-42:\r)]0.4,0) arc (-42:42:\r);}
+      \draw[gray!60, thick] (-1.05,0.22) -- (-1.32,0.22);
+      \draw[gray!60, thick] (-1.05,-0.22) -- (-1.32,-0.22);
+      \node[font=\tiny, text=metugray] at (0.15,-1.03) {voice coil + magnet};
+    \end{scope}
+    % --- graphical model
+    \begin{scope}[shift={(3.9,-0.1)}]
+      \draw (-0.85,-0.6) to[sV, invert, l_={\scriptsize$v_s$}] (-0.85,0.6);
+      \draw (-0.85,0.6) -- (-0.1,0.6) to[R, l=\scriptsize$R$] (0.85,0.6);
+      \draw (0.85,0.6) to[L, l=\scriptsize$L$] (0.85,-0.6) -- (-0.85,-0.6);
+      \draw[-{Stealth[length=2mm]}, ccur, thick] (-0.55,0.9) -- (-0.05,0.9);
+      \node[ccur, font=\tiny] at (-0.3,1.13) {$i$};
+    \end{scope}
+    % --- mathematical model
+    \node at (7.8,0) {$\displaystyle v_s = R\,i + L\,\frac{di}{dt}$};
+    % --- analysis
+    \begin{scope}[shift={(11.7,-0.42)}]
+      \draw[->,gray!65] (-1.0,0) -- (1.15,0) node[right,font=\tiny,black] {$\omega$};
+      \draw[->,gray!65] (-1.0,0) -- (-1.0,1.28) node[right=1pt,font=\tiny,black] {$|Z|$};
+      \draw[gray!55,dashed] (-1.0,0.32) -- (1.0,0.32);
+      \node[font=\tiny, text=metugray, anchor=east] at (-1.05,0.32) {$R$};
+      \draw[cvolt, very thick, domain=-1.0:1.0, samples=80, smooth]
+           plot (\x, {0.32*sqrt(1+(1.9*(\x+1.0))^2)});
+      \node[font=\tiny, text=metugray] at (0.05,-0.48) {the coil chokes the treble};
+    \end{scope}
   \end{tikzpicture}
   \end{center}
   \vfill
-  \begin{itemize}
-    \item A real resistor has inductance, a temperature coefficient, a size, a price.
-    \item We keep \alert{one number}, $R$, and throw the rest away.
-    \item Whether that is brilliant or foolish depends on the question you are asking.
-  \end{itemize}
+  \begin{center}
+    A real loudspeaker also has a cone, a suspension, a mass, a room around it.\\
+    We keep \alert{two numbers}, $R$ and $L$, and throw the rest away.
+  \end{center}
   \vfill
   \begin{center}
     {\large\itshape ``All models are wrong, but some are useful.''}\\[3pt]
@@ -132,26 +181,69 @@
 
 %--------------------------------------------------------------
 \begin{frame}{The same pipeline, other domains}
+  \vfill
   \begin{center}
-  \small
-  \begin{tabular}{l l l}
-    \toprule
-    \textbf{Domain} & \textbf{``Across'' quantity} & \textbf{``Through'' quantity}\\
-    \midrule
-    electrical & \Vcol{electric potential} & \Icol{current}\\
-    hydraulic  & pressure                  & volumetric flow\\
-    thermal    & temperature               & heat flow\\
-    mechanical & velocity                  & force\\
-    \bottomrule
-  \end{tabular}
+  \begin{tikzpicture}[scale=0.82, transform shape]
+    % electrical
+    \begin{scope}
+      \dmpanel{electrical}
+      \draw[thick] (0.1,0.7) -- (0.7,0.7);
+      \draw[thick, decorate, decoration={zigzag, segment length=4pt, amplitude=3pt}]
+            (0.7,0.7) -- (2.3,0.7);
+      \draw[thick] (2.3,0.7) -- (2.9,0.7);
+      \dmacross{voltage $v$}\dmthrough{current $i$}
+    \end{scope}
+    % hydraulic
+    \begin{scope}[xshift=3.6cm]
+      \dmpanel{hydraulic}
+      \draw[line width=3pt, gray!40] (0.1,0.92) -- (0.95,0.92);
+      \draw[line width=1.4pt, gray!55] (0.95,0.92) -- (2.05,0.92);
+      \draw[line width=3pt, gray!40] (2.05,0.92) -- (2.9,0.92);
+      \draw[line width=3pt, gray!40] (0.1,0.48) -- (0.95,0.48);
+      \draw[line width=1.4pt, gray!55] (0.95,0.48) -- (2.05,0.48);
+      \draw[line width=3pt, gray!40] (2.05,0.48) -- (2.9,0.48);
+      \dmacross{pressure drop $\Delta p$}\dmthrough{flow rate $Q$}
+    \end{scope}
+    % thermal
+    \begin{scope}[xshift=7.2cm]
+      \dmpanel{thermal}
+      \fill[gray!15] (0.95,0.28) rectangle (2.05,1.12);
+      \draw[gray!60, thick] (0.95,0.28) rectangle (2.05,1.12);
+      \foreach \k in {0,1,2,3}{\draw[gray!45] (1.0+\k*0.28,0.28) -- (1.21+\k*0.28,1.12);}
+      \draw[thick, gray!55] (0.45,0.7) -- (0.95,0.7);
+      \draw[thick, gray!55] (2.05,0.7) -- (2.55,0.7);
+      \dmacross{temp.\ difference $\Delta T$}\dmthrough{heat flow $q$}
+    \end{scope}
+    % mechanical
+    \begin{scope}[xshift=10.8cm]
+      \dmpanel{mechanical}
+      \draw[thick, gray!55] (0.1,0.7) -- (1.05,0.7);
+      \draw[thick, gray!55] (1.05,0.33) -- (1.05,1.07);
+      \fill[gray!20] (1.05,0.33) rectangle (1.78,1.07);
+      \draw[gray!60, thick] (1.05,0.33) rectangle (1.78,1.07);
+      \draw[thick, gray!55] (1.46,0.7) -- (2.9,0.7);
+      \draw[thick, gray!55] (1.46,0.45) -- (1.46,0.95);
+      \dmacross{rel.\ velocity $\Delta u$}\dmthrough{force $F$}
+    \end{scope}
+  \end{tikzpicture}
   \end{center}
   \vfill
-  \begin{block}{Every ``across'' quantity is a difference}
-    It is always measured between two points --- and in every domain the word
-    ``difference'' is usually dropped. We say \Vcol{voltage}, not ``potential
-    difference''; a plumber says ``pressure'', not ``pressure difference''. The
-    difference is still there, hidden in the name.
-  \end{block}
+  \begin{columns}[T,onlytextwidth]
+    \begin{column}{0.48\textwidth}
+      \begin{block}{Across: needs \emph{two} points}
+        \small A difference. The second point is usually left unsaid because a reference
+        was agreed on long ago --- sea level, atmospheric pressure. A circuit has none,
+        so we pick one: \emph{ground}.
+      \end{block}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \begin{block}{Through: needs \emph{one}}
+        \small Measured at a place, with a direction --- and no reference: zero current
+        means the same to everyone.
+      \end{block}
+    \end{column}
+  \end{columns}
+  \vfill
 \end{frame}
 
 %==============================================================
@@ -305,20 +397,34 @@
 %--------------------------------------------------------------
 \begin{frame}{Conventional current}
   \vfill
-  \begin{block}{The arrow points the way \emph{positive} charge would move}
-    In a copper wire the carriers are electrons, so they actually move \emph{against}
-    the arrow.
-  \end{block}
-  \vfill
   \begin{center}
-    No equation in this course changes because of it.
+  \begin{tikzpicture}[scale=1.0]
+    % wire
+    \fill[gray!12] (0,0) rectangle (8,1.0);
+    \draw[gray!55] (0,0) -- (8,0) (0,1.0) -- (8,1.0);
+    % electrons drifting left
+    \foreach \x in {0.8,2.0,3.2,4.4,5.6,6.8}{
+      \fill[ccharge] (\x,0.5) circle (0.13);
+      \node[white, font=\tiny] at (\x,0.5) {$-$};
+      \draw[-{Stealth[length=1.6mm]}, ccharge, thick] (\x-0.22,0.5) -- (\x-0.62,0.5);
+    }
+    % current arrow
+    \draw[-{Stealth[length=3mm]}, ccur, very thick] (2.6,1.55) -- (5.4,1.55);
+    \node[ccur, font=\small] at (4.0,1.9) {$i$ \ (conventional current)};
+    \draw[-{Stealth[length=2.4mm]}, ccharge, very thick] (5.4,-0.55) -- (2.6,-0.55);
+    \node[ccharge, font=\small] at (4.0,-0.95) {electrons actually drift this way};
+  \end{tikzpicture}
   \end{center}
   \vfill
-  A current counts only the \alert{net rate at which charge crosses a section}: one
-  electron moving left transports exactly as much charge to the right as one positive
-  charge moving right. The model never asks what the carriers are --- and it had better
-  not, because in a semiconductor they are electrons \emph{and} holes, and in a battery
-  they are ions.
+  \begin{center}
+    One electron moving left carries as much charge to the right\\
+    as one positive charge moving right. \alert{No equation changes.}
+  \end{center}
+  \vfill
+  \begin{center}\small\color{metugray}
+    Just as well: in a semiconductor the carriers are electrons \emph{and} holes,
+    and in a battery they are ions.
+  \end{center}
   \vfill
 \end{frame}
 
@@ -352,7 +458,7 @@
   \end{center}
   \vfill
   \begin{center}\small
-    Only the first deserves the symbol $I$. Most of EE201 is about the other two.
+    Only the first deserves the symbol $I$.
   \end{center}
 \end{frame}
 
@@ -433,19 +539,19 @@
 
 %--------------------------------------------------------------
 \begin{frame}{What that definition does --- and does not --- say}
-  \begin{itemize}
-    \item It is a \alert{ratio}. Carry twice the charge, exchange twice the energy: the
-          ratio is the same. So voltage belongs to the \textbf{pair of points}, not to the
-          charge you used to probe it.
-    \item It is defined even when \alert{nothing is moving}. A $1.5\V$ battery on the
-          shelf has $1.5\V$ across it with $i = 0$ --- just as a closed tap still has
-          pressure behind it.
-    \item Order matters: $v_{ab} = -v_{ba}$. There is no ``voltage at a point'' until we
-          fix a reference (Section: ground).
-    \item In a \emph{lumped} circuit the energy per charge depends only on the two
-          endpoints, \alert{not on the path} taken between them. That is what makes
-          ``the voltage between $a$ and $b$'' a meaningful phrase --- and it becomes KVL.
+  \vfill
+  \begin{itemize}\itemsep1.1em
+    \item It is a \alert{ratio}. Twice the charge, twice the energy --- same $v_{ab}$.
+          Voltage belongs to the \textbf{pair of points}, not to the charge.
+    \item It is defined with \alert{nothing moving}. A $1.5\V$ battery on the shelf has
+          $1.5\V$ across it at $i=0$ --- like a closed tap with pressure behind it.
+    \item \alert{Order matters}: $v_{ab} = -v_{ba}$. There is no ``voltage at a point''
+          until we fix a reference.
+    \item The energy per charge depends on the two endpoints, \alert{not on the path}.
+          That is what makes ``the voltage between $a$ and $b$'' mean anything --- and
+          later it becomes KVL.
   \end{itemize}
+  \vfill
 \end{frame}
 
 %--------------------------------------------------------------
@@ -514,9 +620,8 @@
         \item $C$ --- the cross-section of the container
       \end{itemize}
       \vspace{0.4em}
-      {\small The \alert{shape of the circuit} plays the part of the shape of the tank:
-       the same charge poured between \emph{another} pair of points reaches a different
-       level, because $C$ is different. We define $C$ properly in Lecture~5.}
+      {\small The \alert{shape of the circuit} plays the part of the shape of the tank.
+       We define $C$ properly in Lecture~5.}
   \end{columns}
 \end{frame}
 
@@ -603,16 +708,19 @@
     \fill[cvolt!22] (0,1.2) circle (0.42);
     \draw[cvolt, very thick] (0,1.2) circle (0.42);
     \node[font=\scriptsize, text=cvolt] at (0,1.2) {pump};
-    \node[font=\scriptsize, text=cvolt, align=center] at (0,-0.8) {pressure\\ difference};
-    \draw[curarr] (2.9,-0.4) -- (1.9,-0.4);
-    \node[font=\scriptsize, text=ccur] at (2.4,-0.85) {flow rate};
+    \draw[acr] (-0.85,0.62) -- (-0.85,1.78);
+    \node[font=\scriptsize, text=cvolt, rotate=90] at (-1.15,1.2) {pressure difference};
+    \draw[curarr] (3.3,-0.45) -- (2.3,-0.45);
+    \node[font=\scriptsize, text=ccur] at (2.8,-0.95) {flow rate};
     \begin{scope}[xshift=7.6cm]
       \node[font=\bfseries\small, text=metugray] at (1.7,3.6) {Electrical};
-      \draw (0,0) to[battery1, l_={\color{cvolt}$v$}] (0,2.4);
+      \draw (0,0) to[battery1, invert] (0,2.4);
+      \draw[acr] (-0.85,0.62) -- (-0.85,1.78);
+      \node[font=\scriptsize, text=cvolt, rotate=90] at (-1.15,1.2) {voltage $v$};
       \draw (0,2.4) to[R, l={$R$}] (3.4,2.4);
       \draw (3.4,2.4) -- (3.4,0) -- (0,0);
-      \draw[curarr] (2.4,-0.4) -- (1.4,-0.4);
-      \node[font=\scriptsize, text=ccur] at (1.9,-0.85) {current $i$};
+      \draw[curarr] (2.8,-0.45) -- (1.8,-0.45);
+      \node[font=\scriptsize, text=ccur] at (2.3,-0.95) {current $i$};
     \end{scope}
   \end{tikzpicture}
   \end{center}
@@ -620,29 +728,26 @@
 \end{frame}
 
 %--------------------------------------------------------------
-\begin{frame}{Across and through}
+\begin{frame}{The dictionary}
+  \vfill
   \begin{center}
-  \small
-  \begin{tabular}{l l l}
+  \renewcommand{\arraystretch}{1.35}
+  \begin{tabular}{r c l}
     \toprule
-    \textbf{Hydraulic} & \textbf{Electrical} & \\
+    \textbf{Hydraulic} & & \textbf{Electrical}\\
     \midrule
-    pressure (difference)  & \Vcol{voltage $v$} & \textbf{across}: a difference between two points\\
-    volumetric flow rate   & \Icol{current $i$} & \textbf{through}: needs a direction\\
-    pipe restriction       & resistance $R$     & opposes flow, dissipates energy\\
-    pump                   & voltage source     & supplies energy\\
+    pressure difference  & $\leftrightarrow$ & \Vcol{voltage $v$}\\
+    volumetric flow rate & $\leftrightarrow$ & \Icol{current $i$}\\
+    pipe restriction     & $\leftrightarrow$ & resistance $R$\\
+    pump                 & $\leftrightarrow$ & voltage source\\
     \bottomrule
   \end{tabular}
   \end{center}
   \vfill
-  \begin{block}{Where the analogy breaks --- and a warning}
-    Water can leak out and pile up in a bucket; charge in a lumped circuit cannot.
-    \\[3pt]
-    And if you say \alert{``the current across the resistor''} or
-    \alert{``the voltage through the resistor''}, you have not just picked the wrong
-    word --- you have swapped the two quantities. Voltage is measured \emph{between two
-    points}; current is measured \emph{through one point}.
-  \end{block}
+  \begin{center}\small\color{metugray}
+    Useful for intuition, not for proofs --- water is incompressible, charge is not.
+  \end{center}
+  \vfill
 \end{frame}
 
 %==============================================================
@@ -663,7 +768,7 @@
     \column{0.50\textwidth}
       \begin{center}
       \begin{circuitikz}[scale=0.8, transform shape]
-        \draw (0,0) to[battery1, l={$12\V$}] (0,2.4);
+        \draw (0,0) to[battery1, invert, l={$12\V$}] (0,2.4);
         \draw (0,2.4) -- (1.2,2.4);
         \draw (1.2,2.4) to[R, l_=$R_1$] (3.4,2.4);
         \draw (3.4,2.4) to[R, l=$R_2$] (3.4,0);
@@ -699,7 +804,7 @@
   \end{columns}
   \vfill
   \begin{center}
-    In EE201 we always mean the third one.\\[3pt]
+    In EE201 we mean the third one.\\[3pt]
     {\small In the laboratory, confusing them is how you blow a fuse.}
   \end{center}
 \end{frame}
@@ -769,10 +874,11 @@
     Draw the current arrow so that it \alert{enters the $+$ terminal}. Then
     \[ p = vi = \text{power \emph{absorbed} by the element}. \]
     $p > 0$: the element absorbs. \qquad $p < 0$: it delivers.
-    \\[4pt]
-    If the picture you are given does \emph{not} obey the PSC, do not memorise a second
-    formula: flip one reference, change that variable's sign, and use $p = vi$ as always.
   \end{block}
+  \begin{center}\small\color{metugray}
+    Given a picture that does not obey the PSC: flip one reference, change that
+    variable's sign, and use $p = vi$ as always.
+  \end{center}
   \vfill
   \begin{center}
   \begin{tikzpicture}[scale=0.95]
@@ -806,7 +912,7 @@
     \column{0.46\textwidth}
       \begin{center}
       \begin{circuitikz}[scale=0.85, transform shape]
-        \draw (0,0) to[battery1, l={$12\,$V}] (0,2.6);
+        \draw (0,0) to[battery1, invert, l={$12\,$V}] (0,2.6);
         \node[font=\small, text=cvolt] at (-0.33,2.05) {$+$};
         \node[font=\small, text=cvolt] at (-0.33,0.55) {$-$};
         \draw (0,2.6) to[short, i>^={\color{ccur}$2\,$A}] (1.1,2.6);
@@ -838,26 +944,83 @@
 \section{Lumped circuits}
 %--------------------------------------------------------------
 \begin{frame}{What exactly is a circuit?}
-  An \textbf{electric circuit} is an interconnection of elements through which charge can
-  flow along closed paths. Everything in EE201 also assumes it is \alert{lumped}:
-  \vspace{0.3em}
+  \vfill
+  \begin{center}
+    Elements interconnected so that charge can flow along \alert{closed paths}.\\[2pt]
+    Everything in EE201 also assumes the circuit is \alert{lumped}:
+  \end{center}
+  \vfill
   \begin{block}{Three things we assume}
-    \begin{enumerate}
-      \item \textbf{Nothing piles up.} The current leaving an element equals the current
-            entering it, at every instant.\\
-            {\footnotesize Charge may \emph{separate} inside --- that is what a capacitor
-             does --- but the element as a whole never gains or loses charge.}
-      \item \textbf{Nothing leaks out.} The fields stay inside the elements: the loops of
-            wire in your diagram are neither antennas nor transformers.
-      \item \textbf{Nothing is late.} The circuit is small compared with $\lambda = c/f$,
-            so a change at one point is felt everywhere at once.
+    \begin{enumerate}\itemsep0.55em
+      \item \textbf{Nothing piles up.} Current out $=$ current in, at every instant.
+            {\footnotesize Charge may \emph{separate} inside --- a capacitor does exactly
+             that --- but the element as a whole never gains charge.}
+      \item \textbf{Nothing leaks out.} No changing magnetic field through your loops:
+            they are neither antennas nor transformers.
+      \item \textbf{Nothing is late.} The circuit is much smaller than the wavelength,
+            $d \ll \lambda = c/f$.
     \end{enumerate}
   \end{block}
-  \vspace{0.2em}
-  \begin{center}\footnotesize
-    $50$ Hz: $\lambda = 6000$ km, any board is lumped. \quad
-    $2.4$ GHz: $\lambda = 12.5$ cm, a $3$ cm track is not.
+  \vfill
+  \begin{center}\footnotesize\color{metugray}
+    $50$ Hz: $\lambda = 6000$ km --- any board is lumped. \qquad
+    $2.4$ GHz: $\lambda = 12.5$ cm --- a $3$ cm track is not.
   \end{center}
+  \vfill
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{Nothing is late: a circuit much smaller than $\lambda$}
+  \begin{center}
+  \begin{tikzpicture}[x=1.05cm,y=1.05cm]
+    \draw[->,gray!60] (-0.3,0) -- (12.4,0);
+    \draw[cvolt, very thick, domain=0:12.1, samples=300, smooth] plot (\x, {0.7*sin(60*\x)});
+    \draw[metugray,|<->|] (6,-1.45) -- (12,-1.45) node[midway,below,font=\scriptsize] {$\lambda = c/f$};
+    \node[font=\scriptsize, text=metugray, anchor=west] at (0,1.5)
+         {a \emph{snapshot} along the circuit at one instant --- the axis is distance, not time};
+    \fill[cpow] (1.0,{0.7*sin(60*1.0)}) circle (2.2pt);
+    \fill[cpow] (1.35,{0.7*sin(60*1.35)}) circle (2.2pt);
+    \draw[cpow,dashed,thin] (1.0,-0.6) -- (1.0,{0.7*sin(60*1.0)});
+    \draw[cpow,dashed,thin] (1.35,-0.6) -- (1.35,{0.7*sin(60*1.35)});
+    \draw[cpow, very thick] (1.0,-0.6) -- (1.35,-0.6);
+    \node[font=\scriptsize, text=cpow, anchor=north] at (1.2,-0.78) {$d$};
+    \node[font=\small\bfseries, text=cpow, anchor=west] at (2.4,-0.95) {$d \ll \lambda$: LUMPED};
+  \end{tikzpicture}
+  \end{center}
+  \vfill
+  \begin{center}
+  Both ends sit at practically the same point of the wave, so every point of the circuit
+  reads \alert{the same number} at any instant ---\\ ``the voltage of a node'' means
+  something.
+  \end{center}
+  \vfill
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{\dots and one that is not}
+  \begin{center}
+  \begin{tikzpicture}[x=1.05cm,y=1.05cm]
+    \draw[->,gray!60] (-0.3,0) -- (12.4,0);
+    \draw[cvolt, very thick, domain=0:12.1, samples=300, smooth] plot (\x, {0.7*sin(60*\x)});
+    \draw[metugray,|<->|] (6,-1.45) -- (12,-1.45) node[midway,below,font=\scriptsize] {$\lambda = c/f$};
+    \node[font=\scriptsize, text=metugray, anchor=west] at (0,1.5)
+         {a \emph{snapshot} along the circuit at one instant --- the axis is distance, not time};
+    \fill[metured] (1.5,0.7) circle (2.2pt);
+    \fill[metured] (4.5,-0.7) circle (2.2pt);
+    \draw[metured,dashed,thin] (1.5,-0.6) -- (1.5,0.7);
+    \draw[metured,dashed,thin] (4.5,-0.6) -- (4.5,-0.7);
+    \draw[metured, very thick] (1.5,-0.6) -- (4.5,-0.6);
+    \node[font=\scriptsize, text=metured, anchor=north] at (3.0,-0.78) {$d$};
+    \node[font=\small\bfseries, text=metured, anchor=west] at (5.4,-0.95) {$d \sim \lambda$: NOT LUMPED};
+  \end{tikzpicture}
+  \end{center}
+  \vfill
+  \begin{center}
+  One end is at the crest, the other at the trough: \alert{different values at the same
+  moment}.\\ There is no single number to call the node voltage, and circuit theory no
+  longer applies.
+  \end{center}
+  \vfill
 \end{frame}
 
 %--------------------------------------------------------------
@@ -880,7 +1043,7 @@
     \column{0.44\textwidth}
       \begin{center}
       \begin{circuitikz}[scale=0.75, transform shape]
-        \draw (0,0) to[battery1, l={$V_s$}] (0,2.4);
+        \draw (0,0) to[battery1, invert, l={$V_s$}] (0,2.4);
         \draw (0,2.4) -- (1.0,2.4);
         \draw (1.0,2.4) to[R, l_=$R_1$] (3.4,2.4);
         \draw (3.4,2.4) to[R, l=$R_2$] (3.4,0);
@@ -905,7 +1068,7 @@
     \column{0.50\textwidth}
       \begin{center}
       \begin{circuitikz}[scale=0.62, transform shape]
-        \draw (0,0) to[battery1, l={$V_s$}] (0,2.8);
+        \draw (0,0) to[battery1, invert, l={$V_s$}] (0,2.8);
         \draw (0,2.8) -- (1.6,2.8);
         \draw (1.6,2.8) to[R, l_={$R_1$}] (1.6,1.0);
         \draw (3.6,2.8) to[R, l={$R_2$}] (3.6,1.0);
@@ -923,7 +1086,7 @@
     \column{0.46\textwidth}
       \begin{center}
       \begin{circuitikz}[scale=0.72, transform shape]
-        \draw (0,0) to[battery1, l={$V_s$}] (0,2.6);
+        \draw (0,0) to[battery1, invert, l={$V_s$}] (0,2.6);
         \draw (0,2.6) -- (1.2,2.6);
         \draw (1.2,2.6) to[R, l_={$R_1$}] (3.0,2.6);
         \draw (1.2,1.5) to[R, l_={$R_2$}] (3.0,1.5);
@@ -981,7 +1144,7 @@
   \begin{center}
     \Large\color{metured}\textbf{Questions?}\\[6pt]
     \normalsize\normalcolor
-    Notes for this lecture: see the Section 2 repository.
+    Notes for this lecture: see the course repository.
   \end{center}
 \end{frame}
 

@@ -4,8 +4,8 @@ Lecture notes and slides for the first lecture of EE201 (Section 2, Fall 2026/27
 
 | File | What it is |
 |---|---|
-| `EE201_Lecture_1.tex` | Handout / lecture notes (article, ~14 pages). Self-contained: full definitions, derivations and worked examples. |
-| `EE201_Lecture_1_slides.tex` | Beamer deck (30 slides) for the lecture itself — visual, low text. |
+| `EE201_Lecture_1.tex` | Handout / lecture notes (article, ~13 pages). Self-contained: full definitions, derivations and worked examples. |
+| `EE201_Lecture_1_slides.tex` | Beamer deck (32 slides) for the lecture itself — visual, low text. |
 | `build.sh` | Compiles both, removes auxiliary files, opens the PDFs. |
 
 ## Compiling
