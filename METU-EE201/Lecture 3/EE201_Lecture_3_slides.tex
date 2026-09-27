@@ -96,6 +96,9 @@
 
 \newcommand{\ohm}{\,\Omega}
 \newcommand{\Req}{R_{\mathrm{eq}}}
+\newcommand{\taxes}[4]{%
+  \draw[vax] (-0.15,0) -- (#1,0) node[right=1pt, font=\scriptsize] {$t$};
+  \draw[vax] (0,-#2) -- (0,#3) node[above=1pt, font=\scriptsize] {#4};}
 \newcommand{\viaxes}[3]{%
   \draw[vax] (-#1,0) -- (#1,0) node[right=1pt, font=\scriptsize, text=cvolt] {$v$};
   \draw[vax] (0,-#2) -- (0,#2) node[above=1pt, font=\scriptsize, text=ccur] {$i$};
@@ -103,7 +106,7 @@
 
 \hypersetup{colorlinks=true,allcolors=metured}
 
-\title{Lecture 3: Lumped Elements}\subtitle{and their characteristics}
+\title{Lecture 3: Lumped Elements}\subtitle{characteristics, and the LTI resistor}
 \author{M. Mert Ankaralı}
 \institute{\small Department of Electrical and Electronics Engineering\\
            Middle East Technical University}
@@ -256,8 +259,6 @@
   \vfill
 \end{frame}
 
-%==============================================================
-\section{Sources}
 %--------------------------------------------------------------
 \begin{frame}{The independent voltage source}
   \vfill
@@ -354,7 +355,7 @@
 \begin{frame}{$v_s(t)$ can be any function you like}
   \vfill
   \begin{center}
-  \begin{tikzpicture}[scale=0.92, transform shape]
+  \begin{tikzpicture}[scale=0.84, transform shape]
    \foreach \dx/\ttlx in {0/{constant (DC)}, 4.2/{sinusoidal}, 8.4/{square}, 12.6/{ramp}}{
      \begin{scope}[xshift=\dx cm]
        \draw[vax] (-0.15,0) -- (3.1,0) node[right, font=\scriptsize] {$t$};
@@ -453,7 +454,7 @@
 \begin{frame}{Which quadrant is the element in?}
   \vfill
   \begin{center}
-  \begin{tikzpicture}[scale=1.2, transform shape]
+  \begin{tikzpicture}[scale=1.1, transform shape]
     \fill[cpow!14] (0,0) rectangle (1.45,1.25);
     \fill[cpow!14] (0,0) rectangle (-1.45,-1.25);
     \fill[cvolt!16] (0,0) rectangle (-1.45,1.25);
@@ -463,7 +464,7 @@
     \node[font=\scriptsize, text=cpow] at (-0.78,-0.68) {$p > 0$};
     \node[font=\scriptsize, text=cvolt] at (-0.78,0.68) {$p < 0$};
     \node[font=\scriptsize, text=cvolt] at (0.78,-0.68) {$p < 0$};
-    \node[font=\normalsize, anchor=west, text width=7.6cm] at (2.6,0)
+    \node[font=\normalsize, anchor=west, text width=7.2cm] at (2.45,0)
       {With the passive sign convention $\Pcol{p} = \Vcol{v}\Icol{i}$ is the power
        \emph{absorbed}.\\[8pt]
        Stay in the \textcolor{cpow}{green} quadrants $\Rightarrow$ the element can only
@@ -494,7 +495,7 @@
       \draw[crv] (-1.4,0.7) -- (1.4,0.7);
       \fill[metured] (-0.7,0.7) circle (2.4pt);
     \end{scope}
-    \node[font=\normalsize, anchor=west, text width=5.4cm] at (7.2,0)
+    \node[font=\normalsize, anchor=west, text width=5.1cm] at (7.05,0)
       {A vertical line at $v_s \neq 0$ crosses quadrants 1 \emph{and} 4.\\[8pt]
        A horizontal line at $i_s \neq 0$ crosses quadrants 1 \emph{and} 2.\\[8pt]
        Driving a circuit means giving out energy --- so this had better be true.};
@@ -503,8 +504,6 @@
   \vfill
 \end{frame}
 
-%==============================================================
-\section{The resistor}
 %--------------------------------------------------------------
 \begin{frame}{What is a resistor?}
   \vfill
@@ -604,8 +603,6 @@
   \vfill
 \end{frame}
 
-%==============================================================
-\section{Five words}
 %--------------------------------------------------------------
 \begin{frame}{Linear}
   \vfill
@@ -758,8 +755,6 @@
   \vfill
 \end{frame}
 
-%==============================================================
-\section{Characterization}
 %--------------------------------------------------------------
 \begin{frame}{The gallery, characterized}
   \vfill
@@ -827,29 +822,136 @@
   \vfill
 \end{frame}
 
-%==============================================================
-\section{Where two curves meet}
 %--------------------------------------------------------------
-\begin{frame}{Two elements face to face must agree}
+\begin{frame}{The LTI resistor}
+  \vfill
+  \begin{center}
+    {\large Take two of those five words: \alert{linear} and \alert{time-invariant}.}\\[6pt]
+    A straight line through the origin, and it never moves. Only the slope is left.
+  \end{center}
   \vfill
   \begin{center}
   \begin{tikzpicture}[scale=1.15, transform shape]
-    \draw[thick] (0,0) rectangle (1.3,1.3);
-    \draw[thick] (2.6,0) rectangle (3.9,1.3);
-    \draw[thick] (1.3,0.95) -- (2.6,0.95);
-    \draw[thick] (1.3,0.35) -- (2.6,0.35);
-    \node[font=\small] at (0.65,0.65) {A};
-    \node[font=\small] at (3.25,0.65) {B};
-    \node[cvolt, font=\small] at (1.95,1.35) {same $v$};
-    \node[ccur, font=\small] at (1.95,-0.08) {same $i$};
+    \viaxes{1.4}{1.3}{}
+    \draw[crv] (-1.2,-0.9) -- (1.2,0.9);
+    \node[font=\scriptsize, text=metured] at (-0.92,0.95) {slope $=G$};
+    \node[font=\normalsize, anchor=west, text width=7.6cm] at (2.4,0)
+      {\[ \Vcol{v} = R\,\Icol{i} \qquad\Longleftrightarrow\qquad \Icol{i} = G\,\Vcol{v} \]
+       \vspace{-4pt}
+       \begin{center}$G = 1/R$\end{center}
+       \vspace{2pt}
+       \small \textbf{resistance} $R$ in ohms, $\Omega = $ V/A\\
+       \textbf{conductance} $G$ in siemens, S $=$ A/V};
+  \end{tikzpicture}
+  \end{center}
+  \vfill
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{Turn the line and sweep $R$ from $\infty$ to $0$}
+  \vfill
+  \begin{center}
+  \begin{tikzpicture}[scale=1.1, transform shape]
+    \def\W{1.4} \def\H{1.3} \def\S{4.3}
+    \begin{scope}
+      \viaxes{\W}{\H}{$R = \infty$: open circuit}
+      \draw[crv] (-1.3,0) -- (1.3,0);
+      \node[font=\scriptsize, text=metugray] at (0.75,-1.0) {$G = 0$};
+    \end{scope}
+    \begin{scope}[xshift=\S cm]
+      \viaxes{\W}{\H}{$0 < R < \infty$}
+      \draw[crv] (-1.2,-0.9) -- (1.2,0.9);
+    \end{scope}
+    \begin{scope}[xshift=2*\S cm]
+      \viaxes{\W}{\H}{$R = 0$: short circuit}
+      \draw[crv] (0,-1.25) -- (0,1.25);
+      \node[font=\scriptsize, text=metugray] at (0.75,-1.0) {$G = \infty$};
+    \end{scope}
   \end{tikzpicture}
   \end{center}
   \vfill
   \begin{center}
-    {\large KVL forces one voltage. KCL forces one current.}\\[8pt]
-    So $(\Vcol{v},\Icol{i})$ must lie on \alert{both} characteristics at once ---\\
-    the circuit operates where the two curves \alert{cross}.
+    A short circuit \alert{fixes the voltage} at zero and lets any current through.\\
+    An open circuit \alert{fixes the current} at zero and allows any voltage.
   \end{center}
+  \vfill
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{$G = 1/R$ --- except at the two ends}
+  \vfill
+  \begin{center}
+  \begin{tabular}{@{}l c c l@{}}
+    \toprule
+     & $R$ & $G$ & \textbf{characteristic}\\
+    \midrule
+    short circuit & $0$      & $\infty$ & the $\Icol{i}$-axis, \ $\Vcol{v} = 0$\\
+    open circuit  & $\infty$ & $0$      & the $\Vcol{v}$-axis, \ $\Icol{i} = 0$\\
+    \bottomrule
+  \end{tabular}
+  \end{center}
+  \vfill
+  \begin{center}
+    At each end only \alert{one} of the pair is a usable number.\\[6pt]
+    {\small Same fact as Lecture 3: a short is current-controlled but not
+     voltage-controlled, and an open circuit the other way round.}
+  \end{center}
+  \vfill
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{Power in an LTI resistor}
+  \vfill
+  \begin{center}
+    \begin{tikzpicture}
+      \node[draw=metured, fill=metured!6, rounded corners=4pt, inner sep=12pt]
+      {\large $\displaystyle \Pcol{p} \;=\; \Vcol{v}\,\Icol{i}
+        \;=\; R\,\Icol{i}^{\,2} \;=\; G\,\Vcol{v}^{\,2}
+        \;=\; \frac{\Vcol{v}^{\,2}}{R}$};
+    \end{tikzpicture}
+  \end{center}
+  \vfill
+  \begin{center}
+  \begin{tikzpicture}[scale=1.1, transform shape]
+    \taxes{3.0}{0.2}{1.5}{\Pcol{$w$}}
+    \draw[crv] (0,0) -- (2.8,1.3);
+    \node[font=\scriptsize, text=metugray, above left] at (2.8,1.3) {only climbs};
+    \node[font=\normalsize, anchor=west, text width=7.4cm] at (3.8,0.6)
+      {Squares, so for $R>0$ the power is \alert{never negative}.\\[8pt]
+       The energy graph can only climb: what goes in leaves as \alert{heat}, at the
+       same instant, and never comes back.};
+  \end{tikzpicture}
+  \end{center}
+  \vfill
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{Example: a resistor as a heater}
+  \vfill
+  \begin{columns}[c,onlytextwidth]
+    \begin{column}{0.36\textwidth}
+      \begin{center}
+      \begin{tikzpicture}[scale=1.0, transform shape]
+        \draw (0,0) to[american voltage source, invert] (0,2.0);
+        \draw (0,2.0) -- (1.9,2.0) to[R, l=$4\ohm$] (1.9,0) -- (0,0);
+        \node[pol] at (0.68,1.42) {$+$}; \node[pol] at (0.68,0.52) {$-$};
+        \node[font=\small] at (-0.85,1.0) {$12\V$};
+        \draw[iar] (0.5,2.35) -- (1.2,2.35);
+        \node[ccur, font=\small] at (0.85,2.68) {$i$};
+      \end{tikzpicture}
+      \end{center}
+    \end{column}
+    \begin{column}{0.60\textwidth}
+      \[ \Icol{i} = 3\A \]
+      \[ \Pcol{p} = 12 \times 3 = 4(3)^2 = 36\W \]
+      \[ \Pcol{w}\big|_{10\,\text{min}} = 36 \times 600 = 21.6\uni{kJ} \]
+      \vspace{2pt}
+      \begin{center}\small
+        All of it heat --- which is why a resistor carries a \alert{power rating} as well
+        as a resistance.
+      \end{center}
+    \end{column}
+  \end{columns}
   \vfill
 \end{frame}
 
@@ -912,7 +1014,10 @@
           no memory. Diodes and sources are; capacitors and inductors are not.
     \item Five questions about the curve: \textbf{linear}, \textbf{bilateral},
           \textbf{passive}, \textbf{$v$- or $i$-controlled}, \textbf{time-invariant}.
-    \item Where two characteristics cross is where the circuit operates.
+    \item \textbf{LTI resistor}: linear \emph{and} time-invariant --- one fixed line,
+          $\Vcol{v} = R\Icol{i}$, $\Icol{i} = G\Vcol{v}$. $R=0$ short, $R=\infty$ open.
+          Its power is heat, at once, never returned.
+    \item Element curve $+$ \alert{load line}, same plane: they cross where the circuit operates.
   \end{itemize}
   \vfill
 \end{frame}
@@ -921,9 +1026,9 @@
 \begin{frame}{Next lecture}
   \vfill
   \begin{center}
-  \begin{block}{Equivalent resistance, then systematic analysis}
-    Series and parallel combinations, the voltage and current dividers --- and then the
-    analysis methods that replace the $2b$ equations by a handful.
+  \begin{block}{The capacitor}
+    The first element that \emph{remembers}. Its characteristic lives in a different plane
+    altogether, and the energy you put into it comes back out.
   \end{block}
   \end{center}
   \vfill

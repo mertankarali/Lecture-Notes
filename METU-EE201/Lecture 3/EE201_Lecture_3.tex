@@ -138,7 +138,7 @@
   {\small\scshape Middle East Technical University}\\[2pt]
   {\small\scshape Department of Electrical and Electronics Engineering}\\[7pt]
   {\Large\bfseries\color{metured} EE201 -- Circuit Theory I}\\[4pt]
-  {\large\bfseries Lecture 3: Lumped Elements and Their Characteristics}\\[6pt]
+  {\large\bfseries Lecture 3: Lumped Elements, Characteristics\\ and the LTI Resistor}\\[6pt]
   {\small M. Mert Ankaralı}
 \end{center}
 \end{tcolorbox}
@@ -726,30 +726,129 @@ current-controlled, since $\Vcol{v} = v_s$ for every $\Icol{i}$.
 \end{examplebox}
 
 %==============================================================
+\section{The LTI resistor}
+
+Of the five words above, take two: \textbf{linear} and \textbf{time-invariant}. Linear
+makes the characteristic a straight line through the origin; time-invariant stops that
+line from moving. Nothing is left to choose but the slope --- and that is the element you
+have been calling a resistor since school.
+
+\begin{definitionbox}{LTI resistor}
+A resistor whose characteristic is \textbf{one fixed straight line through the origin}:
+\[
+  \Vcol{v} = R\,\Icol{i}
+  \qquad\Longleftrightarrow\qquad
+  \Icol{i} = G\,\Vcol{v} ,
+  \qquad G = \frac{1}{R} .
+\]
+$R$ is the \textbf{resistance}, in ohms ($\Omega = $ V/A); $G$ is the
+\textbf{conductance}, in siemens (S $=$ A/V).
+\end{definitionbox}
+
+\begin{center}
+\begin{tikzpicture}[x=1cm,y=1cm]
+\def\W{1.35} \def\H{1.25} \def\S{4.0}
+\begin{scope}
+  \viaxes{\W}{\H}{$0 < R < \infty$}
+  \draw[metured!22, very thick] (-1.2,-0.42) -- (1.2,0.42);
+  \draw[metured!45, very thick] (-0.70,-1.12) -- (0.70,1.12);
+  \draw[crv] (-1.15,-0.85) -- (1.15,0.85);
+  \node[font=\tiny, text=metured] at (-0.88,0.92) {slope $= G$};
+  \draw[-{Stealth[length=1.8mm]}, metugray] (1.05,0.36) arc (19:52:1.12);
+  \node[font=\tiny, text=metugray, right=1pt] at (0.78,1.05) {$R$ smaller};
+\end{scope}
+\begin{scope}[xshift=\S cm]
+  \viaxes{\W}{\H}{$R = 0$: short circuit}
+  \draw[crv] (0,-1.18) -- (0,1.18);
+  \node[font=\tiny, text=metugray] at (0.72,-1.0) {$G = \infty$};
+\end{scope}
+\begin{scope}[xshift=2*\S cm]
+  \viaxes{\W}{\H}{$R = \infty$: open circuit}
+  \draw[crv] (-1.25,0) -- (1.25,0);
+  \node[font=\tiny, text=metugray] at (0.72,-1.0) {$G = 0$};
+\end{scope}
+\end{tikzpicture}
+\end{center}
+\vspace{2pt}
+
+Turning the line from horizontal to vertical sweeps $R$ from $\infty$ down to $0$. The two
+end positions have names of their own --- and we have now met them three times over: as
+sources of zero value, as two entries in the gallery, and here as the two limits of a
+resistance.
+
+\begin{center}
+\small
+\begin{tabular}{@{}l l l l l@{}}
+\toprule
+ & \textbf{$R$} & \textbf{$G$} & \textbf{characteristic} & \textbf{what is fixed}\\
+\midrule
+short circuit & $0$      & $\infty$ & the $\Icol{i}$-axis, $\Vcol{v} = 0$ & the voltage\\
+open circuit  & $\infty$ & $0$      & the $\Vcol{v}$-axis, $\Icol{i} = 0$ & the current\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{cautionbox}[$G = 1/R$ is not always available]
+At the two extremes only one of the pair exists: a short circuit has $G = \infty$, an open
+circuit has $R = \infty$, and neither number is usable in a formula. This is the same fact
+as Section~\ref{sec:words}: a short circuit is current-controlled but not
+voltage-controlled, and an open circuit the other way round.
+\end{cautionbox}
+
+\begin{examplebox}[Example 3.3 --- reading the line]
+A $100\ohm$ resistor has $5\V$ across it. Then
+\[
+  \Icol{i} = \frac{5}{100} = 50\uni{mA} ,
+  \qquad
+  G = \frac{1}{100} = 10\uni{mS} .
+\]
+Double the voltage and the current doubles: that is all ``linear'' means. Wait an hour and
+nothing about the line changes: that is ``time-invariant''.
+\end{examplebox}
+
+%==============================================================
+\section{Power in an LTI resistor}
+
+Substituting the terminal equation into $\Pcol{p} = \Vcol{v}\Icol{i}$ gives three ways to
+write the same thing:
+\[
+  \boxed{\;\Pcol{p} \;=\; \Vcol{v}\,\Icol{i} \;=\; R\,\Icol{i}^{\,2}
+         \;=\; G\,\Vcol{v}^{\,2} \;=\; \frac{\Vcol{v}^{\,2}}{R}\;}
+\]
+The middle forms are squares. So for $R > 0$,
+\[
+  \Pcol{p(t)} \;\ge\; 0 \quad\text{at every instant,}
+  \qquad
+  \Pcol{w(t)} = \int_{t_0}^{t}\!\Pcol{p(\tau)}\,d\tau \;\ge\; 0
+  \quad\text{and never decreases.}
+\]
+
+\begin{ideabox}[A resistor has no memory and no store]
+Energy enters and leaves as heat \emph{at the same instant}. The graph of $\Pcol{w}$ only
+climbs; nothing the circuit does afterwards can bring that energy back. Keep this in mind ---
+next lecture's capacitor behaves in exactly the opposite way.
+\end{ideabox}
+
+\begin{examplebox}[Example 3.4 --- a resistor as a heater]
+A $12\V$ source across $4\ohm$:
+\[
+  \Icol{i} = 3\A, \qquad
+  \Pcol{p} = 12 \times 3 = R\Icol{i}^2 = 4(3)^2 = 36\W ,
+\]
+and in ten minutes $\Pcol{w} = 36 \times 600 = 21.6\uni{kJ}$, all of it heat. That is why
+resistors carry a power rating as well as a resistance: a $\tfrac14\W$ part in this
+position would not survive.
+\end{examplebox}
+
+%==============================================================
 \section{Why the picture was worth drawing}
 \label{sec:loadline}
 
-Two elements joined face to face must agree: KCL forces one current through both, KVL
-forces one voltage across both, so the pair $(\Vcol{v},\Icol{i})$ has to lie on
-\emph{both} characteristics at once. The operating point is where the two curves cross.
+A diode has no resistance to write down --- only a curve. That curve is still enough
+to solve a circuit, and doing it once shows why we bothered to draw characteristics
+at all.
 
-\begin{center}
-\begin{tikzpicture}[scale=1.05]
-  \draw[thick] (0,0) rectangle (1.3,1.3);
-  \draw[thick] (2.6,0) rectangle (3.9,1.3);
-  \draw[thick] (1.3,0.95) -- (2.6,0.95);
-  \draw[thick] (1.3,0.35) -- (2.6,0.35);
-  \node[font=\small] at (0.65,0.65) {A};
-  \node[font=\small] at (3.25,0.65) {B};
-  \node[cvolt, font=\small] at (1.95,1.38) {same $\Vcol{v}$};
-  \node[ccur, font=\small] at (1.95,-0.12) {same $\Icol{i}$};
-  \node[font=\small, anchor=west, text width=9.4cm] at (5.0,0.65)
-    {One pair $(\Vcol{v},\Icol{i})$ has to satisfy both elements at the same instant ---
-     so it sits on curve A \emph{and} on curve B.};
-\end{tikzpicture}
-\end{center}
-
-\begin{examplebox}[Example 3.3 --- a diode driven by a source and a resistor]
+\begin{examplebox}[Example 3.5 --- a diode driven by a source and a resistor]
 A $1.5\V$ source in series with $R$ drives a diode. Walk round the loop with the diode
 voltage $\Vcol{v}$ and current $\Icol{i}$:
 \[
@@ -815,12 +914,19 @@ nonlinear element there often is no algebra to be had.
         the origin), \textbf{bilateral} (symmetric about the origin), \textbf{passive}
         (quadrants 1 and 3 only), \textbf{voltage-} or \textbf{current-controlled}
         (single-valued which way round?), \textbf{time-invariant} (does the curve move?).
-  \item Where two characteristics cross is where the circuit operates.
+  \item An \textbf{LTI resistor} is linear \emph{and} time-invariant: one fixed straight
+        line through the origin, $\Vcol{v} = R\Icol{i}$, $\Icol{i} = G\Vcol{v}$,
+        $G = 1/R$. Ohms and siemens.
+  \item $R = 0$ is a short circuit, $R = \infty$ an open circuit; at each end only one of
+        $R$, $G$ is a usable number. Its power $R\Icol{i}^2 = G\Vcol{v}^2 \ge 0$ leaves as
+        heat at the same instant --- no memory, no store.
+  \item Draw the element's curve and the rest of the circuit's \textbf{load line} in the
+        same plane: where they cross is where the circuit operates. No algebra needed.
 \end{itemize}
 
 \subsection*{Next lecture}
-Equivalent resistance --- series and parallel combinations and the voltage and current
-dividers --- and then the systematic analysis methods.
+The capacitor --- the first element that \emph{remembers}. Its characteristic lives in a
+different plane altogether, and the energy you put into it comes back out.
 
 \subsection*{Reading}
 \begin{itemize}
@@ -830,7 +936,9 @@ dividers --- and then the systematic analysis methods.
   \item Lecture notes and videos of Prof.\ Emre Tuna,
         \href{https://users.metu.edu.tr/etuna/ee201/}{\texttt{users.metu.edu.tr/etuna/ee201}}
         --- Lecture~3 video: voltage source $6{:}50$, current source $16{:}19$,
-        activeness $20{:}55$, resistor $22{:}57$, the definitions $33{:}24$--$43{:}10$.
+        activeness $20{:}55$, resistor $22{:}57$, the definitions $33{:}24$--$43{:}10$;
+        Lecture~4 video: LTI resistor $1{:}00$, resistance and conductance $3{:}44$,
+        short circuit $7{:}00$, open circuit $9{:}23$, power $11{:}05$.
 \end{itemize}
 
 \end{document}
