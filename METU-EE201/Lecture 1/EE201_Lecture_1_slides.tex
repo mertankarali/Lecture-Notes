@@ -283,10 +283,10 @@
 
 %--------------------------------------------------------------
 \begin{frame}{A wire is already \alert{full} of charge}
-  \begin{columns}[c,onlytextwidth]
+  \begin{columns}[T,onlytextwidth]
     \column{0.46\textwidth}
       \begin{center}
-      \begin{tikzpicture}[scale=0.92]
+      \begin{tikzpicture}[scale=0.80]
         \fill[gray!8] (-0.55,-0.55) rectangle (3.35,2.35);
         \foreach \i in {0,1,2,3}{\foreach \j in {0,1,2}{
           \node[circle, draw=ccharge, fill=ccharge!20, inner sep=2.0pt, font=\tiny]
@@ -294,18 +294,40 @@
         \foreach \p in {(0.45,0.3),(1.4,0.75),(2.3,0.25),(0.7,1.5),(1.75,1.7),
                         (2.75,1.25),(0.25,2.0),(2.1,1.05),(1.15,0.15)}{
           \node[circle, fill=ccur, text=white, inner sep=1.5pt, font=\tiny] at \p {$-$};}
-        \node[font=\scriptsize, text=metugray, align=center] at (1.4,-1.1)
-             {copper: fixed $+$ ions,\\ electrons free to wander};
+        \node[font=\scriptsize, text=metugray, align=center] at (1.4,-1.15)
+             {copper: fixed $+$ ions, electrons\\ free to move \emph{within} the metal};
+      \end{tikzpicture}
+      \end{center}
+      \vspace{0.6em}
+      % ---------- the pipe ----------
+      \begin{center}
+      \begin{tikzpicture}[scale=0.80]
+        \draw[metugray, thick, rounded corners=3pt, fill=ccur!12]
+              (0,0) rectangle (4.3,0.85);
+        \foreach \x in {0.28,0.72,1.16,1.6,2.04,2.48,2.92,3.36,3.8,4.1}{
+          \foreach \y in {0.26,0.58}{
+            \fill[ccur!55] (\x,\y) circle (1.5pt);}}
+        \draw[flowarr] (-0.85,0.42) -- (-0.12,0.42);
+        \draw[flowarr] (4.42,0.42) -- (5.15,0.42);
+        \node[font=\scriptsize, text=metured, above] at (-0.5,0.55) {push};
+        \node[font=\scriptsize, text=metured, above] at (4.8,0.55) {flow};
+        \node[font=\scriptsize, text=metugray, align=center] at (2.15,-0.75)
+             {a pipe \alert{already full}: raise the pressure\\
+              at one end, the far end flows \emph{at once}};
       \end{tikzpicture}
       \end{center}
     \column{0.50\textwidth}
       $1\ \mathrm{cm^3}$ of copper contains about
       \[ 8.5\times10^{22}\ \text{free electrons} \;\approx\; \Qcol{13\,600\Cb} \]
-      of \emph{mobile} charge --- and its net charge is \alert{zero}.
-      \vspace{0.5em}
+      of \emph{mobile} charge --- free to move \alert{within} the metal, not to leave it.
+      \vspace{0.3em}
+
+      And its net charge is \alert{zero}: every electron that broke loose left its $+$ ion
+      behind.
+      \vspace{0.6em}
       \begin{block}{So what is a current?}
-        \small Every free electron left a $+$ ion behind. The metal stays neutral;
-        current is that charge \emph{drifting}, not charge being poured in.
+        \small Charge that is \emph{already there}, \alert{drifting} --- not charge being
+        poured in. Nothing is used up: what flows in at one end flows out at the other.
       \end{block}
   \end{columns}
 \end{frame}
@@ -373,9 +395,9 @@
         \[ \approx 9\times10^{22}\ \text{elementary charges} \]
       \end{block}
       \small
-      At $10^{22}$ charges, the lumpiness of charge is invisible. We may treat
-      \Qcol{$q(t)$} as a \alert{smooth} quantity --- which is what lets us write
-      $dq/dt$ at all.
+      Charge comes in whole electrons --- but with $10^{22}$ of them we can treat
+      \Qcol{$q(t)$} as a \alert{smooth} quantity, which is what lets us write $dq/dt$
+      at all.
     \column{0.47\textwidth}
       \begin{block}{How fast do the charges move?}
         $1\A$ in a $1\ \mathrm{mm^2}$ copper wire:
@@ -385,8 +407,9 @@
         \end{center}
       \end{block}
       \small
-      Yet the lamp lights the instant you flip the switch. The carriers crawl;
-      the \emph{signal} that starts them travels near the speed of light.
+      Yet the lamp lights the instant you flip the switch. The wire is
+      \alert{already full}, so every electron starts moving together --- you never wait
+      for one to travel from the switch to the lamp.
   \end{columns}
   \vfill
   \begin{center}\small\color{metugray}
@@ -417,8 +440,8 @@
   \end{center}
   \vfill
   \begin{center}
-    One electron moving left carries as much charge to the right\\
-    as one positive charge moving right. \alert{No equation changes.}
+    \alert{One electron moving left} carries as much charge to the right\\
+    \alert{as one positive charge moving right.}
   \end{center}
   \vfill
   \begin{center}\small\color{metugray}
@@ -457,9 +480,6 @@
   \end{tikzpicture}
   \end{center}
   \vfill
-  \begin{center}\small
-    Only the first deserves the symbol $I$.
-  \end{center}
 \end{frame}
 
 %--------------------------------------------------------------
@@ -532,8 +552,7 @@
   \begin{block}{Definition}
     \[ \Vcol{v_{ab}} \;=\; \frac{\Pcol{dw}}{\Qcol{dq}}
        \qquad\text{unit: \textbf{volt (V)}}, \quad 1\V = 1\J/\Cb \]
-    the energy exchanged \emph{per unit of charge} carried from $a$ to $b$ through the
-    element.
+    the energy exchanged \emph{per unit of charge} carried from $a$ to $b$.
   \end{block}
 \end{frame}
 
@@ -543,13 +562,16 @@
   \begin{itemize}\itemsep1.1em
     \item It is a \alert{ratio}. Twice the charge, twice the energy --- same $v_{ab}$.
           Voltage belongs to the \textbf{pair of points}, not to the charge.
-    \item It is defined with \alert{nothing moving}. A $1.5\V$ battery on the shelf has
-          $1.5\V$ across it at $i=0$ --- like a closed tap with pressure behind it.
+    \item It does \alert{not need a current}. A $1.5\V$ battery on the shelf has
+          $1.5\V$ across it at $i = 0$ --- and still $1.5\V$ while it drives $2\A$.
+          Voltage is defined either way: it does not depend on whether charge happens
+          to be flowing.
     \item \alert{Order matters}: $v_{ab} = -v_{ba}$. There is no ``voltage at a point''
           until we fix a reference.
     \item The energy per charge depends on the two endpoints, \alert{not on the path}.
-          That is what makes ``the voltage between $a$ and $b$'' mean anything --- and
-          later it becomes KVL.
+          So ``the voltage between $a$ and $b$'' is a \alert{single, definite number} ---
+          take whichever path you like and you get the same answer. Later this becomes
+          KVL.
   \end{itemize}
   \vfill
 \end{frame}
@@ -628,7 +650,7 @@
 
 %--------------------------------------------------------------
 \begin{frame}{Reference polarity}
-  Exactly as for current, we mark $+$ and $-$ \alert{before} we know the answer.
+  Exactly as for current, we \alert{can} mark $+$ and $-$ before we know the answer.
   \vfill
   \begin{center}
   \begin{tikzpicture}[scale=1.0]
@@ -659,7 +681,7 @@
 \end{frame}
 
 %--------------------------------------------------------------
-\begin{frame}{A first element: the \alert{resistor}}
+\begin{frame}{The first element: the \alert{resistor}}
   We have defined the variables. To talk about a circuit we also need an
   \emph{element} --- a rule tying $v$ and $i$ together. Here is the simplest one.
   \vfill
@@ -676,7 +698,7 @@
       \end{center}
     \column{0.50\textwidth}
       \begin{itemize}
-        \item \textbf{Algebraic, no memory:} the current \emph{now} depends only on the
+        \item \textbf{Algebraic, no memory} (\emph{static}): the current \emph{now} depends only on the
               voltage \emph{now} --- no derivatives, no history.
         \item \textbf{Geometry sets $R$:} for a uniform bar,
               \[ R = \rho\,\frac{L}{A} \]
@@ -812,7 +834,7 @@
 %==============================================================
 \section{Power}
 %--------------------------------------------------------------
-\begin{frame}{\Pcol{Power} falls out of the definitions}
+\begin{frame}{Where $\Pcol{p} = \Vcol{v}\Icol{i}$ comes from}
   \vfill
   \[
     \Pcol{p(t)} = \frac{dw}{dt}
@@ -833,7 +855,7 @@
   \end{columns}
   \vfill
   \begin{center}\small
-    $p = vi$ was \alert{not postulated} --- it is a consequence of defining $v$ as energy
+    $p = vi$ is \alert{not a new definition} --- it follows from defining $v$ as energy
     per charge and $i$ as charge per time.
   \end{center}
 \end{frame}
@@ -862,7 +884,7 @@
   \vfill
   \begin{itemize}
     \item $p(t) \ge 0$: a resistor never gives energy back.
-    \item The power ripples at \alert{twice} the frequency, around $\overline{p} = 10\W$.
+    \item The power \alert{oscillates} at \emph{twice} the frequency, around $\overline{p} = 10\W$.
   \end{itemize}
 \end{frame}
 
@@ -875,10 +897,6 @@
     \[ p = vi = \text{power \emph{absorbed} by the element}. \]
     $p > 0$: the element absorbs. \qquad $p < 0$: it delivers.
   \end{block}
-  \begin{center}\small\color{metugray}
-    Given a picture that does not obey the PSC: flip one reference, change that
-    variable's sign, and use $p = vi$ as always.
-  \end{center}
   \vfill
   \begin{center}
   \begin{tikzpicture}[scale=0.95]
@@ -970,57 +988,107 @@
 \end{frame}
 
 %--------------------------------------------------------------
-\begin{frame}{Nothing is late: a circuit much smaller than $\lambda$}
+\begin{frame}{Read the axis carefully}
+  \vfill
   \begin{center}
-  \begin{tikzpicture}[x=1.05cm,y=1.05cm]
-    \draw[->,gray!60] (-0.3,0) -- (12.4,0);
-    \draw[cvolt, very thick, domain=0:12.1, samples=300, smooth] plot (\x, {0.7*sin(60*\x)});
-    \draw[metugray,|<->|] (6,-1.45) -- (12,-1.45) node[midway,below,font=\scriptsize] {$\lambda = c/f$};
-    \node[font=\scriptsize, text=metugray, anchor=west] at (0,1.5)
-         {a \emph{snapshot} along the circuit at one instant --- the axis is distance, not time};
-    \fill[cpow] (1.0,{0.7*sin(60*1.0)}) circle (2.2pt);
-    \fill[cpow] (1.35,{0.7*sin(60*1.35)}) circle (2.2pt);
-    \draw[cpow,dashed,thin] (1.0,-0.6) -- (1.0,{0.7*sin(60*1.0)});
-    \draw[cpow,dashed,thin] (1.35,-0.6) -- (1.35,{0.7*sin(60*1.35)});
-    \draw[cpow, very thick] (1.0,-0.6) -- (1.35,-0.6);
-    \node[font=\scriptsize, text=cpow, anchor=north] at (1.2,-0.78) {$d$};
-    \node[font=\small\bfseries, text=cpow, anchor=west] at (2.4,-0.95) {$d \ll \lambda$: LUMPED};
+    A signal does not appear everywhere at once --- it \alert{travels} along the circuit
+    at about $c$.\\[6pt]
+    {\large So picture the whole circuit \alert{frozen at one instant}, and plot the
+     voltage \alert{along it}.}
+  \end{center}
+  \vfill
+  \begin{center}
+  \begin{tikzpicture}[x=1.0cm,y=1.0cm]
+    \draw[->,gray!60] (-0.3,0) -- (11.6,0)
+         node[right,font=\scriptsize,black] {distance};
+    \draw[cvolt, very thick, domain=0:11.3, samples=300, smooth] plot (\x, {0.7*sin(60*\x)});
+    \draw[metugray,|<->|] (5.6,-1.35) -- (11.3,-1.35)
+         node[midway,below,font=\scriptsize] {one wavelength $\lambda = c/f$};
   \end{tikzpicture}
   \end{center}
   \vfill
   \begin{center}
-  Both ends sit at practically the same point of the wave, so every point of the circuit
-  reads \alert{the same number} at any instant ---\\ ``the voltage of a node'' means
-  something.
+    \alert{The horizontal axis is distance, not time.} \ Every point of the circuit sits
+    somewhere on this wave.\\[4pt]
+    The question is whether the circuit is \alert{short enough} that its two ends sit at
+    the \emph{same} place on it.
   \end{center}
   \vfill
 \end{frame}
 
 %--------------------------------------------------------------
-\begin{frame}{\dots and one that is not}
+\begin{frame}{Short circuit, one number: $d \ll \lambda$}
   \begin{center}
-  \begin{tikzpicture}[x=1.05cm,y=1.05cm]
-    \draw[->,gray!60] (-0.3,0) -- (12.4,0);
-    \draw[cvolt, very thick, domain=0:12.1, samples=300, smooth] plot (\x, {0.7*sin(60*\x)});
-    \draw[metugray,|<->|] (6,-1.45) -- (12,-1.45) node[midway,below,font=\scriptsize] {$\lambda = c/f$};
-    \node[font=\scriptsize, text=metugray, anchor=west] at (0,1.5)
-         {a \emph{snapshot} along the circuit at one instant --- the axis is distance, not time};
-    \fill[metured] (1.5,0.7) circle (2.2pt);
-    \fill[metured] (4.5,-0.7) circle (2.2pt);
-    \draw[metured,dashed,thin] (1.5,-0.6) -- (1.5,0.7);
-    \draw[metured,dashed,thin] (4.5,-0.6) -- (4.5,-0.7);
-    \draw[metured, very thick] (1.5,-0.6) -- (4.5,-0.6);
-    \node[font=\scriptsize, text=metured, anchor=north] at (3.0,-0.78) {$d$};
-    \node[font=\small\bfseries, text=metured, anchor=west] at (5.4,-0.95) {$d \sim \lambda$: NOT LUMPED};
+  \begin{tikzpicture}[x=1.0cm,y=1.0cm]
+    \draw[->,gray!60] (-0.3,0) -- (11.6,0) node[right,font=\scriptsize,black] {distance};
+    \draw[cvolt, very thick, domain=0:11.3, samples=300, smooth] plot (\x, {0.7*sin(60*\x)});
+    \draw[metugray,|<->|] (5.6,-1.4) -- (11.3,-1.4)
+         node[midway,below,font=\scriptsize] {$\lambda$};
+    \fill[cpow] (1.0,{0.7*sin(60*1.0)}) circle (2.4pt);
+    \fill[cpow] (1.35,{0.7*sin(60*1.35)}) circle (2.4pt);
+    \draw[cpow,dashed,thin] (1.0,-0.62) -- (1.0,{0.7*sin(60*1.0)});
+    \draw[cpow,dashed,thin] (1.35,-0.62) -- (1.35,{0.7*sin(60*1.35)});
+    \draw[cpow, very thick] (1.0,-0.62) -- (1.35,-0.62);
+    \node[font=\scriptsize, text=cpow, anchor=north] at (1.18,-0.8) {$d$};
+    \node[font=\small\bfseries, text=cpow, anchor=west] at (2.2,-0.95)
+         {the whole circuit fits here};
   \end{tikzpicture}
   \end{center}
   \vfill
   \begin{center}
-  One end is at the crest, the other at the trough: \alert{different values at the same
-  moment}.\\ There is no single number to call the node voltage, and circuit theory no
-  longer applies.
+    Both ends sit at practically the \alert{same point} of the wave, so every point of the
+    circuit reads \alert{the same number} at that instant.\\[4pt]
+    That is what lets us say ``the voltage of a node'' at all.
   \end{center}
   \vfill
+  \begin{center}
+    \begin{tikzpicture}
+      \node[draw=cpow, fill=cpow!7, rounded corners=4pt, inner sep=9pt, font=\small,
+            text width=11.6cm, align=center]
+      {Mains, $f = 50\uni{Hz}$: \ $\lambda = 6000\uni{km}$. \ A $30\uni{cm}$ board is
+       $10^{-7}$ of a wavelength. \ \textbf{Everything in EE201 lives here.}};
+    \end{tikzpicture}
+  \end{center}
+  \vfill
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{\dots and when it is not: $d \sim \lambda$}
+  \begin{center}
+  \begin{tikzpicture}[x=1.0cm,y=1.0cm]
+    \draw[->,gray!60] (-0.3,0) -- (11.6,0) node[right,font=\scriptsize,black] {distance};
+    \draw[cvolt, very thick, domain=0:11.3, samples=300, smooth] plot (\x, {0.7*sin(60*\x)});
+    \draw[metugray,|<->|] (5.6,-1.4) -- (11.3,-1.4)
+         node[midway,below,font=\scriptsize] {$\lambda$};
+    \fill[metured] (1.5,0.7) circle (2.4pt);
+    \fill[metured] (4.5,-0.7) circle (2.4pt);
+    \draw[metured,dashed,thin] (1.5,-1.02) -- (1.5,0.7);
+    \draw[metured,dashed,thin] (4.5,-1.02) -- (4.5,-0.7);
+    \draw[metured, very thick] (1.5,-1.02) -- (4.5,-1.02);
+    \node[font=\scriptsize, text=metured, anchor=north] at (3.0,-1.18) {$d$};
+    \node[font=\small\bfseries, text=metured, anchor=west] at (5.0,-1.02)
+         {one end at the crest, the other at the trough};
+  \end{tikzpicture}
+  \end{center}
+  \vfill
+  \begin{center}
+    \alert{Different values at the same moment.} There is no single number to call
+    ``the node voltage'', so circuit theory no longer applies ---\\
+    you need the fields themselves: transmission lines, and Maxwell's equations.
+  \end{center}
+  \vfill
+  \begin{center}
+    \begin{tikzpicture}
+      \node[draw=metured, fill=metured!6, rounded corners=4pt, inner sep=9pt, font=\small,
+            text width=10.4cm, align=center]
+      {Wi-Fi, $f = 2.4\uni{GHz}$: \ $\lambda = 12.5\uni{cm}$. \ A $3\uni{cm}$ trace is a
+       \emph{quarter} of a wavelength.};
+    \end{tikzpicture}
+  \end{center}
+  \vfill
+  \begin{center}\small\color{metugray}
+    The same board can be lumped for one signal and not for another.
+  \end{center}
 \end{frame}
 
 %--------------------------------------------------------------
@@ -1127,7 +1195,9 @@
   \end{center}
   \vfill
   \begin{itemize}
-    \item References (arrow, polarity) are \alert{choices}; signs carry the physics.
+    \item References (arrow, polarity) are \alert{choices}. The \alert{sign} of the answer
+          then tells you what is really happening --- a minus is information, not an
+          error.
     \item PSC: current into $+$ $\Rightarrow$ $p = vi$ is absorbed, and $\sum_k p_k = 0$.
     \item Across vs through. Ground is a choice.
     \item Lumped $\Rightarrow$ ODEs. That is what makes this course possible.

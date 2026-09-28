@@ -136,9 +136,9 @@
 %==============================================================
 \section{Why circuits? From the world to a model}
 
-Circuit theory is not really about wires. It is a way of \emph{modelling} physical
-systems, and you will use the same way of thinking in control, signal processing, power,
-robotics and electronics for the rest of your career. The pipeline is always the same:
+Circuit theory is not about wires. It is a way of \emph{modelling} physical systems, and
+you will use the same thinking in control, signal processing, power, robotics and
+electronics for the rest of your career. The pipeline is always the same:
 
 \begin{center}
 \begin{tikzpicture}[node distance=1.15cm]
@@ -156,10 +156,10 @@ robotics and electronics for the rest of your career. The pipeline is always the
 
 The hard step is the first arrow. A real resistor has inductance, a temperature
 coefficient, a power rating and a size; we throw all of that away and keep one number,
-$R$. Whether that is brilliant or foolish depends on what you are asking of the model.
-Calling that step ``the art'' makes it sound decorative, as though the equations were the
-real work. It is the other way round: the mathematics can be looked up, while deciding
-what to keep and what to discard \emph{is} the engineering.
+$R$. Whether that is brilliant or foolish depends on what you ask of the model. Calling
+that step ``the art'' makes it sound decorative, as though the equations were the real
+work. The opposite is true: the mathematics can be looked up, while deciding what to keep
+and what to discard \emph{is} the engineering.
 
 \begin{center}
 \begin{minipage}{0.82\textwidth}
@@ -170,7 +170,7 @@ what to keep and what to discard \emph{is} the engineering.
 \end{center}
 
 Every element you will meet in EE201 is wrong in some measurable way. The question is
-never ``is this model true?'' but ``is it useful for what I am about to do?''.
+never ``is this model true?'' but ``is it useful here?''.
 
 \begin{center}
 \begin{circuitikz}[scale=0.95, transform shape]
@@ -192,10 +192,10 @@ never ``is this model true?'' but ``is it useful for what I am about to do?''.
 \end{center}
 
 \vspace{-0.3em}
-{\small A circuit of the kind you will be able to analyse by the end of the semester: a
-source, resistors, an operational amplifier and a capacitor --- one element from each part
-of the course. All of EE201 is about what each element does on its own, and what the wires
-force them to share.}
+{\small A circuit you will be able to analyse by the end of the semester: a source,
+resistors, an operational amplifier and a capacitor --- one element from each part of the
+course. All of EE201 is about what each element does on its own, and what the wires force
+them to share.}
 
 \begin{ideabox}[The same pipeline, other domains]
 The elements change, the structure does not. Every such domain has one \emph{across}
@@ -222,19 +222,17 @@ was agreed on long ago --- altitude from sea level, gauge pressure from atmosphe
 pressure (a flat tyre reads zero, not $101$ kPa), temperature from absolute zero. A
 circuit has no universal reference, so we choose one and call it \emph{ground}.
 
-A through quantity is the opposite. It is measured \emph{at} one place --- a cross-section
-of a wire, a pipe, a shaft --- and needs a direction, not a second point. It needs no
-reference either: zero current means the same to everyone, while zero volts is somebody's
-decision.
+A through quantity is the opposite: measured \emph{at} one place --- a cross-section of a
+wire, a pipe, a shaft --- it needs a direction, not a second point, and no reference
+either. Zero current means the same to everyone; zero volts is somebody's decision.
 
 All these domains obey the same conservation and connection laws, which is why circuit
-theory is taught in most engineering disciplines.
+theory is taught across engineering.
 \end{ideabox}
 
-In EE201 we work with the \emph{lumped circuit} model, which we make precise at the end
-of this lecture. The sections before it build the vocabulary that model is written in:
-charge, current, voltage, ground, power, and a sign convention that keeps the bookkeeping
-honest.
+In EE201 we work with the \emph{lumped circuit} model, made precise at the end of this
+lecture. The sections before it build its vocabulary: charge, current, voltage, ground,
+power, and a sign convention that keeps the bookkeeping honest.
 
 %==============================================================
 \section{Charge}
@@ -251,8 +249,8 @@ Charge is quantised: it comes in integer multiples of the elementary charge
   \qquad\text{so}\qquad
   1\Cb \;\approx\; 6.24\times 10^{18}\ \text{electron charges}.
 \]
-An electron carries $-e$ and a proton $+e$. In an isolated atom the two exactly balance,
-so the atom as a whole is neutral.
+An electron carries $-e$ and a proton $+e$. In an isolated atom the two balance exactly,
+so the atom is neutral.
 
 \begin{center}
 \begin{tikzpicture}[scale=0.95]
@@ -292,17 +290,70 @@ Two facts about charge do all the work in this course:
         When we write Kirchhoff's current law in Lecture~2, we are writing conservation of
         charge.
   \item \textbf{A conductor is already full of charge, and is still neutral.} In a metal,
-        roughly one electron per atom breaks loose and is free to move through the
-        material, leaving a fixed positive ion behind. One cubic centimetre of copper
-        contains about $8.5\times10^{22}$ such free electrons --- about
-        $13\,600\Cb$ of \emph{mobile} charge --- while the net charge of that copper is
-        essentially zero, because every free electron is matched by the ion it left.
+        roughly one electron per atom breaks loose, leaving a fixed positive ion behind.
+        One cubic centimetre of copper contains about $8.5\times10^{22}$ of these ---
+        about $13\,600\Cb$ of \emph{mobile} charge --- yet its net charge is essentially
+        zero, because every loose electron is matched by the ion it left.
 \end{enumerate}
+
+\begin{cautionbox}[What ``free'' does and does not mean]
+These are traditionally called \textbf{free electrons}, the term you will meet in your
+solid-state and semiconductor courses. But \emph{free} here means free to move
+\textbf{within} the metal --- not free to leave it. The electron wanders through the
+lattice; it does not escape, and the ion it came from stays put. That is why a piece of
+copper can hold $13\,600\Cb$ of movable charge per cubic centimetre and still be neutral.
+When the two ideas seem to contradict each other, this word is the trouble; in these notes
+the adjective is \textbf{mobile}.
+\end{cautionbox}
 
 The second fact is easy to misread. A current in a wire is not charge being \emph{poured
 into} the wire: the charge is already there, and a current is that charge
 \emph{drifting}. The wire stays neutral while it drifts. This is the first assumption of
-the lumped model below, and it is what makes Kirchhoff's current law true.
+the lumped model below, and what makes Kirchhoff's current law true.
+
+\subsection{A pipe that is already full}
+
+The hydraulic picture is the right one, provided you start it correctly: a wire is not an
+empty pipe waiting to be filled, but a pipe that is \emph{already full}.
+
+\begin{center}
+\begin{tikzpicture}[x=1cm,y=1cm]
+  \draw[metugray, thick, rounded corners=3pt, fill=ccur!12] (0,0) rectangle (5.2,0.95);
+  \foreach \x in {0.30,0.78,1.26,1.74,2.22,2.70,3.18,3.66,4.14,4.62,4.98}{
+    \foreach \y in {0.30,0.65}{ \fill[ccur!55] (\x,\y) circle (1.7pt);}}
+  \draw[flowarr] (-1.35,0.47) -- (-0.15,0.47);
+  \draw[flowarr] (5.35,0.47) -- (6.55,0.47);
+  \node[font=\scriptsize, text=metured] at (-0.75,1.02) {push};
+  \node[font=\scriptsize, text=metured] at (5.95,1.02) {flow};
+  \node[font=\small, anchor=west, text width=6.3cm] at (7.15,0.47)
+    {Raise the pressure at one end and the far end flows \emph{at once} --- long before any
+     drop of water has travelled the length of the pipe.};
+\end{tikzpicture}
+\end{center}
+\vspace{2pt}
+
+Read across from the picture and most of this lecture is already in it:
+
+\begin{center}
+\small
+\begin{tabular}{@{}l l@{}}
+\toprule
+\textbf{pipe already full of water} & \textbf{wire already full of mobile charge}\\
+\midrule
+pressure difference between the ends & \textbf{voltage} across the element\\
+rate of flow past a point & \textbf{current} through it\\
+the far end responds immediately & the lamp lights the instant you switch it on\\
+water circulates, it is not consumed & charge is not consumed either\\
+flow needs a closed loop & so does a circuit\\
+\bottomrule
+\end{tabular}
+\end{center}
+\vspace{4pt}
+
+The last two rows head off the two commonest wrong pictures: that a lamp \emph{uses up}
+the current passing through it, and that charge can be delivered down a single wire.
+Neither survives the full pipe. Whatever flows in at one end flows out at the other, and
+it has to come back around.
 
 %==============================================================
 \section{Current}
@@ -347,9 +398,9 @@ The unit is the \textbf{ampere (A)}, and $1\A = 1\Cb/\s$.
   \qquad
   N = \frac{14\,400}{1.602\times10^{-19}} \approx 9\times10^{22}\ \text{electrons}.
 \]
-Note that the rating is in ampere-hours --- a charge written as a current times a time.
-And at $10^{22}$ charges the lumpiness of $e$ is invisible, which is what lets us treat
-\Qcol{$q(t)$} as a smooth function and write $dq/dt$ at all.
+The rating is in ampere-hours --- a charge written as a current times a time. Charge comes
+in whole electrons, but with $10^{22}$ of them we can treat \Qcol{$q(t)$} as a smooth
+function, which is what lets us write $dq/dt$ at all.
 
 \smallskip
 \textbf{(b) How fast do the electrons actually move?} Take $1\A$ flowing in an ordinary
@@ -357,13 +408,14 @@ $1\ \mathrm{mm^2}$ copper wire. Each electron drifts along the wire at roughly
 \[
   0.07\ \mathrm{mm/s} \qquad\text{--- about one metre in four hours.}
 \]
-Yet the lamp lights the instant you flip the switch. The carriers crawl; the
-\emph{signal} that sets them all moving travels at nearly the speed of light.
+Yet the lamp lights the instant you flip the switch. The wire is already full, so you
+never wait for an electron to travel from the switch to the lamp: every electron along it
+starts moving together, almost the moment you close the circuit.
 
 \smallskip
-{\footnotesize (For the curious: the drift speed follows from $v = i/(n e A)$, where
-$n \approx 8.5\times10^{28}\ \mathrm{m^{-3}}$ is the density of free electrons in copper.
-You will not need this formula in EE201 --- it is here so that the number is not magic.)}
+{\footnotesize (For the curious: the drift speed follows from $v = i/(n e A)$, with
+$n \approx 8.5\times10^{28}\ \mathrm{m^{-3}}$ the density of mobile electrons in copper.
+Not needed in EE201 --- it is here so the number is not magic.)}
 \end{examplebox}
 
 \subsection{Reference direction: the arrow is a choice, not a fact}
@@ -390,27 +442,26 @@ call positive}; the sign of the number then tells us which way the charge actual
 \end{tikzpicture}
 \end{center}
 
-Both pictures describe the same physical current. You will often assign arrows before
-you know the answer; a negative result is not a mistake, it is the model telling you the
-charge goes the other way.
+Both pictures describe the same current. You will often assign arrows before you know the
+answer; a negative result is not a mistake, it is the model telling you the charge goes
+the other way.
 
 \begin{cautionbox}[Conventional current]
-By historical convention, the current arrow points in the direction in which
-\emph{positive} charge would move. In a copper wire the carriers are electrons, so they
-actually move \emph{against} the arrow.
+By convention, the current arrow points the way \emph{positive} charge would move. In a
+copper wire the carriers are electrons, so they move \emph{against} the arrow.
 
 \smallskip
 No equation in this course changes because of it. A current counts only the \emph{net
 rate at which charge crosses a section}, and an electron moving left carries as much
 charge to the right as a proton moving right. The model never asks what the carriers are
 --- and it had better not, since in a semiconductor they are electrons \emph{and} holes,
-and in a battery they are ions.
+and in a battery ions.
 \end{cautionbox}
 
 \subsection{Notation}
 
-We follow the usual convention of the course: lowercase letters for quantities that may
-vary with time, uppercase for constants.
+The usual convention: lowercase letters for quantities that may vary with time, uppercase
+for constants.
 \[
   i(t),\, v(t),\, q(t),\, p(t) \quad\text{(general)}
   \qquad\qquad
@@ -442,6 +493,7 @@ vary with time, uppercase for constants.
 \end{center}
 
 
+
 \begin{examplebox}[Example 1.2 --- charging a phone]
 In the last part of a charge cycle the battery is topped up: the charge \emph{stored in
 the battery} approaches its full value as
@@ -454,13 +506,13 @@ The charging current is the rate at which that charge accumulates:
   i(t) = \frac{dq}{dt} = \frac{Q_f}{\tau}\,e^{-t/\tau}
        = \frac{3600}{1200}\,e^{-t/\tau} = 3\,e^{-t/\tau}\A .
 \]
-So the current starts at $3\A$ and decays: after $20$ minutes it is $3/e \approx 1.1\A$,
+The current starts at $3\A$ and decays: after $20$ minutes it is $3/e \approx 1.1\A$,
 after an hour about $0.15\A$. The fuller the battery, the more slowly it fills --- which
-is why the last ten per cent always takes so long.
+is why the last ten per cent takes so long.
 
 \smallskip
-Going the other way, with a \emph{constant} current the charge simply accumulates
-linearly: $I = 3\A$ flowing for $8$ hours transports
+With a \emph{constant} current the charge accumulates linearly: $I = 3\A$ flowing for
+$8$ hours transports
 $Q = I\,\Delta t = 3 \times 8 \times 3600 = 86\,400\Cb$.
 
 \smallskip
@@ -471,12 +523,12 @@ integral--derivative pair in this course has that same flavour.
 %==============================================================
 \section{Voltage}
 
-Current tells us that charge is moving, but not \emph{why} it moves or what the motion
-costs. Charge does not wander through a circuit on its own: carrying it through an element
-always exchanges energy, and voltage is the bookkeeping of that exchange.
+Current tells us charge is moving, but not \emph{why} or what the motion costs. Charge
+does not wander through a circuit on its own: carrying it through an element exchanges
+energy, and voltage is the bookkeeping of that exchange.
 
-Consider a small charge $dq$ entering an element at terminal $a$ and leaving at $b$, and
-let $dw$ be the energy exchanged while that happens.
+Let a small charge $dq$ enter an element at terminal $a$ and leave at $b$, exchanging
+energy $dw$ on the way.
 
 \begin{center}
 \begin{tikzpicture}[scale=1.0]
@@ -496,8 +548,8 @@ let $dw$ be the energy exchanged while that happens.
 \end{center}
 
 \begin{definitionbox}{Voltage (potential difference)}
-The \textbf{voltage} $\Vcol{v_{ab}}$ between terminals $a$ and $b$ is the energy exchanged
-\emph{per unit of charge} carried from $a$ to $b$ through the element:
+The \textbf{voltage} $\Vcol{v_{ab}}$ between two points $a$ and $b$ is the energy
+exchanged \emph{per unit of charge} carried from $a$ to $b$:
 \[
   \boxed{\;\Vcol{v_{ab}} \;=\; \frac{\Pcol{dw}}{\Qcol{dq}}\;}
 \]
@@ -509,32 +561,35 @@ Four remarks, and they matter more than the formula.
 
 \begin{enumerate}
   \item \textbf{It is a ratio.} Carry twice the charge and twice the energy is exchanged,
-        so $v_{ab}$ comes out the same. Voltage therefore describes the \emph{pair of
-        terminals}, not the charge that happened to pass between them.
-  \item \textbf{Nothing has to be moving.} A $1.5\V$ battery in a drawer has $1.5\V$
+        so $v_{ab}$ is the same. Voltage describes the \emph{pair of terminals}, not the
+        charge that passed between them.
+  \item \textbf{It does not need a current.} A $1.5\V$ battery in a drawer has $1.5\V$
         across its terminals with $i = 0$, just as a closed tap still has pressure behind
-        it. Voltage is a readiness to exchange energy, not a record of energy already
-        exchanged.
+        it --- and it still has $1.5\V$ across it while driving $2\A$ through a lamp.
+        Voltage is defined, measurable and computable in both cases: it is a readiness to
+        exchange energy per unit charge, and says nothing by itself about whether charge
+        is flowing. Voltage and current are separate quantities; it takes an
+        \emph{element} to relate them, which is what Lecture~3 is about.
   \item \textbf{It is always between two points, and the order matters:}
         $\Vcol{v_{ab}} = -\Vcol{v_{ba}}$. ``The voltage at node $a$'' means nothing until
         a reference point is chosen --- which is why the older name
         \emph{potential difference} is the more honest one.
   \item \textbf{In a lumped circuit it depends only on the two endpoints, not on the
-        path between them.} This is the second lumped-model assumption in disguise, and it
-        is what makes ``the voltage between $a$ and $b$'' well defined. Applied around a
-        closed path, it is Kirchhoff's voltage law.
+        path between them.} Carry the charge from $a$ to $b$ by any route and the energy
+        per unit charge is the same, so ``the voltage between $a$ and $b$'' is a single,
+        definite number. This is the second lumped-model assumption in disguise; applied
+        around a closed path, it is Kirchhoff's voltage law.
 \end{enumerate}
 
-One thing comes for free. With $dq = i\,dt$, the energy exchanged per unit time is
-$dw/dt = v\,i$ --- the power, which we never postulate: it follows from these two
-definitions.
+One thing comes for free: with $dq = i\,dt$, the energy exchanged per unit time is
+$dw/dt = v\,i$ --- the power, which needs no separate definition.
 
 \subsection{Voltage as an electrical height}
 
-The most useful mental picture is gravitational. Lifting a mass $m$ through a height $h$
-costs $mgh$; the energy \emph{per unit mass}, $gh$, depends only on the height difference.
-A heavier ball gains more energy, but energy per kilogram is the same --- so $gh$, like
-voltage, belongs to the two places and not to the object you carried between them.
+The most useful picture is gravitational. Lifting a mass $m$ through a height $h$ costs
+$mgh$; the energy \emph{per unit mass}, $gh$, depends only on the height difference. A
+heavier ball gains more energy, but energy per kilogram is the same --- so $gh$, like
+voltage, belongs to the two places, not to the object carried between them.
 
 \begin{center}
 \begin{tikzpicture}[scale=1.0]
@@ -556,12 +611,12 @@ voltage, belongs to the two places and not to the object you carried between the
 
 The picture anticipates two later ideas. ``Sea level'' is a choice, and moving it changes
 no height difference --- that is ground. And the energy spent climbing a hill does not
-depend on the route --- that is remark~4, and it is Kirchhoff's voltage law.
+depend on the route --- that is remark~4, and Kirchhoff's voltage law.
 
 \subsection{Charge is the amount, voltage is the level}
 
 A trap that catches almost everybody: charge starts to \emph{feel} like energy. It is
-not. The cleanest way to see why is to separate the \emph{amount} of something from its
+not. The way to see why is to separate the \emph{amount} of something from its
 \emph{level}.
 
 \begin{center}
@@ -593,15 +648,15 @@ not. The cleanest way to see why is to separate the \emph{amount} of something f
 \end{center}
 
 Pour one litre into a narrow tube and the level jumps; pour the same litre into a wide
-tank and it barely moves. Same amount, different level, because the two containers have
+tank and it barely moves. Same amount, different level, because the containers have
 different cross-sections. Electrically, the ``cross-section'' of a pair of conductors is
-called its \textbf{capacitance} $C$, and the relation is exactly the same one:
+its \textbf{capacitance} $C$, and the relation is the same:
 \[
   q = C\,v .
 \]
-The \emph{shape of the circuit} plays the part of the shape of the tank. The same charge
+The \emph{shape of the circuit} plays the part of the shape of the tank: the same charge
 moved between a different pair of points gives a different voltage, because the geometry
---- and therefore $C$ --- is different. Capacitance is defined properly in Lecture~5; for
+--- and therefore $C$ --- is different. Capacitance is defined properly in Lecture~4; for
 now it is enough that the link between \emph{how much charge} and \emph{what voltage} is a
 property of the circuit, not a universal constant.
 
@@ -611,11 +666,10 @@ Charge the pair of conductors up to $q$. The energy you had to supply is
   W = \int_0^{q} v\,dq' = \int_0^{q} \frac{q'}{C}\,dq' = \frac{q^2}{2C} = \tfrac{1}{2}Cv^2 .
 \]
 Two things follow. First, energy grows with the \emph{square} of charge --- if charge
-were energy under another name, the relation would be linear. Second, look at the
-integral: the \emph{first} coulomb costs almost nothing, because the level is still
-near zero, while the \emph{last} coulomb is expensive, because by then it has to be
-lifted to the full height. The price of one coulomb \emph{is} the voltage, and the
-voltage changes as you fill.
+were energy under another name, the relation would be linear. Second, the \emph{first}
+coulomb costs almost nothing, because the level is near zero, while the \emph{last} is
+expensive, because it must be lifted to the full height. The price of one coulomb
+\emph{is} the voltage, and the voltage changes as you fill.
 \end{ideabox}
 
 The sharpest statement of the difference is about a complete circuit:
@@ -627,14 +681,14 @@ Around a loop, the charge that leaves the source comes back to it. The energy do
 \end{minipage}
 \end{center}
 
-Charge \emph{circulates}: every coulomb entering a resistor leaves it, and none is ``used
-up''. Energy flows one way --- out of the source, into heat, light or motion, and never
-back. The copper of the charge section makes the same point: one cubic centimetre holds
-some $13\,600\Cb$ of mobile charge and stores no energy at all. Charge is everywhere; what
-carries energy is the \emph{difference in level}.
+Charge \emph{circulates}: every coulomb entering a resistor leaves it, none ``used up''.
+Energy flows one way --- out of the source, into heat, light or motion, never back. The
+copper above makes the same point: one cubic centimetre holds some $13\,600\Cb$ of mobile
+charge and stores no energy at all. Charge is everywhere; what carries energy is the
+\emph{difference in level}.
 
 %% ---------------------------------------------------------------
-%% Kept for Lecture 5, where capacitance is defined properly:
+%% Kept for Lecture 4, where capacitance is defined properly:
 % \begin{ideabox}[For the mechanically minded]
 % In the velocity--force analogy of the opening section, mass plays exactly the part of
 % capacitance:
@@ -651,9 +705,8 @@ carries energy is the \emph{difference in level}.
 
 \subsection{Reference polarity}
 
-Exactly as for current, we mark a \emph{reference polarity} with a $+$ and a $-$ sign
-before we know the answer. The pair of pictures below describe the same physical element
-in the same physical state.
+Exactly as for current, we \emph{can} mark a reference polarity with $+$ and $-$ before we
+know the answer. The two pictures below describe the same element in the same state.
 
 \begin{center}
 \begin{tikzpicture}
@@ -678,12 +731,12 @@ in the same physical state.
 \end{tikzpicture}
 \end{center}
 
-\subsection{A first element: the resistor}
+\subsection{The first element: the resistor}
 
 So far we have defined only \emph{variables}: charge, current, voltage. A circuit also
 needs \emph{elements}, each imposing a rule between the voltage across it and the current
 through it. That rule is the element's \textbf{branch relation}; the whole family arrives
-in Lecture~2. One of them is worth meeting now, because the analogies below need it.
+in Lecture~3. One is worth meeting now, because the analogies below need it.
 
 \begin{definitionbox}{The resistor and Ohm's law}
 A \textbf{resistor} is a two-terminal element whose voltage and current obey, at every
@@ -706,28 +759,28 @@ Two features of this relation matter more than the formula.
 \begin{itemize}
   \item \textbf{It is algebraic, and has no memory.} The current now is fixed by the
         voltage now --- no derivatives, no integrals, nothing about the past. Such
-        elements are called \emph{resistive}, and the first four topics of the course live
-        entirely among them. Capacitors and inductors, which \emph{do} remember, arrive in
-        Lecture~5 and change the problem completely.
+        elements are called \emph{resistive} (or \emph{static}), and the first four topics
+        of the course live entirely among them. Capacitors and inductors, which \emph{do}
+        remember, arrive in Lectures~4 and~5 and change the problem completely.
   \item \textbf{The resistance comes from geometry and material.} For a uniform bar of
         length $L$ and cross-section $A$ made of a material of resistivity $\rho$,
         \[
           R = \rho\,\frac{L}{A} .
         \]
-        Long and thin means large $R$; short and fat means small $R$. That is precisely
-        the behaviour of a pipe carrying water, which is why the analogy of the next
-        subsection works as well as it does. (Copper has
+        Long and thin means large $R$; short and fat means small $R$ --- exactly the
+        behaviour of a pipe carrying water, which is why the next subsection's analogy
+        works so well. (Copper has
         $\rho \approx 1.7\times10^{-8}\ \Omega\cdot\mathrm{m}$, which is why we make wires
         out of it and assume they have no resistance at all.)
 \end{itemize}
 
-We come back to the sign convention that accompanies $v = Ri$, and to the reason a
-resistor can only \emph{absorb} energy, once power is defined.
+The sign convention that accompanies $v = Ri$, and the reason a resistor can only
+\emph{absorb} energy, come once power is defined.
 
 \subsection{The hydraulic analogy}
 
-Most people have better intuition for water than for electrons, and the analogy is
-close enough to be genuinely useful --- as long as you remember it is an analogy.
+Most people have better intuition for water than for electrons, and the analogy is close
+enough to be useful --- as long as you remember it is an analogy.
 
 \begin{center}
 \begin{tikzpicture}[scale=1.0]
@@ -781,14 +834,12 @@ water in the pipes         & \Qcol{charge $q$}    & conserved: it does not disap
 %==============================================================
 \section{Ground and node voltages}
 
-Since only \emph{differences} of potential have physical meaning, we are free to declare
-one point of the circuit to be zero. That point is called the \textbf{reference node},
-or simply \textbf{ground}.
+Since only \emph{differences} of potential have physical meaning, we may declare one point
+of the circuit to be zero. That point is the \textbf{reference node}, or \textbf{ground}.
 
 \begin{definitionbox}{Ground (reference node)}
-A node chosen, by us, to have potential zero. Once it is chosen, the ``voltage at node
-$a$'', written $v_a$, means $v_{a,\text{ground}}$, and every two-point voltage follows
-from the difference
+A node chosen, by us, to have potential zero. The ``voltage at node $a$'', written $v_a$,
+then means $v_{a,\text{ground}}$, and every two-point voltage follows from
 \[
   \boxed{\; v_{ab} = v_a - v_b \;}
 \]
@@ -811,10 +862,9 @@ from the difference
 \end{circuitikz}
 \end{center}
 
-Choosing a different node as ground shifts \emph{every} node voltage by the same constant
-and changes \emph{no} two-point voltage, no current and no power. The choice is a matter
-of convenience: pick the node that the most elements touch, and your equations get
-shorter.
+Choosing a different ground shifts \emph{every} node voltage by the same constant and
+changes \emph{no} two-point voltage, current or power. The choice is convenience: pick the
+node the most elements touch, and your equations get shorter.
 
 \begin{ideabox}[Three different things are called ``ground'']
 \textbf{Earth ground} is a physical connection to the planet, used for safety.
@@ -840,23 +890,21 @@ and $t$ is
 \]
 \end{definitionbox}
 
-Notice that $p = vi$ was not postulated: it fell out of the definitions of voltage
-(energy per charge) and current (charge per time). That is the whole point of defining
-them the way we did.
+$p = vi$ is not a separate definition: it follows from voltage (energy per charge) and
+current (charge per time). That is the whole point of defining them the way we did.
 
-For the one element we have met so far, substituting Ohm's law gives
+For the one element we have met, Ohm's law gives
 \[
   p = vi = i^2 R = \frac{v^2}{R} ,
 \]
 which for $R > 0$ is never negative, whatever the signs of $v$ and $i$. A resistor can
-only \emph{absorb} energy --- it has no way of giving any back --- and that absorbed
-energy leaves the circuit as heat.
+only \emph{absorb} energy --- it has no way of giving any back --- and that energy leaves
+the circuit as heat.
 
 Energy bills are written in kilowatt-hours: $1\ \mathrm{kWh} = 10^3 \times 3600 =
 3.6\times10^6\J$.
 
-As a first check of the units: a $12\V$ battery supplying a constant $2\A$ for $5$ minutes
-delivers
+A units check: a $12\V$ battery supplying a constant $2\A$ for $5$ minutes delivers
 \[
   P = VI = 12 \times 2 = 24\W,
   \qquad
@@ -895,7 +943,7 @@ The instantaneous power is
 \small
 \begin{itemize}[leftmargin=1.1em]
   \item $p(t) \ge 0$ always: a resistor never returns energy.
-  \item The power ripples at \emph{twice} the frequency of the voltage, about an average
+  \item The power \emph{oscillates} at twice the frequency of the voltage, about an average
         of $10\W$.
   \item The \emph{peak}, $20\W$, is twice the average. An element must survive the peak;
         how hot it gets is set by the average.
@@ -909,15 +957,14 @@ The energy absorbed over one period $T = 1/50$ s is
     = \frac{10}{50} = 0.2\J .
 \]
 The average power is what a wattmeter shows and what heats the element; the $100$ Hz
-ripple is what makes a cheap transformer hum.
+oscillation is what makes a cheap transformer hum.
 \end{examplebox}
 
 %==============================================================
 \section{The passive sign convention}
 
-We now have $p = vi$, but $v$ and $i$ each carry a reference that \emph{we} chose. Which
-sign of $p$ means ``this element is consuming energy''? A convention settles it once and
-for all.
+We have $p = vi$, but $v$ and $i$ each carry a reference that \emph{we} chose. Which sign
+of $p$ means ``this element is consuming energy''? A convention settles it.
 
 \begin{definitionbox}{Passive sign convention (PSC)}
 Assign the current reference arrow so that it \textbf{enters the terminal marked $+$}.
@@ -954,9 +1001,9 @@ so $p > 0$ means the element absorbs (consumes) energy, and $p < 0$ means it del
 \end{tikzpicture}
 \end{center}
 
-If the picture you are given does \emph{not} satisfy the PSC --- the arrow leaves the $+$
-terminal --- there is no need for a second formula. Flip one reference, change that
-variable's sign, and use $p = vi$ as always:
+If the picture does \emph{not} satisfy the PSC --- the arrow leaves the $+$ terminal ---
+no second formula is needed. Flip one reference, change that variable's sign, and use
+$p = vi$:
 \[
   p_{\text{absorbed}} = v\,(-i) = -vi .
 \]
@@ -968,9 +1015,9 @@ powers of all elements sum to zero:
 \[
   \boxed{\;\sum_{k=1}^{N} p_k(t) = 0\;}
 \]
-Elements with $p_k < 0$ (sources, usually) supply exactly what the elements with
-$p_k > 0$ (resistors, usually) consume. This is Tellegen's theorem. If your powers
-do not cancel, something is wrong.
+Elements with $p_k < 0$ (usually sources) supply exactly what those with $p_k > 0$
+(usually resistors) consume. This is Tellegen's theorem: if your powers do not cancel,
+something is wrong.
 
 \begin{examplebox}[Example 1.4 --- a power balance]
 In the circuit below the source drives $2\A$ around the loop and the two resistors drop
@@ -1007,8 +1054,8 @@ An \textbf{electric circuit} is an interconnection of electrical elements throug
 charge can flow along closed paths.
 \end{definitionbox}
 
-Everything we do in EE201 rests on one further modelling assumption, and it deserves to
-be stated precisely rather than assumed silently.
+Everything we do in EE201 rests on one further modelling assumption, worth stating
+precisely rather than assuming silently.
 
 \begin{definitionbox}{The lumped circuit model}
 A circuit is \textbf{lumped} when three things may be assumed.
@@ -1030,15 +1077,14 @@ $c$ advances a distance $\lambda = c/f$ in one period; $\lambda$ is its
 \]
 \end{definitionbox}
 
-Read (c) in terms of times if you prefer: crossing the circuit takes $d/c$, while the
-signal itself changes in $1/f$, and we assume the first is negligible next to the second.
-Either way, a change at one point reaches everywhere else before anything else has had
-time to happen.
+Read (c) in terms of times if you prefer: crossing the circuit takes $d/c$, the signal
+changes in $1/f$, and we assume the first is negligible next to the second. Either way, a
+change at one point reaches everywhere else before anything else has had time to happen.
 
 When the three hold, a circuit is described by \emph{ordinary} differential equations in
 time. When they do not, the same physics needs Maxwell's equations and partial
-differential equations in space and time --- which is what the electromagnetic field
-theory courses are for.
+differential equations in space and time --- what the electromagnetic field theory courses
+are for.
 
 \begin{center}
 \begin{tikzpicture}[x=1cm,y=1cm]
@@ -1080,34 +1126,33 @@ theory courses are for.
 \end{center}
 
 The picture above is the one to keep. It shows the signal \emph{frozen in space}: the
-horizontal axis runs along the circuit, and the curve is the value the signal has at each
-place at one instant. If the circuit occupies a tiny fraction of a wavelength, every point
-of it reads the same number, and we may speak of ``the'' voltage of a node. If it occupies
-an appreciable fraction, different parts of the same circuit hold different values at the
-same moment, and a single node voltage no longer exists.
+horizontal axis runs along the circuit, and the curve is the signal's value at each place
+at one instant. If the circuit occupies a tiny fraction of a wavelength, every point reads
+the same number and we may speak of ``the'' voltage of a node. If it occupies an
+appreciable fraction, different parts hold different values at the same moment, and a
+single node voltage no longer exists.
 
-Each of the three deserves a sentence of translation.
+Each of the three, translated:
 
 \begin{itemize}
   \item \textbf{(a) does not forbid charge from moving \emph{inside} an element.} A
         capacitor is the obvious case: it puts $+q$ on one plate and $-q$ on the other, so
-        charge certainly separates inside it. What (a) says is that the element as a
-        \emph{whole} never gains or loses charge --- the same current $i = dq/dt$ that
-        enters one terminal leaves the other. A wire, likewise, is a pipe and not a
-        bucket. Without this, ``the current through an element'' would not even be a
-        well-defined phrase, and Kirchhoff's current law would be false.
+        charge does separate inside it. (a) says the element as a \emph{whole} never gains
+        or loses charge --- the same current $i = dq/dt$ that enters one terminal leaves
+        the other. A wire, likewise, is a pipe and not a bucket. Without this, ``the
+        current through an element'' would not be well defined, and Kirchhoff's current
+        law would be false.
   \item \textbf{(b) says the loops in your diagram are not antennas and not
-        transformers.} You drew a rectangle of wire; if a changing \emph{magnetic} field
-        passed
-        through that rectangle it would induce a voltage in it, and the voltage between
-        two nodes would depend on how you routed the wire. Assumption (b) rules that out,
-        which is what makes ``the voltage between $a$ and $b$'' independent of the path
-        --- and Kirchhoff's voltage law true.
+        transformers.} You drew a rectangle of wire; a changing \emph{magnetic} field
+        through it would induce a voltage, and the voltage between two nodes would depend
+        on how you routed the wire. Assumption (b) rules that out, which makes ``the
+        voltage between $a$ and $b$'' independent of the path --- and Kirchhoff's voltage
+        law true.
   \item \textbf{(c) says everything happens everywhere at once.} A signal crosses a
         $30$ cm board in about a nanosecond, while a $50$ Hz mains waveform takes
         milliseconds to change appreciably --- a factor of a million. That delay is not
-        worth modelling, so we may use a single time variable $t$ for the whole circuit
-        instead of a function of position as well.
+        worth modelling, so one time variable $t$ serves the whole circuit, with no
+        dependence on position.
 \end{itemize}
 
 \begin{center}
@@ -1125,10 +1170,9 @@ Each of the three deserves a sentence of translation.
 \end{tikzpicture}
 \end{center}
 
-The same piece of hardware can be lumped for one signal and distributed for another. A
-mobile phone motherboard is a lumped circuit as far as its battery is concerned and a
-transmission-line problem as far as its antenna is concerned. The model is chosen by the
-question, not by the object.
+The same hardware can be lumped for one signal and distributed for another. A mobile phone
+motherboard is a lumped circuit for its battery and a transmission-line problem for its
+antenna. The model is chosen by the question, not by the object.
 
 %==============================================================
 \section{Terminals, nodes, branches}
@@ -1179,8 +1223,7 @@ will meet in Lecture~2,
 
 \begin{examplebox}[Example 1.5 --- the same circuit, drawn twice]
 The two drawings below look different but are the \emph{same} circuit: in both, $R_1$ and
-$R_2$ have both of their terminals in common, and that pair is in series with $R_3$ and
-the source.
+$R_2$ share both terminals, and that pair is in series with $R_3$ and the source.
 
 \begin{center}
 \begin{circuitikz}[scale=0.78, transform shape]
@@ -1216,18 +1259,17 @@ the source.
 \end{circuitikz}
 \end{center}
 
-Drawing (b) makes it obvious that $R_1$ and $R_2$ are in parallel. Drawing (a) hides it
-behind a detour of wire. Nothing was changed except where the symbols were placed --- and
-that is the only skill being tested when a problem looks impossible at first sight.
+Drawing (b) makes it obvious that $R_1$ and $R_2$ are in parallel; drawing (a) hides it
+behind a detour of wire. Only the placement of the symbols changed --- and that is the
+only skill being tested when a problem looks impossible at first sight.
 \end{examplebox}
 
 \begin{cautionbox}[Drawing is not topology]
 Two circuits that look completely different on paper can be the same circuit. What
 matters is which terminals share a node, not where you placed the symbols. So when a
-problem looks unfamiliar, redraw it: put every element that touches a given node so that
-it visibly touches the \emph{same point or the same line} as the others on that node, and
-straighten out the detours of wire. Series and parallel connections usually become obvious
-the moment you do this, and half of the difficulty disappears with them.
+problem looks unfamiliar, redraw it: put every element on a given node so that it visibly
+touches the \emph{same point or the same line}, and straighten the detours of wire. Series
+and parallel connections usually become obvious, and half the difficulty goes with them.
 \end{cautionbox}
 
 %==============================================================
