@@ -4,7 +4,7 @@ Lecture notes and slides for the sixth lecture of EE201 (Section 2, Fall 2026/27
 
 | File | What it is |
 |---|---|
-| `EE201_Lecture_6.tex` | Handout / lecture notes (article, 8 pages). Self-contained: definitions, four worked examples, the power theorem with proof. |
+| `EE201_Lecture_6.tex` | Handout / lecture notes (article, 9 pages). Self-contained: definitions, four worked examples, the power theorem with proof. |
 | `EE201_Lecture_6_slides.tex` | Beamer deck (25 slides, 41 PDF pages) for the lecture itself — visual, low text. |
 | `build.sh` | Compiles both, removes auxiliary files, opens the PDFs. |
 
@@ -27,11 +27,14 @@ Following p. 11 of Prof. Emre Tuna's notes and the second half of his recorded L
 [METU OCW](https://ocw.metu.edu.tr/course/view.php?id=351) (from 41:47).
 
 1. **Sources controlled from elsewhere** (41:47) — circle: decides its own value; diamond:
-   copies a variable from another branch, scaled. Linear dependent sources only
+   copies a variable from another branch, scaled. Almost always linear in one variable
 2. **The four kinds** (43:04–48:14) — VCVS, CCVS, VCCS, CCCS; voltage gain,
    transresistance, transconductance, current gain, and their units (out over in).
-   The sensing side: open circuit for a voltage, short circuit for a current
-3. **Why we need them** — the amplifier model (R_in, μ v_in, R_out); transistors and op-amps
+   The sensing side: open circuit for a voltage, short circuit for a current. More general
+   forms: several controlling variables (one source per term), affine (plus an independent
+   source), and nonlinear (mentioned, not used)
+3. **Why we need them** — the amplifier model (R_in, μ v_in, R_out); components and ICs
+   modelled as, or designed to be, dependent sources — one example per kind
 4. **Reading a diagram** (49:15) — Prof. Tuna's example: the CCVS's terminal equation names
    a current in another branch. That is the only new thing compared with Lecture 2.
    A note on the two meanings of *controlled* (Lecture 3 resistor vs. dependent source)

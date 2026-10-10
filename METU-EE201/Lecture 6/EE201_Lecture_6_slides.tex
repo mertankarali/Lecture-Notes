@@ -162,8 +162,8 @@
       \draw (0,0) to[american controlled current source] (0,1.9);
       \node[font=\small, right] at (0.45,0.95) {$\beta\,\Icol{i_x}$};
     \end{scope}
-    \node[font=\small\bfseries, text=metured] at (1.8,2.55) {independent (Lecture 3)};
-    \node[font=\small\bfseries, text=metured] at (8.2,2.55) {dependent (today)};
+    \node[font=\small\bfseries, text=metured] at (1.8,2.55) {independent};
+    \node[font=\small\bfseries, text=metured] at (8.2,2.55) {dependent};
     \node[capn, font=\small] at (1.8,-0.6) {decides\\ its own value};
     \node[capn, font=\small] at (7.85,-0.6) {copies a variable\\ from elsewhere, scaled};
   \end{tikzpicture}
@@ -171,8 +171,8 @@
   \vfill
   \begin{block}{Dependent (controlled) source}
     A voltage or current source whose value is a function of a voltage or current in
-    \emph{another} branch --- the \alert{controlling variable}. In EE201 the function is
-    always a constant times that variable: a \alert{linear} dependent source.
+    \emph{another} branch --- the \alert{controlling variable}. Almost always the function
+    is a constant times one variable: a \alert{linear} dependent source.
   \end{block}
   \vfill
 \end{frame}
@@ -220,7 +220,7 @@
 %--------------------------------------------------------------
 \begin{frame}{The constant, and its unit}
   \vfill
-  \begin{center}
+  \begin{center}\small
   \begin{tabular}{@{}l l l l@{}}
   \toprule
   \textbf{Kind} & \textbf{Equation} & \textbf{The constant} & \textbf{Unit}\\
@@ -233,11 +233,23 @@
   \end{tabular}
   \end{center}
   \vfill
-  \begin{center}
-    The unit is always \alert{what comes out} over \alert{what goes in}.\\[6pt]
-    \emph{Trans-} when the two differ: a transresistance turns a current into a voltage,\\
-    so it is measured in ohms.
-  \end{center}
+  \begin{columns}[t,onlytextwidth]
+    \begin{column}{0.42\textwidth}
+      \small
+      The unit is always \alert{what comes out} over \alert{what goes in}.\\[6pt]
+      \emph{Trans-} when the two differ: a transresistance turns a current into a voltage,
+      so it is measured in ohms.
+    \end{column}
+    \begin{column}{0.55\textwidth}
+      \begin{block}{More general forms}
+        \small
+        \textbf{Several variables:} $\mu_a\Vcol{v_a} + \mu_b\Vcol{v_b}$ --- one source per
+        term.\\[3pt]
+        \textbf{Affine:} $\mu\Vcol{v_x} + V_0$ --- plus an independent source $V_0$.\\[3pt]
+        \textbf{Nonlinear:} $\Icol{i} = f(\Vcol{v_x})$ --- exists, not used in EE201.
+      \end{block}
+    \end{column}
+  \end{columns}
   \vfill
 \end{frame}
 
@@ -298,13 +310,26 @@
   \end{tikzpicture}
   \end{center}
   \vfill
-  \begin{itemize}\itemsep4pt
-    \item The simplest model of anything that \alert{amplifies}: the gain $\mu$ is the only
-          place where the output can grow larger than the input.
-    \item A \textbf{transistor} is modelled with a VCCS or a CCCS --- in the electronics
-          courses.
-    \item An \textbf{op-amp} is a VCVS with $\mu \approx 10^5$ --- later in this course.
-  \end{itemize}
+  \begin{columns}[c,onlytextwidth]
+    \begin{column}{0.38\textwidth}
+      \small
+      The simplest model of anything that \alert{amplifies}. Many components and
+      integrated circuits are modelled as dependent sources --- and some are
+      \alert{designed} to be one.
+    \end{column}
+    \begin{column}{0.60\textwidth}
+      \begin{center}\small
+      \begin{tabular}{@{}l l l@{}}
+      \toprule
+      VCVS & op-amp & $\mu \approx 10^5$\\
+      CCVS & current-sense amplifier & $r$ \ ($\Omega$)\\
+      VCCS & MOSFET, transconductance amp. & $g_m$ \ (S)\\
+      CCCS & bipolar transistor & $\beta \approx 100$\\
+      \bottomrule
+      \end{tabular}
+      \end{center}
+    \end{column}
+  \end{columns}
   \vfill
 \end{frame}
 
@@ -334,8 +359,8 @@
     Which equation does the dependent source contribute?\\[8pt]
     \onslide<2->{A CCVS: \ $\Vcol{v} = r\,\Icol{i_1}$ \ --- and $\Icol{i_1}$ flows through
     $R$, at the \alert{far right}.}\\[8pt]
-    \onslide<3->{$n = 4$, \ $b = 5$: still $2b = 10$ unknowns and $b = 5$ terminal equations.
-    \\ Four speak about one element each. The fifth \alert{links two branches}.}
+    \onslide<3->{$n = 4$ nodes and $b = 5$ branches: $2b = 10$ unknowns, $b = 5$ terminal
+    equations.\\ Four speak about one element each. The fifth \alert{links two branches}.}
   \end{center}
   \vfill
 \end{frame}
@@ -822,6 +847,7 @@
   \begin{itemize}\itemsep5pt
     \item A \textbf{dependent source} (diamond) takes its value from a voltage or current in
           another branch: VCVS, CCVS, VCCS, CCCS. Unit of the constant: out over in.
+          Almost always linear in one variable.
     \item Its terminal equation names a \alert{foreign variable}. Write KCL, KVL and
           terminal equations as usual, plus one equation for the controlling variable.
     \item It can \textbf{deliver power} --- that is amplification --- but it

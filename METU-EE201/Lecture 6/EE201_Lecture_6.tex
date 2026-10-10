@@ -165,15 +165,16 @@
 \section{Sources controlled from elsewhere}
 
 The sources of Lecture~3 decide their own value. A $12\V$ source holds $12\V$ whatever the
-rest of the circuit does. Today's sources do not: their value is set by a voltage or a
-current \emph{somewhere else} in the circuit. They are how an amplifier, a transistor or an
-op-amp enters a circuit diagram.
+rest of the circuit does. The sources of this lecture do not: their value is set by a
+voltage or a current \emph{somewhere else} in the circuit. They are how amplifiers,
+transistors and many integrated circuits enter a circuit diagram.
 
 \begin{definitionbox}{Dependent (controlled) source}
 A \textbf{dependent source} is a voltage or current source whose value is a function of a
 voltage or current in \emph{another} branch of the circuit, the \textbf{controlling
-variable}. When the function is a constant times the controlling variable, it is a
-\textbf{linear} dependent source. All dependent sources in EE201 are linear.
+variable}. Almost always the function is a constant times one controlling variable, as in
+$\Vcol{v} = \mu\,\Vcol{v_x}$: a \textbf{linear} dependent source. More general forms are
+in Section~2.2.
 \end{definitionbox}
 
 The symbol is a \textbf{diamond}. A circle means the source decides its own value; a
@@ -276,6 +277,52 @@ In a real circuit diagram the sensing side is almost never drawn. The controllin
 variable is simply the voltage across, or the current through, some element that is
 already there, and the diagram labels it: $\Vcol{v_x}$, $\Icol{i_x}$, $\Icol{i_1}$.
 
+\subsection{More general dependent sources}
+
+The four kinds above depend on one variable through one constant. That covers almost every
+circuit in this course, but the definition allows more.
+
+\begin{center}
+\begin{tikzpicture}[scale=1.0]
+  % (a) two controlling variables
+  \begin{scope}
+    \draw (0,0.75) to[american controlled voltage source, invert] (0,2.65);
+    \draw (0,0.3) -- (0,0.75); \draw (0,2.65) -- (0,3.1);
+    \node[font=\small, right] at (0.45,1.7) {$\mu_a\Vcol{v_a} + \mu_b\Vcol{v_b}$};
+    \node[font=\Large, text=metured] at (3.05,1.7) {$=$};
+    \draw (4.0,0.3) to[american controlled voltage source, invert] (4.0,1.6)
+          to[american controlled voltage source, invert] (4.0,3.1);
+    \node[font=\small, right] at (4.4,2.35) {$\mu_a\Vcol{v_a}$};
+    \node[font=\small, right] at (4.4,0.95) {$\mu_b\Vcol{v_b}$};
+    \node[ttl] at (2.1,-0.25) {several variables: one source per term};
+  \end{scope}
+  % (b) affine
+  \begin{scope}[xshift=7.9cm]
+    \draw (0,0.75) to[american controlled voltage source, invert] (0,2.65);
+    \draw (0,0.3) -- (0,0.75); \draw (0,2.65) -- (0,3.1);
+    \node[font=\small, right] at (0.45,1.7) {$\mu\Vcol{v_x} + V_0$};
+    \node[font=\Large, text=metured] at (2.6,1.7) {$=$};
+    \draw (3.55,0.3) to[american voltage source, invert] (3.55,1.6)
+          to[american controlled voltage source, invert] (3.55,3.1);
+    \node[font=\small, right] at (3.95,2.35) {$\mu\Vcol{v_x}$};
+    \node[font=\small, right] at (4.0,0.95) {$V_0$};
+    \node[ttl] at (1.9,-0.25) {affine: the constant is an independent source};
+  \end{scope}
+\end{tikzpicture}
+\end{center}
+
+\begin{itemize}
+  \item \textbf{Several controlling variables}, $\Vcol{v} = \mu_a\Vcol{v_a} + \mu_b\Vcol{v_b}$:
+        one dependent source per term, in series. For a current source the terms are
+        sources in parallel.
+  \item \textbf{Affine}, $\Vcol{v} = \mu\Vcol{v_x} + V_0$: the constant term is an
+        independent source in series with a linear dependent one. Such sources may appear
+        in problems.
+  \item \textbf{Nonlinear}, for example $\Icol{i} = f(\Vcol{v_x})$: a real transistor
+        over its full range behaves like this. We do not use nonlinear dependent sources in
+        EE201.
+\end{itemize}
+
 %==============================================================
 \section{Why we need them}
 
@@ -306,9 +353,26 @@ below is how an amplifier usually appears in a circuit diagram.
 \end{tikzpicture}
 \end{center}
 
-The same idea models real devices. A transistor is modelled with a VCCS or a CCCS; you will
-meet both in the electronics courses. An op-amp is a VCVS with an enormous gain,
-$\mu \approx 10^5$; it has a chapter of its own later in this course.
+Many components and integrated circuits are modelled as dependent sources over their
+working range, and some are designed to be one. Each of the four kinds has a familiar
+example:
+
+\begin{center}
+\small
+\begin{tabular}{@{}l l l@{}}
+\toprule
+\textbf{Kind} & \textbf{Device} & \textbf{Typical constant}\\
+\midrule
+VCVS & op-amp                                  & $\mu \approx 10^5$\\
+CCVS & current-sense amplifier                 & $r$, in ohms\\
+VCCS & MOSFET; transconductance amplifier      & $g_m$, in siemens\\
+CCCS & bipolar transistor                      & $\beta \approx 100$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The op-amp has a chapter of its own later in this course; the transistor models come in the
+electronics courses.
 
 %==============================================================
 \section{Reading a diagram with a dependent source}
@@ -339,8 +403,8 @@ is the current through $R$. The source sits at the far left; the current it sens
 at the far right.
 \end{minipage}
 
-Count as in Lecture~2: $n = 4$, $b = 5$, so $2b = 10$ unknowns and $b = 5$ terminal
-equations. Four of them --- for $C$, $L$, $i_s$ and $R$ --- each speak about one element. The
+Count as in Lecture~2: $n = 4$ nodes and $b = 5$ branches, so $2b = 10$ unknowns and
+$b = 5$ terminal equations. Four of them --- for $C$, $L$, $i_s$ and $R$ --- each speak about one element. The
 fifth ties the source's own voltage to another branch's current.
 \end{examplebox}
 
@@ -489,7 +553,8 @@ makes up the rest.
 become $2\Icol{i_x} + \Vcol{v_a} = 0$ and $\Vcol{v_a} = 18\Icol{i_x}$, so
 $20\,\Icol{i_x} = 0$: every voltage and current is zero, the dependent source's included.
 Without an independent source, all-zero satisfies every equation --- and when the circuit has
-a unique solution, that is the solution.\\[3pt]
+a unique solution, that is the solution. (The constant term of an affine source,
+$\mu\Vcol{v_x} + V_0$, is an independent source in disguise; that part can.)\\[3pt]
 \textbf{It is never switched off.} Later we will switch sources off one at a time
 (superposition, Thévenin equivalents). Only \emph{independent} sources are switched off. A
 dependent source stays: its value is not an input, it is part of how the circuit behaves.
@@ -755,7 +820,8 @@ ideal transformer & $\Vcol{v_j}/N_j$ all equal, \ $\sum_j N_j\Icol{i_j} = 0$ & $
 \begin{itemize}
   \item A \textbf{dependent source} (diamond) takes its value from a voltage or current in
         another branch. Four kinds: VCVS, CCVS, VCCS, CCCS; the constant's unit is output
-        over input.
+        over input. Almost always linear in one variable; several variables and affine
+        forms split into simpler sources.
   \item Its terminal equation names a \textbf{foreign variable}. Otherwise nothing
         changes: write KCL, KVL and terminal equations, plus one equation for the
         controlling variable.
