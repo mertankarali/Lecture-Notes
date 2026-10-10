@@ -118,6 +118,13 @@
     \node[dotm] at (1.24,#2-0.2) {};
   \end{scope}}
 
+%  An ideal gear: centre (#1,#2), radius #3, #4 teeth, rotated by #5 degrees
+\newcommand{\gear}[5]{%
+  \draw[metugray, thick, fill=gray!22, rotate around={#5:(#1,#2)}]
+    plot[domain=0:360, samples=#4*24, variable=\t]
+    ({#1+(#3+0.13*(sin(#4*\t)>0))*cos(\t)}, {#2+(#3+0.13*(sin(#4*\t)>0))*sin(\t)}) -- cycle;
+  \fill[white] (#1,#2) circle (0.12); \draw[metugray] (#1,#2) circle (0.12);}
+
 \hypersetup{colorlinks=true,allcolors=metured}
 
 \title{Lecture 6: Dependent Sources\\ and the Ideal Transformer}
@@ -723,6 +730,52 @@
        = -\Vcol{v_1}\Icol{i_1} \]}
     \onslide<3->{Voltage multiplied by $N_2/N_1$, current divided by $N_2/N_1$.\\[4pt]
     Nothing is stored, nothing is dissipated. The same holds for any number of windings.}
+  \end{center}
+  \vfill
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{A mechanical analogy: the gear pair}
+  \vfill
+  \begin{columns}[c,onlytextwidth]
+    \begin{column}{0.40\textwidth}
+      \begin{center}
+      \begin{tikzpicture}[scale=0.8]
+  \gear{0}{0}{0.7}{10}{0}
+  \gear{2.235}{0}{1.4}{20}{9}
+  \draw[-{Stealth[length=2.4mm]}, cvolt, very thick] (110:1.15) arc (110:200:1.15);
+  \node[font=\small, text=cvolt] at (155:1.55) {$\omega_1$};
+  \node[font=\small, text=ccur] at (0,-1.25) {$\tau_1$};
+  \node[font=\scriptsize, text=metugray] at (0,-1.65) {$n_1 = 10$ teeth};
+  \begin{scope}[shift={(2.235,0)}]
+    \draw[-{Stealth[length=2.4mm]}, cvolt, very thick] (70:1.85) arc (70:-20:1.85);
+    \node[font=\small, text=cvolt] at (25:2.25) {$\omega_2$};
+    \node[font=\small, text=ccur] at (0,-1.95) {$\tau_2$};
+    \node[font=\scriptsize, text=metugray] at (0,-2.35) {$n_2 = 20$ teeth};
+  \end{scope}
+      \end{tikzpicture}
+      \end{center}
+    \end{column}
+    \begin{column}{0.58\textwidth}
+      \small
+      \begin{tabular}{@{}l l@{}}
+      \toprule
+      \textbf{Ideal transformer} & \textbf{Ideal gear pair}\\
+      \midrule
+      voltage $\Vcol{v}$ & angular velocity $\Vcol{\omega}$\\
+      current $\Icol{i}$ & torque $\Icol{\tau}$\\
+      turns $N_1$, $N_2$ & teeth $n_1$, $n_2$\\
+      power in $=$ power out & $\tau_1\omega_1 = \tau_2\omega_2$\\
+      step-down: $\Vcol{v}$ down, $\Icol{i}$ up & $\Vcol{\omega}$ down, $\Icol{\tau}$ up\\
+      dots set the sign & gears turn opposite ways\\
+      \bottomrule
+      \end{tabular}
+    \end{column}
+  \end{columns}
+  \vfill
+  \begin{center}\small
+    $10$ teeth driving $20$: half the speed, twice the torque --- like a $2:1$ step-down
+    transformer.
   \end{center}
   \vfill
 \end{frame}

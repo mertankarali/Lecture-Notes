@@ -118,6 +118,12 @@
 \newcommand{\ohm}{\,\Omega}
 \newcommand{\kohm}{\,\mathrm{k}\Omega}
 
+%  An ideal gear: centre (#1,#2), radius #3, #4 teeth, rotated by #5 degrees
+\newcommand{\gear}[5]{%
+  \draw[metugray, thick, fill=gray!22, rotate around={#5:(#1,#2)}]
+    plot[domain=0:360, samples=#4*24, variable=\t]
+    ({#1+(#3+0.13*(sin(#4*\t)>0))*cos(\t)}, {#2+(#3+0.13*(sin(#4*\t)>0))*sin(\t)}) -- cycle;
+  \fill[white] (#1,#2) circle (0.12); \draw[metugray] (#1,#2) circle (0.12);}
 %  A two-winding ideal-transformer symbol between (#1,0)--(#1,#2) on the left and
 %  (#1+1.6,0)--(#1+1.6,#2) on the right; dots at the top of both windings.
 \newcommand{\xfmr}[2]{%
@@ -671,6 +677,52 @@ $\sum_j \Vcol{v_j}\Icol{i_j} = \lambda\sum_j N_j\Icol{i_j} = \lambda \cdot 0 = 0
 Nothing is stored and nothing is dissipated. With two windings,
 $\Vcol{v_1}\Icol{i_1} = -\Vcol{v_2}\Icol{i_2}$: the voltage is multiplied by $N_2/N_1$ and the
 current divided by the same factor.
+
+\subsection{A mechanical analogy: the gear pair}
+
+An ideal gear pair does for rotation what an ideal transformer does for electric circuits.
+Take angular velocity $\omega$ as the across quantity, like voltage, and torque $\tau$ as
+the through quantity, like current.
+
+\begin{center}
+\begin{minipage}[c]{0.36\linewidth}
+\centering
+\begin{tikzpicture}[scale=0.85]
+  \gear{0}{0}{0.7}{10}{0}
+  \gear{2.235}{0}{1.4}{20}{9}
+  \draw[-{Stealth[length=2.4mm]}, cvolt, very thick] (110:1.15) arc (110:200:1.15);
+  \node[font=\small, text=cvolt] at (155:1.55) {$\omega_1$};
+  \node[font=\small, text=ccur] at (0,-1.25) {$\tau_1$};
+  \node[font=\scriptsize, text=metugray] at (0,-1.65) {$n_1 = 10$ teeth};
+  \begin{scope}[shift={(2.235,0)}]
+    \draw[-{Stealth[length=2.4mm]}, cvolt, very thick] (70:1.85) arc (70:-20:1.85);
+    \node[font=\small, text=cvolt] at (25:2.25) {$\omega_2$};
+    \node[font=\small, text=ccur] at (0,-1.95) {$\tau_2$};
+    \node[font=\scriptsize, text=metugray] at (0,-2.35) {$n_2 = 20$ teeth};
+  \end{scope}
+\end{tikzpicture}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.62\linewidth}
+\small
+\begin{tabular}{@{}l l@{}}
+\toprule
+\textbf{Ideal transformer} & \textbf{Ideal gear pair}\\
+\midrule
+voltage $\Vcol{v}$ & angular velocity $\Vcol{\omega}$\\
+current $\Icol{i}$ & torque $\Icol{\tau}$\\
+turns $N_1$, $N_2$ & teeth $n_1$, $n_2$\\
+power in $=$ power out & $\tau_1\omega_1 = \tau_2\omega_2$\\
+step-down: $\Vcol{v}$ down, $\Icol{i}$ up & small drives large: $\Vcol{\omega}$ down, $\Icol{\tau}$ up\\
+moving a dot flips a sign & meshing gears turn opposite ways\\
+\bottomrule
+\end{tabular}
+\end{minipage}
+\end{center}
+
+With $n_1 = 10$ and $n_2 = 20$ teeth, the large gear turns at half the speed with twice the
+torque --- what a $2:1$ step-down transformer does to voltage and current. Both are ideal
+only in the model: no losses and nothing stored (the gears are massless and frictionless).
+Unlike a physical transformer, a gear pair also works at constant speed.
 
 \begin{examplebox}[Example 6.4 --- a step-down transformer]
 A $10:1$ transformer connects $v_s(t) = 120\cos\omega t\V$ to a $3\ohm$ load. Find the

@@ -4,8 +4,8 @@ Lecture notes and slides for the sixth lecture of EE201 (Section 2, Fall 2026/27
 
 | File | What it is |
 |---|---|
-| `EE201_Lecture_6.tex` | Handout / lecture notes (article, 7 pages). Self-contained: definitions, four worked examples, the power theorem with proof. |
-| `EE201_Lecture_6_slides.tex` | Beamer deck (21 slides, 34 PDF pages) for the lecture itself — visual, low text. |
+| `EE201_Lecture_6.tex` | Handout / lecture notes (article, 8 pages). Self-contained: definitions, four worked examples, the power theorem with proof. |
+| `EE201_Lecture_6_slides.tex` | Beamer deck (22 slides, 35 PDF pages) for the lecture itself — visual, low text. |
 | `build.sh` | Compiles both, removes auxiliary files, opens the PDFs. |
 
 ## Compiling
@@ -48,7 +48,8 @@ Following p. 11 of Prof. Emre Tuna's notes and the second half of his recorded L
    N₁i₁ + N₂i₂ = 0 with the dot convention; k windings in one line. A physical transformer
    works only with AC signals; the ideal model is resistive (no d/dt)
 7. **Its power** (54:47) — Σ vⱼiⱼ = 0 at every instant, with a two-line proof
-   (Prof. Tuna's exercise); Example 6.4, a 10:1 step-down transformer, and the 300 Ω the
+   (Prof. Tuna's exercise); the ideal gear pair as a mechanical analogy (ω ↔ v, τ ↔ i,
+   power in = power out); Example 6.4, a 10:1 step-down transformer, and the 300 Ω the
    source sees
 
 ## Conventions
@@ -61,7 +62,7 @@ the right.
 Six slides build up **step by step** with beamer overlays — the CCVS example, the
 amplifier example and its power table, the CCCS example, the transformer power proof and
 the transformer example. Each step is an ordinary extra PDF page; that is why the deck has
-21 slides but 34 pages.
+22 slides but 35 pages.
 
 ## References
 
