@@ -378,15 +378,9 @@ electronics courses.
 \textbf{DC/DC converters.} A DC/DC converter turns one DC voltage into another --- the
 $5\V$ of a USB port into the $1\V$ a processor needs, a battery voltage into what a motor
 needs. It is one of the most fundamental electronic circuits, used in almost every field:
-phones, computers, cars, satellites, robots. Averaged over its switching period, a
-step-down (buck) converter with duty ratio $D$ is a VCVS at its output and a CCCS at its
-input:
-\[
-  \Vcol{v_{\mathrm{out}}} = D\,\Vcol{v_{\mathrm{in}}} , \qquad
-  \Icol{i_{\mathrm{in}}} = D\,\Icol{i_{\mathrm{out}}} .
-\]
-The pair behaves like the ideal transformer of Section~6 with ratio $1:D$ --- but, unlike a
-physical transformer, it also works at DC.
+phones, computers, cars, satellites, robots. To the circuit around it, a DC/DC converter is
+essentially a voltage-controlled voltage source, $\Vcol{v_{\mathrm{out}}} = k\,\Vcol{v_{\mathrm{in}}}$,
+with the ratio $k$ set by its design.
 
 %==============================================================
 \section{Reading a diagram with a dependent source}

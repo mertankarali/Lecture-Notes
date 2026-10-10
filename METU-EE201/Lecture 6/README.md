@@ -35,7 +35,7 @@ Following p. 11 of Prof. Emre Tuna's notes and the second half of his recorded L
    source), and nonlinear (mentioned, not used)
 3. **Why we need them** — the amplifier model (R_in, μ v_in, R_out); components and ICs
    modelled as, or designed to be, dependent sources — one example per kind; DC/DC
-   converters, whose averaged model is a CCCS at the input and a VCVS at the output
+   converters, essentially a VCVS v_out = k v_in
 4. **Reading a diagram** (49:15) — Prof. Tuna's example: the CCVS's terminal equation names
    a current in another branch. That is the only new thing compared with the earlier
    lectures. A note on the two meanings of *controlled* (resistor vs. dependent source)
