@@ -5,7 +5,7 @@ Lecture notes and slides for the sixth lecture of EE201 (Section 2, Fall 2026/27
 | File | What it is |
 |---|---|
 | `EE201_Lecture_6.tex` | Handout / lecture notes (article, 7 pages). Self-contained: definitions, four worked examples, the power theorem with proof. |
-| `EE201_Lecture_6_slides.tex` | Beamer deck (20 slides, 33 PDF pages) for the lecture itself — visual, low text. |
+| `EE201_Lecture_6_slides.tex` | Beamer deck (21 slides, 34 PDF pages) for the lecture itself — visual, low text. |
 | `build.sh` | Compiles both, removes auxiliary files, opens the PDFs. |
 
 ## Compiling
@@ -34,7 +34,8 @@ Following p. 11 of Prof. Emre Tuna's notes and the second half of his recorded L
    forms: several controlling variables (one source per term), affine (plus an independent
    source), and nonlinear (mentioned, not used)
 3. **Why we need them** — the amplifier model (R_in, μ v_in, R_out); components and ICs
-   modelled as, or designed to be, dependent sources — one example per kind
+   modelled as, or designed to be, dependent sources — one example per kind; DC/DC
+   converters, whose averaged model is a CCCS at the input and a VCVS at the output
 4. **Reading a diagram** (49:15) — Prof. Tuna's example: the CCVS's terminal equation names
    a current in another branch. That is the only new thing compared with the earlier
    lectures. A note on the two meanings of *controlled* (resistor vs. dependent source)
@@ -60,7 +61,7 @@ the right.
 Six slides build up **step by step** with beamer overlays — the CCVS example, the
 amplifier example and its power table, the CCCS example, the transformer power proof and
 the transformer example. Each step is an ordinary extra PDF page; that is why the deck has
-20 slides but 33 pages.
+21 slides but 34 pages.
 
 ## References
 

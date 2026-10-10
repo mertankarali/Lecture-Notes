@@ -268,14 +268,14 @@ current into a voltage, so it is measured in ohms, like a resistance.
 \subsection{The sensing side}
 
 In each picture the left-hand pair of terminals is where the source senses its controlling
-variable. It senses it without disturbing anything:
+variable. Sensing does not change the circuit --- it does not ``disturb'' it:
 \begin{itemize}
   \item to sense a \Vcol{voltage} it is an \textbf{open circuit} --- it draws no current;
   \item to sense a \Icol{current} it is a \textbf{short circuit} --- it takes no voltage.
 \end{itemize}
-In a real circuit diagram the sensing side is almost never drawn. The controlling
-variable is simply the voltage across, or the current through, some element that is
-already there, and the diagram labels it: $\Vcol{v_x}$, $\Icol{i_x}$, $\Icol{i_1}$.
+In circuit diagrams the sensing side is usually not drawn: the controlling variable is
+labelled on an element that is already there, as $\Vcol{v_x}$, $\Icol{i_x}$ or
+$\Icol{i_1}$.
 
 \subsection{More general dependent sources}
 
@@ -294,7 +294,7 @@ circuit in this course, but the definition allows more.
           to[american controlled voltage source, invert] (4.0,3.1);
     \node[font=\small, right] at (4.4,2.35) {$\mu_a\Vcol{v_a}$};
     \node[font=\small, right] at (4.4,0.95) {$\mu_b\Vcol{v_b}$};
-    \node[ttl] at (2.1,-0.25) {several variables: one source per term};
+    \node[ttl] at (2.1,-0.25) {several variables: two sources in series};
   \end{scope}
   % (b) affine
   \begin{scope}[xshift=7.9cm]
@@ -313,8 +313,8 @@ circuit in this course, but the definition allows more.
 
 \begin{itemize}
   \item \textbf{Several controlling variables}, $\Vcol{v} = \mu_a\Vcol{v_a} + \mu_b\Vcol{v_b}$:
-        one dependent source per term, in series. For a current source the terms are
-        sources in parallel.
+        the same as two dependent sources in series, one giving $\mu_a\Vcol{v_a}$ and
+        one giving $\mu_b\Vcol{v_b}$. For a current source the two are in parallel.
   \item \textbf{Affine}, $\Vcol{v} = \mu\Vcol{v_x} + V_0$: the constant term is an
         independent source in series with a linear dependent one. Such sources may appear
         in problems.
@@ -374,6 +374,19 @@ CCCS & bipolar transistor                      & $\beta \approx 100$\\
 
 The op-amp has a chapter of its own later in this course; the transistor models come in the
 electronics courses.
+
+\textbf{DC/DC converters.} A DC/DC converter turns one DC voltage into another --- the
+$5\V$ of a USB port into the $1\V$ a processor needs, a battery voltage into what a motor
+needs. It is one of the most fundamental electronic circuits, used in almost every field:
+phones, computers, cars, satellites, robots. Averaged over its switching period, a
+step-down (buck) converter with duty ratio $D$ is a VCVS at its output and a CCCS at its
+input:
+\[
+  \Vcol{v_{\mathrm{out}}} = D\,\Vcol{v_{\mathrm{in}}} , \qquad
+  \Icol{i_{\mathrm{in}}} = D\,\Icol{i_{\mathrm{out}}} .
+\]
+The pair behaves like the ideal transformer of Section~6 with ratio $1:D$ --- but, unlike a
+physical transformer, it also works at DC.
 
 %==============================================================
 \section{Reading a diagram with a dependent source}
@@ -611,7 +624,8 @@ no current to carry its flux, so the turn-weighted currents cancel:
 $N_1\Icol{i_1} + N_2\Icol{i_2} = 0$.
 
 A physical transformer therefore works only with \textbf{changing (AC) signals}. A constant
-current gives a constant flux, and no voltage appears on the other winding.
+current gives a constant flux, and no voltage appears on the other winding. For DC, the
+same job is done by a DC/DC converter (Section~3).
 
 \begin{definitionbox}{Ideal transformer}
 With $\Vcol{v_1}$, $\Vcol{v_2}$ positive at the dotted terminals and $\Icol{i_1}$,
@@ -703,19 +717,6 @@ rescales a resistance by $(N_1/N_2)^2$.
 %==============================================================
 \section*{Summary}
 \addcontentsline{toc}{section}{Summary}
-
-\begin{center}
-\small
-\begin{tabular}{@{}l l l@{}}
-\toprule
-\textbf{Element} & \textbf{Terminal equations} & \textbf{Power}\\
-\midrule
-VCVS, CCVS & $\Vcol{v} = \mu\Vcol{v_1}$, \ $\Vcol{v} = r\Icol{i_1}$ & can deliver (active)\\
-VCCS, CCCS & $\Icol{i} = g\Vcol{v_1}$, \ $\Icol{i} = \beta\Icol{i_1}$ & can deliver (active)\\
-ideal transformer & $\Vcol{v_j}/N_j$ all equal, \ $\sum_j N_j\Icol{i_j} = 0$ & $\Pcol{p} = 0$ at every instant\\
-\bottomrule
-\end{tabular}
-\end{center}
 
 \begin{itemize}
   \item A \textbf{dependent source} (diamond) takes its value from a voltage or current in
