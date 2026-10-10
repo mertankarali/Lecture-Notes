@@ -313,6 +313,7 @@
   \begin{columns}[c,onlytextwidth]
     \begin{column}{0.38\textwidth}
       \small
+      $R_{\mathrm{in}}$: input resistance. \ $R_{\mathrm{out}}$: output resistance.\\[5pt]
       The simplest model of anything that \alert{amplifies}. Many components and
       integrated circuits are modelled as dependent sources --- and some are
       \alert{designed} to be one.
@@ -334,7 +335,7 @@
 \end{frame}
 
 %--------------------------------------------------------------
-\begin{frame}{Example: what the diamond says}
+\begin{frame}{Example: the controlling variable of a CCVS}
   \vfill
   \begin{center}
   \begin{tikzpicture}[scale=1.0]
@@ -366,13 +367,13 @@
 \end{frame}
 
 %--------------------------------------------------------------
-\begin{frame}{What is new --- and what is not}
+\begin{frame}{Terminal equations with a dependent source}
   \vfill
   \begin{center}
   \begin{tikzpicture}[scale=1.0]
     \node[draw=metugray, fill=metulight, rounded corners=4pt, minimum width=5.4cm,
           minimum height=2.0cm, align=center, font=\small] (a) at (0,0)
-         {\textbf{Lecture 2}\\[4pt] every terminal equation\\ describes \emph{one} element};
+         {\textbf{So far}\\[4pt] every terminal equation\\ describes \emph{one} element};
     \node[draw=metured, fill=metured!5, rounded corners=4pt, minimum width=5.4cm,
           minimum height=2.0cm, align=center, font=\small] (b) at (7.2,0)
          {\textbf{A dependent source}\\[4pt] its terminal equation names\\ a variable of
@@ -386,7 +387,7 @@
   \end{center}
   \vfill
   \begin{block}{Two meanings of ``controlled''}
-    Lecture 3: a \emph{voltage-controlled resistor} has $\Icol{i} = f(\Vcol{v})$ of its
+    Earlier: a \emph{voltage-controlled resistor} has $\Icol{i} = f(\Vcol{v})$ of its
     \alert{own} voltage. A voltage-controlled \emph{source} takes its value from
     \alert{another} branch.
   \end{block}
@@ -394,7 +395,7 @@
 \end{frame}
 
 %--------------------------------------------------------------
-\begin{frame}{No new method}
+\begin{frame}{Solving circuits with dependent sources}
   \vfill
   \begin{block}{Recipe}
     \begin{enumerate}\itemsep4pt
@@ -414,34 +415,40 @@
 \end{frame}
 
 %--------------------------------------------------------------
-\begin{frame}{Example: an amplifier}
+\begin{frame}{Example: an amplifier --- find $\Vcol{v_L}$}
   \begin{center}
-  \begin{tikzpicture}[scale=0.84, transform shape]
+  \begin{tikzpicture}[scale=0.8, transform shape]
+    \draw[ampbox] (-1.75,-0.4) rectangle (1.75,3.0);
+    \node[font=\footnotesize\bfseries, text=metured, anchor=north west] at (-1.7,2.97) {microphone};
     \draw[ampbox] (1.95,-0.4) rectangle (7.3,3.0);
     \node[font=\footnotesize\bfseries, text=metured, anchor=north west] at (2.0,2.97) {amplifier};
+    \node[font=\footnotesize\bfseries, text=metured] at (8.95,3.25) {load};
     \draw (0,0) to[american voltage source, invert] (0,2.2);
-    \node[font=\small, left] at (-0.45,1.1) {$50\uni{mV}$};
+    \node[font=\small, left] at (-0.45,1.1) {$v_s$};
     \draw (0,2.2) to[R] (2.2,2.2) -- (3.0,2.2);
-    \node[font=\small] at (1.1,2.6) {$1\kohm$};
+    \node[font=\small] at (1.1,2.6) {$R_s$};
     \draw[iar] (0.55,1.85) -- (1.25,1.85); \node[font=\small, text=ccur] at (0.9,1.55) {$i_{\mathrm{in}}$};
     \draw (3.0,0) to[R] (3.0,2.2);
-    \node[font=\small, anchor=west] at (3.2,0.45) {$4\kohm$};
+    \node[font=\small, anchor=west] at (3.2,0.45) {$R_{\mathrm{in}}$};
     \node[pol] at (2.6,1.75) {$+$}; \node[pol] at (2.6,1.1) {$v_{\mathrm{in}}$};
     \node[pol] at (2.6,0.45) {$-$};
     \draw (5.2,0) to[american controlled voltage source, invert] (5.2,2.2);
-    \node[font=\small, left] at (4.78,1.1) {$100\,\Vcol{v_{\mathrm{in}}}$};
+    \node[font=\small, left] at (4.78,1.1) {$\mu\,\Vcol{v_{\mathrm{in}}}$};
     \draw (5.2,2.2) to[R] (7.0,2.2) -- (8.2,2.2);
-    \node[font=\small] at (6.1,2.6) {$100\ohm$};
+    \node[font=\small] at (6.1,2.6) {$R_{\mathrm{out}}$};
     \draw[iar] (7.45,2.5) -- (8.0,2.5); \node[font=\small, text=ccur] at (7.72,2.8) {$i_o$};
     \draw (8.2,2.2) to[R] (8.2,0);
-    \node[font=\small, anchor=west] at (8.45,1.1) {$400\ohm$};
+    \node[font=\small, anchor=west] at (8.45,1.1) {$R_L$};
     \node[pol] at (7.8,1.6) {$+$}; \node[pol] at (7.8,1.05) {$v_L$}; \node[pol] at (7.8,0.45) {$-$};
     \draw (8.2,0) -- (0,0);
   \end{tikzpicture}
   \end{center}
   \vspace{-2pt}
+  \vspace{-6pt}
   \begin{center}\small
-    A microphone drives an amplifier with $\mu = 100$. \ Find $\Vcol{v_L}$.
+    $v_s = 50\uni{mV}$, \ $R_s = 1\kohm$ \quad\textbar\quad
+    $R_{\mathrm{in}} = 4\kohm$, \ $\mu = 100$, \ $R_{\mathrm{out}} = 100\ohm$
+    \quad\textbar\quad $R_L = 400\ohm$
   \end{center}
   \vspace{-4pt}
   \begin{columns}[t,onlytextwidth]
@@ -453,7 +460,7 @@
     \end{column}
     \begin{column}{0.48\textwidth}
       \onslide<3->
-      \textbf{Output side} --- the diamond is $4\V$:
+      \textbf{Output side} --- the source gives $4\V$:
       \[ \Icol{i_o} = \frac{4\V}{500\ohm} = 8\uni{mA} \]
       \[ \alert{\Vcol{v_L} = 3.2\V}, \qquad \frac{\Vcol{v_L}}{v_s} = 64 \]
     \end{column}
@@ -525,7 +532,7 @@
   \end{center}
   \vfill
   \begin{center}
-    KCL on the surface (Lecture 2): one branch crosses it, so its current is \alert{zero}.\\[6pt]
+    KCL on the closed surface: one branch crosses it, so its current is \alert{zero}.\\[6pt]
     The two sides interact \alert{only} through $\Vcol{v_{\mathrm{in}}}$.
   \end{center}
   \vfill
@@ -591,12 +598,12 @@
 \end{frame}
 
 %==============================================================
-\begin{frame}{Two coils, one core}
+\begin{frame}{The transformer}
   \vfill
   \begin{columns}[c,onlytextwidth]
-    \begin{column}{0.56\textwidth}
+    \begin{column}{0.55\textwidth}
       \begin{center}
-      \begin{tikzpicture}[scale=0.92, transform shape]
+      \begin{tikzpicture}[scale=0.9, transform shape]
         \fill[gray!30, even odd rule] (0,0) rectangle (4.2,3.0) (0.75,0.75) rectangle (3.45,2.25);
         \draw[gray!60] (0,0) rectangle (4.2,3.0); \draw[gray!60] (0.75,0.75) rectangle (3.45,2.25);
         \draw[cflux, thick, dashed, rounded corners=8pt] (0.375,0.375) rectangle (3.825,2.625);
@@ -619,17 +626,21 @@
       \end{tikzpicture}
       \end{center}
     \end{column}
-    \begin{column}{0.42\textwidth}
+    \begin{column}{0.43\textwidth}
       \small
       \begin{itemize}\itemsep5pt
-        \item \textbf{Lecture 1:} no changing magnetic field links the loops.
-        \item \textbf{Lecture 2:} if we \emph{want} such a link, draw it as an element.
-        \item \textbf{Lecture 5:} a coil's field passes through the coil itself.
-        \item \textbf{Today:} two coils on one iron core --- the field of each passes
-              through the other.
+        \item So far: no changing magnetic field links the loops. When we \emph{want} such
+              a link, we draw it as an element.
+        \item Two coils on one iron core: \alert{one flux} $\Fcol{\Phi}$ through every turn.
+        \item $N$ turns: $\Vcol{v} = N\,d\Fcol{\Phi}/dt$, \ so
+              $\Vcol{v_1}/N_1 = \Vcol{v_2}/N_2$.
       \end{itemize}
     \end{column}
   \end{columns}
+  \vfill
+  \begin{block}{A physical transformer works only with AC signals}
+    A constant current gives a constant flux, and no voltage appears on the other winding.
+  \end{block}
   \vfill
 \end{frame}
 
@@ -661,50 +672,11 @@
       \end{block}
       \vspace{4pt}
       \small
-      Equivalently $\Vcol{v_2} = \tfrac{N_2}{N_1}\Vcol{v_1}$, \
-      $\Icol{i_2} = -\tfrac{N_1}{N_2}\Icol{i_1}$.\\[6pt]
-      The dots act like reference marks. Move one dot and both equations
-      \alert{change sign}.
+      The second: an ideal core needs no current to carry its flux.\\[4pt]
+      Move one dot and both equations \alert{change sign}.\\[4pt]
+      No $d/dt$: in the model it is a \alert{resistive} element.
     \end{column}
   \end{columns}
-  \vfill
-\end{frame}
-
-%--------------------------------------------------------------
-\begin{frame}{Where the two equations come from}
-  \vfill
-  \begin{block}{Voltages: one flux through every turn}
-    Each turn sees $d\Fcol{\Phi}/dt$. $N$ turns in series: $\Vcol{v} = N\,d\Fcol{\Phi}/dt$.
-    \[ \frac{\Vcol{v_1}}{N_1} = \frac{\Vcol{v_2}}{N_2} = \frac{d\Fcol{\Phi}}{dt} \]
-  \end{block}
-  \vfill
-  \begin{block}{Currents: an ideal core needs no current}
-    The turn-weighted currents must cancel: \ $N_1\Icol{i_1} + N_2\Icol{i_2} = 0$.\\
-    A real core needs a small magnetising current; the ideal one needs none.
-  \end{block}
-  \vfill
-  \begin{center}\small
-    With $k$ windings on one core: \
-    $\dfrac{\Vcol{v_1}}{N_1} = \cdots = \dfrac{\Vcol{v_k}}{N_k}$ \ and \
-    $N_1\Icol{i_1} + \cdots + N_k\Icol{i_k} = 0$.
-  \end{center}
-  \vfill
-\end{frame}
-
-%--------------------------------------------------------------
-\begin{frame}{No derivatives --- and no DC}
-  \vfill
-  \begin{center}
-    {\large The equations are \alert{algebraic}: no $d/dt$, no memory.}\\[6pt]
-    The ideal transformer is a \alert{resistive} element --- listed with resistors and\\
-    dependent sources in the course outline, even though it is built from coils.
-  \end{center}
-  \vfill
-  \begin{block}{A real transformer needs a changing flux}
-    Feed it DC and, once the current settles, the flux is constant: the secondary voltage
-    is zero and the primary is just a coil --- a \alert{short circuit} at DC (Lecture 5).
-    Use the ideal model for changing waveforms only.
-  \end{block}
   \vfill
 \end{frame}
 
@@ -712,41 +684,16 @@
 \begin{frame}{The ideal transformer absorbs no power}
   \vfill
   \begin{center}
-    Each winding obeys the PSC, so $\Vcol{v_j}\Icol{i_j}$ is what it absorbs.\\[8pt]
-    {\Large $\displaystyle \Pcol{p(t)} = \sum_{j=1}^{k} \Vcol{v_j}\Icol{i_j} = 0$
+    {\Large $\Pcol{p(t)} = \Vcol{v_1}\Icol{i_1} + \Vcol{v_2}\Icol{i_2} = 0$
      \quad \normalsize at every instant}
   \end{center}
   \vfill
   \begin{center}
-    \onslide<2->{Call the common ratio $\lambda(t) = \Vcol{v_j}/N_j$, so
-    $\Vcol{v_j} = N_j\lambda$:}\\[6pt]
-    \onslide<3->{\[ \sum_j \Vcol{v_j}\Icol{i_j} = \sum_j N_j\lambda\,\Icol{i_j}
-       = \lambda \underbrace{\sum_j N_j\Icol{i_j}}_{=\,0} = 0 \]}
-    \onslide<4->{The first equation gave $\lambda$; the second made the sum vanish.
-    \alert{Both} are needed.}
-  \end{center}
-  \vfill
-\end{frame}
-
-%--------------------------------------------------------------
-\begin{frame}{Dissipate, store, or pass through}
-  \vfill
-  \begin{center}
-  \begin{tabular}{@{}l l l@{}}
-  \toprule
-  \textbf{Element} & \textbf{Absorbed power} & \textbf{The energy is}\\
-  \midrule
-  resistor            & $\Pcol{p} \ge 0$               & dissipated\\
-  capacitor, inductor & $\Pcol{p}$ can change sign     & stored, then returned\\
-  ideal transformer   & $\Pcol{p} = 0$ at every instant & passed straight through\\
-  \bottomrule
-  \end{tabular}
-  \end{center}
-  \vfill
-  \begin{center}
-    Two windings: \ $\Vcol{v_1}\Icol{i_1} = -\Vcol{v_2}\Icol{i_2}$.\\[6pt]
-    Voltage multiplied by $N_2/N_1$, current divided by $N_2/N_1$ --- the
-    \alert{product unchanged}.
+    \onslide<2->{\[ \Vcol{v_2}\Icol{i_2}
+       = \Bigl(\frac{N_2}{N_1}\Vcol{v_1}\Bigr)\Bigl(-\frac{N_1}{N_2}\Icol{i_1}\Bigr)
+       = -\Vcol{v_1}\Icol{i_1} \]}
+    \onslide<3->{Voltage multiplied by $N_2/N_1$, current divided by $N_2/N_1$.\\[4pt]
+    Nothing is stored, nothing is dissipated. The same holds for any number of windings.}
   \end{center}
   \vfill
 \end{frame}
@@ -754,7 +701,7 @@
 %--------------------------------------------------------------
 \begin{frame}{Example: a step-down transformer}
   \begin{center}
-  \begin{tikzpicture}[scale=0.95, transform shape]
+  \begin{tikzpicture}[scale=0.92, transform shape]
     \draw (-1.8,0) to[american voltage source, invert] (-1.8,1.8);
     \node[font=\small, left] at (-2.25,0.9) {$120\cos\omega t\V$};
     \draw (-1.8,1.8) -- (0,1.8); \draw (-1.8,0) -- (0,0);
@@ -786,59 +733,9 @@
       \onslide<3->
       $\Pcol{p_1} = \Vcol{v_1}\Icol{i_1} = 48\cos^2\omega t\W$\\[3pt]
       $\Pcol{p_2} = \Vcol{v_2}\Icol{i_2} = -48\cos^2\omega t\W$\\[3pt]
-      $\Pcol{p_1} + \Pcol{p_2} = 0$ --- \alert{at every instant}.
+      Seen from the source: $\Vcol{v_1}/\Icol{i_1} = 300\ohm = 10^2 \times 3\ohm$.
     \end{column}
   \end{columns}
-\end{frame}
-
-%--------------------------------------------------------------
-\begin{frame}{Seen from the source}
-  \vfill
-  \begin{center}
-    $\dfrac{\Vcol{v_1}}{\Icol{i_1}} = \dfrac{120}{0.4} = 300\ohm = 10^2 \times 3\ohm$\\[10pt]
-    The source cannot tell the transformer and its $3\ohm$ load from a single $300\ohm$
-    resistor.
-  \end{center}
-  \vfill
-  \begin{block}{A transformer rescales resistance}
-    \[ \frac{\Vcol{v_1}}{\Icol{i_1}} = \Bigl(\frac{N_1}{N_2}\Bigr)^{\!2} R_L \]
-    That is how an $8\ohm$ loudspeaker is made to look like a much larger resistance to
-    the amplifier driving it.
-  \end{block}
-  \vfill
-\end{frame}
-
-%--------------------------------------------------------------
-\begin{frame}{A transformer is two dependent sources}
-  \vfill
-  \begin{center}
-  \begin{tikzpicture}[scale=1.0]
-    \draw (0,0) to[american controlled current source] (0,1.8);
-    \node[font=\small, right] at (0.42,0.9) {$\dfrac{N_2}{N_1}\,\Icol{i_2}$};
-    \draw (0,1.8) -- (-1.0,1.8) node[ocirc]{}; \draw (0,0) -- (-1.0,0) node[ocirc]{};
-    \node[pol] at (-0.75,1.4) {$+$}; \node[pol] at (-0.75,0.4) {$-$};
-    \node[pol] at (-0.75,0.9) {$v_1$};
-    \draw[iar] (-0.85,2.12) -- (-0.25,2.12); \node[font=\small, text=ccur] at (-0.55,2.42) {$i_1$};
-    \draw (4.3,0) to[american controlled voltage source, invert] (4.3,1.8);
-    \node[font=\small, left] at (3.88,0.9) {$\dfrac{N_2}{N_1}\,\Vcol{v_1}$};
-    \draw (4.3,1.8) -- (5.3,1.8) node[ocirc]{}; \draw (4.3,0) -- (5.3,0) node[ocirc]{};
-    \node[pol] at (5.05,1.4) {$+$}; \node[pol] at (5.05,0.4) {$-$};
-    \node[pol] at (5.05,0.9) {$v_2$};
-    \draw[iar] (5.15,2.12) -- (4.55,2.12); \node[font=\small, text=ccur] at (4.85,2.42) {$i_2$};
-    \node[ttl] at (0,-0.5) {CCCS, controlled by $\Icol{i_2}$};
-    \node[ttl] at (4.3,-0.5) {VCVS, controlled by $\Vcol{v_1}$};
-  \end{tikzpicture}
-  \end{center}
-  \vfill
-  \begin{center}
-    \onslide<2->{CCCS: $\Icol{i_1} = -\tfrac{N_2}{N_1}\Icol{i_2}$ \ is \
-    $N_1\Icol{i_1} + N_2\Icol{i_2} = 0$. \qquad
-    VCVS: $\Vcol{v_2} = \tfrac{N_2}{N_1}\Vcol{v_1}$.}\\[8pt]
-    \onslide<3->{Powers: $-\tfrac{N_2}{N_1}\Vcol{v_1}\Icol{i_2}$ and
-    $+\tfrac{N_2}{N_1}\Vcol{v_1}\Icol{i_2}$ --- one delivers exactly what the other
-    absorbs.}
-  \end{center}
-  \vfill
 \end{frame}
 
 %--------------------------------------------------------------
@@ -853,10 +750,8 @@
     \item It can \textbf{deliver power} --- that is amplification --- but it
           \textbf{cannot start anything}, and it is never switched off.
     \item \textbf{Ideal transformer}: $\Vcol{v_1}/N_1 = \Vcol{v_2}/N_2$, \
-          $N_1\Icol{i_1} + N_2\Icol{i_2} = 0$, signs set by the \alert{dots}. Resistive, but a
-          real one needs changing waveforms.
-    \item It \textbf{absorbs no power at any instant} and rescales a load by
-          $(N_1/N_2)^2$.
+          $N_1\Icol{i_1} + N_2\Icol{i_2} = 0$, signs set by the \alert{dots}. It absorbs
+          \textbf{no power at any instant}. A physical one works only with AC signals.
   \end{itemize}
   \vfill
 \end{frame}
