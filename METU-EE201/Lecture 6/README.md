@@ -45,9 +45,9 @@ Following p. 11 of Prof. Emre Tuna's notes and the second half of his recorded L
    Example 6.3, a CCCS whose controlling current is unknown, with the power check.
    What a dependent source cannot do: start anything, or be switched off
 6. **The ideal transformer** (51:31) — two coils on one core; v₁/N₁ = v₂/N₂ and
-   N₁i₁ + N₂i₂ = 0 with the dot convention; k windings in one line. A physical transformer
-   works only with AC signals; the ideal model is resistive (no d/dt)
-7. **Its power** (54:47) — Σ vⱼiⱼ = 0 at every instant, with a two-line proof
+   N₁i₁ + N₂i₂ = 0 with the dot convention. A physical transformer works only with AC
+   signals; the ideal model is resistive (no d/dt)
+7. **Its power** (54:47) — v₁i₁ + v₂i₂ = 0 at every instant, with a one-line proof
    (Prof. Tuna's exercise); the ideal gear pair as a mechanical analogy (ω ↔ v, τ ↔ i,
    power in = power out); Example 6.4, a 10:1 step-down transformer, and the 300 Ω the
    source sees

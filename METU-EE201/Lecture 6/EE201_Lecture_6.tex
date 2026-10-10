@@ -585,9 +585,14 @@ dependent source stays: its value is not an input, it is part of how the circuit
 %==============================================================
 \section{The ideal transformer}
 
-So far we have assumed that no changing magnetic field links the loops of a circuit. When
-we \emph{want} such a link, we draw it as an element of its own: the transformer. Two coils
-are wound on one iron core, so the magnetic field of each passes through the other.
+So far we have assumed that no changing magnetic field links the loops of a circuit.
+Sometimes we need such a link on purpose. We then model it as an element of its own: the
+transformer.
+
+A transformer is two coils wound on one iron core. A current in coil~1 sets up a magnetic
+field, and the core guides that field through coil~2. When the current changes, the field
+changes, and the changing field induces a voltage in coil~2. No wire connects the two coils:
+the magnetic field links them.
 
 \begin{center}
 \begin{tikzpicture}[scale=0.95]
@@ -614,18 +619,13 @@ are wound on one iron core, so the magnetic field of each passes through the oth
   \draw[iar] (-1.05,2.38) -- (-0.4,2.38); \node[font=\small, text=ccur] at (-0.72,2.68) {$i_1$};
   \draw[iar] (5.25,2.5) -- (4.6,2.5); \node[font=\small, text=ccur] at (4.92,2.8) {$i_2$};
   \node[font=\small, anchor=west, text width=5.6cm] at (6.6,1.5)
-    {One flux $\Fcol{\Phi}$ passes through every turn of both windings. A winding of $N$
-     turns has $\Vcol{v} = N\,d\Fcol{\Phi}/dt$.};
+    {The iron core guides the magnetic field of coil~1 (flux $\Fcol{\Phi}$) through coil~2.};
 \end{tikzpicture}
 \end{center}
 
-Divide by $N$: $\Vcol{v_1}/N_1 = \Vcol{v_2}/N_2 = d\Fcol{\Phi}/dt$. An \emph{ideal} core needs
-no current to carry its flux, so the turn-weighted currents cancel:
-$N_1\Icol{i_1} + N_2\Icol{i_2} = 0$.
-
-A physical transformer therefore works only with \textbf{changing (AC) signals}. A constant
-current gives a constant flux, and no voltage appears on the other winding. For DC, the
-same job is done by a DC/DC converter (Section~3).
+A voltage is induced only while the field changes, so a physical transformer works only
+with \textbf{changing (AC) signals}. A constant current gives a constant field, and no
+voltage appears on the other coil.
 
 \begin{definitionbox}{Ideal transformer}
 With $\Vcol{v_1}$, $\Vcol{v_2}$ positive at the dotted terminals and $\Icol{i_1}$,
@@ -636,8 +636,7 @@ $\Icol{i_2}$ entering the dotted terminals,
   \boxed{\;N_1\Icol{i_1} + N_2\Icol{i_2} = 0\;}
 \]
 Equivalently, $\Vcol{v_2} = \dfrac{N_2}{N_1}\,\Vcol{v_1}$ and
-$\Icol{i_2} = -\dfrac{N_1}{N_2}\,\Icol{i_1}$. With $k$ windings on one core, all the ratios
-$\Vcol{v_j}/N_j$ are equal and $\sum_j N_j\Icol{i_j} = 0$.
+$\Icol{i_2} = -\dfrac{N_1}{N_2}\,\Icol{i_1}$.
 \end{definitionbox}
 
 \begin{center}
@@ -663,20 +662,19 @@ $\Vcol{v_j}/N_j$ are equal and $\sum_j N_j\Icol{i_j} = 0$.
 %==============================================================
 \section{The power of an ideal transformer}
 
-Each winding has its current entering its $+$ terminal, so $\Vcol{v_j}\Icol{i_j}$ is the
-power that winding absorbs.
+Each winding has its current entering its $+$ terminal, so $\Vcol{v_1}\Icol{i_1}$ and
+$\Vcol{v_2}\Icol{i_2}$ are the powers the two windings absorb.
 
 \begin{definitionbox}{The ideal transformer absorbs no power}
-At every instant, \ $\Pcol{p(t)} = \sum_j \Vcol{v_j}\Icol{i_j} = 0$.
+At every instant, \ $\Pcol{p(t)} = \Vcol{v_1}\Icol{i_1} + \Vcol{v_2}\Icol{i_2} = 0$.
 \end{definitionbox}
 
-\textbf{Proof.} Call the common ratio $\lambda = \Vcol{v_j}/N_j$. Then
-$\sum_j \Vcol{v_j}\Icol{i_j} = \lambda\sum_j N_j\Icol{i_j} = \lambda \cdot 0 = 0$.
-\hfill$\blacksquare$
+\textbf{Proof.} Substitute the two equations:
+$\Vcol{v_2}\Icol{i_2} = \bigl(\tfrac{N_2}{N_1}\Vcol{v_1}\bigr)\bigl(-\tfrac{N_1}{N_2}\Icol{i_1}\bigr)
+= -\Vcol{v_1}\Icol{i_1}$. \hfill$\blacksquare$
 
-Nothing is stored and nothing is dissipated. With two windings,
-$\Vcol{v_1}\Icol{i_1} = -\Vcol{v_2}\Icol{i_2}$: the voltage is multiplied by $N_2/N_1$ and the
-current divided by the same factor.
+Nothing is stored and nothing is dissipated: the voltage is multiplied by $N_2/N_1$ and the
+current divided by the same factor. The same holds for any number of windings on one core.
 
 \subsection{A mechanical analogy: the gear pair}
 

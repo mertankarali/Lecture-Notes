@@ -664,18 +664,18 @@
     \begin{column}{0.43\textwidth}
       \small
       \begin{itemize}\itemsep5pt
-        \item So far: no changing magnetic field links the loops. When we \emph{want} such
-              a link, we draw it as an element.
-        \item Two coils on one iron core: \alert{one flux} $\Fcol{\Phi}$ through every turn.
-        \item $N$ turns: $\Vcol{v} = N\,d\Fcol{\Phi}/dt$, \ so
-              $\Vcol{v_1}/N_1 = \Vcol{v_2}/N_2$.
+        \item Sometimes we \alert{need} a magnetic link between two circuits. We model it
+              as an element: the transformer.
+        \item A current in coil 1 sets up a magnetic field; the iron core guides it
+              through coil 2.
+        \item When the current changes, the field changes and \alert{induces a voltage}
+              in coil 2. No wire connects the coils.
       \end{itemize}
     \end{column}
   \end{columns}
   \vfill
   \begin{block}{A physical transformer works only with AC signals}
-    A constant current gives a constant flux, and no voltage appears on the other winding.
-    For DC, a DC/DC converter does this job.
+    A constant current gives a constant field, and no voltage appears on the other coil.
   \end{block}
   \vfill
 \end{frame}
@@ -708,7 +708,6 @@
       \end{block}
       \vspace{4pt}
       \small
-      The second: an ideal core needs no current to carry its flux.\\[4pt]
       Move one dot and both equations \alert{change sign}.\\[4pt]
       No $d/dt$: in the model it is a \alert{resistive} element.
     \end{column}
