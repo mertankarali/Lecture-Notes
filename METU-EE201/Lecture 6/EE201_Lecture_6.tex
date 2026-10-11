@@ -325,7 +325,7 @@ circuit in this course, but the definition allows more.
         independent source in series with a linear dependent one. Such sources may appear
         in problems.
   \item \textbf{Nonlinear}, for example $\Icol{i} = f(\Vcol{v_x})$: a real transistor
-        over its full range behaves like this. We do not use nonlinear dependent sources in
+        over its full range, or a voltage regulator (Section~3), behaves like this. We do not use nonlinear dependent sources in
         EE201.
 \end{itemize}
 
@@ -384,9 +384,28 @@ electronics courses.
 \textbf{DC/DC converters.} A DC/DC converter turns one DC voltage into another --- the
 $5\V$ of a USB port into the $1\V$ a processor needs, a battery voltage into what a motor
 needs. It is one of the most fundamental electronic circuits, used in almost every field:
-phones, computers, cars, satellites, robots. To the circuit around it, a DC/DC converter is
-essentially a voltage-controlled voltage source, $\Vcol{v_{\mathrm{out}}} = k\,\Vcol{v_{\mathrm{in}}}$,
-with the ratio $k$ set by its design.
+phones, computers, cars, satellites, robots.
+
+\begin{minipage}[c]{0.58\linewidth}
+To the circuit around it, a DC/DC converter behaves like a voltage-controlled voltage
+source, $\Vcol{v_{\mathrm{out}}} = f(\Vcol{v_{\mathrm{in}}})$. But most DC/DC converters are
+\textbf{voltage regulators}, not amplifiers: they hold $\Vcol{v_{\mathrm{out}}}$ at a set
+value, say $3.3\V$, over a wide range of $\Vcol{v_{\mathrm{in}}}$. Then $f$ is far from a
+straight line, and the converter is a \emph{nonlinear} dependent source.
+\end{minipage}\hfill
+\begin{minipage}[c]{0.38\linewidth}
+\centering
+\begin{tikzpicture}[scale=0.95]
+  \draw[-{Stealth[length=2mm]}, gray!70] (-0.1,0) -- (3.3,0) node[right, font=\scriptsize, text=cvolt] {$v_{\mathrm{in}}$};
+  \draw[-{Stealth[length=2mm]}, gray!70] (0,-0.1) -- (0,2.2) node[above, font=\scriptsize, text=cvolt] {$v_{\mathrm{out}}$};
+  \draw[metugray, dashed] (0,0) -- (2.1,2.1);
+  \node[font=\scriptsize, text=metugray, anchor=west] at (1.75,2.05) {linear, $k\,v_{\mathrm{in}}$};
+  \draw[metured, very thick] (0,0) -- (1.2,1.2) -- (3.1,1.2);
+  \draw[gray!60, dashed] (0,1.2) -- (1.2,1.2);
+  \node[font=\scriptsize, left] at (0,1.2) {$3.3\V$};
+  \node[font=\scriptsize, text=metured, anchor=north] at (2.2,1.15) {regulator};
+\end{tikzpicture}
+\end{minipage}
 
 %==============================================================
 \section{Reading a diagram with a dependent source}
