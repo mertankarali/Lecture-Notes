@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #--------------------------------------------------------------
-#  EE201 -- Lecture 7: Circuit Graphs and the Incidence Matrix -- build script
+#  EE201 -- Lecture 7: Circuit Graphs, the Incidence Matrix and Tellegen's Theorem -- build script
 #
 #  Usage:   ./build.sh              compile both, clean, open PDFs
 #           ./build.sh --no-open    compile and clean, do not open

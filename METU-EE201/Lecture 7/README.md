@@ -1,11 +1,11 @@
-# EE201 — Lecture 7: Circuit Graphs and the Incidence Matrix
+# EE201 — Lecture 7: Circuit Graphs, the Incidence Matrix and Tellegen's Theorem
 
 Lecture notes and slides for the seventh lecture of EE201 (Section 2, Fall 2026/27).
 
 | File | What it is |
 |---|---|
-| `EE201_Lecture_7.tex` | Handout / lecture notes (article, 7 pages). Self-contained: definitions, five worked examples, why the rows of A are independent for a connected graph. |
-| `EE201_Lecture_7_slides.tex` | Beamer deck (20 slides, 49 PDF pages) for the lecture itself — visual, low text. |
+| `EE201_Lecture_7.tex` | Handout / lecture notes (article, 11 pages). Self-contained: definitions, eight worked examples plus one in the appendix, KCL and KVL in matrix form, Tellegen's theorem with proof. |
+| `EE201_Lecture_7_slides.tex` | Beamer deck (25 slides, 71 PDF pages) for the lecture itself — visual, low text. |
 | `build.sh` | Compiles both, removes auxiliary files, opens the PDFs. |
 
 ## Compiling
@@ -24,8 +24,8 @@ extra matrix packages.
 
 ## Contents
 
-Following pp. 12–14 of Prof. Emre Tuna's notes and his recorded Lecture 6 on
-[METU OCW](https://ocw.metu.edu.tr/course/view.php?id=351).
+Following pp. 12–15 of Prof. Emre Tuna's notes, his recorded Lecture 6 and the first 28 minutes
+of his Lecture 7 on [METU OCW](https://ocw.metu.edu.tr/course/view.php?id=351).
 
 1. **Interconnection equations** (2:18) — the 2b equations split into b element equations
    (what the elements are) and b interconnection equations, KCL and KVL (how they are wired).
@@ -44,26 +44,43 @@ Following pp. 12–14 of Prof. Emre Tuna's notes and his recorded Lecture 6 on
 7. **The reduced incidence matrix** (40:45–43:45) — rows of A_a always sum to zero; delete
    the reference node's row to get A, (n − 1) × b; Example 7.4; deleting the row loses no
    equation and no part of the graph
-8. **Connected graphs** (46:52–48:00) — definition and examples; for a connected graph the
-   rows of A are independent, with a short argument; a circuit in two separate pieces
-   (e.g. coupled only through a transformer) can be joined by one wire that carries no current
-9. **KCL of a circuit graph** (50:15) — A i = 0: n − 1 independent KCL equations.
-   Example 7.5 writes A_a, A and the equations for the circuit of Example 7.2
+8. **Connected graphs** (46:52–48:00) — definition, with the graph of N (connected) next to
+   a transformer circuit whose graph is in two pieces; other such circuits (a dependent
+   source that senses in one part and acts in another: isolation amplifier, optocoupler).
+   Connected ⇒ the n − 1 rows of A are independent. Separate pieces: treat each piece as
+   a graph of its own (own reference node, own reduced matrix), then stack them —
+   Example 7.5; p pieces give n − p independent rows
+9. **KCL in matrix form** (50:15) — A i = 0: n − 1 independent KCL equations.
+   Example 7.6 writes A_a, A and the equations for the circuit of Example 7.2
+10. **Branch and node voltages** (L7 0:35–6:57) — v_k with + at the tail; e_k measured from
+    the reference node; v_pq notation
+11. **KVL on a circuit graph** (L7 8:30) — v_k = e_tail − e_head, so v = Aᵀe with the same A;
+    remarks (17:55): e fixes every branch voltage, and KVL puts no constraint on e (a loop
+    check); node voltages as unknowns, the idea behind node analysis. Example 7.7: the
+    3-terminal circuit
+12. **Tellegen's theorem** (L7 19:39, 24:31) — in any circuit Σ v_k i_k = 0 at every instant:
+    conservation of power. Proof (notes only): write each v_k as tail minus head and
+    collect the terms of each node voltage — every bracket is a KCL equation; then the
+    same two steps in matrix form. Example 7.8: a 10 V source with 2, 4 and 12 Ω resistors solved
+    with node voltages (KCL at ② gives e₂ = 6 V, then v = Aᵀe and Ohm's law); the table shows
+    the source delivering 20 W and the resistors absorbing 20 W.
+    **Appendix** (notes only): the general form for two circuits with the same graph,
+    with a numerical check on N (Example A.1)
 
 ## Conventions
 
-Same colour code as before (current blue, voltage orange); nodes are dark red, with circled
+Same colour code as before (current blue, voltage and node voltage orange, power green); nodes are dark red, with circled
 node numbers in the text, figures and matrix row labels. Branch arrows in a circuit drawing
 are blue (they are current references); in a graph they are plain arrows.
 
 The bridge example, the 3-terminal example, the KCL equations (one node at a time, with
 the node highlighted), the matrix (a row, then a column), linear dependence, the reduced
-matrix and the last example build up **step by step** with beamer overlays. Each step is an
-ordinary extra PDF page; that is why the deck has 20 slides but 49 pages.
+matrix, the separate-pieces example, the KCL example, KVL on the graph, and the Tellegen example build up **step by step** with beamer overlays. Each step is an
+ordinary extra PDF page; that is why the deck has 25 slides but 71 pages.
 
 ## References
 
 - Alexander & Sadiku, *Fundamentals of Electric Circuits*, Section 2.4
-- Chua, Desoer & Kuh, *Linear and Nonlinear Circuits* — circuit graphs and the incidence matrix
+- Chua, Desoer & Kuh, *Linear and Nonlinear Circuits* — circuit graphs, the incidence matrix, Tellegen's theorem
 - Lecture notes and videos of Prof. Emre Tuna —
   [users.metu.edu.tr/etuna/ee201](https://users.metu.edu.tr/etuna/ee201/)
