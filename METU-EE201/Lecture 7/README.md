@@ -4,8 +4,8 @@ Lecture notes and slides for the seventh lecture of EE201 (Section 2, Fall 2026/
 
 | File | What it is |
 |---|---|
-| `EE201_Lecture_7.tex` | Handout / lecture notes (article, 11 pages). Self-contained: definitions, eight worked examples plus one in the appendix, KCL and KVL in matrix form, Tellegen's theorem with proof. |
-| `EE201_Lecture_7_slides.tex` | Beamer deck (25 slides, 71 PDF pages) for the lecture itself — visual, low text. |
+| `EE201_Lecture_7.tex` | Handout / lecture notes (article, 12 pages). Self-contained: definitions, eight worked examples plus one in the appendix, KCL and KVL in matrix form, Tellegen's theorem with proof. |
+| `EE201_Lecture_7_slides.tex` | Beamer deck (27 slides, 83 PDF pages) for the lecture itself — visual, low text. |
 | `build.sh` | Compiles both, removes auxiliary files, opens the PDFs. |
 
 ## Compiling
@@ -54,10 +54,10 @@ of his Lecture 7 on [METU OCW](https://ocw.metu.edu.tr/course/view.php?id=351).
    Example 7.6 writes A_a, A and the equations for the circuit of Example 7.2
 10. **Branch and node voltages** (L7 0:35–6:57) — v_k with + at the tail; e_k measured from
     the reference node; v_pq notation
-11. **KVL on a circuit graph** (L7 8:30) — v_k = e_tail − e_head, so v = Aᵀe with the same A;
+11. **KVL on a circuit graph** (L7 8:30) — KVL around the loop formed by a branch and two node voltages gives v_k = e_tail − e_head, so v = Aᵀe with the same A;
     remarks (17:55): e fixes every branch voltage, and KVL puts no constraint on e (a loop
-    check); node voltages as unknowns, the idea behind node analysis. Example 7.7: the
-    3-terminal circuit
+    check); node voltages as unknowns, the idea behind node analysis. Example 7.7: a
+    ladder circuit (source, R, R, L, C), its graph and v = Aᵀe
 12. **Tellegen's theorem** (L7 19:39, 24:31) — in any circuit Σ v_k i_k = 0 at every instant:
     conservation of power. Proof (notes only): write each v_k as tail minus head and
     collect the terms of each node voltage — every bracket is a KCL equation; then the
@@ -66,6 +66,9 @@ of his Lecture 7 on [METU OCW](https://ocw.metu.edu.tr/course/view.php?id=351).
     the source delivering 20 W and the resistors absorbing 20 W.
     **Appendix** (notes only): the general form for two circuits with the same graph,
     with a numerical check on N (Example A.1)
+13. **Looking ahead: why node voltages?** — a flow from the n − 1 node voltages to every
+    branch voltage (KVL holds automatically), every branch current (element equations) and back to
+    n − 1 KCL equations: the idea of node analysis, without the full method yet
 
 ## Conventions
 
@@ -76,7 +79,7 @@ are blue (they are current references); in a graph they are plain arrows.
 The bridge example, the 3-terminal example, the KCL equations (one node at a time, with
 the node highlighted), the matrix (a row, then a column), linear dependence, the reduced
 matrix, the separate-pieces example, the KCL example, KVL on the graph, and the Tellegen example build up **step by step** with beamer overlays. Each step is an
-ordinary extra PDF page; that is why the deck has 25 slides but 71 pages.
+ordinary extra PDF page; that is why the deck has 27 slides but 83 pages.
 
 ## References
 

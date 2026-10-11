@@ -190,6 +190,94 @@
     \node[font=\scriptsize, text=metugray] at (0,0.3) {tail};
     \node[font=\scriptsize, text=metugray] at (2.2,0.3) {head};
   \end{tikzpicture}}
+%  A_a of N with column 3 boxed and the sum of its rows; #1, #2: extra options for the
+%  box and the sum row (overlay styles on slides, empty in the notes)
+\newcommand{\Aasum}[2]{%
+  \begin{tikzpicture}[baseline={([yshift=-0.6ex]S.center)}]
+    \matrix (S) [matrix of math nodes, ampersand replacement=\&,
+                 left delimiter={[}, right delimiter={]}, inner sep=1pt,
+                 column sep=0.45em,
+                 nodes={text width=1.35em, align=right, minimum height=1.25em,
+                        inner sep=1pt}] {
+       1 \&  1 \&  0 \&  0 \&  0 \& -1\\
+      -1 \&  0 \& -1 \&  1 \&  0 \&  0\\
+       0 \& -1 \&  1 \&  0 \&  1 \&  0\\
+       0 \&  0 \&  0 \& -1 \& -1 \&  1\\};
+    \foreach \j in {1,...,6}
+      \node[font=\scriptsize, text=metugray, anchor=south east, inner sep=1pt]
+        at ([yshift=2pt]S-1-\j.north east) {\j};
+    \foreach \i in {1,...,4}
+      \node[nlab, left=11pt] at (S.west |- S-\i-1) {\i};
+    \node[left=26pt] at (S.west) {$A_a =$};
+    \draw[cvolt, very thick, rounded corners=3pt, #1]
+      ([xshift=-1pt, yshift=1pt]S-1-3.north west) rectangle
+      ([xshift=2pt, yshift=-1pt]S-4-3.south east);
+    \begin{scope}[#2]
+      \draw[metugray, thick] ([yshift=-5pt]S.south west) -- ([yshift=-5pt]S.south east);
+      \foreach \j in {1,...,6}
+        \node[text width=1.35em, align=right, inner sep=1pt, text=metured]
+          at ([yshift=-0.75cm]S-4-\j) {$0$};
+      \node[font=\small, text=metured, left=6pt, anchor=east]
+        at ([yshift=-0.75cm]S.west |- S-4-1) {sum of rows:};
+    \end{scope}
+  \end{tikzpicture}}
+%  KVL example: a ladder circuit (source, R, R, L, C) and its graph, reference node 4
+\newcommand{\kvlcircuit}{%
+  \begin{tikzpicture}[scale=0.85]
+    \draw (0,0) to[american voltage source, invert] (0,2.2);
+    \node[font=\small, left] at (-0.45,1.1) {$v_s$};
+    \draw (0,2.2) to[R, l=$R_1$] (2.4,2.2);
+    \draw (2.4,2.2) to[L, l=$L$] (4.8,2.2);
+    \draw (2.4,2.2) to[R, l=$R_2$] (2.4,0);
+    \draw (4.8,2.2) to[C, l=$C$] (4.8,0);
+    \draw (0,0) -- (4.8,0);
+    \draw[iar] (0.55,0.7) -- (0.55,1.5);  \node[font=\small, text=ccur] at (0.85,1.1) {$i_1$};
+    \draw[iar] (0.8,1.75) -- (1.6,1.75);  \node[font=\small, text=ccur] at (1.2,1.45) {$i_2$};
+    \draw[iar] (1.95,1.5) -- (1.95,0.7);  \node[font=\small, text=ccur] at (1.65,1.1) {$i_3$};
+    \draw[iar] (3.2,1.75) -- (4.0,1.75);  \node[font=\small, text=ccur] at (3.6,1.45) {$i_4$};
+    \draw[iar] (4.35,1.5) -- (4.35,0.7);  \node[font=\small, text=ccur] at (4.05,1.1) {$i_5$};
+    \foreach \x/\y/\k/\pos in {0/2.2/1/above left, 2.4/2.2/2/above, 4.8/2.2/3/above right,
+                               2.4/0/4/below left}
+      {\fill[metured] (\x,\y) circle (2.2pt); \node[nlab, \pos=2pt] at (\x,\y) {\k};}
+    \draw (2.4,0) -- (2.4,-0.2) node[ground, scale=0.8]{};
+  \end{tikzpicture}}
+\newcommand{\kvlgraph}{%
+  \begin{tikzpicture}[scale=0.85]
+    \coordinate (m1) at (0,2.2); \coordinate (m2) at (2.4,2.2);
+    \coordinate (m3) at (4.8,2.2); \coordinate (m4) at (2.4,0);
+    \draw[gbr] (m4) -- node[blab, below left=-1pt] {1} (m1);
+    \draw[gbr] (m1) -- node[blab, above] {2} (m2);
+    \draw[gbr] (m2) -- node[blab, left] {3} (m4);
+    \draw[gbr] (m2) -- node[blab, above] {4} (m3);
+    \draw[gbr] (m3) -- node[blab, below right=-1pt] {5} (m4);
+    \foreach \k/\pos in {1/above left, 2/above, 3/above right, 4/below}
+      {\fill[metured] (m\k) circle (2.2pt); \node[nlab, \pos=2pt] at (m\k) {\k};}
+    \draw (m4) -- ++(0.6,0) -- ++(0,-0.12) node[ground, scale=0.8]{};
+    \node[font=\small, text=cvolt] at (0.15,2.75) {$\Vcol{e_1}$};
+    \node[font=\small, text=cvolt] at (2.95,2.75) {$\Vcol{e_2}$};
+    \node[font=\small, text=cvolt] at (5.05,2.75) {$\Vcol{e_3}$};
+  \end{tikzpicture}}
+%  KVL loop for branch 1: branch 1 (1->2) and the node voltages e1, e2 to the reference 4
+\newcommand{\kvltri}[1][1]{%
+  \begin{tikzpicture}[scale=#1, baseline={(0,0)}]
+    \coordinate (a) at (0,1.1); \coordinate (b) at (-1.1,0); \coordinate (g) at (0,-1.1);
+    \draw[gbr] (a) --
+      node[pos=0.2, auto=right, pol, inner sep=1pt] {$+$}
+      node[pos=0.5, auto=right, font=\small, text=cvolt, inner sep=2pt] {$v_1$}
+      node[pos=0.8, auto=right, pol, inner sep=1pt] {$-$} (b);
+    \draw[cvolt, thick, dashed] (b) --
+      node[pos=0.2, auto=right, pol, inner sep=1pt] {$+$}
+      node[pos=0.5, auto=right, font=\small, text=cvolt, inner sep=2pt] {$e_2$}
+      node[pos=0.8, auto=right, pol, inner sep=1pt] {$-$} (g);
+    \draw[cvolt, thick, dashed] (a) --
+      node[pos=0.2, auto=left, pol, inner sep=1pt] {$+$}
+      node[pos=0.5, auto=left, font=\small, text=cvolt, inner sep=2pt] {$e_1$}
+      node[pos=0.8, auto=left, pol, inner sep=1pt] {$-$} (g);
+    \draw[-{Stealth[length=1.6mm]}, metugray, thick]
+      (-0.33,0) ++(70:0.27) arc[start angle=70, end angle=340, radius=0.27];
+    \foreach \p/\k/\pos in {a/1/above, b/2/left, g/4/below}
+      {\fill[metured] (\p) circle (2.2pt); \node[nlab, \pos=3pt] at (\p) {\k};}
+  \end{tikzpicture}}
 \newcommand{\U}[2]{\uncover<#1->{#2}}
 \providecommand{\ohm}{\,\Omega}
 
@@ -505,12 +593,12 @@
 %--------------------------------------------------------------
 \begin{frame}{The incidence matrix}
   \vfill
-  \begin{block}{Incidence matrix $A_a$ \ ($n \times b$)}
+  \begin{block}{Incidence matrix $A_a$ \ ($n \times b$; \ $j$: node, $k$: branch)}
     \[
-      a_{ij} =
+      a_{jk} =
       \begin{cases}
-        +1 & \text{if branch } j \text{ leaves node } i,\\
-        -1 & \text{if branch } j \text{ enters node } i,\\
+        +1 & \text{if branch } k \text{ leaves node } j,\\
+        -1 & \text{if branch } k \text{ enters node } j,\\
         \phantom{+}0 & \text{otherwise.}
       \end{cases}
     \]
@@ -562,22 +650,24 @@
 \end{frame}
 
 %--------------------------------------------------------------
-\begin{frame}{The rows of $A_a$ are always dependent}
+\begin{frame}[t]{The rows of $A_a$ are always dependent}
+  \vspace{4pt}
+  \begin{columns}[c,onlytextwidth]
+    \begin{column}{0.55\textwidth}
+      \centering
+      \Aasum{visible on=<2->}{visible on=<3->}
+    \end{column}
+    \begin{column}{0.43\textwidth}
+      \onslide<2->{Each column: one $+1$, one $-1$.\\[10pt]}
+      \onslide<3->{$\Rightarrow$ the rows add up to $\mathbf{0}$.\\[10pt]}
+      \onslide<4->{\alert{One KCL equation is redundant.}}
+    \end{column}
+  \end{columns}
   \vfill
-  \begin{center}
-    Every column has one $+1$ and one $-1$, so
-    \[ \text{row } \nd1 + \text{row } \nd2 + \dots + \text{row } \nd{$n$} = [\,0\ 0\ \cdots\ 0\,] \]
-    --- dependence with every $\alpha = 1$. One KCL equation is always redundant.
-  \end{center}
-  \vfill
-  \onslide<2->
+  \onslide<5->
   \begin{block}{Reduced incidence matrix $A$ \ ($(n-1) \times b$)}
-    Choose a \alert{reference node} (\alert{ground}), arbitrarily. Delete its row from $A_a$.
+    Choose a \alert{reference node} (\alert{ground}). Delete its row from $A_a$.
   \end{block}
-  \vfill
-  \begin{center}\small
-    The reference node is also the common reference for node voltages.
-  \end{center}
   \vfill
 \end{frame}
 
@@ -618,7 +708,7 @@
         \qquad (3 \times 6)
       \]
       \onslide<3->
-      Rows independent: columns 6, 4, 5 each have a single nonzero entry, in rows
+      Rows independent: columns 6, 4, 5 each have a \textbf{single} \textbf{nonzero} entry, in rows
       \nd1, \nd2, \nd3.
     \end{column}
   \end{columns}
@@ -629,14 +719,21 @@
 \begin{frame}{Deleting the row loses nothing}
   \vfill
   \begin{block}{No equation is lost}
-    $A\Icol{\mathbf{i}} = \mathbf{0} \;\Rightarrow\; A_a\Icol{\mathbf{i}} = \mathbf{0}$:
-    the deleted row is minus the sum of the rows that were kept.
+    \centering
+    The rows add up to $\mathbf{0}$, so \
+    row \nd4 $= -\,($row \nd1 $+$ row \nd2 $+$ row \nd3$)$\\[4pt]
+    $\begin{bmatrix} 0 & 0 & 0 & -1 & -1 & 1 \end{bmatrix} = -\begin{bmatrix} 0 & 0 & 0 & 1 & 1 & -1 \end{bmatrix}$\\[6pt]
+    \onslide<2->{\small KCL at \nd4: \
+    $-\Icol{i_4} - \Icol{i_5} + \Icol{i_6}
+      = -\bigl[(\Icol{i_1} + \Icol{i_2} - \Icol{i_6}) + (-\Icol{i_1} - \Icol{i_3} + \Icol{i_4})
+        + (-\Icol{i_2} + \Icol{i_3} + \Icol{i_5})\bigr]$\\[4pt]}
+    \onslide<3->{\alert{KCL at \nd1, \nd2, \nd3 $\Rightarrow$ KCL at \nd4.}}
   \end{block}
   \vfill
-  \onslide<2->
+  \onslide<4->
   \begin{block}{No part of the graph is lost}
     Each column of $A_a$ sums to zero, so the deleted row can be rebuilt from $A$.\\
-    A column of $A$ with a single nonzero entry is a branch that touches the reference node.
+    A column of $A$ with a \textbf{single} \textbf{nonzero} entry is a branch that touches the reference node.
   \end{block}
   \vfill
 \end{frame}
@@ -849,14 +946,48 @@
         Reference: $\Vcol{e} = 0$. \hfill $n - 1 = 3$
       \end{block}
       \small
-      $\Vcol{v_{pq}}$: node $p$ ($+$) w.r.t.\ node $q$ ($-$).\\
-      $\Vcol{e_1} = \Vcol{v_{14}}$, \ $\Vcol{e_2} = \Vcol{v_{24}}$, \ $\Vcol{e_3} = \Vcol{v_{34}}$
+      Each $\Vcol{e_k}$: $+$ at node $k$, $-$ at the reference \nd4.
     \end{column}
   \end{columns}
 \end{frame}
 
 %--------------------------------------------------------------
-\begin{frame}{KVL on a circuit graph}
+\begin{frame}[t]{KVL on a circuit graph}
+  \vspace{2pt}
+  \begin{columns}[T,onlytextwidth]
+    \begin{column}{0.36\textwidth}
+      \centering
+      \begin{tikzpicture}[scale=0.85]
+        \bridgecoords
+        \draw[cvolt!45, line width=5pt, line cap=round] (n1) -- (n2);
+        \bridgegraph
+        \draw (n4) -- ++(0.75,0) -- ++(0,-0.12) node[ground, scale=0.9]{};
+        \node[font=\small, text=cvolt] at (0.75,2.05) {$\Vcol{e_1}$};
+        \node[font=\small, text=cvolt] at (-1.75,-0.55) {$\Vcol{e_2}$};
+        \node[font=\small, text=cvolt] at (1.75,-0.55) {$\Vcol{e_3}$};
+      \end{tikzpicture}
+    \end{column}
+    \begin{column}{0.62\textwidth}
+      Loop \nd1 $\to$ \nd2 $\to$ \nd4 $\to$ \nd1:\\[6pt]
+      \kvltri[1.05]\hspace{2.5em}%
+      $\begin{aligned}
+         &\Vcol{v_1} + \Vcol{e_2} - \Vcol{e_1} = 0\\[6pt]
+         \Rightarrow\ &\alert{\Vcol{v_1} = \Vcol{e_1} - \Vcol{e_2}}
+       \end{aligned}$
+    \end{column}
+  \end{columns}
+  \vfill
+  \onslide<2->
+  \begin{block}{Any branch $k$: tail $p$, head $q$}
+    \centering
+    $\Vcol{v_k} = \Vcol{e_p} - \Vcol{e_q}$ \quad --- \quad \alert{tail minus head}
+    \qquad ($\Vcol{e} = 0$ at the reference)
+  \end{block}
+  \vfill
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{KVL for all branches}
   \begin{columns}[c,onlytextwidth]
     \begin{column}{0.3\textwidth}
       \centering
@@ -869,26 +1000,20 @@
       \end{tikzpicture}
     \end{column}
     \begin{column}{0.68\textwidth}
-      \small
-      Branch 1, from \nd1 to \nd2 --- go through the reference \nd4:
-      \[ \Vcol{v_1} = \Vcol{v_{12}} = \Vcol{v_{14}} + \Vcol{v_{42}}
-         = \Vcol{v_{14}} - \Vcol{v_{24}} = \Vcol{e_1} - \Vcol{e_2} \]
-      \onslide<2->
-      Any branch from $p$ to $q$: \ $\Vcol{v_k} = \Vcol{e_p} - \Vcol{e_q}$ ---
-      \alert{tail minus head} (reference: $0$).
+      Tail minus head:
+      \[
+        \begin{aligned}
+          \Vcol{v_1} &= \Vcol{e_1} - \Vcol{e_2} & \Vcol{v_4} &= \Vcol{e_2}\\
+          \Vcol{v_2} &= \Vcol{e_1} - \Vcol{e_3} & \Vcol{v_5} &= \Vcol{e_3}\\
+          \Vcol{v_3} &= \Vcol{e_3} - \Vcol{e_2} & \Vcol{v_6} &= -\Vcol{e_1}
+        \end{aligned}
+      \]
     \end{column}
   \end{columns}
   \vfill
-  \onslide<3->
+  \onslide<2->
   \[
-    \left.
-    \begin{aligned}
-      \Vcol{v_1} &= \Vcol{e_1} - \Vcol{e_2} & \Vcol{v_4} &= \Vcol{e_2}\\
-      \Vcol{v_2} &= \Vcol{e_1} - \Vcol{e_3} & \Vcol{v_5} &= \Vcol{e_3}\\
-      \Vcol{v_3} &= \Vcol{e_3} - \Vcol{e_2} & \Vcol{v_6} &= -\Vcol{e_1}
-    \end{aligned}
-    \ \right\}
-    \;\Longrightarrow\;
+    \text{In matrix form:}\qquad
     \begin{bmatrix}
       \Vcol{v_1}\\ \Vcol{v_2}\\ \Vcol{v_3}\\ \Vcol{v_4}\\ \Vcol{v_5}\\ \Vcol{v_6}
     \end{bmatrix}
@@ -900,13 +1025,13 @@
        0 &  1 &  0\\
        0 &  0 &  1\\
       -1 &  0 &  0
-    \end{bmatrix}}_{\alert<4->{A^T}}
+    \end{bmatrix}}_{\alert<3->{A^T}}
     \begin{bmatrix} \Vcol{e_1}\\ \Vcol{e_2}\\ \Vcol{e_3} \end{bmatrix}
   \]
   \vfill
-  \onslide<4->
+  \onslide<3->
   \begin{center}\small
-    This matrix is $A^T$: its row 1, $[\,1\ \ {-1}\ \ 0\,]$, is column 1 of $A$ --- and so on.
+    Row $k$ of $A^T$ = column $k$ of $A$.
   \end{center}
 \end{frame}
 
@@ -934,50 +1059,51 @@
           satisfies KVL around every loop. Loop 1, 3, 2:\\[2pt]
           $\Vcol{v_1} - \Vcol{v_3} - \Vcol{v_2}
            = (\Vcol{e_1} - \Vcol{e_2}) - (\Vcol{e_3} - \Vcol{e_2}) - (\Vcol{e_1} - \Vcol{e_3}) = 0$
-    \item<4-> So node voltages are good unknowns: only $n-1$, free, KVL built in ---
+    \item<4-> So node voltages are good unknowns: only $n-1$, free, KVL automatic ---
           the idea behind \alert{node analysis}.
   \end{itemize}
   \vfill
 \end{frame}
 
 %--------------------------------------------------------------
-\begin{frame}{Example: KVL for the circuit with a 3-terminal element}
+\begin{frame}[t]{Example: branch voltages from node voltages}
+  \begin{columns}[c,onlytextwidth]
+    \begin{column}{0.48\textwidth}
+      \centering \kvlcircuit
+    \end{column}
+    \begin{column}{0.04\textwidth}
+      \onslide<2->{$\Rightarrow$}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \centering \onslide<2->{\kvlgraph}
+    \end{column}
+  \end{columns}
   \vfill
   \begin{columns}[c,onlytextwidth]
-    \begin{column}{0.36\textwidth}
-      \begin{center}
-      \begin{tikzpicture}[scale=1.0]
-        \coordinate (a) at (0,1.6); \coordinate (b) at (3,1.6); \coordinate (c) at (1.5,-1.0);
-        \draw[gbr] (a) -- (b);                \node[blab, above] at (1.5,1.6) {1};
-        \draw[gbr] (c) to[bend left=22] (b);  \node[blab] at (1.72,0.38) {4};
-        \draw[gbr] (a) to[bend right=30] (b); \node[blab] at (1.5,0.9) {3};
-        \draw[gbr] (b) to[bend left=22] (c);  \node[blab] at (2.75,0.15) {2};
-        \foreach \p/\k/\pos in {a/1/left, b/2/right, c/3/below}
-          {\fill[metured] (\p) circle (2.2pt); \node[nlab, \pos=3pt] at (\p) {\k};}
-        \draw (c) -- ++(0.6,0) -- ++(0,-0.15) node[ground, scale=0.9]{};
-        \node[font=\small, text=cvolt] at (0,2.05) {$\Vcol{e_1}$};
-        \node[font=\small, text=cvolt] at (3.0,2.05) {$\Vcol{e_2}$};
-      \end{tikzpicture}
-      \end{center}
+    \begin{column}{0.4\textwidth}
+      \centering\small
+      \onslide<3->{$A = \begin{bmatrix}
+     -1 &  1 & 0 &  0 & 0\\
+      0 & -1 & 1 &  1 & 0\\
+      0 &  0 & 0 & -1 & 1
+    \end{bmatrix}$\\[4pt] reference \nd4}
     \end{column}
-    \begin{column}{0.62\textwidth}
-      \small
-      $A = \begin{bmatrix} 1 & 0 & 1 & 0\\ -1 & 1 & -1 & -1 \end{bmatrix}$
-      \ (reference \nd3), so two node voltages.
-      \onslide<2->
-      \[
-        \begin{bmatrix} \Vcol{v_1}\\ \Vcol{v_2}\\ \Vcol{v_3}\\ \Vcol{v_4} \end{bmatrix}
-        =
-        \begin{bmatrix} 1 & -1\\ 0 & 1\\ 1 & -1\\ 0 & -1 \end{bmatrix}
-        \begin{bmatrix} \Vcol{e_1}\\ \Vcol{e_2} \end{bmatrix}
-        =
-        \begin{bmatrix}
-          \Vcol{e_1} - \Vcol{e_2}\\ \Vcol{e_2}\\ \Vcol{e_1} - \Vcol{e_2}\\ -\Vcol{e_2}
-        \end{bmatrix}
-      \]
-      \onslide<3->
-      Branches 1 and 3 join the same nodes: same voltage.\\
-      Branch 4 goes from the reference to \nd2: $\Vcol{v_4} = 0 - \Vcol{e_2}$.
+    \begin{column}{0.6\textwidth}
+      \centering\small
+      \onslide<4->{$\begin{bmatrix} \Vcol{v_1}\\ \Vcol{v_2}\\ \Vcol{v_3}\\ \Vcol{v_4}\\ \Vcol{v_5} \end{bmatrix}
+    =
+    \begin{bmatrix}
+      -1 &  0 &  0\\
+       1 & -1 &  0\\
+       0 &  1 &  0\\
+       0 &  1 & -1\\
+       0 &  0 &  1
+    \end{bmatrix}
+    \begin{bmatrix} \Vcol{e_1}\\ \Vcol{e_2}\\ \Vcol{e_3} \end{bmatrix}
+    =
+    \begin{bmatrix}
+      -\Vcol{e_1}\\ \Vcol{e_1} - \Vcol{e_2}\\ \Vcol{e_2}\\ \Vcol{e_2} - \Vcol{e_3}\\ \Vcol{e_3}
+    \end{bmatrix}$}
     \end{column}
   \end{columns}
   \vfill
@@ -1073,6 +1199,37 @@
 \end{frame}
 
 %--------------------------------------------------------------
+\begin{frame}{Looking ahead: why node voltages?}
+  \begin{center}
+    $2b$ unknowns (all $\Vcol{v_k}$, $\Icol{i_k}$), $2b$ equations: $b$ element, $n-1$ KCL,
+    $b-n+1$ KVL.
+  \end{center}
+  \vfill
+  \begin{center}
+\begin{tikzpicture}[scale=0.84, transform shape,
+    fb/.style={draw=metugray, fill=metulight, rounded corners=3pt, align=center,
+               minimum height=1.15cm, text width=1.95cm, font=\small},
+    fa/.style={-{Stealth[length=2.5mm]}, very thick, metugray},
+    fl/.style={font=\footnotesize, align=center, text=metured}]
+  \node[fb, draw=metured, very thick] (u) at (0,0) {$\Vcol{\mathbf{e}}$\\ $n-1$ unknowns};
+  \node[fb, visible on=<2->] (a) at (4.6,0) {all $b$ branch\\ voltages $\Vcol{\mathbf{v}}$};
+  \node[fb, visible on=<3->] (b) at (9.2,0) {all $b$ branch\\ currents $\Icol{\mathbf{i}}$};
+  \node[fb, draw=metured, very thick, visible on=<4->] (c) at (13.8,0) {$n-1$ equations\\ for $\Vcol{\mathbf{e}}$};
+  \draw[fa, visible on=<2->] (u) -- node[fl, above=2pt] {KVL holds\\ for any $\Vcol{\mathbf{e}}$:\\ $\Vcol{\mathbf{v}} = A^T\Vcol{\mathbf{e}}$} (a);
+  \draw[fa, visible on=<3->] (a) -- node[fl, above=2pt] {element\\ equations} (b);
+  \draw[fa, visible on=<4->] (b) -- node[fl, above=2pt] {KCL:\\ $A\Icol{\mathbf{i}} = \mathbf{0}$} (c);
+\end{tikzpicture}
+  \end{center}
+  \vfill
+  \onslide<5->
+  \begin{center}
+    $2b$ unknowns $\to$ \alert{$n-1 < b$}: $n$ nodes take $n-1$ branches to join;
+    each loop adds one.\\[4pt]
+    Solve for $\Vcol{\mathbf{e}}$; everything else follows. \alert{Node analysis} --- coming soon.
+  \end{center}
+\end{frame}
+
+%--------------------------------------------------------------
 \begin{frame}{Summary}
   \vfill
   \begin{itemize}\itemsep3pt\small
@@ -1089,6 +1246,8 @@
           constraint on the node voltages $\Vcol{\mathbf{e}}$.
     \item \textbf{Tellegen}: in any circuit $\Icol{\mathbf{i}}^T\Vcol{\mathbf{v}}
           = \sum \Vcol{v_k}\Icol{i_k} = 0$ --- \alert{conservation of power}.
+    \item \textbf{Why}: with $\Vcol{\mathbf{e}}$ as unknowns KVL holds automatically; $n-1$
+          unknowns are enough --- the idea of node analysis.
   \end{itemize}
   \vfill
 \end{frame}
