@@ -4,7 +4,7 @@ Lecture notes and slides for the seventh lecture of EE201 (Section 2, Fall 2026/
 
 | File | What it is |
 |---|---|
-| `EE201_Lecture_7.tex` | Handout / lecture notes (article, 12 pages). Self-contained: definitions, eight worked examples plus one in the appendix, KCL and KVL in matrix form, Tellegen's theorem with proof. |
+| `EE201_Lecture_7.tex` | Handout / lecture notes (article, 13 pages). Self-contained: definitions, eight worked examples plus one in the appendix, KCL and KVL in matrix form, Tellegen's theorem (general form and proof in the appendix). |
 | `EE201_Lecture_7_slides.tex` | Beamer deck (27 slides, 83 PDF pages) for the lecture itself — visual, low text. |
 | `build.sh` | Compiles both, removes auxiliary files, opens the PDFs. |
 
@@ -59,13 +59,14 @@ of his Lecture 7 on [METU OCW](https://ocw.metu.edu.tr/course/view.php?id=351).
     check); node voltages as unknowns, the idea behind node analysis. Example 7.7: a
     ladder circuit (source, R, R, L, C), its graph and v = Aᵀe
 12. **Tellegen's theorem** (L7 19:39, 24:31) — in any circuit Σ v_k i_k = 0 at every instant:
-    conservation of power. Proof (notes only): write each v_k as tail minus head and
-    collect the terms of each node voltage — every bracket is a KCL equation; then the
-    same two steps in matrix form. Example 7.8: a 10 V source with 2, 4 and 12 Ω resistors solved
+    conservation of power; the proof uses only KCL and KVL (it is in the appendix).
+    Example 7.8: a 10 V source with 2, 4 and 12 Ω resistors solved
     with node voltages (KCL at ② gives e₂ = 6 V, then v = Aᵀe and Ohm's law); the table shows
     the source delivering 20 W and the resistors absorbing 20 W.
-    **Appendix** (notes only): the general form for two circuits with the same graph,
-    with a numerical check on N (Example A.1)
+    **Appendix** (notes only): A.1 the general Tellegen's theorem (two circuits with the
+    same graph) with a numerical check on N (Example A.1); A.2 its proof — write each v_k as
+    tail minus head and collect the terms of each node voltage, every bracket is a KCL
+    equation; then the same two steps in matrix form
 13. **Looking ahead: why node voltages?** — a flow from the n − 1 node voltages to every
     branch voltage (KVL holds automatically), every branch current (element equations) and back to
     n − 1 KCL equations: the idea of node analysis, without the full method yet

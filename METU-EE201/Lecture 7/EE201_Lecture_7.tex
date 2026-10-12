@@ -387,9 +387,8 @@ taken. Lengths, angles and the shape of the drawing carry no information.
 
 The arrow on branch $k$ is the \textbf{reference direction} of its current $\Icol{i_k}$.
 As before we use associated reference directions, so the branch voltage $\Vcol{v_k}$ is
-measured with $+$ at the tail of the arrow and $-$ at its head. Choosing an arrow does not
-claim that the current really flows that way: if it flows the other way, $\Icol{i_k}$ comes
-out negative.
+measured with $+$ at the tail of the arrow and $-$ at its head. The arrow is only a
+reference: if the current flows the other way, $\Icol{i_k}$ is negative.
 
 \subsection{Example}
 
@@ -687,9 +686,9 @@ $\mathbf{v}_3 = 2\mathbf{v}_2 - \mathbf{v}_1$. Any nonzero multiple works as wel
 example $3\mathbf{v}_1 - 6\mathbf{v}_2 + 3\mathbf{v}_3 = \mathbf{0}$.
 \end{examplebox}
 
-For a set of equations the meaning is direct. If the rows of a matrix $M$ are linearly
-dependent, one equation of $M\mathbf{x} = \mathbf{0}$ is a combination of the others: it
-follows from them and adds no information. The largest number of independent rows is the
+For a set of equations the meaning is direct. If the rows of a matrix $M$ are dependent,
+one equation of $M\mathbf{x} = \mathbf{0}$ follows from the others and adds no
+information. The largest number of independent rows is the
 \textbf{rank} of $M$. When all rows are independent, $M$ has \textbf{full row rank}.
 
 %==============================================================
@@ -809,16 +808,16 @@ the arrow directions. Otherwise it falls into separate pieces.
 
 The graph of $\mathcal{N}$ is connected. The transformer circuit is not: the windings are
 coupled only through the core, so no branch joins the two sides. (An ideal transformer is a
-two-port: one branch per winding.) Other circuits split the same way --- for example,
-two parts that interact only through a dependent source that senses in one part and acts
-in the other, the model of an isolation amplifier or an optocoupler.
+two-port: one branch per winding.) Other circuits split the same way, for example an
+isolation amplifier or an optocoupler: a dependent source senses in one part and acts in the
+other.
 
 \begin{ideabox}[Connected graph: the rows of $A$ are independent]
 If the graph is connected, the $n-1$ rows of $A$ are linearly independent:
 $\operatorname{rank} A = n - 1$.
 \end{ideabox}
 
-\subsection{A graph in separate pieces}
+\subsection{A graph in separate pieces}\label{sec:pieces}
 
 Treat each piece as a graph of its own. Each piece is connected, so it gets its own
 incidence matrix, its own reference node and its own reduced incidence matrix. Then stack
@@ -874,7 +873,71 @@ Two independent KCL equations: $n - p = 4 - 2 = 2$.
 \end{examplebox}
 
 With $p$ separate pieces there are $p$ reference nodes, one per piece, and $A$ has $n - p$
-independent rows. In EE201 graphs are connected unless stated otherwise.
+independent rows.
+
+\paragraph{Corollary: joining the pieces.}
+Join the two reference nodes \nd2 and \nd4 of the transformer graph with a wire. They become
+one node. Three things to check: the current in the wire, the branch voltages, and the
+incidence matrix.
+
+\begin{center}
+\begin{tikzpicture}[scale=0.85]
+  \coordinate (t1) at (0,1.8); \coordinate (t2) at (0,0);
+  \coordinate (t3) at (2.4,1.8); \coordinate (t4) at (2.4,0);
+  \draw[cvolt, thick, dashed] (0,0.95) ellipse (1.05 and 1.45);
+  \node[font=\footnotesize, text=cvolt, align=center] at (-1.95,1.5) {closed\\ surface};
+  \draw[copper, line width=1.6pt] (t2) -- (t4);
+  \draw[-{Stealth[length=2mm]}, ccur, thick] (1.0,-0.25) -- (1.5,-0.25);
+  \node[font=\small, text=ccur] at (1.25,-0.58) {$\Icol{i_w} = 0$};
+  \draw[gbr] (t1) to[bend right=40] (t2); \node[blab] at (-0.62,0.9) {1};
+  \draw[gbr] (t1) to[bend left=40] (t2);  \node[blab] at (0.62,0.9) {2};
+  \draw[gbr] (t3) to[bend right=40] (t4); \node[blab] at (1.78,0.9) {3};
+  \draw[gbr] (t3) to[bend left=40] (t4);  \node[blab] at (3.02,0.9) {4};
+  \foreach \k/\pos in {1/above, 2/below left, 3/above, 4/below right}
+    {\fill[metured] (t\k) circle (2.2pt); \node[nlab, \pos=2pt] at (t\k) {\k};}
+  \draw (1.95,0) -- (1.95,-0.15) node[ground, scale=0.8]{};
+\end{tikzpicture}
+\end{center}
+
+\textbf{The wire carries no current.} Let $\Icol{i_w}$ flow through the wire from \nd2 to
+\nd4. Branches 1 and 2 go from \nd1 to \nd2, so KCL at \nd1 and at \nd2 gives
+\[
+  \nd1:\ \ \Icol{i_1} + \Icol{i_2} = 0,
+  \qquad
+  \nd2:\ \ -\Icol{i_1} - \Icol{i_2} + \Icol{i_w} = 0
+  \qquad\Longrightarrow\qquad
+  \Icol{i_w} = \Icol{i_1} + \Icol{i_2} = 0 .
+\]
+This is KCL on the closed surface around piece 1: only the wire crosses it.
+
+\textbf{No branch voltage changes.} Every branch still lies inside its own piece. The wire
+only gives the two pieces a common reference.
+
+\textbf{The incidence matrix stays the same.} The joined graph is connected. Its nodes are
+\nd1, \nd3 and the joined node \nd2 $\equiv$ \nd4, so $n = 3$ and $b = 4$. Branches 3 and 4
+now go from \nd3 to the joined node. Column by column, with the joined node as reference:
+\[
+  A_a = \incmatc{J}{1,2,3,4}{1,2,3}{%
+     1 \&  1 \&  0 \&  0\\
+    -1 \& -1 \& -1 \& -1\\
+     0 \&  0 \&  1 \&  1\\}{%
+    \draw[metured, very thick] ([xshift=-3pt]J-2-1.west) -- ([xshift=3pt]J-2-4.east);
+    \node[font=\scriptsize, text=metugray, right=4pt] at (J.east |- J-2-4) {$\equiv$\,\nd4};}
+  \quad\xrightarrow{\ \text{delete row } \nd2\ }\quad
+  A = \incmat{Jr}{4}{1,3}{%
+     1 \& 1 \& 0 \& 0\\
+     0 \& 0 \& 1 \& 1\\}
+  \;=\; \begin{bmatrix} A_1 & 0\\ 0 & A_2 \end{bmatrix}
+\]
+This is exactly the stacked $A$ of Example~7.5. The KCL equation at the joined node,
+$-(\Icol{i_1} + \Icol{i_2}) - (\Icol{i_3} + \Icol{i_4}) = 0$, is the deleted row: it follows
+from the other two.
+
+\textbf{In general.} Joining the $p$ reference nodes changes only their rows, and these rows
+are deleted anyway. All other rows stay as they were. The joined graph has $n - p + 1$
+nodes, so $A$ again has $n - p$ rows. A graph in separate pieces can always be made
+connected this way, and nothing changes. In EE201 graphs are connected unless stated
+otherwise.
 
 %==============================================================
 \section{KCL in matrix form}
@@ -1065,7 +1128,7 @@ inductor or a capacitor --- only the graph matters.
 \end{examplebox}
 
 %==============================================================
-\section{Tellegen's theorem}
+\section{Tellegen's theorem}\label{sec:tellegen}
 
 KCL and KVL together give a short but powerful result.
 
@@ -1081,48 +1144,9 @@ $\Vcol{v_k}\Icol{i_k}$ is the power absorbed by branch $k$. So the theorem says 
 power absorbed by all branches is zero: the power delivered by some branches is absorbed by
 the others. This is \textbf{conservation of power}.
 
-\textbf{Proof.} Take branch $k$ from node $p$ to node $q$.
-
-\begin{center}
-\begin{tikzpicture}[baseline=-0.6ex]
-    \coordinate (p) at (0,0); \coordinate (q) at (2.6,0);
-    \draw[gbr] (p) -- (q);
-    \fill[metured] (p) circle (2.2pt); \fill[metured] (q) circle (2.2pt);
-    \node[font=\small, below=14pt] at (p) {node $p$};
-    \node[font=\small, below=14pt] at (q) {node $q$};
-    \node[pol] at (0.3,-0.3) {$+$}; \node[pol] at (2.3,-0.3) {$-$};
-    \node[font=\small, text=cvolt] at (1.3,-0.32) {$v_k$};
-    \draw[iar] (0.9,0.28) -- (1.7,0.28); \node[font=\small, text=ccur] at (1.3,0.55) {$i_k$};
-    \node[font=\small, text=cvolt, above=10pt] at (p) {$\Vcol{e_p}$};
-    \node[font=\small, text=cvolt, above=10pt] at (q) {$\Vcol{e_q}$};
-  \end{tikzpicture}
-\end{center}
-
-By KVL its voltage is tail minus head, $\Vcol{v_k} = \Vcol{e_p} - \Vcol{e_q}$, so its power
-splits into two terms, one for each end:
-\[
-  \Vcol{v_k}\Icol{i_k} = \underbrace{\Vcol{e_p}\Icol{i_k}}_{i_k \text{ leaves } p}
-                       \; - \underbrace{\Vcol{e_q}\Icol{i_k}}_{i_k \text{ enters } q} .
-\]
-Add over all branches and collect the terms of each node $n$. Every branch that leaves $n$
-contributes $+\Vcol{e_n}\Icol{i_k}$ and every branch that enters $n$ contributes
-$-\Vcol{e_n}\Icol{i_k}$:
-\[
-  \sum_{k} \Vcol{v_k}\Icol{i_k}
-  = \sum_{n} \Vcol{e_n}\,\Big(\underbrace{\textstyle\sum \text{currents leaving } n
-      - \sum \text{currents entering } n}_{=\,0 \text{ by KCL}}\Big) = 0 .
-\]
-(The reference node has $\Vcol{e} = 0$, so it adds nothing.) For $\mathcal{N}$ the brackets are
-exactly the three KCL equations of Section~4:
-$\sum_k \Vcol{v_k}\Icol{i_k} = \Vcol{e_1}(\Icol{i_1}+\Icol{i_2}-\Icol{i_6})
-+ \Vcol{e_2}(-\Icol{i_1}-\Icol{i_3}+\Icol{i_4}) + \Vcol{e_3}(-\Icol{i_2}+\Icol{i_3}+\Icol{i_5})$.
-In matrix form the two steps are one line:
-$\Icol{\mathbf{i}}^T\Vcol{\mathbf{v}} \overset{\text{KVL}}{=} \Icol{\mathbf{i}}^T A^T\Vcol{\mathbf{e}}
-= (A\Icol{\mathbf{i}})^T\Vcol{\mathbf{e}} \overset{\text{KCL}}{=} 0$. \hfill$\blacksquare$
-
-The proof uses KCL and KVL only --- never the element equations. That is why knowing that
-$\Icol{\mathbf{i}}$ and $\Vcol{\mathbf{v}}$ come from the same circuit does not make it
-any shorter, and why the theorem holds even more generally (see the appendix).
+The proof uses KCL and KVL only, never the element equations. So the theorem holds even more
+generally, for two different circuits with the same graph. The general form and its proof
+are in the appendix.
 
 \begin{examplebox}[Example 7.8 --- checking Tellegen's theorem]
 Find the voltage and the current of every branch with node voltages, and check that
@@ -1225,12 +1249,20 @@ lecture show that a much smaller set of unknowns is enough.
         $n-1$ equations, exactly as many as the unknowns $\Vcol{\mathbf{e}}$.
 \end{itemize}
 Solve them for $\Vcol{\mathbf{e}}$, and every other voltage and current follows. So $2b$
-unknowns become $n-1$, and $n-1$ is less than $b$. Joining $n$ nodes takes $n-1$
-branches; with only these there is no loop at all. Each further branch closes a loop and
-adds one KVL equation --- hence $b-n+1$ of them. Any circuit with a loop has $b \ge n$, so
+unknowns become $n-1$.
+
+\begin{ideabox}[Always $b > n - 1$]
+Joining $n$ nodes takes at least $n-1$ branches. With exactly $n-1$ there is no loop. Then
+each branch is the only link between two parts of the graph, and KCL on a surface around
+one part makes its current zero (as for the wire in Section~\ref{sec:pieces}). So a circuit
+that carries any current has a loop, and
 \[
   n - 1 \;<\; b \;<\; 2b .
 \]
+Each branch beyond the first $n-1$ closes a loop and adds one KVL equation: hence $b-n+1$
+of them.
+\end{ideabox}
+
 Example~7.8 was a small case of it, with the single unknown $\Vcol{e_2}$. This is \textbf{node analysis}, the subject of a coming
 lecture.
 
@@ -1257,7 +1289,7 @@ lecture.
         tail minus head. KVL puts no constraint on $\Vcol{\mathbf{e}}$.
   \item \textbf{Tellegen's theorem}: in any circuit
         $\Icol{\mathbf{i}}^T\Vcol{\mathbf{v}} = \sum \Vcol{v_k}\Icol{i_k} = 0$ ---
-        conservation of power, from KCL and KVL alone. (A general form is in the appendix.)
+        conservation of power, from KCL and KVL alone. (General form and proof: appendix.)
   \item \textbf{Why}: with the $n-1$ node voltages as unknowns, KVL holds automatically (no
         KVL equation to write), and KCL gives just enough equations --- the idea of node
         analysis.
@@ -1286,18 +1318,27 @@ counterpart of $\Vcol{\mathbf{v}} = A^T\Vcol{\mathbf{e}}$.
 \end{itemize}
 
 %==============================================================
-\section*{Appendix: Tellegen's theorem, general form}
+\clearpage
+\section*{Appendix}
 \addcontentsline{toc}{section}{Appendix}
 
-The proof used only two facts: $\Icol{\mathbf{i}}$ satisfies KCL and $\Vcol{\mathbf{v}}$
-satisfies KVL, both with the same $A$. Nothing about the elements was used, and nothing
-requires $\Icol{\mathbf{i}}$ and $\Vcol{\mathbf{v}}$ to come from the same circuit.
+\subsection*{A.1\quad General Tellegen's theorem}
 
-\begin{ideabox}[Tellegen's theorem, general form]
+The theorem of Section~\ref{sec:tellegen} needs only two facts: $\Icol{\mathbf{i}}$
+satisfies KCL and $\Vcol{\mathbf{v}}$ satisfies KVL, both on the same graph. Nothing requires
+them to come from the same circuit.
+
+\begin{ideabox}[General Tellegen's theorem]
 Take two circuits with the \textbf{same graph}, with any elements. Let $\Icol{\mathbf{i}}$ be
-the branch currents of circuit~1 and $\Vcol{\mathbf{v}}$ the branch voltages of circuit~2.
-Then $\Icol{\mathbf{i}}^T\Vcol{\mathbf{v}} = 0$.
+the branch currents of circuit~1 and $\Vcol{\mathbf{v}}$ the branch voltages of circuit~2,
+with associated reference directions. Then
+\[
+  \Icol{\mathbf{i}}^T\Vcol{\mathbf{v}} = \sum_{k=1}^{b} \Vcol{v_k}\,\Icol{i_k} = 0 .
+\]
 \end{ideabox}
+
+Here $\Vcol{v_k}\Icol{i_k}$ is no longer a power: the voltage and the current belong to
+different circuits. With circuit~1 = circuit~2 it is conservation of power.
 
 \begin{examplebox}[Example A.1 --- the general form on the graph of $\mathcal{N}$]
 Take any branch currents that satisfy KCL on the graph of $\mathcal{N}$, and any node
@@ -1315,5 +1356,54 @@ $\Vcol{\mathbf{v}} = A^T\Vcol{\mathbf{e}} = [\,3\ \ 2\ \ 1\ \ 2\ \ 3\ \ {-5}\,]^
   = 15 - 15 = 0 .
 \]
 \end{examplebox}
+
+\subsection*{A.2\quad Proof of the general Tellegen's theorem}
+
+Let $\Icol{\mathbf{i}}$ be the branch currents of circuit~1: they satisfy KCL,
+$A\Icol{\mathbf{i}} = \mathbf{0}$. Let $\Vcol{\mathbf{v}}$ be the branch voltages of
+circuit~2, and $\Vcol{\mathbf{e}}$ its node voltages: they satisfy KVL,
+$\Vcol{\mathbf{v}} = A^T\Vcol{\mathbf{e}}$. Both use the same $A$, because the graph is the
+same. Take branch $k$ from node $p$ to node $q$.
+
+\begin{center}
+\begin{tikzpicture}[baseline=-0.6ex]
+    \coordinate (p) at (0,0); \coordinate (q) at (2.6,0);
+    \draw[gbr] (p) -- (q);
+    \fill[metured] (p) circle (2.2pt); \fill[metured] (q) circle (2.2pt);
+    \node[font=\small, below=14pt] at (p) {node $p$};
+    \node[font=\small, below=14pt] at (q) {node $q$};
+    \node[pol] at (0.3,-0.3) {$+$}; \node[pol] at (2.3,-0.3) {$-$};
+    \node[font=\small, text=cvolt] at (1.3,-0.32) {$v_k$};
+    \draw[iar] (0.9,0.28) -- (1.7,0.28); \node[font=\small, text=ccur] at (1.3,0.55) {$i_k$};
+    \node[font=\small, text=cvolt, above=10pt] at (p) {$\Vcol{e_p}$};
+    \node[font=\small, text=cvolt, above=10pt] at (q) {$\Vcol{e_q}$};
+  \end{tikzpicture}
+\end{center}
+
+By KVL in circuit~2, its voltage is tail minus head, $\Vcol{v_k} = \Vcol{e_p} - \Vcol{e_q}$.
+So the product $\Vcol{v_k}\Icol{i_k}$ splits into two terms, one for each end:
+\[
+  \Vcol{v_k}\Icol{i_k} = \underbrace{\Vcol{e_p}\Icol{i_k}}_{i_k \text{ leaves } p}
+                       \; - \underbrace{\Vcol{e_q}\Icol{i_k}}_{i_k \text{ enters } q} .
+\]
+Add over all branches and collect the terms of each node $n$. Every branch that leaves $n$
+contributes $+\Vcol{e_n}\Icol{i_k}$ and every branch that enters $n$ contributes
+$-\Vcol{e_n}\Icol{i_k}$:
+\[
+  \sum_{k} \Vcol{v_k}\Icol{i_k}
+  = \sum_{n} \Vcol{e_n}\,\Big(\underbrace{\textstyle\sum \text{currents leaving } n
+      - \sum \text{currents entering } n}_{=\,0 \text{ by KCL in circuit 1}}\Big) = 0 .
+\]
+(The reference node has $\Vcol{e} = 0$, so it adds nothing.) For $\mathcal{N}$ the brackets are
+exactly the three KCL equations of Section~4:
+$\sum_k \Vcol{v_k}\Icol{i_k} = \Vcol{e_1}(\Icol{i_1}+\Icol{i_2}-\Icol{i_6})
++ \Vcol{e_2}(-\Icol{i_1}-\Icol{i_3}+\Icol{i_4}) + \Vcol{e_3}(-\Icol{i_2}+\Icol{i_3}+\Icol{i_5})$.
+In matrix form the two steps are one line:
+$\Icol{\mathbf{i}}^T\Vcol{\mathbf{v}} \overset{\text{KVL}}{=} \Icol{\mathbf{i}}^T A^T\Vcol{\mathbf{e}}
+= (A\Icol{\mathbf{i}})^T\Vcol{\mathbf{e}} \overset{\text{KCL}}{=} 0$. \hfill$\blacksquare$
+
+The proof uses only KCL for $\Icol{\mathbf{i}}$ and KVL for $\Vcol{\mathbf{v}}$, never the
+element equations. With circuit~1 = circuit~2 it gives the theorem of
+Section~\ref{sec:tellegen}: conservation of power.
 
 \end{document}
