@@ -393,7 +393,7 @@ reference: if the current flows the other way, $\Icol{i_k}$ is negative.
 \subsection{Example}
 
 \begin{examplebox}[Example 7.1 --- the graph of a bridge circuit]
-The circuit $\mathcal{N}$ below has six two-terminal elements, drawn as boxes because
+The bridge circuit below has six two-terminal elements, drawn as boxes because
 their type does not matter here. Find its graph.
 
 \begin{center}
@@ -405,7 +405,7 @@ their type does not matter here. Find its graph.
     \draw (n3) to[generic] (n4);
     \draw (n4) -- (-2.6,-1.7) to[generic] (-2.6,1.7) -- (n1);
     \foreach \k in {1,2,3,4} \fill (n\k) circle (1.6pt);
-    \node[ttl] at (-0.4,-2.5) {(a) circuit $\mathcal{N}$};
+    \node[ttl] at (-0.4,-2.5) {(a) bridge circuit};
   \end{scope}
   \begin{scope}[xshift=5.6cm]
     \bridgecoords
@@ -432,8 +432,7 @@ their type does not matter here. Find its graph.
 \end{center}
 
 Steps 1--3 label the six branches, give each one an arrow (blue: the current reference),
-and label the four nodes. Step 4 keeps only the dots and the arrows. The graph of
-$\mathcal{N}$ has
+and label the four nodes. Step 4 keeps only the dots and the arrows. The bridge graph has
 \[
   \text{nodes } \{\nd1, \nd2, \nd3, \nd4\}, \quad n = 4;
   \qquad
@@ -573,7 +572,7 @@ senses the controlling variable and the branch of the source.
 
 Every branch current flows along its own arrow. At each node, count a current
 \textbf{leaving} the node with $+$ and a current \textbf{entering} it with $-$; KCL says
-the sum is zero. For the graph of $\mathcal{N}$ in Example~7.1:
+the sum is zero. For the bridge graph in Example~7.1:
 
 \begin{center}
 \begin{minipage}[c]{0.36\linewidth}
@@ -694,7 +693,7 @@ information. The largest number of independent rows is the
 %==============================================================
 \section{The reduced incidence matrix}
 
-Look at the incidence matrix of $\mathcal{N}$. Column~3 (branch~3, from \nd3 to \nd2) has
+Look at the incidence matrix of the bridge. Column~3 (branch~3, from \nd3 to \nd2) has
 $+1$ in row \nd3, $-1$ in row \nd2, and zeros elsewhere. Every column is like this: one $+1$
 and one $-1$. So adding all four rows gives zero in every column:
 \begin{center}
@@ -717,7 +716,7 @@ written $A$.
 The choice of the reference node is arbitrary. It is the same node that will serve as the
 common reference for node voltages.
 
-\begin{examplebox}[Example 7.4 --- the reduced incidence matrix of $\mathcal{N}$]
+\begin{examplebox}[Example 7.4 --- the reduced incidence matrix of the bridge]
 Take \nd4 as the reference node and delete its row:
 \[
   A_a =
@@ -728,24 +727,33 @@ Take \nd4 as the reference node and delete its row:
      \rowcolor{metured!12}
      0 &  0 &  0 & -1 & -1 &  1
   \end{bmatrix}
-  \quad\xrightarrow{\ \text{delete row } \nd4\ }\quad
-  A =
-  \begin{bmatrix}
-     1 &  1 &  0 &  0 &  0 & -1\\
-    -1 &  0 & -1 &  1 &  0 &  0\\
-     0 & -1 &  1 &  0 &  1 &  0
-  \end{bmatrix} .
+  \;\xrightarrow{\ \text{delete row } \nd4\ }\;
+  A = \incmatc{Ar}{1,2,3,4,5,6}{1,2,3}{%
+     1 \&  1 \&  0 \&  0 \&  0 \& -1\\
+    -1 \&  0 \& -1 \&  1 \&  0 \&  0\\
+     0 \& -1 \&  1 \&  0 \&  1 \&  0\\}{%
+    \foreach \j in {4,5,6}
+      \draw[ccur, thick, rounded corners=2pt]
+        ([xshift=-1pt, yshift=1pt]Ar-1-\j.north west) rectangle
+        ([xshift=1pt, yshift=-1pt]Ar-3-\j.south east);} .
 \]
-$A$ is $3 \times 6$. Its rows are independent: columns 4, 5 and 6 each have a \textbf{single}
-\textbf{nonzero} entry, in rows \nd2, \nd3 and \nd1. A combination of the rows
-that gives zero in these three columns must have all three $\alpha$'s zero.
+$A$ is $3 \times 6$. Are its rows independent? Let
+$\alpha_1\,(\text{row } \nd1) + \alpha_2\,(\text{row } \nd2) + \alpha_3\,(\text{row } \nd3)
+= \mathbf{0}$. Columns 4, 5 and 6 (boxed) have only one nonzero entry each, so each of them
+fixes one $\alpha$:
+\[
+  \text{column 4: } \alpha_2 = 0, \qquad
+  \text{column 5: } \alpha_3 = 0, \qquad
+  \text{column 6: } -\alpha_1 = 0 .
+\]
+All three $\alpha$'s are zero, so the rows of $A$ are independent.
 \end{examplebox}
 
 Deleting the row loses nothing.
 
 \begin{itemize}
   \item \textbf{No equation is lost.} The rows of $A_a$ add up to zero. So the deleted row
-        is the negative of the sum of the kept rows. For $\mathcal{N}$:
+        is the negative of the sum of the kept rows. For the bridge:
         \[
           \text{row } \nd4 = -(\text{row } \nd1 + \text{row } \nd2 + \text{row } \nd3):
           \qquad
@@ -777,7 +785,7 @@ the arrow directions. Otherwise it falls into separate pieces.
 \begin{tikzpicture}[scale=0.8]
   \begin{scope}
     \bridgecoords \bridgegraph
-    \node[ttl] at (-0.4,-2.55) {graph of $\mathcal{N}$: connected};
+    \node[ttl] at (-0.4,-2.55) {bridge graph: connected};
   \end{scope}
   \draw[metugray!60, dashed] (2.6,-2.6) -- (2.6,2.3);
   \begin{scope}[xshift=5.2cm, yshift=-0.9cm]
@@ -806,7 +814,7 @@ the arrow directions. Otherwise it falls into separate pieces.
 \end{tikzpicture}
 \end{center}
 
-The graph of $\mathcal{N}$ is connected. The transformer circuit is not: the windings are
+The bridge graph is connected. The transformer circuit is not: the windings are
 coupled only through the core, so no branch joins the two sides. (An ideal transformer is a
 two-port: one branch per winding.) Other circuits split the same way, for example an
 isolation amplifier or an optocoupler: a dependent source senses in one part and acts in the
@@ -1026,8 +1034,8 @@ $\Vcol{e_k}$ has $+$ at node $k$ and $-$ at the reference node \nd4.
 %==============================================================
 \section{KVL on a circuit graph}
 
-By KVL, every branch voltage can be written in terms of node voltages. Branch~1 of
-$\mathcal{N}$ goes from \nd1 to \nd2. Branch~1 and the node voltages $\Vcol{e_1}$,
+By KVL, every branch voltage can be written in terms of node voltages. Branch~1 of the
+bridge goes from \nd1 to \nd2. Branch~1 and the node voltages $\Vcol{e_1}$,
 $\Vcol{e_2}$ form a closed loop \nd1 $\to$ \nd2 $\to$ \nd4 $\to$ \nd1. KVL around it:
 \begin{center}
   \kvltri[0.8]\hspace{3em}%
@@ -1038,7 +1046,7 @@ $\Vcol{e_2}$ form a closed loop \nd1 $\to$ \nd2 $\to$ \nd4 $\to$ \nd1. KVL aroun
 \end{center}
 In general, a branch from node $p$ to node $q$ has $\Vcol{v_k} = \Vcol{e_p} - \Vcol{e_q}$:
 \textbf{tail minus head}. If one end is the reference node, its node voltage is $0$. For
-all six branches of $\mathcal{N}$:
+all six branches of the bridge:
 \[
   \left.
   \begin{aligned}
@@ -1340,8 +1348,8 @@ with associated reference directions. Then
 Here $\Vcol{v_k}\Icol{i_k}$ is no longer a power: the voltage and the current belong to
 different circuits. With circuit~1 = circuit~2 it is conservation of power.
 
-\begin{examplebox}[Example A.1 --- the general form on the graph of $\mathcal{N}$]
-Take any branch currents that satisfy KCL on the graph of $\mathcal{N}$, and any node
+\begin{examplebox}[Example A.1 --- the general form on the bridge graph]
+Take any branch currents that satisfy KCL on the bridge graph, and any node
 voltages --- they do not have to come from the same circuit:
 \[
   \Icol{\mathbf{i}} = [\,1\ \ 2\ \ 1\ \ 2\ \ 1\ \ 3\,]^T\A ,
@@ -1394,7 +1402,7 @@ $-\Vcol{e_n}\Icol{i_k}$:
   = \sum_{n} \Vcol{e_n}\,\Big(\underbrace{\textstyle\sum \text{currents leaving } n
       - \sum \text{currents entering } n}_{=\,0 \text{ by KCL in circuit 1}}\Big) = 0 .
 \]
-(The reference node has $\Vcol{e} = 0$, so it adds nothing.) For $\mathcal{N}$ the brackets are
+(The reference node has $\Vcol{e} = 0$, so it adds nothing.) For the bridge the brackets are
 exactly the three KCL equations of Section~4:
 $\sum_k \Vcol{v_k}\Icol{i_k} = \Vcol{e_1}(\Icol{i_1}+\Icol{i_2}-\Icol{i_6})
 + \Vcol{e_2}(-\Icol{i_1}-\Icol{i_3}+\Icol{i_4}) + \Vcol{e_3}(-\Icol{i_2}+\Icol{i_3}+\Icol{i_5})$.

@@ -290,7 +290,7 @@
     \begin{scope}[xshift=11.0cm, yshift=0.8cm, scale=0.75, transform shape]
       \bridgecoords \bridgegraph
     \end{scope}
-    \node[ttl] at (10.6,-1.2) {nonseparable ($\mathcal{N}$)};
+    \node[ttl] at (10.6,-1.2) {nonseparable (bridge)};
     \begin{scope}[#3]
       \draw[bigarr] (12.55,0.8) -- (13.45,0.8);
       \node[capn] at (13.0,1.35) {remove\\ node 2};
@@ -492,7 +492,7 @@ board with no wire crossing another.
 \end{tikzpicture}
 \end{center}
 
-(a) is the graph of the bridge circuit $\mathcal{N}$, drawn as a square: its two diagonals,
+(a) is the graph of the bridge circuit, drawn as a square: its two diagonals,
 branches~3 and~6, cross. (b) is the same graph --- same nodes, same branches --- with
 branch~6 taken around the outside. No branches cross, so the graph is planar.
 
@@ -559,9 +559,9 @@ node, together with all the branches attached to that node.
 \end{center}
 
 Removing the centre node of the left graph removes its four branches and leaves two
-separate pieces, so that graph is separable. In $\mathcal{N}$, removing \nd2 removes branches
+separate pieces, so that graph is separable. In the bridge graph, removing \nd2 removes branches
 1, 3 and 4; branches 2, 5, 6 still join \nd1, \nd3, \nd4. The same holds for any other node,
-so $\mathcal{N}$ is nonseparable.
+so the bridge graph is nonseparable.
 
 From now on the graph $G$ is \textbf{planar and nonseparable}, and it is drawn without
 crossings.
@@ -583,7 +583,7 @@ a loop of branches and contains no branch inside it. That loop is an \textbf{inn
 \end{tikzpicture}
 \end{minipage}%
 \begin{minipage}[c]{0.56\linewidth}
-The graph of $\mathcal{N}$ has three inner meshes:
+The bridge graph has three inner meshes:
 \begin{itemize}
   \item mesh \mlab{1}: branches 1, 2, 3;
   \item mesh \mlab{2}: branches 3, 4, 5;
@@ -619,7 +619,7 @@ For a planar, nonseparable graph with $\ell$ inner meshes and $b$ branches, the
 A row is a mesh: walk around it clockwise, and record each branch you meet with $+1$ if its
 arrow points the way you walk, $-1$ if it points against you.
 
-\begin{examplebox}[Example 8.2 --- the mesh matrix of $\mathcal{N}$]
+\begin{examplebox}[Example 8.2 --- the mesh matrix of the bridge]
 \begin{center}
 \begin{minipage}[c]{0.36\linewidth}
 \centering
@@ -655,7 +655,7 @@ KVL around every mesh is
 \]
 \end{ideabox}
 
-For $\mathcal{N}$ the three rows are
+For the bridge the three rows are
 \[
   -\Vcol{v_1} + \Vcol{v_2} + \Vcol{v_3} = 0, \qquad
   -\Vcol{v_3} - \Vcol{v_4} + \Vcol{v_5} = 0, \qquad
@@ -677,7 +677,7 @@ Every branch current is a sum of mesh currents. A branch carries the mesh curren
 meshes it belongs to: $+$ if the mesh direction coincides with the branch arrow, $-$ if not.
 These are exactly the entries of column $j$ of $M$.
 
-\begin{examplebox}[Example 8.3 --- branch currents of $\mathcal{N}$ from mesh currents]
+\begin{examplebox}[Example 8.3 --- branch currents of the bridge from mesh currents]
 \begin{center}
 \begin{minipage}[c]{0.3\linewidth}
 \centering
@@ -735,7 +735,7 @@ mesh \mlab{1}, so $\Icol{i_2} = \Icol{i_{M1}}$.
   \item Once the $\ell$ mesh currents are known, all $b$ branch currents are known.
   \item KCL puts \textbf{no constraint} on the mesh currents. A mesh current enters each
         node on its loop and leaves it again, so it adds zero to KCL at every node. For
-        example, KCL at \nd2 of $\mathcal{N}$:
+        example, KCL at \nd2 of the bridge:
         $-\Icol{i_1} - \Icol{i_3} + \Icol{i_4}
         = (\Icol{i_{M1}} - \Icol{i_{M3}}) - (\Icol{i_{M1}} - \Icol{i_{M2}})
           + (-\Icol{i_{M2}} + \Icol{i_{M3}}) = 0$.

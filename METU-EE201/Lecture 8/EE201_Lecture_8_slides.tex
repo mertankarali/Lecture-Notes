@@ -274,7 +274,7 @@
     \begin{scope}[xshift=11.0cm, yshift=0.8cm, scale=0.75, transform shape]
       \bridgecoords \bridgegraph
     \end{scope}
-    \node[ttl] at (10.6,-1.2) {nonseparable ($\mathcal{N}$)};
+    \node[ttl] at (10.6,-1.2) {nonseparable (bridge)};
     \begin{scope}[#3]
       \draw[bigarr] (12.55,0.8) -- (13.45,0.8);
       \node[capn] at (13.0,1.35) {remove\\ node 2};
@@ -459,7 +459,7 @@
     \only<1>{On paper, branches 3 and 6 seem to cross. Do they meet?}%
     \only<2>{No: two separate wires, the crossing point is \alert{not a node}.\\
       In hardware: a jumper wire, or a track on a second layer of the board.}%
-    \only<3->{Redrawn with no crossing (this is $\mathcal{N}$), so the graph is \alert{planar}.\\
+    \only<3->{Redrawn with no crossing (this is the bridge graph), so the graph is \alert{planar}.\\
       A drawing with crossings does not decide it --- the question is whether
       \emph{some} drawing has none.}
   \end{center}
@@ -533,7 +533,7 @@
   \end{center}
   \vfill
   \begin{center}
-    \only<-5>{\uncover<5>{Any node of $\mathcal{N}$ can be removed: the rest stays connected.}}%
+    \only<-5>{\uncover<5>{Any node of the bridge can be removed: the rest stays connected.}}%
     \only<6->{From now on: the graph is \alert{planar} and \alert{nonseparable}, drawn without crossings.}
   \end{center}
 \end{frame}
@@ -589,7 +589,7 @@
 \end{frame}
 
 %--------------------------------------------------------------
-\begin{frame}{Example: the mesh matrix of $\mathcal{N}$}
+\begin{frame}{Example: the mesh matrix of the bridge}
   \begin{columns}[c,onlytextwidth]
     \begin{column}{0.38\textwidth}
       \centering
@@ -631,7 +631,7 @@
   \vfill
   \onslide<2->
   \begin{center}
-    For $\mathcal{N}$:\quad
+    For the bridge:\quad
     $-\Vcol{v_1} + \Vcol{v_2} + \Vcol{v_3} = 0, \qquad
      -\Vcol{v_3} - \Vcol{v_4} + \Vcol{v_5} = 0, \qquad
      \Vcol{v_1} + \Vcol{v_4} + \Vcol{v_6} = 0$\\[8pt]
@@ -666,7 +666,7 @@
 \end{frame}
 
 %--------------------------------------------------------------
-\begin{frame}{Example: branch currents of $\mathcal{N}$ from mesh currents}
+\begin{frame}{Example: branch currents of the bridge from mesh currents}
   \begin{columns}[c,onlytextwidth]
     \begin{column}{0.3\textwidth}
       \centering

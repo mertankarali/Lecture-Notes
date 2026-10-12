@@ -98,6 +98,11 @@
 \newcommand{\brarr}[4]{%
   \draw[iar] ($(#1)!0.34!(#2)!0.34cm!#3:(#2)$) -- ($(#1)!0.66!(#2)!0.34cm!#3:(#2)$);
   \node[blab] at ($(#1)!0.5!(#2)!0.66cm!#3:(#2)$) {#4};}
+%  The two halves of \brarr: the branch number only, and the current arrow only
+\newcommand{\brlab}[4]{%
+  \node[blab] at ($(#1)!0.5!(#2)!0.66cm!#3:(#2)$) {#4};}
+\newcommand{\brarw}[3]{%
+  \draw[iar] ($(#1)!0.34!(#2)!0.34cm!#3:(#2)$) -- ($(#1)!0.66!(#2)!0.34cm!#3:(#2)$);}
 \newcommand{\gbranch}[4]{%
   \draw[gbr] (#1) -- (#2);
   \node[blab] at ($(#1)!0.5!(#2)!0.28cm!#3:(#2)$) {#4};}
@@ -329,66 +334,58 @@
 \end{frame}
 
 %--------------------------------------------------------------
-\begin{frame}{The graph of a circuit}
-  \vfill
-  \begin{block}{Circuit graph}
-    Replace every two-terminal element by a line segment, a \alert{branch}. The points
-    where branches meet are the \alert{nodes}. The graph records only \emph{which nodes
-    each branch joins}; the shape of the drawing carries no information.
-  \end{block}
-  \vfill
-  \begin{columns}[t,onlytextwidth]
-    \begin{column}{0.46\textwidth}
+\begin{frame}[t]{The graph of a circuit}
+  \begin{center}\small
+    Each element is a \alert{branch}, each meeting point a \alert{node}.
+  \end{center}
+  \begin{columns}[T,onlytextwidth]
+    \begin{column}{0.3\textwidth}
       \textbf{Procedure}
-      \begin{enumerate}\small
-        \item Label each branch: $1, \dots, b$.
-        \item Give each branch a direction --- \alert{arbitrary}.
-        \item Label each node: \nd1, \dots, \nd{$n$}.
-        \item Draw the graph: dots and arrows.
+      \begin{enumerate}\small\itemsep4pt
+        \item<2-> \alert<2>{Label each branch: $1, \dots, b$.}
+        \item<3-> \alert<3>{Give each branch a direction --- arbitrary.}
+        \item<4-> \alert<4>{Label each node: \nd1, \dots, \nd{$n$}.}
+        \item<5-> \alert<5>{Draw the graph: dots and arrows.}
       \end{enumerate}
     \end{column}
-    \begin{column}{0.5\textwidth}
-      \small
-      \onslide<2->
-      The arrow is the \alert{reference direction} of $\Icol{i_k}$. With associated
-      references, $\Vcol{v_k}$ has $+$ at the tail.\\[5pt]
-      If the current flows the other way, $\Icol{i_k}$ is simply negative.
+    \begin{column}{0.68\textwidth}
+      \centering
+      \begin{tikzpicture}[scale=0.78, transform shape]
+        \begin{scope}
+          \bridgecoords \bridgecircuit
+          \foreach \k in {1,2,3,4} \fill (n\k) circle (1.6pt);
+          \begin{scope}[visible on=<2->]
+            \brlab{n1}{n2}{-90}{1}  \brlab{n1}{n3}{90}{2}  \brlab{n3}{n2}{-90}{3}
+            \brlab{n2}{n4}{-90}{4}  \brlab{n3}{n4}{90}{5}  \brlab{s6}{e6}{90}{6}
+          \end{scope}
+          \begin{scope}[visible on=<3->]
+            \brarw{n1}{n2}{-90}  \brarw{n1}{n3}{90}  \brarw{n3}{n2}{-90}
+            \brarw{n2}{n4}{-90}  \brarw{n3}{n4}{90}  \brarw{s6}{e6}{90}
+          \end{scope}
+          \begin{scope}[visible on=<4->] \bridgenodes \end{scope}
+          \node[ttl] at (-0.4,-2.55) {bridge circuit};
+        \end{scope}
+        \begin{scope}[visible on=<5->]
+          \draw[bigarr] (2.3,0) -- (3.1,0);
+          \begin{scope}[xshift=6.2cm]
+            \bridgecoords \bridgegraph
+            \node[ttl] at (-0.4,-2.55) {its graph};
+          \end{scope}
+        \end{scope}
+      \end{tikzpicture}
     \end{column}
   \end{columns}
   \vfill
-\end{frame}
-
-%--------------------------------------------------------------
-\begin{frame}{Example: the graph of a bridge circuit}
-  \vfill
-  \begin{center}
-  \begin{tikzpicture}[scale=0.82, transform shape]
-    \begin{scope}
-      \bridgecoords \bridgecircuit
-      \foreach \k in {1,2,3,4} \fill (n\k) circle (1.6pt);
-      \node[ttl] at (-0.4,-2.55) {circuit $\mathcal{N}$};
-    \end{scope}
-    \begin{scope}[xshift=5.7cm, visible on=<2->]
-      \bridgecoords \bridgecircuit
-      \brarr{n1}{n2}{-90}{1}  \brarr{n1}{n3}{90}{2}  \brarr{n3}{n2}{-90}{3}
-      \brarr{n2}{n4}{-90}{4}  \brarr{n3}{n4}{90}{5}  \brarr{s6}{e6}{90}{6}
-      \bridgenodes
-      \node[ttl] at (-0.4,-2.55) {steps 1--3};
-    \end{scope}
-    \begin{scope}[xshift=11.3cm, visible on=<3->]
-      \bridgecoords \bridgegraph
-      \node[ttl] at (-0.4,-2.55) {step 4: the graph};
-    \end{scope}
-  \end{tikzpicture}
-  \end{center}
-  \vfill
-  \begin{center}
+  \begin{center}\small
     \only<1>{Six elements, drawn as boxes: their type does not matter here.}%
-    \only<2>{Number the branches, give each an arrow (\Icol{current reference}), number the nodes.}%
-    \only<3->{Nodes $\{\nd1,\nd2,\nd3,\nd4\}$, $n = 4$; \quad branches $\{1,\dots,6\}$, $b = 6$.\\[3pt]
-      \small Branch 6 is curved only for clarity --- a straight arrow is the same graph.}
+    \only<2>{Branches $1, \dots, 6$: $b = 6$.}%
+    \only<3>{The arrow is the \alert{reference direction} of $\Icol{i_k}$; $\Vcol{v_k}$ has $+$
+      at the tail.\\ If the current flows the other way, $\Icol{i_k}$ is simply negative.}%
+    \only<4>{Nodes \nd1, \nd2, \nd3, \nd4: $n = 4$.}%
+    \only<5->{Keep only dots and arrows: $n = 4$, $b = 6$.\\
+      Branch 6 is curved only for clarity --- a straight arrow is the same graph.}
   \end{center}
-  \vfill
+  \vspace{6pt}
 \end{frame}
 
 %--------------------------------------------------------------
@@ -616,7 +613,7 @@
 \end{frame}
 
 %--------------------------------------------------------------
-\begin{frame}{Review: linear dependence}
+\begin{frame}[t]{Review: linear dependence}
   \vfill
   \begin{block}{Linear dependence}
     $\mathbf{v}_1, \dots, \mathbf{v}_k$ (same size) are \alert{linearly dependent} if there
@@ -629,19 +626,21 @@
     \begin{column}{0.38\textwidth}
       \onslide<2->
       \[ \begin{bmatrix} 1\\ 0 \end{bmatrix},\ \begin{bmatrix} 0\\ -1 \end{bmatrix} \]
-      \small independent: $[\alpha_1\ \ {-\alpha_2}]^T = \mathbf{0}$ only if both are zero.
+      \small \only<2>{Dependent or independent?}%
+      \onslide<3->{independent: $[\alpha_1\ \ {-\alpha_2}]^T = \mathbf{0}$ only if both are zero.}
     \end{column}
     \begin{column}{0.58\textwidth}
-      \onslide<3->
+      \onslide<4->
       \[ \mathbf{v}_1 = \begin{bmatrix} 1\\ 2\\ 3 \end{bmatrix},\
          \mathbf{v}_2 = \begin{bmatrix} 4\\ 5\\ 6 \end{bmatrix},\
          \mathbf{v}_3 = \begin{bmatrix} 7\\ 8\\ 9 \end{bmatrix} \]
-      \small dependent: $\mathbf{v}_1 - 2\mathbf{v}_2 + \mathbf{v}_3 = \mathbf{0}$, so
-      $\mathbf{v}_3 = 2\mathbf{v}_2 - \mathbf{v}_1$.
+      \small \only<4>{Dependent or independent?}%
+      \onslide<5->{dependent: $\mathbf{v}_1 - 2\mathbf{v}_2 + \mathbf{v}_3 = \mathbf{0}$, so
+      $\mathbf{v}_3 = 2\mathbf{v}_2 - \mathbf{v}_1$.}
     \end{column}
   \end{columns}
   \vfill
-  \onslide<4->
+  \onslide<6->
   \begin{center}\small
     Rows of $M$ dependent $\Rightarrow$ one equation of $M\mathbf{x} = \mathbf{0}$ follows from the
     others.\\ Number of independent rows: the \alert{rank}. All rows independent: \alert{full row rank}.
@@ -672,7 +671,7 @@
 \end{frame}
 
 %--------------------------------------------------------------
-\begin{frame}{Example: the reduced incidence matrix of $\mathcal{N}$}
+\begin{frame}{Example: the reduced incidence matrix of the bridge}
   \vfill
   \begin{columns}[c,onlytextwidth]
     \begin{column}{0.3\textwidth}
@@ -699,17 +698,23 @@
       \]
       \onslide<2->
       \[
-        A =
-        \begin{bmatrix}
-           1 &  1 &  0 &  0 &  0 & -1\\
-          -1 &  0 & -1 &  1 &  0 &  0\\
-           0 & -1 &  1 &  0 &  1 &  0
-        \end{bmatrix}
+        A = \incmat{Ar}{6}{1,2,3}{%
+           1 \&  1 \&  0 \&  0 \&  0 \& -1\\
+          -1 \&  0 \& -1 \&  1 \&  0 \&  0\\
+           0 \& -1 \&  1 \&  0 \&  1 \&  0\\}{%
+          \foreach \j in {4,5,6}
+            \draw[ccur, thick, rounded corners=2pt, visible on=<3->]
+              ([xshift=-1pt, yshift=1pt]Ar-1-\j.north west) rectangle
+              ([xshift=1pt, yshift=-1pt]Ar-3-\j.south east);}
         \qquad (3 \times 6)
       \]
       \onslide<3->
-      Rows independent: columns 6, 4, 5 each have a \textbf{single} \textbf{nonzero} entry, in rows
-      \nd1, \nd2, \nd3.
+      Independent rows? Let $\alpha_1\,\text{row}\,\nd1 + \alpha_2\,\text{row}\,\nd2
+      + \alpha_3\,\text{row}\,\nd3 = \mathbf{0}$.\\[2pt]
+      Columns 4, 5, 6 have only one nonzero entry each:\\[2pt]
+      \onslide<4->
+      \hspace*{1em}column 4: $\alpha_2 = 0$, \ column 5: $\alpha_3 = 0$, \ column 6: $-\alpha_1 = 0$.\\[2pt]
+      \alert{All $\alpha$'s are zero: the rows of $A$ are independent.}
     \end{column}
   \end{columns}
   \vfill
@@ -749,7 +754,7 @@
   \begin{tikzpicture}[scale=0.63, transform shape]
     \begin{scope}
       \bridgecoords \bridgegraph
-      \node[ttl, font=\small\bfseries] at (-0.4,-2.6) {graph of $\mathcal{N}$: connected};
+      \node[ttl, font=\small\bfseries] at (-0.4,-2.6) {bridge graph: connected};
     \end{scope}
     \draw[metugray!60, dashed] (2.6,-2.6) -- (2.6,2.3);
     \begin{scope}[xshift=5.2cm, yshift=-0.9cm]
@@ -779,10 +784,7 @@
   \end{center}
   \vfill
   \small
-  The windings are coupled only through the core: no branch joins the two sides.\\
-  \onslide<2->
-  \alert{Also:} two parts that interact only through a dependent source that senses in one
-  part and acts in the other --- an isolation amplifier, an optocoupler.
+  The windings are coupled only through the core: no branch joins the two sides.
 \end{frame}
 
 %--------------------------------------------------------------
@@ -1031,7 +1033,7 @@
   \vfill
   \onslide<3->
   \begin{center}\small
-    Row $k$ of $A^T$ = column $k$ of $A$.
+    $A^T$ is the \alert{transpose of the reduced incidence matrix} $A$: row $k$ of $A^T$ = column $k$ of $A$.
   \end{center}
 \end{frame}
 
@@ -1092,13 +1094,13 @@
       \centering\small
       \onslide<4->{$\begin{bmatrix} \Vcol{v_1}\\ \Vcol{v_2}\\ \Vcol{v_3}\\ \Vcol{v_4}\\ \Vcol{v_5} \end{bmatrix}
     =
-    \begin{bmatrix}
+    \underbrace{\begin{bmatrix}
       -1 &  0 &  0\\
        1 & -1 &  0\\
        0 &  1 &  0\\
        0 &  1 & -1\\
        0 &  0 &  1
-    \end{bmatrix}
+    \end{bmatrix}}_{A^T}
     \begin{bmatrix} \Vcol{e_1}\\ \Vcol{e_2}\\ \Vcol{e_3} \end{bmatrix}
     =
     \begin{bmatrix}
@@ -1158,7 +1160,7 @@
       {\scriptsize reference \nd3; $+$ of $\Vcol{v_k}$ at the tail of each arrow}
     \end{column}
     \begin{column}{0.56\textwidth}
-      \footnotesize
+      \footnotesize\renewcommand{\arraystretch}{0.85}
       \onslide<2->{%
       \textbf{Node voltages:} $\Vcol{e_1} = 10\V$ (source), $\Vcol{e_2}$ unknown.\\[3pt]}
       \onslide<3->{%
@@ -1166,10 +1168,11 @@
       $-\dfrac{\Vcol{e_1} - \Vcol{e_2}}{2} + \dfrac{\Vcol{e_2}}{4} + \dfrac{\Vcol{e_2}}{12} = 0
        \;\Rightarrow\; \Vcol{e_2} = 6\V$\\[4pt]}
       \onslide<4->{%
-      \textbf{$\Vcol{\mathbf{v}} = A^T\Vcol{\mathbf{e}}$:} $\Vcol{v_1} = -\Vcol{e_1} = -10$, $\Vcol{v_2} = 4$,
-      $\Vcol{v_3} = \Vcol{v_4} = 6\V$\\[3pt]
-      \textbf{Ohm, KCL at \nd1:} $\Icol{i_1} = \Icol{i_2} = 2$, $\Icol{i_3} = 1.5$,
-      $\Icol{i_4} = 0.5\A$}
+      \textbf{KVL:}\
+      $\Vcol{\mathbf{v}} = A^T\Vcol{\mathbf{e}}
+       = \underbrace{\begin{bmatrix} -1 & 0\\ 1 & -1\\ 0 & 1\\ 0 & 1 \end{bmatrix}}_{A^T}
+         \begin{bmatrix} 10\\ 6 \end{bmatrix}
+       = \begin{bmatrix} -10\\ 4\\ 6\\ 6 \end{bmatrix}\V$}
     \end{column}
   \end{columns}
   \vfill
@@ -1192,6 +1195,8 @@
     \end{column}
     \begin{column}{0.42\textwidth}
       \small
+      \textbf{Ohm, KCL at \nd1:} $\Icol{i_1} = \Icol{i_2} = 2$, $\Icol{i_3} = 1.5$,
+      $\Icol{i_4} = 0.5\A$.\\[4pt]
       $\Vcol{v_1} < 0$: its $+$ (tail) is at \nd3.\\
       The source \alert{delivers} $20\W$; the resistors \alert{absorb} $8 + 9 + 3 = 20\W$.
     \end{column}

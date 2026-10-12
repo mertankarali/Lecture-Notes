@@ -5,7 +5,7 @@ Lecture notes and slides for the seventh lecture of EE201 (Section 2, Fall 2026/
 | File | What it is |
 |---|---|
 | `EE201_Lecture_7.tex` | Handout / lecture notes (article, 13 pages). Self-contained: definitions, eight worked examples plus one in the appendix, KCL and KVL in matrix form, Tellegen's theorem (general form and proof in the appendix). |
-| `EE201_Lecture_7_slides.tex` | Beamer deck (27 slides, 83 PDF pages) for the lecture itself — visual, low text. |
+| `EE201_Lecture_7_slides.tex` | Beamer deck (26 slides, 85 PDF pages) for the lecture itself — visual, low text. |
 | `build.sh` | Compiles both, removes auxiliary files, opens the PDFs. |
 
 ## Compiling
@@ -33,18 +33,18 @@ of his Lecture 7 on [METU OCW](https://ocw.metu.edu.tr/course/view.php?id=351).
 2. **The graph of a circuit** (4:00–7:55) — the four-step procedure: number the branches,
    give each an arbitrary arrow (the current reference; associated reference for the
    voltage), number the nodes, keep dots and arrows. Example 7.1: Prof. Tuna's bridge
-   circuit N, n = 4, b = 6
+   bridge circuit, n = 4, b = 6
 3. **Elements with more than two terminals** (13:45) — a k-terminal element becomes k − 1
    branches to a chosen reference terminal, and why k − 1 (KCL on a surface, KVL); the
    transistor with the emitter as reference; Example 7.2, a circuit with a 3-terminal element
-4. **KCL on a circuit graph** (21:49) — leaving +, entering −; the four node equations of N
+4. **KCL on a circuit graph** (21:49) — leaving +, entering −; the four node equations of the bridge graph
 5. **The incidence matrix** (26:04–30:40) — circuit matrices; A_a (n × b), KCL as
    A_a i = 0; reading a row (a node, its KCL) and a column (a branch, one +1 and one −1)
 6. **Review: linear dependence** (35:19–37:24) — definition; Example 7.3; rank and full row rank
 7. **The reduced incidence matrix** (40:45–43:45) — rows of A_a always sum to zero; delete
    the reference node's row to get A, (n − 1) × b; Example 7.4; deleting the row loses no
    equation and no part of the graph
-8. **Connected graphs** (46:52–48:00) — definition, with the graph of N (connected) next to
+8. **Connected graphs** (46:52–48:00) — definition, with the bridge graph (connected) next to
    a transformer circuit whose graph is in two pieces; other such circuits (a dependent
    source that senses in one part and acts in another: isolation amplifier, optocoupler).
    Connected ⇒ the n − 1 rows of A are independent. Separate pieces: treat each piece as
@@ -64,7 +64,7 @@ of his Lecture 7 on [METU OCW](https://ocw.metu.edu.tr/course/view.php?id=351).
     with node voltages (KCL at ② gives e₂ = 6 V, then v = Aᵀe and Ohm's law); the table shows
     the source delivering 20 W and the resistors absorbing 20 W.
     **Appendix** (notes only): A.1 the general Tellegen's theorem (two circuits with the
-    same graph) with a numerical check on N (Example A.1); A.2 its proof — write each v_k as
+    same graph) with a numerical check on the bridge graph (Example A.1); A.2 its proof — write each v_k as
     tail minus head and collect the terms of each node voltage, every bracket is a KCL
     equation; then the same two steps in matrix form
 13. **Looking ahead: why node voltages?** — a flow from the n − 1 node voltages to every
@@ -80,7 +80,7 @@ are blue (they are current references); in a graph they are plain arrows.
 The bridge example, the 3-terminal example, the KCL equations (one node at a time, with
 the node highlighted), the matrix (a row, then a column), linear dependence, the reduced
 matrix, the separate-pieces example, the KCL example, KVL on the graph, and the Tellegen example build up **step by step** with beamer overlays. Each step is an
-ordinary extra PDF page; that is why the deck has 27 slides but 83 pages.
+ordinary extra PDF page; that is why the deck has 26 slides but 85 pages.
 
 ## References
 
