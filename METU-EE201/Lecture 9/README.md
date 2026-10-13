@@ -5,7 +5,7 @@ Lecture notes and slides for the ninth lecture of EE201 (Section 2, Fall 2026/27
 | File | What it is |
 |---|---|
 | `EE201_Lecture_9.tex` | Handout / lecture notes (article, 5 pages). Self-contained: definitions, four worked examples, the "any connected graph" summary. |
-| `EE201_Lecture_9_slides.tex` | Beamer deck (20 slides, 55 PDF pages) for the lecture itself — visual, low text. |
+| `EE201_Lecture_9_slides.tex` | Beamer deck (20 slides, 59 PDF pages) for the lecture itself — visual, low text. |
 | `build.sh` | Compiles both, removes auxiliary files, opens the PDFs. |
 
 ## Compiling
@@ -51,4 +51,4 @@ Then a summary, the next lecture (duality) and reading.
 The tree candidates, the cutsets, the fundamental cutsets and the fundamental loops build up
 step by step with beamer overlays; candidates are shown first ("tree?", "a cutset?") and the
 answer on the next page. Each step is an ordinary extra PDF page; that is why the deck has 20
-slides but 55 pages.
+slides but 59 pages.
