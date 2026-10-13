@@ -662,8 +662,8 @@
   \end{center}
   \vfill
   \begin{center}
-    \onslide<2->{In words: a \alert{smallest} set of branches whose removal cuts the graph
-      into \alert{two pieces}.}
+    \onslide<2->{In words: removing the set cuts the graph into \alert{two pieces}, and
+      \alert{every} branch in the set is needed for that.}
   \end{center}
   \vfill
 \end{frame}
@@ -709,8 +709,11 @@
   \end{columns}
   \vfill
   \begin{center}\small
-    \uncover<4>{All branches back: the closed surface around node \nd4 crosses
-      \alert{exactly} 4, 5, 7.}
+    \only<1-3,5-7>{\phantom{X}}%
+    \only<4>{All branches back: the closed surface around node \nd4 crosses
+      \alert{exactly} 4, 5, 7.}%
+    \only<8>{Cutsets can have \alert{different sizes}: $C_1$ has 3 branches, $C_2$ and $C_3$
+      have 2.}
   \end{center}
 \end{frame}
 
