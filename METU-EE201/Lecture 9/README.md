@@ -5,7 +5,7 @@ Lecture notes and slides for the ninth lecture of EE201 (Section 2, Fall 2026/27
 | File | What it is |
 |---|---|
 | `EE201_Lecture_9.tex` | Handout / lecture notes (article, 5 pages). Self-contained: definitions, four worked examples, the "any connected graph" summary. |
-| `EE201_Lecture_9_slides.tex` | Beamer deck (20 slides, 60 PDF pages) for the lecture itself — visual, low text. |
+| `EE201_Lecture_9_slides.tex` | Beamer deck (20 slides, 62 PDF pages) for the lecture itself — visual, low text. |
 | `build.sh` | Compiles both, removes auxiliary files, opens the PDFs. |
 
 ## Compiling
@@ -33,7 +33,7 @@ Following pp. 17–18 of Prof. Emre Tuna's notes and his recorded Lecture 8 on
    {3, 5, 6} are trees, {1, 2, 3, 5} is not (loop 1, 2, 3); a tree has n − 1 branches
 3. **Cutsets** (22:33, 25:32) — definition (minimal set whose removal cuts the graph in two);
    Example 9.2 on a figure-eight graph: {4, 5, 7}, {1, 3}, {6, 7}; {1, 3, 4, 5, 6} is not a
-   cutset ({4, 5, 6} is); each candidate is checked step by step (highlight, remove, put one back); KCL on a cutset = KCL on a closed surface
+   cutset ({4, 5, 6} is); each candidate is checked step by step (highlight, remove, put one back); KCL on a cutset = KCL on a closed surface, checked with branch currents for {4, 5, 7}, {1, 3}, {4, 5, 6}
 4. **Fundamental cutsets** (30:35, 32:55, 38:32) — one per tree branch; the cotree; Example 9.3
    on a triangle graph G (n = 6, b = 9, tree {1, 3, 5, 8, 9}): five KCL equations, independent;
    remark (41:48): cotree currents fix the tree currents
@@ -51,4 +51,4 @@ Then a summary, the next lecture (duality) and reading.
 The tree candidates, the cutsets, the fundamental cutsets and the fundamental loops build up
 step by step with beamer overlays; candidates are shown first ("tree?", "a cutset?") and the
 answer on the next page. Each step is an ordinary extra PDF page; that is why the deck has 20
-slides but 60 pages.
+slides but 62 pages.

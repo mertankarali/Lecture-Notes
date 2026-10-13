@@ -467,6 +467,20 @@
 \newcommand{\pieceLT}[1][]{\draw[piece, #1] (-2.35,0.55) ellipse (1.35 and 1.05);}
 \newcommand{\piecePR}[1][]{\draw[piece, #1] (2.3,0.52) ellipse [x radius=1.25, y radius=0.62, rotate=-37];}
 \newcommand{\pieceLTM}[1][]{\draw[piece, #1] (-1.45,0.45) ellipse (2.05 and 1.2);}
+%  Current arrows on a branch: cf along the drawing direction, cb against it
+\tikzset{cf/.style={postaction={decorate, decoration={markings,
+    mark=at position 0.62 with {\arrow[ccur]{Stealth[length=2.6mm]}}}}},
+  cb/.style={postaction={decorate, decoration={markings,
+    mark=at position 0.42 with {\arrowreversed[ccur]{Stealth[length=2.6mm]}}}}}}
+%  The figure-eight graph with the branch currents of the KCL example (#k: plainbr or cutbr)
+\newcommand{\eightI}[7]{\eightsub{#1,cb}{#2,cf}{#3,cf}{#4,cf}{#5,cf}{#6,cb}{#7,cf}}
+\newcommand{\Ik}[1]{\ensuremath{\Icol{i_{#1}}}}
+\newcommand{\eightItable}{%
+  {\small\renewcommand{\arraystretch}{1.1}\setlength{\tabcolsep}{4pt}%
+  \begin{tabular}{@{}l*{7}{c}@{}}
+    branch & 1 & 2 & 3 & 4 & 5 & 6 & 7\\
+    \Icol{current (A)} & \Icol{2} & \Icol{2} & \Icol{2} & \Icol{1} & \Icol{2} & \Icol{3} & \Icol{3}
+  \end{tabular}}}
 %  Circulation arrows for a fundamental loop, centred at (#2,#3), radius #1
 \newcommand{\loopcw}[3][0.3]{%
   \draw[cvolt, thick, -{Stealth[length=2mm]}] ($(#2,#3)+(150:#1)$)
@@ -749,21 +763,45 @@
 
 %--------------------------------------------------------------
 \begin{frame}{KCL on a cutset}
+  \newcommand{\yes}{\textcolor{ctree}{\checkmark}}
+  \begin{columns}[c,onlytextwidth]
+    \begin{column}{0.52\textwidth}
+      \centering
+      \begin{tikzpicture}[scale=0.86]
+        \useasboundingbox (-3.75,-1.0) rectangle (3.75,1.75);
+        \eightcoords
+        \only<2>{\pieceP}\only<3>{\pieceLT}\only<4>{\piecePR}
+        \only<1>{\eightI{plainbr}{plainbr}{plainbr}{plainbr}{plainbr}{plainbr}{plainbr}}%
+        \only<2>{\eightI{plainbr}{plainbr}{plainbr}{cutbr}{cutbr}{plainbr}{cutbr}}%
+        \only<3>{\eightI{cutbr}{plainbr}{cutbr}{plainbr}{plainbr}{plainbr}{plainbr}}%
+        \only<4>{\eightI{plainbr}{plainbr}{plainbr}{cutbr}{cutbr}{cutbr}{plainbr}}%
+      \end{tikzpicture}\\[6pt]
+      \eightItable
+    \end{column}
+    \begin{column}{0.46\textwidth}
+      \only<1>{Branch currents in the arrow directions.\\[6pt]
+        They satisfy KCL at every node, e.g.\ node \nd3:
+        \[\Ik1 + \Ik4 + \Ik5 - \Ik3 - \Ik6 = 2 + 1 + 2 - 2 - 3 = 0.\]}%
+      \only<2>{$C_1 = \{4, 5, 7\}$, surface around node \nd4:\\[4pt]
+        leaving: \Ik7; \ entering: \Ik4, \Ik5
+        \[\Ik7 - \Ik4 - \Ik5 = 3 - 1 - 2 = 0 \ \yes\]
+        Here this is just KCL at node \nd4.}%
+      \only<3>{$C_2 = \{1, 3\}$, surface around nodes \nd1, \nd2:\\[4pt]
+        leaving: \Ik3; \ entering: \Ik1
+        \[\Ik3 - \Ik1 = 2 - 2 = 0 \ \yes\]
+        {\small KCL at \nd1: $\Ik2 - \Ik1 = 0$; \ at \nd2: $\Ik3 - \Ik2 = 0$.\\
+        Add them: \Ik2 is inside the surface and cancels.}}%
+      \only<4>{$\{4, 5, 6\}$, surface around nodes \nd4, \nd5:\\[4pt]
+        leaving: \Ik6; \ entering: \Ik4, \Ik5
+        \[\Ik6 - \Ik4 - \Ik5 = 3 - 1 - 2 = 0 \ \yes\]
+        {\small Sum of KCL at \nd4 and \nd5: \Ik7 cancels.}}
+    \end{column}
+  \end{columns}
   \vfill
   \begin{center}
-  \begin{tikzpicture}[scale=1.0]
-    \eightcoords \eightgraph
-    \draw[surf] (eP) circle (0.55);  \node[font=\small, text=cvolt] at (2.25,1.65) {$C_1$};
-  \end{tikzpicture}
+    \onslide<2->{\alert{KCL on a cutset:} the cutset currents add up to zero\\
+      {\small ($+$ leaving the surface, $-$ entering).}}
   \end{center}
-  \vfill
-  \begin{center}
-    A cutset splits the graph in two. A closed surface around one part crosses \alert{exactly}
-    the cutset branches.\\[6pt]
-    \onslide<2->{$\Rightarrow$ KCL on that surface: the cutset currents add up to zero\\
-    \small ($+$ leaving the surface, $-$ entering).}
-  \end{center}
-  \vfill
 \end{frame}
 
 %--------------------------------------------------------------
