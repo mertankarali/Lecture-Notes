@@ -821,27 +821,61 @@
         \only<3>{\fill[partfill] (0,1.8) ellipse (1.55 and 0.5);
           \fill[partfill] (0,0) ellipse (2.45 and 0.45);
           \tgraph{treebr}{faintbr}{cutaway}{faintbr}{faintbr}{treebr}{treebr}}%
-        \only<4->{\fill[partfill] (0,1.8) ellipse (1.55 and 0.5);
+        \only<4>{\fill[partfill] (0,1.8) ellipse (1.55 and 0.5);
           \fill[partfill] (0,0) ellipse (2.45 and 0.45);
           \draw[surf] (0,1.8) ellipse (1.8 and 0.8);
           \tgraph{treebr}{hlbr}{hlbr}{hlbr}{hlbr}{treebr}{treebr}}%
       \end{tikzpicture}\\[2pt]
-      {\small tree \textcolor{ctree}{$\{1, 3, 6, 7\}$}, \ cotree $\{2, 4, 5\}$}
+      {\small tree \textcolor{ctree}{$\{1, 3, 6, 7\}$}, \ co-tree $\{2, 4, 5\}$}
     \end{column}
     \begin{column}{0.54\textwidth}
       \begin{enumerate}\itemsep3pt
-        \item<1-> Fix a \alert{tree} (green). The other branches form the \alert{cotree}.
+        \item<1-> Fix a \alert{tree} (green). The other branches form the \alert{co-tree}.
         \item<2-> Pick one tree branch, e.g.\ \textcolor{cvolt}{3}.
         \item<3-> Remove it: the tree falls into \alert{two parts},
           $\{\nd1, \nd2\}$ and $\{\nd3, \nd4, \nd5\}$.
         \item<4-> The branches joining the two parts form a cutset:
           $\{\textcolor{cvolt}{3, 2, 4, 5}\}$. It is the \alert{fundamental cutset} of 3.
       \end{enumerate}
-      \onslide<5->{%
-      \begin{block}{Fundamental cutset of a tree branch $\beta$}
-        $\beta$ and the cotree branches that join the two parts. It has
-        \alert{one} tree branch, $\beta$. Its direction is that of $\beta$.
+    \end{column}
+  \end{columns}
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}[t]{Fundamental cutset: one tree branch, one direction}
+  \tikzset{partfill/.style={fill=ctree!13}}
+  \begin{columns}[T,onlytextwidth]
+    \begin{column}{0.46\textwidth}
+      \centering
+      \begin{tikzpicture}[scale=1.0]
+        \useasboundingbox (-2.75,-0.75) rectangle (3.2,2.75);
+        \tgcoords
+        \fill[partfill] (0,1.8) ellipse (1.55 and 0.5);
+        \fill[partfill] (0,0) ellipse (2.45 and 0.45);
+        \draw[surf] (0,1.8) ellipse (1.8 and 0.8);
+        \tgraph{treebr}{hlbr}{treebr}{hlbr}{hlbr}{treebr}{treebr}
+        \node[font=\scriptsize, text=ctree, anchor=east] at (-1.55,2.55) {part $\{\nd1, \nd2\}$};
+        \node[font=\scriptsize, text=ctree] at (0,-0.75) {part $\{\nd3, \nd4, \nd5\}$};
+        \begin{scope}[visible on=<2->]
+          \draw[-{Stealth[length=3mm]}, cvolt, line width=2pt] (2.55,1.95) -- (2.55,0.5);
+          \node[font=\scriptsize, text=cvolt, align=center] at (2.75,2.3) {direction\\of 3};
+        \end{scope}
+      \end{tikzpicture}\\[8pt]
+      \onslide<3->{%
+      \begin{block}{Fundamental cutset of $\beta$}
+        \small $\beta$ plus the co-tree branches that join the two parts of the tree. Its only
+        tree branch is $\beta$; its direction is the direction of $\beta$.
       \end{block}}
+    \end{column}
+    \begin{column}{0.52\textwidth}
+      Cutset of 3: $\{3, 2, 4, 5\}$\\[6pt]
+      \textbf{One tree branch.} Only \textcolor{ctree}{3} is a tree branch; 2, 4, 5 are
+      co-tree branches. Every other tree branch (1, 6, 7) lies \alert{inside one part}, so it
+      does not join the parts.\\[8pt]
+      \onslide<2->{\textbf{Direction.} Branch 3 points from part $\{\nd1, \nd2\}$ to part
+        $\{\nd3, \nd4, \nd5\}$. The cutset gets the \alert{same direction}: a branch counts
+        $+$ if it crosses that way, $-$ if against. Here 2, 4, 5 all cross that way:
+        \[\Icol{i_3} + \Icol{i_2} + \Icol{i_4} + \Icol{i_5} = 0.\]}
     \end{column}
   \end{columns}
 \end{frame}
@@ -888,7 +922,7 @@
 \end{frame}
 
 %--------------------------------------------------------------
-\begin{frame}{Cotree currents fix the tree currents}
+\begin{frame}{Co-tree currents fix the tree currents}
   \vfill
   \begin{center}
     Each fundamental cutset has \alert{one} tree branch. Solve for it:
@@ -902,7 +936,7 @@
   \]
   \vfill
   \begin{center}
-    Know the $b - n + 1$ cotree currents $\Rightarrow$ know all branch currents.
+    Know the $b - n + 1$ co-tree currents $\Rightarrow$ know all branch currents.
   \end{center}
   \vfill
 \end{frame}
@@ -911,9 +945,9 @@
 \begin{frame}{Fundamental loops}
   \vfill
   \begin{block}{Fundamental loop}
-    Each cotree branch closes exactly one loop with the tree: that cotree branch plus the tree
-    path between its ends. It is the fundamental loop of that cotree branch. Its direction is
-    that of the cotree branch.
+    Each co-tree branch closes exactly one loop with the tree: that co-tree branch plus the tree
+    path between its ends. It is the fundamental loop of that co-tree branch. Its direction is
+    that of the co-tree branch.
   \end{block}
   \vfill
   \begin{center}
@@ -937,28 +971,28 @@
         \only<3>{\tgraph{hlbr}{faintbr}{hlbr}{hlbr}{faintbr}{faintbr}{faintbr}\loopcw{0}{1.15}}%
         \only<4->{\tgraph{hlbr}{faintbr}{hlbr}{faintbr}{hlbr}{faintbr}{hlbr}\loopcw{0.9}{0.75}}%
       \end{tikzpicture}\\[2pt]
-      {\small tree $\{1, 3, 6, 7\}$, cotree $\{2, 4, 5\}$}
+      {\small tree $\{1, 3, 6, 7\}$, co-tree $\{2, 4, 5\}$}
     \end{column}
     \begin{column}{0.54\textwidth}
       \small
       \renewcommand{\arraystretch}{1.35}
       \begin{tabular}{@{}c l l@{}}
-        cotree br. & loop & KVL\\ \hline
+        co-tree br. & loop & KVL\\ \hline
         \uncover<2->{2} & \uncover<2->{$\{2, 6, 3\}$}    & \uncover<2->{$\Vcol{v_2} + \Vcol{v_6} - \Vcol{v_3} = 0$}\\
         \uncover<3->{4} & \uncover<3->{$\{4, 3, 1\}$}    & \uncover<3->{$\Vcol{v_4} - \Vcol{v_3} - \Vcol{v_1} = 0$}\\
         \uncover<4->{5} & \uncover<4->{$\{5, 7, 3, 1\}$} & \uncover<4->{$\Vcol{v_5} - \Vcol{v_7} - \Vcol{v_3} - \Vcol{v_1} = 0$}
       \end{tabular}\\[10pt]
       \onslide<5->{\alert{$b - n + 1 = 3$ KVL equations, independent:} each has its own
-        cotree branch voltage.}
+        co-tree branch voltage.}
     \end{column}
   \end{columns}
 \end{frame}
 
 %--------------------------------------------------------------
-\begin{frame}{Tree voltages fix the cotree voltages}
+\begin{frame}{Tree voltages fix the co-tree voltages}
   \vfill
   \begin{center}
-    Each fundamental loop has \alert{one} cotree branch. Solve for it:
+    Each fundamental loop has \alert{one} co-tree branch. Solve for it:
   \end{center}
   \vfill
   \[
@@ -983,7 +1017,7 @@
        & how many & gives\\
       \midrule
       tree branches   & $n - 1$     & fundamental cutsets: the KCL equations\\
-      cotree branches & $b - n + 1$ & fundamental loops: the KVL equations\\
+      co-tree branches & $b - n + 1$ & fundamental loops: the KVL equations\\
       \bottomrule
     \end{tabular}
   \end{center}
@@ -1027,7 +1061,7 @@
       \textbf{tree branch voltages}  & $n - 1$     & branch voltage\\
       \midrule
       mesh currents        & $b - n + 1$ & branch current\\
-      \textbf{cotree branch currents} & $b - n + 1$ & branch current\\
+      \textbf{co-tree branch currents} & $b - n + 1$ & branch current\\
       \bottomrule
     \end{tabular}
   \end{center}
@@ -1043,12 +1077,12 @@
   \vfill
   \begin{itemize}\itemsep5pt
     \item \textbf{Tree}: all nodes, connected, no loop; $n - 1$ branches. The rest: the
-          \textbf{cotree}, $b - n + 1$ branches.
+          \textbf{co-tree}, $b - n + 1$ branches.
     \item \textbf{Cutset}: minimal set of branches that cuts the graph in two. KCL holds on it.
     \item \textbf{Fundamental cutsets} (one per tree branch): $n - 1$ independent KCL
-          equations. Cotree currents fix the tree currents.
-    \item \textbf{Fundamental loops} (one per cotree branch): $b - n + 1$ independent KVL
-          equations. Tree voltages fix the cotree voltages.
+          equations. Co-tree currents fix the tree currents.
+    \item \textbf{Fundamental loops} (one per co-tree branch): $b - n + 1$ independent KVL
+          equations. Tree voltages fix the co-tree voltages.
     \item Works for \alert{any} connected graph --- planar or not, separable or not.
   \end{itemize}
   \vfill
