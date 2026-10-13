@@ -670,32 +670,23 @@ currents of the cutset branches add up to zero (each with $+$ if it leaves the s
 if it enters).
 
 Take the branch currents below, in the arrow directions. They satisfy KCL at every node.
+Consider the cutset $\{4, 5, 6\}$, with the surface around nodes \nd4 and \nd5.
 \begin{center}
-\begin{tabular}{@{}c@{\hspace{5mm}}c@{}}
-\begin{tikzpicture}[scale=0.62]
-  \useasboundingbox (-3.75,-1.0) rectangle (3.75,1.75);
-  \eightcoords \pieceLT
-  \eightI{cutbr}{plainbr}{cutbr}{plainbr}{plainbr}{plainbr}{plainbr}
-\end{tikzpicture}
-&
-\begin{tikzpicture}[scale=0.62]
+\begin{tikzpicture}[scale=0.7, baseline=(eM)]
   \useasboundingbox (-3.75,-1.0) rectangle (3.75,1.75);
   \eightcoords \piecePR
   \eightI{plainbr}{plainbr}{plainbr}{cutbr}{cutbr}{cutbr}{plainbr}
-\end{tikzpicture}\\
-{\small $C_2 = \{1, 3\}$} & {\small $\{4, 5, 6\}$}
-\end{tabular}\\[4pt]
+\end{tikzpicture}
+\qquad
 \eightItable
 \end{center}
-For each cutset, write leaving currents with $+$ and entering ones with $-$:
-\begin{align*}
-  C_1 = \{4, 5, 7\}: &\quad \Icol{i_7} - \Icol{i_4} - \Icol{i_5} = 3 - 1 - 2 = 0,\\
-  C_2 = \{1, 3\}: &\quad \Icol{i_3} - \Icol{i_1} = 2 - 2 = 0,\\
-  \{4, 5, 6\}: &\quad \Icol{i_6} - \Icol{i_4} - \Icol{i_5} = 3 - 1 - 2 = 0.
-\end{align*}
-For $C_1$ this is just KCL at node~\nd4. For $C_2$ it is the sum of KCL at nodes \nd1 and
-\nd2: $(\Icol{i_2} - \Icol{i_1}) + (\Icol{i_3} - \Icol{i_2}) = 0$. The current $\Icol{i_2}$ is
-inside the surface and cancels.
+Current $\Icol{i_6}$ leaves the surface; $\Icol{i_4}$ and $\Icol{i_5}$ enter it:
+\[
+  \Icol{i_6} - \Icol{i_4} - \Icol{i_5} = 3 - 1 - 2 = 0.
+\]
+This is the sum of KCL at nodes \nd4 and \nd5:
+$(\Icol{i_7} - \Icol{i_4} - \Icol{i_5}) + (\Icol{i_6} - \Icol{i_7}) = 0$. The current
+$\Icol{i_7}$ is inside the surface and cancels.
 
 %==============================================================
 \section{Fundamental cutsets}

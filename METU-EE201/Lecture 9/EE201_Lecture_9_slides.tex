@@ -782,11 +782,9 @@
       \begin{tikzpicture}[scale=0.86]
         \useasboundingbox (-3.75,-1.0) rectangle (3.75,1.75);
         \eightcoords
-        \only<2>{\pieceP}\only<3>{\pieceLT}\only<4>{\piecePR}
+        \only<2>{\piecePR}
         \only<1>{\eightI{plainbr}{plainbr}{plainbr}{plainbr}{plainbr}{plainbr}{plainbr}}%
-        \only<2>{\eightI{plainbr}{plainbr}{plainbr}{cutbr}{cutbr}{plainbr}{cutbr}}%
-        \only<3>{\eightI{cutbr}{plainbr}{cutbr}{plainbr}{plainbr}{plainbr}{plainbr}}%
-        \only<4>{\eightI{plainbr}{plainbr}{plainbr}{cutbr}{cutbr}{cutbr}{plainbr}}%
+        \only<2>{\eightI{plainbr}{plainbr}{plainbr}{cutbr}{cutbr}{cutbr}{plainbr}}%
       \end{tikzpicture}\\[6pt]
       \eightItable
     \end{column}
@@ -794,19 +792,12 @@
       \only<1>{Branch currents in the arrow directions.\\[6pt]
         They satisfy KCL at every node, e.g.\ node \nd3:
         \[\Ik1 + \Ik4 + \Ik5 - \Ik3 - \Ik6 = 2 + 1 + 2 - 2 - 3 = 0.\]}%
-      \only<2>{$C_1 = \{4, 5, 7\}$, surface around node \nd4:\\[4pt]
-        leaving: \Ik7; \ entering: \Ik4, \Ik5
-        \[\Ik7 - \Ik4 - \Ik5 = 3 - 1 - 2 = 0 \ \yes\]
-        Here this is just KCL at node \nd4.}%
-      \only<3>{$C_2 = \{1, 3\}$, surface around nodes \nd1, \nd2:\\[4pt]
-        leaving: \Ik3; \ entering: \Ik1
-        \[\Ik3 - \Ik1 = 2 - 2 = 0 \ \yes\]
-        {\small KCL at \nd1: $\Ik2 - \Ik1 = 0$; \ at \nd2: $\Ik3 - \Ik2 = 0$.\\
-        Add them: \Ik2 is inside the surface and cancels.}}%
-      \only<4>{$\{4, 5, 6\}$, surface around nodes \nd4, \nd5:\\[4pt]
+      \only<2>{Cutset $\{\textcolor{cvolt}{4, 5, 6}\}$: surface around \nd4, \nd5\\[4pt]
         leaving: \Ik6; \ entering: \Ik4, \Ik5
         \[\Ik6 - \Ik4 - \Ik5 = 3 - 1 - 2 = 0 \ \yes\]
-        {\small Sum of KCL at \nd4 and \nd5: \Ik7 cancels.}}
+        {\small KCL at \nd4: \ $\Ik7 - \Ik4 - \Ik5 = 0$\\
+        KCL at \nd5: \ $\Ik6 - \Ik7 = 0$\\[3pt]
+        Add them: \Ik7 is inside the surface and cancels.}}
     \end{column}
   \end{columns}
   \vfill
