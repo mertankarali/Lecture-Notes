@@ -5,7 +5,7 @@ Lecture notes and slides for the ninth lecture of EE201 (Section 2, Fall 2026/27
 | File | What it is |
 |---|---|
 | `EE201_Lecture_9.tex` | Handout / lecture notes (article, 5 pages). Self-contained: definitions, four worked examples, the "any connected graph" summary. |
-| `EE201_Lecture_9_slides.tex` | Beamer deck (21 slides, 65 PDF pages) for the lecture itself — visual, low text. |
+| `EE201_Lecture_9_slides.tex` | Beamer deck (22 slides, 72 PDF pages) for the lecture itself — visual, low text. |
 | `build.sh` | Compiles both, removes auxiliary files, opens the PDFs. |
 
 ## Compiling
@@ -40,15 +40,16 @@ Following pp. 17–18 of Prof. Emre Tuna's notes and his recorded Lecture 8 on
 5. **Fundamental loops** (43:51, 47:07) — one per co-tree branch; Example 9.4: three KVL
    equations, independent; remark (55:38): tree voltages fix the co-tree voltages
 6. **Any connected graph** — n − 1 tree branches ↔ KCL, b − n + 1 co-tree branches ↔ KVL; works
-   for nonplanar graphs and fixes the separable case met earlier (square with a triangle inside)
+   for nonplanar graphs; Example 9.5 solves the separable graph met earlier (square with a
+   triangle inside) step by step: 5 KCL + 2 KVL, one current for the square, one for the triangle
 7. **Looking ahead** — tree branch voltages and co-tree branch currents as the general version of
    node voltages and mesh currents
 
-Then a summary, the next lecture (duality) and reading.
+Then a summary and reading.
 
 ## Slides
 
 The tree candidates, the cutsets, the fundamental cutsets and the fundamental loops build up
 step by step with beamer overlays; candidates are shown first ("tree?", "a cutset?") and the
-answer on the next page. Each step is an ordinary extra PDF page; that is why the deck has 21
-slides but 65 pages.
+answer on the next page. Each step is an ordinary extra PDF page; that is why the deck has 22
+slides but 72 pages.

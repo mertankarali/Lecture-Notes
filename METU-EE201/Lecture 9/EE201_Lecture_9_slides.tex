@@ -481,6 +481,22 @@
     branch & 1 & 2 & 3 & 4 & 5 & 6 & 7\\
     \Icol{current (A)} & \Icol{2} & \Icol{2} & \Icol{2} & \Icol{1} & \Icol{2} & \Icol{3} & \Icol{3}
   \end{tabular}}}
+%  The separable graph: a square with a triangle inside, attached at node 1 (6 nodes, 7 branches)
+\newcommand{\sepcoords}{%
+  \coordinate (q1) at (0,2.4); \coordinate (q2) at (2.4,2.4);
+  \coordinate (q3) at (2.4,0); \coordinate (q4) at (0,0);
+  \coordinate (q5) at (1.5,1.75); \coordinate (q6) at (0.55,0.95);}
+\newcommand{\sepnodes}{%
+  \foreach \k/\pos in {1/above left, 2/above right, 3/below right, 4/below left, 5/right, 6/below}
+    {\fill[metured] (q\k) circle (2.2pt); \node[nlab, \pos=2pt] at (q\k) {\k};}}
+%  #1 ... #7: styles of branches 1 ... 7
+\newcommand{\sepgraph}[7]{%
+  \sbranch{q1}{q2}{90}{1}{#1}  \sbranch{q2}{q3}{90}{2}{#2}  \sbranch{q3}{q4}{90}{3}{#3}
+  \sbranch{q4}{q1}{90}{4}{#4}  \sbranch{q5}{q6}{90}{6}{#6}
+  \draw[#5] (q1) -- (q5);  \node[blab] at (0.95,2.27) {5};
+  \draw[#7] (q6) -- (q1);  \node[blab] at (0.6,1.62) {7};
+  \sepnodes}
+\newcommand{\septree}{\sepgraph{treebr}{treebr}{treebr}{cotreebr}{treebr}{treebr}{cotreebr}}
 %  Circulation arrows for a fundamental loop, centred at (#2,#3), radius #1
 \newcommand{\loopcw}[3][0.3]{%
   \draw[cvolt, thick, -{Stealth[length=2mm]}] ($(#2,#3)+(150:#1)$)
@@ -848,17 +864,21 @@
     \begin{column}{0.46\textwidth}
       \centering
       \begin{tikzpicture}[scale=1.0]
-        \useasboundingbox (-2.75,-0.75) rectangle (3.2,2.75);
+        \useasboundingbox (-2.75,-0.75) rectangle (2.75,3.15);
         \tgcoords
         \fill[partfill] (0,1.8) ellipse (1.55 and 0.5);
         \fill[partfill] (0,0) ellipse (2.45 and 0.45);
         \draw[surf] (0,1.8) ellipse (1.8 and 0.8);
         \tgraph{treebr}{hlbr}{treebr}{hlbr}{hlbr}{treebr}{treebr}
-        \node[font=\scriptsize, text=ctree, anchor=east] at (-1.55,2.55) {part $\{\nd1, \nd2\}$};
+        \node[font=\scriptsize, text=ctree, anchor=east] at (-1.75,2.6) {part $\{\nd1, \nd2\}$};
         \node[font=\scriptsize, text=ctree] at (0,-0.75) {part $\{\nd3, \nd4, \nd5\}$};
         \begin{scope}[visible on=<2->]
-          \draw[-{Stealth[length=3mm]}, cvolt, line width=2pt] (2.55,1.95) -- (2.55,0.5);
-          \node[font=\scriptsize, text=cvolt, align=center] at (2.75,2.3) {direction\\of 3};
+          \foreach \t in {30,90,150,210,330,-90} {
+            \pgfmathsetmacro{\nx}{cos(\t)/1.8} \pgfmathsetmacro{\ny}{sin(\t)/0.8}
+            \pgfmathsetmacro{\nn}{sqrt(\nx*\nx+\ny*\ny)}
+            \draw[-{Stealth[length=2.4mm]}, cvolt, line width=1.3pt]
+              ({1.8*cos(\t)},{1.8+0.8*sin(\t)}) -- ++({0.4*\nx/\nn},{0.4*\ny/\nn});}
+          \node[font=\scriptsize, text=cvolt] at (0.9,3.0) {cutset direction: out};
         \end{scope}
       \end{tikzpicture}\\[8pt]
       \onslide<3->{%
@@ -872,9 +892,9 @@
       \textbf{One tree branch.} Only \textcolor{ctree}{3} is a tree branch; 2, 4, 5 are
       co-tree branches. Every other tree branch (1, 6, 7) lies \alert{inside one part}, so it
       does not join the parts.\\[8pt]
-      \onslide<2->{\textbf{Direction.} Branch 3 points from part $\{\nd1, \nd2\}$ to part
-        $\{\nd3, \nd4, \nd5\}$. The cutset gets the \alert{same direction}: a branch counts
-        $+$ if it crosses that way, $-$ if against. Here 2, 4, 5 all cross that way:
+      \onslide<2->{\textbf{Direction.} Branch 3 \alert{leaves} the surface: from part
+        $\{\nd1, \nd2\}$ to part $\{\nd3, \nd4, \nd5\}$. So the cutset points \alert{out of the
+        surface}: $+$ for a branch leaving it, $-$ for one entering. Here 2, 4, 5 leave too:
         \[\Icol{i_3} + \Icol{i_2} + \Icol{i_4} + \Icol{i_5} = 0.\]}
     \end{column}
   \end{columns}
@@ -1022,30 +1042,61 @@
     \end{tabular}
   \end{center}
   \vfill
-  \onslide<2->
-  \begin{columns}[c,onlytextwidth]
-    \begin{column}{0.62\textwidth}
-      No drawing needed: works for \alert{nonplanar} graphs.\\[6pt]
-      It also fixes the \alert{separable} case met earlier: with this tree, the two
-      fundamental loops are the square and the triangle --- each a single loop.
-    \end{column}
-    \begin{column}{0.36\textwidth}
+  \begin{center}
+    \onslide<2->{No drawing needed: works for \alert{nonplanar} graphs.\\[6pt]}
+    \onslide<3->{It also works for \alert{separable} graphs. Example next.}
+  \end{center}
+  \vfill
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}[t]{Example: the separable graph}
+  \begin{columns}[T,onlytextwidth]
+    \begin{column}{0.4\textwidth}
       \centering
-      \begin{tikzpicture}[scale=0.75]
-        \coordinate (q1) at (0,2.4); \coordinate (q2) at (2.4,2.4);
-        \coordinate (q3) at (2.4,0); \coordinate (q4) at (0,0);
-        \coordinate (q5) at (1.5,1.75); \coordinate (q6) at (0.55,0.95);
-        \draw[ctree, line width=2.1pt] (q1) -- (q2) -- (q3) -- (q4);
-        \draw[black!75, thick] (q4) -- (q1);
-        \draw[ctree, line width=2.1pt] (q1) -- (q5) -- (q6);
-        \draw[black!75, thick] (q6) -- (q1);
-        \foreach \k/\pos in {1/above left, 2/above right, 3/below right, 4/below left,
-                             5/right, 6/below}
-          {\fill[metured] (q\k) circle (2.2pt); \node[nlab, \pos=2pt] at (q\k) {\k};}
-      \end{tikzpicture}
+      \begin{tikzpicture}[scale=1.3]
+        \useasboundingbox (-0.6,-0.6) rectangle (3.0,3.0);
+        \sepcoords
+        \only<1>{\sepgraph{gbr}{gbr}{gbr}{gbr}{gbr}{gbr}{gbr}}%
+        \only<2,5->{\septree}%
+        \only<3>{\sepgraph{hlbr}{hlbr}{hlbr}{hlbr}{faintbr}{faintbr}{faintbr}\loopcw[0.28]{1.75}{0.6}}%
+        \only<4>{\sepgraph{faintbr}{faintbr}{faintbr}{faintbr}{hlbr}{hlbr}{hlbr}\loopcw[0.2]{0.7}{1.72}}%
+      \end{tikzpicture}\\[4pt]
+      {\small $n = 6$, \ $b = 7$}
+    \end{column}
+    \begin{column}{0.58\textwidth}
+      \small
+      \only<1>{A square with a triangle inside, joined only at node \nd1.\\[6pt]
+        Separable: the mesh method did not work here.}%
+      \only<2>{Tree \textcolor{ctree}{$\{1, 2, 3, 5, 6\}$}: \ $n - 1 = 5$ branches.\\[4pt]
+        Co-tree $\{4, 7\}$: \ $b - n + 1 = 2$ branches.}%
+      \only<3-4>{\textbf{Fundamental loops} (KVL)\\[4pt]
+        \renewcommand{\arraystretch}{1.3}
+        \begin{tabular}{@{}c l l@{}}
+          co-tree br. & loop & KVL\\ \hline
+          4 & $\{4, 1, 2, 3\}$ & $\Vcol{v_4} + \Vcol{v_1} + \Vcol{v_2} + \Vcol{v_3} = 0$\\
+          \uncover<4->{7} & \uncover<4->{$\{7, 5, 6\}$} & \uncover<4->{$\Vcol{v_7} + \Vcol{v_5} + \Vcol{v_6} = 0$}
+        \end{tabular}\\[6pt]
+        \only<3>{The loop of 4 is the square.}\only<4>{The loop of 7 is the triangle.}}%
+      \only<5->{\textbf{Fundamental cutsets} (KCL)\\[4pt]
+        \renewcommand{\arraystretch}{1.2}
+        \begin{tabular}{@{}c l l@{}}
+          tree br. & cutset & KCL\\ \hline
+          1 & $\{1, 4\}$ & $\Icol{i_1} - \Icol{i_4} = 0$\\
+          2 & $\{2, 4\}$ & $\Icol{i_2} - \Icol{i_4} = 0$\\
+          3 & $\{3, 4\}$ & $\Icol{i_3} - \Icol{i_4} = 0$\\
+          5 & $\{5, 7\}$ & $\Icol{i_5} - \Icol{i_7} = 0$\\
+          6 & $\{6, 7\}$ & $\Icol{i_6} - \Icol{i_7} = 0$
+        \end{tabular}\\[6pt]
+        \onslide<6->{So $\Icol{i_1} = \Icol{i_2} = \Icol{i_3} = \Icol{i_4}$ and
+          $\Icol{i_5} = \Icol{i_6} = \Icol{i_7}$:\\
+          \alert{one current for the square, one for the triangle}.}}
     \end{column}
   \end{columns}
   \vfill
+  \begin{center}
+    \onslide<6->{5 KCL $+$ 2 KVL equations, all independent --- no problem at node \nd1.}
+  \end{center}
 \end{frame}
 
 %--------------------------------------------------------------
@@ -1089,13 +1140,7 @@
 \end{frame}
 
 %--------------------------------------------------------------
-\begin{frame}{Next lecture}
-  \vfill
-  \begin{center}
-  \begin{block}{Duality}
-    The dual of a planar graph, and the dual of a circuit.
-  \end{block}
-  \end{center}
+\begin{frame}
   \vfill
   \begin{center}
     {\Large\color{metured} Questions?}

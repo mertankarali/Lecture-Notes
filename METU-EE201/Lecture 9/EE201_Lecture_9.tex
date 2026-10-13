@@ -496,6 +496,22 @@
     branch & 1 & 2 & 3 & 4 & 5 & 6 & 7\\
     \Icol{current (A)} & \Icol{2} & \Icol{2} & \Icol{2} & \Icol{1} & \Icol{2} & \Icol{3} & \Icol{3}
   \end{tabular}}}
+%  The separable graph: a square with a triangle inside, attached at node 1 (6 nodes, 7 branches)
+\newcommand{\sepcoords}{%
+  \coordinate (q1) at (0,2.4); \coordinate (q2) at (2.4,2.4);
+  \coordinate (q3) at (2.4,0); \coordinate (q4) at (0,0);
+  \coordinate (q5) at (1.5,1.75); \coordinate (q6) at (0.55,0.95);}
+\newcommand{\sepnodes}{%
+  \foreach \k/\pos in {1/above left, 2/above right, 3/below right, 4/below left, 5/right, 6/below}
+    {\fill[metured] (q\k) circle (2.2pt); \node[nlab, \pos=2pt] at (q\k) {\k};}}
+%  #1 ... #7: styles of branches 1 ... 7
+\newcommand{\sepgraph}[7]{%
+  \sbranch{q1}{q2}{90}{1}{#1}  \sbranch{q2}{q3}{90}{2}{#2}  \sbranch{q3}{q4}{90}{3}{#3}
+  \sbranch{q4}{q1}{90}{4}{#4}  \sbranch{q5}{q6}{90}{6}{#6}
+  \draw[#5] (q1) -- (q5);  \node[blab] at (0.95,2.27) {5};
+  \draw[#7] (q6) -- (q1);  \node[blab] at (0.6,1.62) {7};
+  \sepnodes}
+\newcommand{\septree}{\sepgraph{treebr}{treebr}{treebr}{cotreebr}{treebr}{treebr}{cotreebr}}
 %  Circulation arrows for a fundamental loop, centred at (#2,#3), radius #1
 \newcommand{\loopcw}[3][0.3]{%
   \draw[cvolt, thick, -{Stealth[length=2mm]}] ($(#2,#3)+(150:#1)$)
@@ -702,9 +718,9 @@ Its direction is taken as the direction of $\beta$.
 \end{definitionbox}
 
 It has only one tree branch: every other tree branch lies inside one of the two parts, so it
-does not join them. Its direction is the way $\beta$ points, from one part to the other. A
-branch of the cutset counts $+$ in KCL if it crosses the same way as $\beta$, and $-$ if it
-crosses the other way.
+does not join them. For the direction, draw the closed surface around one part. If $\beta$
+leaves the surface, the cutset points out of the surface; if $\beta$ enters, it points in. In
+KCL a branch counts $+$ if it crosses the surface the same way as $\beta$, and $-$ otherwise.
 
 \begin{examplebox}[Example 9.3 --- fundamental cutsets and KCL]
 The graph $G$ has $n = 5$ nodes and $b = 7$ branches. Take the tree $\{1, 3, 6, 7\}$
@@ -835,23 +851,50 @@ co-tree branches & $b - n + 1$ & fundamental loops: the $b-n+1$ KVL equations\\
 \end{tabular}
 \end{center}
 No drawing is needed. This works for nonplanar graphs, and it is also the fix for separable
-graphs met earlier: the triangle inside a square, attached at one node. Pick a tree, for
-example the green one below. The two co-tree branches give two fundamental loops, the square
-and the triangle, and each is a single loop.
-\begin{center}
+graphs met earlier.
+
+\begin{examplebox}[Example 9.5 --- the separable graph]
+The square with the triangle inside, joined only at node \nd1: $n = 6$, $b = 7$. Take the
+tree $\{1, 2, 3, 5, 6\}$ (green, $n - 1 = 5$). The co-tree is $\{4, 7\}$ ($b - n + 1 = 2$).
+\begin{center}\small
+\renewcommand{\arraystretch}{1.15}\setlength{\tabcolsep}{3pt}
+\begin{minipage}[c]{0.24\linewidth}
+\centering
 \begin{tikzpicture}[scale=0.8]
-  \coordinate (q1) at (0,2.4); \coordinate (q2) at (2.4,2.4);
-  \coordinate (q3) at (2.4,0); \coordinate (q4) at (0,0);
-  \coordinate (q5) at (1.5,1.75); \coordinate (q6) at (0.55,0.95);
-  \draw[ctree, line width=2.1pt] (q1) -- (q2) -- (q3) -- (q4);
-  \draw[black!75, thick] (q4) -- (q1);
-  \draw[ctree, line width=2.1pt] (q1) -- (q5) -- (q6);
-  \draw[black!75, thick] (q6) -- (q1);
-  \foreach \k/\pos in {1/above left, 2/above right, 3/below right, 4/below left,
-                       5/right, 6/below}
-    {\fill[metured] (q\k) circle (2.2pt); \node[nlab, \pos=2pt] at (q\k) {\k};}
+  \sepcoords \septree
 \end{tikzpicture}
+\end{minipage}%
+\begin{minipage}[c]{0.34\linewidth}
+\centering
+\begin{tabular}{@{}c l l@{}}
+\toprule
+tree br. & cutset & KCL\\
+\midrule
+1 & $\{1, 4\}$ & $\Icol{i_1} - \Icol{i_4} = 0$\\
+2 & $\{2, 4\}$ & $\Icol{i_2} - \Icol{i_4} = 0$\\
+3 & $\{3, 4\}$ & $\Icol{i_3} - \Icol{i_4} = 0$\\
+5 & $\{5, 7\}$ & $\Icol{i_5} - \Icol{i_7} = 0$\\
+6 & $\{6, 7\}$ & $\Icol{i_6} - \Icol{i_7} = 0$\\
+\bottomrule
+\end{tabular}
+\end{minipage}%
+\begin{minipage}[c]{0.42\linewidth}
+\centering
+\begin{tabular}{@{}c l@{}}
+\toprule
+co-tree br. & KVL on its loop\\
+\midrule
+4 & $\Vcol{v_4} + \Vcol{v_1} + \Vcol{v_2} + \Vcol{v_3} = 0$\\
+7 & $\Vcol{v_7} + \Vcol{v_5} + \Vcol{v_6} = 0$\\
+\bottomrule
+\end{tabular}
+\end{minipage}
 \end{center}
+The two fundamental loops are the square and the triangle, each a single loop. The KCL
+equations give $\Icol{i_1} = \Icol{i_2} = \Icol{i_3} = \Icol{i_4}$ and
+$\Icol{i_5} = \Icol{i_6} = \Icol{i_7}$: one current for the square and one for the triangle.
+In total $5 + 2 = 7 = b$ independent equations. Node~\nd1 causes no trouble.
+\end{examplebox}
 
 %==============================================================
 \section{Looking ahead}
@@ -877,9 +920,6 @@ current, like mesh currents. Both work for any connected graph.
   \item No drawing is needed: this works for any connected graph, planar or not, separable
         or not.
 \end{itemize}
-
-\subsection*{Next lecture}
-\textbf{Duality}: the dual of a planar graph and the dual of a circuit.
 
 \subsection*{Reading}
 \begin{itemize}
