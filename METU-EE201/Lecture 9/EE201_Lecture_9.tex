@@ -514,6 +514,33 @@
   \draw[#6] (q6) -- (q1);  \node[blab] at (0.6,1.62) {6};
   \sepnodes}
 \newcommand{\septree}{\sepgraph{treebr}{treebr}{cotreebr}{treebr}{treebr}{cotreebr}}
+%  A 3 x 6 branch matrix of G: #1 name, #2 row labels, #3 rows, #4 extra TikZ code
+\newcommand{\brmat}[4]{%
+  \begin{tikzpicture}[baseline={([yshift=-0.6ex]#1.center)}]
+    \matrix (#1) [matrix of math nodes, ampersand replacement=\&,
+                  left delimiter={[}, right delimiter={]}, inner sep=1pt,
+                  column sep=0.45em,
+                  nodes={text width=1.35em, align=right, minimum height=1.25em,
+                         inner sep=1pt}] {#3};
+    \foreach \j in {1,...,6}
+      \node[font=\scriptsize, text=metugray, anchor=south east, inner sep=1pt]
+        at ([yshift=2pt]#1-1-\j.north east) {\j};
+    \foreach \lab [count=\i] in {#2}
+      \node[font=\scriptsize, text=metugray, left=9pt] at (#1.west |- #1-\i-1) {\lab};
+    #4
+  \end{tikzpicture}}
+%  Box around column #2 of matrix #1 (3 rows), colour #3
+\newcommand{\colbox}[3]{%
+  \draw[#3, thick, rounded corners=2pt]
+    ([xshift=-1pt, yshift=1pt]#1-1-#2.north west) rectangle ([xshift=1pt, yshift=-1pt]#1-3-#2.south east);}
+\newcommand{\Qrows}{%
+   1 \&  0 \& 0 \& 1 \& 1 \& 0\\
+   0 \&  1 \& 1 \& 1 \& 1 \& 0\\
+   0 \& -1 \& 0 \& 0 \& 0 \& 1\\}
+\newcommand{\Brows}{%
+   0 \& 1 \& -1 \& 0 \& 0 \& 1\\
+  -1 \& 0 \& -1 \& 1 \& 0 \& 0\\
+  -1 \& 0 \& -1 \& 0 \& 1 \& 0\\}
 %  Circulation arrows for a fundamental loop, centred at (#2,#3), radius #1
 \newcommand{\loopcw}[3][0.3]{%
   \draw[cvolt, thick, -{Stealth[length=2mm]}] ($(#2,#3)+(150:#1)$)
@@ -849,21 +876,56 @@ $\Vcol{v_4} = \Vcol{v_5} = 5$~V. So the $n - 1$ tree voltages fix every branch v
 node voltages.
 
 %==============================================================
-\section{Any connected graph}
+\section{Matrix form}
 
-The tree is the key, and every connected graph has one. So:
+The fundamental cutset equations can be collected in a matrix, like the incidence matrix.
+The \textbf{fundamental cutset matrix} $Q$ has one row per tree branch and one column per
+branch. An entry is $+1$ or $-1$ if the branch is in the cutset, in the same or the opposite
+direction, and $0$ otherwise. The \textbf{fundamental loop matrix} $B$ has one row per co-tree
+branch; an entry is $+1$ or $-1$ if the branch is in the loop, along or against its
+direction. For $G$, with tree $\{1, 3, 6\}$:
+\[
+  Q = \brmat{Qn}{1, 3, 6}{\Qrows}{\foreach \j in {1,3,6} {\colbox{Qn}{\j}{ctree}}}
+  \qquad
+  B = \brmat{Bn}{2, 4, 5}{\Brows}{\foreach \j in {2,4,5} {\colbox{Bn}{\j}{cvolt}}}
+\]
+KCL on the fundamental cutsets is $Q\Icol{\mathbf{i}} = \mathbf{0}$, and KVL on the
+fundamental loops is $B\Vcol{\mathbf{v}} = \mathbf{0}$. The tree columns of $Q$ and the
+co-tree columns of $B$ (boxed) form identity matrices, so the rows are independent.
+
+The transposes give the remarks above in one line each. With the co-tree currents
+$\Icol{\mathbf{i}_C} = [\Icol{i_2}\ \Icol{i_4}\ \Icol{i_5}]^T$ and the tree voltages
+$\Vcol{\mathbf{v}_T} = [\Vcol{v_1}\ \Vcol{v_3}\ \Vcol{v_6}]^T$,
+\[
+  \Icol{\mathbf{i}} = B^T\Icol{\mathbf{i}_C}, \qquad \Vcol{\mathbf{v}} = Q^T\Vcol{\mathbf{v}_T}.
+\]
+The first satisfies KCL for any $\Icol{\mathbf{i}_C}$, the second satisfies KVL for any
+$\Vcol{\mathbf{v}_T}$. Finally $QB^T = \mathbf{0}$: every row of $Q$ is orthogonal to every
+row of $B$.
+
 \begin{center}
 \renewcommand{\arraystretch}{1.25}
-\begin{tabular}{@{}l c l@{}}
+\begin{tabular}{@{}l l l@{}}
 \toprule
- & how many & gives\\
+ & incidence / mesh & fundamental cutset / loop\\
 \midrule
-tree branches   & $n - 1$     & fundamental cutsets: the $n-1$ KCL equations\\
-co-tree branches & $b - n + 1$ & fundamental loops: the $b-n+1$ KVL equations\\
+KCL & $A\Icol{\mathbf{i}} = \mathbf{0}$ & $Q\Icol{\mathbf{i}} = \mathbf{0}$\\
+KVL & $M\Vcol{\mathbf{v}} = \mathbf{0}$ & $B\Vcol{\mathbf{v}} = \mathbf{0}$\\
+$n-1$ voltages & $\Vcol{\mathbf{v}} = A^T\Vcol{\mathbf{e}}$ (node voltages)
+  & $\Vcol{\mathbf{v}} = Q^T\Vcol{\mathbf{v}_T}$ (tree voltages)\\
+$b-n+1$ currents & $\Icol{\mathbf{i}} = M^T\Icol{\mathbf{i}_M}$ (mesh currents)
+  & $\Icol{\mathbf{i}} = B^T\Icol{\mathbf{i}_C}$ (co-tree currents)\\
+orthogonality & $AM^T = \mathbf{0}$ & $QB^T = \mathbf{0}$\\
+works for & $A$: any; $M$: planar, nonseparable & any connected graph\\
 \bottomrule
 \end{tabular}
 \end{center}
-No drawing is needed. This works for nonplanar graphs, and it is also the fix for separable
+
+%==============================================================
+\section{Any connected graph}
+
+The tree is the key, and every connected graph has one. Its $n-1$ tree branches give the
+KCL equations, and its $b-n+1$ co-tree branches give the KVL equations. No drawing is needed. This works for nonplanar graphs, and it is also the fix for separable
 graphs met earlier.
 
 \begin{examplebox}[Example 9.5 --- the separable graph]
@@ -910,10 +972,9 @@ for each loop. In total $4 + 2 = 6 = b$ independent equations. Node~\nd1 causes 
 %==============================================================
 \section{Looking ahead}
 
-Node voltages and mesh currents were good unknowns: few, and one law held automatically.
-Trees give the general version. The $n-1$ \textbf{tree branch voltages} fix every branch
-voltage, like node voltages. The $b-n+1$ \textbf{co-tree branch currents} fix every branch
-current, like mesh currents. Both work for any connected graph.
+A circuit has $2b$ branch unknowns. A tree reduces them: the $n-1$ \textbf{tree branch
+voltages} fix every branch voltage (like node voltages), and the $b-n+1$ \textbf{co-tree branch
+currents} fix every branch current (like mesh currents), for any connected graph.
 
 %==============================================================
 \section*{Summary}
@@ -928,8 +989,9 @@ current, like mesh currents. Both work for any connected graph.
         These give $n-1$ independent KCL equations. Knowing the co-tree currents gives all branch currents.
   \item Each co-tree branch has a \textbf{fundamental loop}: it and a tree path. These give
         $b-n+1$ independent KVL equations. Knowing the tree voltages gives all branch voltages.
-  \item No drawing is needed: this works for any connected graph, planar or not, separable
-        or not.
+  \item In matrix form: $Q\Icol{\mathbf{i}} = \mathbf{0}$, $B\Vcol{\mathbf{v}} = \mathbf{0}$,
+        $\Icol{\mathbf{i}} = B^T\Icol{\mathbf{i}_C}$, $\Vcol{\mathbf{v}} = Q^T\Vcol{\mathbf{v}_T}$,
+        for any connected graph.
 \end{itemize}
 
 \subsection*{Reading}
@@ -938,11 +1000,8 @@ current, like mesh currents. Both work for any connected graph.
         fundamental loops.
   \item Lecture notes and videos of Prof.\ Emre Tuna,
         \href{https://users.metu.edu.tr/etuna/ee201/}{\texttt{users.metu.edu.tr/etuna/ee201}}
-        --- notes pp.~17--18; Lecture~8 video: nonplanar circuits $15{:}51$, tree $16{:}10$,
-        example $18{:}01$, cutset $22{:}33$, example $25{:}32$, fundamental cutset $30{:}35$,
-        example and co-tree $32{:}55$, KCL on fundamental cutsets $38{:}32$, remark on co-tree
-        currents $41{:}48$, fundamental loop $43{:}51$, example $47{:}07$, remark on tree
-        voltages $55{:}38$.
+        --- notes pp.~17--18; Lecture~8 video: trees $16{:}10$, cutsets $22{:}33$,
+        fundamental cutsets $30{:}35$, fundamental loops $43{:}51$.
 \end{itemize}
 
 \end{document}
