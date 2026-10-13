@@ -749,14 +749,26 @@
           \eightsub{backbr}{plainbr}{cutaway}{cutaway}{cutaway}{cutaway}{plainbr}}
         \only<4>{\pieceLTM \piecePR
           \eightsub{plainbr}{plainbr}{plainbr}{cutaway}{cutaway}{cutaway}{plainbr}}
+        \only<5>{\eightsub{plainbr}{plainbr}{plainbr}{cutbr}{plainbr}{cutbr}{plainbr}}
+        \only<6>{\eightsub{plainbr}{plainbr}{plainbr}{cutaway}{plainbr}{cutaway}{plainbr}}
+        \only<7>{\piecePR[fill=none]
+          \eightsub{plainbr}{plainbr}{plainbr}{cutbr}{cutbr}{cutbr}{plainbr}}
       \end{tikzpicture}
     \end{column}
     \begin{column}{0.46\textwidth}
+      \only<1-4>{%
       $C = \{\textcolor{cvolt}{1, 3, 4, 5, 6}\}$: a cutset?\\[8pt]
       \onslide<2->{(1) Remove all five: \alert{three} pieces. \yes\\[6pt]}
       \onslide<3->{(2) Put back \textcolor{ctree}{1}: still unconnected. \no\\[8pt]
         $\Rightarrow$ \alert{not} a cutset: some branches are not needed.\\[8pt]}
-      \onslide<4->{Branches 1, 3 are extra: $\{4, 5, 6\}$ alone is a cutset.}
+      \onslide<4->{Branches 1, 3 are extra: $\{4, 5, 6\}$ alone is a cutset.}}%
+      \only<5-7>{%
+      $C = \{\textcolor{cvolt}{4, 6}\}$: a cutset?\\[8pt]
+      \onslide<6->{(1) Remove both: still \alert{one} piece --- branch 5 still joins \nd3
+        and \nd4. \no\\[6pt]
+        $\Rightarrow$ \alert{not} a cutset: a branch is missing.\\[8pt]}
+      \onslide<7->{Branches 4 and 5 both join \nd3 and \nd4 (\alert{parallel}): a surface
+        that crosses one crosses the other. Here the surface gives $\{4, 5, 6\}$.}}
     \end{column}
   \end{columns}
 \end{frame}

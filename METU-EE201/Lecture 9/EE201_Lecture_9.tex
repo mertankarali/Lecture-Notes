@@ -657,6 +657,11 @@ piece crosses exactly the branches of the cutset.
 The set $\{1, 3, 4, 5, 6\}$ is \emph{not} a cutset. Removing it leaves three pieces. With
 branch~1 put back, the graph is still unconnected, so condition~2 fails. Branches 1 and 3 are
 not needed: $\{4, 5, 6\}$ alone is a cutset.
+
+The set $\{4, 6\}$ is not a cutset either, but for the opposite reason. Removing it leaves
+the graph connected, since branch~5 still joins nodes \nd3 and \nd4, so condition~1 fails.
+Branches 4 and 5 are parallel: both join \nd3 and \nd4. A closed surface that crosses one of
+them crosses the other too. So parallel branches are in a cutset together or not at all.
 \end{examplebox}
 
 \textbf{KCL on a cutset.} A cutset splits the graph into two parts. A closed surface around
