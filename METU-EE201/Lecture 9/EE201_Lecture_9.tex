@@ -462,6 +462,7 @@
   \foreach \p in {eL,eT,eM,eP,eR} \fill[metured] (\p) circle (2.2pt);}
 %  The figure-eight graph with numbered nodes and a style for each branch (#1 ... #7)
 \tikzset{cutbr/.style={cvolt, line width=2.2pt},
+  cutaway/.style={draw=none, every node/.style={opacity=0}},
   piece/.style={fill=cvolt!9, draw=cvolt, thick, dash pattern=on 3pt off 2pt}}
 \newcommand{\eightnodes}{%
   \foreach \p/\k/\pos in {eL/1/left, eT/2/above, eM/3/below, eP/4/above, eR/5/right}
@@ -608,36 +609,36 @@ Let $G$ be a connected graph. A set $C$ of branches is a \textbf{cutset} if
 The second condition makes the cutset minimal: no branch in it is unnecessary.
 
 \begin{examplebox}[Example 9.2 --- cutsets of a figure-eight graph]
-In each panel the removed branches are dashed; look at what is left.
+In each panel the removed branches are deleted; look at what is left.
 \begin{center}
 \tikzset{backbr/.style={ctree, line width=2.2pt}}
 \begin{tabular}{@{}c@{\hspace{6mm}}c@{}}
 \begin{tikzpicture}[scale=0.62]
   \useasboundingbox (-3.75,-1.0) rectangle (3.75,1.75);
-  \eightcoords \pieceP \eightsub{plainbr}{plainbr}{plainbr}{gone}{gone}{plainbr}{gone}
+  \eightcoords \pieceP \eightsub{plainbr}{plainbr}{plainbr}{cutaway}{cutaway}{plainbr}{cutaway}
 \end{tikzpicture}
 &
 \begin{tikzpicture}[scale=0.62]
   \useasboundingbox (-3.75,-1.0) rectangle (3.75,1.75);
-  \eightcoords \pieceLT \eightsub{gone}{plainbr}{gone}{plainbr}{plainbr}{plainbr}{plainbr}
+  \eightcoords \pieceLT \eightsub{cutaway}{plainbr}{cutaway}{plainbr}{plainbr}{plainbr}{plainbr}
 \end{tikzpicture}\\[-1pt]
 {\small $C_1 = \{4, 5, 7\}$: node \nd4 cut off} & {\small $C_2 = \{1, 3\}$: nodes \nd1, \nd2 cut off}\\[8pt]
 \begin{tikzpicture}[scale=0.62]
   \useasboundingbox (-3.75,-1.0) rectangle (3.75,1.75);
-  \eightcoords \pieceR \eightsub{plainbr}{plainbr}{plainbr}{plainbr}{plainbr}{gone}{gone}
+  \eightcoords \pieceR \eightsub{plainbr}{plainbr}{plainbr}{plainbr}{plainbr}{cutaway}{cutaway}
 \end{tikzpicture}
 &
 \begin{tikzpicture}[scale=0.62]
   \useasboundingbox (-3.75,-1.0) rectangle (3.75,1.75);
-  \eightcoords \pieceLTM \piecePR \eightsub{backbr}{plainbr}{gone}{gone}{gone}{gone}{plainbr}
+  \eightcoords \pieceLTM \piecePR \eightsub{backbr}{plainbr}{cutaway}{cutaway}{cutaway}{cutaway}{plainbr}
 \end{tikzpicture}\\[-1pt]
 {\small $C_3 = \{6, 7\}$: node \nd5 cut off} & {\small $\{1, 3, 4, 5, 6\}$ with \textcolor{ctree}{1} put back: still two pieces}
 \end{tabular}
 \end{center}
 For $C_1$: removing branches 4, 5, 7 cuts off node~\nd4, so condition~1 holds. Putting back
 any one of them reaches node~\nd4 again, so condition~2 holds. $C_2$ and $C_3$ are checked
-the same way. In each case the dashed closed surface around the cut-off piece crosses
-exactly the branches of the cutset.
+the same way. With all branches back, the dashed closed surface around the cut-off
+piece crosses exactly the branches of the cutset.
 
 The set $\{1, 3, 4, 5, 6\}$ is \emph{not} a cutset. Removing it leaves three pieces. With
 branch~1 put back, the graph is still unconnected, so condition~2 fails. Branches 1 and 3 are
