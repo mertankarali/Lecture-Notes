@@ -547,7 +547,7 @@ again, with its crossings; from the side, the heights show.
 \end{center}
 
 %==============================================================
-\section{Nonseparable graphs}
+\section{Nonseparable graphs}\label{sec:nonsep}
 
 \begin{definitionbox}{Nonseparable graph}
 A connected graph is \textbf{nonseparable} if it stays connected after removing any one
@@ -599,6 +599,61 @@ The number of inner meshes is
 \]
 the same as the number of independent KVL equations found earlier. A mesh is a loop, so
 each mesh gives one KVL equation, and these $\ell$ equations are independent.
+
+\subsection{Why planar and nonseparable?}
+
+\textbf{Planar.} A mesh is a region of a drawing with no crossings. A nonplanar graph cannot
+be drawn without crossings, so it has no meshes. Its KVL equations are found another way,
+with trees, later on.
+
+\textbf{Nonseparable.} This is a safe, conservative assumption: sufficient, not strictly
+necessary. It guarantees that every mesh is bounded by a single loop. A separable graph may
+or may not satisfy this, as the two examples below show.
+
+\begin{center}
+\begin{tikzpicture}[scale=0.8]
+  % (a) two triangles sharing a node
+  \begin{scope}
+    \coordinate (p1) at (1.6,1.2); \coordinate (p2) at (0,2.4); \coordinate (p3) at (0,0);
+    \coordinate (p4) at (3.2,2.4); \coordinate (p5) at (3.2,0);
+    \fill[ccur!16] (p1) -- (p2) -- (p3) -- cycle;
+    \fill[cvolt!22] (p1) -- (p4) -- (p5) -- cycle;
+    \draw[black!75, thick] (p1) -- (p2) -- (p3) -- cycle;
+    \draw[black!75, thick] (p1) -- (p4) -- (p5) -- cycle;
+    \foreach \k/\pos in {1/above, 2/above left, 3/below left, 4/above right, 5/below right}
+      {\fill[metured] (p\k) circle (2.2pt); \node[nlab, \pos=2pt] at (p\k) {\k};}
+    \meshcw[0.24]{0.55}{1.2}{1} \meshcw[0.24]{2.65}{1.2}{2}
+    \node[ttl, align=center] at (1.6,-0.95) {(a) separable,\\ each mesh is one loop};
+  \end{scope}
+  % (b) square with a triangle inside
+  \begin{scope}[xshift=5.8cm]
+    \coordinate (q1) at (0,2.4); \coordinate (q2) at (2.4,2.4);
+    \coordinate (q3) at (2.4,0); \coordinate (q4) at (0,0);
+    \coordinate (q5) at (1.5,1.75); \coordinate (q6) at (0.55,0.95);
+    \fill[ccur!16] (q1) -- (q2) -- (q3) -- (q4) -- cycle;
+    \fill[cvolt!22] (q1) -- (q5) -- (q6) -- cycle;
+    \draw[black!75, thick] (q1) -- (q2) -- (q3) -- (q4) -- cycle;
+    \draw[black!75, thick] (q1) -- (q5) -- (q6) -- cycle;
+    \foreach \k/\pos in {1/above left, 2/above right, 3/below right, 4/below left,
+                         5/right, 6/below}
+      {\fill[metured] (q\k) circle (2.2pt); \node[nlab, \pos=2pt] at (q\k) {\k};}
+    \node[font=\footnotesize, text=ccur, align=center] at (1.75,0.6) {shaded\\ region};
+    \node[ttl, align=center] at (1.2,-0.95) {(b) separable, shaded\\ region is not one loop};
+  \end{scope}
+\end{tikzpicture}
+\end{center}
+
+\begin{itemize}
+  \item \textbf{(a) Two triangles sharing \nd1.} Removing \nd1 splits the graph, so it is
+        separable. Still, each mesh is a triangle, a single loop. The meshes work directly:
+        $\ell = 2 = b - n + 1 = 6 - 5 + 1$.
+  \item \textbf{(b) A triangle inside a square, attached at \nd1.} Again \nd1 is a
+        \textbf{cut node}. The shaded region is bounded by the square \emph{and} the
+        triangle: two loops that touch only at \nd1. It is not a single loop, so it is not a
+        proper mesh.
+\end{itemize}
+So the nonseparable assumption rules out case (b). Graphs like (b) can still be handled ---
+there is a simple fix, which we will see in a coming lecture.
 
 %==============================================================
 \section{The mesh matrix}

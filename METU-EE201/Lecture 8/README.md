@@ -37,6 +37,9 @@ Following pp. 15–16 of Prof. Emre Tuna's notes and his recorded Lecture 7 on
 3. **Nonseparable graphs** (33:02) — definition; two triangles sharing a node (separable)
    vs. the bridge graph (nonseparable)
 4. **Meshes** — inner meshes of a planar drawing, clockwise by convention; ℓ = b − n + 1
+   *Why planar and nonseparable?* (notes only): a nonplanar graph has no meshes; in a separable
+   graph a mesh may be bounded by two loops touching at a cut node — split at the cut node and
+   use meshes piece by piece (example: square with a triangle attached inside at one node)
 5. **The mesh matrix** (34:41–38:30) — M (ℓ × b): +1 along, −1 against; Example 8.2 builds M
    for the bridge mesh by mesh; KVL as M v = 0
 6. **Mesh currents** (47:10–48:43) — i = Mᵀ i_M; Example 8.3 for the bridge; remarks: KCL puts no
