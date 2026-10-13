@@ -714,9 +714,12 @@ Fix a tree $T$ of a connected graph $G$. The branches of $G$ that are not in $T$
 parts. The branches of $G$ that join these two parts form a cutset.
 
 \begin{definitionbox}{Fundamental cutset}
-The \textbf{fundamental cutset} of a tree branch $\beta$ is $\beta$ together with the co-tree
-branches that join the two parts of the tree. It contains exactly one tree branch, $\beta$.
-Its direction is taken as the direction of $\beta$.
+The \textbf{fundamental cutset} of a tree branch $\beta$ is
+\begin{itemize}
+  \item $\beta$ plus the co-tree branches that join the two parts of the tree;
+  \item it contains only one tree branch, $\beta$;
+  \item its direction is that of $\beta$.
+\end{itemize}
 \end{definitionbox}
 
 It has only one tree branch: every other tree branch lies inside one of the two parts, so it
@@ -764,25 +767,32 @@ A tree gives $n-1$ fundamental cutsets, so $n-1$ KCL equations. They are indepen
 equation contains its own tree branch current, which appears in no other equation.
 \end{ideabox}
 
-\textbf{Remark.} Each equation has one tree branch current. So once the co-tree branch
-currents are known, the tree branch currents follow. For $G$:
+\textbf{Remark: co-tree currents are enough.} Suppose only the co-tree currents are known.
+Each fundamental cutset has one tree branch, so its KCL can be solved for that tree branch
+current. For $G$:
 \[
   \Icol{i_1} = -\Icol{i_4} - \Icol{i_5}, \quad
   \Icol{i_3} = -\Icol{i_2} - \Icol{i_4} - \Icol{i_5}, \quad
   \Icol{i_6} = \Icol{i_2} .
 \]
+For example, $\Icol{i_2} = 1$, $\Icol{i_4} = 1$, $\Icol{i_5} = 2$~A give $\Icol{i_1} = -3$,
+$\Icol{i_3} = -4$, $\Icol{i_6} = 1$~A. So the $b - n + 1$ co-tree currents fix every branch
+current, like mesh currents.
 
 %==============================================================
 \section{Fundamental loops}
 
-\begin{definitionbox}{Fundamental loop}
-Let $T$ be a tree of a connected graph $G$. Each co-tree branch defines exactly one loop that
-contains that co-tree branch and no other co-tree branch. It is the \textbf{fundamental loop}
-of that co-tree branch. Its direction is taken as the direction of the co-tree branch.
-\end{definitionbox}
+Fix a tree $T$ of a connected graph $G$ and pick one co-tree branch. Adding it to the tree
+closes exactly one loop: the co-tree branch plus the tree path between its two ends.
 
-Adding one co-tree branch to the tree closes exactly one loop: the co-tree branch plus the
-tree path between its two ends.
+\begin{definitionbox}{Fundamental loop}
+The \textbf{fundamental loop} of a co-tree branch is
+\begin{itemize}
+  \item that co-tree branch plus the tree path between its ends;
+  \item it contains only one co-tree branch;
+  \item its direction is that of the co-tree branch.
+\end{itemize}
+\end{definitionbox}
 
 \begin{examplebox}[Example 9.4 --- fundamental loops and KVL]
 Same graph and tree as in Example~9.3. Each co-tree branch closes one loop. Walk it in the
@@ -811,7 +821,7 @@ walk, $-$ if against.
 \begin{tabular}[t]{@{}c@{}}
 \begin{tikzpicture}[scale=0.78]
   \tgcoords \tgraph{hlbr}{faintbr}{hlbr}{faintbr}{hlbr}{faintbr}
-  \loopcw[0.2]{1.25}{0.8}
+  \loopcw[0.25]{0}{1.2}
 \end{tikzpicture}\\[-2pt]
 {\scriptsize\bfseries\color{metugray} loop of 5: $\{5, 3, 1\}$}\\[1pt]
 {\small $\Vcol{v_5} - \Vcol{v_3} - \Vcol{v_1} = 0$}
@@ -826,13 +836,17 @@ independent: each equation contains its own co-tree branch voltage, which appear
 other equation.
 \end{ideabox}
 
-\textbf{Remark.} Each equation has one co-tree branch voltage. So once the tree branch
-voltages are known, the co-tree branch voltages follow. For $G$:
+\textbf{Remark: tree voltages are enough.} Suppose only the tree voltages are known. Each
+fundamental loop has one co-tree branch, so its KVL can be solved for that co-tree branch
+voltage. For $G$:
 \[
   \Vcol{v_2} = \Vcol{v_3} - \Vcol{v_6}, \quad
   \Vcol{v_4} = \Vcol{v_1} + \Vcol{v_3}, \quad
   \Vcol{v_5} = \Vcol{v_1} + \Vcol{v_3} .
 \]
+For example, $\Vcol{v_1} = 2$, $\Vcol{v_3} = 3$, $\Vcol{v_6} = 1$~V give $\Vcol{v_2} = 2$,
+$\Vcol{v_4} = \Vcol{v_5} = 5$~V. So the $n - 1$ tree voltages fix every branch voltage, like
+node voltages.
 
 %==============================================================
 \section{Any connected graph}
@@ -911,9 +925,9 @@ current, like mesh currents. Both work for any connected graph.
   \item A \textbf{cutset} is a minimal set of branches whose removal cuts the graph in two.
         KCL holds on every cutset: it is KCL on a closed surface.
   \item Each tree branch has a \textbf{fundamental cutset}: it and some co-tree branches.
-        These give $n-1$ independent KCL equations. Co-tree currents fix the tree currents.
+        These give $n-1$ independent KCL equations. Knowing the co-tree currents gives all branch currents.
   \item Each co-tree branch has a \textbf{fundamental loop}: it and a tree path. These give
-        $b-n+1$ independent KVL equations. Tree voltages fix the co-tree voltages.
+        $b-n+1$ independent KVL equations. Knowing the tree voltages gives all branch voltages.
   \item No drawing is needed: this works for any connected graph, planar or not, separable
         or not.
 \end{itemize}

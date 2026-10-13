@@ -865,7 +865,7 @@
   \begin{columns}[T,onlytextwidth]
     \begin{column}{0.46\textwidth}
       \centering
-      \begin{tikzpicture}[scale=1.0]
+      \begin{tikzpicture}[scale=0.85]
         \useasboundingbox (-2.75,-0.75) rectangle (2.75,3.15);
         \tgcoords
         \fill[partfill] (0,1.8) ellipse (1.55 and 0.5);
@@ -882,21 +882,25 @@
               ({1.8*cos(\t)},{1.8+0.8*sin(\t)}) -- ++({0.4*\nx/\nn},{0.4*\ny/\nn});}
           \node[font=\scriptsize, text=cvolt] at (0.9,3.0) {cutset direction: out};
         \end{scope}
-      \end{tikzpicture}\\[8pt]
-      \onslide<3->{%
-      \begin{block}{Fundamental cutset of $\beta$}
-        \small $\beta$ plus the co-tree branches that join the two parts of the tree. Its only
-        tree branch is $\beta$; its direction is the direction of $\beta$.
+      \end{tikzpicture}\\[2pt]
+      \onslide<4->{%
+      \begin{block}{Fundamental cutset}
+        \small
+        \begin{itemize}
+          \item the tree branch $+$ the co-tree branches joining the two parts
+          \item only \alert{one} tree branch in it
+          \item direction: that of the tree branch
+        \end{itemize}
       \end{block}}
     \end{column}
     \begin{column}{0.52\textwidth}
-      Cutset of 3: $\{3, 2, 4, 5\}$\\[6pt]
+      Cutset of 3: $\{3, 2, 4, 5\}$\\[4pt]
       \textbf{One tree branch.} Only \textcolor{ctree}{3} is a tree branch; 2, 4, 5 are
-      co-tree branches. Every other tree branch (1, 6) lies \alert{inside one part}, so it
-      does not join the parts.\\[8pt]
-      \onslide<2->{\textbf{Direction.} Branch 3 \alert{leaves} the surface: from part
-        $\{\nd1, \nd2\}$ to part $\{\nd3, \nd4\}$. So the cutset points \alert{out of the
-        surface}: $+$ for a branch leaving it, $-$ for one entering. Here 2, 4, 5 leave too:
+      co-tree branches. The other tree branches (1, 6) lie \alert{inside one part}.\\[5pt]
+      \onslide<2->{\textbf{Direction.} Branch 3 \alert{leaves} the surface, from part
+        $\{\nd1, \nd2\}$ to part $\{\nd3, \nd4\}$: the cutset points \alert{out}.\\[5pt]}
+      \onslide<3->{\textbf{KCL.} Branch $k$ carries current \Icol{$i_k$} along its arrow.
+        KCL on the surface: $+$ leaving, $-$ entering. Branches 2, 4, 5 leave too:
         \[\Icol{i_3} + \Icol{i_2} + \Icol{i_4} + \Icol{i_5} = 0.\]}
     \end{column}
   \end{columns}
@@ -924,11 +928,13 @@
     \end{column}
     \begin{column}{0.54\textwidth}
       \small
-      Remove one tree branch: the tree falls in two parts. The fundamental cutset joins them.
+      For each tree branch: its fundamental cutset, and \alert{KCL on that cutset}
+      (branch currents \Icol{$i_k$} along the arrows; $+$ if a branch crosses the surface the
+      same way as the tree branch, $-$ if not).
       \\[6pt]
       \renewcommand{\arraystretch}{1.3}
       \begin{tabular}{@{}c l l@{}}
-        tree br. & cutset & KCL\\ \hline
+        tree br. & cutset & KCL on it\\ \hline
         \uncover<2->{1} & \uncover<2->{$\{1, 4, 5\}$}    & \uncover<2->{$\Icol{i_1} + \Icol{i_4} + \Icol{i_5} = 0$}\\
         \uncover<3->{3} & \uncover<3->{$\{3, 2, 4, 5\}$} & \uncover<3->{$\Icol{i_3} + \Icol{i_2} + \Icol{i_4} + \Icol{i_5} = 0$}\\
         \uncover<4->{6} & \uncover<4->{$\{6, 2\}$}       & \uncover<4->{$\Icol{i_6} - \Icol{i_2} = 0$}
@@ -940,38 +946,69 @@
 \end{frame}
 
 %--------------------------------------------------------------
-\begin{frame}{Co-tree currents fix the tree currents}
-  \vfill
-  \begin{center}
-    Each fundamental cutset has \alert{one} tree branch. Solve for it:
-  \end{center}
-  \vfill
-  \[
-    \Icol{i_1} = -\Icol{i_4} - \Icol{i_5}, \qquad
-    \Icol{i_3} = -\Icol{i_2} - \Icol{i_4} - \Icol{i_5}, \qquad
-    \Icol{i_6} = \Icol{i_2}
-  \]
-  \vfill
-  \begin{center}
-    Know the $b - n + 1$ co-tree currents $\Rightarrow$ know all branch currents.
-  \end{center}
-  \vfill
+\begin{frame}[t]{Co-tree currents are enough}
+  \begin{columns}[T,onlytextwidth]
+    \begin{column}{0.4\textwidth}
+      \centering
+      \begin{tikzpicture}[scale=0.85]
+        \useasboundingbox (-2.6,-0.75) rectangle (2.5,2.75);
+        \tgcoords
+        \tgraph{treebr}{gbr, ccur, line width=1.6pt}{treebr}{gbr, ccur, line width=1.6pt}{gbr, ccur, line width=1.6pt}{treebr}
+      \end{tikzpicture}\\[2pt]
+      {\small tree \textcolor{ctree}{$\{1, 3, 6\}$}, \ co-tree \Icol{$\{2, 4, 5\}$}}
+    \end{column}
+    \begin{column}{0.58\textwidth}
+      \textbf{Question.} We know only the \Icol{co-tree} currents $\Icol{i_2}, \Icol{i_4},
+      \Icol{i_5}$. Can we find all the other currents?\\[8pt]
+      \onslide<2->{Each fundamental cutset has \alert{one} tree branch. Solve its KCL for
+        that current:
+        \[\Icol{i_1} = -\Icol{i_4} - \Icol{i_5}, \quad
+          \Icol{i_3} = -\Icol{i_2} - \Icol{i_4} - \Icol{i_5}, \quad
+          \Icol{i_6} = \Icol{i_2}\]}
+      \onslide<3->{For example $\Icol{i_2} = 1$, $\Icol{i_4} = 1$, $\Icol{i_5} = 2$ A gives
+        \[\Icol{i_1} = -3, \quad \Icol{i_3} = -4, \quad \Icol{i_6} = 1 \text{ A}.\]}
+      \onslide<4->{\alert{Yes:} the $b - n + 1$ co-tree currents fix every branch current
+        --- the same role as mesh currents.}
+    \end{column}
+  \end{columns}
 \end{frame}
 
 %--------------------------------------------------------------
-\begin{frame}{Fundamental loops}
-  \vfill
-  \begin{block}{Fundamental loop}
-    Each co-tree branch closes exactly one loop with the tree: that co-tree branch plus the tree
-    path between its ends. It is the fundamental loop of that co-tree branch. Its direction is
-    that of the co-tree branch.
-  \end{block}
-  \vfill
-  \begin{center}
-    KVL around it: $+\Vcol{v_k}$ if the arrow of branch $k$ points along the walk, $-\Vcol{v_k}$ if
-    against.
-  \end{center}
-  \vfill
+\begin{frame}[t]{Fundamental loops}
+  \begin{columns}[T,onlytextwidth]
+    \begin{column}{0.44\textwidth}
+      \centering
+      \begin{tikzpicture}[scale=0.85]
+        \useasboundingbox (-2.6,-0.75) rectangle (2.5,2.75);
+        \tgcoords
+        \only<1>{\tgtree}%
+        \only<2>{\tgraph{treebr}{faintbr}{treebr}{hlbr}{faintbr}{treebr}}%
+        \only<3->{\tgraph{hlbr}{faintbr}{hlbr}{hlbr}{faintbr}{faintbr}}%
+        \only<4->{\loopcw{0}{1.15}}%
+      \end{tikzpicture}\\[4pt]
+      \onslide<6->{%
+      \begin{block}{Fundamental loop}
+        \small
+        \begin{itemize}
+          \item the co-tree branch $+$ the tree path between its ends
+          \item only \alert{one} co-tree branch in it
+          \item direction: that of the co-tree branch
+        \end{itemize}
+      \end{block}}
+    \end{column}
+    \begin{column}{0.54\textwidth}
+      \begin{enumerate}\itemsep3pt
+        \item<1-> Fix a \alert{tree} (green): $\{1, 3, 6\}$. Co-tree: $\{2, 4, 5\}$.
+        \item<2-> Pick one \alert{co-tree} branch, e.g.\ \textcolor{cvolt}{4}.
+        \item<3-> Add it to the tree: it closes \alert{exactly one loop}, branch 4 plus the
+          tree path between its ends (3 and 1).
+        \item<4-> This loop $\{\textcolor{cvolt}{4, 3, 1}\}$ is the \alert{fundamental loop}
+          of 4. Its direction is that of branch 4.
+        \item<5-> KVL around it: $+\Vcol{v_k}$ along an arrow, $-\Vcol{v_k}$ against:
+          \[\Vcol{v_4} - \Vcol{v_3} - \Vcol{v_1} = 0.\]
+      \end{enumerate}
+    \end{column}
+  \end{columns}
 \end{frame}
 
 %--------------------------------------------------------------
@@ -986,15 +1023,18 @@
         \only<1>{\tgtree}%
         \only<2>{\tgraph{faintbr}{hlbr}{hlbr}{faintbr}{faintbr}{hlbr}\loopccw{-1}{0.6}}%
         \only<3>{\tgraph{hlbr}{faintbr}{hlbr}{hlbr}{faintbr}{faintbr}\loopcw{0}{1.15}}%
-        \only<4->{\tgraph{hlbr}{faintbr}{hlbr}{faintbr}{hlbr}{faintbr}\loopcw[0.2]{1.25}{0.8}}%
+        \only<4->{\tgraph{hlbr}{faintbr}{hlbr}{faintbr}{hlbr}{faintbr}\loopcw[0.25]{0}{1.2}}%
       \end{tikzpicture}\\[2pt]
       {\small tree $\{1, 3, 6\}$, co-tree $\{2, 4, 5\}$}
     \end{column}
     \begin{column}{0.54\textwidth}
       \small
+      For each co-tree branch: its fundamental loop, and \alert{KVL around it} (walk in the
+      direction of the co-tree branch; $+\Vcol{v_k}$ along an arrow, $-\Vcol{v_k}$ against).
+      \\[6pt]
       \renewcommand{\arraystretch}{1.35}
       \begin{tabular}{@{}c l l@{}}
-        co-tree br. & loop & KVL\\ \hline
+        co-tree br. & loop & KVL around it\\ \hline
         \uncover<2->{2} & \uncover<2->{$\{2, 6, 3\}$}    & \uncover<2->{$\Vcol{v_2} + \Vcol{v_6} - \Vcol{v_3} = 0$}\\
         \uncover<3->{4} & \uncover<3->{$\{4, 3, 1\}$}    & \uncover<3->{$\Vcol{v_4} - \Vcol{v_3} - \Vcol{v_1} = 0$}\\
         \uncover<4->{5} & \uncover<4->{$\{5, 3, 1\}$} & \uncover<4->{$\Vcol{v_5} - \Vcol{v_3} - \Vcol{v_1} = 0$}
@@ -1006,22 +1046,31 @@
 \end{frame}
 
 %--------------------------------------------------------------
-\begin{frame}{Tree voltages fix the co-tree voltages}
-  \vfill
-  \begin{center}
-    Each fundamental loop has \alert{one} co-tree branch. Solve for it:
-  \end{center}
-  \vfill
-  \[
-    \Vcol{v_2} = \Vcol{v_3} - \Vcol{v_6}, \qquad
-    \Vcol{v_4} = \Vcol{v_1} + \Vcol{v_3}, \qquad
-    \Vcol{v_5} = \Vcol{v_1} + \Vcol{v_3}
-  \]
-  \vfill
-  \begin{center}
-    Know the $n - 1$ tree voltages $\Rightarrow$ know all branch voltages.
-  \end{center}
-  \vfill
+\begin{frame}[t]{Tree voltages are enough}
+  \begin{columns}[T,onlytextwidth]
+    \begin{column}{0.4\textwidth}
+      \centering
+      \begin{tikzpicture}[scale=0.85]
+        \useasboundingbox (-2.6,-0.75) rectangle (2.5,2.75);
+        \tgcoords
+        \tgraph{gbr, cvolt, line width=1.6pt}{faintbr}{gbr, cvolt, line width=1.6pt}{faintbr}{faintbr}{gbr, cvolt, line width=1.6pt}
+      \end{tikzpicture}\\[2pt]
+      {\small tree \Vcol{$\{1, 3, 6\}$}, \ co-tree $\{2, 4, 5\}$}
+    \end{column}
+    \begin{column}{0.58\textwidth}
+      \textbf{Question.} We know only the \Vcol{tree} voltages $\Vcol{v_1}, \Vcol{v_3},
+      \Vcol{v_6}$. Can we find all the other voltages?\\[8pt]
+      \onslide<2->{Each fundamental loop has \alert{one} co-tree branch. Solve its KVL for
+        that voltage:
+        \[\Vcol{v_2} = \Vcol{v_3} - \Vcol{v_6}, \quad
+          \Vcol{v_4} = \Vcol{v_1} + \Vcol{v_3}, \quad
+          \Vcol{v_5} = \Vcol{v_1} + \Vcol{v_3}\]}
+      \onslide<3->{For example $\Vcol{v_1} = 2$, $\Vcol{v_3} = 3$, $\Vcol{v_6} = 1$ V gives
+        \[\Vcol{v_2} = 2, \quad \Vcol{v_4} = 5, \quad \Vcol{v_5} = 5 \text{ V}.\]}
+      \onslide<4->{\alert{Yes:} the $n - 1$ tree voltages fix every branch voltage --- the
+        same role as node voltages.}
+    \end{column}
+  \end{columns}
 \end{frame}
 
 %--------------------------------------------------------------
@@ -1067,7 +1116,8 @@
         Separable: the mesh method did not work here.}%
       \only<2>{Tree \textcolor{ctree}{$\{1, 2, 4, 5\}$}: \ $n - 1 = 4$ branches.\\[4pt]
         Co-tree $\{3, 6\}$: \ $b - n + 1 = 2$ branches.}%
-      \only<3-4>{\textbf{Fundamental loops} (KVL)\\[4pt]
+      \only<3-4>{\textbf{Fundamental loops}: KVL around each, walking with the co-tree
+        branch\\[4pt]
         \renewcommand{\arraystretch}{1.3}
         \begin{tabular}{@{}c l l@{}}
           co-tree br. & loop & KVL\\ \hline
@@ -1075,7 +1125,8 @@
           \uncover<4->{6} & \uncover<4->{$\{6, 4, 5\}$} & \uncover<4->{$\Vcol{v_6} + \Vcol{v_4} + \Vcol{v_5} = 0$}
         \end{tabular}\\[6pt]
         \only<3>{The loop of 3 is the outer loop.}\only<4>{The loop of 6 is the inner triangle.}}%
-      \only<5->{\textbf{Fundamental cutsets} (KCL)\\[4pt]
+      \only<5->{\textbf{Fundamental cutsets}: KCL on each, signs set by the tree
+        branch\\[4pt]
         \renewcommand{\arraystretch}{1.2}
         \begin{tabular}{@{}c l l@{}}
           tree br. & cutset & KCL\\ \hline
@@ -1127,9 +1178,9 @@
           \textbf{co-tree}, $b - n + 1$ branches.
     \item \textbf{Cutset}: minimal set of branches that cuts the graph in two. KCL holds on it.
     \item \textbf{Fundamental cutsets} (one per tree branch): $n - 1$ independent KCL
-          equations. Co-tree currents fix the tree currents.
+          equations. Knowing the co-tree currents gives all branch currents.
     \item \textbf{Fundamental loops} (one per co-tree branch): $b - n + 1$ independent KVL
-          equations. Tree voltages fix the co-tree voltages.
+          equations. Knowing the tree voltages gives all branch voltages.
     \item Works for \alert{any} connected graph --- planar or not, separable or not.
   \end{itemize}
   \vfill

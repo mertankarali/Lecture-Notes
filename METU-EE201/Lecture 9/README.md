@@ -5,7 +5,7 @@ Lecture notes and slides for the ninth lecture of EE201 (Section 2, Fall 2026/27
 | File | What it is |
 |---|---|
 | `EE201_Lecture_9.tex` | Handout / lecture notes (article, 5 pages). Self-contained: definitions, four worked examples, the "any connected graph" summary. |
-| `EE201_Lecture_9_slides.tex` | Beamer deck (22 slides, 71 PDF pages) for the lecture itself — visual, low text. |
+| `EE201_Lecture_9_slides.tex` | Beamer deck (22 slides, 83 PDF pages) for the lecture itself — visual, low text. |
 | `build.sh` | Compiles both, removes auxiliary files, opens the PDFs. |
 
 ## Compiling
@@ -36,9 +36,9 @@ Following pp. 17–18 of Prof. Emre Tuna's notes and his recorded Lecture 8 on
    cutset ({4, 5, 6} is), {4, 6} is not either (parallel branches 4, 5); each candidate is checked step by step (highlight, remove, put one back); KCL on a cutset = KCL on a closed surface, checked with branch currents on {4, 5, 6}
 4. **Fundamental cutsets** (30:35, 32:55, 38:32) — one per tree branch; the co-tree; Example 9.3
    on a graph G (n = 4, b = 6, tree {1, 3, 6}): three KCL equations, independent;
-   remark (41:48): co-tree currents fix the tree currents
+   remark (41:48): the co-tree currents give all branch currents
 5. **Fundamental loops** (43:51, 47:07) — one per co-tree branch; Example 9.4: three KVL
-   equations, independent; remark (55:38): tree voltages fix the co-tree voltages
+   equations, independent; remark (55:38): the tree voltages give all branch voltages
 6. **Any connected graph** — n − 1 tree branches ↔ KCL, b − n + 1 co-tree branches ↔ KVL; works
    for nonplanar graphs; Example 9.5 solves the separable graph met earlier (two loops joined at
    one node) step by step: 4 KCL + 2 KVL, one current for each loop
@@ -52,4 +52,4 @@ Then a summary and reading.
 The tree candidates, the cutsets, the fundamental cutsets and the fundamental loops build up
 step by step with beamer overlays; candidates are shown first ("tree?", "a cutset?") and the
 answer on the next page. Each step is an ordinary extra PDF page; that is why the deck has 22
-slides but 71 pages.
+slides but 83 pages.
