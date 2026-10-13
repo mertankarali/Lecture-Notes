@@ -626,14 +626,19 @@
 \begin{frame}{Why this lecture?}
   \vfill
   \begin{itemize}\itemsep10pt
-    \item \textbf{So far:} node voltages with $A$ work for any graph; mesh currents with $M$
-      only for \alert{planar, nonseparable} graphs.
+    \item \textbf{So far:} node voltages ($A$) work for any connected graph, with one fixed
+      reference node. Mesh currents ($M$) need a \alert{planar, nonseparable} graph.
     \item<2-> \textbf{Problem:} \alert{nonplanar} graphs have no meshes, and in
       \alert{separable} graphs a mesh may not be bounded by a single loop.
     \item<3-> \textbf{Goal of this lecture:} methods that also work for nonplanar and
       separable circuits --- for \alert{every} connected graph.
-    \item<4-> \textbf{Idea:} pick a \alert{tree}. It gives $n - 1$ independent KCL and
-      $b - n + 1$ independent KVL equations, and the unknowns, with no drawing needed.
+    \item<4-> \textbf{Idea:} pick a \alert{tree}. It gives both sides:
+      \begin{itemize}
+        \item \alert{fundamental cutsets} generalise the node equations: same $n - 1$
+          count, but the tree can be chosen;
+        \item \alert{fundamental loops} generalise the mesh equations: $b - n + 1$ of them,
+          for every connected graph.
+      \end{itemize}
   \end{itemize}
   \vfill
 \end{frame}
