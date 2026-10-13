@@ -526,6 +526,27 @@
    0 \& 1 \& -1 \& 0 \& 0 \& 1\\
   -1 \& 0 \& -1 \& 1 \& 0 \& 0\\
   -1 \& 0 \& -1 \& 0 \& 1 \& 0\\}
+%  Roadmap of the lecture; #1 = current part (1-5), 0 = overview
+\newcommand{\rmitem}[3]{%
+  \item \ifnum#1<\rmcur\relax \textcolor{black!35}{\textbf{#2} --- #3}
+          \ \textcolor{ctree}{\checkmark}%
+        \else\ifnum#1=\rmcur\relax \textcolor{metured}{\textbf{#2}} --- #3%
+        \else \textbf{#2} --- \textcolor{black!60}{#3}\fi\fi}
+\newcommand{\roadmapframe}[1]{%
+  \begin{frame}{Roadmap}
+    \def\rmcur{#1}%
+    \vfill
+    \begin{enumerate}\itemsep9pt
+      \rmitem{1}{Trees}{a skeleton that reaches every node, with no loop}
+      \rmitem{2}{Cutsets}{KCL on closed surfaces, not only on single nodes}
+      \rmitem{3}{Fundamental cutsets}{a tree picks $n - 1$ independent KCL equations
+        (matrix $Q$)}
+      \rmitem{4}{Fundamental loops}{the same tree picks $b - n + 1$ independent KVL equations
+        (matrix $B$)}
+      \rmitem{5}{Any connected graph}{nonplanar and separable graphs too}
+    \end{enumerate}
+    \vfill
+  \end{frame}}
 %  Circulation arrows for a fundamental loop, centred at (#2,#3), radius #1
 \newcommand{\loopcw}[3][0.3]{%
   \draw[cvolt, thick, -{Stealth[length=2mm]}] ($(#2,#3)+(150:#1)$)
@@ -602,6 +623,23 @@
 \end{frame}
 
 %--------------------------------------------------------------
+\begin{frame}{Why this lecture?}
+  \vfill
+  \begin{itemize}\itemsep10pt
+    \item \textbf{Goal:} solve a circuit, i.e.\ find all $b$ branch currents and $b$ branch
+      voltages.
+    \item<2-> \textbf{We need:} enough \alert{independent} KCL and KVL equations, and as
+      \alert{few unknowns} as possible.
+    \item<3-> \textbf{So far:} node voltages with $A$ work for any graph; mesh currents with
+      $M$ only for \alert{planar, nonseparable} graphs.
+    \item<4-> \textbf{Missing:} a mesh-like tool for \alert{every} connected graph.
+    \item<5-> \textbf{Today:} pick a \alert{tree}. It gives the KCL and KVL equations, and
+      the unknowns, for any connected graph.
+  \end{itemize}
+  \vfill
+\end{frame}
+
+%--------------------------------------------------------------
 \begin{frame}[t]{Nonplanar circuits}
   \centering
   \begin{tikzpicture}[scale=0.85]
@@ -630,6 +668,9 @@
     Today: a method that needs \alert{no planar drawing} and works for \alert{any connected graph}.
   \end{block}}
 \end{frame}
+
+%--------------------------------------------------------------
+\roadmapframe{1}
 
 %--------------------------------------------------------------
 \begin{frame}[t]{Trees}
@@ -702,6 +743,9 @@
   \end{columns}
   \vfill
 \end{frame}
+
+%--------------------------------------------------------------
+\roadmapframe{2}
 
 %--------------------------------------------------------------
 \begin{frame}[t]{Cutsets}
@@ -851,6 +895,9 @@
       {\small ($+$ leaving the surface, $-$ entering).}}
   \end{center}
 \end{frame}
+
+%--------------------------------------------------------------
+\roadmapframe{3}
 
 %--------------------------------------------------------------
 \begin{frame}[t]{Fundamental cutsets}
@@ -1055,6 +1102,9 @@
 \end{frame}
 
 %--------------------------------------------------------------
+\roadmapframe{4}
+
+%--------------------------------------------------------------
 \begin{frame}[t]{Fundamental loops}
   \begin{columns}[T,onlytextwidth]
     \begin{column}{0.44\textwidth}
@@ -1210,6 +1260,9 @@
       $AM^T = \mathbf{0}$.}
   \end{center}
 \end{frame}
+%--------------------------------------------------------------
+\roadmapframe{5}
+
 %--------------------------------------------------------------
 \begin{frame}{Any connected graph}
   \vfill
