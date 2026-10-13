@@ -626,15 +626,14 @@
 \begin{frame}{Why this lecture?}
   \vfill
   \begin{itemize}\itemsep10pt
-    \item \textbf{Goal:} solve a circuit, i.e.\ find all $b$ branch currents and $b$ branch
-      voltages.
-    \item<2-> \textbf{We need:} enough \alert{independent} KCL and KVL equations, and as
-      \alert{few unknowns} as possible.
-    \item<3-> \textbf{So far:} node voltages with $A$ work for any graph; mesh currents with
-      $M$ only for \alert{planar, nonseparable} graphs.
-    \item<4-> \textbf{Missing:} a mesh-like tool for \alert{every} connected graph.
-    \item<5-> \textbf{Today:} pick a \alert{tree}. It gives the KCL and KVL equations, and
-      the unknowns, for any connected graph.
+    \item \textbf{So far:} node voltages with $A$ work for any graph; mesh currents with $M$
+      only for \alert{planar, nonseparable} graphs.
+    \item<2-> \textbf{Problem:} \alert{nonplanar} graphs have no meshes, and in
+      \alert{separable} graphs a mesh may not be bounded by a single loop.
+    \item<3-> \textbf{Goal of this lecture:} methods that also work for nonplanar and
+      separable circuits --- for \alert{every} connected graph.
+    \item<4-> \textbf{Idea:} pick a \alert{tree}. It gives $n - 1$ independent KCL and
+      $b - n + 1$ independent KVL equations, and the unknowns, with no drawing needed.
   \end{itemize}
   \vfill
 \end{frame}
