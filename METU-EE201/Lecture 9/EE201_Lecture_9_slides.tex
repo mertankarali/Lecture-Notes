@@ -808,29 +808,40 @@
 \end{frame}
 
 %--------------------------------------------------------------
-\begin{frame}{Fundamental cutsets}
-  \begin{columns}[c,onlytextwidth]
-    \begin{column}{0.58\textwidth}
-      \begin{block}{Fundamental cutset}
-        Take a tree $T$ and a tree branch $\beta$. Exactly one cutset contains $\beta$ and
-        \alert{no other tree branch}: the fundamental cutset of $\beta$. Its direction is that
-        of $\beta$.
-      \end{block}
-      \onslide<2->{%
-      \begin{block}{Cotree}
-        The branches that are not in the tree.
-      \end{block}}
-      \onslide<3->{\small Tree $\{1, 3, 6, 7\}$: $n - 1 = 4$. \ Cotree $\{2, 4, 5\}$:
-        $b - n + 1 = 3$.}
-    \end{column}
-    \begin{column}{0.4\textwidth}
+\begin{frame}[t]{Fundamental cutsets}
+  \tikzset{partfill/.style={fill=ctree!13}}
+  \begin{columns}[T,onlytextwidth]
+    \begin{column}{0.44\textwidth}
       \centering
-      \begin{tikzpicture}[scale=0.85]
+      \begin{tikzpicture}[scale=1.05]
+        \useasboundingbox (-2.75,-0.75) rectangle (2.75,2.75);
         \tgcoords
-        \only<1-2>{\tgraph{gbr}{gbr}{gbr}{gbr}{gbr}{gbr}{gbr}}%
-        \only<3->{\tgtree}
+        \only<1>{\tgtree}%
+        \only<2>{\tgraph{treebr}{cotreebr}{hlbr}{cotreebr}{cotreebr}{treebr}{treebr}}%
+        \only<3>{\fill[partfill] (0,1.8) ellipse (1.55 and 0.5);
+          \fill[partfill] (0,0) ellipse (2.45 and 0.45);
+          \tgraph{treebr}{faintbr}{cutaway}{faintbr}{faintbr}{treebr}{treebr}}%
+        \only<4->{\fill[partfill] (0,1.8) ellipse (1.55 and 0.5);
+          \fill[partfill] (0,0) ellipse (2.45 and 0.45);
+          \draw[surf] (0,1.8) ellipse (1.8 and 0.8);
+          \tgraph{treebr}{hlbr}{hlbr}{hlbr}{hlbr}{treebr}{treebr}}%
       \end{tikzpicture}\\[2pt]
-      {\small graph $G$: $n = 5$, $b = 7$}
+      {\small tree \textcolor{ctree}{$\{1, 3, 6, 7\}$}, \ cotree $\{2, 4, 5\}$}
+    \end{column}
+    \begin{column}{0.54\textwidth}
+      \begin{enumerate}\itemsep3pt
+        \item<1-> Fix a \alert{tree} (green). The other branches form the \alert{cotree}.
+        \item<2-> Pick one tree branch, e.g.\ \textcolor{cvolt}{3}.
+        \item<3-> Remove it: the tree falls into \alert{two parts},
+          $\{\nd1, \nd2\}$ and $\{\nd3, \nd4, \nd5\}$.
+        \item<4-> The branches joining the two parts form a cutset:
+          $\{\textcolor{cvolt}{3, 2, 4, 5}\}$. It is the \alert{fundamental cutset} of 3.
+      \end{enumerate}
+      \onslide<5->{%
+      \begin{block}{Fundamental cutset of a tree branch $\beta$}
+        $\beta$ and the cotree branches that join the two parts. It has
+        \alert{one} tree branch, $\beta$. Its direction is that of $\beta$.
+      \end{block}}
     \end{column}
   \end{columns}
 \end{frame}

@@ -691,17 +691,15 @@ $\Icol{i_7}$ is inside the surface and cancels.
 %==============================================================
 \section{Fundamental cutsets}
 
-\begin{definitionbox}{Fundamental cutset and cotree}
-Let $T$ be a tree of a connected graph $G$, and $\beta$ a branch of $T$. There is exactly one
-cutset of $G$ that contains $\beta$ and no other tree branch. It is the \textbf{fundamental
-cutset} of $\beta$.
+Fix a tree $T$ of a connected graph $G$. The branches of $G$ that are not in $T$ form the
+\textbf{cotree}. Now pick one tree branch $\beta$ and remove it. The tree falls into two
+parts. The branches of $G$ that join these two parts form a cutset.
 
-The branches of $G$ that are not in $T$ form the \textbf{cotree}.
+\begin{definitionbox}{Fundamental cutset}
+The \textbf{fundamental cutset} of a tree branch $\beta$ is $\beta$ together with the cotree
+branches that join the two parts of the tree. It contains exactly one tree branch, $\beta$.
+Its direction is taken as the direction of $\beta$.
 \end{definitionbox}
-
-Removing the tree branch $\beta$ splits the tree into two parts. The fundamental cutset is
-the set of branches that join these two parts: $\beta$ itself and some cotree branches. Its
-direction is taken as the direction of $\beta$.
 
 \begin{examplebox}[Example 9.3 --- fundamental cutsets and KCL]
 The graph $G$ has $n = 5$ nodes and $b = 7$ branches. Take the tree $\{1, 3, 6, 7\}$
