@@ -47,7 +47,7 @@ Following pp. 17–18 of Prof. Emre Tuna's notes and his recorded Lecture 8 on
 7. **Matrix form side by side** — A, M against Q, B: KCL, KVL, the n − 1 voltage and
    b − n + 1 current unknowns, orthogonality; what the tree voltages / co-tree currents are for
 
-Then a summary and reading.
+Then a summary.
 
 ## Slides
 
