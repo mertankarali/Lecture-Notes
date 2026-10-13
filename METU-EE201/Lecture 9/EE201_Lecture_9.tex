@@ -794,9 +794,9 @@ A tree gives $n-1$ fundamental cutsets, so $n-1$ KCL equations. They are indepen
 equation contains its own tree branch current, which appears in no other equation.
 \end{ideabox}
 
-\textbf{Remark: co-tree currents are enough.} Suppose only the co-tree currents are known.
-Each fundamental cutset has one tree branch, so its KCL can be solved for that tree branch
-current. For $G$:
+\textbf{Branch currents from co-tree currents.} We can relate every branch current to the
+co-tree currents. A co-tree current is itself. Each fundamental cutset has one tree branch,
+so its KCL gives that tree branch current in terms of co-tree currents. For $G$:
 \[
   \Icol{i_1} = -\Icol{i_4} - \Icol{i_5}, \quad
   \Icol{i_3} = -\Icol{i_2} - \Icol{i_4} - \Icol{i_5}, \quad
@@ -813,7 +813,7 @@ and $0$ otherwise. For $G$:
   Q = \brmat{Qn}{1, 3, 6}{\Qrows}{\foreach \j in {1,3,6} {\colbox{Qn}{\j}{ctree}}},
   \qquad Q\Icol{\mathbf{i}} = \mathbf{0} \quad (\text{like } A\Icol{\mathbf{i}} = \mathbf{0}).
 \]
-The tree columns (boxed) form an identity, so the rows are independent. The remark above, in
+The tree columns (boxed) form an identity, so the rows are independent. The relation above, in
 matrix form, is $\Icol{\mathbf{i}} = B^T\Icol{\mathbf{i}_C}$ with
 $\Icol{\mathbf{i}_C} = [\Icol{i_2}\ \Icol{i_4}\ \Icol{i_5}]^T$, like
 $\Icol{\mathbf{i}} = M^T\Icol{\mathbf{i}_M}$. Its transpose $B$ comes back with the
@@ -876,9 +876,9 @@ independent: each equation contains its own co-tree branch voltage, which appear
 other equation.
 \end{ideabox}
 
-\textbf{Remark: tree voltages are enough.} Suppose only the tree voltages are known. Each
-fundamental loop has one co-tree branch, so its KVL can be solved for that co-tree branch
-voltage. For $G$:
+\textbf{Branch voltages from tree voltages.} We can relate every branch voltage to the tree
+voltages. A tree voltage is itself. Each fundamental loop has one co-tree branch, so its KVL
+gives that co-tree branch voltage in terms of tree voltages. For $G$:
 \[
   \Vcol{v_2} = \Vcol{v_3} - \Vcol{v_6}, \quad
   \Vcol{v_4} = \Vcol{v_1} + \Vcol{v_3}, \quad
@@ -895,7 +895,7 @@ $\Icol{\mathbf{i}} = B^T\Icol{\mathbf{i}_C}$:
   B = \brmat{Bn}{2, 4, 5}{\Brows}{\foreach \j in {2,4,5} {\colbox{Bn}{\j}{cvolt}}},
   \qquad B\Vcol{\mathbf{v}} = \mathbf{0} \quad (\text{like } M\Vcol{\mathbf{v}} = \mathbf{0}).
 \]
-The remark above, in matrix form, is $\Vcol{\mathbf{v}} = Q^T\Vcol{\mathbf{v}_T}$ with
+The relation above, in matrix form, is $\Vcol{\mathbf{v}} = Q^T\Vcol{\mathbf{v}_T}$ with
 $\Vcol{\mathbf{v}_T} = [\Vcol{v_1}\ \Vcol{v_3}\ \Vcol{v_6}]^T$, like
 $\Vcol{\mathbf{v}} = A^T\Vcol{\mathbf{e}}$. Finally $QB^T = \mathbf{0}$, like
 $AM^T = \mathbf{0}$.
@@ -983,9 +983,9 @@ for each loop. In total $4 + 2 = 6 = b$ independent equations. Node~\nd1 causes 
   \item A \textbf{cutset} is a minimal set of branches whose removal cuts the graph in two.
         KCL holds on every cutset: it is KCL on a closed surface.
   \item Each tree branch has a \textbf{fundamental cutset}: it and some co-tree branches.
-        These give $n-1$ independent KCL equations. Knowing the co-tree currents gives all branch currents.
+        These give $n-1$ independent KCL equations. Every branch current follows from the co-tree currents.
   \item Each co-tree branch has a \textbf{fundamental loop}: it and a tree path. These give
-        $b-n+1$ independent KVL equations. Knowing the tree voltages gives all branch voltages.
+        $b-n+1$ independent KVL equations. Every branch voltage follows from the tree voltages.
 \end{itemize}
 
 \subsection*{Reading}

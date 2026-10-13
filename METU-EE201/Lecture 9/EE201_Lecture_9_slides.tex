@@ -1000,7 +1000,7 @@
 \end{frame}
 
 %--------------------------------------------------------------
-\begin{frame}[t]{Co-tree currents are enough}
+\begin{frame}[t]{Branch currents from co-tree currents}
   \begin{columns}[T,onlytextwidth]
     \begin{column}{0.4\textwidth}
       \centering
@@ -1012,15 +1012,17 @@
       {\small tree \textcolor{ctree}{$\{1, 3, 6\}$}, \ co-tree \Icol{$\{2, 4, 5\}$}}
     \end{column}
     \begin{column}{0.58\textwidth}
-      \textbf{Question.} We know only the \Icol{co-tree} currents $\Icol{i_2}, \Icol{i_4},
-      \Icol{i_5}$. Can we find all the other currents?\\[8pt]
-      \onslide<2->{Each fundamental cutset has \alert{one} tree branch. Solve its KCL for
-        that current:
+      \textbf{Goal.} Relate \alert{every} branch current to the \Icol{co-tree} currents
+      $\Icol{i_2}, \Icol{i_4}, \Icol{i_5}$.\\[8pt]
+      \onslide<2->{\textbf{Co-tree branches:} nothing to do --- $\Icol{i_2}, \Icol{i_4},
+        \Icol{i_5}$ themselves.\\[6pt]}
+      \onslide<3->{\textbf{Tree branches:} each fundamental cutset has \alert{one} tree
+        branch. Solve its KCL for that current:
         \[\Icol{i_1} = -\Icol{i_4} - \Icol{i_5}, \quad
           \Icol{i_3} = -\Icol{i_2} - \Icol{i_4} - \Icol{i_5}, \quad
           \Icol{i_6} = \Icol{i_2}\]}
-      \onslide<3->{\alert{Yes.} So the unknown currents reduce from $b$ to the $b - n + 1$
-        co-tree currents, and KCL holds automatically --- the same role as mesh currents.}
+      \onslide<4->{So all $b$ branch currents are combinations of the $b - n + 1$ co-tree
+        currents, and KCL holds automatically --- like mesh currents.}
     \end{column}
   \end{columns}
 \end{frame}
@@ -1154,7 +1156,7 @@
 \end{frame}
 
 %--------------------------------------------------------------
-\begin{frame}[t]{Tree voltages are enough}
+\begin{frame}[t]{Branch voltages from tree voltages}
   \begin{columns}[T,onlytextwidth]
     \begin{column}{0.4\textwidth}
       \centering
@@ -1166,15 +1168,17 @@
       {\small tree \Vcol{$\{1, 3, 6\}$}, \ co-tree $\{2, 4, 5\}$}
     \end{column}
     \begin{column}{0.58\textwidth}
-      \textbf{Question.} We know only the \Vcol{tree} voltages $\Vcol{v_1}, \Vcol{v_3},
-      \Vcol{v_6}$. Can we find all the other voltages?\\[8pt]
-      \onslide<2->{Each fundamental loop has \alert{one} co-tree branch. Solve its KVL for
-        that voltage:
+      \textbf{Goal.} Relate \alert{every} branch voltage to the \Vcol{tree} voltages
+      $\Vcol{v_1}, \Vcol{v_3}, \Vcol{v_6}$.\\[8pt]
+      \onslide<2->{\textbf{Tree branches:} nothing to do --- $\Vcol{v_1}, \Vcol{v_3},
+        \Vcol{v_6}$ themselves.\\[6pt]}
+      \onslide<3->{\textbf{Co-tree branches:} each fundamental loop has \alert{one} co-tree
+        branch. Solve its KVL for that voltage:
         \[\Vcol{v_2} = \Vcol{v_3} - \Vcol{v_6}, \quad
           \Vcol{v_4} = \Vcol{v_1} + \Vcol{v_3}, \quad
           \Vcol{v_5} = \Vcol{v_1} + \Vcol{v_3}\]}
-      \onslide<3->{\alert{Yes.} So the unknown voltages reduce from $b$ to the $n - 1$ tree
-        voltages, and KVL holds automatically --- the same role as node voltages.}
+      \onslide<4->{So all $b$ branch voltages are combinations of the $n - 1$ tree voltages,
+        and KVL holds automatically --- like node voltages.}
     \end{column}
   \end{columns}
 \end{frame}
@@ -1314,9 +1318,9 @@
           \textbf{co-tree}, $b - n + 1$ branches.
     \item \textbf{Cutset}: minimal set of branches that cuts the graph in two. KCL holds on it.
     \item \textbf{Fundamental cutsets} (one per tree branch): $n - 1$ independent KCL
-          equations. Knowing the co-tree currents gives all branch currents.
+          equations. Every branch current follows from the co-tree currents.
     \item \textbf{Fundamental loops} (one per co-tree branch): $b - n + 1$ independent KVL
-          equations. Knowing the tree voltages gives all branch voltages.
+          equations. Every branch voltage follows from the tree voltages.
     \item Matrix form: $Q\Icol{\mathbf{i}} = \mathbf{0}$, \ $B\Vcol{\mathbf{v}} = \mathbf{0}$,
           \ $\Icol{\mathbf{i}} = B^T\Icol{\mathbf{i}_C}$, \ $\Vcol{\mathbf{v}} = Q^T\Vcol{\mathbf{v}_T}$.
     \item Works for \alert{any} connected graph --- planar or not, separable or not.
