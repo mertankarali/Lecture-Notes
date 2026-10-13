@@ -416,21 +416,22 @@
   \draw[#6] (n4) to[out=180, in=180, looseness=2.3] (n1);
   \node[blab] at (-2.55,0) {6};
   \bridgenodes}
-%  The graph G of this lecture: a trapezoid cut into three triangles, 5 nodes, 7 branches
+%  The graph G of this lecture: 4 nodes, 6 branches (branch 5 curved, parallel to 4)
 \newcommand{\tgcoords}{%
   \coordinate (g1) at (-1,1.73); \coordinate (g2) at (1,1.73);
-  \coordinate (g3) at (-2,0);    \coordinate (g4) at (0,0);     \coordinate (g5) at (2,0);}
+  \coordinate (g3) at (-2,0);    \coordinate (g4) at (0,0);}
 \newcommand{\tgnodes}{%
-  \foreach \k/\pos in {1/above, 2/above, 3/below left, 4/below, 5/below right}
+  \foreach \k/\pos in {1/above, 2/above, 3/below left, 4/below}
     {\fill[metured] (g\k) circle (2.2pt); \node[nlab, \pos=2pt] at (g\k) {\k};}}
-%  G with a style for each branch (#1 ... #7 = branches 1 ... 7)
-\newcommand{\tgraph}[7]{%
+%  G with a style for each branch (#1 ... #6 = branches 1 ... 6)
+\newcommand{\tgraph}[6]{%
   \sbranch{g2}{g1}{-90}{1}{#1}  \sbranch{g1}{g3}{-90}{2}{#2}  \sbranch{g1}{g4}{90}{3}{#3}
-  \sbranch{g2}{g4}{90}{4}{#4}   \sbranch{g2}{g5}{90}{5}{#5}   \sbranch{g3}{g4}{-90}{6}{#6}
-  \sbranch{g4}{g5}{-90}{7}{#7}
+  \sbranch{g2}{g4}{90}{4}{#4}
+  \draw[#5] (g2) to[out=-10, in=0, looseness=1.6] node[blab, pos=0.5, right=1pt] {5} (g4);
+  \sbranch{g3}{g4}{-90}{6}{#6}
   \tgnodes}
-%  G with its tree {1,3,6,7} in green
-\newcommand{\tgtree}{\tgraph{treebr}{cotreebr}{treebr}{cotreebr}{cotreebr}{treebr}{treebr}}
+%  G with its tree {1,3,6} in green
+\newcommand{\tgtree}{\tgraph{treebr}{cotreebr}{treebr}{cotreebr}{cotreebr}{treebr}}
 %  The figure-eight graph of the cutset example (no arrows)
 \newcommand{\eightcoords}{%
   \coordinate (eL) at (-3.0,0); \coordinate (eT) at (-1.7,1.05); \coordinate (eM) at (0,0);
@@ -481,22 +482,23 @@
     branch & 1 & 2 & 3 & 4 & 5 & 6 & 7\\
     \Icol{current (A)} & \Icol{2} & \Icol{2} & \Icol{2} & \Icol{1} & \Icol{2} & \Icol{3} & \Icol{3}
   \end{tabular}}}
-%  The separable graph: a square with a triangle inside, attached at node 1 (6 nodes, 7 branches)
+%  The separable graph: two loops joined only at node 1 (5 nodes, 6 branches)
 \newcommand{\sepcoords}{%
-  \coordinate (q1) at (0,2.4); \coordinate (q2) at (2.4,2.4);
-  \coordinate (q3) at (2.4,0); \coordinate (q4) at (0,0);
+  \coordinate (q1) at (0,2.4); \coordinate (q2) at (2.4,2.4); \coordinate (q4) at (0,0);
   \coordinate (q5) at (1.5,1.75); \coordinate (q6) at (0.55,0.95);}
 \newcommand{\sepnodes}{%
-  \foreach \k/\pos in {1/above left, 2/above right, 3/below right, 4/below left, 5/right, 6/below}
-    {\fill[metured] (q\k) circle (2.2pt); \node[nlab, \pos=2pt] at (q\k) {\k};}}
-%  #1 ... #7: styles of branches 1 ... 7
-\newcommand{\sepgraph}[7]{%
-  \sbranch{q1}{q2}{90}{1}{#1}  \sbranch{q2}{q3}{90}{2}{#2}  \sbranch{q3}{q4}{90}{3}{#3}
-  \sbranch{q4}{q1}{90}{4}{#4}  \sbranch{q5}{q6}{90}{6}{#6}
-  \draw[#5] (q1) -- (q5);  \node[blab] at (0.95,2.27) {5};
-  \draw[#7] (q6) -- (q1);  \node[blab] at (0.6,1.62) {7};
+  \foreach \q/\k/\pos in {q1/1/above left, q2/2/above right, q4/3/below left, q5/4/right, q6/5/below}
+    {\fill[metured] (\q) circle (2.2pt); \node[nlab, \pos=2pt] at (\q) {\k};}}
+%  #1 ... #6: styles of branches 1 ... 6 (branch 2 goes round the corner)
+\newcommand{\sepgraph}[6]{%
+  \sbranch{q1}{q2}{90}{1}{#1}
+  \draw[#2] (q2) .. controls (2.4,0) and (2.4,0) .. (q4);  \node[blab] at (2.62,0.9) {2};
+  \sbranch{q4}{q1}{90}{3}{#3}
+  \draw[#4] (q1) -- (q5);  \node[blab] at (0.95,2.27) {4};
+  \sbranch{q5}{q6}{90}{5}{#5}
+  \draw[#6] (q6) -- (q1);  \node[blab] at (0.6,1.62) {6};
   \sepnodes}
-\newcommand{\septree}{\sepgraph{treebr}{treebr}{treebr}{cotreebr}{treebr}{treebr}{cotreebr}}
+\newcommand{\septree}{\sepgraph{treebr}{treebr}{cotreebr}{treebr}{treebr}{cotreebr}}
 %  Circulation arrows for a fundamental loop, centred at (#2,#3), radius #1
 \newcommand{\loopcw}[3][0.3]{%
   \draw[cvolt, thick, -{Stealth[length=2mm]}] ($(#2,#3)+(150:#1)$)
@@ -830,26 +832,26 @@
     \begin{column}{0.44\textwidth}
       \centering
       \begin{tikzpicture}[scale=1.05]
-        \useasboundingbox (-2.75,-0.75) rectangle (2.75,2.75);
+        \useasboundingbox (-2.6,-0.75) rectangle (2.5,2.75);
         \tgcoords
         \only<1>{\tgtree}%
-        \only<2>{\tgraph{treebr}{cotreebr}{hlbr}{cotreebr}{cotreebr}{treebr}{treebr}}%
+        \only<2>{\tgraph{treebr}{cotreebr}{hlbr}{cotreebr}{cotreebr}{treebr}}%
         \only<3>{\fill[partfill] (0,1.8) ellipse (1.55 and 0.5);
-          \fill[partfill] (0,0) ellipse (2.45 and 0.45);
-          \tgraph{treebr}{faintbr}{cutaway}{faintbr}{faintbr}{treebr}{treebr}}%
+          \fill[partfill] (-1,0) ellipse (1.4 and 0.42);
+          \tgraph{treebr}{faintbr}{cutaway}{faintbr}{faintbr}{treebr}}%
         \only<4>{\fill[partfill] (0,1.8) ellipse (1.55 and 0.5);
-          \fill[partfill] (0,0) ellipse (2.45 and 0.45);
+          \fill[partfill] (-1,0) ellipse (1.4 and 0.42);
           \draw[surf] (0,1.8) ellipse (1.8 and 0.8);
-          \tgraph{treebr}{hlbr}{hlbr}{hlbr}{hlbr}{treebr}{treebr}}%
+          \tgraph{treebr}{hlbr}{hlbr}{hlbr}{hlbr}{treebr}}%
       \end{tikzpicture}\\[2pt]
-      {\small tree \textcolor{ctree}{$\{1, 3, 6, 7\}$}, \ co-tree $\{2, 4, 5\}$}
+      {\small tree \textcolor{ctree}{$\{1, 3, 6\}$}, \ co-tree $\{2, 4, 5\}$}
     \end{column}
     \begin{column}{0.54\textwidth}
       \begin{enumerate}\itemsep3pt
         \item<1-> Fix a \alert{tree} (green). The other branches form the \alert{co-tree}.
         \item<2-> Pick one tree branch, e.g.\ \textcolor{cvolt}{3}.
         \item<3-> Remove it: the tree falls into \alert{two parts},
-          $\{\nd1, \nd2\}$ and $\{\nd3, \nd4, \nd5\}$.
+          $\{\nd1, \nd2\}$ and $\{\nd3, \nd4\}$.
         \item<4-> The branches joining the two parts form a cutset:
           $\{\textcolor{cvolt}{3, 2, 4, 5}\}$. It is the \alert{fundamental cutset} of 3.
       \end{enumerate}
@@ -867,11 +869,11 @@
         \useasboundingbox (-2.75,-0.75) rectangle (2.75,3.15);
         \tgcoords
         \fill[partfill] (0,1.8) ellipse (1.55 and 0.5);
-        \fill[partfill] (0,0) ellipse (2.45 and 0.45);
+        \fill[partfill] (-1,0) ellipse (1.4 and 0.42);
         \draw[surf] (0,1.8) ellipse (1.8 and 0.8);
-        \tgraph{treebr}{hlbr}{treebr}{hlbr}{hlbr}{treebr}{treebr}
+        \tgraph{treebr}{hlbr}{treebr}{hlbr}{hlbr}{treebr}
         \node[font=\scriptsize, text=ctree, anchor=east] at (-1.75,2.6) {part $\{\nd1, \nd2\}$};
-        \node[font=\scriptsize, text=ctree] at (0,-0.75) {part $\{\nd3, \nd4, \nd5\}$};
+        \node[font=\scriptsize, text=ctree] at (0,-0.75) {part $\{\nd3, \nd4\}$};
         \begin{scope}[visible on=<2->]
           \foreach \t in {30,90,150,210,330,-90} {
             \pgfmathsetmacro{\nx}{cos(\t)/1.8} \pgfmathsetmacro{\ny}{sin(\t)/0.8}
@@ -890,10 +892,10 @@
     \begin{column}{0.52\textwidth}
       Cutset of 3: $\{3, 2, 4, 5\}$\\[6pt]
       \textbf{One tree branch.} Only \textcolor{ctree}{3} is a tree branch; 2, 4, 5 are
-      co-tree branches. Every other tree branch (1, 6, 7) lies \alert{inside one part}, so it
+      co-tree branches. Every other tree branch (1, 6) lies \alert{inside one part}, so it
       does not join the parts.\\[8pt]
       \onslide<2->{\textbf{Direction.} Branch 3 \alert{leaves} the surface: from part
-        $\{\nd1, \nd2\}$ to part $\{\nd3, \nd4, \nd5\}$. So the cutset points \alert{out of the
+        $\{\nd1, \nd2\}$ to part $\{\nd3, \nd4\}$. So the cutset points \alert{out of the
         surface}: $+$ for a branch leaving it, $-$ for one entering. Here 2, 4, 5 leave too:
         \[\Icol{i_3} + \Icol{i_2} + \Icol{i_4} + \Icol{i_5} = 0.\]}
     \end{column}
@@ -907,7 +909,7 @@
     \begin{column}{0.44\textwidth}
       \centering
       \begin{tikzpicture}[scale=1.05]
-        \useasboundingbox (-2.75,-0.75) rectangle (2.75,2.75);
+        \useasboundingbox (-2.6,-0.75) rectangle (2.5,2.75);
         \tgcoords \tgtree
         \begin{scope}[visible on=<2->]
           \draw[surf] (g2) circle (0.42);  \node[font=\small, text=cvolt] at (1.7,2.25) {$C_1$};
@@ -917,9 +919,6 @@
         \end{scope}
         \begin{scope}[visible on=<4->]
           \draw[surf] (g3) circle (0.5);   \node[font=\small, text=cvolt] at (-2.6,0.5) {$C_6$};
-        \end{scope}
-        \begin{scope}[visible on=<5->]
-          \draw[surf] (g5) circle (0.5);   \node[font=\small, text=cvolt] at (2.6,0.5) {$C_7$};
         \end{scope}
       \end{tikzpicture}
     \end{column}
@@ -932,10 +931,9 @@
         tree br. & cutset & KCL\\ \hline
         \uncover<2->{1} & \uncover<2->{$\{1, 4, 5\}$}    & \uncover<2->{$\Icol{i_1} + \Icol{i_4} + \Icol{i_5} = 0$}\\
         \uncover<3->{3} & \uncover<3->{$\{3, 2, 4, 5\}$} & \uncover<3->{$\Icol{i_3} + \Icol{i_2} + \Icol{i_4} + \Icol{i_5} = 0$}\\
-        \uncover<4->{6} & \uncover<4->{$\{6, 2\}$}       & \uncover<4->{$\Icol{i_6} - \Icol{i_2} = 0$}\\
-        \uncover<5->{7} & \uncover<5->{$\{7, 5\}$}       & \uncover<5->{$\Icol{i_7} + \Icol{i_5} = 0$}
+        \uncover<4->{6} & \uncover<4->{$\{6, 2\}$}       & \uncover<4->{$\Icol{i_6} - \Icol{i_2} = 0$}
       \end{tabular}\\[8pt]
-      \onslide<6->{\alert{$n - 1 = 4$ KCL equations, independent:} each has its own tree
+      \onslide<5->{\alert{$n - 1 = 3$ KCL equations, independent:} each has its own tree
         branch current.}
     \end{column}
   \end{columns}
@@ -951,8 +949,7 @@
   \[
     \Icol{i_1} = -\Icol{i_4} - \Icol{i_5}, \qquad
     \Icol{i_3} = -\Icol{i_2} - \Icol{i_4} - \Icol{i_5}, \qquad
-    \Icol{i_6} = \Icol{i_2}, \qquad
-    \Icol{i_7} = -\Icol{i_5}
+    \Icol{i_6} = \Icol{i_2}
   \]
   \vfill
   \begin{center}
@@ -984,14 +981,14 @@
     \begin{column}{0.44\textwidth}
       \centering
       \begin{tikzpicture}[scale=1.05]
-        \useasboundingbox (-2.75,-0.75) rectangle (2.75,2.75);
+        \useasboundingbox (-2.6,-0.75) rectangle (2.5,2.75);
         \tgcoords
         \only<1>{\tgtree}%
-        \only<2>{\tgraph{faintbr}{hlbr}{hlbr}{faintbr}{faintbr}{hlbr}{faintbr}\loopccw{-1}{0.6}}%
-        \only<3>{\tgraph{hlbr}{faintbr}{hlbr}{hlbr}{faintbr}{faintbr}{faintbr}\loopcw{0}{1.15}}%
-        \only<4->{\tgraph{hlbr}{faintbr}{hlbr}{faintbr}{hlbr}{faintbr}{hlbr}\loopcw{0.9}{0.75}}%
+        \only<2>{\tgraph{faintbr}{hlbr}{hlbr}{faintbr}{faintbr}{hlbr}\loopccw{-1}{0.6}}%
+        \only<3>{\tgraph{hlbr}{faintbr}{hlbr}{hlbr}{faintbr}{faintbr}\loopcw{0}{1.15}}%
+        \only<4->{\tgraph{hlbr}{faintbr}{hlbr}{faintbr}{hlbr}{faintbr}\loopcw[0.2]{1.25}{0.8}}%
       \end{tikzpicture}\\[2pt]
-      {\small tree $\{1, 3, 6, 7\}$, co-tree $\{2, 4, 5\}$}
+      {\small tree $\{1, 3, 6\}$, co-tree $\{2, 4, 5\}$}
     \end{column}
     \begin{column}{0.54\textwidth}
       \small
@@ -1000,7 +997,7 @@
         co-tree br. & loop & KVL\\ \hline
         \uncover<2->{2} & \uncover<2->{$\{2, 6, 3\}$}    & \uncover<2->{$\Vcol{v_2} + \Vcol{v_6} - \Vcol{v_3} = 0$}\\
         \uncover<3->{4} & \uncover<3->{$\{4, 3, 1\}$}    & \uncover<3->{$\Vcol{v_4} - \Vcol{v_3} - \Vcol{v_1} = 0$}\\
-        \uncover<4->{5} & \uncover<4->{$\{5, 7, 3, 1\}$} & \uncover<4->{$\Vcol{v_5} - \Vcol{v_7} - \Vcol{v_3} - \Vcol{v_1} = 0$}
+        \uncover<4->{5} & \uncover<4->{$\{5, 3, 1\}$} & \uncover<4->{$\Vcol{v_5} - \Vcol{v_3} - \Vcol{v_1} = 0$}
       \end{tabular}\\[10pt]
       \onslide<5->{\alert{$b - n + 1 = 3$ KVL equations, independent:} each has its own
         co-tree branch voltage.}
@@ -1018,7 +1015,7 @@
   \[
     \Vcol{v_2} = \Vcol{v_3} - \Vcol{v_6}, \qquad
     \Vcol{v_4} = \Vcol{v_1} + \Vcol{v_3}, \qquad
-    \Vcol{v_5} = \Vcol{v_1} + \Vcol{v_3} + \Vcol{v_7}
+    \Vcol{v_5} = \Vcol{v_1} + \Vcol{v_3}
   \]
   \vfill
   \begin{center}
@@ -1057,45 +1054,44 @@
       \begin{tikzpicture}[scale=1.3]
         \useasboundingbox (-0.6,-0.6) rectangle (3.0,3.0);
         \sepcoords
-        \only<1>{\sepgraph{gbr}{gbr}{gbr}{gbr}{gbr}{gbr}{gbr}}%
+        \only<1>{\sepgraph{gbr}{gbr}{gbr}{gbr}{gbr}{gbr}}%
         \only<2,5->{\septree}%
-        \only<3>{\sepgraph{hlbr}{hlbr}{hlbr}{hlbr}{faintbr}{faintbr}{faintbr}\loopcw[0.28]{1.75}{0.6}}%
-        \only<4>{\sepgraph{faintbr}{faintbr}{faintbr}{faintbr}{hlbr}{hlbr}{hlbr}\loopcw[0.2]{0.7}{1.72}}%
+        \only<3>{\sepgraph{hlbr}{hlbr}{hlbr}{faintbr}{faintbr}{faintbr}\loopcw[0.28]{1.6}{0.75}}%
+        \only<4>{\sepgraph{faintbr}{faintbr}{faintbr}{hlbr}{hlbr}{hlbr}\loopcw[0.2]{0.7}{1.72}}%
       \end{tikzpicture}\\[4pt]
-      {\small $n = 6$, \ $b = 7$}
+      {\small $n = 5$, \ $b = 6$}
     \end{column}
     \begin{column}{0.58\textwidth}
       \small
-      \only<1>{A square with a triangle inside, joined only at node \nd1.\\[6pt]
+      \only<1>{Two loops joined only at node \nd1.\\[6pt]
         Separable: the mesh method did not work here.}%
-      \only<2>{Tree \textcolor{ctree}{$\{1, 2, 3, 5, 6\}$}: \ $n - 1 = 5$ branches.\\[4pt]
-        Co-tree $\{4, 7\}$: \ $b - n + 1 = 2$ branches.}%
+      \only<2>{Tree \textcolor{ctree}{$\{1, 2, 4, 5\}$}: \ $n - 1 = 4$ branches.\\[4pt]
+        Co-tree $\{3, 6\}$: \ $b - n + 1 = 2$ branches.}%
       \only<3-4>{\textbf{Fundamental loops} (KVL)\\[4pt]
         \renewcommand{\arraystretch}{1.3}
         \begin{tabular}{@{}c l l@{}}
           co-tree br. & loop & KVL\\ \hline
-          4 & $\{4, 1, 2, 3\}$ & $\Vcol{v_4} + \Vcol{v_1} + \Vcol{v_2} + \Vcol{v_3} = 0$\\
-          \uncover<4->{7} & \uncover<4->{$\{7, 5, 6\}$} & \uncover<4->{$\Vcol{v_7} + \Vcol{v_5} + \Vcol{v_6} = 0$}
+          3 & $\{3, 1, 2\}$ & $\Vcol{v_3} + \Vcol{v_1} + \Vcol{v_2} = 0$\\
+          \uncover<4->{6} & \uncover<4->{$\{6, 4, 5\}$} & \uncover<4->{$\Vcol{v_6} + \Vcol{v_4} + \Vcol{v_5} = 0$}
         \end{tabular}\\[6pt]
-        \only<3>{The loop of 4 is the square.}\only<4>{The loop of 7 is the triangle.}}%
+        \only<3>{The loop of 3 is the outer loop.}\only<4>{The loop of 6 is the inner triangle.}}%
       \only<5->{\textbf{Fundamental cutsets} (KCL)\\[4pt]
         \renewcommand{\arraystretch}{1.2}
         \begin{tabular}{@{}c l l@{}}
           tree br. & cutset & KCL\\ \hline
-          1 & $\{1, 4\}$ & $\Icol{i_1} - \Icol{i_4} = 0$\\
-          2 & $\{2, 4\}$ & $\Icol{i_2} - \Icol{i_4} = 0$\\
-          3 & $\{3, 4\}$ & $\Icol{i_3} - \Icol{i_4} = 0$\\
-          5 & $\{5, 7\}$ & $\Icol{i_5} - \Icol{i_7} = 0$\\
-          6 & $\{6, 7\}$ & $\Icol{i_6} - \Icol{i_7} = 0$
+          1 & $\{1, 3\}$ & $\Icol{i_1} - \Icol{i_3} = 0$\\
+          2 & $\{2, 3\}$ & $\Icol{i_2} - \Icol{i_3} = 0$\\
+          4 & $\{4, 6\}$ & $\Icol{i_4} - \Icol{i_6} = 0$\\
+          5 & $\{5, 6\}$ & $\Icol{i_5} - \Icol{i_6} = 0$
         \end{tabular}\\[6pt]
-        \onslide<6->{So $\Icol{i_1} = \Icol{i_2} = \Icol{i_3} = \Icol{i_4}$ and
-          $\Icol{i_5} = \Icol{i_6} = \Icol{i_7}$:\\
-          \alert{one current for the square, one for the triangle}.}}
+        \onslide<6->{So $\Icol{i_1} = \Icol{i_2} = \Icol{i_3}$ and
+          $\Icol{i_4} = \Icol{i_5} = \Icol{i_6}$:\\
+          \alert{one current for each loop}.}}
     \end{column}
   \end{columns}
   \vfill
   \begin{center}
-    \onslide<6->{5 KCL $+$ 2 KVL equations, all independent --- no problem at node \nd1.}
+    \onslide<6->{4 KCL $+$ 2 KVL equations, all independent --- no problem at node \nd1.}
   \end{center}
 \end{frame}
 

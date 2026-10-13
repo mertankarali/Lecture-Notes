@@ -432,21 +432,22 @@
   \draw[#6] (n4) to[out=180, in=180, looseness=2.3] (n1);
   \node[blab] at (-2.55,0) {6};
   \bridgenodes}
-%  The graph G of this lecture: a trapezoid cut into three triangles, 5 nodes, 7 branches
+%  The graph G of this lecture: 4 nodes, 6 branches (branch 5 curved, parallel to 4)
 \newcommand{\tgcoords}{%
   \coordinate (g1) at (-1,1.73); \coordinate (g2) at (1,1.73);
-  \coordinate (g3) at (-2,0);    \coordinate (g4) at (0,0);     \coordinate (g5) at (2,0);}
+  \coordinate (g3) at (-2,0);    \coordinate (g4) at (0,0);}
 \newcommand{\tgnodes}{%
-  \foreach \k/\pos in {1/above, 2/above, 3/below left, 4/below, 5/below right}
+  \foreach \k/\pos in {1/above, 2/above, 3/below left, 4/below}
     {\fill[metured] (g\k) circle (2.2pt); \node[nlab, \pos=2pt] at (g\k) {\k};}}
-%  G with a style for each branch (#1 ... #7 = branches 1 ... 7)
-\newcommand{\tgraph}[7]{%
+%  G with a style for each branch (#1 ... #6 = branches 1 ... 6)
+\newcommand{\tgraph}[6]{%
   \sbranch{g2}{g1}{-90}{1}{#1}  \sbranch{g1}{g3}{-90}{2}{#2}  \sbranch{g1}{g4}{90}{3}{#3}
-  \sbranch{g2}{g4}{90}{4}{#4}   \sbranch{g2}{g5}{90}{5}{#5}   \sbranch{g3}{g4}{-90}{6}{#6}
-  \sbranch{g4}{g5}{-90}{7}{#7}
+  \sbranch{g2}{g4}{90}{4}{#4}
+  \draw[#5] (g2) to[out=-10, in=0, looseness=1.6] node[blab, pos=0.5, right=1pt] {5} (g4);
+  \sbranch{g3}{g4}{-90}{6}{#6}
   \tgnodes}
-%  G with its tree {1,3,6,7} in green
-\newcommand{\tgtree}{\tgraph{treebr}{cotreebr}{treebr}{cotreebr}{cotreebr}{treebr}{treebr}}
+%  G with its tree {1,3,6} in green
+\newcommand{\tgtree}{\tgraph{treebr}{cotreebr}{treebr}{cotreebr}{cotreebr}{treebr}}
 %  The figure-eight graph of the cutset example (no arrows)
 \newcommand{\eightcoords}{%
   \coordinate (eL) at (-3.0,0); \coordinate (eT) at (-1.7,1.05); \coordinate (eM) at (0,0);
@@ -496,22 +497,23 @@
     branch & 1 & 2 & 3 & 4 & 5 & 6 & 7\\
     \Icol{current (A)} & \Icol{2} & \Icol{2} & \Icol{2} & \Icol{1} & \Icol{2} & \Icol{3} & \Icol{3}
   \end{tabular}}}
-%  The separable graph: a square with a triangle inside, attached at node 1 (6 nodes, 7 branches)
+%  The separable graph: two loops joined only at node 1 (5 nodes, 6 branches)
 \newcommand{\sepcoords}{%
-  \coordinate (q1) at (0,2.4); \coordinate (q2) at (2.4,2.4);
-  \coordinate (q3) at (2.4,0); \coordinate (q4) at (0,0);
+  \coordinate (q1) at (0,2.4); \coordinate (q2) at (2.4,2.4); \coordinate (q4) at (0,0);
   \coordinate (q5) at (1.5,1.75); \coordinate (q6) at (0.55,0.95);}
 \newcommand{\sepnodes}{%
-  \foreach \k/\pos in {1/above left, 2/above right, 3/below right, 4/below left, 5/right, 6/below}
-    {\fill[metured] (q\k) circle (2.2pt); \node[nlab, \pos=2pt] at (q\k) {\k};}}
-%  #1 ... #7: styles of branches 1 ... 7
-\newcommand{\sepgraph}[7]{%
-  \sbranch{q1}{q2}{90}{1}{#1}  \sbranch{q2}{q3}{90}{2}{#2}  \sbranch{q3}{q4}{90}{3}{#3}
-  \sbranch{q4}{q1}{90}{4}{#4}  \sbranch{q5}{q6}{90}{6}{#6}
-  \draw[#5] (q1) -- (q5);  \node[blab] at (0.95,2.27) {5};
-  \draw[#7] (q6) -- (q1);  \node[blab] at (0.6,1.62) {7};
+  \foreach \q/\k/\pos in {q1/1/above left, q2/2/above right, q4/3/below left, q5/4/right, q6/5/below}
+    {\fill[metured] (\q) circle (2.2pt); \node[nlab, \pos=2pt] at (\q) {\k};}}
+%  #1 ... #6: styles of branches 1 ... 6 (branch 2 goes round the corner)
+\newcommand{\sepgraph}[6]{%
+  \sbranch{q1}{q2}{90}{1}{#1}
+  \draw[#2] (q2) .. controls (2.4,0) and (2.4,0) .. (q4);  \node[blab] at (2.62,0.9) {2};
+  \sbranch{q4}{q1}{90}{3}{#3}
+  \draw[#4] (q1) -- (q5);  \node[blab] at (0.95,2.27) {4};
+  \sbranch{q5}{q6}{90}{5}{#5}
+  \draw[#6] (q6) -- (q1);  \node[blab] at (0.6,1.62) {6};
   \sepnodes}
-\newcommand{\septree}{\sepgraph{treebr}{treebr}{treebr}{cotreebr}{treebr}{treebr}{cotreebr}}
+\newcommand{\septree}{\sepgraph{treebr}{treebr}{cotreebr}{treebr}{treebr}{cotreebr}}
 %  Circulation arrows for a fundamental loop, centred at (#2,#3), radius #1
 \newcommand{\loopcw}[3][0.3]{%
   \draw[cvolt, thick, -{Stealth[length=2mm]}] ($(#2,#3)+(150:#1)$)
@@ -723,18 +725,17 @@ leaves the surface, the cutset points out of the surface; if $\beta$ enters, it 
 KCL a branch counts $+$ if it crosses the surface the same way as $\beta$, and $-$ otherwise.
 
 \begin{examplebox}[Example 9.3 --- fundamental cutsets and KCL]
-The graph $G$ has $n = 5$ nodes and $b = 7$ branches. Take the tree $\{1, 3, 6, 7\}$
-(green, $n - 1 = 4$ branches). The co-tree is $\{2, 4, 5\}$ ($b - n + 1 = 3$ branches).
+The graph $G$ has $n = 4$ nodes and $b = 6$ branches. Take the tree $\{1, 3, 6\}$
+(green, $n - 1 = 3$ branches). The co-tree is $\{2, 4, 5\}$ ($b - n + 1 = 3$ branches).
 \begin{center}
 \begin{minipage}[c]{0.42\linewidth}
 \centering
 \begin{tikzpicture}[scale=0.95]
-  \useasboundingbox (-2.75,-0.75) rectangle (2.75,2.75);
+  \useasboundingbox (-2.6,-0.75) rectangle (2.5,2.75);
   \tgcoords \tgtree
   \draw[surf] (g2) circle (0.42);                \node[font=\small, text=cvolt] at (1.7,2.25) {$C_1$};
   \draw[surf] (0,1.8) ellipse (1.8 and 0.8);  \node[font=\small, text=cvolt] at (-1.95,2.55) {$C_3$};
   \draw[surf] (g3) circle (0.5);                 \node[font=\small, text=cvolt] at (-2.6,0.5) {$C_6$};
-  \draw[surf] (g5) circle (0.5);                 \node[font=\small, text=cvolt] at (2.6,0.5) {$C_7$};
 \end{tikzpicture}
 \end{minipage}%
 \begin{minipage}[c]{0.56\linewidth}
@@ -748,13 +749,12 @@ tree br. & cutset & KCL\\
 1 & $\{1, 4, 5\}$    & $\Icol{i_1} + \Icol{i_4} + \Icol{i_5} = 0$\\
 3 & $\{3, 2, 4, 5\}$ & $\Icol{i_3} + \Icol{i_2} + \Icol{i_4} + \Icol{i_5} = 0$\\
 6 & $\{6, 2\}$       & $\Icol{i_6} - \Icol{i_2} = 0$\\
-7 & $\{7, 5\}$       & $\Icol{i_7} + \Icol{i_5} = 0$\\
 \bottomrule
 \end{tabular}
 \end{minipage}
 \end{center}
 Each surface encloses one of the two parts left after removing a tree branch. For $C_3$:
-removing branch~3 leaves the parts $\{\nd1, \nd2\}$ and $\{\nd3, \nd4, \nd5\}$. Branches
+removing branch~3 leaves the parts $\{\nd1, \nd2\}$ and $\{\nd3, \nd4\}$. Branches
 3, 2, 4, 5 join them, and all four go from the upper part to the lower part, the same way
 as branch~3: every term has $+$.
 \end{examplebox}
@@ -769,8 +769,7 @@ currents are known, the tree branch currents follow. For $G$:
 \[
   \Icol{i_1} = -\Icol{i_4} - \Icol{i_5}, \quad
   \Icol{i_3} = -\Icol{i_2} - \Icol{i_4} - \Icol{i_5}, \quad
-  \Icol{i_6} = \Icol{i_2}, \quad
-  \Icol{i_7} = -\Icol{i_5} .
+  \Icol{i_6} = \Icol{i_2} .
 \]
 
 %==============================================================
@@ -793,7 +792,7 @@ walk, $-$ if against.
 \begin{tabular}{@{}c@{\hspace{0.5cm}}c@{\hspace{0.5cm}}c@{}}
 \begin{tabular}[t]{@{}c@{}}
 \begin{tikzpicture}[scale=0.78]
-  \tgcoords \tgraph{faintbr}{hlbr}{hlbr}{faintbr}{faintbr}{hlbr}{faintbr}
+  \tgcoords \tgraph{faintbr}{hlbr}{hlbr}{faintbr}{faintbr}{hlbr}
   \loopccw{-1}{0.6}
 \end{tikzpicture}\\[-2pt]
 {\scriptsize\bfseries\color{metugray} loop of 2: $\{2, 6, 3\}$}\\[1pt]
@@ -802,7 +801,7 @@ walk, $-$ if against.
 &
 \begin{tabular}[t]{@{}c@{}}
 \begin{tikzpicture}[scale=0.78]
-  \tgcoords \tgraph{hlbr}{faintbr}{hlbr}{hlbr}{faintbr}{faintbr}{faintbr}
+  \tgcoords \tgraph{hlbr}{faintbr}{hlbr}{hlbr}{faintbr}{faintbr}
   \loopcw{0}{1.15}
 \end{tikzpicture}\\[-2pt]
 {\scriptsize\bfseries\color{metugray} loop of 4: $\{4, 3, 1\}$}\\[1pt]
@@ -811,11 +810,11 @@ walk, $-$ if against.
 &
 \begin{tabular}[t]{@{}c@{}}
 \begin{tikzpicture}[scale=0.78]
-  \tgcoords \tgraph{hlbr}{faintbr}{hlbr}{faintbr}{hlbr}{faintbr}{hlbr}
-  \loopcw{0.9}{0.75}
+  \tgcoords \tgraph{hlbr}{faintbr}{hlbr}{faintbr}{hlbr}{faintbr}
+  \loopcw[0.2]{1.25}{0.8}
 \end{tikzpicture}\\[-2pt]
-{\scriptsize\bfseries\color{metugray} loop of 5: $\{5, 7, 3, 1\}$}\\[1pt]
-{\small $\Vcol{v_5} - \Vcol{v_7} - \Vcol{v_3} - \Vcol{v_1} = 0$}
+{\scriptsize\bfseries\color{metugray} loop of 5: $\{5, 3, 1\}$}\\[1pt]
+{\small $\Vcol{v_5} - \Vcol{v_3} - \Vcol{v_1} = 0$}
 \end{tabular}
 \end{tabular}
 \end{center}
@@ -832,7 +831,7 @@ voltages are known, the co-tree branch voltages follow. For $G$:
 \[
   \Vcol{v_2} = \Vcol{v_3} - \Vcol{v_6}, \quad
   \Vcol{v_4} = \Vcol{v_1} + \Vcol{v_3}, \quad
-  \Vcol{v_5} = \Vcol{v_1} + \Vcol{v_3} + \Vcol{v_7} .
+  \Vcol{v_5} = \Vcol{v_1} + \Vcol{v_3} .
 \]
 
 %==============================================================
@@ -854,8 +853,8 @@ No drawing is needed. This works for nonplanar graphs, and it is also the fix fo
 graphs met earlier.
 
 \begin{examplebox}[Example 9.5 --- the separable graph]
-The square with the triangle inside, joined only at node \nd1: $n = 6$, $b = 7$. Take the
-tree $\{1, 2, 3, 5, 6\}$ (green, $n - 1 = 5$). The co-tree is $\{4, 7\}$ ($b - n + 1 = 2$).
+Two loops joined only at node \nd1: $n = 5$, $b = 6$. Take the tree $\{1, 2, 4, 5\}$
+(green, $n - 1 = 4$). The co-tree is $\{3, 6\}$ ($b - n + 1 = 2$).
 \begin{center}\small
 \renewcommand{\arraystretch}{1.15}\setlength{\tabcolsep}{3pt}
 \begin{minipage}[c]{0.24\linewidth}
@@ -870,11 +869,10 @@ tree $\{1, 2, 3, 5, 6\}$ (green, $n - 1 = 5$). The co-tree is $\{4, 7\}$ ($b - n
 \toprule
 tree br. & cutset & KCL\\
 \midrule
-1 & $\{1, 4\}$ & $\Icol{i_1} - \Icol{i_4} = 0$\\
-2 & $\{2, 4\}$ & $\Icol{i_2} - \Icol{i_4} = 0$\\
-3 & $\{3, 4\}$ & $\Icol{i_3} - \Icol{i_4} = 0$\\
-5 & $\{5, 7\}$ & $\Icol{i_5} - \Icol{i_7} = 0$\\
-6 & $\{6, 7\}$ & $\Icol{i_6} - \Icol{i_7} = 0$\\
+1 & $\{1, 3\}$ & $\Icol{i_1} - \Icol{i_3} = 0$\\
+2 & $\{2, 3\}$ & $\Icol{i_2} - \Icol{i_3} = 0$\\
+4 & $\{4, 6\}$ & $\Icol{i_4} - \Icol{i_6} = 0$\\
+5 & $\{5, 6\}$ & $\Icol{i_5} - \Icol{i_6} = 0$\\
 \bottomrule
 \end{tabular}
 \end{minipage}%
@@ -884,16 +882,15 @@ tree br. & cutset & KCL\\
 \toprule
 co-tree br. & KVL on its loop\\
 \midrule
-4 & $\Vcol{v_4} + \Vcol{v_1} + \Vcol{v_2} + \Vcol{v_3} = 0$\\
-7 & $\Vcol{v_7} + \Vcol{v_5} + \Vcol{v_6} = 0$\\
+3 & $\Vcol{v_3} + \Vcol{v_1} + \Vcol{v_2} = 0$\\
+6 & $\Vcol{v_6} + \Vcol{v_4} + \Vcol{v_5} = 0$\\
 \bottomrule
 \end{tabular}
 \end{minipage}
 \end{center}
-The two fundamental loops are the square and the triangle, each a single loop. The KCL
-equations give $\Icol{i_1} = \Icol{i_2} = \Icol{i_3} = \Icol{i_4}$ and
-$\Icol{i_5} = \Icol{i_6} = \Icol{i_7}$: one current for the square and one for the triangle.
-In total $5 + 2 = 7 = b$ independent equations. Node~\nd1 causes no trouble.
+The two fundamental loops are the outer loop and the inner triangle. The KCL equations give
+$\Icol{i_1} = \Icol{i_2} = \Icol{i_3}$ and $\Icol{i_4} = \Icol{i_5} = \Icol{i_6}$: one current
+for each loop. In total $4 + 2 = 6 = b$ independent equations. Node~\nd1 causes no trouble.
 \end{examplebox}
 
 %==============================================================
