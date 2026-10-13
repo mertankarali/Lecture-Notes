@@ -4,7 +4,7 @@ Lecture notes and slides for the ninth lecture of EE201 (Section 2, Fall 2026/27
 
 | File | What it is |
 |---|---|
-| `EE201_Lecture_9.tex` | Handout / lecture notes (article, 6 pages). Self-contained: definitions, four worked examples, the "any connected graph" summary. |
+| `EE201_Lecture_9.tex` | Handout / lecture notes (article, 5 pages). Self-contained: definitions, four worked examples, the "any connected graph" summary. |
 | `EE201_Lecture_9_slides.tex` | Beamer deck (32 slides, 106 PDF pages) for the lecture itself — visual, low text. |
 | `build.sh` | Compiles both, removes auxiliary files, opens the PDFs. |
 

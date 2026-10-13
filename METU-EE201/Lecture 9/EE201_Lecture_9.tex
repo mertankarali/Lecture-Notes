@@ -592,8 +592,8 @@ no meshes and no mesh matrix. In the hexagon below, the three diagonals cross at
 Moving one diagonal outside removes one crossing, but a jumper wire (a hop) is still needed.
 
 \begin{center}
-\begin{tikzpicture}[scale=0.9]
-    \useasboundingbox (-1.5,-2.15) rectangle (7.6,1.45);
+\begin{tikzpicture}[scale=0.62]
+    \useasboundingbox (-1.8,-2.15) rectangle (8.9,1.45);
   \begin{scope}
     \foreach \a in {0,60,...,300} \coordinate (h\a) at (\a:1.15);
     \draw[black!75, thick] (h0) -- (h60) -- (h120) -- (h180) -- (h240) -- (h300) -- cycle;
@@ -602,17 +602,13 @@ Moving one diagonal outside removes one crossing, but a jumper wire (a hop) is s
     \foreach \a in {0,60,...,300} \fill[metured] (h\a) circle (2.2pt);
     \node[ttl] at (0,-1.95) {crossings at the centre};
   \end{scope}
-  \draw[bigarr] (2.3,0) -- (3.3,0);
-  \begin{scope}[xshift=5.6cm]
+  \draw[bigarr] (2.6,0) -- (4.0,0);
+  \begin{scope}[xshift=6.9cm]
     \hexhop
     \node[ttl] at (0,-1.95) {jumper wire: still one hop};
   \end{scope}
 \end{tikzpicture}
 \end{center}
-
-\noindent How do we then find $n-1$ independent KCL and $b-n+1$ independent KVL equations? This
-lecture gives a method that needs no planar drawing and works for \textbf{any connected
-graph}.
 
 %==============================================================
 \section{Trees}
