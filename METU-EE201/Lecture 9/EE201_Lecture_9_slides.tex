@@ -973,6 +973,33 @@
 \end{frame}
 
 %--------------------------------------------------------------
+\begin{frame}[t]{Matrix form: fundamental cutset matrix $Q$}
+  \begin{columns}[T,onlytextwidth]
+    \begin{column}{0.36\textwidth}
+      \centering
+      \begin{tikzpicture}[scale=0.8]
+        \useasboundingbox (-2.6,-0.75) rectangle (2.5,2.75);
+        \tgcoords \tgtree
+      \end{tikzpicture}\\[2pt]
+      {\small tree \textcolor{ctree}{$\{1, 3, 6\}$}}
+    \end{column}
+    \begin{column}{0.62\textwidth}
+      Collect the fundamental cutset KCL equations in a matrix:\\[4pt]
+      {\small one \alert{row} per tree branch, one \alert{column} per branch;\\
+        $+1$ / $-1$: branch in the cutset, same / opposite direction; \ $0$: not in it.}
+      \[
+        Q = \brmat{Qm}{1, 3, 6}{\Qrows}{%
+          \foreach \j in {1,3,6} {\begin{scope}[visible on=<3->]\colbox{Qm}{\j}{ctree}\end{scope}}}
+      \]
+      \onslide<2->{KCL: \ \alert{$Q\Icol{\mathbf{i}} = \mathbf{0}$} \quad (like
+        $A\Icol{\mathbf{i}} = \mathbf{0}$)\\[6pt]}
+      \onslide<3->{\small Tree columns 1, 3, 6 form an \alert{identity}: each row has its own
+        tree branch, so the rows are independent.}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+%--------------------------------------------------------------
 \begin{frame}[t]{Co-tree currents are enough}
   \begin{columns}[T,onlytextwidth]
     \begin{column}{0.4\textwidth}
@@ -998,6 +1025,33 @@
         co-tree currents, and KCL holds automatically --- the same role as mesh currents.}
     \end{column}
   \end{columns}
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{In matrix form: $\Icol{\mathbf{i}} = B^T\Icol{\mathbf{i}_C}$}
+  \begin{center}
+    Every branch current from the co-tree currents
+    $\Icol{\mathbf{i}_C} = [\Icol{i_2}\ \Icol{i_4}\ \Icol{i_5}]^T$:
+  \end{center}
+  \begin{center}
+    \begin{tikzpicture}[mm/.style={matrix of math nodes, ampersand replacement=\&,
+        left delimiter={[}, right delimiter={]}, inner sep=1pt, column sep=0.4em,
+        nodes={minimum height=1.35em, text width=1.5em, align=center, inner sep=1pt}}]
+      \matrix (L) [mm] {\Icol{i_1} \\ \Icol{i_2} \\ \Icol{i_3} \\ \Icol{i_4} \\ \Icol{i_5} \\ \Icol{i_6} \\};
+      \node (eq) [right=6pt of L] {$=$};
+      \matrix (M) [mm, right=6pt of eq] {0 \& -1 \& -1 \\ 1 \& 0 \& 0 \\ -1 \& -1 \& -1 \\ 0 \& 1 \& 0 \\ 0 \& 0 \& 1 \\ 1 \& 0 \& 0 \\};
+      \matrix (R) [mm, right=12pt of M] {\Icol{i_2} \\ \Icol{i_4} \\ \Icol{i_5} \\};
+      \node[anchor=west, font=\small] at ([xshift=10pt]R.east |- M-1-3) {$\leftarrow \Icol{i_1} = -\Icol{i_4} - \Icol{i_5}$};
+      \node[anchor=west, font=\small] at ([xshift=10pt]R.east |- M-3-3) {$\leftarrow \Icol{i_3} = -\Icol{i_2} - \Icol{i_4} - \Icol{i_5}$};
+      \node[anchor=west, font=\small] at ([xshift=10pt]R.east |- M-6-3) {$\leftarrow \Icol{i_6} = \Icol{i_2}$};
+    \end{tikzpicture}
+  \end{center}
+  \begin{center}
+    \onslide<2->{We call this $6 \times 3$ matrix $B^T$: \quad \alert{$\Icol{\mathbf{i}} = B^T\Icol{\mathbf{i}_C}$},
+      \ like $\Icol{\mathbf{i}} = M^T\Icol{\mathbf{i}_M}$. KCL holds for any $\Icol{\mathbf{i}_C}$.\\[6pt]}
+    \onslide<3->{Its transpose $B$ (rows: co-tree branches 2, 4, 5) will appear again with the
+      fundamental loops.}
+  \end{center}
 \end{frame}
 
 %--------------------------------------------------------------
@@ -1073,6 +1127,35 @@
 \end{frame}
 
 %--------------------------------------------------------------
+\begin{frame}[t]{Matrix form: fundamental loop matrix $B$}
+  \begin{columns}[T,onlytextwidth]
+    \begin{column}{0.36\textwidth}
+      \centering
+      \begin{tikzpicture}[scale=0.8]
+        \useasboundingbox (-2.6,-0.75) rectangle (2.5,2.75);
+        \tgcoords \tgtree
+      \end{tikzpicture}\\[2pt]
+      {\small co-tree $\{2, 4, 5\}$}
+    \end{column}
+    \begin{column}{0.62\textwidth}
+      Collect the fundamental loop KVL equations in a matrix:\\[4pt]
+      {\small one \alert{row} per co-tree branch, one \alert{column} per branch;\\
+        $+1$ / $-1$: branch in the loop, along / against its direction; \ $0$: not in it.}
+      \[
+        B = \brmat{Bm}{2, 4, 5}{\Brows}{%
+          \foreach \j in {2,4,5} {\begin{scope}[visible on=<3->]\colbox{Bm}{\j}{cvolt}\end{scope}}}
+      \]
+      \onslide<2->{KVL: \ \alert{$B\Vcol{\mathbf{v}} = \mathbf{0}$} \quad (like
+        $M\Vcol{\mathbf{v}} = \mathbf{0}$)\\[6pt]}
+      \onslide<3->{\small Co-tree columns 2, 4, 5 form an \alert{identity}: each row has its
+        own co-tree branch, so the rows are independent.\\}
+      \onslide<4->{\small Compare with $\Icol{\mathbf{i}} = B^T\Icol{\mathbf{i}_C}$: the
+        \alert{same} matrix $B$.}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+%--------------------------------------------------------------
 \begin{frame}[t]{Tree voltages are enough}
   \begin{columns}[T,onlytextwidth]
     \begin{column}{0.4\textwidth}
@@ -1099,98 +1182,34 @@
     \end{column}
   \end{columns}
 \end{frame}
-%--------------------------------------------------------------
-\begin{frame}[t]{Matrix form: fundamental cutset matrix $Q$}
-  \begin{columns}[T,onlytextwidth]
-    \begin{column}{0.36\textwidth}
-      \centering
-      \begin{tikzpicture}[scale=0.8]
-        \useasboundingbox (-2.6,-0.75) rectangle (2.5,2.75);
-        \tgcoords \tgtree
-      \end{tikzpicture}\\[2pt]
-      {\small tree \textcolor{ctree}{$\{1, 3, 6\}$}}
-    \end{column}
-    \begin{column}{0.62\textwidth}
-      Collect the fundamental cutset KCL equations in a matrix:\\[4pt]
-      {\small one \alert{row} per tree branch, one \alert{column} per branch;\\
-        $+1$ / $-1$: branch in the cutset, same / opposite direction; \ $0$: not in it.}
-      \[
-        Q = \brmat{Qm}{1, 3, 6}{\Qrows}{%
-          \foreach \j in {1,3,6} {\begin{scope}[visible on=<3->]\colbox{Qm}{\j}{ctree}\end{scope}}}
-      \]
-      \onslide<2->{KCL: \ \alert{$Q\Icol{\mathbf{i}} = \mathbf{0}$} \quad (like
-        $A\Icol{\mathbf{i}} = \mathbf{0}$)\\[6pt]}
-      \onslide<3->{\small Tree columns 1, 3, 6 form an \alert{identity}: each row has its own
-        tree branch, so the rows are independent.}
-    \end{column}
-  \end{columns}
-\end{frame}
 
 %--------------------------------------------------------------
-\begin{frame}[t]{Matrix form: fundamental loop matrix $B$}
-  \begin{columns}[T,onlytextwidth]
-    \begin{column}{0.36\textwidth}
-      \centering
-      \begin{tikzpicture}[scale=0.8]
-        \useasboundingbox (-2.6,-0.75) rectangle (2.5,2.75);
-        \tgcoords \tgtree
-      \end{tikzpicture}\\[2pt]
-      {\small co-tree $\{2, 4, 5\}$}
-    \end{column}
-    \begin{column}{0.62\textwidth}
-      Collect the fundamental loop KVL equations in a matrix:\\[4pt]
-      {\small one \alert{row} per co-tree branch, one \alert{column} per branch;\\
-        $+1$ / $-1$: branch in the loop, along / against its direction; \ $0$: not in it.}
-      \[
-        B = \brmat{Bm}{2, 4, 5}{\Brows}{%
-          \foreach \j in {2,4,5} {\begin{scope}[visible on=<3->]\colbox{Bm}{\j}{cvolt}\end{scope}}}
-      \]
-      \onslide<2->{KVL: \ \alert{$B\Vcol{\mathbf{v}} = \mathbf{0}$} \quad (like
-        $M\Vcol{\mathbf{v}} = \mathbf{0}$)\\[6pt]}
-      \onslide<3->{\small Co-tree columns 2, 4, 5 form an \alert{identity}: each row has its
-        own co-tree branch, so the rows are independent.}
-    \end{column}
-  \end{columns}
-\end{frame}
-
-%--------------------------------------------------------------
-\begin{frame}{The transposes: currents from $B^T$, voltages from $Q^T$}
+\begin{frame}{In matrix form: $\Vcol{\mathbf{v}} = Q^T\Vcol{\mathbf{v}_T}$}
   \begin{center}
-    Co-tree currents $\Icol{\mathbf{i}_C} = [\Icol{i_2}\ \Icol{i_4}\ \Icol{i_5}]^T$, \quad
-    tree voltages $\Vcol{\mathbf{v}_T} = [\Vcol{v_1}\ \Vcol{v_3}\ \Vcol{v_6}]^T$
+    Every branch voltage from the tree voltages
+    $\Vcol{\mathbf{v}_T} = [\Vcol{v_1}\ \Vcol{v_3}\ \Vcol{v_6}]^T$:
   \end{center}
-  \vspace{2pt}
-  \begin{columns}[T,onlytextwidth]
-    \begin{column}{0.49\textwidth}
-      \centering
-      \[
-        \Icol{\mathbf{i}} = B^T \Icol{\mathbf{i}_C}:\quad
-        \begin{bmatrix} \Icol{i_1}\\ \Icol{i_2}\\ \Icol{i_3}\\ \Icol{i_4}\\ \Icol{i_5}\\ \Icol{i_6} \end{bmatrix}
-        = \begin{bmatrix} 0 & -1 & -1\\ 1 & 0 & 0\\ -1 & -1 & -1\\ 0 & 1 & 0\\ 0 & 0 & 1\\ 1 & 0 & 0 \end{bmatrix}
-          \begin{bmatrix} \Icol{i_2}\\ \Icol{i_4}\\ \Icol{i_5} \end{bmatrix}
-      \]
-      \onslide<2->{\small Row 1: $\Icol{i_1} = -\Icol{i_4} - \Icol{i_5}$ --- KCL is
-        \alert{built in}, like $\Icol{\mathbf{i}} = M^T\Icol{\mathbf{i}_M}$.}
-    \end{column}
-    \begin{column}{0.49\textwidth}
-      \centering
-      \onslide<3->{%
-      \[
-        \Vcol{\mathbf{v}} = Q^T \Vcol{\mathbf{v}_T}:\quad
-        \begin{bmatrix} \Vcol{v_1}\\ \Vcol{v_2}\\ \Vcol{v_3}\\ \Vcol{v_4}\\ \Vcol{v_5}\\ \Vcol{v_6} \end{bmatrix}
-        = \begin{bmatrix} 1 & 0 & 0\\ 0 & 1 & -1\\ 0 & 1 & 0\\ 1 & 1 & 0\\ 1 & 1 & 0\\ 0 & 0 & 1 \end{bmatrix}
-          \begin{bmatrix} \Vcol{v_1}\\ \Vcol{v_3}\\ \Vcol{v_6} \end{bmatrix}
-      \]}
-      \onslide<4->{\small Row 2: $\Vcol{v_2} = \Vcol{v_3} - \Vcol{v_6}$ --- KVL is
-        \alert{built in}, like $\Vcol{\mathbf{v}} = A^T\Vcol{\mathbf{e}}$.}
-    \end{column}
-  \end{columns}
-  \vfill
   \begin{center}
-    \onslide<5->{And the two fit together: \alert{$QB^T = \mathbf{0}$}, like $AM^T = \mathbf{0}$.}
+    \begin{tikzpicture}[mm/.style={matrix of math nodes, ampersand replacement=\&,
+        left delimiter={[}, right delimiter={]}, inner sep=1pt, column sep=0.4em,
+        nodes={minimum height=1.35em, text width=1.5em, align=center, inner sep=1pt}}]
+      \matrix (L) [mm] {\Vcol{v_1} \\ \Vcol{v_2} \\ \Vcol{v_3} \\ \Vcol{v_4} \\ \Vcol{v_5} \\ \Vcol{v_6} \\};
+      \node (eq) [right=6pt of L] {$=$};
+      \matrix (M) [mm, right=6pt of eq] {1 \& 0 \& 0 \\ 0 \& 1 \& -1 \\ 0 \& 1 \& 0 \\ 1 \& 1 \& 0 \\ 1 \& 1 \& 0 \\ 0 \& 0 \& 1 \\};
+      \matrix (R) [mm, right=12pt of M] {\Vcol{v_1} \\ \Vcol{v_3} \\ \Vcol{v_6} \\};
+      \node[anchor=west, font=\small] at ([xshift=10pt]R.east |- M-2-3) {$\leftarrow \Vcol{v_2} = \Vcol{v_3} - \Vcol{v_6}$};
+      \node[anchor=west, font=\small] at ([xshift=10pt]R.east |- M-4-3) {$\leftarrow \Vcol{v_4} = \Vcol{v_1} + \Vcol{v_3}$};
+      \node[anchor=west, font=\small] at ([xshift=10pt]R.east |- M-5-3) {$\leftarrow \Vcol{v_5} = \Vcol{v_1} + \Vcol{v_3}$};
+    \end{tikzpicture}
+  \end{center}
+  \begin{center}
+    \onslide<2->{This matrix is $Q^T$, the transpose of the fundamental cutset matrix:
+      \alert{$\Vcol{\mathbf{v}} = Q^T\Vcol{\mathbf{v}_T}$}, like
+      $\Vcol{\mathbf{v}} = A^T\Vcol{\mathbf{e}}$. KVL holds for any $\Vcol{\mathbf{v}_T}$.\\[6pt]}
+    \onslide<3->{And the two matrices fit together: \alert{$QB^T = \mathbf{0}$}, like
+      $AM^T = \mathbf{0}$.}
   \end{center}
 \end{frame}
-
 %--------------------------------------------------------------
 \begin{frame}{Any connected graph}
   \vfill

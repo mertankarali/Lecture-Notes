@@ -806,6 +806,20 @@ For example, $\Icol{i_2} = 1$, $\Icol{i_4} = 1$, $\Icol{i_5} = 2$~A give $\Icol{
 $\Icol{i_3} = -4$, $\Icol{i_6} = 1$~A. So the $b - n + 1$ co-tree currents fix every branch
 current, like mesh currents.
 
+\textbf{Matrix form.} The fundamental cutset equations can be collected in the
+\textbf{fundamental cutset matrix} $Q$: one row per tree branch, one column per branch. An
+entry is $+1$ or $-1$ if the branch is in the cutset, in the same or the opposite direction,
+and $0$ otherwise. For $G$:
+\[
+  Q = \brmat{Qn}{1, 3, 6}{\Qrows}{\foreach \j in {1,3,6} {\colbox{Qn}{\j}{ctree}}},
+  \qquad Q\Icol{\mathbf{i}} = \mathbf{0} \quad (\text{like } A\Icol{\mathbf{i}} = \mathbf{0}).
+\]
+The tree columns (boxed) form an identity, so the rows are independent. The remark above, in
+matrix form, is $\Icol{\mathbf{i}} = B^T\Icol{\mathbf{i}_C}$ with
+$\Icol{\mathbf{i}_C} = [\Icol{i_2}\ \Icol{i_4}\ \Icol{i_5}]^T$, like
+$\Icol{\mathbf{i}} = M^T\Icol{\mathbf{i}_M}$. Its transpose $B$ comes back with the
+fundamental loops.
+
 %==============================================================
 \section{Fundamental loops}
 
@@ -875,33 +889,21 @@ For example, $\Vcol{v_1} = 2$, $\Vcol{v_3} = 3$, $\Vcol{v_6} = 1$~V give $\Vcol{
 $\Vcol{v_4} = \Vcol{v_5} = 5$~V. So the $n - 1$ tree voltages fix every branch voltage, like
 node voltages.
 
+\textbf{Matrix form.} The fundamental loop equations are collected in the \textbf{fundamental
+loop matrix} $B$: one row per co-tree branch; an entry is $+1$ or $-1$ if the branch is in the
+loop, along or against its direction. It is the same $B$ as in
+$\Icol{\mathbf{i}} = B^T\Icol{\mathbf{i}_C}$:
+\[
+  B = \brmat{Bn}{2, 4, 5}{\Brows}{\foreach \j in {2,4,5} {\colbox{Bn}{\j}{cvolt}}},
+  \qquad B\Vcol{\mathbf{v}} = \mathbf{0} \quad (\text{like } M\Vcol{\mathbf{v}} = \mathbf{0}).
+\]
+The remark above, in matrix form, is $\Vcol{\mathbf{v}} = Q^T\Vcol{\mathbf{v}_T}$ with
+$\Vcol{\mathbf{v}_T} = [\Vcol{v_1}\ \Vcol{v_3}\ \Vcol{v_6}]^T$, like
+$\Vcol{\mathbf{v}} = A^T\Vcol{\mathbf{e}}$. Finally $QB^T = \mathbf{0}$, like
+$AM^T = \mathbf{0}$.
+
 %==============================================================
-\section{Matrix form}
-
-The fundamental cutset equations can be collected in a matrix, like the incidence matrix.
-The \textbf{fundamental cutset matrix} $Q$ has one row per tree branch and one column per
-branch. An entry is $+1$ or $-1$ if the branch is in the cutset, in the same or the opposite
-direction, and $0$ otherwise. The \textbf{fundamental loop matrix} $B$ has one row per co-tree
-branch; an entry is $+1$ or $-1$ if the branch is in the loop, along or against its
-direction. For $G$, with tree $\{1, 3, 6\}$:
-\[
-  Q = \brmat{Qn}{1, 3, 6}{\Qrows}{\foreach \j in {1,3,6} {\colbox{Qn}{\j}{ctree}}}
-  \qquad
-  B = \brmat{Bn}{2, 4, 5}{\Brows}{\foreach \j in {2,4,5} {\colbox{Bn}{\j}{cvolt}}}
-\]
-KCL on the fundamental cutsets is $Q\Icol{\mathbf{i}} = \mathbf{0}$, and KVL on the
-fundamental loops is $B\Vcol{\mathbf{v}} = \mathbf{0}$. The tree columns of $Q$ and the
-co-tree columns of $B$ (boxed) form identity matrices, so the rows are independent.
-
-The transposes give the remarks above in one line each. With the co-tree currents
-$\Icol{\mathbf{i}_C} = [\Icol{i_2}\ \Icol{i_4}\ \Icol{i_5}]^T$ and the tree voltages
-$\Vcol{\mathbf{v}_T} = [\Vcol{v_1}\ \Vcol{v_3}\ \Vcol{v_6}]^T$,
-\[
-  \Icol{\mathbf{i}} = B^T\Icol{\mathbf{i}_C}, \qquad \Vcol{\mathbf{v}} = Q^T\Vcol{\mathbf{v}_T}.
-\]
-The first satisfies KCL for any $\Icol{\mathbf{i}_C}$, the second satisfies KVL for any
-$\Vcol{\mathbf{v}_T}$. Finally $QB^T = \mathbf{0}$: every row of $Q$ is orthogonal to every
-row of $B$.
+\section{Matrix form side by side}
 
 \begin{center}
 \renewcommand{\arraystretch}{1.25}
@@ -920,6 +922,10 @@ works for & $A$: any; $M$: planar, nonseparable & any connected graph\\
 \bottomrule
 \end{tabular}
 \end{center}
+A circuit has $2b$ branch unknowns. A tree reduces them: the $n-1$ \textbf{tree branch
+voltages} fix every branch voltage (like node voltages), and the $b-n+1$ \textbf{co-tree branch
+currents} fix every branch current (like mesh currents), for any connected graph.
+
 
 %==============================================================
 \section{Any connected graph}
@@ -970,13 +976,6 @@ for each loop. In total $4 + 2 = 6 = b$ independent equations. Node~\nd1 causes 
 \end{examplebox}
 
 %==============================================================
-\section{Looking ahead}
-
-A circuit has $2b$ branch unknowns. A tree reduces them: the $n-1$ \textbf{tree branch
-voltages} fix every branch voltage (like node voltages), and the $b-n+1$ \textbf{co-tree branch
-currents} fix every branch current (like mesh currents), for any connected graph.
-
-%==============================================================
 \section*{Summary}
 \addcontentsline{toc}{section}{Summary}
 
@@ -989,19 +988,11 @@ currents} fix every branch current (like mesh currents), for any connected graph
         These give $n-1$ independent KCL equations. Knowing the co-tree currents gives all branch currents.
   \item Each co-tree branch has a \textbf{fundamental loop}: it and a tree path. These give
         $b-n+1$ independent KVL equations. Knowing the tree voltages gives all branch voltages.
-  \item In matrix form: $Q\Icol{\mathbf{i}} = \mathbf{0}$, $B\Vcol{\mathbf{v}} = \mathbf{0}$,
-        $\Icol{\mathbf{i}} = B^T\Icol{\mathbf{i}_C}$, $\Vcol{\mathbf{v}} = Q^T\Vcol{\mathbf{v}_T}$,
-        for any connected graph.
 \end{itemize}
 
 \subsection*{Reading}
-\begin{itemize}
-  \item Chua, Desoer \& Kuh, \emph{Linear and Nonlinear Circuits} --- trees, cutsets and
-        fundamental loops.
-  \item Lecture notes and videos of Prof.\ Emre Tuna,
-        \href{https://users.metu.edu.tr/etuna/ee201/}{\texttt{users.metu.edu.tr/etuna/ee201}}
-        --- notes pp.~17--18; Lecture~8 video: trees $16{:}10$, cutsets $22{:}33$,
-        fundamental cutsets $30{:}35$, fundamental loops $43{:}51$.
-\end{itemize}
+Chua, Desoer \& Kuh, \emph{Linear and Nonlinear Circuits} (trees, cutsets, fundamental loops).
+Prof.\ Emre Tuna's notes pp.~17--18 and Lecture~8 video,
+\href{https://users.metu.edu.tr/etuna/ee201/}{\texttt{users.metu.edu.tr/etuna/ee201}}.
 
 \end{document}
