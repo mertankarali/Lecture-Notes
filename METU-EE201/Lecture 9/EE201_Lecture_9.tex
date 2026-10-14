@@ -663,15 +663,15 @@ left out.
 Let $G$ be a connected graph. A set $C$ of branches is a \textbf{cutset} if
 \begin{enumerate}
   \item removing all the branches of $C$ leaves the graph unconnected, and
-  \item for \emph{every} branch of $C$: removing all the other branches of $C$ leaves the
-        graph connected.
+  \item after removing $C$, putting back a single branch of $C$ makes the graph connected
+        again, \emph{whichever} branch of $C$ is put back.
 \end{enumerate}
 Removing a cutset leaves exactly two parts. A closed surface around one part crosses
 exactly the branches of $C$.
 \end{definitionbox}
 
-The second condition makes the cutset minimal: every branch in it is needed. Minimal does not
-mean fewest branches; cutsets of the same graph can have different sizes.
+Condition~2 makes the cutset minimal: every branch is needed. Minimal does not mean fewest;
+cutsets of one graph can differ in size.
 
 Conversely, a closed surface gives a cutset only if the nodes inside, and those outside, are
 each connected among themselves.
@@ -707,18 +707,16 @@ For $C_1$: removing branches 4, 5, 7 cuts off node~\nd4, so condition~1 holds. P
 each one of them reaches node~\nd4 again, so condition~2 holds. $C_2$ and $C_3$ are checked
 the same way.
 
-The set $\{1, 3, 4, 5, 6\}$ is \emph{not} a cutset. Removing it leaves three pieces. With
-branch~1 put back, the graph is still unconnected, so condition~2 fails. Branches 1 and 3 are
-not needed: $\{4, 5, 6\}$ alone is a cutset.
+The set $\{1, 3, 4, 5, 6\}$ is \emph{not} a cutset: removing it leaves three pieces, and with
+branch~1 put back the graph is still unconnected (condition~2 fails). $\{4, 5, 6\}$ alone is.
 
-Condition~2 must hold for \emph{every} branch. Removing $\{1, 4, 5, 7\}$ cuts off
+Condition~2 must hold \emph{whichever} branch is put back. Removing $\{1, 4, 5, 7\}$ cuts off
 node~\nd4; putting back 4, 5 or 7 reconnects it, but putting back 1 does not. So it is not a
 cutset; $C_1 = \{4, 5, 7\}$ is.
 
-The set $\{4, 6\}$ is not a cutset either, but for the opposite reason. Removing it leaves
-the graph connected, since branch~5 still joins nodes \nd3 and \nd4, so condition~1 fails.
-Branches 4 and 5 are parallel: both join \nd3 and \nd4. A closed surface that crosses one of
-them crosses the other too. So parallel branches are in a cutset together or not at all.
+The set $\{4, 6\}$ fails the other way: removing it leaves the graph connected, since
+branch~5 still joins \nd3 and \nd4 (condition~1 fails). Branches 4 and 5 are parallel, so a
+closed surface crosses both or neither: parallel branches are in a cutset together or not at all.
 \end{examplebox}
 
 \textbf{KCL on a cutset.} By KCL on the closed surface around one part, the
@@ -966,13 +964,19 @@ $n-1$ voltages & $\Vcol{\mathbf{v}} = A^T\Vcol{\mathbf{e}}$ (node voltages)
 $b-n+1$ currents & $\Icol{\mathbf{i}} = M^T\Icol{\mathbf{i}_M}$ (mesh currents)
   & $\Icol{\mathbf{i}} = B^T\Icol{\mathbf{i}_C}$ (co-tree currents)\\
 orthogonality & $AM^T = \mathbf{0}$ & $QB^T = \mathbf{0}$\\
+\Icol{KCL currents} & $\mathcal{N}(A) = \mathcal{R}(M^T)$ & $\mathcal{N}(Q) = \mathcal{R}(B^T)$\\
+\Vcol{KVL voltages} & $\mathcal{N}(M) = \mathcal{R}(A^T)$ & $\mathcal{N}(B) = \mathcal{R}(Q^T)$\\
 works for & $A$: any; $M$: planar, nonseparable & any connected graph\\
 \bottomrule
 \end{tabular}
 \end{center}
 A circuit has $2b$ branch unknowns. A tree reduces them: the $n-1$ \textbf{tree branch
 voltages} fix every branch voltage (like node voltages), and the $b-n+1$ \textbf{co-tree branch
-currents} fix every branch current (like mesh currents), for any connected graph.
+currents} fix every branch current (like mesh currents), for any connected graph. The two
+columns describe the same two subspaces: $\mathcal{N}(A) = \mathcal{N}(Q)$ holds all currents
+that satisfy KCL, and $\mathcal{R}(A^T) = \mathcal{R}(Q^T)$ all voltages that satisfy KVL
+(Appendix B).
+
 
 
 %==============================================================
@@ -1097,8 +1101,8 @@ causes no trouble.
 
 %==============================================================
 \clearpage
-\section*{Appendix: why the rows of $Q$ and $B$ are orthogonal}
-\addcontentsline{toc}{section}{Appendix: why the rows of $Q$ and $B$ are orthogonal}
+\section*{Appendix A: why the rows of $Q$ and $B$ are orthogonal}
+\addcontentsline{toc}{section}{Appendix A: why the rows of $Q$ and $B$ are orthogonal}
 
 \textbf{From the matrix forms.} $\Vcol{\mathbf{v}} = Q^T\Vcol{\mathbf{v}_T}$ satisfies KVL for
 every choice of tree voltages, so $BQ^T\Vcol{\mathbf{v}_T} = \mathbf{0}$ for every
@@ -1134,5 +1138,87 @@ where it started, so it crosses as often one way as the other: $\mathbf{q}_k^T\m
 In $G$, the loop of 4 leaves the surface of the cutset of 3 on branch 4 and comes back on
 branch 3 (the cutset points out of the surface): $(+1)(+1) + (+1)(-1) = 0$. A node is the simplest closed surface, so the same
 counting also gives $AM^T = \mathbf{0}$.
+
+%==============================================================
+\clearpage
+\section*{Appendix B: null and range spaces of $A$, $Q$, $M$, $B$}
+\addcontentsline{toc}{section}{Appendix B: null and range spaces of $A$, $Q$, $M$, $B$}
+
+\textbf{Two subspaces of a matrix.} Let $X$ have $b$ columns.
+\begin{itemize}
+  \item The \textbf{null space} $\mathcal{N}(X) = \{\mathbf{x} \in \mathbb{R}^b : X\mathbf{x} = \mathbf{0}\}$:
+        the vectors that $X$ sends to zero.
+  \item The \textbf{range space} $\mathcal{R}(X^T) = \{X^T\mathbf{y}\}$: all combinations of the
+        rows of $X$. Its dimension is the rank of $X$.
+  \item \textbf{Rank--nullity:} $\dim \mathcal{N}(X) = b - \operatorname{rank} X$.
+\end{itemize}
+
+\textbf{The ranks.} All four matrices have independent rows:
+\begin{center}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{@{}l c c l@{}}
+\toprule
+matrix & size & rank & why the rows are independent\\
+\midrule
+$A$ & $(n-1)\times b$ & $n-1$   & connected graph (shown earlier)\\
+$Q$ & $(n-1)\times b$ & $n-1$   & identity in the tree columns\\
+$M$ & $\ell\times b$  & $\ell = b-n+1$ & one row per mesh (planar, nonseparable)\\
+$B$ & $\ell\times b$  & $b-n+1$ & identity in the co-tree columns\\
+\bottomrule
+\end{tabular}
+\end{center}
+So $\dim\mathcal{N}(A) = \dim\mathcal{N}(Q) = b - (n-1)$ and
+$\dim\mathcal{N}(M) = \dim\mathcal{N}(B) = b - (b-n+1) = n-1$.
+
+\textbf{Step 1 --- currents: $\mathcal{N}(A) = \mathcal{R}(M^T)$.}
+\begin{itemize}
+  \item KCL says $\Icol{\mathbf{i}} \in \mathcal{N}(A)$. Mesh currents give
+        $\Icol{\mathbf{i}} = M^T\Icol{\mathbf{i}_M} \in \mathcal{R}(M^T)$.
+  \item $AM^T = \mathbf{0}$, so $A(M^T\Icol{\mathbf{i}_M}) = \mathbf{0}$: every vector of
+        $\mathcal{R}(M^T)$ lies in $\mathcal{N}(A)$.
+  \item Both have dimension $b-n+1$. A subspace inside another of the same dimension is all of
+        it, so $\mathcal{R}(M^T) = \mathcal{N}(A)$.
+\end{itemize}
+Meaning: \emph{every} current that satisfies KCL is $M^T\Icol{\mathbf{i}_M}$ for exactly one
+choice of mesh currents (the rows of $M$ are independent). Mesh currents miss nothing and repeat nothing. The same argument with
+$QB^T = \mathbf{0}$ gives $\mathcal{N}(Q) = \mathcal{R}(B^T)$: co-tree currents.
+
+\textbf{Step 2 --- voltages: $\mathcal{N}(M) = \mathcal{R}(A^T)$.} KVL says
+$\Vcol{\mathbf{v}} \in \mathcal{N}(M)$, and node voltages give
+$\Vcol{\mathbf{v}} = A^T\Vcol{\mathbf{e}}$. Now $MA^T = (AM^T)^T = \mathbf{0}$, and both
+subspaces have dimension $n-1$. So $\mathcal{N}(M) = \mathcal{R}(A^T)$: every voltage that
+satisfies KVL comes from exactly one set of node voltages. Likewise
+$\mathcal{N}(B) = \mathcal{R}(Q^T)$: tree voltages.
+
+\textbf{Step 3 --- $A$ and $Q$ give the same KCL.} Each row of $Q$ is KCL on a closed surface,
+$\pm$ the sum of the node KCL equations inside it (take the part without the reference node). So every row of $Q$ is a combination of rows of
+$A$: $Q = TA$ for some $(n-1)\times(n-1)$ matrix $T$. Since $Q$ has rank $n-1$, $T$ is
+invertible. Hence $Q\Icol{\mathbf{i}} = \mathbf{0} \iff A\Icol{\mathbf{i}} = \mathbf{0}$, i.e.\
+$\mathcal{N}(Q) = \mathcal{N}(A)$, and also $\mathcal{R}(Q^T) = \mathcal{R}(A^T)$. With Steps 1
+and 2, all the equalities in the matrix-form table follow; for example
+$\mathcal{N}(M) = \mathcal{R}(A^T) = \mathcal{R}(Q^T) = \mathcal{N}(B)$.
+
+\textbf{The picture.} $\mathbb{R}^b$ splits into two orthogonal subspaces:
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{@{}l l l@{}}
+\toprule
+ & \Icol{KCL currents} & \Vcol{KVL voltages}\\
+\midrule
+as a null space  & $\mathcal{N}(A) = \mathcal{N}(Q)$ & $\mathcal{N}(M) = \mathcal{N}(B)$\\
+as a range space & $\mathcal{R}(M^T) = \mathcal{R}(B^T)$ & $\mathcal{R}(A^T) = \mathcal{R}(Q^T)$\\
+unknowns         & mesh or co-tree currents & node or tree voltages\\
+dimension        & $b-n+1$ & $n-1$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The dimensions add up to $b$. The subspaces are orthogonal: take any $\Icol{\mathbf{i}}$ that
+satisfies KCL and any $\Vcol{\mathbf{v}}$ that satisfies KVL, so $\Vcol{\mathbf{v}} = A^T\Vcol{\mathbf{e}}$ by Step 2. Then
+\[
+  \Vcol{\mathbf{v}}^T\Icol{\mathbf{i}} = (A^T\Vcol{\mathbf{e}})^T\Icol{\mathbf{i}}
+  = \Vcol{\mathbf{e}}^T (A\Icol{\mathbf{i}}) = 0 .
+\]
+This is \textbf{Tellegen's theorem}: $\sum_k \Vcol{v_k}\Icol{i_k} = 0$, even when $\Vcol{\mathbf{v}}$
+and $\Icol{\mathbf{i}}$ come from two different circuits with the same graph.
 
 \end{document}

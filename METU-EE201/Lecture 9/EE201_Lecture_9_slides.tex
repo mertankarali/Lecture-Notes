@@ -757,21 +757,20 @@
     A set $C$ of branches of a connected graph is a \alert{cutset} if
     \begin{enumerate}
       \item removing \alert{all} of $C$ leaves the graph \alert{unconnected}, and
-      \item for \alert{every} branch in $C$: removing \alert{all the others} leaves it
-            \alert{connected}.
+      \item after removing $C$, putting back \alert{a single} branch of $C$ makes it
+            \alert{connected} again --- \alert{whichever} branch we put back.
     \end{enumerate}
   \end{block}
   \vfill
   \begin{center}
-  \begin{tikzpicture}[scale=0.8]
+  \begin{tikzpicture}[scale=0.75]
     \eightcoords
     \eightsub{plainbr}{plainbr}{plainbr}{plainbr}{plainbr}{plainbr}{plainbr}
   \end{tikzpicture}
   \end{center}
   \vfill
   \begin{center}
-    \onslide<2->{In words: removing the set cuts the graph into \alert{two pieces}, and
-      \alert{every} branch in the set is needed for that.}\\[3pt]
+    \onslide<2->{In words: removing $C$ gives \alert{two pieces}, and \alert{every} branch of $C$ is needed.}\\[3pt]
     \onslide<3->{Picture: a \alert{closed surface} around one piece crosses
       \alert{exactly} the branches of the cutset.}
   \end{center}
@@ -876,7 +875,7 @@
       \onslide<9->{(1) Remove all four: node \nd4 cut off, \alert{two} pieces. \yes\\[6pt]}
       \onslide<10->{(2) Put back \textcolor{ctree}{4}, 5 or 7: connected. \yes\\[6pt]}
       \onslide<11->{\phantom{(2)} Put back \textcolor{ctree}{1}: still unconnected. \no\\[8pt]
-        $\Rightarrow$ \alert{not} a cutset: (2) must hold for \alert{every} branch.
+        $\Rightarrow$ \alert{not} a cutset: (2) must hold \alert{whichever} branch we put back.
         Branch 1 is not needed: $\{4, 5, 7\}$ is a cutset.}}
     \end{column}
   \end{columns}
