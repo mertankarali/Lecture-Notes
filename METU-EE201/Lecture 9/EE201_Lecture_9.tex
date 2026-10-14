@@ -752,10 +752,38 @@ The \textbf{fundamental cutset} of a tree branch $\beta$ is
 \end{itemize}
 \end{definitionbox}
 
-It has only one tree branch: every other tree branch lies inside one of the two parts, so it
-does not join them. For the direction, draw the closed surface around one part. If $\beta$
-leaves the surface, the cutset points out of the surface; if $\beta$ enters, it points in. In
-KCL a branch counts $+$ if it crosses the surface the same way as $\beta$, and $-$ otherwise.
+\begin{center}
+\begin{minipage}[c]{0.4\linewidth}
+\centering
+\tikzset{partfill/.style={fill=ctree!13}}
+\begin{tikzpicture}[scale=0.72]
+  \useasboundingbox (-2.75,-0.85) rectangle (2.75,3.15);
+  \tgcoords
+  \fill[partfill] (0,1.8) ellipse (1.55 and 0.5);
+  \fill[partfill] (-1,0) ellipse (1.4 and 0.42);
+  \draw[surf] (0,1.8) ellipse (1.8 and 0.8);
+  \tgraph{treebr}{hlbr}{treebr}{hlbr}{hlbr}{treebr}
+  \foreach \t in {30,90,150,210,330,-90} {
+    \pgfmathsetmacro{\nx}{cos(\t)/1.8} \pgfmathsetmacro{\ny}{sin(\t)/0.8}
+    \pgfmathsetmacro{\nn}{sqrt(\nx*\nx+\ny*\ny)}
+    \draw[-{Stealth[length=2mm]}, cvolt, line width=1.1pt]
+      ({1.8*cos(\t)},{1.8+0.8*sin(\t)}) -- ++({0.4*\nx/\nn},{0.4*\ny/\nn});}
+  \node[font=\scriptsize, text=ctree] at (0,-0.8) {parts $\{\nd1, \nd2\}$ and $\{\nd3, \nd4\}$};
+\end{tikzpicture}
+\end{minipage}%
+\hfill
+\begin{minipage}[c]{0.57\linewidth}
+For the graph $G$ of Example~9.3 below, take $\beta = 3$. Removing it leaves the parts
+$\{\nd1, \nd2\}$ and $\{\nd3, \nd4\}$, and the fundamental cutset is $\{3, 2, 4, 5\}$.
+
+\textbf{One tree branch.} Every other tree branch (1, 6) lies inside one part, so it does
+not join them.
+
+\textbf{Direction.} Branch 3 leaves the surface around $\{\nd1, \nd2\}$, so the cutset
+points out of it (arrows). In KCL a branch counts $+$ if it crosses the surface the same way
+as $\beta$, and $-$ otherwise.
+\end{minipage}
+\end{center}
 
 \begin{examplebox}[Example 9.3 --- fundamental cutsets and KCL]
 The graph $G$ has $n = 4$ nodes and $b = 6$ branches. Take the tree $\{1, 3, 6\}$
@@ -805,8 +833,8 @@ so its KCL gives that tree branch current in terms of co-tree currents. For $G$:
   \Icol{i_3} = -\Icol{i_2} - \Icol{i_4} - \Icol{i_5}, \quad
   \Icol{i_6} = \Icol{i_2} .
 \]
-So the $b - n + 1$ co-tree currents fix every branch
-current, like mesh currents.
+So all $b$ branch currents are combinations of the $b - n + 1$ co-tree
+currents, and KCL holds automatically, like mesh currents.
 
 \textbf{Matrix form.} The fundamental cutset equations can be collected in the
 \textbf{fundamental cutset matrix} $Q$: one row per tree branch, one column per branch. An
@@ -817,16 +845,22 @@ and $0$ otherwise. For $G$:
   \qquad Q\Icol{\mathbf{i}} = \mathbf{0} \quad (\text{like } A\Icol{\mathbf{i}} = \mathbf{0}).
 \]
 The tree columns (boxed) form an identity, so the rows are independent. The relation above, in
-matrix form, is $\Icol{\mathbf{i}} = B^T\Icol{\mathbf{i}_C}$ with
-$\Icol{\mathbf{i}_C} = [\Icol{i_2}\ \Icol{i_4}\ \Icol{i_5}]^T$, like
-$\Icol{\mathbf{i}} = M^T\Icol{\mathbf{i}_M}$. Its transpose $B$ comes back with the
+matrix form, is
+\[
+  \begin{bmatrix} \Icol{i_1}\\ \Icol{i_2}\\ \Icol{i_3}\\ \Icol{i_4}\\ \Icol{i_5}\\ \Icol{i_6} \end{bmatrix}
+  = \underbrace{\begin{bmatrix} 0 & -1 & -1\\ 1 & 0 & 0\\ -1 & -1 & -1\\ 0 & 1 & 0\\ 0 & 0 & 1\\ 1 & 0 & 0 \end{bmatrix}}_{B^T}
+    \begin{bmatrix} \Icol{i_2}\\ \Icol{i_4}\\ \Icol{i_5} \end{bmatrix},
+  \qquad \Icol{\mathbf{i}} = B^T\Icol{\mathbf{i}_C} \quad (\text{like } \Icol{\mathbf{i}} = M^T\Icol{\mathbf{i}_M}).
+\]
+Its transpose $B$, with rows for the co-tree branches 2, 4, 5, comes back with the
 fundamental loops.
 
 %==============================================================
 \section{Fundamental loops}
 
 Fix a tree $T$ of a connected graph $G$ and pick one co-tree branch. Adding it to the tree
-closes exactly one loop: the co-tree branch plus the tree path between its two ends.
+closes exactly one loop: the co-tree branch plus the tree path between its two ends. For
+example, adding co-tree branch 4 to the tree $\{1, 3, 6\}$ of $G$ closes the loop $\{4, 3, 1\}$.
 
 \begin{definitionbox}{Fundamental loop}
 The \textbf{fundamental loop} of a co-tree branch is
@@ -887,8 +921,8 @@ gives that co-tree branch voltage in terms of tree voltages. For $G$:
   \Vcol{v_4} = \Vcol{v_1} + \Vcol{v_3}, \quad
   \Vcol{v_5} = \Vcol{v_1} + \Vcol{v_3} .
 \]
-So the $n - 1$ tree voltages fix every branch voltage, like
-node voltages.
+So all $b$ branch voltages are combinations of the $n - 1$ tree voltages,
+and KVL holds automatically, like node voltages.
 
 \textbf{Matrix form.} The fundamental loop equations are collected in the \textbf{fundamental
 loop matrix} $B$: one row per co-tree branch; an entry is $+1$ or $-1$ if the branch is in the
@@ -898,35 +932,15 @@ $\Icol{\mathbf{i}} = B^T\Icol{\mathbf{i}_C}$:
   B = \brmat{Bn}{2, 4, 5}{\Brows}{\foreach \j in {2,4,5} {\colbox{Bn}{\j}{cvolt}}},
   \qquad B\Vcol{\mathbf{v}} = \mathbf{0} \quad (\text{like } M\Vcol{\mathbf{v}} = \mathbf{0}).
 \]
-The relation above, in matrix form, is $\Vcol{\mathbf{v}} = Q^T\Vcol{\mathbf{v}_T}$ with
-$\Vcol{\mathbf{v}_T} = [\Vcol{v_1}\ \Vcol{v_3}\ \Vcol{v_6}]^T$, like
-$\Vcol{\mathbf{v}} = A^T\Vcol{\mathbf{e}}$. Finally $QB^T = \mathbf{0}$, like
-$AM^T = \mathbf{0}$.
-
-%==============================================================
-\section{Matrix form side by side}
-
-\begin{center}
-\renewcommand{\arraystretch}{1.25}
-\begin{tabular}{@{}l l l@{}}
-\toprule
- & incidence / mesh & fundamental cutset / loop\\
-\midrule
-KCL & $A\Icol{\mathbf{i}} = \mathbf{0}$ & $Q\Icol{\mathbf{i}} = \mathbf{0}$\\
-KVL & $M\Vcol{\mathbf{v}} = \mathbf{0}$ & $B\Vcol{\mathbf{v}} = \mathbf{0}$\\
-$n-1$ voltages & $\Vcol{\mathbf{v}} = A^T\Vcol{\mathbf{e}}$ (node voltages)
-  & $\Vcol{\mathbf{v}} = Q^T\Vcol{\mathbf{v}_T}$ (tree voltages)\\
-$b-n+1$ currents & $\Icol{\mathbf{i}} = M^T\Icol{\mathbf{i}_M}$ (mesh currents)
-  & $\Icol{\mathbf{i}} = B^T\Icol{\mathbf{i}_C}$ (co-tree currents)\\
-orthogonality & $AM^T = \mathbf{0}$ & $QB^T = \mathbf{0}$\\
-works for & $A$: any; $M$: planar, nonseparable & any connected graph\\
-\bottomrule
-\end{tabular}
-\end{center}
-A circuit has $2b$ branch unknowns. A tree reduces them: the $n-1$ \textbf{tree branch
-voltages} fix every branch voltage (like node voltages), and the $b-n+1$ \textbf{co-tree branch
-currents} fix every branch current (like mesh currents), for any connected graph.
-
+The relation above, in matrix form, uses the transpose of the
+fundamental cutset matrix:
+\[
+  \begin{bmatrix} \Vcol{v_1}\\ \Vcol{v_2}\\ \Vcol{v_3}\\ \Vcol{v_4}\\ \Vcol{v_5}\\ \Vcol{v_6} \end{bmatrix}
+  = \underbrace{\begin{bmatrix} 1 & 0 & 0\\ 0 & 1 & -1\\ 0 & 1 & 0\\ 1 & 1 & 0\\ 1 & 1 & 0\\ 0 & 0 & 1 \end{bmatrix}}_{Q^T}
+    \begin{bmatrix} \Vcol{v_1}\\ \Vcol{v_3}\\ \Vcol{v_6} \end{bmatrix},
+  \qquad \Vcol{\mathbf{v}} = Q^T\Vcol{\mathbf{v}_T} \quad (\text{like } \Vcol{\mathbf{v}} = A^T\Vcol{\mathbf{e}}).
+\]
+Finally $QB^T = \mathbf{0}$, like $AM^T = \mathbf{0}$.
 
 %==============================================================
 \section{Any connected graph}
@@ -975,6 +989,31 @@ The two fundamental loops are the outer loop and the inner triangle. The KCL equ
 $\Icol{i_1} = \Icol{i_2} = \Icol{i_3}$ and $\Icol{i_4} = \Icol{i_5} = \Icol{i_6}$: one current
 for each loop. In total $4 + 2 = 6 = b$ independent equations. Node~\nd1 causes no trouble.
 \end{examplebox}
+
+%==============================================================
+\section{Looking ahead: matrix form side by side}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.25}
+\begin{tabular}{@{}l l l@{}}
+\toprule
+ & incidence / mesh & fundamental cutset / loop\\
+\midrule
+KCL & $A\Icol{\mathbf{i}} = \mathbf{0}$ & $Q\Icol{\mathbf{i}} = \mathbf{0}$\\
+KVL & $M\Vcol{\mathbf{v}} = \mathbf{0}$ & $B\Vcol{\mathbf{v}} = \mathbf{0}$\\
+$n-1$ voltages & $\Vcol{\mathbf{v}} = A^T\Vcol{\mathbf{e}}$ (node voltages)
+  & $\Vcol{\mathbf{v}} = Q^T\Vcol{\mathbf{v}_T}$ (tree voltages)\\
+$b-n+1$ currents & $\Icol{\mathbf{i}} = M^T\Icol{\mathbf{i}_M}$ (mesh currents)
+  & $\Icol{\mathbf{i}} = B^T\Icol{\mathbf{i}_C}$ (co-tree currents)\\
+orthogonality & $AM^T = \mathbf{0}$ & $QB^T = \mathbf{0}$\\
+works for & $A$: any; $M$: planar, nonseparable & any connected graph\\
+\bottomrule
+\end{tabular}
+\end{center}
+A circuit has $2b$ branch unknowns. A tree reduces them: the $n-1$ \textbf{tree branch
+voltages} fix every branch voltage (like node voltages), and the $b-n+1$ \textbf{co-tree branch
+currents} fix every branch current (like mesh currents), for any connected graph.
+
 
 %==============================================================
 \section*{Summary}

@@ -4,7 +4,7 @@ Lecture notes and slides for the ninth lecture of EE201 (Section 2, Fall 2026/27
 
 | File | What it is |
 |---|---|
-| `EE201_Lecture_9.tex` | Handout / lecture notes (article, 5 pages). Self-contained: definitions, four worked examples, the "any connected graph" summary. |
+| `EE201_Lecture_9.tex` | Handout / lecture notes (article, 6 pages). Self-contained: definitions, four worked examples, the "any connected graph" summary. |
 | `EE201_Lecture_9_slides.tex` | Beamer deck (32 slides, 106 PDF pages) for the lecture itself — visual, low text. |
 | `build.sh` | Compiles both, removes auxiliary files, opens the PDFs. |
 
@@ -44,7 +44,7 @@ Following pp. 17–18 of Prof. Emre Tuna's notes and his recorded Lecture 8 on
 6. **Any connected graph** — n − 1 tree branches ↔ KCL, b − n + 1 co-tree branches ↔ KVL; works
    for nonplanar graphs; Example 9.5 solves the separable graph met earlier (two loops joined at
    one node) step by step: 4 KCL + 2 KVL, one current for each loop
-7. **Matrix form side by side** — A, M against Q, B: KCL, KVL, the n − 1 voltage and
+7. **Looking ahead: matrix form side by side** — A, M against Q, B: KCL, KVL, the n − 1 voltage and
    b − n + 1 current unknowns, orthogonality; what the tree voltages / co-tree currents are for
 
 Then a summary.
