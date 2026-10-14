@@ -4,7 +4,7 @@ Lecture notes and slides for the ninth lecture of EE201 (Section 2, Fall 2026/27
 
 | File | What it is |
 |---|---|
-| `EE201_Lecture_9.tex` | Handout / lecture notes (article, 6 pages). Self-contained: definitions, four worked examples, the "any connected graph" summary. |
+| `EE201_Lecture_9.tex` | Handout / lecture notes (article, 7 pages). Self-contained: definitions, four worked examples, the "any connected graph" summary. |
 | `EE201_Lecture_9_slides.tex` | Beamer deck (32 slides, 106 PDF pages) for the lecture itself — visual, low text. |
 | `build.sh` | Compiles both, removes auxiliary files, opens the PDFs. |
 
@@ -49,7 +49,9 @@ Following pp. 17–18 of Prof. Emre Tuna's notes and his recorded Lecture 8 on
    loops), then Step 1 tree, Step 2 fundamental loops (KVL), Step 3 fundamental cutsets (KCL), one
    panel per tree branch with the dashed surface and the cut branches, Step 4 result: 4 KCL + 2 KVL = b, one current for each loop
 
-Then a summary.
+Then a summary, and an appendix: why the rows of Q and B are orthogonal — from the matrix forms
+(v = Qᵀ v_T satisfies KVL), and by counting (a loop crosses a cutset surface as often outward as
+inward; a node is the simplest surface, so this also covers A Mᵀ = 0).
 
 ## Slides
 

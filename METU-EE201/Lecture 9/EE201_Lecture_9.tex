@@ -1087,4 +1087,43 @@ causes no trouble.
         $b-n+1$ independent KVL equations. Every branch voltage follows from the tree voltages.
 \end{itemize}
 
+%==============================================================
+\section*{Appendix: why the rows of $Q$ and $B$ are orthogonal}
+\addcontentsline{toc}{section}{Appendix: why the rows of $Q$ and $B$ are orthogonal}
+
+\textbf{From the matrix forms.} $\Vcol{\mathbf{v}} = Q^T\Vcol{\mathbf{v}_T}$ satisfies KVL for
+every choice of tree voltages, so $BQ^T\Vcol{\mathbf{v}_T} = \mathbf{0}$ for every
+$\Vcol{\mathbf{v}_T}$. Hence $BQ^T = \mathbf{0}$, i.e.\ $QB^T = \mathbf{0}$. This is how
+$AM^T = \mathbf{0}$ was found previously.
+
+\noindent
+\begin{minipage}[c]{0.56\linewidth}
+\textbf{By counting.} The argument for a node and a mesh works with a closed surface in place
+of the node. Row $\mathbf{q}_k$ is the cutset of tree branch $k$: $+1$ for a branch that
+crosses its surface in the cutset direction, $-1$ the other way. Row $\mathbf{b}_r$ is a loop.
+Only loop branches that cross the surface give nonzero terms.\par\smallskip
+Walk around the loop. A crossing in the cutset direction gives $+1$, a crossing the other way
+$-1$, whatever the branch arrow (an arrow against the walk flips both signs). The walk ends
+where it started, so it crosses as often one way as the other: $\mathbf{q}_k^T\mathbf{b}_r = 0$.
+\end{minipage}%
+\hfill
+\begin{minipage}[c]{0.41\linewidth}
+\centering
+\begin{tikzpicture}[scale=1.0]
+  \tgcoords
+  \draw[surf] (0,1.8) ellipse (1.8 and 0.8);
+  \tgraph{hlbr}{faintbr}{hlbr}{hlbr}{faintbr}{faintbr}
+  \loopcw[0.22]{0}{1.4}
+  \foreach \p in {(0.6,1.04), (-0.6,1.04)} \fill[black] \p circle (1.6pt);
+  \draw[metugray, thin] (0.6,1.04) -- (2.0,0.45) node[right=-1pt, font=\scriptsize, text=black] {out: $+1$};
+  \draw[metugray, thin] (-0.6,1.04) -- (-2.0,1.3) node[left=-1pt, font=\scriptsize, text=black] {in: $-1$};
+\end{tikzpicture}\\[-1pt]
+{\scriptsize\color{metugray} cutset of 3 and loop of 4 in $G$}
+\end{minipage}
+
+\smallskip
+In $G$, the loop of 4 leaves the surface of the cutset of 3 on branch 4 and comes back on
+branch 3 (the cutset points out of the surface): $(+1)(+1) + (+1)(-1) = 0$. A node is the simplest closed surface, so the same
+counting also gives $AM^T = \mathbf{0}$.
+
 \end{document}

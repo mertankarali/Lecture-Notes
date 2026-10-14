@@ -48,6 +48,8 @@ Following pp. 15–16 of Prof. Emre Tuna's notes and his recorded Lecture 7 on
 7. **Looking ahead: why mesh currents?** — the same flow with KCL and KVL swapped: ℓ mesh
    currents, KCL built in, KVL gives ℓ equations — the idea of mesh analysis
 8. **Summary** — a table comparing node voltages and mesh currents
+9. **Appendix: why the rows of A and M are orthogonal** — a short counting argument: a mesh
+   enters a node on one branch (term −1) and leaves on another (term +1), whatever the arrows
 
 ## Conventions
 

@@ -924,4 +924,42 @@ left to write            & KCL: $A\Icol{\mathbf{i}} = \mathbf{0}$
 Nonplanar circuits: \textbf{trees}, \textbf{cutsets} and fundamental cutsets --- tools that
 work for any connected graph.
 
+%==============================================================
+\section*{Appendix: why the rows of $A$ and $M$ are orthogonal}
+\addcontentsline{toc}{section}{Appendix: why the rows of $A$ and $M$ are orthogonal}
+
+The product $\mathbf{a}_j^T\mathbf{m}_r$ adds $a_{jk}\,m_{rk}$ over the branches $k$. Here $a_{jk} = +1$ if branch $k$ leaves node $j$. A term
+is nonzero only if branch $k$ touches node $j$ \emph{and} lies on mesh $r$. If mesh $r$ misses
+node $j$, all terms are zero. Otherwise the walk around mesh $r$ comes into node $j$ on one
+branch and goes out on another; a mesh passes a node only once, so these are the only two terms.
+\par\smallskip\noindent
+\begin{minipage}[c]{0.4\linewidth}
+\centering
+\begin{tikzpicture}[scale=0.9]
+  \coordinate (J) at (0,0);
+  \draw[thick] (-1.7,-0.4) -- (J) -- (1.7,-0.4);
+  \fill[metured] (J) circle (2.2pt);
+  \node[font=\small, text=metured, below=2pt] at (J) {$j$};
+  \draw[ccur, thick, -{Stealth[length=2.2mm]}] (-1.6,0.02) to[out=18, in=162] (1.6,0.02);
+  \node[font=\scriptsize, text=ccur] at (0,0.5) {walk around mesh $r$};
+  \node[font=\scriptsize] at (-1.15,-0.62) {comes in};
+  \node[font=\scriptsize] at (1.15,-0.62) {goes out};
+\end{tikzpicture}
+\end{minipage}%
+\hfill
+\begin{minipage}[c]{0.57\linewidth}
+\centering\small
+\renewcommand{\arraystretch}{1.3}\setlength{\tabcolsep}{5pt}
+\begin{tabular}{@{}l c c@{}}
+\toprule
+$a_{jk}\,m_{rk}$ & arrow along walk & arrow against walk\\
+\midrule
+walk goes out of $j$ & $(+1)(+1) = +1$ & $(-1)(-1) = +1$\\
+walk comes into $j$  & $(-1)(+1) = -1$ & $(+1)(-1) = -1$\\
+\bottomrule
+\end{tabular}
+\end{minipage}\par\smallskip
+\noindent Whatever the arrows, the branch the walk goes out on gives $+1$ and the one it comes in on
+gives $-1$, so $\mathbf{a}_j^T\mathbf{m}_r = 0$. The same holds for any loop, not only meshes.
+
 \end{document}
