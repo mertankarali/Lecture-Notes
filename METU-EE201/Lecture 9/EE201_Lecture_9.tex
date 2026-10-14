@@ -663,12 +663,18 @@ left out.
 Let $G$ be a connected graph. A set $C$ of branches is a \textbf{cutset} if
 \begin{enumerate}
   \item removing all the branches of $C$ leaves the graph unconnected, and
-  \item removing all the branches of $C$ except any one of them leaves it connected.
+  \item for \emph{every} branch of $C$: removing all the other branches of $C$ leaves the
+        graph connected.
 \end{enumerate}
+Removing a cutset leaves exactly two parts. A closed surface around one part crosses
+exactly the branches of $C$.
 \end{definitionbox}
 
 The second condition makes the cutset minimal: every branch in it is needed. Minimal does not
 mean fewest branches; cutsets of the same graph can have different sizes.
+
+Conversely, a closed surface gives a cutset only if the nodes inside, and those outside, are
+each connected among themselves.
 
 \begin{examplebox}[Example 9.2 --- cutsets of a figure-eight graph]
 In each panel the removed branches are deleted; look at what is left.
@@ -698,13 +704,16 @@ In each panel the removed branches are deleted; look at what is left.
 \end{tabular}
 \end{center}
 For $C_1$: removing branches 4, 5, 7 cuts off node~\nd4, so condition~1 holds. Putting back
-any one of them reaches node~\nd4 again, so condition~2 holds. $C_2$ and $C_3$ are checked
-the same way. With all branches back, the dashed closed surface around the cut-off
-piece crosses exactly the branches of the cutset.
+each one of them reaches node~\nd4 again, so condition~2 holds. $C_2$ and $C_3$ are checked
+the same way.
 
 The set $\{1, 3, 4, 5, 6\}$ is \emph{not} a cutset. Removing it leaves three pieces. With
 branch~1 put back, the graph is still unconnected, so condition~2 fails. Branches 1 and 3 are
 not needed: $\{4, 5, 6\}$ alone is a cutset.
+
+Condition~2 must hold for \emph{every} branch. Removing $\{1, 4, 5, 7\}$ cuts off
+node~\nd4; putting back 4, 5 or 7 reconnects it, but putting back 1 does not. So it is not a
+cutset; $C_1 = \{4, 5, 7\}$ is.
 
 The set $\{4, 6\}$ is not a cutset either, but for the opposite reason. Removing it leaves
 the graph connected, since branch~5 still joins nodes \nd3 and \nd4, so condition~1 fails.
@@ -712,8 +721,7 @@ Branches 4 and 5 are parallel: both join \nd3 and \nd4. A closed surface that cr
 them crosses the other too. So parallel branches are in a cutset together or not at all.
 \end{examplebox}
 
-\textbf{KCL on a cutset.} A cutset splits the graph into two parts. A closed surface around
-one part crosses exactly the branches of the cutset. So by KCL on that closed surface, the
+\textbf{KCL on a cutset.} By KCL on the closed surface around one part, the
 currents of the cutset branches add up to zero (each with $+$ if it leaves the surface, $-$
 if it enters).
 
