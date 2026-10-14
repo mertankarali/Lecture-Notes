@@ -4,7 +4,7 @@ Lecture notes and slides for the eighth lecture of EE201 (Section 2, Fall 2026/2
 
 | File | What it is |
 |---|---|
-| `EE201_Lecture_8.tex` | Handout / lecture notes (article, 6 pages). Self-contained: definitions, four worked examples, a node-voltage vs. mesh-current comparison. |
+| `EE201_Lecture_8.tex` | Handout / lecture notes (article, 7 pages). Self-contained: definitions, four worked examples, a node-voltage vs. mesh-current comparison. |
 | `EE201_Lecture_8_slides.tex` | Beamer deck (19 slides, 54 PDF pages) for the lecture itself — visual, low text. |
 | `build.sh` | Compiles both, removes auxiliary files, opens the PDFs. |
 
@@ -48,8 +48,9 @@ Following pp. 15–16 of Prof. Emre Tuna's notes and his recorded Lecture 7 on
 7. **Looking ahead: why mesh currents?** — the same flow with KCL and KVL swapped: ℓ mesh
    currents, KCL built in, KVL gives ℓ equations — the idea of mesh analysis
 8. **Summary** — a table comparing node voltages and mesh currents
-9. **Appendix: why the rows of A and M are orthogonal** — a short counting argument: a mesh
-   enters a node on one branch (term −1) and leaves on another (term +1), whatever the arrows
+9. **Appendix: why the rows of A and M are orthogonal** (own page) — step by step: which branches
+   count, the sign of each term (four cases drawn: the arrow cancels, only the walk matters), the
+   sum; checked on the bridge (node 2 / mesh 1, node 1 / mesh 2); what it means for KCL
 
 ## Conventions
 
