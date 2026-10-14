@@ -978,26 +978,26 @@ graphs met earlier.
 Two loops joined only at node~\nd1. Previously the mesh method was not safe here. We follow
 the same steps as for $G$.
 \begin{center}
-\begin{tabular}{@{}c@{\hspace{0.3cm}}c@{\hspace{0.3cm}}c@{\hspace{0.3cm}}c@{}}
+\begin{tabular}{@{}c@{\hspace{0.45cm}}c@{\hspace{0.45cm}}c@{\hspace{0.45cm}}c@{}}
 \begin{tabular}[t]{@{}c@{}}
-\begin{tikzpicture}[scale=0.62]
-  \useasboundingbox (-0.55,-0.55) rectangle (2.95,2.95);
+\begin{tikzpicture}[scale=0.8]
+  \useasboundingbox (-0.6,-0.6) rectangle (3.02,3.0);
   \sepcoords \sepgraph{gbr}{gbr}{gbr}{gbr}{gbr}{gbr}
 \end{tikzpicture}\\[-2pt]
 {\scriptsize\bfseries\color{metugray} graph: $n = 5$, $b = 6$}
 \end{tabular}
 &
 \begin{tabular}[t]{@{}c@{}}
-\begin{tikzpicture}[scale=0.62]
-  \useasboundingbox (-0.55,-0.55) rectangle (2.95,2.95);
+\begin{tikzpicture}[scale=0.8]
+  \useasboundingbox (-0.6,-0.6) rectangle (3.02,3.0);
   \sepcoords \septree
 \end{tikzpicture}\\[-2pt]
 {\scriptsize\bfseries\color{metugray} tree $\{1, 2, 4, 5\}$}
 \end{tabular}
 &
 \begin{tabular}[t]{@{}c@{}}
-\begin{tikzpicture}[scale=0.62]
-  \useasboundingbox (-0.55,-0.55) rectangle (2.95,2.95);
+\begin{tikzpicture}[scale=0.8]
+  \useasboundingbox (-0.6,-0.6) rectangle (3.02,3.0);
   \sepcoords \sepgraph{hlbr}{hlbr}{hlbr}{faintbr}{faintbr}{faintbr} \loopcw[0.28]{1.6}{0.75}
 \end{tikzpicture}\\[-2pt]
 {\scriptsize\bfseries\color{metugray} loop of 3: $\{3, 1, 2\}$}\\[1pt]
@@ -1005,8 +1005,8 @@ the same steps as for $G$.
 \end{tabular}
 &
 \begin{tabular}[t]{@{}c@{}}
-\begin{tikzpicture}[scale=0.62]
-  \useasboundingbox (-0.55,-0.55) rectangle (2.95,2.95);
+\begin{tikzpicture}[scale=0.8]
+  \useasboundingbox (-0.6,-0.6) rectangle (3.02,3.0);
   \sepcoords \sepgraph{faintbr}{faintbr}{faintbr}{hlbr}{hlbr}{hlbr} \loopcw[0.2]{0.7}{1.72}
 \end{tikzpicture}\\[-2pt]
 {\scriptsize\bfseries\color{metugray} loop of 6: $\{6, 4, 5\}$}\\[1pt]
@@ -1021,29 +1021,51 @@ co-tree is $\{3, 6\}$ ($b - n + 1 = 2$ branches).
 adding co-tree branch 6 closes the inner triangle. Each is a single loop, walked in the
 direction of its co-tree branch (right-hand panels).
 
-\begin{minipage}[c]{0.36\linewidth}
-\centering\small
-\renewcommand{\arraystretch}{1.15}\setlength{\tabcolsep}{3pt}
-\begin{tabular}{@{}c l l@{}}
-\toprule
-tree br. & cutset & KCL on it\\
-\midrule
-1 & $\{1, 3\}$ & $\Icol{i_1} - \Icol{i_3} = 0$\\
-2 & $\{2, 3\}$ & $\Icol{i_2} - \Icol{i_3} = 0$\\
-4 & $\{4, 6\}$ & $\Icol{i_4} - \Icol{i_6} = 0$\\
-5 & $\{5, 6\}$ & $\Icol{i_5} - \Icol{i_6} = 0$\\
-\bottomrule
+\textbf{Step 3 --- fundamental cutsets (KCL).} Removing a tree branch splits the tree into
+two parts; the dashed surface encloses one of them, and the branches that cross it (orange)
+form the fundamental cutset. For tree branch 1 the parts are
+$\{\nd1, \nd4, \nd5\}$ and $\{\nd2, \nd3\}$. Branches 1 and 3 cross the surface around
+$\{\nd2, \nd3\}$: 1 enters it, 3 leaves it, so $\Icol{i_1} - \Icol{i_3} = 0$. Tree branches 2 and 5 cut off a single node
+(\nd3, \nd5), and tree branch 4 cuts off the pair $\{\nd4, \nd5\}$.
+\begin{center}
+\begin{tabular}{@{}c@{\hspace{0.45cm}}c@{\hspace{0.45cm}}c@{\hspace{0.45cm}}c@{}}
+\begin{tabular}[t]{@{}c@{}}
+\begin{tikzpicture}[scale=0.8]
+  \useasboundingbox (-0.6,-0.6) rectangle (3.02,3.0);
+  \sepcoords \draw[piece, rounded corners=5pt] (1.95,2.95) -- (2.98,2.95) -- (2.98,-0.56) -- (-0.56,-0.56) -- (-0.56,0.42) -- (1.95,0.42) -- cycle; \sepgraph{hlbr}{treebr}{hlbr}{treebr}{treebr}{cotreebr}
+\end{tikzpicture}\\[-2pt]
+{\scriptsize\bfseries\color{metugray} cutset of 1: $\{1, 3\}$}\\[1pt]
+{\small $\Icol{i_1} - \Icol{i_3} = 0$}
 \end{tabular}
-\end{minipage}%
-\hfill
-\begin{minipage}[c]{0.61\linewidth}
-\textbf{Step 3 --- fundamental cutsets (KCL).} For tree branch 1: removing it leaves the parts
-$\{\nd1, \nd4, \nd5\}$ and $\{\nd2, \nd3\}$. Branches 1 and 3 join them; 1 crosses from the
-first part to the second, 3 the other way, so $\Icol{i_1} - \Icol{i_3} = 0$. The other tree
-branches work the same way.
-\end{minipage}
-
-\medskip
+&
+\begin{tabular}[t]{@{}c@{}}
+\begin{tikzpicture}[scale=0.8]
+  \useasboundingbox (-0.6,-0.6) rectangle (3.02,3.0);
+  \sepcoords \draw[piece] (-0.12,-0.12) circle (0.52); \sepgraph{treebr}{hlbr}{hlbr}{treebr}{treebr}{cotreebr}
+\end{tikzpicture}\\[-2pt]
+{\scriptsize\bfseries\color{metugray} cutset of 2: $\{2, 3\}$}\\[1pt]
+{\small $\Icol{i_2} - \Icol{i_3} = 0$}
+\end{tabular}
+&
+\begin{tabular}[t]{@{}c@{}}
+\begin{tikzpicture}[scale=0.8]
+  \useasboundingbox (-0.6,-0.6) rectangle (3.02,3.0);
+  \sepcoords \draw[piece] (1.12,1.3) ellipse [x radius=1.12, y radius=0.44, rotate=40]; \sepgraph{treebr}{treebr}{cotreebr}{hlbr}{treebr}{hlbr}
+\end{tikzpicture}\\[-2pt]
+{\scriptsize\bfseries\color{metugray} cutset of 4: $\{4, 6\}$}\\[1pt]
+{\small $\Icol{i_4} - \Icol{i_6} = 0$}
+\end{tabular}
+&
+\begin{tabular}[t]{@{}c@{}}
+\begin{tikzpicture}[scale=0.8]
+  \useasboundingbox (-0.6,-0.6) rectangle (3.02,3.0);
+  \sepcoords \draw[piece] (0.62,0.77) ellipse (0.4 and 0.38); \sepgraph{treebr}{treebr}{cotreebr}{treebr}{hlbr}{hlbr}
+\end{tikzpicture}\\[-2pt]
+{\scriptsize\bfseries\color{metugray} cutset of 5: $\{5, 6\}$}\\[1pt]
+{\small $\Icol{i_5} - \Icol{i_6} = 0$}
+\end{tabular}
+\end{tabular}
+\end{center}
 \textbf{Step 4 --- result.} The KCL equations give $\Icol{i_1} = \Icol{i_2} = \Icol{i_3}$ and
 $\Icol{i_4} = \Icol{i_5} = \Icol{i_6}$: one current for each loop, the co-tree currents
 $\Icol{i_3}$ and $\Icol{i_6}$. In total $4 + 2 = 6 = b$ independent equations. Node~\nd1

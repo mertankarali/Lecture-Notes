@@ -46,8 +46,8 @@ Following pp. 17–18 of Prof. Emre Tuna's notes and his recorded Lecture 8 on
 7. **Any connected graph** — n − 1 tree branches ↔ KCL, b − n + 1 co-tree branches ↔ KVL; works
    for nonplanar graphs; Example 9.5 solves the separable graph met earlier (two loops joined at
    one node) step by step, as on the slides: four panels (graph, tree, the two fundamental
-   loops), then Step 1 tree, Step 2 fundamental loops (KVL), Step 3 fundamental cutsets (KCL
-   table), Step 4 result: 4 KCL + 2 KVL = b, one current for each loop
+   loops), then Step 1 tree, Step 2 fundamental loops (KVL), Step 3 fundamental cutsets (KCL), one
+   panel per tree branch with the dashed surface and the cut branches, Step 4 result: 4 KCL + 2 KVL = b, one current for each loop
 
 Then a summary.
 
