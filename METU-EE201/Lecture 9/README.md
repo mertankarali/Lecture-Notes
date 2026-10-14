@@ -41,11 +41,13 @@ Following pp. 17–18 of Prof. Emre Tuna's notes and his recorded Lecture 8 on
 5. **Fundamental loops** (43:51, 47:07) — one per co-tree branch; Example 9.4: three KVL
    equations, independent; (55:38): every branch voltage in terms of the tree voltages; matrix
    form B v = 0 (the same B) and v = Qᵀ v_T, Q Bᵀ = 0
-6. **Any connected graph** — n − 1 tree branches ↔ KCL, b − n + 1 co-tree branches ↔ KVL; works
-   for nonplanar graphs; Example 9.5 solves the separable graph met earlier (two loops joined at
-   one node) step by step: 4 KCL + 2 KVL, one current for each loop
-7. **Looking ahead: matrix form side by side** — A, M against Q, B: KCL, KVL, the n − 1 voltage and
+6. **Matrix form side by side** — A, M against Q, B: KCL, KVL, the n − 1 voltage and
    b − n + 1 current unknowns, orthogonality; what the tree voltages / co-tree currents are for
+7. **Any connected graph** — n − 1 tree branches ↔ KCL, b − n + 1 co-tree branches ↔ KVL; works
+   for nonplanar graphs; Example 9.5 solves the separable graph met earlier (two loops joined at
+   one node) step by step, as on the slides: four panels (graph, tree, the two fundamental
+   loops), then Step 1 tree, Step 2 fundamental loops (KVL), Step 3 fundamental cutsets (KCL
+   table), Step 4 result: 4 KCL + 2 KVL = b, one current for each loop
 
 Then a summary.
 

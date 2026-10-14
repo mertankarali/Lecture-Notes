@@ -509,9 +509,9 @@
   \sbranch{q1}{q2}{90}{1}{#1}
   \draw[#2] (q2) .. controls (2.4,0) and (2.4,0) .. (q4);  \node[blab] at (2.62,0.9) {2};
   \sbranch{q4}{q1}{90}{3}{#3}
-  \draw[#4] (q1) -- (q5);  \node[blab] at (0.95,2.27) {4};
+  \draw[#4] (q1) -- (q5);  \node[blab] at (1.3,2.13) {4};
   \sbranch{q5}{q6}{90}{5}{#5}
-  \draw[#6] (q6) -- (q1);  \node[blab] at (0.6,1.62) {6};
+  \draw[#6] (q6) -- (q1);  \node[blab] at (0.2,1.02) {6};
   \sepnodes}
 \newcommand{\septree}{\sepgraph{treebr}{treebr}{cotreebr}{treebr}{treebr}{cotreebr}}
 %  A 3 x 6 branch matrix of G: #1 name, #2 row labels, #3 rows, #4 extra TikZ code
@@ -943,55 +943,7 @@ fundamental cutset matrix:
 Finally $QB^T = \mathbf{0}$, like $AM^T = \mathbf{0}$.
 
 %==============================================================
-\section{Any connected graph}
-
-The tree is the key, and every connected graph has one. Its $n-1$ tree branches give the
-KCL equations, and its $b-n+1$ co-tree branches give the KVL equations. No drawing is needed. This works for nonplanar graphs, and it is also the fix for separable
-graphs met earlier.
-
-\begin{examplebox}[Example 9.5 --- the separable graph]
-Two loops joined only at node \nd1: $n = 5$, $b = 6$. Take the tree $\{1, 2, 4, 5\}$
-(green, $n - 1 = 4$). The co-tree is $\{3, 6\}$ ($b - n + 1 = 2$).
-\begin{center}\small
-\renewcommand{\arraystretch}{1.15}\setlength{\tabcolsep}{3pt}
-\begin{minipage}[c]{0.24\linewidth}
-\centering
-\begin{tikzpicture}[scale=0.8]
-  \sepcoords \septree
-\end{tikzpicture}
-\end{minipage}%
-\begin{minipage}[c]{0.34\linewidth}
-\centering
-\begin{tabular}{@{}c l l@{}}
-\toprule
-tree br. & cutset & KCL\\
-\midrule
-1 & $\{1, 3\}$ & $\Icol{i_1} - \Icol{i_3} = 0$\\
-2 & $\{2, 3\}$ & $\Icol{i_2} - \Icol{i_3} = 0$\\
-4 & $\{4, 6\}$ & $\Icol{i_4} - \Icol{i_6} = 0$\\
-5 & $\{5, 6\}$ & $\Icol{i_5} - \Icol{i_6} = 0$\\
-\bottomrule
-\end{tabular}
-\end{minipage}%
-\begin{minipage}[c]{0.42\linewidth}
-\centering
-\begin{tabular}{@{}c l@{}}
-\toprule
-co-tree br. & KVL on its loop\\
-\midrule
-3 & $\Vcol{v_3} + \Vcol{v_1} + \Vcol{v_2} = 0$\\
-6 & $\Vcol{v_6} + \Vcol{v_4} + \Vcol{v_5} = 0$\\
-\bottomrule
-\end{tabular}
-\end{minipage}
-\end{center}
-The two fundamental loops are the outer loop and the inner triangle. The KCL equations give
-$\Icol{i_1} = \Icol{i_2} = \Icol{i_3}$ and $\Icol{i_4} = \Icol{i_5} = \Icol{i_6}$: one current
-for each loop. In total $4 + 2 = 6 = b$ independent equations. Node~\nd1 causes no trouble.
-\end{examplebox}
-
-%==============================================================
-\section{Looking ahead: matrix form side by side}
+\section{Matrix form side by side}
 
 \begin{center}
 \renewcommand{\arraystretch}{1.25}
@@ -1014,6 +966,89 @@ A circuit has $2b$ branch unknowns. A tree reduces them: the $n-1$ \textbf{tree 
 voltages} fix every branch voltage (like node voltages), and the $b-n+1$ \textbf{co-tree branch
 currents} fix every branch current (like mesh currents), for any connected graph.
 
+
+%==============================================================
+\section{Any connected graph}
+
+The tree is the key, and every connected graph has one. Its $n-1$ tree branches give the
+KCL equations, and its $b-n+1$ co-tree branches give the KVL equations. No drawing is needed. This works for nonplanar graphs, and it is also the fix for separable
+graphs met earlier.
+
+\begin{examplebox}[Example 9.5 --- the separable graph]
+Two loops joined only at node~\nd1. Previously the mesh method was not safe here. We follow
+the same steps as for $G$.
+\begin{center}
+\begin{tabular}{@{}c@{\hspace{0.3cm}}c@{\hspace{0.3cm}}c@{\hspace{0.3cm}}c@{}}
+\begin{tabular}[t]{@{}c@{}}
+\begin{tikzpicture}[scale=0.62]
+  \useasboundingbox (-0.55,-0.55) rectangle (2.95,2.95);
+  \sepcoords \sepgraph{gbr}{gbr}{gbr}{gbr}{gbr}{gbr}
+\end{tikzpicture}\\[-2pt]
+{\scriptsize\bfseries\color{metugray} graph: $n = 5$, $b = 6$}
+\end{tabular}
+&
+\begin{tabular}[t]{@{}c@{}}
+\begin{tikzpicture}[scale=0.62]
+  \useasboundingbox (-0.55,-0.55) rectangle (2.95,2.95);
+  \sepcoords \septree
+\end{tikzpicture}\\[-2pt]
+{\scriptsize\bfseries\color{metugray} tree $\{1, 2, 4, 5\}$}
+\end{tabular}
+&
+\begin{tabular}[t]{@{}c@{}}
+\begin{tikzpicture}[scale=0.62]
+  \useasboundingbox (-0.55,-0.55) rectangle (2.95,2.95);
+  \sepcoords \sepgraph{hlbr}{hlbr}{hlbr}{faintbr}{faintbr}{faintbr} \loopcw[0.28]{1.6}{0.75}
+\end{tikzpicture}\\[-2pt]
+{\scriptsize\bfseries\color{metugray} loop of 3: $\{3, 1, 2\}$}\\[1pt]
+{\small $\Vcol{v_3} + \Vcol{v_1} + \Vcol{v_2} = 0$}
+\end{tabular}
+&
+\begin{tabular}[t]{@{}c@{}}
+\begin{tikzpicture}[scale=0.62]
+  \useasboundingbox (-0.55,-0.55) rectangle (2.95,2.95);
+  \sepcoords \sepgraph{faintbr}{faintbr}{faintbr}{hlbr}{hlbr}{hlbr} \loopcw[0.2]{0.7}{1.72}
+\end{tikzpicture}\\[-2pt]
+{\scriptsize\bfseries\color{metugray} loop of 6: $\{6, 4, 5\}$}\\[1pt]
+{\small $\Vcol{v_6} + \Vcol{v_4} + \Vcol{v_5} = 0$}
+\end{tabular}
+\end{tabular}
+\end{center}
+\textbf{Step 1 --- tree.} Take the tree $\{1, 2, 4, 5\}$ (green, $n - 1 = 4$ branches). The
+co-tree is $\{3, 6\}$ ($b - n + 1 = 2$ branches).
+
+\textbf{Step 2 --- fundamental loops (KVL).} Adding co-tree branch 3 closes the outer loop;
+adding co-tree branch 6 closes the inner triangle. Each is a single loop, walked in the
+direction of its co-tree branch (right-hand panels).
+
+\begin{minipage}[c]{0.36\linewidth}
+\centering\small
+\renewcommand{\arraystretch}{1.15}\setlength{\tabcolsep}{3pt}
+\begin{tabular}{@{}c l l@{}}
+\toprule
+tree br. & cutset & KCL on it\\
+\midrule
+1 & $\{1, 3\}$ & $\Icol{i_1} - \Icol{i_3} = 0$\\
+2 & $\{2, 3\}$ & $\Icol{i_2} - \Icol{i_3} = 0$\\
+4 & $\{4, 6\}$ & $\Icol{i_4} - \Icol{i_6} = 0$\\
+5 & $\{5, 6\}$ & $\Icol{i_5} - \Icol{i_6} = 0$\\
+\bottomrule
+\end{tabular}
+\end{minipage}%
+\hfill
+\begin{minipage}[c]{0.61\linewidth}
+\textbf{Step 3 --- fundamental cutsets (KCL).} For tree branch 1: removing it leaves the parts
+$\{\nd1, \nd4, \nd5\}$ and $\{\nd2, \nd3\}$. Branches 1 and 3 join them; 1 crosses from the
+first part to the second, 3 the other way, so $\Icol{i_1} - \Icol{i_3} = 0$. The other tree
+branches work the same way.
+\end{minipage}
+
+\medskip
+\textbf{Step 4 --- result.} The KCL equations give $\Icol{i_1} = \Icol{i_2} = \Icol{i_3}$ and
+$\Icol{i_4} = \Icol{i_5} = \Icol{i_6}$: one current for each loop, the co-tree currents
+$\Icol{i_3}$ and $\Icol{i_6}$. In total $4 + 2 = 6 = b$ independent equations. Node~\nd1
+causes no trouble.
+\end{examplebox}
 
 %==============================================================
 \section*{Summary}
