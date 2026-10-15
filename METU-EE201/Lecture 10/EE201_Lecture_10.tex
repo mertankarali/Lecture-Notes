@@ -218,8 +218,8 @@
 %  The example circuit: 12 V, 2 ohm, 6 ohm in N1; at the port:
 %  #1 = 0: 3 ohm, 1: 6 V source, 2: 2 A source
 \newcommand{\exN}[1]{%
-  \draw[dashed, metugray, rounded corners=3pt] (-0.95,-0.4) rectangle (2.55,2.5);
-  \node[font=\small, text=metugray, anchor=south west, inner sep=1pt] at (-0.95,2.52) {$N_1$};
+  \draw[dashed, metugray, rounded corners=3pt] (-0.95,-0.4) rectangle (2.55,2.95);
+  \node[font=\small, text=metugray, anchor=south west, inner sep=1pt] at (-0.95,2.97) {$N_1$};
   \draw (0,0) to[american voltage source, invert, l=$12\V$] (0,2);
   \draw (0,2) to[R, l=$2\ohm$] (2.0,2) -- (3.6,2);
   \draw (2.0,2) to[R, l_=$6\ohm$] (2.0,0);
@@ -251,10 +251,24 @@
     \draw (0,0) to[american voltage source, invert, l=$9\V$] (0,2);
     \draw (0,2) to[R, l=$1.5\ohm$] (2.2,2) -- (4.0,2); \draw (0,0) -- (4.0,0);
   \fi
-  \draw[dashed, metugray, rounded corners=3pt] (-0.95,-0.4) rectangle (2.9,2.5);
+  \draw[dashed, metugray, rounded corners=3pt] (-0.95,-0.4) rectangle (2.9,2.95);
   \draw (4.0,2) to[R, l=$R_L$] (4.0,0);
   \draw[fill=white] (3.2,2) circle (1.8pt) node[above=1pt, font=\small] {$a$};
   \draw[fill=white] (3.2,0) circle (1.8pt) node[below=1pt, font=\small] {$b$};}
+%  The first example, resistors combined (the load R_L is absorbed):
+%  #1 = 1: 12 V, 2 ohm, R_p = 6 || R_L;  2: 12 V, R_eq = 2 + R_p, source current i_0
+\newcommand{\exComb}[1]{%
+  \draw (0,0) to[american voltage source, invert, l=$12\V$] (0,2);
+  \ifcase#1\or
+    \draw (0,2) to[R, l=$2\ohm$] (2.0,2) -- (3.6,2);
+    \draw (3.6,2) to[R, l=$R_p$] (3.6,0) -- (0,0);
+    \node[pol] at (3.0,1.6) {$+$}; \node[pol] at (3.0,0.4) {$-$};
+    \node[font=\small, text=cvolt] at (3.0,1.0) {$v$};
+  \or
+    \draw (0,2) -- (3.6,2) to[R, l=$R_{eq}$] (3.6,0) -- (0,0);
+    \draw[iar] (1.4,2.25) -- (2.1,2.25);
+    \node[font=\small, text=ccur] at (1.75,2.58) {$i_0$};
+  \fi}
 %  Port voltage v and current i labels at terminals x = #1 (load to the right)
 \newcommand{\vilab}[1]{%
   \node[pol] at (#1,1.6) {$+$}; \node[pol] at (#1,0.4) {$-$};
@@ -377,37 +391,36 @@ sources.
 %==============================================================
 \section{A first example}
 
-\begin{examplebox}[Example 10.2 --- simplify the circuit]
-\begin{minipage}[c]{0.66\linewidth}
+\begin{examplebox}[Example 10.2 --- combine the resistors]
+\begin{minipage}[c]{0.6\linewidth}
 \centering
 \begin{tabular}{@{}c@{\hspace{2mm}}c@{}}
-\begin{tikzpicture}[scale=0.7]
-  \exN{3}
-\end{tikzpicture} &
-\begin{tikzpicture}[scale=0.7]
-  \exStep{1}
-\end{tikzpicture}\\[-2pt]
+\begin{tikzpicture}[scale=0.66]\exN{3}\vilab{2.85}\end{tikzpicture} &
+\begin{tikzpicture}[scale=0.66]\exComb{1}\end{tikzpicture}\\[-2pt]
 {\scriptsize the circuit} & {\scriptsize step 1}\\[4pt]
-\begin{tikzpicture}[scale=0.7]
-  \exStep{2}
-\end{tikzpicture} &
-\begin{tikzpicture}[scale=0.7]
-  \exStep{3}
-\end{tikzpicture}\\[-2pt]
-{\scriptsize step 2} & {\scriptsize step 3}
+\begin{tikzpicture}[scale=0.66]\exComb{2}\end{tikzpicture} &
+\begin{tikzpicture}[scale=0.66]\exStep{3}\end{tikzpicture}\\[-2pt]
+{\scriptsize step 2} & {\scriptsize the answer as a circuit}
 \end{tabular}
 \end{minipage}%
 \hfill
-\begin{minipage}[c]{0.32\linewidth}
-The load $R_L$ can be any resistive element. Find $\Vcol{v}$ and $\Icol{i}$. Idea: simplify
-the part left of $a$--$b$ once.\par\smallskip
-\textbf{1.} $12\V$ in series with $2\ohm$ becomes $6\A$ in parallel with $2\ohm$ (justified
-in Section~6).\par
-\textbf{2.} $2\ohm \parallel 6\ohm = 1.5\ohm$.\par
-\textbf{3.} $6\A$ in parallel with $1.5\ohm$ becomes $9\V$ in series with $1.5\ohm$.
-\end{minipage}\par\smallskip
-\textbf{Result.} For any $R_L$: $\Icol{i} = 9/(1.5 + R_L)$ and $\Vcol{v} = R_L\Icol{i}$. For
-$R_L = 3\ohm$: $\Icol{i} = 2\A$, $\Vcol{v} = 6\V$.
+\begin{minipage}[c]{0.38\linewidth}
+\raggedright
+The load $R_L$ can be any resistive element. Find $\Vcol{v}$ and $\Icol{i}$.\par\medskip
+\textbf{1.} $6\ohm \parallel R_L$:\par\smallskip
+\hspace*{1em}$R_p = \dfrac{6R_L}{6 + R_L}$\par\medskip
+\textbf{2.} $2\ohm$ in series with $R_p$:\par\smallskip
+\hspace*{1em}$R_{eq} = 2 + R_p = \dfrac{12 + 8R_L}{6 + R_L}$\par\smallskip
+\hspace*{1em}$\Icol{i_0} = \dfrac{12}{R_{eq}}$\par\medskip
+\textbf{3.} Back to the circuit:\par\smallskip
+\hspace*{1em}$\Vcol{v} = R_p\Icol{i_0} = \dfrac{72R_L}{12 + 8R_L}$, \ $\Icol{i} = \dfrac{\Vcol{v}}{R_L}$
+\end{minipage}\par\medskip
+\textbf{Read the answer as a circuit.}
+$\Icol{i} = \dfrac{72}{12 + 8R_L} = \dfrac{9}{1.5 + R_L}$. The denominator is a constant,
+$1.5\ohm$, plus $R_L$: a $9\V$ source driving $1.5\ohm$ and $R_L$ in series gives the same
+$\Icol{i}$ (and $\Vcol{v} = R_L\Icol{i}$) for every $R_L$. So the part left of $a$--$b$ may be
+replaced by $9\V$ in series with $1.5\ohm$. For $R_L = 3\ohm$: $\Icol{i} = 2\A$,
+$\Vcol{v} = 6\V$.
 \end{examplebox}
 
 \textbf{What did we use?} The part left of $a$--$b$ became one source and one resistor, and
@@ -668,11 +681,30 @@ short-circuit current $2\A$ (out of $a$).
 \end{minipage}
 \end{examplebox}
 
-\begin{examplebox}[Example 10.5 --- Example 10.2, justified]
-Steps 1 and 3 of Example 10.2 are source transformations ($12 = 2 \times 6$ and
-$9 = 1.5 \times 6$); step 2 is a parallel connection. So the $9\V$ source with $1.5\ohm$ is
-equivalent, at $a$--$b$, to the original part. Inside, the values differ: for $R_L = 3\ohm$
-the $12\V$ source carries $3\A$, while the $9\V$ source carries $2\A$.
+\begin{examplebox}[Example 10.5 --- Example 10.2 again, by source transformations]
+\begin{minipage}[c]{0.6\linewidth}
+\centering
+\begin{tabular}{@{}c@{\hspace{2mm}}c@{}}
+\begin{tikzpicture}[scale=0.66]\exN{3}\end{tikzpicture} &
+\begin{tikzpicture}[scale=0.66]\exStep{1}\end{tikzpicture}\\[-2pt]
+{\scriptsize the circuit} & {\scriptsize step 1}\\[4pt]
+\begin{tikzpicture}[scale=0.66]\exStep{2}\end{tikzpicture} &
+\begin{tikzpicture}[scale=0.66]\exStep{3}\end{tikzpicture}\\[-2pt]
+{\scriptsize step 2} & {\scriptsize step 3}
+\end{tabular}
+\end{minipage}%
+\hfill
+\begin{minipage}[c]{0.38\linewidth}
+\raggedright
+Only the part left of $a$--$b$ is simplified; $R_L$ stays.\par\smallskip
+\textbf{1.} Source transformation: $12\V$ with $2\ohm$ becomes $6\A$ with $2\ohm$
+($12 = 2 \times 6$).\par\smallskip
+\textbf{2.} Parallel: $2\ohm \parallel 6\ohm = 1.5\ohm$.\par\smallskip
+\textbf{3.} Source transformation: $6\A$ with $1.5\ohm$ becomes $9\V$ with $1.5\ohm$
+($9 = 1.5 \times 6$).\par\smallskip
+The result is the same, and $R_L$ never enters the algebra. Inside, the values differ: for
+$R_L = 3\ohm$ the $12\V$ source carries $3\A$, the $9\V$ source $2\A$.
+\end{minipage}
 \end{examplebox}
 
 %==============================================================

@@ -190,8 +190,8 @@
 %  The example circuit: 12 V, 2 ohm, 6 ohm in N1; at the port:
 %  #1 = 0: 3 ohm, 1: 6 V source, 2: 2 A source
 \newcommand{\exN}[1]{%
-  \draw[dashed, metugray, rounded corners=3pt] (-0.95,-0.4) rectangle (2.55,2.5);
-  \node[font=\small, text=metugray, anchor=south west, inner sep=1pt] at (-0.95,2.52) {$N_1$};
+  \draw[dashed, metugray, rounded corners=3pt] (-0.95,-0.4) rectangle (2.55,2.95);
+  \node[font=\small, text=metugray, anchor=south west, inner sep=1pt] at (-0.95,2.97) {$N_1$};
   \draw (0,0) to[american voltage source, invert, l=$12\V$] (0,2);
   \draw (0,2) to[R, l=$2\ohm$] (2.0,2) -- (3.6,2);
   \draw (2.0,2) to[R, l_=$6\ohm$] (2.0,0);
@@ -223,10 +223,24 @@
     \draw (0,0) to[american voltage source, invert, l=$9\V$] (0,2);
     \draw (0,2) to[R, l=$1.5\ohm$] (2.2,2) -- (4.0,2); \draw (0,0) -- (4.0,0);
   \fi
-  \draw[dashed, metugray, rounded corners=3pt] (-0.95,-0.4) rectangle (2.9,2.5);
+  \draw[dashed, metugray, rounded corners=3pt] (-0.95,-0.4) rectangle (2.9,2.95);
   \draw (4.0,2) to[R, l=$R_L$] (4.0,0);
   \draw[fill=white] (3.2,2) circle (1.8pt) node[above=1pt, font=\small] {$a$};
   \draw[fill=white] (3.2,0) circle (1.8pt) node[below=1pt, font=\small] {$b$};}
+%  The first example, resistors combined (the load R_L is absorbed):
+%  #1 = 1: 12 V, 2 ohm, R_p = 6 || R_L;  2: 12 V, R_eq = 2 + R_p, source current i_0
+\newcommand{\exComb}[1]{%
+  \draw (0,0) to[american voltage source, invert, l=$12\V$] (0,2);
+  \ifcase#1\or
+    \draw (0,2) to[R, l=$2\ohm$] (2.0,2) -- (3.6,2);
+    \draw (3.6,2) to[R, l=$R_p$] (3.6,0) -- (0,0);
+    \node[pol] at (3.0,1.6) {$+$}; \node[pol] at (3.0,0.4) {$-$};
+    \node[font=\small, text=cvolt] at (3.0,1.0) {$v$};
+  \or
+    \draw (0,2) -- (3.6,2) to[R, l=$R_{eq}$] (3.6,0) -- (0,0);
+    \draw[iar] (1.4,2.25) -- (2.1,2.25);
+    \node[font=\small, text=ccur] at (1.75,2.58) {$i_0$};
+  \fi}
 %  Port voltage v and current i labels at terminals x = #1 (load to the right)
 \newcommand{\vilab}[1]{%
   \node[pol] at (#1,1.6) {$+$}; \node[pol] at (#1,0.4) {$-$};
@@ -478,35 +492,33 @@
 \begin{frame}{Which circuit is which?}
   \vfill
   \begin{center}
-  \begin{tikzpicture}
-    \begin{scope}[shift={(0.3 cm,0)}, scale=0.62]\node[font=\small, rotate=90, transform shape=false] at (-0.88,0.75) {$5\V$};\mini{american voltage source, invert}{R, l=$2\ohm$}
+  \begin{tikzpicture}[tag/.style={font=\scriptsize\bfseries, text=white, rounded corners=2pt, inner sep=2.5pt}]
+    \node[font=\footnotesize, text=metugray, align=left, anchor=west] at (-0.2,0.5) {Same circuit,\\two inputs};
+    \begin{scope}[shift={(3.4 cm,0 cm)}, scale=0.62]\node[font=\small, rotate=90, transform shape=false] at (-0.88,0.75) {$5\V$};\mini{american voltage source, invert}{R, l=$2\ohm$}
       \node[font=\small] at (0.95,-0.6) {(a)};\end{scope}
-    \begin{scope}[shift={(3.1 cm,0)}, scale=0.62]\node[font=\small, rotate=90, transform shape=false] at (-0.88,0.75) {$5\cos t$};\mini{american voltage source, invert}{R, l=$2\ohm$}
+    \begin{scope}[shift={(6.8 cm,0 cm)}, scale=0.62]\node[font=\small, rotate=90, transform shape=false] at (-0.88,0.75) {$5\cos t$};\mini{american voltage source, invert}{R, l=$2\ohm$}
       \node[font=\small] at (0.95,-0.6) {(b)};\end{scope}
-    \begin{scope}[shift={(6.0 cm,0)}, scale=0.62]\node[font=\small, rotate=90, transform shape=false] at (-0.88,0.75) {$5\V$};\mini{american voltage source, invert}{D}
+    \node[font=\footnotesize, text=metugray, align=left, anchor=west] at (-0.2,-2.2) {Same input,\\$2\ohm$ replaced};
+    \begin{scope}[shift={(3.4 cm,-2.7 cm)}, scale=0.62]\node[font=\small, rotate=90, transform shape=false] at (-0.88,0.75) {$5\V$};\mini{american voltage source, invert}{D}
       \node[font=\small] at (0.95,-0.6) {(c) diode};\end{scope}
-    \begin{scope}[shift={(8.8 cm,0)}, scale=0.62]\node[font=\small, rotate=90, transform shape=false] at (-0.88,0.75) {$5\V$};\mini{american voltage source, invert}{vR, l=$R(t)$}
+    \begin{scope}[shift={(6.8 cm,-2.7 cm)}, scale=0.62]\node[font=\small, rotate=90, transform shape=false] at (-0.88,0.75) {$5\V$};\mini{american voltage source, invert}{vR, l=$R(t)$}
       \node[font=\small] at (0.95,-0.6) {(d)};\end{scope}
-    \begin{scope}[shift={(12.0 cm,0)}, scale=0.62]\node[font=\small, rotate=90, transform shape=false] at (-0.88,0.75) {$5\V$};\mini{american voltage source, invert}{C}
+    \begin{scope}[shift={(10.2 cm,-2.7 cm)}, scale=0.62]\node[font=\small, rotate=90, transform shape=false] at (-0.88,0.75) {$5\V$};\mini{american voltage source, invert}{C}
       \node[font=\small] at (0.95,-0.6) {(e)};\end{scope}
+    \draw[metugray!40] (-0.2,-1.15) -- (11.6,-1.15);
+    \only<2->{%
+    \node[tag, fill=cpow] at (3.99,-0.8) {LTI resistive};
+    \node[tag, fill=cpow] at (7.39,-0.8) {LTI resistive};
+    \node[tag, fill=metured] at (3.99,-3.5) {nonlinear};
+    \node[tag, fill=metured] at (7.39,-3.5) {time-varying};
+    \node[tag, fill=metured] at (10.79,-3.5) {dynamic};}
   \end{tikzpicture}
   \end{center}
   \vfill
   \begin{center}
   \only<1>{A source, a $1\ohm$ resistor and one more element. In (d), $R(t) = 2 + \sin t\ \Omega$.\\[4pt] Linear? \quad Time-invariant? \quad Resistive?}%
-  \only<2->{%
-  \renewcommand{\arraystretch}{1.2}
-  \begin{tabular}{@{}l c c c c c@{}}
-  \toprule
-   & (a) & (b) & (c) & (d) & (e)\\
-  \midrule
-  linear         & \yes & \yes & \no  & \yes & \yes\\
-  time-invariant & \yes & \yes & \yes & \no  & \yes\\
-  resistive      & \yes & \yes & \yes & \yes & \no\\
-  \midrule
-  LTI resistive  & \yes & \yes & \no & \no & \no\\
-  \bottomrule
-  \end{tabular}}
+  \only<2->{The input does not change the class: (a) and (b) are both LTI resistive.\\[4pt]
+  Each of (c), (d), (e) breaks exactly one of the three properties.}
   \end{center}
   \vfill
 \end{frame}
@@ -540,30 +552,53 @@
 \roadmapframe{2}
 
 %--------------------------------------------------------------
-\begin{frame}{A first example: simplify the circuit}
+\begin{frame}{A first example: combine the resistors}
   \begin{columns}[c,onlytextwidth]
-    \begin{column}{0.48\textwidth}
+    \begin{column}{0.46\textwidth}
       \centering
       \begin{tikzpicture}[scale=1.0]
-        \only<1>{\exN{3}\vilab{2.85}}%
-        \only<2>{\exStep{1}\vilab{3.2}}%
-        \only<3>{\exStep{2}\vilab{3.2}}%
-        \only<4->{\exStep{3}\vilab{3.2}}%
+        \only<1,4->{\exN{3}\vilab{2.85}}%
+        \only<2>{\exComb{1}}%
+        \only<3>{\exComb{2}}%
       \end{tikzpicture}
     \end{column}
-    \begin{column}{0.5\textwidth}
-      \only<1>{$R_L$ (the load) can be \alert{any} resistive element. Find $\Vcol{v}$ and
-        $\Icol{i}$.\\[6pt] Idea: simplify the part \alert{left of $a$--$b$} once.}%
-      \only<2->{\textbf{Step 1.} $12\V$ in series with $2\ohm$ $\to$ $6\A$ in parallel with
-        $2\ohm$ (shown later).\\[6pt]}%
-      \only<3->{\textbf{Step 2.} $2\ohm \parallel 6\ohm = 1.5\ohm$.\\[6pt]}%
-      \only<4->{\textbf{Step 3.} $6\A$ in parallel with $1.5\ohm$ $\to$ $9\V$ in series with
-        $1.5\ohm$.\\[6pt]}%
-      \only<5->{\textbf{Result.} For \alert{any} $R_L$:
-        $\Icol{i} = \dfrac{9}{1.5 + R_L}$, \ $\Vcol{v} = R_L\Icol{i}$.\\[4pt]
-        $R_L = 3\ohm$: \ $\Icol{i} = 2\A$, \ $\Vcol{v} = 6\V$.}
+    \begin{column}{0.52\textwidth}
+      $R_L$ (the load) can be \alert{any} resistive element. Find $\Vcol{v}$ and $\Icol{i}$.\\[10pt]
+      \onslide<2->{\textbf{Step 1.} $6\ohm \parallel R_L$:\quad
+        $R_p = \dfrac{6R_L}{6 + R_L}$\\[8pt]}
+      \onslide<3->{\textbf{Step 2.} $2\ohm$ in series with $R_p$:\\[2pt]
+        $R_{eq} = 2 + R_p = \dfrac{12 + 8R_L}{6 + R_L}$, \quad
+        $\Icol{i_0} = \dfrac{12}{R_{eq}}$\\[8pt]}
+      \onslide<4->{\textbf{Step 3.} Back to the circuit:\\[2pt]
+        $\Vcol{v} = R_p\,\Icol{i_0} = \dfrac{72R_L}{12 + 8R_L}$\\[4pt]
+        $\Icol{i} = \dfrac{\Vcol{v}}{R_L} = \dfrac{72}{12 + 8R_L}$}
     \end{column}
   \end{columns}
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{Read the answer as a circuit}
+  \[
+    \Icol{i} = \frac{72}{12 + 8R_L} = \frac{9}{\alert{1.5} + R_L}
+  \]
+  \begin{itemize}\itemsep2pt
+    \item<2-> The denominator is a \alert{constant}, $1.5\ohm$, plus $R_L$.
+    \item<2-> A $9\V$ source driving $1.5\ohm$ and $R_L$ in series gives the same $\Icol{i}$.
+  \end{itemize}
+  \vfill
+  \onslide<3->{%
+  \begin{center}
+  \begin{tikzpicture}[scale=0.7, baseline=(c.base)]
+    \exN{3} \coordinate (c) at (0,1);
+  \end{tikzpicture}
+  \qquad $\equiv$ at $a$--$b$ \qquad
+  \begin{tikzpicture}[scale=0.7, baseline=(c.base)]
+    \exStep{3} \coordinate (c) at (0,1);
+  \end{tikzpicture}
+  \end{center}}
+  \vfill
+  \onslide<4->{\begin{center}The part left of $a$--$b$ is now \alert{one source and one resistor}.\\[2pt]
+    For $R_L = 3\ohm$: $\Icol{i} = 2\A$, $\Vcol{v} = 6\V$.\end{center}}
 \end{frame}
 
 %--------------------------------------------------------------
@@ -914,25 +949,29 @@
 \end{frame}
 
 %--------------------------------------------------------------
-\begin{frame}{The first example, justified}
-  \begin{center}
-  \begin{tikzpicture}[scale=0.85, baseline=(c.base)]
-    \exN{3} \coordinate (c) at (0,1);
-  \end{tikzpicture}
-  \qquad $\equiv$ at $a$--$b$ \qquad
-  \begin{tikzpicture}[scale=0.85, baseline=(c.base)]
-    \exStep{3} \coordinate (c) at (0,1);
-  \end{tikzpicture}
-  \end{center}
-  \vfill
-  \begin{itemize}\itemsep6pt
-    \item Steps 1 and 3 are source transformations: $12 = 2 \times 6$ and $9 = 1.5 \times 6$.
-    \item<2-> Step 2 is a parallel connection: $2\ohm \parallel 6\ohm = 1.5\ohm$.
-    \item<3-> So the two parts left of $a$--$b$ are \alert{equivalent one-ports}.
-    \item<4-> \alert{Careful:} inside them the values differ; for $R_L = 3\ohm$ the $12\V$
-      source carries $3\A$, the $9\V$ source $2\A$.
-  \end{itemize}
-  \vfill
+\begin{frame}{The first example, again}
+  \begin{columns}[c,onlytextwidth]
+    \begin{column}{0.46\textwidth}
+      \centering
+      \begin{tikzpicture}[scale=1.0]
+        \only<1>{\exN{3}\vilab{2.85}}%
+        \only<2>{\exStep{1}\vilab{3.2}}%
+        \only<3>{\exStep{2}\vilab{3.2}}%
+        \only<4->{\exStep{3}\vilab{3.2}}%
+      \end{tikzpicture}
+    \end{column}
+    \begin{column}{0.52\textwidth}
+      \only<1>{Now simplify only the part \alert{left of $a$--$b$}; $R_L$ stays.\\[8pt]}%
+      \only<2->{\textbf{Step 1.} Source transformation:\\
+        $12\V$ with $2\ohm$ $\to$ $6\A$ with $2\ohm$ \ ($12 = 2 \times 6$)\\[6pt]}%
+      \only<3->{\textbf{Step 2.} Parallel: $2\ohm \parallel 6\ohm = 1.5\ohm$\\[6pt]}%
+      \only<4->{\textbf{Step 3.} Source transformation:\\
+        $6\A$ with $1.5\ohm$ $\to$ $9\V$ with $1.5\ohm$ \ ($9 = 1.5 \times 6$)\\[6pt]}%
+      \only<5->{Same result, and $R_L$ never enters the algebra.\\[6pt]}%
+      \only<6->{\alert{Careful:} inside, the values differ; for $R_L = 3\ohm$ the $12\V$
+        source carries $3\A$, the $9\V$ source $2\A$.}
+    \end{column}
+  \end{columns}
 \end{frame}
 
 %--------------------------------------------------------------
