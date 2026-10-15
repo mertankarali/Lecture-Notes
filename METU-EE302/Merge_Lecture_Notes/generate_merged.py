@@ -15,18 +15,64 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent   # METU-EE302/
 PWD = Path(__file__).resolve().parent          # Merge_Lecture_Notes/
-NUM_LECTURES = 21
 
 # ── 1. collect lecture file paths ──────────────────────────────────────────
 
-def find_tex(lecture_num: int) -> Path:
-    folder = ROOT / f"Lecture {lecture_num}"
-    tex_files = list(folder.glob("*.tex"))
-    if not tex_files:
-        raise FileNotFoundError(f"No .tex found in {folder}")
-    return tex_files[0]
+LECTURE_DIR_RE = re.compile(r"^Lecture\s+(\d+)$")
 
-lecture_files = [find_tex(n) for n in range(1, NUM_LECTURES + 1)]
+
+def _lecture_num_from_dir(path: Path) -> int | None:
+    m = LECTURE_DIR_RE.match(path.name)
+    if not m:
+        return None
+    return int(m.group(1))
+
+
+def find_lecture_tex_files() -> list[tuple[int, Path]]:
+    """
+    Find lecture sources robustly so adding new lectures is automatic.
+
+    Expected layout:
+      METU-EE302/
+        Lecture 1/EE302_Lecture_1.tex
+        Lecture 2/EE302_Lecture_2.tex
+        ...
+    """
+    lecture_dirs: list[tuple[int, Path]] = []
+    for p in ROOT.iterdir():
+        if not p.is_dir():
+            continue
+        n = _lecture_num_from_dir(p)
+        if n is None:
+            continue
+        lecture_dirs.append((n, p))
+
+    lecture_dirs.sort(key=lambda x: x[0])
+    if not lecture_dirs:
+        raise FileNotFoundError(f"No 'Lecture <n>' folders found under {ROOT}")
+
+    lecture_tex: list[tuple[int, Path]] = []
+    for n, folder in lecture_dirs:
+        preferred = folder / f"EE302_Lecture_{n}.tex"
+        if preferred.exists():
+            lecture_tex.append((n, preferred))
+            continue
+
+        tex_files = sorted(folder.glob("*.tex"))
+        if len(tex_files) == 1:
+            lecture_tex.append((n, tex_files[0]))
+            continue
+        if not tex_files:
+            raise FileNotFoundError(f"No .tex found in {folder}")
+        raise FileNotFoundError(
+            f"Multiple .tex found in {folder}. "
+            f"Add a canonical file named {preferred.name}."
+        )
+
+    return lecture_tex
+
+
+lecture_sources = find_lecture_tex_files()
 
 # ── 2. extract body content ────────────────────────────────────────────────
 
@@ -94,6 +140,22 @@ PREAMBLE = r"""% ============================================================
 \renewcommand{\thefigure}{\thelecnum.\arabic{figure}}
 \renewcommand{\thetable}{\thelecnum.\arabic{table}}
 
+% ── outline depth (PDF bookmarks) ─────────────────────────────────────────
+% Ensure subsections/subsubsections appear in the PDF outline.
+\setcounter{tocdepth}{3}
+\setcounter{secnumdepth}{3}
+\bookmarksetup{depth=3}
+
+% ── unique hyperlink anchors across lectures ─────────────────────────────
+% Counters reset each lecture; without unique \theH* anchors, bookmark targets
+% can collide and jump to the first occurrence (often Lecture 1).
+\renewcommand{\theHsection}{\thelecnum.\arabic{section}}
+\renewcommand{\theHsubsection}{\thelecnum.\arabic{section}.\arabic{subsection}}
+\renewcommand{\theHsubsubsection}{\thelecnum.\arabic{section}.\arabic{subsection}.\arabic{subsubsection}}
+\renewcommand{\theHequation}{\thelecnum.\arabic{equation}}
+\renewcommand{\theHfigure}{\thelecnum.\arabic{figure}}
+\renewcommand{\theHtable}{\thelecnum.\arabic{table}}
+
 % ── lecture header macro ─────────────────────────────────────────────────
 \newcommand{\lecture}[2]{
    \pagestyle{myheadings}
@@ -157,16 +219,38 @@ PREAMBLE = r"""% ============================================================
 def make_lecture_block(num: int, body: str) -> str:
     """Wrap the raw body with a PDF bookmark for the lecture outline entry."""
     label = f"lecture{num}"
-    bookmark = (
+    header = (
         f"% {'='*60}\n"
         f"% Lecture {num}\n"
         f"% {'='*60}\n"
+    )
+
+    # Best target: immediately after \lecture{<num>}{...} which performs \newpage.
+    # This prevents the bookmark from pointing to the previous lecture’s last page.
+    lecture_cmd_re = re.compile(
+        rf"(\\lecture\s*\{{\s*{re.escape(str(num))}\s*\}}\s*\{{[^}}]*\}}\s*)"
+    )
+    def _inject_after_lecture(m: re.Match) -> str:
+        return (
+            m.group(1)
+            + "\n\\phantomsection\n"
+            + f"\\pdfbookmark[0]{{Lecture {num}}}{{{label}}}\n"
+        )
+
+    injected = lecture_cmd_re.sub(_inject_after_lecture, body, count=1)
+    if injected != body:
+        return header + injected + "\n"
+
+    # Fallback: still add a bookmark at the start of the block.
+    bookmark_fallback = (
+        f"\\clearpage\n"
+        f"\\phantomsection\n"
         f"\\pdfbookmark[0]{{Lecture {num}}}{{{label}}}\n"
     )
-    return bookmark + body + "\n"
+    return header + bookmark_fallback + body + "\n"
 
 body_blocks = []
-for n, path in enumerate(lecture_files, start=1):
+for n, path in lecture_sources:
     print(f"  reading Lecture {n}: {path.name}")
     body = extract_body(path)
     body = absolutify_graphics(body, path.parent)
