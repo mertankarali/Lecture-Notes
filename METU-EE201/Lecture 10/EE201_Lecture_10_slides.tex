@@ -555,9 +555,9 @@
     \begin{column}{0.46\textwidth}
       \centering
       \begin{tikzpicture}[scale=1.0]
-        \only<1,4->{\exN{3}\vilab{2.85}}%
+        \only<1>{\exN{3}\vilab{2.85}}%
         \only<2>{\exComb{1}}%
-        \only<3>{\exComb{2}}%
+        \only<3->{\exComb{2}}%
       \end{tikzpicture}
     \end{column}
     \begin{column}{0.52\textwidth}
@@ -565,38 +565,36 @@
       \onslide<2->{\textbf{Step 1.} $6\ohm \parallel R_L$:\quad
         $R_p = \dfrac{6R_L}{6 + R_L}$\\[8pt]}
       \onslide<3->{\textbf{Step 2.} $2\ohm$ in series with $R_p$:\\[2pt]
-        $R_{eq} = 2 + R_p = \dfrac{12 + 8R_L}{6 + R_L}$, \quad
-        $\Icol{i_0} = \dfrac{12}{R_{eq}}$\\[8pt]}
-      \onslide<4->{\textbf{Step 3.} Back to the circuit:\\[2pt]
-        $\Vcol{v} = R_p\,\Icol{i_0} = \dfrac{72R_L}{12 + 8R_L}$\\[4pt]
-        $\Icol{i} = \dfrac{\Vcol{v}}{R_L} = \dfrac{72}{12 + 8R_L}$}
+        $R_{eq} = 2 + R_p = \dfrac{12 + 8R_L}{6 + R_L}$\\[6pt]
+        $\Icol{i_0} = \dfrac{12}{R_{eq}} = \dfrac{12(6 + R_L)}{12 + 8R_L}$}
     \end{column}
   \end{columns}
 \end{frame}
 
 %--------------------------------------------------------------
-\begin{frame}{Read the answer as a circuit}
-  \[
-    \Icol{i} = \frac{72}{12 + 8R_L} = \frac{9}{\alert{1.5} + R_L}
-  \]
-  \begin{itemize}\itemsep2pt
-    \item<2-> The denominator is a \alert{constant}, $1.5\ohm$, plus $R_L$.
-    \item<2-> A $9\V$ source driving $1.5\ohm$ and $R_L$ in series gives the same $\Icol{i}$.
-  \end{itemize}
-  \vfill
-  \onslide<3->{%
-  \begin{center}
-  \begin{tikzpicture}[scale=0.7, baseline=(c.base)]
-    \exN{3} \coordinate (c) at (0,1);
+\begin{frame}{Back to the circuit, then read the answer}
+  \centering
+  \begin{tikzpicture}[arr/.style={-{Stealth[length=2.5mm]}, thick, metugray}]
+    \path (-1.2,-3.9) rectangle (9.6,1.95); % fixed size for all overlays
+    % (A) 12 V, 2 ohm and the single equivalent resistor R_p
+    \begin{scope}[scale=0.62]\exComb{1}\end{scope}
+    \node[font=\small, anchor=north] at (1.2,-0.35) {$\Vcol{v} = R_p\,\Icol{i_0} = \dfrac{72R_L}{12 + 8R_L}$};
+    % (B) R_p split again: 6 ohm and R_L
+    \onslide<2->{%
+    \draw[arr] (3.0,0.9) -- node[above, font=\scriptsize, text=metugray] {split $R_p$} (4.5,0.9);
+    \begin{scope}[shift={(6.1 cm,0)}, scale=0.62]\exN{3}\vilab{2.85}\end{scope}
+    \node[font=\small, anchor=north] at (7.3,-0.35) {$\Icol{i} = \dfrac{\Vcol{v}}{R_L} = \dfrac{72}{12 + 8R_L}$};}
+    % (C) the algebra, and 9 V with 1.5 ohm
+    \onslide<3->{%
+    \node[font=\normalsize] at (1.2,-2.75) {$\Icol{i} = \dfrac{72}{12 + 8R_L} = \dfrac{9}{\alert{1.5} + R_L}$};
+    \node[font=\scriptsize, text=metugray] at (1.2,-3.55) {divide by 8: a constant plus $R_L$};}
+    \onslide<4->{%
+    \draw[arr] (3.5,-2.75) -- (4.6,-2.75);
+    \begin{scope}[shift={(6.1 cm,-3.4 cm)}, scale=0.62]\exStep{3}\vilab{3.2}\end{scope}}
   \end{tikzpicture}
-  \qquad $\equiv$ at $a$--$b$ \qquad
-  \begin{tikzpicture}[scale=0.7, baseline=(c.base)]
-    \exStep{3} \coordinate (c) at (0,1);
-  \end{tikzpicture}
-  \end{center}}
-  \vfill
-  \onslide<4->{\begin{center}The part left of $a$--$b$ is now \alert{one source and one resistor}.\\[2pt]
-    For $R_L = 3\ohm$: $\Icol{i} = 2\A$, $\Vcol{v} = 6\V$.\end{center}}
+  \par\smallskip
+  \onslide<5->{$9\V$ in series with $1.5\ohm$ gives the same $\Icol{i}$ and $\Vcol{v}$ for \alert{every} $R_L$.\\[2pt]
+    For $R_L = 3\ohm$: $\Icol{i} = 2\A$, $\Vcol{v} = 6\V$.}
 \end{frame}
 
 %--------------------------------------------------------------
