@@ -458,30 +458,18 @@ independent current source $\Icol{i_s(t)} = \Icol{i(t)}$. No branch voltage or b
 inside $N_1$ changes. An observer inside $N_1$ cannot tell (I), (II) and (III) apart.
 \end{ideabox}
 
-\textbf{Why it works.} Solve (I) first and call its port values $\Vcol{v^*}(t)$ and
-$\Icol{i^*}(t)$. Then compare the equations of (I) and (II):
-\begin{center}
-\renewcommand{\arraystretch}{1.2}
-\begin{tabular}{@{}l l l@{}}
-\toprule
- & \textbf{(I)} & \textbf{(II)}\\
-\midrule
-inside $N_1$ & KCL, KVL and element laws of $N_1$ & the same\\
-outside $N_1$ & the equations of $N_2$ & $\Vcol{v} = \Vcol{v^*}$ (the source)\\
-\bottomrule
-\end{tabular}
-\end{center}
-Now check the solution of (I) against (II). Its $N_1$ values satisfy the $N_1$ equations,
-because these did not change. Its port voltage is $\Vcol{v^*}$, so the source law holds. A
-voltage source takes any current, so $\Icol{i} = \Icol{i^*}$ is allowed. Hence the solution of
-(I) also solves (II). In (III) the roles swap: the source fixes $\Icol{i} = \Icol{i^*}$, and a
-current source takes any voltage. Only $\Vcol{v^*}$ and $\Icol{i^*}$ were used, so $N_2$ can be
-anything, even nonlinear.
+\textbf{Why it works.} $N_1$ meets the rest of the circuit only at $a$ and $b$. So, seen from
+inside $N_1$, the rest is nothing but a voltage $\Vcol{v}$ and a current $\Icol{i}$ at these
+terminals; in (I) they take the values $\Vcol{v^*}(t)$ and $\Icol{i^*}(t)$. A voltage source
+$\Vcol{v_s} = \Vcol{v^*}$ fixes the voltage and lets the current be whatever $N_1$ drives through
+it, which is $\Icol{i^*}$. A current source $\Icol{i_s} = \Icol{i^*}$ fixes the current and lets
+the voltage be whatever it must be, which is $\Vcol{v^*}$. In all three cases $N_1$ has the same
+equations and sees the same values at $a$--$b$, so it has the same solution. $N_2$ itself never
+enters the argument: it can be anything, even nonlinear.
 
-\textbf{One condition.} The argument shows that the old solution is \emph{a} solution of the
-new circuit; it is \emph{the} solution only if the new circuit has a unique solution. If
-$N_1$ is a single $2\A$ current source and $N_2$ is replaced by a $2\A$ current source, KCL
-holds for every $\Vcol{v}$: the voltage is no longer fixed.
+\textbf{One condition.} The new circuit must have a unique solution. If $N_1$ is a single
+$2\A$ current source and $N_2$ is replaced by a $2\A$ current source, KCL holds for every
+$\Vcol{v}$: the voltage is no longer fixed.
 
 \begin{examplebox}[Example 10.3 --- substitution in the first example]
 \begin{center}

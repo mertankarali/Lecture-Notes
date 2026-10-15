@@ -656,69 +656,66 @@
 
 %--------------------------------------------------------------
 \begin{frame}{Why does it work?}
-  \vfill
-  Solve (I) first; call its port values $\Vcol{v^*}(t)$ and $\Icol{i^*}(t)$.
-  Then compare the equations:
   \begin{center}
-  \renewcommand{\arraystretch}{1.4}
-  \begin{tabular}{@{}l l l@{}}
-  \toprule
-   & \textbf{(I)} & \textbf{(II)}\\
-  \midrule
-  inside $N_1$ & KCL, KVL, element laws & \onslide<2->{\alert{the same}}\\
-  outside $N_1$ & the equations of $N_2$ & \onslide<2->{$\Vcol{v} = \Vcol{v^*}$ \ (the source)}\\
-  \bottomrule
-  \end{tabular}
+  \begin{tikzpicture}[scale=0.9]
+    \draw[elem] (0,0) rectangle (1.7,2.0); \node at (0.85,1.0) {$N_1$};
+    \draw (1.7,1.6) -- (3.5,1.6); \draw (1.7,0.4) -- (3.5,0.4);
+    \draw[fill=white] (2.6,1.6) circle (1.8pt) node[above=1pt, font=\small] {$a$};
+    \draw[fill=white] (2.6,0.4) circle (1.8pt) node[below=1pt, font=\small] {$b$};
+    \draw[iar] (1.82,1.84) -- (2.38,1.84);
+    \node[font=\small, text=ccur] at (2.1,2.14) {$i^*$};
+    \node[pol] at (2.6,1.28) {$+$}; \node[pol] at (2.6,0.72) {$-$};
+    \node[font=\small, text=cvolt] at (2.95,1.0) {$v^*$};
+    \fill[metugray!25, rounded corners=4pt] (3.5,-0.25) rectangle (5.6,2.25);
+    \node[font=\Large\bfseries, text=metugray] at (4.55,1.0) {?};
+  \end{tikzpicture}
   \end{center}
-  \begin{itemize}\itemsep6pt
-    \item<3-> The $N_1$ values of (I) satisfy the $N_1$ equations: they did not change.
-      \hfill\onslide<3->{\yes}
-    \item<4-> The port voltage of (I) is $\Vcol{v^*}$, so the source law holds.
-      \hfill\onslide<4->{\yes}
-    \item<5-> A voltage source takes \alert{any} current, so $\Icol{i} = \Icol{i^*}$ is
-      allowed. \hfill\onslide<5->{\yes}
-    \item<6-> So the solution of (I) also solves (II): if (II) has \alert{one} solution, this
-      is it.
-  \end{itemize}
-  \vfill
+  \vspace{-4pt}
+  \begin{center}
+    \only<1>{$N_1$ meets the rest of the circuit \alert{only} at $a$ and $b$.}%
+    \only<2->{From inside $N_1$, the rest is just a voltage $\Vcol{v^*}$ and a current
+      $\Icol{i^*}$.}
+  \end{center}
+  \onslide<3->{%
+  \begin{center}
+  \begin{tabular}{@{}c@{\hspace{3mm}}c@{\hspace{3mm}}c@{}}
+  \begin{tikzpicture}[scale=0.55]\pairbox{$N_1$}{$N_2$}\end{tikzpicture} &
+  \begin{tikzpicture}[scale=0.55]\subsbox{0}\end{tikzpicture} &
+  \begin{tikzpicture}[scale=0.55]\subsbox{1}\end{tikzpicture}\\[-2pt]
+  \scriptsize (I) gives $\Vcol{v^*}$, $\Icol{i^*}$ &
+  \scriptsize (II) $\Vcol{v}$ fixed at $\Vcol{v^*}$, $\Icol{i}$ free $\to \Icol{i^*}$ &
+  \scriptsize (III) $\Icol{i}$ fixed at $\Icol{i^*}$, $\Vcol{v}$ free $\to \Vcol{v^*}$
+  \end{tabular}
+  \end{center}}
+  \vspace{-2pt}
+  \begin{center}
+  \onslide<4->{Same equations in $N_1$, same $\Vcol{v^*}$, $\Icol{i^*}$ at $a$--$b$
+    $\Rightarrow$ the \alert{same solution} inside $N_1$.}\\[3pt]
+  \onslide<5->{$N_2$ itself never enters: it can be \alert{anything}, even nonlinear.}
+  \end{center}
 \end{frame}
 
 %--------------------------------------------------------------
-\begin{frame}{Why does it work? The current source, and one condition}
-  \begin{itemize}\itemsep6pt
-    \item In (III) the roles swap: the source fixes $\Icol{i} = \Icol{i^*}$.
-    \item<2-> A current source takes \alert{any} voltage, so $\Vcol{v} = \Vcol{v^*}$ is
-      allowed.
-    \item<3-> Only $\Vcol{v^*}$ and $\Icol{i^*}$ were used, so $N_2$ can be
-      \alert{anything}, even nonlinear.
-  \end{itemize}
-  \vfill
-  \onslide<4->{%
-  \begin{block}{One condition: the new circuit must have a unique solution}
-    \begin{columns}[c,onlytextwidth]
-      \begin{column}{0.42\textwidth}
-        \centering
-        \begin{tikzpicture}[scale=0.85]
-          \draw (0,0) to[american current source, l=$2\A$] (0,1.8);
-          \draw (0,1.8) -- (2.4,1.8); \draw (0,0) -- (2.4,0);
-          \draw (2.4,1.8) to[american current source, l=$2\A$] (2.4,0);
-          \node[pol] at (1.2,1.45) {$+$}; \node[pol] at (1.2,0.35) {$-$};
-          \node[font=\small, text=cvolt] at (1.2,0.9) {$\Vcol{v} = {?}$};
-          \node[font=\scriptsize, text=metugray] at (0,-0.45) {$N_1$};
-          \node[font=\scriptsize, text=metugray] at (2.4,-0.45) {source for $N_2$};
-        \end{tikzpicture}
-      \end{column}
-      \begin{column}{0.56\textwidth}
-        \small
-        $N_1$ is a $2\A$ source; $N_2$ is replaced by a $2\A$ source.\\[3pt]
-        \onslide<5->{KCL holds for \alert{every} $\Vcol{v}$: the old solution is one of
-          many.\\[3pt]}
-        \onslide<6->{The argument shows the old solution is \alert{a} solution; uniqueness
-          makes it \alert{the} solution.}
-      \end{column}
-    \end{columns}
-  \end{block}}
-  \vfill
+\begin{frame}{One condition: a unique solution}
+  \begin{columns}[c,onlytextwidth]
+    \begin{column}{0.45\textwidth}
+      \centering
+      \begin{tikzpicture}[scale=1.0]
+        \draw (0,0) to[american current source, l=$2\A$] (0,1.8);
+        \draw (0,1.8) -- (2.4,1.8); \draw (0,0) -- (2.4,0);
+        \draw (2.4,1.8) to[american current source, l=$2\A$] (2.4,0);
+        \node[pol] at (1.2,1.45) {$+$}; \node[pol] at (1.2,0.35) {$-$};
+        \node[font=\small, text=cvolt] at (1.2,0.9) {$\Vcol{v} = {?}$};
+        \node[font=\scriptsize, text=metugray] at (0,-0.5) {$N_1$};
+        \node[font=\scriptsize, text=metugray] at (2.4,-0.5) {in place of $N_2$};
+      \end{tikzpicture}
+    \end{column}
+    \begin{column}{0.53\textwidth}
+      $N_1$: a $2\A$ source. \ $N_2$ replaced by a $2\A$ source.\\[10pt]
+      \onslide<2->{KCL holds for \alert{every} $\Vcol{v}$: $\Vcol{v}$ is not fixed.\\[10pt]}
+      \onslide<3->{The substitution needs a new circuit with a \alert{unique} solution.}
+    \end{column}
+  \end{columns}
 \end{frame}
 
 %--------------------------------------------------------------
