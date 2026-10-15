@@ -657,18 +657,37 @@
 
 %--------------------------------------------------------------
 \begin{frame}{A unique solution}
+  \vfill
+  A circuit with $n$ nodes and $b$ branches has $2b$ unknowns, $\Vcol{v_1},\dots,\Vcol{v_b}$ and
+  $\Icol{i_1},\dots,\Icol{i_b}$, and $2b$ equations:
+  \begin{center}
+  \renewcommand{\arraystretch}{1.15}
+  \begin{tabular}{@{}l l r@{}}
+  KCL & $A\,\Icol{\mathbf{i}} = 0$ & $n - 1$\\
+  KVL & $B\,\Vcol{\mathbf{v}} = 0$ & $b - n + 1$\\
+  element laws & one for each branch & $b$
+  \end{tabular}
+  \end{center}
   \begin{block}{Definition}
-    A circuit has a \alert{unique solution} if exactly one set of branch voltages and branch
-    currents satisfies all its KCL, KVL and element equations.
+    The circuit has a \alert{unique solution} if exactly one $(\Vcol{\mathbf{v}}, \Icol{\mathbf{i}})$
+    satisfies all $2b$ equations.
   \end{block}
+  \vfill
+  \begin{center}LTI resistive: the $2b$ equations are linear, and the solution is unique when
+    their coefficient matrix is invertible.\end{center}
+  \vfill
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{A unique solution? Three small circuits}
   \vfill
   \begin{center}
   \begin{tabular}{@{}c@{\hspace{8mm}}c@{\hspace{8mm}}c@{}}
-  \begin{tikzpicture}[scale=0.7]\draw (0,0) to[american voltage source, invert, l=$5\V$] (0,1.8);
+  \begin{tikzpicture}[scale=0.8]\draw (0,0) to[american voltage source, invert, l=$5\V$] (0,1.8);
       \draw (0,1.8) -- (2.2,1.8); \draw (0,0) -- (2.2,0);
-      \draw (2.2,1.8) to[R, l=$1\ohm$] (2.2,0);\end{tikzpicture} & \begin{tikzpicture}[scale=0.7]\draw (0,0) to[american voltage source, invert, l=$5\V$] (0,1.8);
+      \draw (2.2,1.8) to[R, l=$1\ohm$] (2.2,0);\end{tikzpicture} & \begin{tikzpicture}[scale=0.8]\draw (0,0) to[american voltage source, invert, l=$5\V$] (0,1.8);
       \draw (0,1.8) -- (2.2,1.8); \draw (0,0) -- (2.2,0);
-      \draw (2.2,0) to[american voltage source, invert, l_=$5\V$] (2.2,1.8);\end{tikzpicture} & \begin{tikzpicture}[scale=0.7]\draw (0,0) to[american voltage source, invert, l=$5\V$] (0,1.8);
+      \draw (2.2,0) to[american voltage source, invert, l_=$5\V$] (2.2,1.8);\end{tikzpicture} & \begin{tikzpicture}[scale=0.8]\draw (0,0) to[american voltage source, invert, l=$5\V$] (0,1.8);
       \draw (0,1.8) -- (2.2,1.8); \draw (0,0) -- (2.2,0);
       \draw (2.2,0) to[american voltage source, invert, l_=$6\V$] (2.2,1.8);\end{tikzpicture}\\[2pt]
   (a) & (b) & (c)\\[2pt]
@@ -678,8 +697,7 @@
   \end{tabular}
   \end{center}
   \vfill
-  \onslide<3->{\begin{center}LTI resistive: $2b$ equations for $2b$ unknowns, unique when the
-    coefficient matrix is invertible.\end{center}}
+  \vfill
 \end{frame}
 
 %--------------------------------------------------------------
@@ -723,34 +741,68 @@
 \end{frame}
 
 %--------------------------------------------------------------
-\begin{frame}{(I) and (II): why it works}
-  \vfill
-  \textbf{Assume} (I) and (II) each have a \alert{unique solution}.\\[2pt]
-  {\small $x_1$, $x_2$: branch values inside $N_1$, $N_2$. The parts share only $\Vcol{v}$ and $\Icol{i}$.}
-  \setlength{\abovedisplayskip}{3pt}\setlength{\belowdisplayskip}{2pt}
-  \begin{columns}[t,onlytextwidth]
-    \begin{column}{0.5\textwidth}
-      \centering\textbf{(I)}, solution $x_1^*$, $\Vcol{v^*}$, $\Icol{i^*}$, $x_2^*$
-      \begin{align*}
-        \textcolor{cflux}{N_1:}\ & \textcolor{cflux}{M_1 x_1 + m_v\Vcol{v} + m_i\Icol{i} = s_1}\\
-        N_2:\ & n_v\Vcol{v} + n_i\Icol{i} + M_2 x_2 = s_2
-      \end{align*}
-    \end{column}
-    \begin{column}{0.5\textwidth}
-      \centering\onslide<2->{\textbf{(II)}, the $N_1$ row is \alert{the same}
-      \begin{align*}
-        \textcolor{cflux}{N_1:}\ & \textcolor{cflux}{M_1 x_1 + m_v\Vcol{v} + m_i\Icol{i} = s_1}\\
-        \text{source:}\ & \Vcol{v} = \Vcol{v^*}
-      \end{align*}}
-    \end{column}
-  \end{columns}
-  \begin{itemize}\itemsep5pt
-    \item<3-> Put $x_1^*$, $\Vcol{v^*}$, $\Icol{i^*}$ into (II): both rows hold. \yes
-    \item<4-> One solution, so this is it: $x_1 = x_1^*$, $\Icol{i} = \Icol{i^*}$.
-    \item<5-> $N_2$ appears only in the replaced row: it can be \alert{anything}.
-    \item<6-> Uniqueness was used in the second step: otherwise $\Icol{i}$ could differ from $\Icol{i^*}$.
+\begin{frame}{(I) and (II): one element first}
+  \begin{center}
+  \begin{tikzpicture}[scale=0.85, baseline=(c.base)]
+          \coordinate (c) at (0,1.0);
+          \draw[elem, rounded corners=4pt] (0,0) rectangle (1.8,2.0);
+          \node[font=\small, align=center] at (0.9,1.0) {rest of\\the circuit};
+          \draw (1.8,1.7) -- (3.0,1.7); \draw (1.8,0.3) -- (3.0,0.3);
+          \draw[elem] (2.7,0.7) rectangle (3.3,1.3); \node[font=\small] at (3.0,1.0) {$E$};
+          \draw (3.0,1.7) -- (3.0,1.3); \draw (3.0,0.7) -- (3.0,0.3);
+          \draw[iar] (2.05,1.95) -- (2.65,1.95); \node[font=\small, text=ccur] at (2.35,2.28) {$\Icol{i_e}$};
+          \node[pol] at (3.6,1.45) {$+$}; \node[pol] at (3.6,0.55) {$-$};
+          \node[font=\small, text=cvolt] at (3.75,1.0) {$\Vcol{v_e}$};
+        \end{tikzpicture}
+  \qquad\onslide<2->{$\Longrightarrow$\qquad
+  \begin{tikzpicture}[scale=0.85, baseline=(c.base)]
+          \coordinate (c) at (0,1.0);
+          \draw[elem, rounded corners=4pt] (0,0) rectangle (1.8,2.0);
+          \node[font=\small, align=center] at (0.9,1.0) {rest of\\the circuit};
+          \draw (1.8,1.7) -- (3.0,1.7); \draw (1.8,0.3) -- (3.0,0.3);
+          \draw (3.0,0.3) to[american voltage source, invert] (3.0,1.7); \node[font=\small, text=cvolt, right] at (3.35,1.0) {$\Vcol{v_e^*}$};
+        \end{tikzpicture}}
+  \end{center}
+  \vspace{-4pt}
+  \begin{center}\small
+    \only<1>{Any element $E$ of a circuit; in the solution of (I) it has $\Vcol{v_e^*}$ and $\Icol{i_e^*}$.}%
+    \only<2->{Replace only $E$ by a voltage source. Assume both circuits have a unique solution.}
+  \end{center}
+  \vspace{-2pt}
+  \onslide<3->{%
+  \begin{center}\small
+  \renewcommand{\arraystretch}{1.15}
+  \begin{tabular}{@{}l c c@{}}
+  \toprule
+   & \textbf{(I)} & \textbf{(II)}\\
+  \midrule
+  KCL & $A\,\Icol{\mathbf{i}} = 0$ & \alert{the same} (same graph)\\
+  KVL & $B\,\Vcol{\mathbf{v}} = 0$ & \alert{the same} (same graph)\\
+  the other $b - 1$ elements & their laws & \alert{the same}\\
+  element $E$ & the law of $E$ & \alert{$\Vcol{v_e} = \Vcol{v_e^*}$}\\
+  \bottomrule
+  \end{tabular}
+  \end{center}}
+  \vspace{-4pt}
+  \begin{itemize}\itemsep2pt\small
+    \item<4-> The solution of (I) satisfies all equations of (II). \yes
+    \item<5-> (II) has only one solution, so this is it: nothing changes, also $\Icol{i_e} = \Icol{i_e^*}$.
   \end{itemize}
-  \vfill
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{(I) and (II): from one element to $N_2$}
+  \begin{center}
+  \begin{tikzpicture}[scale=0.8]\pairbox{$N_1$}{$N_2$}\end{tikzpicture}
+  \end{center}
+  \begin{itemize}\itemsep6pt
+    \item Seen from $N_1$, all of $N_2$ acts like \alert{one branch} from $a$ to $b$, with
+      $\Vcol{v}$ and $\Icol{i}$.
+    \item<2-> So take $E = N_2$: replacing it by a voltage source changes only its own equations.
+    \item<3-> The equations of $N_1$ stay the same, and the solution of (I) still satisfies them.
+    \item<4-> With a unique solution, nothing inside $N_1$ changes. \yes
+    \item<5-> $N_2$ is removed, so it can be \alert{anything}, even nonlinear.
+  \end{itemize}
 \end{frame}
 
 %--------------------------------------------------------------
@@ -784,34 +836,68 @@
 \end{frame}
 
 %--------------------------------------------------------------
-\begin{frame}{(I) and (III): why it works}
-  \vfill
-  \textbf{Assume} (I) and (III) each have a \alert{unique solution}.\\[2pt]
-  {\small $x_1$, $x_2$: branch values inside $N_1$, $N_2$. The parts share only $\Vcol{v}$ and $\Icol{i}$.}
-  \setlength{\abovedisplayskip}{3pt}\setlength{\belowdisplayskip}{2pt}
-  \begin{columns}[t,onlytextwidth]
-    \begin{column}{0.5\textwidth}
-      \centering\textbf{(I)}, solution $x_1^*$, $\Vcol{v^*}$, $\Icol{i^*}$, $x_2^*$
-      \begin{align*}
-        \textcolor{cflux}{N_1:}\ & \textcolor{cflux}{M_1 x_1 + m_v\Vcol{v} + m_i\Icol{i} = s_1}\\
-        N_2:\ & n_v\Vcol{v} + n_i\Icol{i} + M_2 x_2 = s_2
-      \end{align*}
-    \end{column}
-    \begin{column}{0.5\textwidth}
-      \centering\onslide<2->{\textbf{(III)}, the $N_1$ row is \alert{the same}
-      \begin{align*}
-        \textcolor{cflux}{N_1:}\ & \textcolor{cflux}{M_1 x_1 + m_v\Vcol{v} + m_i\Icol{i} = s_1}\\
-        \text{source:}\ & \Icol{i} = \Icol{i^*}
-      \end{align*}}
-    \end{column}
-  \end{columns}
-  \begin{itemize}\itemsep5pt
-    \item<3-> Put $x_1^*$, $\Vcol{v^*}$, $\Icol{i^*}$ into (III): both rows hold. \yes
-    \item<4-> One solution, so this is it: $x_1 = x_1^*$, $\Vcol{v} = \Vcol{v^*}$.
-    \item<5-> $N_2$ appears only in the replaced row: it can be \alert{anything}.
-    \item<6-> Uniqueness was used in the second step: otherwise $\Vcol{v}$ could differ from $\Vcol{v^*}$.
+\begin{frame}{(I) and (III): one element first}
+  \begin{center}
+  \begin{tikzpicture}[scale=0.85, baseline=(c.base)]
+          \coordinate (c) at (0,1.0);
+          \draw[elem, rounded corners=4pt] (0,0) rectangle (1.8,2.0);
+          \node[font=\small, align=center] at (0.9,1.0) {rest of\\the circuit};
+          \draw (1.8,1.7) -- (3.0,1.7); \draw (1.8,0.3) -- (3.0,0.3);
+          \draw[elem] (2.7,0.7) rectangle (3.3,1.3); \node[font=\small] at (3.0,1.0) {$E$};
+          \draw (3.0,1.7) -- (3.0,1.3); \draw (3.0,0.7) -- (3.0,0.3);
+          \draw[iar] (2.05,1.95) -- (2.65,1.95); \node[font=\small, text=ccur] at (2.35,2.28) {$\Icol{i_e}$};
+          \node[pol] at (3.6,1.45) {$+$}; \node[pol] at (3.6,0.55) {$-$};
+          \node[font=\small, text=cvolt] at (3.75,1.0) {$\Vcol{v_e}$};
+        \end{tikzpicture}
+  \qquad\onslide<2->{$\Longrightarrow$\qquad
+  \begin{tikzpicture}[scale=0.85, baseline=(c.base)]
+          \coordinate (c) at (0,1.0);
+          \draw[elem, rounded corners=4pt] (0,0) rectangle (1.8,2.0);
+          \node[font=\small, align=center] at (0.9,1.0) {rest of\\the circuit};
+          \draw (1.8,1.7) -- (3.0,1.7); \draw (1.8,0.3) -- (3.0,0.3);
+          \draw (3.0,1.7) to[american current source] (3.0,0.3); \node[font=\small, text=ccur, right] at (3.35,1.0) {$\Icol{i_e^*}$};
+        \end{tikzpicture}}
+  \end{center}
+  \vspace{-4pt}
+  \begin{center}\small
+    \only<1>{Any element $E$ of a circuit; in the solution of (I) it has $\Vcol{v_e^*}$ and $\Icol{i_e^*}$.}%
+    \only<2->{Replace only $E$ by a current source. Assume both circuits have a unique solution.}
+  \end{center}
+  \vspace{-2pt}
+  \onslide<3->{%
+  \begin{center}\small
+  \renewcommand{\arraystretch}{1.15}
+  \begin{tabular}{@{}l c c@{}}
+  \toprule
+   & \textbf{(I)} & \textbf{(III)}\\
+  \midrule
+  KCL & $A\,\Icol{\mathbf{i}} = 0$ & \alert{the same} (same graph)\\
+  KVL & $B\,\Vcol{\mathbf{v}} = 0$ & \alert{the same} (same graph)\\
+  the other $b - 1$ elements & their laws & \alert{the same}\\
+  element $E$ & the law of $E$ & \alert{$\Icol{i_e} = \Icol{i_e^*}$}\\
+  \bottomrule
+  \end{tabular}
+  \end{center}}
+  \vspace{-4pt}
+  \begin{itemize}\itemsep2pt\small
+    \item<4-> The solution of (I) satisfies all equations of (III). \yes
+    \item<5-> (III) has only one solution, so this is it: nothing changes, also $\Vcol{v_e} = \Vcol{v_e^*}$.
   \end{itemize}
-  \vfill
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{(I) and (III): from one element to $N_2$}
+  \begin{center}
+  \begin{tikzpicture}[scale=0.8]\pairbox{$N_1$}{$N_2$}\end{tikzpicture}
+  \end{center}
+  \begin{itemize}\itemsep6pt
+    \item Seen from $N_1$, all of $N_2$ acts like \alert{one branch} from $a$ to $b$, with
+      $\Vcol{v}$ and $\Icol{i}$.
+    \item<2-> So take $E = N_2$: replacing it by a current source changes only its own equations.
+    \item<3-> The equations of $N_1$ stay the same, and the solution of (I) still satisfies them.
+    \item<4-> With a unique solution, nothing inside $N_1$ changes. \yes
+    \item<5-> $N_2$ is removed, so it can be \alert{anything}, even nonlinear.
+  \end{itemize}
 \end{frame}
 
 %--------------------------------------------------------------

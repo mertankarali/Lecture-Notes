@@ -459,12 +459,14 @@ inside $N_1$ changes. An observer inside $N_1$ cannot tell (I), (II) and (III) a
 Condition: each circuit has a unique solution.
 \end{ideabox}
 
-\textbf{Unique solution.} A circuit has a unique solution if exactly one set of branch voltages
-and branch currents satisfies all its KCL, KVL and element equations. A $5\V$ source with a
-$1\ohm$ resistor has one ($\Icol{i} = 5\A$). Two $5\V$ sources in parallel have many: any
-current circulates. A $5\V$ and a $6\V$ source in parallel have none: KVL fails. In an LTI
-resistive circuit there are $2b$ equations for $2b$ unknowns, and the solution is unique when
-the coefficient matrix is invertible.
+\textbf{Unique solution.} A circuit with $n$ nodes and $b$ branches has $2b$ unknowns
+(the branch voltages $\Vcol{\mathbf{v}}$ and currents $\Icol{\mathbf{i}}$) and $2b$ equations: KCL
+$A\Icol{\mathbf{i}} = 0$ ($n - 1$), KVL $B\Vcol{\mathbf{v}} = 0$ ($b - n + 1$) and one element law
+per branch ($b$). The circuit has a \emph{unique solution} if exactly one
+$(\Vcol{\mathbf{v}}, \Icol{\mathbf{i}})$ satisfies all $2b$ equations. A $5\V$ source with a $1\ohm$
+resistor has one; two $5\V$ sources in parallel have many (any current); a $5\V$ and a $6\V$
+source in parallel have none (KVL fails). In an LTI resistive circuit the equations are linear,
+and the solution is unique when their coefficient matrix is invertible.
 
 \subsection*{(I) and (II): replacing $N_2$ by a voltage source}
 
@@ -487,28 +489,30 @@ since there too $\Vcol{v} = 6\V$.
 \end{minipage}
 \end{examplebox}
 
-\textbf{Why it works.} Assume (I) and (II) each have a unique solution. Let $x_1$ and $x_2$
-collect the branch voltages and currents inside $N_1$ and $N_2$; the two parts share only
-$\Vcol{v}$ and $\Icol{i}$. Written in matrix form, the KCL, KVL and element equations are
-\[
-\text{(I)}\quad
-\begin{aligned}
-  &\textcolor{cflux}{M_1 x_1 + m_v\Vcol{v} + m_i\Icol{i} = s_1} && (N_1)\\
-  &n_v\Vcol{v} + n_i\Icol{i} + M_2 x_2 = s_2 && (N_2)
-\end{aligned}
-\qquad\qquad
-\text{(II)}\quad
-\begin{aligned}
-  &\textcolor{cflux}{M_1 x_1 + m_v\Vcol{v} + m_i\Icol{i} = s_1} && (N_1)\\
-  &\Vcol{v} = \Vcol{v^*} && (\text{source})
-\end{aligned}
-\]
-with $x_1^*$, $\Vcol{v^*}$, $\Icol{i^*}$, $x_2^*$ the solution of (I). The $N_1$ row is the same in
-both. Put $x_1^*$, $\Vcol{v^*}$, $\Icol{i^*}$ into (II): the $N_1$ row holds, as it did in (I),
-and so does the source row. Since (II) has one solution, this is it: $x_1 = x_1^*$ and
-$\Icol{i} = \Icol{i^*}$. $N_2$ appears only in the replaced row, so it can be anything.
-Uniqueness is needed in the last step: if $N_1$ is a single $5\V$ source, (II) puts two
-$5\V$ sources in parallel, and KVL holds for every $\Icol{i}$.
+\textbf{Why it works: one element first.} Take any element $E$ of a circuit, with
+$\Vcol{v_e^*}$ and $\Icol{i_e^*}$ in the solution, and replace only $E$ by a voltage source
+$\Vcol{v_e^*}$. Assume both circuits have a unique solution. Compare the equations:
+\begin{center}
+\renewcommand{\arraystretch}{1.1}
+\begin{tabular}{@{}l c c@{}}
+\toprule
+ & before & after\\
+\midrule
+KCL, KVL & $A\Icol{\mathbf{i}} = 0$, \ $B\Vcol{\mathbf{v}} = 0$ & the same (same graph)\\
+the other $b - 1$ elements & their laws & the same\\
+element $E$ & the law of $E$ & $\Vcol{v_e} = \Vcol{v_e^*}$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The old solution satisfies every equation of the new circuit, and the new circuit has only one
+solution, so nothing changes, also $\Icol{i_e} = \Icol{i_e^*}$.
+
+\textbf{From one element to $N_2$.} Seen from $N_1$, all of $N_2$ acts like one branch from $a$ to
+$b$, with $\Vcol{v}$ and $\Icol{i}$. Take $E = N_2$: replacing it by a source changes only its own
+equations, and those of $N_1$ stay the same. With a unique solution, nothing inside $N_1$
+changes. $N_2$ is removed, so it can be anything, even nonlinear. Without uniqueness the step
+fails: if $N_1$ is a single $5\V$ source, (II) puts two $5\V$ sources in parallel, and the
+current is not fixed.
 
 \subsection*{(I) and (III): replacing $N_2$ by a current source}
 
@@ -526,11 +530,11 @@ equation holds in (I), where $\Icol{i} = 2\A$.
 \end{minipage}
 \end{examplebox}
 
-\textbf{Why it works.} The same argument: in (III) the $N_1$ row is unchanged and the
-source row is $\Icol{i} = \Icol{i^*}$. The solution of (I) satisfies both rows, so, if (III) has
-one solution, $x_1 = x_1^*$ and $\Vcol{v} = \Vcol{v^*}$. Uniqueness is needed again: if $N_1$ is a
-single $2\A$ source, (III) puts two $2\A$ sources in series, and KCL holds for every
-$\Vcol{v}$.
+\textbf{Why it works.} The same two steps. Replacing one element $E$ by a current source
+$\Icol{i_e^*}$ changes only its law, now $\Icol{i_e} = \Icol{i_e^*}$; KCL, KVL and the other laws stay
+the same, so with a unique solution $\Vcol{v_e} = \Vcol{v_e^*}$. Then take $E = N_2$. Uniqueness is
+needed again: if $N_1$ is a single $2\A$ source, (III) puts two $2\A$ sources in series, and the
+voltage is not fixed.
 
 %==============================================================
 \section{Ports and equivalent one-ports}
