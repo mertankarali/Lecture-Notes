@@ -493,19 +493,17 @@
   \vfill
   \begin{center}
   \begin{tikzpicture}[tag/.style={font=\scriptsize\bfseries, text=white, rounded corners=2pt, inner sep=2.5pt}]
-    \node[font=\footnotesize, text=metugray, align=left, anchor=west] at (-0.2,0.5) {Same circuit,\\two inputs};
     \begin{scope}[shift={(3.4 cm,0 cm)}, scale=0.62]\node[font=\small, rotate=90, transform shape=false] at (-0.88,0.75) {$5\V$};\mini{american voltage source, invert}{R, l=$2\ohm$}
       \node[font=\small] at (0.95,-0.6) {(a)};\end{scope}
     \begin{scope}[shift={(6.8 cm,0 cm)}, scale=0.62]\node[font=\small, rotate=90, transform shape=false] at (-0.88,0.75) {$5\cos t$};\mini{american voltage source, invert}{R, l=$2\ohm$}
       \node[font=\small] at (0.95,-0.6) {(b)};\end{scope}
-    \node[font=\footnotesize, text=metugray, align=left, anchor=west] at (-0.2,-2.2) {Same input,\\$2\ohm$ replaced};
     \begin{scope}[shift={(3.4 cm,-2.7 cm)}, scale=0.62]\node[font=\small, rotate=90, transform shape=false] at (-0.88,0.75) {$5\V$};\mini{american voltage source, invert}{D}
       \node[font=\small] at (0.95,-0.6) {(c) diode};\end{scope}
     \begin{scope}[shift={(6.8 cm,-2.7 cm)}, scale=0.62]\node[font=\small, rotate=90, transform shape=false] at (-0.88,0.75) {$5\V$};\mini{american voltage source, invert}{vR, l=$R(t)$}
       \node[font=\small] at (0.95,-0.6) {(d)};\end{scope}
     \begin{scope}[shift={(10.2 cm,-2.7 cm)}, scale=0.62]\node[font=\small, rotate=90, transform shape=false] at (-0.88,0.75) {$5\V$};\mini{american voltage source, invert}{C}
       \node[font=\small] at (0.95,-0.6) {(e)};\end{scope}
-    \draw[metugray!40] (-0.2,-1.15) -- (11.6,-1.15);
+    \draw[metugray!40] (2.4,-1.15) -- (11.6,-1.15);
     \only<2->{%
     \node[tag, fill=cpow] at (3.99,-0.8) {LTI resistive};
     \node[tag, fill=cpow] at (7.39,-0.8) {LTI resistive};
