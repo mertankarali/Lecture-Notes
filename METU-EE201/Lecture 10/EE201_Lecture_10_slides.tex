@@ -202,19 +202,37 @@
     \draw (3.6,0) to[american voltage source, invert, l_=$6\V$] (3.6,2);
   \or
     \draw (3.6,2) to[american current source, l=$2\A$] (3.6,0);
+  \or
+    \draw (3.6,2) to[R, l=$R_L$] (3.6,0);
   \fi
   \draw[fill=white] (2.85,2) circle (1.8pt) node[above=1pt, font=\small] {$a$};
   \draw[fill=white] (2.85,0) circle (1.8pt) node[below=1pt, font=\small] {$b$};}
-%  The example circuit after 6 ohm || 3 ohm -> 2 ohm
-\newcommand{\exRed}{%
-  \draw (0,0) to[american voltage source, invert, l=$12\V$] (0,2);
-  \draw (0,2) to[R, l=$2\ohm$] (2.0,2) -- (3.0,2);
-  \draw (3.0,2) to[R, l=$2\ohm$] (3.0,0) -- (0,0);
-  \node[font=\scriptsize, text=metugray, right] at (3.45,0.45) {$= 6\ohm \parallel 3\ohm$};
-  \draw[fill=white] (2.4,2) circle (1.8pt) node[above=1pt, font=\small] {$a$};
-  \draw[fill=white] (2.4,0) circle (1.8pt) node[below=1pt, font=\small] {$b$};
-  \node[pol] at (2.4,1.6) {$+$}; \node[pol] at (2.4,0.4) {$-$};
-  \node[font=\small, text=cvolt] at (2.4,1.0) {$v$};}
+%  The first example, simplified left of a-b; the load R_L stays.
+%  #1 = 1: 6 A || 2 || 6;  2: 6 A || 1.5;  3: 9 V in series with 1.5
+\newcommand{\exStep}[1]{%
+  \ifcase#1\or
+    \draw (0,0) to[american current source, l=$6\A$] (0,2);
+    \draw (0,2) -- (4.0,2); \draw (0,0) -- (4.0,0);
+    \draw (1.3,2) to[R, l_=$2\ohm$] (1.3,0);
+    \draw (2.2,2) to[R, l=$6\ohm$] (2.2,0);
+  \or
+    \draw (0,0) to[american current source, l=$6\A$] (0,2);
+    \draw (0,2) -- (4.0,2); \draw (0,0) -- (4.0,0);
+    \draw (1.6,2) to[R, l=$1.5\ohm$] (1.6,0);
+  \or
+    \draw (0,0) to[american voltage source, invert, l=$9\V$] (0,2);
+    \draw (0,2) to[R, l=$1.5\ohm$] (2.2,2) -- (4.0,2); \draw (0,0) -- (4.0,0);
+  \fi
+  \draw[dashed, metugray, rounded corners=3pt] (-0.95,-0.4) rectangle (2.9,2.5);
+  \draw (4.0,2) to[R, l=$R_L$] (4.0,0);
+  \draw[fill=white] (3.2,2) circle (1.8pt) node[above=1pt, font=\small] {$a$};
+  \draw[fill=white] (3.2,0) circle (1.8pt) node[below=1pt, font=\small] {$b$};}
+%  Port voltage v and current i labels at terminals x = #1 (load to the right)
+\newcommand{\vilab}[1]{%
+  \node[pol] at (#1,1.6) {$+$}; \node[pol] at (#1,0.4) {$-$};
+  \node[font=\small, text=cvolt] at (#1,1.0) {$v$};
+  \draw[iar] (#1+0.2,2.25) -- (#1+0.65,2.25);
+  \node[font=\small, text=ccur] at (#1+0.45,2.55) {$i$};}
 %  Small classification circuits: source #1, a 1 ohm resistor, element #2 (circuitikz options)
 \newcommand{\mini}[2]{%
   \draw (0,0) to[#1] (0,1.5) to[R, l=$1\ohm$] (1.9,1.5) to[#2] (1.9,0) -- (0,0);}
@@ -250,15 +268,7 @@
     \end{enumerate}
     \vfill
   \end{frame}}
-%  Example 10.2 after the source transformation: 6 A || 2 || 6 || 3 ohm
-\newcommand{\exT}{%
-  \draw (0,0) to[american current source, l=$6\A$] (0,2);
-  \draw (0,2) -- (4.0,2); \draw (0,0) -- (4.0,0);
-  \draw (1.1,2) to[R, l=$2\ohm$] (1.1,0);
-  \draw (2.4,2) to[R, l=$6\ohm$] (2.4,0);
-  \draw (4.0,2) to[R, l=$3\ohm$] (4.0,0);
-  \draw[fill=white] (3.3,2) circle (1.8pt) node[above=1pt, font=\small] {$a$};
-  \draw[fill=white] (3.3,0) circle (1.8pt) node[below=1pt, font=\small] {$b$};}
+
 
 \begin{document}
 
@@ -418,7 +428,7 @@
     \begin{column}{0.44\textwidth}
       \centering
       \begin{tikzpicture}[scale=0.95]
-        \mini{american voltage source, invert, l={$\Vcol{v_s(t)} = 10\cos t$}}{R, l=$2\ohm$}
+        \mini{american voltage source, invert, l={$\Vcol{v_s(t)} = 5\cos t$}}{R, l=$2\ohm$}
       \end{tikzpicture}
     \end{column}
     \begin{column}{0.54\textwidth}
@@ -469,21 +479,21 @@
   \vfill
   \begin{center}
   \begin{tikzpicture}
-    \begin{scope}[shift={(0 cm,0)}, scale=0.68]\mini{american voltage source, invert}{R, l=$2\ohm$}
+    \begin{scope}[shift={(0.3 cm,0)}, scale=0.62]\node[font=\small, rotate=90, transform shape=false] at (-0.88,0.75) {$5\V$};\mini{american voltage source, invert}{R, l=$2\ohm$}
       \node[font=\small] at (0.95,-0.6) {(a)};\end{scope}
-    \begin{scope}[shift={(3.9 cm,0)}, scale=0.68]\mini{american voltage source, invert, l=$10\cos t$}{R, l=$2\ohm$}
+    \begin{scope}[shift={(3.1 cm,0)}, scale=0.62]\node[font=\small, rotate=90, transform shape=false] at (-0.88,0.75) {$5\cos t$};\mini{american voltage source, invert}{R, l=$2\ohm$}
       \node[font=\small] at (0.95,-0.6) {(b)};\end{scope}
-    \begin{scope}[shift={(6.5 cm,0)}, scale=0.68]\mini{american voltage source, invert}{D}
+    \begin{scope}[shift={(6.0 cm,0)}, scale=0.62]\node[font=\small, rotate=90, transform shape=false] at (-0.88,0.75) {$5\V$};\mini{american voltage source, invert}{D}
       \node[font=\small] at (0.95,-0.6) {(c) diode};\end{scope}
-    \begin{scope}[shift={(8.9 cm,0)}, scale=0.68]\mini{american voltage source, invert}{vR, l=$R(t)$}
+    \begin{scope}[shift={(8.8 cm,0)}, scale=0.62]\node[font=\small, rotate=90, transform shape=false] at (-0.88,0.75) {$5\V$};\mini{american voltage source, invert}{vR, l=$R(t)$}
       \node[font=\small] at (0.95,-0.6) {(d)};\end{scope}
-    \begin{scope}[shift={(11.9 cm,0)}, scale=0.68]\mini{american voltage source, invert}{C}
-      \node[font=\small] at (0.95,-0.6) {(e) capacitor};\end{scope}
+    \begin{scope}[shift={(12.0 cm,0)}, scale=0.62]\node[font=\small, rotate=90, transform shape=false] at (-0.88,0.75) {$5\V$};\mini{american voltage source, invert}{C}
+      \node[font=\small] at (0.95,-0.6) {(e)};\end{scope}
   \end{tikzpicture}
   \end{center}
   \vfill
   \begin{center}
-  \only<1>{A source, a $1\ohm$ resistor and one more element. Sources: $5\V$ except (b). In (d), $R(t) = 2 + \sin t\ \Omega$.\\[4pt] Linear? \quad Time-invariant? \quad Resistive?}%
+  \only<1>{A source, a $1\ohm$ resistor and one more element. In (d), $R(t) = 2 + \sin t\ \Omega$.\\[4pt] Linear? \quad Time-invariant? \quad Resistive?}%
   \only<2->{%
   \renewcommand{\arraystretch}{1.2}
   \begin{tabular}{@{}l c c c c c@{}}
@@ -532,30 +542,26 @@
 %--------------------------------------------------------------
 \begin{frame}{A first example: simplify the circuit}
   \begin{columns}[c,onlytextwidth]
-    \begin{column}{0.5\textwidth}
+    \begin{column}{0.48\textwidth}
       \centering
       \begin{tikzpicture}[scale=1.0]
-        \only<1,4>{\exN{0}
-          \node[pol] at (2.85,1.6) {$+$}; \node[pol] at (2.85,0.4) {$-$};
-          \node[font=\small, text=cvolt] at (2.85,1.0) {$v$};
-          \draw[iar] (3.05,2.25) -- (3.5,2.25);
-          \node[font=\small, text=ccur] at (3.3,2.55) {$i$};}%
-        \only<2-3>{\exRed}%
-        \only<4>{%
-          \draw[iar] (0.6,1.72) -- (1.3,1.72);
-          \node[font=\small, text=ccur] at (0.95,1.45) {$3\A$};
-          \draw[iar] (1.45,0.85) -- (1.45,0.3);
-          \node[font=\small, text=ccur, left] at (1.38,0.55) {$1\A$};}
+        \only<1>{\exN{3}\vilab{2.85}}%
+        \only<2>{\exStep{1}\vilab{3.2}}%
+        \only<3>{\exStep{2}\vilab{3.2}}%
+        \only<4->{\exStep{3}\vilab{3.2}}%
       \end{tikzpicture}
     \end{column}
-    \begin{column}{0.48\textwidth}
-      \only<1>{Find $\Vcol{v}$ and $\Icol{i}$.}%
-      \only<2->{\textbf{Step 1.} $6\ohm$ and $3\ohm$ are in parallel: together they act as
-        one $2\ohm$.\\[8pt]}%
-      \only<3->{\textbf{Step 2.} The two $2\ohm$ share the $12\V$ equally:
-        $\Vcol{v} = 6\V$.\\[8pt]}%
-      \only<4->{\textbf{Step 3.} Back to the original circuit: $\Icol{i} = 6/3 = 2\A$;
-        the $2\ohm$ carries $3\A$, the $6\ohm$ carries $1\A$.}
+    \begin{column}{0.5\textwidth}
+      \only<1>{$R_L$ (the load) can be \alert{any} resistive element. Find $\Vcol{v}$ and
+        $\Icol{i}$.\\[6pt] Idea: simplify the part \alert{left of $a$--$b$} once.}%
+      \only<2->{\textbf{Step 1.} $12\V$ in series with $2\ohm$ $\to$ $6\A$ in parallel with
+        $2\ohm$ (shown later).\\[6pt]}%
+      \only<3->{\textbf{Step 2.} $2\ohm \parallel 6\ohm = 1.5\ohm$.\\[6pt]}%
+      \only<4->{\textbf{Step 3.} $6\A$ in parallel with $1.5\ohm$ $\to$ $9\V$ in series with
+        $1.5\ohm$.\\[6pt]}%
+      \only<5->{\textbf{Result.} For \alert{any} $R_L$:
+        $\Icol{i} = \dfrac{9}{1.5 + R_L}$, \ $\Vcol{v} = R_L\Icol{i}$.\\[4pt]
+        $R_L = 3\ohm$: \ $\Icol{i} = 2\A$, \ $\Vcol{v} = 6\V$.}
     \end{column}
   \end{columns}
 \end{frame}
@@ -564,9 +570,10 @@
 \begin{frame}{What did we just do?}
   \vfill
   \begin{itemize}\itemsep8pt
-    \item We replaced a part ($6\ohm \parallel 3\ohm$) by a \alert{simpler part} ($2\ohm$).
-    \item<2-> The rest of the circuit did not notice: $\Vcol{v}$ stayed the same.
-    \item<3-> Knowing $\Vcol{v}$, we went \alert{back} and found the values inside.
+    \item The part left of $a$--$b$ became \alert{one source and one resistor}.
+    \item<2-> $R_L$ did not notice: every load gets the same $\Vcol{v}$ and $\Icol{i}$ as
+      before.
+    \item<3-> The work is done \alert{once}; each new load is one line of algebra.
   \end{itemize}
   \vfill
   \onslide<4->{%
@@ -662,9 +669,10 @@
       \end{tikzpicture}
     \end{column}
     \begin{column}{0.52\textwidth}
-      \only<1>{The first example, cut at $a$, $b$: $N_2$ is the $3\ohm$ resistor.}%
-      \only<2->{\textbf{(I)} From the first example: $\Vcol{v} = 6\V$, $\Icol{i} = 2\A$;
-        inside $N_1$: $\Icol{3\A}$ in the $2\ohm$, $\Icol{1\A}$ in the $6\ohm$.\\[10pt]}%
+      \only<1>{The first example with $R_L = 3\ohm$, cut at $a$, $b$: $N_2$ is the load.}%
+      \only<2->{\textbf{(I)} From the first example ($R_L = 3\ohm$): $\Vcol{v} = 6\V$,
+        $\Icol{i} = 2\A$; inside $N_1$: $\Icol{3\A}$ in the $2\ohm$, $\Icol{1\A}$ in the
+        $6\ohm$.\\[10pt]}%
       \only<3->{\textbf{(II)} A $6\V$ source fixes $\Vcol{v} = 6\V$: again $\Icol{3\A}$ and
         $\Icol{1\A}$. \yes\\[10pt]}%
       \only<4->{\textbf{(III)} A $2\A$ source: KCL at $a$,
@@ -906,31 +914,25 @@
 \end{frame}
 
 %--------------------------------------------------------------
-\begin{frame}{Example: the first example, by transformations}
-  \begin{columns}[c,onlytextwidth]
-    \begin{column}{0.46\textwidth}
-      \centering
-      \begin{tikzpicture}[scale=1.0]
-        \only<1>{\exN{0}}%
-        \only<2>{\exT}%
-        \only<3->{%
-          \draw (0,0) to[american current source, l=$6\A$] (0,2);
-          \draw (0,2) -- (1.6,2); \draw (0,0) -- (1.6,0);
-          \draw (1.6,2) to[R, l=$1\ohm$] (1.6,0);
-          \node[pol] at (2.6,1.55) {$+$}; \node[pol] at (2.6,0.45) {$-$};
-          \node[font=\small, text=cvolt] at (2.6,1.0) {$\Vcol{v}$};}
-      \end{tikzpicture}
-    \end{column}
-    \begin{column}{0.52\textwidth}
-      \only<1>{Find $\Vcol{v}$ again, with source transformations only.}%
-      \only<2->{$12\V$ with $2\ohm$ in series $\to$ $6\A$ with $2\ohm$ in parallel.\\[8pt]}%
-      \only<3->{$2\ohm$, $6\ohm$, $3\ohm$ in parallel:
-        $G_{eq} = \tfrac12 + \tfrac16 + \tfrac13 = 1\Sie$, so $R_{eq} = 1\ohm$.\\[6pt]
-        $\Vcol{v} = 6\A \times 1\ohm = 6\V$, \quad $\Icol{i} = 6/3 = 2\A$. \yes\\[8pt]}%
-      \only<4->{\alert{Careful:} inside the transformed one-port the values differ. The
-        $12\V$ source carries $3\A$, the $6\A$ source carries $6\A$.}
-    \end{column}
-  \end{columns}
+\begin{frame}{The first example, justified}
+  \begin{center}
+  \begin{tikzpicture}[scale=0.85, baseline=(c.base)]
+    \exN{3} \coordinate (c) at (0,1);
+  \end{tikzpicture}
+  \qquad $\equiv$ at $a$--$b$ \qquad
+  \begin{tikzpicture}[scale=0.85, baseline=(c.base)]
+    \exStep{3} \coordinate (c) at (0,1);
+  \end{tikzpicture}
+  \end{center}
+  \vfill
+  \begin{itemize}\itemsep6pt
+    \item Steps 1 and 3 are source transformations: $12 = 2 \times 6$ and $9 = 1.5 \times 6$.
+    \item<2-> Step 2 is a parallel connection: $2\ohm \parallel 6\ohm = 1.5\ohm$.
+    \item<3-> So the two parts left of $a$--$b$ are \alert{equivalent one-ports}.
+    \item<4-> \alert{Careful:} inside them the values differ; for $R_L = 3\ohm$ the $12\V$
+      source carries $3\A$, the $9\V$ source $2\A$.
+  \end{itemize}
+  \vfill
 \end{frame}
 
 %--------------------------------------------------------------
