@@ -34,11 +34,10 @@ Following pp. 21–23 of Prof. Emre Tuna's notes and his recorded Lecture 10 on
    varies in time is the element law, not just the variables; Example 10.1 classifies five small circuits (on the slides in two rows: the same circuit with two inputs, then the 2 Ω replaced); KCL and KVL are
    always linear, and in an LTI resistive circuit the element equations are too
 2. **A first example** (added) — Example 10.2: 12 V, 2 Ω, 6 Ω with an arbitrary resistive load
-   R_L, solved by combining resistors only: 6 Ω ∥ R_L = R_p, then R_eq = 2 + R_p, source
-   current, back to v and i; the answer i = 9/(1.5 + R_L) is read as a circuit (9 V driving
-   1.5 Ω and R_L in series), so the part left of a–b is 9 V with 1.5 Ω; three questions it
-   raises point to the substitution theorem, equivalent one-ports, and the series/parallel and
-   source rules
+   R_L; R_L is left aside and one KCL at a gives the law of the part left of a–b,
+   v = 9 − 1.5 i; a 9 V source with 1.5 Ω obeys the same law, so R_L cannot tell them apart and
+   i = 9/(1.5 + R_L) for any load; three questions it raises point to the substitution theorem,
+   equivalent one-ports, and the series/parallel and source rules
 3. **Substitution theorem** (07:32) — N₂ replaced by a voltage source v_s = v or a current
    source i_s = i, nothing changes inside N₁ (configurations I, II, III); why it works, and the
    unique-solution condition; Example 10.3: the first example cut at the 3 Ω load, checked in

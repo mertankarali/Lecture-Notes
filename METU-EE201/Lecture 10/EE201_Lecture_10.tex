@@ -255,20 +255,20 @@
   \draw (4.0,2) to[R, l=$R_L$] (4.0,0);
   \draw[fill=white] (3.2,2) circle (1.8pt) node[above=1pt, font=\small] {$a$};
   \draw[fill=white] (3.2,0) circle (1.8pt) node[below=1pt, font=\small] {$b$};}
-%  The first example, resistors combined (the load R_L is absorbed):
-%  #1 = 1: 12 V, 2 ohm, R_p = 6 || R_L;  2: 12 V, R_eq = 2 + R_p, source current i_0
-\newcommand{\exComb}[1]{%
-  \draw (0,0) to[american voltage source, invert, l=$12\V$] (0,2);
-  \ifcase#1\or
-    \draw (0,2) to[R, l=$2\ohm$] (2.0,2) -- (3.6,2);
-    \draw (3.6,2) to[R, l=$R_p$] (3.6,0) -- (0,0);
-    \node[pol] at (3.0,1.6) {$+$}; \node[pol] at (3.0,0.4) {$-$};
-    \node[font=\small, text=cvolt] at (3.0,1.0) {$v$};
+%  The part left of a-b alone (#1 = 0: 12 V, 2 ohm, 6 ohm;  1: 9 V with 1.5 ohm)
+\newcommand{\exLeft}[1]{%
+  \draw[dashed, metugray, rounded corners=3pt] (-0.95,-0.4) rectangle (2.55,2.95);
+  \ifcase#1
+    \draw (0,0) to[american voltage source, invert, l=$12\V$] (0,2);
+    \draw (0,2) to[R, l=$2\ohm$] (2.0,2) -- (2.85,2);
+    \draw (2.0,2) to[R, l_=$6\ohm$] (2.0,0);
   \or
-    \draw (0,2) -- (3.6,2) to[R, l=$R_{eq}$] (3.6,0) -- (0,0);
-    \draw[iar] (1.4,2.25) -- (2.1,2.25);
-    \node[font=\small, text=ccur] at (1.75,2.58) {$i_0$};
-  \fi}
+    \draw (0,0) to[american voltage source, invert, l=$9\V$] (0,2);
+    \draw (0,2) to[R, l=$1.5\ohm$] (2.0,2) -- (2.85,2);
+  \fi
+  \draw (0,0) -- (2.85,0);
+  \draw[fill=white] (2.85,2) circle (1.8pt) node[above=1pt, font=\small] {$a$};
+  \draw[fill=white] (2.85,0) circle (1.8pt) node[below=1pt, font=\small] {$b$};}
 %  Port voltage v and current i labels at terminals x = #1 (load to the right)
 \newcommand{\vilab}[1]{%
   \node[pol] at (#1,1.6) {$+$}; \node[pol] at (#1,0.4) {$-$};
@@ -391,36 +391,31 @@ sources.
 %==============================================================
 \section{A first example}
 
-\begin{examplebox}[Example 10.2 --- combine the resistors]
+\begin{examplebox}[Example 10.2 --- what does $R_L$ see?]
 \begin{minipage}[c]{0.6\linewidth}
 \centering
 \begin{tabular}{@{}c@{\hspace{2mm}}c@{}}
 \begin{tikzpicture}[scale=0.66]\exN{3}\vilab{2.85}\end{tikzpicture} &
-\begin{tikzpicture}[scale=0.66]\exComb{1}\end{tikzpicture}\\[-2pt]
-{\scriptsize the circuit} & {\scriptsize step 1}\\[4pt]
-\begin{tikzpicture}[scale=0.66]\exComb{2}\end{tikzpicture} &
-\begin{tikzpicture}[scale=0.66]\exStep{3}\end{tikzpicture}\\[-2pt]
-{\scriptsize step 2} & {\scriptsize the answer as a circuit}
+\begin{tikzpicture}[scale=0.66]\exLeft{0}\vilab{2.85}\end{tikzpicture}\\[-2pt]
+{\scriptsize the circuit} & {\scriptsize the part left of $a$--$b$}\\[4pt]
+\begin{tikzpicture}[scale=0.66]\exLeft{1}\vilab{2.85}\end{tikzpicture} &
+\begin{tikzpicture}[scale=0.66]\exStep{3}\vilab{3.2}\end{tikzpicture}\\[-2pt]
+{\scriptsize the same law $\Vcol{v} = 9 - 1.5\Icol{i}$} & {\scriptsize any load}
 \end{tabular}
 \end{minipage}%
 \hfill
 \begin{minipage}[c]{0.38\linewidth}
 \raggedright
 The load $R_L$ can be any resistive element. Find $\Vcol{v}$ and $\Icol{i}$.\par\medskip
-\textbf{1.} $6\ohm \parallel R_L$:\par\smallskip
-\hspace*{1em}$R_p = \dfrac{6R_L}{6 + R_L}$\par\medskip
-\textbf{2.} $2\ohm$ in series with $R_p$:\par\smallskip
-\hspace*{1em}$R_{eq} = 2 + R_p = \dfrac{12 + 8R_L}{6 + R_L}$\par\smallskip
-\hspace*{1em}$\Icol{i_0} = \dfrac{12}{R_{eq}}$\par\medskip
-\textbf{3.} Back to the circuit; $2\ohm$ carries $\Icol{i_0}$ (KVL):\par\smallskip
-\hspace*{1em}$\Vcol{v} = 12 - 2\Icol{i_0} = \dfrac{72R_L}{12 + 8R_L}$, \ $\Icol{i} = \dfrac{\Vcol{v}}{R_L}$
+Leave $R_L$ aside and look only at the part left of $a$--$b$. The $2\ohm$ has $12 - \Vcol{v}$
+across it, the $6\ohm$ has $\Vcol{v}$. KCL at $a$:
+\[\frac{12 - \Vcol{v}}{2} = \frac{\Vcol{v}}{6} + \Icol{i}
+  \quad\Rightarrow\quad \Vcol{v} = 9 - 1.5\,\Icol{i}.\]
+A $9\V$ source in series with $1.5\ohm$ obeys the same law (KVL), so $R_L$ cannot tell the two
+apart.
 \end{minipage}\par\medskip
-\textbf{Read the answer as a circuit.}
-$\Icol{i} = \dfrac{72}{12 + 8R_L} = \dfrac{9}{1.5 + R_L}$. The denominator is a constant,
-$1.5\ohm$, plus $R_L$: a $9\V$ source driving $1.5\ohm$ and $R_L$ in series gives the same
-$\Icol{i}$ (and $\Vcol{v} = R_L\Icol{i}$) for every $R_L$. So the part left of $a$--$b$ may be
-replaced by $9\V$ in series with $1.5\ohm$. For $R_L = 3\ohm$: $\Icol{i} = 2\A$,
-$\Vcol{v} = 6\V$.
+\textbf{Any load.} With $\Vcol{v} = R_L\Icol{i}$: $\Icol{i} = 9/(1.5 + R_L)$. For
+$R_L = 3\ohm$: $\Icol{i} = 2\A$, $\Vcol{v} = 6\V$.
 \end{examplebox}
 
 \textbf{What did we use?} The part left of $a$--$b$ became one source and one resistor, and
@@ -702,7 +697,7 @@ Only the part left of $a$--$b$ is simplified; $R_L$ stays.\par\smallskip
 \textbf{2.} Parallel: $2\ohm \parallel 6\ohm = 1.5\ohm$.\par\smallskip
 \textbf{3.} Source transformation: $6\A$ with $1.5\ohm$ becomes $9\V$ with $1.5\ohm$
 ($9 = 1.5 \times 6$).\par\smallskip
-The result is the same, and $R_L$ never enters the algebra. Inside, the values differ: for
+The result is the same $9\V$ and $1.5\ohm$. Inside, the values differ: for
 $R_L = 3\ohm$ the $12\V$ source carries $3\A$, the $9\V$ source $2\A$.
 \end{minipage}
 \end{examplebox}

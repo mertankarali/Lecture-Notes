@@ -227,28 +227,20 @@
   \draw (4.0,2) to[R, l=$R_L$] (4.0,0);
   \draw[fill=white] (3.2,2) circle (1.8pt) node[above=1pt, font=\small] {$a$};
   \draw[fill=white] (3.2,0) circle (1.8pt) node[below=1pt, font=\small] {$b$};}
-%  The first example, resistors combined (the load R_L is absorbed):
-%  #1 = 1: 12 V, 2 ohm, R_p = 6 || R_L;  2: 12 V, R_eq = 2 + R_p, source current i_0
-\newcommand{\exComb}[1]{%
-  \draw (0,0) to[american voltage source, invert, l=$12\V$] (0,2);
-  \ifcase#1\or
-    \draw (0,2) to[R, l=$2\ohm$] (2.0,2) -- (3.6,2);
-    \draw (3.6,2) to[R, l=$R_p$] (3.6,0) -- (0,0);
-    \node[pol] at (3.0,1.6) {$+$}; \node[pol] at (3.0,0.4) {$-$};
-    \node[font=\small, text=cvolt] at (3.0,1.0) {$v$};
+%  The part left of a-b alone (#1 = 0: 12 V, 2 ohm, 6 ohm;  1: 9 V with 1.5 ohm)
+\newcommand{\exLeft}[1]{%
+  \draw[dashed, metugray, rounded corners=3pt] (-0.95,-0.4) rectangle (2.55,2.95);
+  \ifcase#1
+    \draw (0,0) to[american voltage source, invert, l=$12\V$] (0,2);
+    \draw (0,2) to[R, l=$2\ohm$] (2.0,2) -- (2.85,2);
+    \draw (2.0,2) to[R, l_=$6\ohm$] (2.0,0);
   \or
-    \draw (0,2) -- (3.6,2) to[R, l=$R_{eq}$] (3.6,0) -- (0,0);
-    \draw[iar] (1.4,2.25) -- (2.1,2.25);
-    \node[font=\small, text=ccur] at (1.75,2.58) {$i_0$};
-  \fi}
-%  A source #1 with a series resistor #2 driving the load R_L (a, b terminals)
-\newcommand{\exLoop}[2]{%
-  \draw (0,0) to[american voltage source, invert, l=#1] (0,2);
-  \draw (0,2) to[R, l=#2] (2.2,2) -- (4.0,2); \draw (0,0) -- (4.0,0);
-  \draw[dashed, metugray, rounded corners=3pt] (-0.95,-0.4) rectangle (2.9,2.95);
-  \draw (4.0,2) to[R, l=$R_L$] (4.0,0);
-  \draw[fill=white] (3.2,2) circle (1.8pt) node[above=1pt, font=\small] {$a$};
-  \draw[fill=white] (3.2,0) circle (1.8pt) node[below=1pt, font=\small] {$b$};}
+    \draw (0,0) to[american voltage source, invert, l=$9\V$] (0,2);
+    \draw (0,2) to[R, l=$1.5\ohm$] (2.0,2) -- (2.85,2);
+  \fi
+  \draw (0,0) -- (2.85,0);
+  \draw[fill=white] (2.85,2) circle (1.8pt) node[above=1pt, font=\small] {$a$};
+  \draw[fill=white] (2.85,0) circle (1.8pt) node[below=1pt, font=\small] {$b$};}
 %  Port voltage v and current i labels at terminals x = #1 (load to the right)
 \newcommand{\vilab}[1]{%
   \node[pol] at (#1,1.6) {$+$}; \node[pol] at (#1,0.4) {$-$};
@@ -558,54 +550,46 @@
 \roadmapframe{2}
 
 %--------------------------------------------------------------
-\begin{frame}{A first example: combine the resistors}
+\begin{frame}{A first example: what does $R_L$ see?}
   \begin{columns}[c,onlytextwidth]
-    \begin{column}{0.46\textwidth}
+    \begin{column}{0.44\textwidth}
       \centering
       \begin{tikzpicture}[scale=1.0]
         \only<1>{\exN{3}\vilab{2.85}}%
-        \only<2>{\exComb{1}}%
-        \only<3->{\exComb{2}}%
+        \only<2->{\exLeft{0}\vilab{2.85}}%
       \end{tikzpicture}
     \end{column}
-    \begin{column}{0.52\textwidth}
+    \begin{column}{0.54\textwidth}
       $R_L$ (the load) can be \alert{any} resistive element. Find $\Vcol{v}$ and $\Icol{i}$.\\[10pt]
-      \onslide<2->{\textbf{Step 1.} $6\ohm \parallel R_L$:\quad
-        $R_p = \dfrac{6R_L}{6 + R_L}$\\[8pt]}
-      \onslide<3->{\textbf{Step 2.} $2\ohm$ in series with $R_p$:\\[2pt]
-        $R_{eq} = 2 + R_p = \dfrac{12 + 8R_L}{6 + R_L}$\\[6pt]
-        $\Icol{i_0} = \dfrac{12}{R_{eq}} = \dfrac{12(6 + R_L)}{12 + 8R_L}$}
+      \onslide<2->{Leave $R_L$ aside: look only at the part left of $a$--$b$.\\[10pt]}
+      \onslide<3->{The $2\ohm$ has $12 - \Vcol{v}$ across it, the $6\ohm$ has $\Vcol{v}$.\\[10pt]}
+      \onslide<4->{KCL at $a$: \quad $\dfrac{12 - \Vcol{v}}{2} = \dfrac{\Vcol{v}}{6} + \Icol{i}$\\[12pt]}
+      \onslide<5->{Solve for $\Vcol{v}$: \quad
+        \colorbox{metulight}{$\Vcol{v} = 9 - 1.5\,\Icol{i}$}}
     \end{column}
   \end{columns}
 \end{frame}
 
 %--------------------------------------------------------------
-\begin{frame}{Split into $R_L$ and the rest}
-  \centering
-  \begin{tikzpicture}[arr/.style={-{Stealth[length=2.5mm]}, thick, metugray}]
-    \path (-1.4,-4.3) rectangle (10.4,1.95); % fixed size for all overlays
-    % row 1: 12 V and R_eq; the current in R_L
-    \begin{scope}[scale=0.62]\exComb{2}\end{scope}
-    \node[font=\small, anchor=north] at (1.1,-0.35) {$\Icol{i_0} = \dfrac{12(6 + R_L)}{12 + 8R_L}$};
-    \onslide<2->{%
-    \node[font=\small, anchor=west, align=left] at (4.1,0.75)
-      {$R_{eq}$ still holds $6\ohm \parallel R_L$; they share $\Icol{i_0}$:\\[6pt]
-       $\Icol{i} = \dfrac{6}{6 + R_L}\,\Icol{i_0} = \dfrac{72}{12 + 8R_L}$};}
-    % row 2: a source and a resistor in series with R_L
-    \onslide<3->{%
-    \draw[metugray!40] (-1.2,-1.35) -- (10.2,-1.35);
-    \begin{scope}[shift={(0,-3.55 cm)}, scale=0.62]
-      \only<3>{\exLoop{$V$}{$R$}}\only<4->{\exLoop{$9\V$}{$1.5\ohm$}}\vilab{3.2}\end{scope}
-    \node[font=\small, anchor=west, align=left] at (4.1,-2.3)
-      {Wanted: $V$ and $R$ with $\dfrac{V}{\Icol{i}} = R + R_L$ for every $R_L$.\\[6pt]
-       $\dfrac{V}{\Icol{i}} = \dfrac{12V}{72} + \dfrac{8V}{72}\,R_L$\rule[-12pt]{0pt}{1pt}};}
-    \onslide<4->{%
-    \node[font=\small, anchor=west, align=left] at (4.1,-3.85)
-      {$\dfrac{8V}{72} = 1$: \ $V = 9\V$, \ $R = \dfrac{12 \times 9}{72} = \alert{1.5\ohm}$};}
+\begin{frame}{Read the result as a circuit}
+  \begin{center}\colorbox{metulight}{$\Vcol{v} = 9 - 1.5\,\Icol{i}$}\end{center}
+  \onslide<2->{%
+  \begin{center}
+  \begin{tikzpicture}[scale=0.85, baseline=(c.base)]
+    \exLeft{0}\vilab{2.85} \coordinate (c) at (0,1);
   \end{tikzpicture}
-  \par\smallskip
-  \onslide<5->{\small $9\V$ with $1.5\ohm$: the same $\Icol{i}$ and $\Vcol{v}$ for \alert{every} $R_L$; \
-    $R_L = 3\ohm$ gives $\Icol{i} = 2\A$, $\Vcol{v} = 6\V$.}
+  \qquad $\equiv$ \qquad
+  \begin{tikzpicture}[scale=0.85, baseline=(c.base)]
+    \exLeft{1}\vilab{2.85} \coordinate (c) at (0,1);
+  \end{tikzpicture}
+  \end{center}
+  \begin{center}The right one obeys $\Vcol{v} = 9 - 1.5\,\Icol{i}$ too (KVL): the \alert{same law}.\end{center}}
+  \vfill
+  \onslide<3->{%
+  \begin{center}
+  Any load: \ $\Vcol{v} = R_L\Icol{i}$, \ so \ $\Icol{i} = \dfrac{9}{1.5 + R_L}$.
+  \quad For $R_L = 3\ohm$: $\Icol{i} = 2\A$, $\Vcol{v} = 6\V$.
+  \end{center}}
 \end{frame}
 
 %--------------------------------------------------------------
@@ -974,7 +958,7 @@
       \only<3->{\textbf{Step 2.} Parallel: $2\ohm \parallel 6\ohm = 1.5\ohm$\\[6pt]}%
       \only<4->{\textbf{Step 3.} Source transformation:\\
         $6\A$ with $1.5\ohm$ $\to$ $9\V$ with $1.5\ohm$ \ ($9 = 1.5 \times 6$)\\[6pt]}%
-      \only<5->{Same result, and $R_L$ never enters the algebra.\\[6pt]}%
+      \only<5->{Same $9\V$ and $1.5\ohm$, now by transforming the circuit.\\[6pt]}%
       \only<6->{\alert{Careful:} inside, the values differ; for $R_L = 3\ohm$ the $12\V$
         source carries $3\A$, the $9\V$ source $2\A$.}
     \end{column}
