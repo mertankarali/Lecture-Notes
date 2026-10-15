@@ -456,7 +456,15 @@ into $N_2$ at $a$.
 Replace $N_2$ by an independent voltage source $\Vcol{v_s(t)} = \Vcol{v(t)}$, or by an
 independent current source $\Icol{i_s(t)} = \Icol{i(t)}$. No branch voltage or branch current
 inside $N_1$ changes. An observer inside $N_1$ cannot tell (I), (II) and (III) apart.
+Condition: each circuit has a unique solution.
 \end{ideabox}
+
+\textbf{Unique solution.} A circuit has a unique solution if exactly one set of branch voltages
+and branch currents satisfies all its KCL, KVL and element equations. A $5\V$ source with a
+$1\ohm$ resistor has one ($\Icol{i} = 5\A$). Two $5\V$ sources in parallel have many: any
+current circulates. A $5\V$ and a $6\V$ source in parallel have none: KVL fails. In an LTI
+resistive circuit there are $2b$ equations for $2b$ unknowns, and the solution is unique when
+the coefficient matrix is invertible.
 
 \subsection*{(I) and (II): replacing $N_2$ by a voltage source}
 

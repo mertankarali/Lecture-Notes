@@ -5,7 +5,7 @@ Lecture notes and slides for the tenth lecture of EE201 (Section 2, Fall 2026/27
 | File | What it is |
 |---|---|
 | `EE201_Lecture_10.tex` | Handout / lecture notes (article, 6 pages). Self-contained: definitions, six worked examples, a summary. |
-| `EE201_Lecture_10_slides.tex` | Beamer deck (34 slides, 107 PDF pages) for the lecture itself — visual, low text. |
+| `EE201_Lecture_10_slides.tex` | Beamer deck (35 slides, 110 PDF pages) for the lecture itself — visual, low text. |
 | `build.sh` | Compiles both, removes auxiliary files, opens the PDFs. |
 
 ## Compiling
@@ -39,7 +39,8 @@ Following pp. 21–23 of Prof. Emre Tuna's notes and his recorded Lecture 10 on
    i = 9/(1.5 + R_L) for any load; three questions it raises point to the substitution theorem,
    equivalent one-ports, and the series/parallel and source rules
 3. **Substitution theorem** (07:32) — N₂ replaced by a voltage source v_s = v or a current
-   source i_s = i, nothing changes inside N₁ (configurations I, II, III). Then one case at a
+   source i_s = i, nothing changes inside N₁ (configurations I, II, III), if each circuit has a
+   unique solution (defined, with 5 V + 1 Ω: one; 5 V ∥ 5 V: many; 5 V ∥ 6 V: none). Then one case at a
    time, example first: (I) and (II) — Example 10.3, the first example with R_L = 3 Ω replaced
    by a 6 V source, KCL at a gives i = 2 A again; why it works, assuming unique solutions: the
    equations in matrix form, the N₁ row is the same and the source row is v = v*, so the
@@ -67,5 +68,5 @@ six main parts (done parts greyed with a check mark, the current one highlighted
 
 The definitions, the substitution theorem, the examples and the source transformation build
 up step by step with beamer overlays; questions are shown first and the answers on the next
-page. Each step is an ordinary extra PDF page; that is why the deck has 34 slides but 107
+page. Each step is an ordinary extra PDF page; that is why the deck has 35 slides but 110
 pages.

@@ -649,9 +649,37 @@
   \only<4->{%
   \begin{block}{Substitution theorem}
     No branch voltage or branch current inside $N_1$ changes. An observer inside $N_1$
-    \alert{cannot tell} (I), (II) and (III) apart.
+    \alert{cannot tell} (I), (II) and (III) apart.\\[2pt]
+    Condition: each circuit has a \alert{unique solution}.
   \end{block}}
   \vfill
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{A unique solution}
+  \begin{block}{Definition}
+    A circuit has a \alert{unique solution} if exactly one set of branch voltages and branch
+    currents satisfies all its KCL, KVL and element equations.
+  \end{block}
+  \vfill
+  \begin{center}
+  \begin{tabular}{@{}c@{\hspace{8mm}}c@{\hspace{8mm}}c@{}}
+  \begin{tikzpicture}[scale=0.7]\draw (0,0) to[american voltage source, invert, l=$5\V$] (0,1.8);
+      \draw (0,1.8) -- (2.2,1.8); \draw (0,0) -- (2.2,0);
+      \draw (2.2,1.8) to[R, l=$1\ohm$] (2.2,0);\end{tikzpicture} & \begin{tikzpicture}[scale=0.7]\draw (0,0) to[american voltage source, invert, l=$5\V$] (0,1.8);
+      \draw (0,1.8) -- (2.2,1.8); \draw (0,0) -- (2.2,0);
+      \draw (2.2,0) to[american voltage source, invert, l_=$5\V$] (2.2,1.8);\end{tikzpicture} & \begin{tikzpicture}[scale=0.7]\draw (0,0) to[american voltage source, invert, l=$5\V$] (0,1.8);
+      \draw (0,1.8) -- (2.2,1.8); \draw (0,0) -- (2.2,0);
+      \draw (2.2,0) to[american voltage source, invert, l_=$6\V$] (2.2,1.8);\end{tikzpicture}\\[2pt]
+  (a) & (b) & (c)\\[2pt]
+  \onslide<2->{\small\yes\ unique: $\Icol{i} = 5\A$} &
+  \onslide<2->{\small\no\ many: any current} &
+  \onslide<2->{\small\no\ none: KVL fails}
+  \end{tabular}
+  \end{center}
+  \vfill
+  \onslide<3->{\begin{center}LTI resistive: $2b$ equations for $2b$ unknowns, unique when the
+    coefficient matrix is invertible.\end{center}}
 \end{frame}
 
 %--------------------------------------------------------------
@@ -696,9 +724,9 @@
 
 %--------------------------------------------------------------
 \begin{frame}{(I) and (II): why it works}
-  \small
-  \textbf{Assume} (I) and (II) each have a \alert{unique} solution.\\
-  $x_1$, $x_2$: the branch values inside $N_1$, $N_2$; the two parts share only $\Vcol{v}$ and $\Icol{i}$.
+  \vfill
+  \textbf{Assume} (I) and (II) each have a \alert{unique solution}.\\[2pt]
+  {\small $x_1$, $x_2$: branch values inside $N_1$, $N_2$. The parts share only $\Vcol{v}$ and $\Icol{i}$.}
   \setlength{\abovedisplayskip}{3pt}\setlength{\belowdisplayskip}{2pt}
   \begin{columns}[t,onlytextwidth]
     \begin{column}{0.5\textwidth}
@@ -716,28 +744,13 @@
       \end{align*}}
     \end{column}
   \end{columns}
-  \begin{itemize}\itemsep2pt
+  \begin{itemize}\itemsep5pt
     \item<3-> Put $x_1^*$, $\Vcol{v^*}$, $\Icol{i^*}$ into (II): both rows hold. \yes
     \item<4-> One solution, so this is it: $x_1 = x_1^*$, $\Icol{i} = \Icol{i^*}$.
     \item<5-> $N_2$ appears only in the replaced row: it can be \alert{anything}.
+    \item<6-> Uniqueness was used in the second step: otherwise $\Icol{i}$ could differ from $\Icol{i^*}$.
   \end{itemize}
-  \onslide<6->{%
-  \begin{block}{Why assume a unique solution?}
-    \begin{columns}[c,onlytextwidth]
-      \begin{column}{0.3\textwidth}\centering
-        \begin{tikzpicture}[scale=0.6]
-          \draw (0,0) to[american voltage source, invert, l=$5\V$] (0,1.8);
-          \draw (0,1.8) -- (2.2,1.8); \draw (0,0) -- (2.2,0);
-          \draw (2.2,0) to[american voltage source, invert, l_=$5\V$] (2.2,1.8);
-          \draw[iar] (0.75,2.05) -- (1.45,2.05);
-          \node[font=\scriptsize, text=ccur] at (1.1,2.4) {$\Icol{i} = {?}$};
-        \end{tikzpicture}
-      \end{column}
-      \begin{column}{0.68\textwidth}\small
-        $N_1$ a $5\V$ source: (II) has two $5\V$ sources in parallel.\\ KVL holds for \alert{every} $\Icol{i}$: many solutions.
-      \end{column}
-    \end{columns}
-  \end{block}}
+  \vfill
 \end{frame}
 
 %--------------------------------------------------------------
@@ -772,9 +785,9 @@
 
 %--------------------------------------------------------------
 \begin{frame}{(I) and (III): why it works}
-  \small
-  \textbf{Assume} (I) and (III) each have a \alert{unique} solution.\\
-  $x_1$, $x_2$: the branch values inside $N_1$, $N_2$; the two parts share only $\Vcol{v}$ and $\Icol{i}$.
+  \vfill
+  \textbf{Assume} (I) and (III) each have a \alert{unique solution}.\\[2pt]
+  {\small $x_1$, $x_2$: branch values inside $N_1$, $N_2$. The parts share only $\Vcol{v}$ and $\Icol{i}$.}
   \setlength{\abovedisplayskip}{3pt}\setlength{\belowdisplayskip}{2pt}
   \begin{columns}[t,onlytextwidth]
     \begin{column}{0.5\textwidth}
@@ -792,27 +805,13 @@
       \end{align*}}
     \end{column}
   \end{columns}
-  \begin{itemize}\itemsep2pt
+  \begin{itemize}\itemsep5pt
     \item<3-> Put $x_1^*$, $\Vcol{v^*}$, $\Icol{i^*}$ into (III): both rows hold. \yes
     \item<4-> One solution, so this is it: $x_1 = x_1^*$, $\Vcol{v} = \Vcol{v^*}$.
     \item<5-> $N_2$ appears only in the replaced row: it can be \alert{anything}.
+    \item<6-> Uniqueness was used in the second step: otherwise $\Vcol{v}$ could differ from $\Vcol{v^*}$.
   \end{itemize}
-  \onslide<6->{%
-  \begin{block}{Why assume a unique solution?}
-    \begin{columns}[c,onlytextwidth]
-      \begin{column}{0.3\textwidth}\centering
-        \begin{tikzpicture}[scale=0.6]
-          \draw (0,0) to[american current source, l=$2\A$] (0,1.8);
-          \draw (0,1.8) -- (2.2,1.8); \draw (0,0) -- (2.2,0);
-          \draw (2.2,1.8) to[american current source, l=$2\A$] (2.2,0);
-          \node[font=\scriptsize, text=cvolt] at (1.1,0.9) {$\Vcol{v} = {?}$};
-        \end{tikzpicture}
-      \end{column}
-      \begin{column}{0.68\textwidth}\small
-        $N_1$ a $2\A$ source: (III) has two $2\A$ sources in series.\\ KCL holds for \alert{every} $\Vcol{v}$: many solutions.
-      \end{column}
-    \end{columns}
-  \end{block}}
+  \vfill
 \end{frame}
 
 %--------------------------------------------------------------
