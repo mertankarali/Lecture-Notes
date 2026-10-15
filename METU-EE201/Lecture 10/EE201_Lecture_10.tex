@@ -458,48 +458,60 @@ independent current source $\Icol{i_s(t)} = \Icol{i(t)}$. No branch voltage or b
 inside $N_1$ changes. An observer inside $N_1$ cannot tell (I), (II) and (III) apart.
 \end{ideabox}
 
-\textbf{Why it works.} $N_1$ meets the rest of the circuit only at $a$ and $b$, so, seen from
-inside $N_1$, the rest is nothing but a voltage $\Vcol{v}$ and a current $\Icol{i}$ at these
-terminals; in (I) they take the values $\Vcol{v^*}(t)$ and $\Icol{i^*}(t)$. Why does the
-current come out as $\Icol{i^*}$ again in (II)? Consider the problem P: \emph{$N_1$ with a
-known voltage $\Vcol{v^*}$ at $a$--$b$}. The solution of (I) solves P: it obeys the equations of
-$N_1$, and its port voltage is $\Vcol{v^*}$. The solution of (II) also solves P: the equations
-of $N_1$ are the same, and the source sets $\Vcol{v} = \Vcol{v^*}$. If P has only one solution,
-(I) and (II) agree everywhere in $N_1$, and the port current, part of that solution, is
-$\Icol{i^*}$ in both. In the first example: with $\Vcol{v} = 6\V$, KCL at $a$ gives
-$(12 - 6)/2 = 6/6 + \Icol{i}$, so $\Icol{i} = 2\A$. For (III), P fixes the current
-$\Icol{i^*}$ instead, and $\Vcol{v^*}$ follows the same way. $N_2$ itself never enters the
-argument: it can be anything, even nonlinear.
+\subsection*{(I) and (II): replacing $N_2$ by a voltage source}
 
-\textbf{One condition.} P must have a unique solution. If $N_1$ is a single $2\A$ current
-source and $N_2$ is replaced by a $2\A$ current source, KCL holds for every $\Vcol{v}$: the
-voltage is no longer fixed.
-
-\begin{examplebox}[Example 10.3 --- substitution in the first example]
-\begin{center}
-\begin{tabular}{@{}c@{\hspace{3mm}}c@{\hspace{3mm}}c@{}}
-\begin{tikzpicture}[scale=0.68]
-  \exN{0}
-\end{tikzpicture} &
-\begin{tikzpicture}[scale=0.68]
-  \exN{1}
-\end{tikzpicture} &
-\begin{tikzpicture}[scale=0.68]
-  \exN{2}
-\end{tikzpicture}\\[2pt]
-{\small (I) $N_2$: $R_L = 3\ohm$} & {\small (II) a $6\V$ source} & {\small (III) a $2\A$ source}
+\begin{examplebox}[Example 10.3 --- a voltage source in the first example]
+\begin{minipage}[c]{0.6\linewidth}
+\centering
+\begin{tabular}{@{}c@{\hspace{2mm}}c@{}}
+\begin{tikzpicture}[scale=0.62]\exN{0}\end{tikzpicture} &
+\begin{tikzpicture}[scale=0.62]\exN{1}\end{tikzpicture}\\[-2pt]
+{\scriptsize (I) $N_2$: $R_L = 3\ohm$} & {\scriptsize (II) a $6\V$ source}
 \end{tabular}
-\end{center}
-\textbf{(I)} From Example 10.2 with $R_L = 3\ohm$: $\Vcol{v} = 6\V$ and $\Icol{i} = 2\A$;
-inside $N_1$ the $2\ohm$ carries $(12 - 6)/2 = 3\A$ and the $6\ohm$ carries $1\A$.
-
-\textbf{(II)} The $6\V$ source fixes $\Vcol{v} = 6\V$. Again the $2\ohm$ carries $3\A$ and the
-$6\ohm$ carries $1\A$; the source takes the remaining $2\A$.
-
-\textbf{(III)} The $2\A$ source takes $2\A$ from node $a$. KCL at $a$:
-$(12 - \Vcol{v})/2 = \Vcol{v}/6 + 2$, so $\Vcol{v} = 6\V$, and the currents inside $N_1$ are
-$3\A$ and $1\A$ again.
+\end{minipage}\hfill
+\begin{minipage}[c]{0.38\linewidth}
+\raggedright
+\textbf{(I)} From Example 10.2 with $R_L = 3\ohm$: $\Vcol{v} = 6\V$, $\Icol{i} = 2\A$; the
+$2\ohm$ carries $3\A$, the $6\ohm$ carries $1\A$.\par\smallskip
+\textbf{(II)} KCL at $a$ with $\Vcol{v} = 6\V$: $(12 - 6)/2 = 6/6 + \Icol{i}$, so
+$\Icol{i} = 2\A$. Again $3\A$ and $1\A$: nothing changed. In (I) we solved the same equation,
+since there too $\Vcol{v} = 6\V$.
+\end{minipage}
 \end{examplebox}
+
+\textbf{Why it works.} In the example, $N_1$ needed to know only $\Vcol{v} = 6\V$. In general,
+call the port values of (I) $\Vcol{v^*}(t)$ and $\Icol{i^*}(t)$, and consider the problem P:
+\emph{$N_1$ with a known voltage $\Vcol{v^*}$ at $a$--$b$}. The solution of (I) solves P: it
+obeys the equations of $N_1$, and its port voltage is $\Vcol{v^*}$. The solution of (II) also
+solves P: the equations of $N_1$ are the same, and the source sets $\Vcol{v} = \Vcol{v^*}$. If P
+has only one solution, the two agree everywhere in $N_1$, also $\Icol{i} = \Icol{i^*}$. $N_2$
+never entered the argument: it can be anything, even nonlinear.
+
+\subsection*{(I) and (III): replacing $N_2$ by a current source}
+
+\begin{examplebox}[Example 10.4 --- a current source in the first example]
+\begin{minipage}[c]{0.3\linewidth}
+\centering
+\begin{tikzpicture}[scale=0.62]\exN{2}\end{tikzpicture}\\[-2pt]
+{\scriptsize (III) a $2\A$ source}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.68\linewidth}
+\raggedright
+KCL at $a$ with $\Icol{i} = 2\A$: $(12 - \Vcol{v})/2 = \Vcol{v}/6 + 2$, so $\Vcol{v} = 6\V$.
+Again the $2\ohm$ carries $3\A$ and the $6\ohm$ carries $1\A$: nothing changed. The same
+equation holds in (I), where $\Icol{i} = 2\A$.
+\end{minipage}
+\end{examplebox}
+
+\textbf{Why it works.} Now $N_1$ needs to know only $\Icol{i}$. Consider the problem Q:
+\emph{$N_1$ with a known current $\Icol{i^*}$ at $a$--$b$}. The solution of (I) solves Q, and
+so does the solution of (III), where the source sets $\Icol{i} = \Icol{i^*}$. If Q has only one
+solution, the two agree everywhere in $N_1$, also $\Vcol{v} = \Vcol{v^*}$.
+
+\textbf{One condition.} P or Q must have a unique solution. If $N_1$ is a single $2\A$ current
+source and $N_2$ is replaced by a $2\A$ current source, KCL holds for every $\Vcol{v}$: Q has
+many solutions, and the voltage is no longer fixed.
+
 
 %==============================================================
 \section{Ports and equivalent one-ports}
@@ -665,7 +677,7 @@ $\Icol{i} = -i_s$.
 \end{minipage}
 \end{center}
 
-\begin{examplebox}[Example 10.4 --- a source transformation]
+\begin{examplebox}[Example 10.5 --- a source transformation]
 \begin{minipage}[c]{0.58\linewidth}
 \centering
 \begin{tikzpicture}[scale=0.72, baseline=(c.base)]
@@ -683,7 +695,7 @@ short-circuit current $2\A$ (out of $a$).
 \end{minipage}
 \end{examplebox}
 
-\begin{examplebox}[Example 10.5 --- Example 10.2 again, by source transformations]
+\begin{examplebox}[Example 10.6 --- Example 10.2 again, by source transformations]
 \begin{minipage}[c]{0.6\linewidth}
 \centering
 \begin{tabular}{@{}c@{\hspace{2mm}}c@{}}

@@ -655,48 +655,47 @@
 \end{frame}
 
 %--------------------------------------------------------------
-\begin{frame}{Why does it work?}
-  \begin{center}
-  \begin{tikzpicture}[scale=0.9]
-    \draw[elem] (0,0) rectangle (1.7,2.0); \node at (0.85,1.0) {$N_1$};
-    \draw (1.7,1.6) -- (3.5,1.6); \draw (1.7,0.4) -- (3.5,0.4);
-    \draw[fill=white] (2.6,1.6) circle (1.8pt) node[above=1pt, font=\small] {$a$};
-    \draw[fill=white] (2.6,0.4) circle (1.8pt) node[below=1pt, font=\small] {$b$};
-    \draw[iar] (1.82,1.84) -- (2.38,1.84);
-    \node[font=\small, text=ccur] at (2.1,2.14) {$i^*$};
-    \node[pol] at (2.6,1.28) {$+$}; \node[pol] at (2.6,0.72) {$-$};
-    \node[font=\small, text=cvolt] at (2.95,1.0) {$v^*$};
-    \fill[metugray!25, rounded corners=4pt] (3.5,-0.25) rectangle (5.6,2.25);
-    \node[font=\Large\bfseries, text=metugray] at (4.55,1.0) {?};
-  \end{tikzpicture}
-  \end{center}
-  \vspace{-4pt}
-  \begin{center}
-    \only<1>{$N_1$ meets the rest of the circuit \alert{only} at $a$ and $b$.}%
-    \only<2->{From inside $N_1$, the rest is just a voltage $\Vcol{v^*}$ and a current
-      $\Icol{i^*}$.}
-  \end{center}
-  \onslide<3->{%
-  \begin{center}
-  \begin{tabular}{@{}c@{\hspace{3mm}}c@{\hspace{3mm}}c@{}}
-  \begin{tikzpicture}[scale=0.55]\pairbox{$N_1$}{$N_2$}\end{tikzpicture} &
-  \begin{tikzpicture}[scale=0.55]\subsbox{0}\end{tikzpicture} &
-  \begin{tikzpicture}[scale=0.55]\subsbox{1}\end{tikzpicture}\\[-2pt]
-  \scriptsize (I) gives $\Vcol{v^*}$, $\Icol{i^*}$ &
-  \scriptsize (II) $\Vcol{v}$ fixed at $\Vcol{v^*}$, $\Icol{i}$ free $\to \Icol{i^*}$ &
-  \scriptsize (III) $\Icol{i}$ fixed at $\Icol{i^*}$, $\Vcol{v}$ free $\to \Vcol{v^*}$
-  \end{tabular}
-  \end{center}}
-  \vspace{-2pt}
-  \begin{center}
-  \onslide<4->{Same equations in $N_1$, same $\Vcol{v^*}$, $\Icol{i^*}$ at $a$--$b$
-    $\Rightarrow$ the \alert{same solution} inside $N_1$.}\\[3pt]
-  \onslide<5->{$N_2$ itself never enters: it can be \alert{anything}, even nonlinear.}
-  \end{center}
+\begin{frame}{(I) and (II): an example}
+  \begin{columns}[c,onlytextwidth]
+    \begin{column}{0.46\textwidth}
+      \centering
+      \begin{tikzpicture}[scale=1.0]
+        \only<1>{\exN{0}
+          \draw[iar] (0.6,1.72) -- (1.3,1.72);
+          \node[font=\small, text=ccur] at (0.95,1.45) {$3\A$};
+          \draw[iar] (1.45,0.85) -- (1.45,0.3);
+          \node[font=\small, text=ccur, left] at (1.38,0.55) {$1\A$};
+          \node[pol] at (2.85,1.6) {$+$}; \node[pol] at (2.85,0.4) {$-$};
+          \node[font=\small, text=cvolt] at (2.85,1.0) {$6\V$};
+          \draw[iar] (3.05,2.25) -- (3.5,2.25);
+          \node[font=\small, text=ccur] at (3.3,2.55) {$2\A$};}%
+        \only<2->{\exN{1}
+          \node[pol] at (2.85,1.6) {$+$}; \node[pol] at (2.85,0.4) {$-$};
+          \node[font=\small, text=cvolt] at (2.85,1.0) {$6\V$};}%
+        \only<4->{%
+          \draw[iar] (0.6,1.72) -- (1.3,1.72);
+          \node[font=\small, text=ccur] at (0.95,1.45) {$3\A$};
+          \draw[iar] (1.45,0.85) -- (1.45,0.3);
+          \node[font=\small, text=ccur, left] at (1.38,0.55) {$1\A$};
+          \draw[iar] (3.05,2.25) -- (3.5,2.25);
+          \node[font=\small, text=ccur] at (3.3,2.55) {$2\A$};}%
+      \end{tikzpicture}
+    \end{column}
+    \begin{column}{0.52\textwidth}
+      \textbf{(I)} The first example with $R_L = 3\ohm$: $\Vcol{v} = 6\V$, $\Icol{i} = 2\A$;
+      $\Icol{3\A}$ in the $2\ohm$, $\Icol{1\A}$ in the $6\ohm$.\\[10pt]
+      \onslide<2->{\textbf{(II)} Replace $R_L$ by a $6\V$ source. What are the values now?\\[10pt]}
+      \onslide<3->{KCL at $a$ with $\Vcol{v} = 6\V$:\\[2pt]
+        $\dfrac{12 - 6}{2} = \dfrac{6}{6} + \Icol{i}$ \ $\Rightarrow$ \ $\Icol{i} = 2\A$\\[10pt]}
+      \onslide<4->{$\Icol{3\A}$ in the $2\ohm$, $\Icol{1\A}$ in the $6\ohm$: nothing
+        changed. \yes\\[10pt]}
+      \onslide<5->{In (I) we solved \alert{the same equation}: there too $\Vcol{v} = 6\V$.}
+    \end{column}
+  \end{columns}
 \end{frame}
 
 %--------------------------------------------------------------
-\begin{frame}{Why is the current $\Icol{i^*}$ again?}
+\begin{frame}{(I) and (II): why it works}
   \begin{columns}[c,onlytextwidth]
     \begin{column}{0.36\textwidth}
       \centering
@@ -713,24 +712,80 @@
       {\small Problem P: $N_1$ with a \alert{known} voltage $\Vcol{v^*}$ at $a$--$b$.}
     \end{column}
     \begin{column}{0.62\textwidth}
-      \begin{itemize}\itemsep7pt
-        \item<2-> The solution of (I) solves P: it obeys the equations of $N_1$, and its
-          port voltage is $\Vcol{v^*}$. \yes
-        \item<3-> The solution of (II) solves P: the same equations, and the source sets
+      \begin{itemize}\itemsep6pt
+        \item In the example, $N_1$ needed to know only $\Vcol{v} = 6\V$.
+        \item<2-> In general, call the port values of (I) $\Vcol{v^*}$ and $\Icol{i^*}$.
+        \item<3-> The solution of (I) solves P: it obeys the equations of $N_1$, with port
+          voltage $\Vcol{v^*}$. \yes
+        \item<4-> The solution of (II) solves P: the same equations, and the source sets
           $\Vcol{v} = \Vcol{v^*}$. \yes
-        \item<4-> P has only \alert{one} solution, so (I) and (II) agree everywhere in $N_1$.
-        \item<5-> The port current is part of that solution: $\Icol{i} = \Icol{i^*}$.
+        \item<5-> P has only \alert{one} solution, so the two agree everywhere in $N_1$,
+          also $\Icol{i} = \Icol{i^*}$.
+        \item<6-> $N_2$ never entered: it can be \alert{anything}, even nonlinear.
       \end{itemize}
     \end{column}
   \end{columns}
-  \vfill
-  \onslide<6->{%
-  \begin{block}{In the first example}
-    Fix $\Vcol{v} = 6\V$. KCL at $a$: \ $\dfrac{12 - 6}{2} = \dfrac{6}{6} + \Icol{i}$
-    \ $\Rightarrow$ \ $\Icol{i} = 2\A = \Icol{i^*}$.\\[2pt]
-    For a current source, P fixes $\Icol{i} = \Icol{i^*}$ instead, and $\Vcol{v} = \Vcol{v^*}$
-    follows the same way.
-  \end{block}}
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{(I) and (III): an example}
+  \begin{columns}[c,onlytextwidth]
+    \begin{column}{0.46\textwidth}
+      \centering
+      \begin{tikzpicture}[scale=1.0]
+        \only<1->{\exN{2}
+          \draw[iar] (3.05,2.25) -- (3.5,2.25);
+          \node[font=\small, text=ccur] at (3.3,2.55) {$2\A$};}%
+        \only<3->{%
+          \draw[iar] (0.6,1.72) -- (1.3,1.72);
+          \node[font=\small, text=ccur] at (0.95,1.45) {$3\A$};
+          \draw[iar] (1.45,0.85) -- (1.45,0.3);
+          \node[font=\small, text=ccur, left] at (1.38,0.55) {$1\A$};
+          \node[pol] at (2.85,1.6) {$+$}; \node[pol] at (2.85,0.4) {$-$};
+          \node[font=\small, text=cvolt] at (2.85,1.0) {$6\V$};}%
+      \end{tikzpicture}
+    \end{column}
+    \begin{column}{0.52\textwidth}
+      \textbf{(III)} Replace $R_L$ by a $2\A$ source. What are the values now?\\[10pt]
+      \onslide<2->{KCL at $a$ with $\Icol{i} = 2\A$:\\[2pt]
+        $\dfrac{12 - \Vcol{v}}{2} = \dfrac{\Vcol{v}}{6} + 2$ \ $\Rightarrow$ \
+        $\Vcol{v} = 6\V$\\[10pt]}
+      \onslide<3->{$\Icol{3\A}$ in the $2\ohm$, $\Icol{1\A}$ in the $6\ohm$: nothing
+        changed. \yes\\[10pt]}
+      \onslide<4->{In (I) this equation holds too: there $\Icol{i} = 2\A$.}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{(I) and (III): why it works}
+  \begin{columns}[c,onlytextwidth]
+    \begin{column}{0.36\textwidth}
+      \centering
+      \begin{tikzpicture}[scale=0.85]
+        \draw[elem] (0,0) rectangle (1.7,2.0); \node at (0.85,1.0) {$N_1$};
+        \draw (1.7,1.6) -- (3.4,1.6); \draw (1.7,0.4) -- (3.4,0.4);
+        \draw (3.4,1.6) to[american current source] (3.4,0.4);
+        \node[font=\small, text=ccur, right] at (3.75,1.0) {$\Icol{i^*}$};
+        \draw[fill=white] (2.85,1.6) circle (1.8pt) node[above=1pt, font=\small] {$a$};
+        \draw[fill=white] (2.85,0.4) circle (1.8pt) node[below=1pt, font=\small] {$b$};
+        \node[pol] at (2.85,1.28) {$+$}; \node[pol] at (2.85,0.72) {$-$};
+        \node[font=\small, text=cvolt] at (2.3,1.0) {$\Vcol{v} = {?}$};
+      \end{tikzpicture}\\[4pt]
+      {\small Problem Q: $N_1$ with a \alert{known} current $\Icol{i^*}$ at $a$--$b$.}
+    \end{column}
+    \begin{column}{0.62\textwidth}
+      \begin{itemize}\itemsep6pt
+        \item In the example, $N_1$ needed to know only $\Icol{i} = 2\A$.
+        \item<2-> The solution of (I) solves Q: it obeys the equations of $N_1$, with port
+          current $\Icol{i^*}$. \yes
+        \item<3-> The solution of (III) solves Q: the same equations, and the source sets
+          $\Icol{i} = \Icol{i^*}$. \yes
+        \item<4-> Q has only \alert{one} solution, so the two agree everywhere in $N_1$,
+          also $\Vcol{v} = \Vcol{v^*}$.
+      \end{itemize}
+    \end{column}
+  \end{columns}
 \end{frame}
 
 %--------------------------------------------------------------
@@ -751,43 +806,9 @@
     \begin{column}{0.53\textwidth}
       $N_1$: a $2\A$ source. \ $N_2$ replaced by a $2\A$ source.\\[10pt]
       \onslide<2->{KCL holds for \alert{every} $\Vcol{v}$: $\Vcol{v}$ is not fixed.\\[10pt]}
-      \onslide<3->{Here the new circuit has many solutions, so the argument breaks down.\\[10pt]}
+      \onslide<3->{Here problem Q has many solutions, so the argument breaks down.\\[10pt]}
       \onslide<4->{The substitution needs the new circuit to have a \alert{unique}
         solution.}
-    \end{column}
-  \end{columns}
-\end{frame}
-
-%--------------------------------------------------------------
-\begin{frame}{Example: substitution}
-  \begin{columns}[c,onlytextwidth]
-    \begin{column}{0.46\textwidth}
-      \centering
-      \begin{tikzpicture}[scale=1.0]
-        \only<1-2>{\exN{0}}%
-        \only<3>{\exN{1}}%
-        \only<4>{\exN{2}}%
-        \only<2->{%
-          \draw[iar] (0.6,1.72) -- (1.3,1.72);
-          \node[font=\small, text=ccur] at (0.95,1.45) {$3\A$};
-          \draw[iar] (1.45,0.85) -- (1.45,0.3);
-          \node[font=\small, text=ccur, left] at (1.38,0.55) {$1\A$};
-          \node[pol] at (2.85,1.6) {$+$}; \node[pol] at (2.85,0.4) {$-$};
-          \node[font=\small, text=cvolt] at (2.85,1.0) {$6\V$};
-          \draw[iar] (3.05,2.25) -- (3.5,2.25);
-          \node[font=\small, text=ccur] at (3.3,2.55) {$2\A$};}
-      \end{tikzpicture}
-    \end{column}
-    \begin{column}{0.52\textwidth}
-      \only<1>{The first example with $R_L = 3\ohm$, cut at $a$, $b$: $N_2$ is the load.}%
-      \only<2->{\textbf{(I)} From the first example ($R_L = 3\ohm$): $\Vcol{v} = 6\V$,
-        $\Icol{i} = 2\A$; inside $N_1$: $\Icol{3\A}$ in the $2\ohm$, $\Icol{1\A}$ in the
-        $6\ohm$.\\[10pt]}%
-      \only<3->{\textbf{(II)} A $6\V$ source fixes $\Vcol{v} = 6\V$: again $\Icol{3\A}$ and
-        $\Icol{1\A}$. \yes\\[10pt]}%
-      \only<4->{\textbf{(III)} A $2\A$ source: KCL at $a$,
-        $\tfrac{12 - \Vcol{v}}{2} = \tfrac{\Vcol{v}}{6} + 2$, so $\Vcol{v} = 6\V$:
-        again $\Icol{3\A}$ and $\Icol{1\A}$. \yes}
     \end{column}
   \end{columns}
 \end{frame}

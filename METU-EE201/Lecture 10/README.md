@@ -4,8 +4,8 @@ Lecture notes and slides for the tenth lecture of EE201 (Section 2, Fall 2026/27
 
 | File | What it is |
 |---|---|
-| `EE201_Lecture_10.tex` | Handout / lecture notes (article, 6 pages). Self-contained: definitions, five worked examples, a summary. |
-| `EE201_Lecture_10_slides.tex` | Beamer deck (34 slides, 105 PDF pages) for the lecture itself — visual, low text. |
+| `EE201_Lecture_10.tex` | Handout / lecture notes (article, 6 pages). Self-contained: definitions, six worked examples, a summary. |
+| `EE201_Lecture_10_slides.tex` | Beamer deck (35 slides, 109 PDF pages) for the lecture itself — visual, low text. |
 | `build.sh` | Compiles both, removes auxiliary files, opens the PDFs. |
 
 ## Compiling
@@ -39,10 +39,12 @@ Following pp. 21–23 of Prof. Emre Tuna's notes and his recorded Lecture 10 on
    i = 9/(1.5 + R_L) for any load; three questions it raises point to the substitution theorem,
    equivalent one-ports, and the series/parallel and source rules
 3. **Substitution theorem** (07:32) — N₂ replaced by a voltage source v_s = v or a current
-   source i_s = i, nothing changes inside N₁ (configurations I, II, III); why it works (N₁ meets the rest only at a–b, so from inside it
-   the rest is just v* and i*; a voltage source fixes v; problem P, N₁ with a known v*, has one
-   solution, which both (I) and (II) satisfy, so i = i*; a current source the reverse), and the unique-solution condition (two 2 A sources in series); Example 10.3: the first example cut at the 3 Ω load, checked in
-   all three configurations
+   source i_s = i, nothing changes inside N₁ (configurations I, II, III). Then one case at a
+   time, example first: (I) and (II) — Example 10.3, the first example with R_L = 3 Ω replaced
+   by a 6 V source, KCL at a gives i = 2 A again; why it works (problem P: N₁ with a known
+   voltage v*, solved by both (I) and (II), unique, so i = i*). (I) and (III) — Example 10.4, a
+   2 A source gives v = 6 V again; why it works (problem Q: N₁ with a known current i*). The
+   unique-solution condition (two 2 A sources in series)
 4. **Ports and equivalent one-ports** (15:37, 19:43) — port condition, one-port, i–v
    characteristic; equivalent one-ports give the same branch values in any N₀
 5. **Series and parallel connections** (24:03, 27:53) — resistors and voltage sources in
@@ -50,7 +52,7 @@ Following pp. 21–23 of Prof. Emre Tuna's notes and his recorded Lecture 10 on
    connections to avoid (parallel voltage sources, series current sources)
 6. **One source and one resistor** (32:15, 41:05) — v = R₁i + v_s and v = R₂i + R₂i_s,
    equivalent when R₁ = R₂ = R and v_s = R i_s (i–v line, open-circuit voltage, short-circuit
-   current); Example 10.4 (20 V, 10 Ω ≡ 2 A, 10 Ω); Example 10.5 reaches the same 9 V with
+   current); Example 10.5 (20 V, 10 Ω ≡ 2 A, 10 Ω); Example 10.6 reaches the same 9 V with
    1.5 Ω by source transformations, without R_L in the algebra
 7. **Solving LTI resistive circuits** (42:50) — transform the circuit (this lecture) or write
    its equations as it is: node voltage and mesh current analysis, later
@@ -64,5 +66,5 @@ six main parts (done parts greyed with a check mark, the current one highlighted
 
 The definitions, the substitution theorem, the examples and the source transformation build
 up step by step with beamer overlays; questions are shown first and the answers on the next
-page. Each step is an ordinary extra PDF page; that is why the deck has 34 slides but 105
+page. Each step is an ordinary extra PDF page; that is why the deck has 35 slides but 109
 pages.
