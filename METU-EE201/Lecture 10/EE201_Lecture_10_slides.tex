@@ -205,6 +205,16 @@
   \fi
   \draw[fill=white] (2.85,2) circle (1.8pt) node[above=1pt, font=\small] {$a$};
   \draw[fill=white] (2.85,0) circle (1.8pt) node[below=1pt, font=\small] {$b$};}
+%  The example circuit after 6 ohm || 3 ohm -> 2 ohm
+\newcommand{\exRed}{%
+  \draw (0,0) to[american voltage source, invert, l=$12\V$] (0,2);
+  \draw (0,2) to[R, l=$2\ohm$] (2.0,2) -- (3.0,2);
+  \draw (3.0,2) to[R, l=$2\ohm$] (3.0,0) -- (0,0);
+  \node[font=\scriptsize, text=metugray, right] at (3.45,0.45) {$= 6\ohm \parallel 3\ohm$};
+  \draw[fill=white] (2.4,2) circle (1.8pt) node[above=1pt, font=\small] {$a$};
+  \draw[fill=white] (2.4,0) circle (1.8pt) node[below=1pt, font=\small] {$b$};
+  \node[pol] at (2.4,1.6) {$+$}; \node[pol] at (2.4,0.4) {$-$};
+  \node[font=\small, text=cvolt] at (2.4,1.0) {$v$};}
 %  Small classification circuits: source #1, a 1 ohm resistor, element #2 (circuitikz options)
 \newcommand{\mini}[2]{%
   \draw (0,0) to[#1] (0,1.5) to[R, l=$1\ohm$] (1.9,1.5) to[#2] (1.9,0) -- (0,0);}
@@ -232,10 +242,11 @@
     \vfill
     \begin{enumerate}\itemsep9pt
       \rmitem{1}{LTI resistive circuits}{what the words mean, and what we gain}
-      \rmitem{2}{Substitution theorem}{replace a part of a circuit by a source}
-      \rmitem{3}{One-ports and equivalence}{the same $i$--$v$ characteristic at the port}
-      \rmitem{4}{Series and parallel}{combine resistors and sources}
-      \rmitem{5}{One source and one resistor}{exchange a voltage source and a current source}
+      \rmitem{2}{A first example}{simplify a circuit step by step}
+      \rmitem{3}{Substitution theorem}{replace a part of a circuit by a source}
+      \rmitem{4}{One-ports and equivalence}{the same $i$--$v$ characteristic at the port}
+      \rmitem{5}{Series and parallel}{combine resistors and sources}
+      \rmitem{6}{One source and one resistor}{exchange a voltage source and a current source}
     \end{enumerate}
     \vfill
   \end{frame}}
@@ -519,6 +530,65 @@
 \roadmapframe{2}
 
 %--------------------------------------------------------------
+\begin{frame}{A first example: simplify the circuit}
+  \begin{columns}[c,onlytextwidth]
+    \begin{column}{0.5\textwidth}
+      \centering
+      \begin{tikzpicture}[scale=1.0]
+        \only<1,4>{\exN{0}
+          \node[pol] at (2.85,1.6) {$+$}; \node[pol] at (2.85,0.4) {$-$};
+          \node[font=\small, text=cvolt] at (2.85,1.0) {$v$};
+          \draw[iar] (3.05,2.25) -- (3.5,2.25);
+          \node[font=\small, text=ccur] at (3.3,2.55) {$i$};}%
+        \only<2-3>{\exRed}%
+        \only<4>{%
+          \draw[iar] (0.6,1.72) -- (1.3,1.72);
+          \node[font=\small, text=ccur] at (0.95,1.45) {$3\A$};
+          \draw[iar] (1.45,0.85) -- (1.45,0.3);
+          \node[font=\small, text=ccur, left] at (1.38,0.55) {$1\A$};}
+      \end{tikzpicture}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \only<1>{Find $\Vcol{v}$ and $\Icol{i}$.}%
+      \only<2->{\textbf{Step 1.} $6\ohm$ and $3\ohm$ are in parallel: together they act as
+        one $2\ohm$.\\[8pt]}%
+      \only<3->{\textbf{Step 2.} The two $2\ohm$ share the $12\V$ equally:
+        $\Vcol{v} = 6\V$.\\[8pt]}%
+      \only<4->{\textbf{Step 3.} Back to the original circuit: $\Icol{i} = 6/3 = 2\A$;
+        the $2\ohm$ carries $3\A$, the $6\ohm$ carries $1\A$.}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{What did we just do?}
+  \vfill
+  \begin{itemize}\itemsep8pt
+    \item We replaced a part ($6\ohm \parallel 3\ohm$) by a \alert{simpler part} ($2\ohm$).
+    \item<2-> The rest of the circuit did not notice: $\Vcol{v}$ stayed the same.
+    \item<3-> Knowing $\Vcol{v}$, we went \alert{back} and found the values inside.
+  \end{itemize}
+  \vfill
+  \onslide<4->{%
+  \begin{center}\small
+  \renewcommand{\arraystretch}{1.35}
+  \begin{tabular}{@{}l l@{}}
+  \toprule
+  \textbf{question} & \textbf{answered by}\\
+  \midrule
+  May a part be replaced by a \alert{source}? & substitution theorem\\
+  When may a part be replaced by a \alert{simpler part}? & equivalent one-ports\\
+  Which simple replacements are there? & series, parallel, source transformation\\
+  \bottomrule
+  \end{tabular}
+  \end{center}}
+  \vfill
+\end{frame}
+
+%==============================================================
+\roadmapframe{3}
+
+%--------------------------------------------------------------
 \begin{frame}{The substitution theorem}
   \vfill
   \begin{center}
@@ -592,12 +662,9 @@
       \end{tikzpicture}
     \end{column}
     \begin{column}{0.52\textwidth}
-      \only<1>{$N_2$ is the $3\ohm$ resistor. Find $\Vcol{v}$, $\Icol{i}$ and the currents
-        inside $N_1$.}%
-      \only<2->{\textbf{(I)} $6\ohm \parallel 3\ohm = 2\ohm$; the two $2\ohm$ share
-        $12\V$:\\[3pt]
-        \quad $\Vcol{v} = 6\V$, \ $\Icol{i} = 6/3 = 2\A$\\[3pt]
-        Inside $N_1$: $\Icol{3\A}$ in the $2\ohm$, $\Icol{1\A}$ in the $6\ohm$.\\[10pt]}%
+      \only<1>{The first example, cut at $a$, $b$: $N_2$ is the $3\ohm$ resistor.}%
+      \only<2->{\textbf{(I)} From the first example: $\Vcol{v} = 6\V$, $\Icol{i} = 2\A$;
+        inside $N_1$: $\Icol{3\A}$ in the $2\ohm$, $\Icol{1\A}$ in the $6\ohm$.\\[10pt]}%
       \only<3->{\textbf{(II)} A $6\V$ source fixes $\Vcol{v} = 6\V$: again $\Icol{3\A}$ and
         $\Icol{1\A}$. \yes\\[10pt]}%
       \only<4->{\textbf{(III)} A $2\A$ source: KCL at $a$,
@@ -608,7 +675,7 @@
 \end{frame}
 
 %==============================================================
-\roadmapframe{3}
+\roadmapframe{4}
 
 %--------------------------------------------------------------
 \begin{frame}{Ports and one-ports}
@@ -666,7 +733,7 @@
 \end{frame}
 
 %==============================================================
-\roadmapframe{4}
+\roadmapframe{5}
 
 %--------------------------------------------------------------
 \begin{frame}{Series connection}
@@ -756,7 +823,7 @@
 \end{frame}
 
 %==============================================================
-\roadmapframe{5}
+\roadmapframe{6}
 
 %--------------------------------------------------------------
 \begin{frame}{One source and one resistor}
@@ -839,7 +906,7 @@
 \end{frame}
 
 %--------------------------------------------------------------
-\begin{frame}{Example: the substitution example, by transformations}
+\begin{frame}{Example: the first example, by transformations}
   \begin{columns}[c,onlytextwidth]
     \begin{column}{0.46\textwidth}
       \centering

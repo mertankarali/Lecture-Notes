@@ -233,6 +233,16 @@
   \fi
   \draw[fill=white] (2.85,2) circle (1.8pt) node[above=1pt, font=\small] {$a$};
   \draw[fill=white] (2.85,0) circle (1.8pt) node[below=1pt, font=\small] {$b$};}
+%  The example circuit after 6 ohm || 3 ohm -> 2 ohm
+\newcommand{\exRed}{%
+  \draw (0,0) to[american voltage source, invert, l=$12\V$] (0,2);
+  \draw (0,2) to[R, l=$2\ohm$] (2.0,2) -- (3.0,2);
+  \draw (3.0,2) to[R, l=$2\ohm$] (3.0,0) -- (0,0);
+  \node[font=\scriptsize, text=metugray, right] at (3.45,0.45) {$= 6\ohm \parallel 3\ohm$};
+  \draw[fill=white] (2.4,2) circle (1.8pt) node[above=1pt, font=\small] {$a$};
+  \draw[fill=white] (2.4,0) circle (1.8pt) node[below=1pt, font=\small] {$b$};
+  \node[pol] at (2.4,1.6) {$+$}; \node[pol] at (2.4,0.4) {$-$};
+  \node[font=\small, text=cvolt] at (2.4,1.0) {$v$};}
 %  Small classification circuits: source #1, a 1 ohm resistor, element #2 (circuitikz options)
 \newcommand{\mini}[2]{%
   \draw (0,0) to[#1] (0,1.5) to[R, l=$1\ohm$] (1.9,1.5) to[#2] (1.9,0) -- (0,0);}
@@ -348,6 +358,41 @@ sources.
 
 
 %==============================================================
+\section{A first example}
+
+\begin{examplebox}[Example 10.2 --- simplify the circuit]
+\begin{center}
+\begin{tikzpicture}[scale=0.7, baseline=(c.base)]
+  \exN{0} \coordinate (c) at (0,1);
+  \node[pol] at (2.85,1.6) {$+$}; \node[pol] at (2.85,0.4) {$-$};
+  \node[font=\small, text=cvolt] at (2.85,1.0) {$v$};
+  \draw[iar] (3.05,2.25) -- (3.5,2.25); \node[font=\small, text=ccur] at (3.3,2.55) {$i$};
+\end{tikzpicture}
+\quad $\Longrightarrow$ \quad
+\begin{tikzpicture}[scale=0.7, baseline=(c.base)]
+  \exRed \coordinate (c) at (0,1);
+\end{tikzpicture}
+\end{center}
+Find $\Vcol{v}$ and $\Icol{i}$.
+\textbf{Step 1.} The $6\ohm$ and the $3\ohm$ are in parallel; together they act as one
+$2\ohm$ (right).
+\textbf{Step 2.} The two $2\ohm$ share the $12\V$ equally, so $\Vcol{v} = 6\V$.
+\textbf{Step 3.} Back to the original circuit: $\Icol{i} = 6/3 = 2\A$ in the $3\ohm$, the
+$6\ohm$ carries $6/6 = 1\A$, and the $2\ohm$ carries $(12 - 6)/2 = 3\A$.
+\end{examplebox}
+
+\textbf{What did we use?} We replaced a part by a simpler part, and the rest of the circuit
+did not notice: $\Vcol{v}$ stayed the same. Then we went back and used $\Vcol{v}$ to find the
+values inside. Three questions make this precise:
+\begin{itemize}
+  \item May a part be replaced by a source? --- the \textbf{substitution theorem} (Section~3).
+  \item When may a part be replaced by a simpler part? --- \textbf{equivalent one-ports}
+        (Section~4).
+  \item Which simple replacements are there? --- \textbf{series, parallel}, \textbf{source
+        transformation} (Sections 5, 6).
+\end{itemize}
+
+%==============================================================
 \section{The substitution theorem}
 
 Split a circuit into two parts $N_1$ and $N_2$, joined at two terminals $a$ and $b$. Let
@@ -386,24 +431,23 @@ matter.
 current source, replacing $N_2$ by a current source puts two current sources in series: their
 currents are equal, but the voltage $\Vcol{v}$ is no longer fixed.
 
-\begin{examplebox}[Example 10.2 --- substitution in a small circuit]
+\begin{examplebox}[Example 10.3 --- substitution in the first example]
 \begin{center}
 \begin{tabular}{@{}c@{\hspace{3mm}}c@{\hspace{3mm}}c@{}}
-\begin{tikzpicture}[scale=0.74]
+\begin{tikzpicture}[scale=0.68]
   \exN{0}
 \end{tikzpicture} &
-\begin{tikzpicture}[scale=0.74]
+\begin{tikzpicture}[scale=0.68]
   \exN{1}
 \end{tikzpicture} &
-\begin{tikzpicture}[scale=0.74]
+\begin{tikzpicture}[scale=0.68]
   \exN{2}
 \end{tikzpicture}\\[2pt]
 {\small (I) $N_2$: the $3\ohm$ resistor} & {\small (II) a $6\V$ source} & {\small (III) a $2\A$ source}
 \end{tabular}
 \end{center}
-\textbf{(I)} The $6\ohm$ and $3\ohm$ are in parallel: $2\ohm$. The two $2\ohm$ share the
-$12\V$, so $\Vcol{v} = 6\V$, and $\Icol{i} = 6/3 = 2\A$ flows into $N_2$. Inside $N_1$: the
-$2\ohm$ carries $(12 - 6)/2 = 3\A$ and the $6\ohm$ carries $6/6 = 1\A$.
+\textbf{(I)} From Example 10.2: $\Vcol{v} = 6\V$ and $\Icol{i} = 2\A$; inside $N_1$ the
+$2\ohm$ carries $3\A$ and the $6\ohm$ carries $1\A$.
 
 \textbf{(II)} The $6\V$ source fixes $\Vcol{v} = 6\V$. Again the $2\ohm$ carries $3\A$ and the
 $6\ohm$ carries $1\A$; the source takes the remaining $2\A$.
@@ -412,9 +456,6 @@ $6\ohm$ carries $1\A$; the source takes the remaining $2\A$.
 $(12 - \Vcol{v})/2 = \Vcol{v}/6 + 2$, so $\Vcol{v} = 6\V$, and the currents inside $N_1$ are
 $3\A$ and $1\A$ again.
 \end{examplebox}
-
-The theorem lets us cut a circuit and study one part at a time. It is also the key step in
-later proofs, where a complicated part is replaced by a source.
 
 %==============================================================
 \section{Ports and equivalent one-ports}
@@ -541,10 +582,10 @@ In both, $\Icol{i}$ enters at $a$.
 
 \begin{center}
 \begin{tabular}{@{}c@{\hspace{14mm}}c@{}}
-\begin{tikzpicture}[scale=0.85]
+\begin{tikzpicture}[scale=0.75]
   \vsR{$v_s$}{$R_1$} \stport
 \end{tikzpicture} &
-\begin{tikzpicture}[scale=0.85]
+\begin{tikzpicture}[scale=0.75]
   \isR{$i_s$}{$R_2$} \stport
 \end{tikzpicture}\\[2pt]
 $\Vcol{v} = R_1\Icol{i} + v_s \qquad (1)$ &
@@ -569,7 +610,7 @@ $\Icol{i} = -i_s$.
 \hfill
 \begin{minipage}[c]{0.45\linewidth}
 \centering
-\begin{tikzpicture}[scale=0.85]
+\begin{tikzpicture}[scale=0.75]
   \draw[-{Stealth[length=2mm]}] (-2.6,0) -- (1.6,0) node[right] {$\Icol{i}$};
   \draw[-{Stealth[length=2mm]}] (0,-0.5) -- (0,2.4) node[above] {$\Vcol{v}$};
   \draw[metured, very thick] (-2.3,-0.3) -- (1.3,2.1);
@@ -580,21 +621,25 @@ $\Icol{i} = -i_s$.
 \end{minipage}
 \end{center}
 
-\begin{examplebox}[Example 10.3 --- a source transformation]
-\begin{center}
-\begin{tikzpicture}[scale=0.85, baseline=(c.base)]
+\begin{examplebox}[Example 10.4 --- a source transformation]
+\begin{minipage}[c]{0.58\linewidth}
+\centering
+\begin{tikzpicture}[scale=0.72, baseline=(c.base)]
   \vsR{$20\V$}{$10\ohm$} \coordinate (c) at (0,0.8);
 \end{tikzpicture}
-\quad $\equiv$ \quad
-\begin{tikzpicture}[scale=0.85, baseline=(c.base)]
+\ $\equiv$\
+\begin{tikzpicture}[scale=0.72, baseline=(c.base)]
   \isR{$2\A$}{$10\ohm$} \coordinate (c) at (0,0.8);
 \end{tikzpicture}
-\end{center}
+\end{minipage}%
+\hfill
+\begin{minipage}[c]{0.4\linewidth}
 $R = 10\ohm$ and $i_s = v_s/R = 20/10 = 2\A$. Both have open-circuit voltage $20\V$ and
 short-circuit current $2\A$ (out of $a$).
+\end{minipage}
 \end{examplebox}
 
-\begin{examplebox}[Example 10.4 --- Example 10.2 again, by transformations]
+\begin{examplebox}[Example 10.5 --- Example 10.2 again, by transformations]
 Replace the $12\V$ source and the $2\ohm$ by a $6\A$ source in parallel with $2\ohm$. Now
 $2\ohm$, $6\ohm$ and $3\ohm$ are in parallel: $G_{eq} = \tfrac12 + \tfrac16 + \tfrac13 =
 1\Sie$, so $R_{eq} = 1\ohm$, and
@@ -616,27 +661,21 @@ work for every LTI resistive circuit:
   \item \textbf{node voltage analysis} --- the $n - 1$ node voltages are the unknowns;
   \item \textbf{mesh current analysis} --- the $b - n + 1$ mesh currents are the unknowns.
 \end{enumerate}
-Both start from the matrices met earlier ($A$ and $M$); now the element equations are linear
-and can be written in matrix form too.
 
 %==============================================================
 \section*{Summary}
 \addcontentsline{toc}{section}{Summary}
 
 \begin{itemize}
-  \item A \textbf{resistive} element has an algebraic law with no memory (resistor, dependent
-        source, ideal transformer, \dots); a \textbf{dynamic} one has a derivative ($L$, $C$).
-        A circuit is linear, time-invariant and resistive if all its elements are. Independent sources
-        are external inputs; they are not part of the classification. All equations of an LTI
-        resistive circuit are linear and algebraic.
-  \item \textbf{Substitution:} a part $N_2$ may be replaced by a voltage source equal to its
-        port voltage, or a current source equal to its port current; nothing changes in the
-        rest (if the solution stays unique).
+  \item A \textbf{resistive} element has an algebraic law with no memory; a \textbf{dynamic}
+        one ($L$, $C$) has a derivative. In an LTI resistive circuit every element, apart from
+        the independent sources (inputs), is linear, time-invariant and resistive.
+  \item \textbf{Substitution:} a part may be replaced by a source equal to its port voltage
+        or current; nothing changes in the rest (if the solution stays unique).
   \item Two one-ports are \textbf{equivalent} if they have the same $i$--$v$ characteristic;
         the rest of the circuit cannot tell them apart.
   \item Series: $R_{eq} = \sum R_j$, $v_{s,eq} = \sum v_{sj}$. Parallel: $G_{eq} = \sum G_j$,
-        $i_{s,eq} = \sum i_{sj}$.
-  \item A voltage source $v_s$ with series $R$ is equivalent to a current source
+        $i_{s,eq} = \sum i_{sj}$. Source transformation: $v_s$ with series $R$ $\equiv$
         $i_s = v_s/R$ with parallel $R$.
 \end{itemize}
 
