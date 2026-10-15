@@ -696,35 +696,48 @@
 
 %--------------------------------------------------------------
 \begin{frame}{(I) and (II): why it works}
-  \begin{columns}[c,onlytextwidth]
-    \begin{column}{0.36\textwidth}
-      \centering
-      \begin{tikzpicture}[scale=0.85]
-        \draw[elem] (0,0) rectangle (1.7,2.0); \node at (0.85,1.0) {$N_1$};
-        \draw (1.7,1.6) -- (3.4,1.6); \draw (1.7,0.4) -- (3.4,0.4);
-        \draw (3.4,0.4) to[american voltage source, invert] (3.4,1.6);
-        \node[font=\small, text=cvolt, right] at (3.75,1.0) {$\Vcol{v^*}$};
-        \draw[fill=white] (2.85,1.6) circle (1.8pt) node[above=1pt, font=\small] {$a$};
-        \draw[fill=white] (2.85,0.4) circle (1.8pt) node[below=1pt, font=\small] {$b$};
-        \draw[iar] (1.85,1.84) -- (2.45,1.84);
-        \node[font=\small, text=ccur] at (2.1,2.2) {$\Icol{i} = {?}$};
-      \end{tikzpicture}\\[4pt]
-      {\small Problem P: $N_1$ with a \alert{known} voltage $\Vcol{v^*}$ at $a$--$b$.}
+  \small
+  \textbf{Assume} (I) and (II) each have a \alert{unique} solution.\\
+  $x_1$, $x_2$: the branch values inside $N_1$, $N_2$; the two parts share only $\Vcol{v}$ and $\Icol{i}$.
+  \setlength{\abovedisplayskip}{3pt}\setlength{\belowdisplayskip}{2pt}
+  \begin{columns}[t,onlytextwidth]
+    \begin{column}{0.5\textwidth}
+      \centering\textbf{(I)}, solution $x_1^*$, $\Vcol{v^*}$, $\Icol{i^*}$, $x_2^*$
+      \begin{align*}
+        \textcolor{cflux}{N_1:}\ & \textcolor{cflux}{M_1 x_1 + m_v\Vcol{v} + m_i\Icol{i} = s_1}\\
+        N_2:\ & n_v\Vcol{v} + n_i\Icol{i} + M_2 x_2 = s_2
+      \end{align*}
     \end{column}
-    \begin{column}{0.62\textwidth}
-      \begin{itemize}\itemsep6pt
-        \item In the example, $N_1$ needed to know only $\Vcol{v} = 6\V$.
-        \item<2-> In general, call the port values of (I) $\Vcol{v^*}$ and $\Icol{i^*}$.
-        \item<3-> The solution of (I) solves P: it obeys the equations of $N_1$, with port
-          voltage $\Vcol{v^*}$. \yes
-        \item<4-> The solution of (II) solves P: the same equations, and the source sets
-          $\Vcol{v} = \Vcol{v^*}$. \yes
-        \item<5-> P has only \alert{one} solution, so the two agree everywhere in $N_1$,
-          also $\Icol{i} = \Icol{i^*}$.
-        \item<6-> $N_2$ never entered: it can be \alert{anything}, even nonlinear.
-      \end{itemize}
+    \begin{column}{0.5\textwidth}
+      \centering\onslide<2->{\textbf{(II)}, the $N_1$ row is \alert{the same}
+      \begin{align*}
+        \textcolor{cflux}{N_1:}\ & \textcolor{cflux}{M_1 x_1 + m_v\Vcol{v} + m_i\Icol{i} = s_1}\\
+        \text{source:}\ & \Vcol{v} = \Vcol{v^*}
+      \end{align*}}
     \end{column}
   \end{columns}
+  \begin{itemize}\itemsep2pt
+    \item<3-> Put $x_1^*$, $\Vcol{v^*}$, $\Icol{i^*}$ into (II): both rows hold. \yes
+    \item<4-> One solution, so this is it: $x_1 = x_1^*$, $\Icol{i} = \Icol{i^*}$.
+    \item<5-> $N_2$ appears only in the replaced row: it can be \alert{anything}.
+  \end{itemize}
+  \onslide<6->{%
+  \begin{block}{Why assume a unique solution?}
+    \begin{columns}[c,onlytextwidth]
+      \begin{column}{0.3\textwidth}\centering
+        \begin{tikzpicture}[scale=0.6]
+          \draw (0,0) to[american voltage source, invert, l=$5\V$] (0,1.8);
+          \draw (0,1.8) -- (2.2,1.8); \draw (0,0) -- (2.2,0);
+          \draw (2.2,0) to[american voltage source, invert, l_=$5\V$] (2.2,1.8);
+          \draw[iar] (0.75,2.05) -- (1.45,2.05);
+          \node[font=\scriptsize, text=ccur] at (1.1,2.4) {$\Icol{i} = {?}$};
+        \end{tikzpicture}
+      \end{column}
+      \begin{column}{0.68\textwidth}\small
+        $N_1$ a $5\V$ source: (II) has two $5\V$ sources in parallel.\\ KVL holds for \alert{every} $\Icol{i}$: many solutions.
+      \end{column}
+    \end{columns}
+  \end{block}}
 \end{frame}
 
 %--------------------------------------------------------------
@@ -759,59 +772,51 @@
 
 %--------------------------------------------------------------
 \begin{frame}{(I) and (III): why it works}
-  \begin{columns}[c,onlytextwidth]
-    \begin{column}{0.36\textwidth}
-      \centering
-      \begin{tikzpicture}[scale=0.85]
-        \draw[elem] (0,0) rectangle (1.7,2.0); \node at (0.85,1.0) {$N_1$};
-        \draw (1.7,1.6) -- (3.4,1.6); \draw (1.7,0.4) -- (3.4,0.4);
-        \draw (3.4,1.6) to[american current source] (3.4,0.4);
-        \node[font=\small, text=ccur, right] at (3.75,1.0) {$\Icol{i^*}$};
-        \draw[fill=white] (2.85,1.6) circle (1.8pt) node[above=1pt, font=\small] {$a$};
-        \draw[fill=white] (2.85,0.4) circle (1.8pt) node[below=1pt, font=\small] {$b$};
-        \node[pol] at (2.85,1.28) {$+$}; \node[pol] at (2.85,0.72) {$-$};
-        \node[font=\small, text=cvolt] at (2.3,1.0) {$\Vcol{v} = {?}$};
-      \end{tikzpicture}\\[4pt]
-      {\small Problem Q: $N_1$ with a \alert{known} current $\Icol{i^*}$ at $a$--$b$.}
+  \small
+  \textbf{Assume} (I) and (III) each have a \alert{unique} solution.\\
+  $x_1$, $x_2$: the branch values inside $N_1$, $N_2$; the two parts share only $\Vcol{v}$ and $\Icol{i}$.
+  \setlength{\abovedisplayskip}{3pt}\setlength{\belowdisplayskip}{2pt}
+  \begin{columns}[t,onlytextwidth]
+    \begin{column}{0.5\textwidth}
+      \centering\textbf{(I)}, solution $x_1^*$, $\Vcol{v^*}$, $\Icol{i^*}$, $x_2^*$
+      \begin{align*}
+        \textcolor{cflux}{N_1:}\ & \textcolor{cflux}{M_1 x_1 + m_v\Vcol{v} + m_i\Icol{i} = s_1}\\
+        N_2:\ & n_v\Vcol{v} + n_i\Icol{i} + M_2 x_2 = s_2
+      \end{align*}
     \end{column}
-    \begin{column}{0.62\textwidth}
-      \begin{itemize}\itemsep6pt
-        \item In the example, $N_1$ needed to know only $\Icol{i} = 2\A$.
-        \item<2-> The solution of (I) solves Q: it obeys the equations of $N_1$, with port
-          current $\Icol{i^*}$. \yes
-        \item<3-> The solution of (III) solves Q: the same equations, and the source sets
-          $\Icol{i} = \Icol{i^*}$. \yes
-        \item<4-> Q has only \alert{one} solution, so the two agree everywhere in $N_1$,
-          also $\Vcol{v} = \Vcol{v^*}$.
-      \end{itemize}
+    \begin{column}{0.5\textwidth}
+      \centering\onslide<2->{\textbf{(III)}, the $N_1$ row is \alert{the same}
+      \begin{align*}
+        \textcolor{cflux}{N_1:}\ & \textcolor{cflux}{M_1 x_1 + m_v\Vcol{v} + m_i\Icol{i} = s_1}\\
+        \text{source:}\ & \Icol{i} = \Icol{i^*}
+      \end{align*}}
     \end{column}
   \end{columns}
+  \begin{itemize}\itemsep2pt
+    \item<3-> Put $x_1^*$, $\Vcol{v^*}$, $\Icol{i^*}$ into (III): both rows hold. \yes
+    \item<4-> One solution, so this is it: $x_1 = x_1^*$, $\Vcol{v} = \Vcol{v^*}$.
+    \item<5-> $N_2$ appears only in the replaced row: it can be \alert{anything}.
+  \end{itemize}
+  \onslide<6->{%
+  \begin{block}{Why assume a unique solution?}
+    \begin{columns}[c,onlytextwidth]
+      \begin{column}{0.3\textwidth}\centering
+        \begin{tikzpicture}[scale=0.6]
+          \draw (0,0) to[american current source, l=$2\A$] (0,1.8);
+          \draw (0,1.8) -- (2.2,1.8); \draw (0,0) -- (2.2,0);
+          \draw (2.2,1.8) to[american current source, l=$2\A$] (2.2,0);
+          \node[font=\scriptsize, text=cvolt] at (1.1,0.9) {$\Vcol{v} = {?}$};
+        \end{tikzpicture}
+      \end{column}
+      \begin{column}{0.68\textwidth}\small
+        $N_1$ a $2\A$ source: (III) has two $2\A$ sources in series.\\ KCL holds for \alert{every} $\Vcol{v}$: many solutions.
+      \end{column}
+    \end{columns}
+  \end{block}}
 \end{frame}
 
 %--------------------------------------------------------------
-\begin{frame}{One condition: a unique solution}
-  \begin{columns}[c,onlytextwidth]
-    \begin{column}{0.45\textwidth}
-      \centering
-      \begin{tikzpicture}[scale=1.0]
-        \draw (0,0) to[american current source, l=$2\A$] (0,1.8);
-        \draw (0,1.8) -- (2.4,1.8); \draw (0,0) -- (2.4,0);
-        \draw (2.4,1.8) to[american current source, l=$2\A$] (2.4,0);
-        \node[pol] at (1.2,1.45) {$+$}; \node[pol] at (1.2,0.35) {$-$};
-        \node[font=\small, text=cvolt] at (1.2,0.9) {$\Vcol{v} = {?}$};
-        \node[font=\scriptsize, text=metugray] at (0,-0.5) {$N_1$};
-        \node[font=\scriptsize, text=metugray] at (2.4,-0.5) {in place of $N_2$};
-      \end{tikzpicture}
-    \end{column}
-    \begin{column}{0.53\textwidth}
-      $N_1$: a $2\A$ source. \ $N_2$ replaced by a $2\A$ source.\\[10pt]
-      \onslide<2->{KCL holds for \alert{every} $\Vcol{v}$: $\Vcol{v}$ is not fixed.\\[10pt]}
-      \onslide<3->{Here problem Q has many solutions, so the argument breaks down.\\[10pt]}
-      \onslide<4->{The substitution needs the new circuit to have a \alert{unique}
-        solution.}
-    \end{column}
-  \end{columns}
-\end{frame}
+
 
 %==============================================================
 \roadmapframe{4}

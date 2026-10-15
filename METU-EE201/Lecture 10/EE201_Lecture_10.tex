@@ -479,13 +479,28 @@ since there too $\Vcol{v} = 6\V$.
 \end{minipage}
 \end{examplebox}
 
-\textbf{Why it works.} In the example, $N_1$ needed to know only $\Vcol{v} = 6\V$. In general,
-call the port values of (I) $\Vcol{v^*}(t)$ and $\Icol{i^*}(t)$, and consider the problem P:
-\emph{$N_1$ with a known voltage $\Vcol{v^*}$ at $a$--$b$}. The solution of (I) solves P: it
-obeys the equations of $N_1$, and its port voltage is $\Vcol{v^*}$. The solution of (II) also
-solves P: the equations of $N_1$ are the same, and the source sets $\Vcol{v} = \Vcol{v^*}$. If P
-has only one solution, the two agree everywhere in $N_1$, also $\Icol{i} = \Icol{i^*}$. $N_2$
-never entered the argument: it can be anything, even nonlinear.
+\textbf{Why it works.} Assume (I) and (II) each have a unique solution. Let $x_1$ and $x_2$
+collect the branch voltages and currents inside $N_1$ and $N_2$; the two parts share only
+$\Vcol{v}$ and $\Icol{i}$. Written in matrix form, the KCL, KVL and element equations are
+\[
+\text{(I)}\quad
+\begin{aligned}
+  &\textcolor{cflux}{M_1 x_1 + m_v\Vcol{v} + m_i\Icol{i} = s_1} && (N_1)\\
+  &n_v\Vcol{v} + n_i\Icol{i} + M_2 x_2 = s_2 && (N_2)
+\end{aligned}
+\qquad\qquad
+\text{(II)}\quad
+\begin{aligned}
+  &\textcolor{cflux}{M_1 x_1 + m_v\Vcol{v} + m_i\Icol{i} = s_1} && (N_1)\\
+  &\Vcol{v} = \Vcol{v^*} && (\text{source})
+\end{aligned}
+\]
+with $x_1^*$, $\Vcol{v^*}$, $\Icol{i^*}$, $x_2^*$ the solution of (I). The $N_1$ row is the same in
+both. Put $x_1^*$, $\Vcol{v^*}$, $\Icol{i^*}$ into (II): the $N_1$ row holds, as it did in (I),
+and so does the source row. Since (II) has one solution, this is it: $x_1 = x_1^*$ and
+$\Icol{i} = \Icol{i^*}$. $N_2$ appears only in the replaced row, so it can be anything.
+Uniqueness is needed in the last step: if $N_1$ is a single $5\V$ source, (II) puts two
+$5\V$ sources in parallel, and KVL holds for every $\Icol{i}$.
 
 \subsection*{(I) and (III): replacing $N_2$ by a current source}
 
@@ -503,15 +518,11 @@ equation holds in (I), where $\Icol{i} = 2\A$.
 \end{minipage}
 \end{examplebox}
 
-\textbf{Why it works.} Now $N_1$ needs to know only $\Icol{i}$. Consider the problem Q:
-\emph{$N_1$ with a known current $\Icol{i^*}$ at $a$--$b$}. The solution of (I) solves Q, and
-so does the solution of (III), where the source sets $\Icol{i} = \Icol{i^*}$. If Q has only one
-solution, the two agree everywhere in $N_1$, also $\Vcol{v} = \Vcol{v^*}$.
-
-\textbf{One condition.} P or Q must have a unique solution. If $N_1$ is a single $2\A$ current
-source and $N_2$ is replaced by a $2\A$ current source, KCL holds for every $\Vcol{v}$: Q has
-many solutions, and the voltage is no longer fixed.
-
+\textbf{Why it works.} The same argument: in (III) the $N_1$ row is unchanged and the
+source row is $\Icol{i} = \Icol{i^*}$. The solution of (I) satisfies both rows, so, if (III) has
+one solution, $x_1 = x_1^*$ and $\Vcol{v} = \Vcol{v^*}$. Uniqueness is needed again: if $N_1$ is a
+single $2\A$ source, (III) puts two $2\A$ sources in series, and KCL holds for every
+$\Vcol{v}$.
 
 %==============================================================
 \section{Ports and equivalent one-ports}

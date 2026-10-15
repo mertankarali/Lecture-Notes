@@ -5,7 +5,7 @@ Lecture notes and slides for the tenth lecture of EE201 (Section 2, Fall 2026/27
 | File | What it is |
 |---|---|
 | `EE201_Lecture_10.tex` | Handout / lecture notes (article, 6 pages). Self-contained: definitions, six worked examples, a summary. |
-| `EE201_Lecture_10_slides.tex` | Beamer deck (35 slides, 109 PDF pages) for the lecture itself — visual, low text. |
+| `EE201_Lecture_10_slides.tex` | Beamer deck (34 slides, 107 PDF pages) for the lecture itself — visual, low text. |
 | `build.sh` | Compiles both, removes auxiliary files, opens the PDFs. |
 
 ## Compiling
@@ -41,10 +41,11 @@ Following pp. 21–23 of Prof. Emre Tuna's notes and his recorded Lecture 10 on
 3. **Substitution theorem** (07:32) — N₂ replaced by a voltage source v_s = v or a current
    source i_s = i, nothing changes inside N₁ (configurations I, II, III). Then one case at a
    time, example first: (I) and (II) — Example 10.3, the first example with R_L = 3 Ω replaced
-   by a 6 V source, KCL at a gives i = 2 A again; why it works (problem P: N₁ with a known
-   voltage v*, solved by both (I) and (II), unique, so i = i*). (I) and (III) — Example 10.4, a
-   2 A source gives v = 6 V again; why it works (problem Q: N₁ with a known current i*). The
-   unique-solution condition (two 2 A sources in series)
+   by a 6 V source, KCL at a gives i = 2 A again; why it works, assuming unique solutions: the
+   equations in matrix form, the N₁ row is the same and the source row is v = v*, so the
+   solution of (I) solves (II); uniqueness needed (two 5 V sources in parallel). (I) and
+   (III) — Example 10.4, a 2 A source gives v = 6 V again; the same argument with i = i*
+   (two 2 A sources in series)
 4. **Ports and equivalent one-ports** (15:37, 19:43) — port condition, one-port, i–v
    characteristic; equivalent one-ports give the same branch values in any N₀
 5. **Series and parallel connections** (24:03, 27:53) — resistors and voltage sources in
@@ -66,5 +67,5 @@ six main parts (done parts greyed with a check mark, the current one highlighted
 
 The definitions, the substitution theorem, the examples and the source transformation build
 up step by step with beamer overlays; questions are shown first and the answers on the next
-page. Each step is an ordinary extra PDF page; that is why the deck has 35 slides but 109
+page. Each step is an ordinary extra PDF page; that is why the deck has 34 slides but 107
 pages.
