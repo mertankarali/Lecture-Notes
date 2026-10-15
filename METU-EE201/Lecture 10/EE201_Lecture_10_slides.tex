@@ -696,6 +696,44 @@
 \end{frame}
 
 %--------------------------------------------------------------
+\begin{frame}{Why is the current $\Icol{i^*}$ again?}
+  \begin{columns}[c,onlytextwidth]
+    \begin{column}{0.36\textwidth}
+      \centering
+      \begin{tikzpicture}[scale=0.85]
+        \draw[elem] (0,0) rectangle (1.7,2.0); \node at (0.85,1.0) {$N_1$};
+        \draw (1.7,1.6) -- (3.4,1.6); \draw (1.7,0.4) -- (3.4,0.4);
+        \draw (3.4,0.4) to[american voltage source, invert] (3.4,1.6);
+        \node[font=\small, text=cvolt, right] at (3.75,1.0) {$\Vcol{v^*}$};
+        \draw[fill=white] (2.85,1.6) circle (1.8pt) node[above=1pt, font=\small] {$a$};
+        \draw[fill=white] (2.85,0.4) circle (1.8pt) node[below=1pt, font=\small] {$b$};
+        \draw[iar] (1.85,1.84) -- (2.45,1.84);
+        \node[font=\small, text=ccur] at (2.1,2.2) {$\Icol{i} = {?}$};
+      \end{tikzpicture}\\[4pt]
+      {\small Problem P: $N_1$ with a \alert{known} voltage $\Vcol{v^*}$ at $a$--$b$.}
+    \end{column}
+    \begin{column}{0.62\textwidth}
+      \begin{itemize}\itemsep7pt
+        \item<2-> The solution of (I) solves P: it obeys the equations of $N_1$, and its
+          port voltage is $\Vcol{v^*}$. \yes
+        \item<3-> The solution of (II) solves P: the same equations, and the source sets
+          $\Vcol{v} = \Vcol{v^*}$. \yes
+        \item<4-> P has only \alert{one} solution, so (I) and (II) agree everywhere in $N_1$.
+        \item<5-> The port current is part of that solution: $\Icol{i} = \Icol{i^*}$.
+      \end{itemize}
+    \end{column}
+  \end{columns}
+  \vfill
+  \onslide<6->{%
+  \begin{block}{In the first example}
+    Fix $\Vcol{v} = 6\V$. KCL at $a$: \ $\dfrac{12 - 6}{2} = \dfrac{6}{6} + \Icol{i}$
+    \ $\Rightarrow$ \ $\Icol{i} = 2\A = \Icol{i^*}$.\\[2pt]
+    For a current source, P fixes $\Icol{i} = \Icol{i^*}$ instead, and $\Vcol{v} = \Vcol{v^*}$
+    follows the same way.
+  \end{block}}
+\end{frame}
+
+%--------------------------------------------------------------
 \begin{frame}{One condition: a unique solution}
   \begin{columns}[c,onlytextwidth]
     \begin{column}{0.45\textwidth}
@@ -713,7 +751,9 @@
     \begin{column}{0.53\textwidth}
       $N_1$: a $2\A$ source. \ $N_2$ replaced by a $2\A$ source.\\[10pt]
       \onslide<2->{KCL holds for \alert{every} $\Vcol{v}$: $\Vcol{v}$ is not fixed.\\[10pt]}
-      \onslide<3->{The substitution needs a new circuit with a \alert{unique} solution.}
+      \onslide<3->{Here the new circuit has many solutions, so the argument breaks down.\\[10pt]}
+      \onslide<4->{The substitution needs the new circuit to have a \alert{unique}
+        solution.}
     \end{column}
   \end{columns}
 \end{frame}

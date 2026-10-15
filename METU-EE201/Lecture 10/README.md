@@ -5,7 +5,7 @@ Lecture notes and slides for the tenth lecture of EE201 (Section 2, Fall 2026/27
 | File | What it is |
 |---|---|
 | `EE201_Lecture_10.tex` | Handout / lecture notes (article, 6 pages). Self-contained: definitions, five worked examples, a summary. |
-| `EE201_Lecture_10_slides.tex` | Beamer deck (33 slides, 98 PDF pages) for the lecture itself — visual, low text. |
+| `EE201_Lecture_10_slides.tex` | Beamer deck (34 slides, 105 PDF pages) for the lecture itself — visual, low text. |
 | `build.sh` | Compiles both, removes auxiliary files, opens the PDFs. |
 
 ## Compiling
@@ -40,8 +40,8 @@ Following pp. 21–23 of Prof. Emre Tuna's notes and his recorded Lecture 10 on
    equivalent one-ports, and the series/parallel and source rules
 3. **Substitution theorem** (07:32) — N₂ replaced by a voltage source v_s = v or a current
    source i_s = i, nothing changes inside N₁ (configurations I, II, III); why it works (N₁ meets the rest only at a–b, so from inside it
-   the rest is just v* and i*; a voltage source fixes v and lets i follow, a current source the
-   reverse), and the unique-solution condition (two 2 A sources in series); Example 10.3: the first example cut at the 3 Ω load, checked in
+   the rest is just v* and i*; a voltage source fixes v; problem P, N₁ with a known v*, has one
+   solution, which both (I) and (II) satisfy, so i = i*; a current source the reverse), and the unique-solution condition (two 2 A sources in series); Example 10.3: the first example cut at the 3 Ω load, checked in
    all three configurations
 4. **Ports and equivalent one-ports** (15:37, 19:43) — port condition, one-port, i–v
    characteristic; equivalent one-ports give the same branch values in any N₀
@@ -64,5 +64,5 @@ six main parts (done parts greyed with a check mark, the current one highlighted
 
 The definitions, the substitution theorem, the examples and the source transformation build
 up step by step with beamer overlays; questions are shown first and the answers on the next
-page. Each step is an ordinary extra PDF page; that is why the deck has 33 slides but 98
+page. Each step is an ordinary extra PDF page; that is why the deck has 34 slides but 105
 pages.
