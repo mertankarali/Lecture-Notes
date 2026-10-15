@@ -241,6 +241,14 @@
     \draw[iar] (1.4,2.25) -- (2.1,2.25);
     \node[font=\small, text=ccur] at (1.75,2.58) {$i_0$};
   \fi}
+%  A source #1 with a series resistor #2 driving the load R_L (a, b terminals)
+\newcommand{\exLoop}[2]{%
+  \draw (0,0) to[american voltage source, invert, l=#1] (0,2);
+  \draw (0,2) to[R, l=#2] (2.2,2) -- (4.0,2); \draw (0,0) -- (4.0,0);
+  \draw[dashed, metugray, rounded corners=3pt] (-0.95,-0.4) rectangle (2.9,2.95);
+  \draw (4.0,2) to[R, l=$R_L$] (4.0,0);
+  \draw[fill=white] (3.2,2) circle (1.8pt) node[above=1pt, font=\small] {$a$};
+  \draw[fill=white] (3.2,0) circle (1.8pt) node[below=1pt, font=\small] {$b$};}
 %  Port voltage v and current i labels at terminals x = #1 (load to the right)
 \newcommand{\vilab}[1]{%
   \node[pol] at (#1,1.6) {$+$}; \node[pol] at (#1,0.4) {$-$};
@@ -572,30 +580,32 @@
 \end{frame}
 
 %--------------------------------------------------------------
-\begin{frame}{Back to the circuit, then read the answer}
+\begin{frame}{Split into $R_L$ and the rest}
   \centering
   \begin{tikzpicture}[arr/.style={-{Stealth[length=2.5mm]}, thick, metugray}]
-    \path (-1.6,-3.9) rectangle (9.8,1.95); % fixed size for all overlays
-    % (A) 12 V and the single equivalent resistor R_eq
+    \path (-1.4,-4.3) rectangle (10.4,1.95); % fixed size for all overlays
+    % row 1: 12 V and R_eq; the current in R_L
     \begin{scope}[scale=0.62]\exComb{2}\end{scope}
     \node[font=\small, anchor=north] at (1.1,-0.35) {$\Icol{i_0} = \dfrac{12(6 + R_L)}{12 + 8R_L}$};
-    % (B) back to the circuit: R_eq is 2 ohm, 6 ohm and R_L
     \onslide<2->{%
-    \draw[arr] (2.9,0.9) -- node[above, font=\scriptsize, text=metugray, align=center] {back to the\\circuit: $2\ohm$\\carries $\Icol{i_0}$} (4.9,0.9);
-    \begin{scope}[shift={(6.4 cm,0)}, scale=0.62]\exN{3}\vilab{2.85}
-\end{scope}
-    \node[font=\small, anchor=north] at (7.6,-0.35) {KVL: \ $\Vcol{v} = 12 - 2\Icol{i_0} = \dfrac{72R_L}{12 + 8R_L}$};}
-    % (C) the algebra, and 9 V with 1.5 ohm
+    \node[font=\small, anchor=west, align=left] at (4.1,0.75)
+      {$R_{eq}$ still holds $6\ohm \parallel R_L$; they share $\Icol{i_0}$:\\[6pt]
+       $\Icol{i} = \dfrac{6}{6 + R_L}\,\Icol{i_0} = \dfrac{72}{12 + 8R_L}$};}
+    % row 2: a source and a resistor in series with R_L
     \onslide<3->{%
-    \node[font=\normalsize] at (1.1,-2.75) {$\Icol{i} = \dfrac{\Vcol{v}}{R_L} = \dfrac{72}{12 + 8R_L} = \dfrac{9}{\alert{1.5} + R_L}$};
-    \node[font=\scriptsize, text=metugray] at (1.1,-3.55) {divide by 8: a constant plus $R_L$};}
+    \draw[metugray!40] (-1.2,-1.35) -- (10.2,-1.35);
+    \begin{scope}[shift={(0,-3.55 cm)}, scale=0.62]
+      \only<3>{\exLoop{$V$}{$R$}}\only<4->{\exLoop{$9\V$}{$1.5\ohm$}}\vilab{3.2}\end{scope}
+    \node[font=\small, anchor=west, align=left] at (4.1,-2.3)
+      {Wanted: $V$ and $R$ with $\dfrac{V}{\Icol{i}} = R + R_L$ for every $R_L$.\\[6pt]
+       $\dfrac{V}{\Icol{i}} = \dfrac{12V}{72} + \dfrac{8V}{72}\,R_L$\rule[-12pt]{0pt}{1pt}};}
     \onslide<4->{%
-    \draw[arr] (4.15,-2.75) -- (4.95,-2.75);
-    \begin{scope}[shift={(6.4 cm,-3.4 cm)}, scale=0.62]\exStep{3}\vilab{3.2}\end{scope}}
+    \node[font=\small, anchor=west, align=left] at (4.1,-3.85)
+      {$\dfrac{8V}{72} = 1$: \ $V = 9\V$, \ $R = \dfrac{12 \times 9}{72} = \alert{1.5\ohm}$};}
   \end{tikzpicture}
   \par\smallskip
-  \onslide<5->{$9\V$ in series with $1.5\ohm$ gives the same $\Icol{i}$ and $\Vcol{v}$ for \alert{every} $R_L$.\\[2pt]
-    For $R_L = 3\ohm$: $\Icol{i} = 2\A$, $\Vcol{v} = 6\V$.}
+  \onslide<5->{\small $9\V$ with $1.5\ohm$: the same $\Icol{i}$ and $\Vcol{v}$ for \alert{every} $R_L$; \
+    $R_L = 3\ohm$ gives $\Icol{i} = 2\A$, $\Vcol{v} = 6\V$.}
 \end{frame}
 
 %--------------------------------------------------------------
