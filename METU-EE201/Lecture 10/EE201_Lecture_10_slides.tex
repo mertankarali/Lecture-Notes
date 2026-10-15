@@ -657,19 +657,66 @@
 %--------------------------------------------------------------
 \begin{frame}{Why does it work?}
   \vfill
-  \begin{itemize}\itemsep10pt
-    \item The equations inside $N_1$ (KCL, KVL, element equations) do \alert{not} change.
-    \item<2-> $N_1$ meets the rest only through $\Vcol{v}$ and $\Icol{i}$.
-    \item<3-> The source fixes one of them at the value it had in (I).
-    \item<4-> So the solution of (I) still satisfies every equation of (II) and (III).
-    \item<5-> $N_2$ can be \alert{anything}, even nonlinear: only its port values matter.
+  Solve (I) first; call its port values $\Vcol{v^*}(t)$ and $\Icol{i^*}(t)$.
+  Then compare the equations:
+  \begin{center}
+  \renewcommand{\arraystretch}{1.4}
+  \begin{tabular}{@{}l l l@{}}
+  \toprule
+   & \textbf{(I)} & \textbf{(II)}\\
+  \midrule
+  inside $N_1$ & KCL, KVL, element laws & \onslide<2->{\alert{the same}}\\
+  outside $N_1$ & the equations of $N_2$ & \onslide<2->{$\Vcol{v} = \Vcol{v^*}$ \ (the source)}\\
+  \bottomrule
+  \end{tabular}
+  \end{center}
+  \begin{itemize}\itemsep6pt
+    \item<3-> The $N_1$ values of (I) satisfy the $N_1$ equations: they did not change.
+      \hfill\onslide<3->{\yes}
+    \item<4-> The port voltage of (I) is $\Vcol{v^*}$, so the source law holds.
+      \hfill\onslide<4->{\yes}
+    \item<5-> A voltage source takes \alert{any} current, so $\Icol{i} = \Icol{i^*}$ is
+      allowed. \hfill\onslide<5->{\yes}
+    \item<6-> So the solution of (I) also solves (II): if (II) has \alert{one} solution, this
+      is it.
   \end{itemize}
   \vfill
-  \onslide<6->{%
-  \begin{block}{One condition}
-    The new circuit must have a \alert{unique} solution.\\[3pt]
-    Example: $N_1$ a single current source and $N_2$ replaced by a current source
-    $\Rightarrow$ $\Vcol{v}$ undetermined.
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{Why does it work? The current source, and one condition}
+  \begin{itemize}\itemsep6pt
+    \item In (III) the roles swap: the source fixes $\Icol{i} = \Icol{i^*}$.
+    \item<2-> A current source takes \alert{any} voltage, so $\Vcol{v} = \Vcol{v^*}$ is
+      allowed.
+    \item<3-> Only $\Vcol{v^*}$ and $\Icol{i^*}$ were used, so $N_2$ can be
+      \alert{anything}, even nonlinear.
+  \end{itemize}
+  \vfill
+  \onslide<4->{%
+  \begin{block}{One condition: the new circuit must have a unique solution}
+    \begin{columns}[c,onlytextwidth]
+      \begin{column}{0.42\textwidth}
+        \centering
+        \begin{tikzpicture}[scale=0.85]
+          \draw (0,0) to[american current source, l=$2\A$] (0,1.8);
+          \draw (0,1.8) -- (2.4,1.8); \draw (0,0) -- (2.4,0);
+          \draw (2.4,1.8) to[american current source, l=$2\A$] (2.4,0);
+          \node[pol] at (1.2,1.45) {$+$}; \node[pol] at (1.2,0.35) {$-$};
+          \node[font=\small, text=cvolt] at (1.2,0.9) {$\Vcol{v} = {?}$};
+          \node[font=\scriptsize, text=metugray] at (0,-0.45) {$N_1$};
+          \node[font=\scriptsize, text=metugray] at (2.4,-0.45) {source for $N_2$};
+        \end{tikzpicture}
+      \end{column}
+      \begin{column}{0.56\textwidth}
+        \small
+        $N_1$ is a $2\A$ source; $N_2$ is replaced by a $2\A$ source.\\[3pt]
+        \onslide<5->{KCL holds for \alert{every} $\Vcol{v}$: the old solution is one of
+          many.\\[3pt]}
+        \onslide<6->{The argument shows the old solution is \alert{a} solution; uniqueness
+          makes it \alert{the} solution.}
+      \end{column}
+    \end{columns}
   \end{block}}
   \vfill
 \end{frame}

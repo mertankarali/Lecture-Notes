@@ -458,15 +458,30 @@ independent current source $\Icol{i_s(t)} = \Icol{i(t)}$. No branch voltage or b
 inside $N_1$ changes. An observer inside $N_1$ cannot tell (I), (II) and (III) apart.
 \end{ideabox}
 
-\textbf{Why it works.} The equations inside $N_1$ (its KCL, KVL and element equations) do
-not change. $N_1$ meets the rest of the circuit only through $\Vcol{v}$ and $\Icol{i}$. The
-source fixes one of them at the value it had in (I), and the solution of (I) still satisfies
-every equation of (II) and (III). $N_2$ can be anything, even nonlinear: only its port values
-matter.
+\textbf{Why it works.} Solve (I) first and call its port values $\Vcol{v^*}(t)$ and
+$\Icol{i^*}(t)$. Then compare the equations of (I) and (II):
+\begin{center}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{@{}l l l@{}}
+\toprule
+ & \textbf{(I)} & \textbf{(II)}\\
+\midrule
+inside $N_1$ & KCL, KVL and element laws of $N_1$ & the same\\
+outside $N_1$ & the equations of $N_2$ & $\Vcol{v} = \Vcol{v^*}$ (the source)\\
+\bottomrule
+\end{tabular}
+\end{center}
+Now check the solution of (I) against (II). Its $N_1$ values satisfy the $N_1$ equations,
+because these did not change. Its port voltage is $\Vcol{v^*}$, so the source law holds. A
+voltage source takes any current, so $\Icol{i} = \Icol{i^*}$ is allowed. Hence the solution of
+(I) also solves (II). In (III) the roles swap: the source fixes $\Icol{i} = \Icol{i^*}$, and a
+current source takes any voltage. Only $\Vcol{v^*}$ and $\Icol{i^*}$ were used, so $N_2$ can be
+anything, even nonlinear.
 
-\textbf{One condition.} The new circuit must have a unique solution. If $N_1$ is a single
-current source, replacing $N_2$ by a current source puts two current sources in series: their
-currents are equal, but the voltage $\Vcol{v}$ is no longer fixed.
+\textbf{One condition.} The argument shows that the old solution is \emph{a} solution of the
+new circuit; it is \emph{the} solution only if the new circuit has a unique solution. If
+$N_1$ is a single $2\A$ current source and $N_2$ is replaced by a $2\A$ current source, KCL
+holds for every $\Vcol{v}$: the voltage is no longer fixed.
 
 \begin{examplebox}[Example 10.3 --- substitution in the first example]
 \begin{center}
