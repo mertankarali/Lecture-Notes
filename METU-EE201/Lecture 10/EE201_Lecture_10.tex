@@ -233,9 +233,9 @@
   \fi
   \draw[fill=white] (2.85,2) circle (1.8pt) node[above=1pt, font=\small] {$a$};
   \draw[fill=white] (2.85,0) circle (1.8pt) node[below=1pt, font=\small] {$b$};}
-%  Small classification circuits: source #1 and element #2 (circuitikz options)
+%  Small classification circuits: source #1, a 1 ohm resistor, element #2 (circuitikz options)
 \newcommand{\mini}[2]{%
-  \draw (0,0) to[#1] (0,1.5) -- (1.4,1.5) to[#2] (1.4,0) -- (0,0);}
+  \draw (0,0) to[#1] (0,1.5) to[R, l=$1\ohm$] (1.9,1.5) to[#2] (1.9,0) -- (0,0);}
 
 \begin{document}
 
@@ -319,34 +319,29 @@ R\,\Icol{i(t)}$ with the same $R$ at every instant; a time-varying one obeys $\V
 R(t)\,\Icol{i(t)}$: the law itself changes. Linear and nonlinear also refer to the element law.
 
 \begin{examplebox}[Example 10.1 --- which circuit is which?]
-Each circuit is a source and one more element.
+Each circuit is a source, a $1\ohm$ resistor and one more element. The sources are $5\V$,
+except in (b).
 \begin{center}
-\small
-\begin{tabular}{@{}c@{\hspace{2mm}}c@{\hspace{2mm}}c@{\hspace{2mm}}c@{\hspace{2mm}}c@{}}
-\begin{tikzpicture}[scale=0.7]
-  \mini{american voltage source, invert, l=$5\V$}{R, l=$2\ohm$}
-\end{tikzpicture} &
-\begin{tikzpicture}[scale=0.7]
-  \mini{american voltage source, invert, l=$10\cos t$}{R, l=$2\ohm$}
-\end{tikzpicture} &
-\begin{tikzpicture}[scale=0.7]
-  \mini{american voltage source, invert, l=$5\V$}{D}
-\end{tikzpicture} &
-\begin{tikzpicture}[scale=0.7]
-  \mini{american voltage source, invert, l=$5\V$}{vR, l=$R(t)$}
-\end{tikzpicture} &
-\begin{tikzpicture}[scale=0.7]
-  \mini{american voltage source, invert, l=$5\V$}{C}
-\end{tikzpicture}\\
-(a) LTI resistive & (b) LTI resistive & (c) nonlinear (diode) & (d) time-varying & (e) dynamic
-\end{tabular}
+\begin{tikzpicture}
+  \begin{scope}[shift={(0 cm,0)}, scale=0.62]\mini{american voltage source, invert}{R, l=$2\ohm$}
+    \node[font=\small, transform shape=false, align=center, anchor=north] at (0.95,-0.3) {(a)\\ LTI resistive};\end{scope}
+  \begin{scope}[shift={(4.2 cm,0)}, scale=0.62]\mini{american voltage source, invert, l=$10\cos t$}{R, l=$2\ohm$}
+    \node[font=\small, transform shape=false, align=center, anchor=north] at (0.95,-0.3) {(b)\\ LTI resistive};\end{scope}
+  \begin{scope}[shift={(7.3 cm,0)}, scale=0.62]\mini{american voltage source, invert}{D}
+    \node[font=\small, transform shape=false, align=center, anchor=north] at (0.95,-0.3) {(c) diode\\ nonlinear};\end{scope}
+  \begin{scope}[shift={(10.2 cm,0)}, scale=0.62]\mini{american voltage source, invert}{vR, l=$R(t)$}
+    \node[font=\small, transform shape=false, align=center, anchor=north] at (0.95,-0.3) {(d)\\ time-varying};\end{scope}
+  \begin{scope}[shift={(13.1 cm,0)}, scale=0.62]\mini{american voltage source, invert}{C}
+    \node[font=\small, transform shape=false, align=center, anchor=north] at (0.95,-0.3) {(e)\\ dynamic};\end{scope}
+\end{tikzpicture}
 \end{center}
 (b) is LTI resistive although its source varies in time. In (d), $R(t) = 2 + \sin t\ \Omega$.
 (c) and (d) are still resistive; (e) is still linear and time-invariant.
 \end{examplebox}
 
-\textbf{What we gain.} In an LTI resistive circuit KCL and KVL are linear, and every element
-equation is linear and algebraic: $v = Ri$ for a resistor, $v = \mu v_x$ or $i = g\,v_x$
+\textbf{What we gain.} KCL and KVL are \emph{always} linear: they come from the graph and
+need no assumption on the elements. In an LTI resistive circuit every element equation is
+linear and algebraic too: $v = Ri$ for a resistor, $v = \mu v_x$ or $i = g\,v_x$
 for a dependent source, $v_2 = n v_1$ and $i_1 = -n i_2$ for an ideal transformer. No derivative appears. Time enters only through the values of the
 independent sources, so at each instant the circuit is solved like a circuit with constant
 sources.

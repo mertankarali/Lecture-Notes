@@ -205,9 +205,9 @@
   \fi
   \draw[fill=white] (2.85,2) circle (1.8pt) node[above=1pt, font=\small] {$a$};
   \draw[fill=white] (2.85,0) circle (1.8pt) node[below=1pt, font=\small] {$b$};}
-%  Small classification circuits: source #1 and element #2 (circuitikz options)
+%  Small classification circuits: source #1, a 1 ohm resistor, element #2 (circuitikz options)
 \newcommand{\mini}[2]{%
-  \draw (0,0) to[#1] (0,1.5) -- (1.4,1.5) to[#2] (1.4,0) -- (0,0);}
+  \draw (0,0) to[#1] (0,1.5) to[R, l=$1\ohm$] (1.9,1.5) to[#2] (1.9,0) -- (0,0);}
 \newcommand{\yes}{\textcolor{cpow}{\checkmark}}
 \newcommand{\no}{\textcolor{metured}{$\boldsymbol{\times}$}}
 \newcommand{\U}[2]{\uncover<#1->{#2}}
@@ -404,13 +404,13 @@
 %--------------------------------------------------------------
 \begin{frame}{Independent sources are inputs}
   \begin{columns}[c,onlytextwidth]
-    \begin{column}{0.4\textwidth}
+    \begin{column}{0.44\textwidth}
       \centering
-      \begin{tikzpicture}[scale=1.15]
+      \begin{tikzpicture}[scale=0.95]
         \mini{american voltage source, invert, l={$\Vcol{v_s(t)} = 10\cos t$}}{R, l=$2\ohm$}
       \end{tikzpicture}
     \end{column}
-    \begin{column}{0.58\textwidth}
+    \begin{column}{0.54\textwidth}
       The source varies in time. Is the circuit time-varying?\\[10pt]
       \onslide<2->{\alert{No.} An independent source is an \alert{external input}: a given
         signal of time.\\[10pt]}
@@ -457,22 +457,22 @@
 \begin{frame}{Which circuit is which?}
   \vfill
   \begin{center}
-  \begin{tikzpicture}[scale=0.8]
-    \begin{scope}[shift={(0,0)}]\mini{american voltage source, invert}{R, l=$2\ohm$}
-      \node[font=\small] at (0.7,-0.45) {(a)};\end{scope}
-    \begin{scope}[shift={(4.7,0)}]\mini{american voltage source, invert, l=$10\cos t$}{R, l=$2\ohm$}
-      \node[font=\small] at (0.7,-0.45) {(b)};\end{scope}
-    \begin{scope}[shift={(8.1,0)}]\mini{american voltage source, invert}{D}
-      \node[font=\small] at (0.7,-0.45) {(c) diode};\end{scope}
-    \begin{scope}[shift={(11.2,0)}]\mini{american voltage source, invert}{vR, l=$R(t)$}
-      \node[font=\small] at (0.7,-0.45) {(d)};\end{scope}
-    \begin{scope}[shift={(15.0,0)}]\mini{american voltage source, invert}{C}
-      \node[font=\small] at (0.7,-0.45) {(e) capacitor};\end{scope}
+  \begin{tikzpicture}
+    \begin{scope}[shift={(0 cm,0)}, scale=0.68]\mini{american voltage source, invert}{R, l=$2\ohm$}
+      \node[font=\small] at (0.95,-0.6) {(a)};\end{scope}
+    \begin{scope}[shift={(3.9 cm,0)}, scale=0.68]\mini{american voltage source, invert, l=$10\cos t$}{R, l=$2\ohm$}
+      \node[font=\small] at (0.95,-0.6) {(b)};\end{scope}
+    \begin{scope}[shift={(6.5 cm,0)}, scale=0.68]\mini{american voltage source, invert}{D}
+      \node[font=\small] at (0.95,-0.6) {(c) diode};\end{scope}
+    \begin{scope}[shift={(8.9 cm,0)}, scale=0.68]\mini{american voltage source, invert}{vR, l=$R(t)$}
+      \node[font=\small] at (0.95,-0.6) {(d)};\end{scope}
+    \begin{scope}[shift={(11.9 cm,0)}, scale=0.68]\mini{american voltage source, invert}{C}
+      \node[font=\small] at (0.95,-0.6) {(e) capacitor};\end{scope}
   \end{tikzpicture}
   \end{center}
   \vfill
   \begin{center}
-  \only<1>{Sources: $5\V$ except (b). In (d), $R(t) = 2 + \sin t\ \Omega$.\\[4pt] Linear? \quad Time-invariant? \quad Resistive?}%
+  \only<1>{A source, a $1\ohm$ resistor and one more element. Sources: $5\V$ except (b). In (d), $R(t) = 2 + \sin t\ \Omega$.\\[4pt] Linear? \quad Time-invariant? \quad Resistive?}%
   \only<2->{%
   \renewcommand{\arraystretch}{1.2}
   \begin{tabular}{@{}l c c c c c@{}}
@@ -492,16 +492,22 @@
 
 %--------------------------------------------------------------
 \begin{frame}{What we gain}
+  \begin{block}{Always --- no assumption on the elements}
+    \centering
+    KCL and KVL are \alert{linear} for \alert{every} circuit: they come from the graph alone.
+  \end{block}
+  \vspace{6pt}
+  \onslide<2->{%
+  \begin{block}{Because the circuit is LTI resistive}
+    Every element equation is \alert{linear} and \alert{algebraic}, with no derivative:
+    \[
+      \Vcol{v} = R\Icol{i} \ \ \text{(resistor)}, \qquad
+      \Vcol{v} = \mu\Vcol{v_x}, \ \ \Icol{i} = g\Vcol{v_x}, \ \dots \ \
+      \text{(dependent sources)}
+    \]
+  \end{block}}
   \vfill
-  \begin{itemize}\itemsep10pt
-    \item KCL and KVL are \alert{linear}.
-    \item<2-> Every element equation is \alert{linear} and \alert{algebraic}, with no
-      derivative:
-      \[
-        \Vcol{v} = R\Icol{i} \ \ \text{(resistor)}, \qquad
-        \Vcol{v} = \mu\Vcol{v_x}, \ \ \Icol{i} = g\Vcol{v_x}, \ \dots \ \
-        \text{(dependent sources)}
-      \]
+  \begin{itemize}\itemsep6pt
     \item<3-> Time enters only through the values of the \alert{independent sources}.
     \item<4-> So at each instant the circuit is solved like a circuit with
       \alert{constant} sources: $2b$ linear algebraic equations.
