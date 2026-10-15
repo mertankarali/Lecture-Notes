@@ -16,6 +16,7 @@
 \usepackage{amsmath,amssymb}
 \usepackage{array,booktabs,tabularx}
 \usepackage{enumitem}
+\usepackage{needspace}
 \usepackage[table]{xcolor}
 \usepackage{fancyhdr}
 \usepackage{titlesec}
@@ -267,39 +268,55 @@
 
 \textbf{Why this lecture?} So far, KCL and KVL were written for any circuit, with any
 elements. From now on we restrict the elements. In an \textbf{LTI resistive circuit} every
-equation is linear and algebraic, so the circuit can be simplified before it is solved. This
-lecture gives the tools for that: the substitution theorem, one-ports and their equivalents,
-series and parallel connections, and the exchange of a voltage source and a current source.
+equation is linear and algebraic. Such a circuit can be solved in two ways: by transforming it
+into a simpler circuit, or by writing the equations of the circuit as it is. This lecture gives
+the tools for the first way: the
+substitution theorem, one-ports and their equivalents, series and parallel connections, and
+the exchange of a voltage source and a current source.
 
 %==============================================================
 \section{LTI resistive circuits}
 
-Three pairs of words describe a circuit. Each pair is defined by what the circuit contains.
+First classify the elements, then the circuit. Independent sources are left aside: they are
+the inputs (see below).
 
-\begin{definitionbox}{Nonlinear, time-varying, dynamic}
+\begin{definitionbox}{Resistive and dynamic elements}
 \begin{itemize}
-  \item A \textbf{nonlinear} circuit contains a nonlinear resistor, inductor, capacitor or
-        dependent source. A circuit is \textbf{linear} if it is not nonlinear.
-  \item A \textbf{time-varying} circuit contains a time-varying resistor, inductor, capacitor
-        or dependent source. A circuit is \textbf{time-invariant} if it is not time-varying.
-  \item A \textbf{dynamic} circuit contains an inductor or a capacitor. A circuit is
-        \textbf{resistive} if it is not dynamic.
+  \item A \textbf{resistive} element relates its voltages and currents at the same instant by
+        an algebraic law; it has no memory. Examples: resistors, diodes, dependent sources,
+        ideal transformers, and the ideal op-amp met later. ``Resistive'' covers all of them,
+        not only resistors.
+  \item A \textbf{dynamic} element has a derivative in its law, so it has memory: capacitors
+        ($\Icol{i} = C\,d\Vcol{v}/dt$), inductors, coupled inductors.
+  \item An element is \textbf{linear} if its law is linear in its voltages and currents, and
+        \textbf{time-invariant} if its law does not change with time.
 \end{itemize}
-An \textbf{LTI resistive circuit} is linear, time-invariant and resistive. It contains only
-LTI resistors, linear time-invariant dependent sources and independent sources.
 \end{definitionbox}
 
-\begin{cautionbox}[Independent sources do not count]
-The lists above do not mention independent sources. A source $\Vcol{v_s(t)} = 10\cos t\V$
-driving an LTI resistor gives an LTI resistive circuit. The words describe the circuit, not the
-waveform that drives it.
-\end{cautionbox}
+\begin{definitionbox}{Nonlinear, time-varying, dynamic circuits}
+\begin{itemize}
+  \item A \textbf{nonlinear} circuit contains at least one nonlinear element, e.g.\ a diode. Otherwise it is
+        \textbf{linear}.
+  \item A \textbf{time-varying} circuit contains at least one time-varying element, e.g.\ $R(t)$. Otherwise it is
+        \textbf{time-invariant}.
+  \item A \textbf{dynamic} circuit contains at least one dynamic element: an $L$ or a $C$. Otherwise it is
+        \textbf{resistive}.
+\end{itemize}
+An \textbf{LTI resistive circuit} is linear, time-invariant and resistive: apart from the
+independent sources, every element is linear, time-invariant and resistive (LTI resistors,
+linear dependent sources, ideal transformers, \dots).
+\end{definitionbox}
 
-\textbf{What we gain.} In an LTI resistive circuit KCL and KVL are linear, and every element
-equation is linear and algebraic: $v = Ri$ for a resistor, $v = \mu v_x$ or $i = g\,v_x$
-for a dependent source. No derivative appears. Time enters only through the values of the
-independent sources, so at each instant the circuit is solved like a circuit with constant
-sources.
+\begin{ideabox}[Independent sources are inputs]
+An independent source is an \textbf{external input}: a given signal of time, such as
+$\Vcol{v_s(t)} = 10\cos t\V$. The three pairs of words describe the circuit that the inputs
+drive, not the inputs.
+\end{ideabox}
+
+\textbf{What varies in time?} In every circuit the voltages and currents are functions of time.
+What matters is the \emph{element law}. A time-invariant resistor obeys $\Vcol{v(t)} =
+R\,\Icol{i(t)}$ with the same $R$ at every instant; a time-varying one obeys $\Vcol{v(t)} =
+R(t)\,\Icol{i(t)}$: the law itself changes. Linear and nonlinear also refer to the element law.
 
 \begin{examplebox}[Example 10.1 --- which circuit is which?]
 Each circuit is a source and one more element.
@@ -319,7 +336,7 @@ Each circuit is a source and one more element.
   \mini{american voltage source, invert, l=$5\V$}{vR, l=$R(t)$}
 \end{tikzpicture} &
 \begin{tikzpicture}[scale=0.7]
-  \mini{american voltage source, invert, l=$5\V$}{C, l_=$C$}
+  \mini{american voltage source, invert, l=$5\V$}{C}
 \end{tikzpicture}\\
 (a) LTI resistive & (b) LTI resistive & (c) nonlinear (diode) & (d) time-varying & (e) dynamic
 \end{tabular}
@@ -327,6 +344,13 @@ Each circuit is a source and one more element.
 (b) is LTI resistive although its source varies in time. In (d), $R(t) = 2 + \sin t\ \Omega$.
 (c) and (d) are still resistive; (e) is still linear and time-invariant.
 \end{examplebox}
+
+\textbf{What we gain.} In an LTI resistive circuit KCL and KVL are linear, and every element
+equation is linear and algebraic: $v = Ri$ for a resistor, $v = \mu v_x$ or $i = g\,v_x$
+for a dependent source, $v_2 = n v_1$ and $i_1 = -n i_2$ for an ideal transformer. No derivative appears. Time enters only through the values of the
+independent sources, so at each instant the circuit is solved like a circuit with constant
+sources.
+
 
 %==============================================================
 \section{The substitution theorem}
@@ -419,7 +443,7 @@ A one-port is always a port: by KCL on a closed surface around $N$, the current 
 that enters at $a$ leaves at $b$. We take $\Icol{i}$ entering the $+$ terminal of
 $\Vcol{v}$. The relation between $\Vcol{v}$ and $\Icol{i}$ is the \textbf{$i$--$v$
 characteristic} of the one-port. A resistor is the simplest one-port: $\Vcol{v} = R\Icol{i}$.
-\end{minipage}
+\end{minipage}\par\smallskip
 \end{center}
 
 \begin{definitionbox}{Equivalent one-ports}
@@ -445,6 +469,7 @@ give the same equations, so the same solution inside $N_0$. Inside $N_1$ and $N_
 branch values may differ.
 
 %==============================================================
+\Needspace{14\baselineskip}
 \section{Series and parallel connections}
 
 \subsection*{Series connection}
@@ -459,7 +484,7 @@ the voltages add (KVL).
 \begin{tikzpicture}[scale=0.75, baseline=(c.base)]
   \eqone{1.2}{R, l=$R_{eq}$} \coordinate (c) at (0,0.5);
 \end{tikzpicture} &
-$R_{eq} = R_1 + R_2 + \dots + R_k$\\[10pt]
+$R_{eq} = R_1 + R_2 + \dots + R_k$\\[6pt]
 \begin{tikzpicture}[scale=0.75, baseline=(c.base)]
   \seriesV \coordinate (c) at (0,0.5);
 \end{tikzpicture} & $\equiv$ &
@@ -473,23 +498,25 @@ For the resistors: $\Vcol{v} = R_1\Icol{i} + \dots + R_k\Icol{i} = R_{eq}\Icol{i
 of $R_j$ is $\Vcol{v_j} = (R_j/R_{eq})\,\Vcol{v}$ (\textbf{voltage divider}). For the sources
 all $+$ signs point towards $a$; a source turned the other way enters the sum with $-$.
 
+\noindent\begin{minipage}{\linewidth}
+\setlength{\parskip}{0.7ex plus .1ex}
 \subsection*{Parallel connection}
 In a parallel connection every element has the same voltage $\Vcol{v}$ (KVL), and the
 currents add (KCL).
 
 \begin{center}
 \begin{tabular}{@{}c@{\hspace{2mm}}c@{\hspace{2mm}}c@{\hspace{4mm}}l@{}}
-\begin{tikzpicture}[scale=1.0, baseline=(c.base)]
+\begin{tikzpicture}[scale=0.85, baseline=(c.base)]
   \parR \coordinate (c) at (0,0.65);
 \end{tikzpicture} & $\equiv$ &
-\begin{tikzpicture}[scale=1.0, baseline=(c.base)]
+\begin{tikzpicture}[scale=0.85, baseline=(c.base)]
   \eqone{1.5}{R, l=$R_{eq}$} \coordinate (c) at (0,0.65);
 \end{tikzpicture} &
-$\dfrac{1}{R_{eq}} = \dfrac{1}{R_1} + \dfrac{1}{R_2} + \dots + \dfrac{1}{R_k}$\\[18pt]
-\begin{tikzpicture}[scale=1.0, baseline=(c.base)]
+$\dfrac{1}{R_{eq}} = \dfrac{1}{R_1} + \dfrac{1}{R_2} + \dots + \dfrac{1}{R_k}$\\[12pt]
+\begin{tikzpicture}[scale=0.85, baseline=(c.base)]
   \parI \coordinate (c) at (0,0.65);
 \end{tikzpicture} & $\equiv$ &
-\begin{tikzpicture}[scale=1.0, baseline=(c.base)]
+\begin{tikzpicture}[scale=0.85, baseline=(c.base)]
   \draw (1.0,0) to[american current source, l=$i_{s,eq}$] (1.0,1.5);
   \draw (0,1.5) -- (1.0,1.5); \draw (0,0) -- (1.0,0); \abterm{0}{1.5}{left}
   \coordinate (c) at (0,0.65);
@@ -497,6 +524,8 @@ $\dfrac{1}{R_{eq}} = \dfrac{1}{R_1} + \dfrac{1}{R_2} + \dots + \dfrac{1}{R_k}$\\
 $i_{s,eq} = i_{s1} + i_{s2} + \dots + i_{sk}$
 \end{tabular}
 \end{center}
+\end{minipage}
+
 With conductances $G_j = 1/R_j$: $\Icol{i} = G_1\Vcol{v} + \dots + G_k\Vcol{v} =
 G_{eq}\Vcol{v}$, so $G_{eq} = G_1 + \dots + G_k$. The share of $R_j$ is
 $\Icol{i_j} = (G_j/G_{eq})\,\Icol{i}$ (\textbf{current divider}). Two resistors:
@@ -586,7 +615,8 @@ source carries $6\A$.
 \section{Solving LTI resistive circuits}
 
 Series and parallel connections and source transformations simplify many circuits, but not
-all. Two systematic methods solve every LTI resistive circuit:
+all. Two methods write the equations of the circuit as it is, without transforming it, and
+work for every LTI resistive circuit:
 \begin{enumerate}
   \item \textbf{node voltage analysis} --- the $n - 1$ node voltages are the unknowns;
   \item \textbf{mesh current analysis} --- the $b - n + 1$ mesh currents are the unknowns.
@@ -599,9 +629,11 @@ and can be written in matrix form too.
 \addcontentsline{toc}{section}{Summary}
 
 \begin{itemize}
-  \item A circuit is \textbf{linear}, \textbf{time-invariant} and \textbf{resistive} if it has
-        no nonlinear element, no time-varying element and no $L$ or $C$. Independent sources
-        do not count. All equations of an LTI resistive circuit are linear and algebraic.
+  \item A \textbf{resistive} element has an algebraic law with no memory (resistor, dependent
+        source, ideal transformer, \dots); a \textbf{dynamic} one has a derivative ($L$, $C$).
+        A circuit is linear, time-invariant and resistive if all its elements are. Independent sources
+        are external inputs; they are not part of the classification. All equations of an LTI
+        resistive circuit are linear and algebraic.
   \item \textbf{Substitution:} a part $N_2$ may be replaced by a voltage source equal to its
         port voltage, or a current source equal to its port current; nothing changes in the
         rest (if the solution stays unique).

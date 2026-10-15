@@ -291,14 +291,18 @@
   \vfill
   \begin{itemize}\itemsep10pt
     \item \textbf{So far:} KCL and KVL, written for \alert{any} elements.
-    \item<2-> \textbf{Now:} we restrict the elements. In an \alert{LTI resistive circuit}
-      every equation is \alert{linear} and \alert{algebraic}.
-    \item<3-> \textbf{Before solving:} simplify. Replace a part of the circuit by a source,
-      or by a simpler part with the same behaviour at its terminals.
-    \item<4-> \textbf{Tools:} the substitution theorem, equivalent one-ports, series and
-      parallel connections, source transformation.
-    \item<5-> \textbf{Next:} systematic methods for every LTI resistive circuit
-      --- node voltage and mesh current analysis.
+    \item<2-> \textbf{Now:} \alert{LTI resistive circuits}, where every equation is
+      \alert{linear} and \alert{algebraic}.
+    \item<3-> \textbf{Two ways to solve:} \alert{transform} the circuit into a simpler one,
+      or write its equations \alert{as it is}.
+    \item<4-> \textbf{This lecture --- transform:} replace a part by a source, or by a simpler
+      part with the same terminal behaviour
+      \begin{itemize}\itemsep2pt
+        \item substitution theorem, equivalent one-ports
+        \item series and parallel connections, source transformation
+      \end{itemize}
+    \item<5-> \textbf{Later --- the circuit as it is:} node voltage and mesh current
+      analysis
   \end{itemize}
   \vfill
 \end{frame}
@@ -307,31 +311,98 @@
 \roadmapframe{1}
 
 %--------------------------------------------------------------
-\begin{frame}{Three pairs of words}
+\begin{frame}{Resistive and dynamic elements}
+  \begin{columns}[t,onlytextwidth]
+    \begin{column}{0.56\textwidth}
+      \begin{block}{Resistive element: no memory}
+        Its law relates $\Vcol{v}$ and $\Icol{i}$ at the \alert{same instant}, algebraically.\\[6pt]
+        \centering
+        \begin{tikzpicture}[scale=0.85]
+          \draw (0,0) to[R] (0,1.4); \node[font=\scriptsize] at (0,-0.35) {resistor};
+          \draw (1.3,0) to[D] (1.3,1.4); \node[font=\scriptsize] at (1.3,-0.35) {diode};
+          \draw (2.6,0) to[american controlled voltage source, invert] (2.6,1.4);
+          \node[font=\scriptsize, align=center] at (2.6,-0.45) {dependent\\[-2pt]source};
+          \draw (4.1,0.7) node[transformer core, scale=0.75] {};
+          \node[font=\scriptsize, align=center] at (4.1,-0.45) {ideal\\[-2pt]transformer};
+        \end{tikzpicture}\\[2pt]
+        {\small later: the ideal op-amp}
+      \end{block}
+    \end{column}
+    \begin{column}{0.4\textwidth}
+      \onslide<2->{%
+      \begin{block}{Dynamic element: memory}
+        Its law has a \alert{derivative}.\\[6pt]
+        \centering
+        \begin{tikzpicture}[scale=0.85]
+          \draw (0,0) to[C] (0,1.4); \node[font=\scriptsize] at (0,-0.35) {$\Icol{i} = C\,\tfrac{d\Vcol{v}}{dt}$};
+          \draw (2.0,0) to[L] (2.0,1.4); \node[font=\scriptsize] at (2.0,-0.35) {$\Vcol{v} = L\,\tfrac{d\Icol{i}}{dt}$};
+        \end{tikzpicture}\\[2pt]
+        {\small also coupled inductors}
+      \end{block}}
+    \end{column}
+  \end{columns}
   \vfill
   \begin{center}
-  \renewcommand{\arraystretch}{1.5}
-  \begin{tabular}{@{}l l l@{}}
-  \toprule
-  the circuit is \dots & if it contains \dots & otherwise it is \dots\\
-  \midrule
-  \alert{nonlinear}    & a nonlinear $R$, $L$, $C$ or dependent source & \textbf{linear}\\
-  \onslide<2->{\alert{time-varying} & a time-varying $R$, $L$, $C$ or dependent source & \textbf{time-invariant}}\\
-  \onslide<3->{\alert{dynamic}      & an $L$ or a $C$ & \textbf{resistive}}\\
-  \bottomrule
-  \end{tabular}
+    \onslide<3->{``Resistive'' means \alert{memoryless}, not only ``a resistor''.\\[6pt]}
+    \onslide<4->{An element is \alert{linear} if its law is linear in $\Vcol{v}$, $\Icol{i}$;
+      \alert{time-invariant} if its law does not change with time.}
   \end{center}
-  \vfill
-  \onslide<4->{%
-  \begin{block}{LTI resistive circuit}
-    Linear, time-invariant and resistive: it contains only \alert{LTI resistors},
-    \alert{linear time-invariant dependent sources} and \alert{independent sources}.
-  \end{block}}
   \vfill
 \end{frame}
 
 %--------------------------------------------------------------
-\begin{frame}{Independent sources do not count}
+\begin{frame}{Three questions about a circuit}
+  \begin{columns}[t,onlytextwidth]
+    \begin{column}{0.31\textwidth}
+      \begin{block}{Linear?}
+        \centering
+        \begin{tikzpicture}[scale=0.9]
+          \draw (0,0) to[D, l=diode] (0,1.4);
+        \end{tikzpicture}\\[4pt]
+        \raggedright
+        \alert{Nonlinear} if it contains \alert{at least one} nonlinear element, e.g.\ a diode.\\[4pt]
+        Otherwise \textbf{linear}.
+      \end{block}
+    \end{column}
+    \begin{column}{0.31\textwidth}
+      \onslide<2->{%
+      \begin{block}{Time-invariant?}
+        \centering
+        \begin{tikzpicture}[scale=0.9]
+          \draw (0,0) to[vR, l=$R(t)$] (0,1.4);
+        \end{tikzpicture}\\[4pt]
+        \raggedright
+        \alert{Time-varying} if it contains \alert{at least one} time-varying element, e.g.\ $R(t)$.\\[4pt]
+        Otherwise \textbf{time-invariant}.
+      \end{block}}
+    \end{column}
+    \begin{column}{0.31\textwidth}
+      \onslide<3->{%
+      \begin{block}{Resistive?}
+        \centering
+        \begin{tikzpicture}[scale=0.9]
+          \draw (0,0) to[L, l=$L$] (0,1.4);
+          \draw (1.3,0) to[C, l=$C$] (1.3,1.4);
+        \end{tikzpicture}\\[4pt]
+        \raggedright
+        \alert{Dynamic} if it contains \alert{at least one} dynamic element: an $L$ or a $C$.\\[4pt]
+        Otherwise \textbf{resistive}.
+      \end{block}}
+    \end{column}
+  \end{columns}
+  \vfill
+  \onslide<4->{%
+  \begin{center}
+    \textbf{LTI resistive circuit} = \textbf{linear} + \textbf{time-invariant} +
+    \textbf{resistive}:\\[3pt]
+    apart from the independent sources, \alert{every element} is linear, time-invariant and
+    resistive.
+  \end{center}}
+  \vfill
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{Independent sources are inputs}
   \begin{columns}[c,onlytextwidth]
     \begin{column}{0.4\textwidth}
       \centering
@@ -341,11 +412,45 @@
     \end{column}
     \begin{column}{0.58\textwidth}
       The source varies in time. Is the circuit time-varying?\\[10pt]
-      \onslide<2->{\alert{No.} The three pairs of words look only at $R$, $L$, $C$ and
-        \alert{dependent} sources. This is an \alert{LTI resistive} circuit.\\[10pt]}
-      \onslide<3->{The words describe the circuit, not the waveform that drives it.}
+      \onslide<2->{\alert{No.} An independent source is an \alert{external input}: a given
+        signal of time.\\[10pt]}
+      \onslide<3->{The three questions are about the \alert{circuit} that the inputs drive,
+        not about the inputs. This is an \alert{LTI resistive} circuit.}
     \end{column}
   \end{columns}
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{What varies in time?}
+  \vfill
+  \begin{center}
+    In \alert{every} circuit $\Vcol{v(t)}$ and $\Icol{i(t)}$ are functions of time.
+    The question is whether the \alert{element law} changes with time.
+  \end{center}
+  \vfill
+  \begin{columns}[t,onlytextwidth]
+    \begin{column}{0.48\textwidth}
+      \begin{block}{Time-invariant resistor}
+        \centering
+        $\Vcol{v(t)} = R\,\Icol{i(t)}$\\[4pt]
+        the same rule at every instant
+      \end{block}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \onslide<2->{%
+      \begin{block}{Time-varying resistor}
+        \centering
+        $\Vcol{v(t)} = R(t)\,\Icol{i(t)}$\\[4pt]
+        the rule itself changes with $t$
+      \end{block}}
+    \end{column}
+  \end{columns}
+  \vfill
+  \begin{center}
+    \onslide<3->{Linear or nonlinear is also a property of the element law:
+      $\Vcol{v} = R\Icol{i}$ is linear, a diode law is not.}
+  \end{center}
+  \vfill
 \end{frame}
 
 %--------------------------------------------------------------
@@ -390,13 +495,13 @@
   \vfill
   \begin{itemize}\itemsep10pt
     \item KCL and KVL are \alert{linear}.
-    \item<2-> Every element equation is \alert{linear} and \alert{algebraic}:
+    \item<2-> Every element equation is \alert{linear} and \alert{algebraic}, with no
+      derivative:
       \[
         \Vcol{v} = R\Icol{i} \ \ \text{(resistor)}, \qquad
         \Vcol{v} = \mu\Vcol{v_x}, \ \ \Icol{i} = g\Vcol{v_x}, \ \dots \ \
         \text{(dependent sources)}
       \]
-      No derivative appears.
     \item<3-> Time enters only through the values of the \alert{independent sources}.
     \item<4-> So at each instant the circuit is solved like a circuit with
       \alert{constant} sources: $2b$ linear algebraic equations.
@@ -446,15 +551,16 @@
   \begin{itemize}\itemsep10pt
     \item The equations inside $N_1$ (KCL, KVL, element equations) do \alert{not} change.
     \item<2-> $N_1$ meets the rest only through $\Vcol{v}$ and $\Icol{i}$.
-    \item<3-> The source fixes one of them at the value it had in (I). The solution of (I)
-      still satisfies every equation of (II) and (III).
-    \item<4-> $N_2$ can be \alert{anything}, even nonlinear: only its port values matter.
+    \item<3-> The source fixes one of them at the value it had in (I).
+    \item<4-> So the solution of (I) still satisfies every equation of (II) and (III).
+    \item<5-> $N_2$ can be \alert{anything}, even nonlinear: only its port values matter.
   \end{itemize}
   \vfill
-  \onslide<5->{%
+  \onslide<6->{%
   \begin{block}{One condition}
-    The new circuit must have a \alert{unique} solution. If $N_1$ is a single current source,
-    replacing $N_2$ by a current source leaves $\Vcol{v}$ undetermined.
+    The new circuit must have a \alert{unique} solution.\\[3pt]
+    Example: $N_1$ a single current source and $N_2$ replaced by a current source
+    $\Rightarrow$ $\Vcol{v}$ undetermined.
   \end{block}}
   \vfill
 \end{frame}
@@ -517,8 +623,8 @@
       \begin{itemize}\itemsep8pt
         \item<2-> A one-port is always a port: KCL on a closed surface around $N$.
         \item<3-> $\Icol{i}$ enters the $+$ terminal of $\Vcol{v}$.
-        \item<4-> The relation between $\Vcol{v}$ and $\Icol{i}$: the
-          \alert{$i$--$v$ characteristic}. A resistor: $\Vcol{v} = R\Icol{i}$.
+        \item<4-> The relation between $\Vcol{v}$ and $\Icol{i}$ is the
+          \alert{$i$--$v$ characteristic}, e.g.\ $\Vcol{v} = R\Icol{i}$ for a resistor.
       \end{itemize}
     \end{column}
   \end{columns}
@@ -760,13 +866,14 @@
   \begin{itemize}\itemsep10pt
     \item Series and parallel connections and source transformations simplify
       \alert{many} circuits, but not all.
-    \item<2-> Two systematic methods solve \alert{every} LTI resistive circuit:
+    \item<2-> Two methods write the equations of the circuit \alert{as it is}, without
+      transforming it, and work for \alert{every} LTI resistive circuit:
       \begin{enumerate}\itemsep4pt
         \item \alert{node voltage analysis}: the $n - 1$ node voltages are the unknowns;
         \item \alert{mesh current analysis}: the $b - n + 1$ mesh currents are the unknowns.
       \end{enumerate}
-    \item<3-> Both start from the matrices met earlier ($A$, $M$); now the element
-      equations are linear too.
+    \item<3-> Both start from the matrices met earlier ($A$, $M$), now with linear element
+      equations.
   \end{itemize}
   \vfill
 \end{frame}
@@ -775,8 +882,9 @@
 \begin{frame}{Summary}
   \vfill
   \begin{itemize}\itemsep7pt
-    \item \alert{LTI resistive}: no nonlinear element, no time-varying element, no $L$ or
-      $C$. Independent sources do not count. All equations are linear and algebraic.
+    \item \alert{LTI resistive}: apart from the independent sources (external inputs), every
+      element is linear, time-invariant and memoryless, so all equations are linear and
+      algebraic.
     \item \alert{Substitution}: replace $N_2$ by a voltage source $\Vcol{v_s} = \Vcol{v}$ or a
       current source $\Icol{i_s} = \Icol{i}$; nothing changes inside $N_1$.
     \item \alert{Equivalent one-ports}: the same $i$--$v$ characteristic; the rest cannot
