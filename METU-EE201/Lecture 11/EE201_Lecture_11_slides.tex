@@ -272,17 +272,18 @@
 \end{frame}
 
 %--------------------------------------------------------------
-\begin{frame}{Why this lecture?}
+\begin{frame}{Motivation}
   \vfill
   \begin{itemize}\itemsep10pt
-    \item \textbf{So far:} we simplified circuits by transforming them.
-    \item<2-> \textbf{Now:} we write the equations of the circuit \alert{as it is}, with a
-      \alert{systematic} procedure: the same steps for every circuit.
-    \item<3-> \textbf{The unknowns:} only the $n - 1$ \alert{node voltages}, not all $2b$
-      branch voltages and currents.
-    \item<4-> \textbf{The result:} a linear system that works for \alert{every} LTI
-      resistive circuit.
-    \item<5-> \textbf{Later:} mesh current analysis, the same idea with KCL and KVL swapped.
+    \item So far, we solved circuits by simplifying them: series, parallel, source
+      transformation.
+    \item<2-> These simplifications do \alert{not} work for every circuit.
+    \item<3-> \alert{Node voltage analysis} writes the equations of the circuit directly,
+      without changing the circuit.
+    \item<4-> Its unknowns are only the $n - 1$ \alert{node voltages}, instead of $2b$ branch
+      voltages and currents.
+    \item<5-> Its steps are the same for \alert{every} LTI resistive circuit.
+    \item<6-> Later, \alert{mesh current analysis} will do the same with mesh currents.
   \end{itemize}
   \vfill
 \end{frame}

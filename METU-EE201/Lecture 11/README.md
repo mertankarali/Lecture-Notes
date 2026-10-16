@@ -5,7 +5,7 @@ Lecture notes and slides for the eleventh lecture of EE201 (Section 2, Fall 2026
 | File | What it is |
 |---|---|
 | `EE201_Lecture_11.tex` | Handout / lecture notes (article, 5 pages). Self-contained: procedure, five worked examples, a summary. |
-| `EE201_Lecture_11_slides.tex` | Beamer deck (32 slides, 104 PDF pages) for the lecture itself — visual, low text. |
+| `EE201_Lecture_11_slides.tex` | Beamer deck (32 slides, 105 PDF pages) for the lecture itself — visual, low text. |
 | `build.sh` | Compiles both, removes auxiliary files, opens the PDFs. |
 
 ## Compiling
@@ -52,8 +52,8 @@ Then a summary table (situation → what to do).
 
 ## Slides
 
-After the review comes a "Why this lecture?" slide, and a roadmap slide opens each of the
+After the review comes a "Motivation" slide, and a roadmap slide opens each of the
 six parts (done parts greyed with a check mark, the current one highlighted). Questions are
 shown first and the answers on the next page; the node being written is highlighted in the
-circuit. Each step is an ordinary extra PDF page; that is why the deck has 32 slides but 104
+circuit. Each step is an ordinary extra PDF page; that is why the deck has 32 slides but 105
 pages.
