@@ -5,7 +5,7 @@ Lecture notes and slides for the eleventh lecture of EE201 (Section 2, Fall 2026
 | File | What it is |
 |---|---|
 | `EE201_Lecture_11.tex` | Handout / lecture notes (article, 5 pages). Self-contained: procedure, five worked examples, a summary. |
-| `EE201_Lecture_11_slides.tex` | Beamer deck (36 slides, 117 PDF pages) for the lecture itself — visual, low text. |
+| `EE201_Lecture_11_slides.tex` | Beamer deck (34 slides, 114 PDF pages) for the lecture itself — visual, low text. |
 | `build.sh` | Compiles both, removes auxiliary files, opens the PDFs. |
 
 ## Compiling
@@ -27,13 +27,11 @@ Following pp. 24–27 of Prof. Emre Tuna's notes, his recorded Lecture 11 (00:00
 first half of his recorded Lecture 12 (00:00–~35:00) on
 [METU OCW](https://ocw.metu.edu.tr/course/view.php?id=351).
 
-1. **The idea** (L11 00:00) — taught on a small example (i_s, R₁, R₂, R₃: 8 branch unknowns,
-   2 node voltages) in three steps: node voltages give the branch voltages (KVL holds
-   automatically), Ohm's law gives the currents, KCL gives the equations; the chain
-   e → v → i → KCL grows one box per step; then the general procedure (reference node, label
-   node voltages, KCL) and the current leaving node k through R, (e_k − e_j)/R
-2. **Resistors and current sources** — Example 11.1 (14 branch unknowns vs 3 node voltages),
-   KCL at each node, Y_n e = i_s; Y_n by inspection (diagonal, off-diagonal, right side);
+1. **The procedure, on an example** (L11 00:00) — Example 11.1 (14 branch unknowns vs 3 node
+   voltages) taught in four steps: choose a reference node; label the node voltages (every
+   branch voltage is a difference, so KVL holds automatically); write the currents,
+   (e_k − e_j)/R; KCL at every node except the ground
+2. **Matrix form** — Y_n e = i_s; Y_n by inspection (diagonal, off-diagonal, right side);
    why Y_n is symmetric: Y_n = A_R G A_Rᵀ, i_s = −A_S i_S
 3. **A voltage source to the ground** (Example II) — Example 11.2: KCL at node 3 gives nothing
    useful, but e₃ = v_s; remark (a known node voltage is not an unknown); Example 11.2
@@ -53,8 +51,9 @@ Then a summary table (situation → what to do).
 
 ## Slides
 
-After the review comes a "Motivation" slide, and a roadmap slide opens each of the
-seven parts (done parts greyed with a check mark, the current one highlighted). Questions are
+After the review comes a "Motivation" slide (what simplifying cannot do, what node voltage
+analysis does), and a roadmap slide opens each of the seven parts: a path of stops with
+what is new at each stop and a small circuit icon (done parts greyed with a check mark, the current one highlighted). Questions are
 shown first and the answers on the next page; the node being written is highlighted in the
-circuit. Each step is an ordinary extra PDF page; that is why the deck has 36 slides but 117
+circuit. Each step is an ordinary extra PDF page; that is why the deck has 34 slides but 114
 pages.

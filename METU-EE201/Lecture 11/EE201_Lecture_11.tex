@@ -143,6 +143,9 @@
 %  Examples 11.1 and 11.2.
 %  #1 = 0: i_s1, R1..R5, i_s2 (11.1);  1: i_s, R1..R4, v_s to ground (11.2);
 %  2: as 1, e_3 not a label (11.2 revisited)
+%  Stage of Example 11.1 drawings: 0 bare, 1 with the ground, 2 also node voltages (default)
+\newcount\exAst \exAst=2
+\newcommand{\nodeA}[3]{\ifnum\exAst>1 \nodev{#1}{#2}{#3}\else\fill (#1) circle (1.7pt);\fi}
 \newcommand{\exA}[1]{%
   \ifnum#1=0
     \draw (0,0) to[american current source, l=$\Icol{i_{s1}}$] (0,2);
@@ -156,15 +159,15 @@
   \ifnum#1=0
     \draw (3.8,2) -- (3.8,3.0) to[R, l=$R_5$] (5.8,3.0) -- (5.8,2);
     \draw (5.8,2) to[american current source, l=$\Icol{i_{s2}}$] (5.8,0);
-    \nodev{3.8,2}{above left}{$e_2$}
-    \nodev{5.8,2}{above right}{$e_3$}
+    \nodeA{3.8,2}{above left}{$e_2$}
+    \nodeA{5.8,2}{above right}{$e_3$}
   \else
     \draw (5.8,0) to[american voltage source, invert, l_=$\Vcol{v_s}$] (5.8,2);
     \nodev{3.8,2}{above}{$e_2$}
     \ifnum#1=1 \nodev{5.8,2}{above}{$e_3$}\else \fill (5.8,2) circle (1.7pt);\fi
   \fi
-  \nodev{1.8,2}{above}{$e_1$}
-  \gnd{3.8}}
+  \nodeA{1.8,2}{above}{$e_1$}
+  \ifnum\exAst>0 \gnd{3.8}\fi}
 %  Example 11.3: two voltage sources; v_s2 between nodes 1 and 2.
 %  #1 = 0: plain;  1: current i through v_s2;  2: the supernode
 \newcommand{\exB}[1]{%
@@ -218,14 +221,15 @@
       (1.55,4.45) -- (4.95,4.45) -- (4.95,1.6) -- (3.85,1.6) -- (3.85,2.9) -- (1.55,2.9) -- cycle;
     \node[nlab] at (5.25,4.45) {S};
   \fi}
-%  A first small example: i_s, R1, R2, R3.  #1 = 0: branch voltages and currents only;
+%  A first small example: i_s1, R1, R2, R3, i_s2.  #1 = 0: branch voltages and currents only;
 %  1: also the ground and the node voltages
 \newcommand{\exI}[1]{%
-  \draw (0,0) to[american current source, l=$\Icol{i_s}$] (0,2.6) -- (2.4,2.6)
-        to[R, l=$R_2$] (5.2,2.6);
+  \draw (0,0) to[american current source, l=$\Icol{i_{s1}}$] (0,2.6) -- (2.4,2.6)
+        to[R, l=$R_2$] (5.2,2.6) -- (7.2,2.6);
   \draw (2.4,2.6) to[R, l=$R_1$] (2.4,0);
   \draw (5.2,2.6) to[R, l=$R_3$] (5.2,0);
-  \draw (0,0) -- (5.2,0);
+  \draw (7.2,2.6) to[american current source, l=$\Icol{i_{s2}}$] (7.2,0);
+  \draw (0,0) -- (7.2,0);
   \node[pol] at (2.05,1.75) {$+$}; \node[pol] at (2.05,0.85) {$-$};
   \node[font=\small, text=cvolt] at (1.75,1.3) {$v_1$};
   \node[pol] at (3.42,2.25) {$+$}; \node[pol] at (4.25,2.25) {$-$};
@@ -273,81 +277,20 @@
 \end{tabular}
 \end{center}
 
-\textbf{Motivation.} An LTI resistive circuit can be solved in two ways: by transforming
-it into a simpler circuit, or by writing its equations as it is. Transforming works for many
-circuits, but not for all. This lecture gives a systematic way to write the equations of
-\emph{any} LTI resistive circuit: \textbf{node voltage analysis}. Its unknowns are only the
-$n-1$ node voltages, instead of the $2b$ branch voltages and currents. Mesh current analysis,
-the same idea with KCL and KVL swapped, comes later.
+\textbf{Motivation.} So far, circuits were solved by simplifying them. Simplifying changes the
+circuit: after $2\ohm \parallel 6\ohm = 1.5\ohm$, the current of each resistor is gone, and
+finding it means going back step by step. Some circuits cannot be simplified at all.
+\textbf{Node voltage analysis} writes the equations of the circuit as it is, with the same steps
+for every LTI resistive circuit. Its unknowns are only the $n-1$ node voltages; every branch
+voltage and current follows from them. Mesh current analysis comes later.
 
 %==============================================================
-\section{The idea: node voltages as the unknowns}
+\section{The procedure, on an example}
 
-The circuit below has $4$ branches, so $4$ branch voltages and $4$ branch currents: $8$
-unknowns. With node voltages, only $2$ unknowns are left. Three steps show how.
+The circuit of Example 11.1 has $b = 7$ branches, so $14$ branch voltages and currents. Node
+voltage analysis needs only $3$ unknowns. Four steps find them.
 
-\begin{examplebox}[A small example]
-\begin{minipage}[c]{0.43\linewidth}
-\centering
-\begin{tikzpicture}[scale=0.85]
-  \exI{1}
-\end{tikzpicture}
-\end{minipage}\hfill
-\begin{minipage}[c]{0.55\linewidth}
-\textbf{Step 1: branch voltages.} With the bottom node as the ground,
-$\Vcol{v_1} = \e{1}$, $\Vcol{v_2} = \e{1} - \e{2}$, $\Vcol{v_3} = \e{2}$. KVL around the loop,
-$\Vcol{v_1} = \Vcol{v_2} + \Vcol{v_3}$, holds automatically: $\e{1} = (\e{1} - \e{2}) + \e{2}$.
-
-\textbf{Step 2: branch currents.} Ohm's law gives
-$\Icol{i_1} = \e{1}/R_1$, $\Icol{i_2} = (\e{1} - \e{2})/R_2$, $\Icol{i_3} = \e{2}/R_3$.
-
-\textbf{Step 3: KCL.} At nodes 1 and 2:
-\[
-  -\Icol{i_s} + \frac{\e{1}}{R_1} + \frac{\e{1} - \e{2}}{R_2} = 0, \qquad
-  -\frac{\e{1} - \e{2}}{R_2} + \frac{\e{2}}{R_3} = 0 .
-\]
-\end{minipage}
-
-\smallskip
-Two equations in $\e{1}$, $\e{2}$; then Steps 1 and 2 give every branch voltage and current.
-\end{examplebox}
-
-In general, $\Vcol{\mathbf{v}} = A^T\Vcol{\mathbf{e}}$ (KVL holds automatically), the element
-laws give $\Icol{\mathbf{i}}$, and KCL $A\Icol{\mathbf{i}} = \mathbf{0}$ gives $n - 1$ equations
-in the $n - 1$ node voltages.
-
-\begin{definitionbox}{Node voltage analysis: the procedure}
-\begin{minipage}[c]{0.55\linewidth}
-\begin{enumerate}
-  \item Choose a \textbf{reference node} (ground); its node voltage is $0$.
-  \item Label the other node voltages $\e{1}, \dots, \e{n-1}$.
-  \item Write \textbf{KCL} at every node except the ground, with each current written in
-        terms of node voltages.
-\end{enumerate}
-\end{minipage}\hfill
-\begin{minipage}[c]{0.42\linewidth}
-\centering
-\begin{tikzpicture}[scale=0.85]
-  \draw (0,1.6) to[R, l=$R$] (2.4,1.6);
-  \nodev{0,1.6}{left}{$e_k$} \nodev{2.4,1.6}{right}{$e_j$}
-  \draw[iar] (0.25,1.25) -- (0.75,1.25); \node[font=\small, text=ccur] at (0.5,1.0) {$i$};
-  \node[font=\small] at (1.2,0.35) {$\Icol{i} = \dfrac{\e{k} - \e{j}}{R} = G\,(\e{k} - \e{j})$};
-\end{tikzpicture}\\[2pt]
-\small The current \emph{leaving} node $k$ through $R$; with the other end at the ground, it
-is $\e{k}/R$.
-\end{minipage}
-\end{definitionbox}
-
-%==============================================================
-\section{Resistors and current sources}
-
-Start with circuits whose elements are only resistors and current sources. Every branch
-current is then either known (a source) or a conductance times a difference of node voltages.
-The circuit of Example 11.1 has $b = 7$ branches, so $2b = 14$ branch voltages and currents.
-With the bottom node as the ground, only $n - 1 = 3$ node voltages are unknown.
-
-\begin{examplebox}[Example 11.1 --- only current sources: KCL at nodes 1, 2 and 3]
-
+\begin{examplebox}[Example 11.1 --- node voltage analysis step by step]
 \begin{minipage}[c]{0.42\linewidth}
 \centering
 \begin{tikzpicture}[scale=0.72]
@@ -355,19 +298,33 @@ With the bottom node as the ground, only $n - 1 = 3$ node voltages are unknown.
 \end{tikzpicture}
 \end{minipage}\hfill
 \begin{minipage}[c]{0.56\linewidth}
-\small
-\begin{alignat*}{2}
-  &\text{node 1:}\ \ & -\Icol{i_{s1}} + \frac{\e{1}}{R_1} + \frac{\e{1} - \e{2}}{R_2} &= 0\\
-  &\text{node 2:}\ \ & \frac{\e{2} - \e{1}}{R_2} + \frac{\e{2}}{R_3} + \frac{\e{2} - \e{3}}{R_4}
-                    + \frac{\e{2} - \e{3}}{R_5} &= 0\\
-  &\text{node 3:}\ \ & \frac{\e{3} - \e{2}}{R_4} + \frac{\e{3} - \e{2}}{R_5} + \Icol{i_{s2}} &= 0
-\end{alignat*}
+\begin{enumerate}
+  \item \textbf{Reference node.} Choose the bottom node as the ground; its node voltage is $0$.
+  \item \textbf{Node voltages.} Label the others $\e{1}$, $\e{2}$, $\e{3}$. Every branch
+        voltage is a difference of them ($\e{1} - \e{2}$ for $R_2$), so KVL holds automatically.
+  \item \textbf{Currents.} The current leaving node $k$ through $R$ to node $j$ is
+        $(\e{k} - \e{j})/R$; to the ground, $\e{k}/R$.
+  \item \textbf{KCL} at every node except the ground:
+\end{enumerate}
 \end{minipage}
-
+\begin{alignat*}{2}
+  &\text{node 1:}\qquad & -\Icol{i_{s1}} + \frac{\e{1}}{R_1} + \frac{\e{1} - \e{2}}{R_2} &= 0\\
+  &\text{node 2:}\qquad & \frac{\e{2} - \e{1}}{R_2} + \frac{\e{2}}{R_3} + \frac{\e{2} - \e{3}}{R_4}
+                    + \frac{\e{2} - \e{3}}{R_5} &= 0\\
+  &\text{node 3:}\qquad & \frac{\e{3} - \e{2}}{R_4} + \frac{\e{3} - \e{2}}{R_5} + \Icol{i_{s2}} &= 0
+\end{alignat*}
+The source $\Icol{i_{s1}}$ points into node 1, so it enters with a minus sign. Three equations,
+three unknowns; then Steps 2 and 3 give every branch voltage and current.
 \end{examplebox}
 
-Every term is a current leaving the node; the source $\Icol{i_{s1}}$ points into node 1, so
-it enters with a minus sign. With $G_k = 1/R_k$ and the terms collected, the three equations of Example 11.1 become
+In general, $\Vcol{\mathbf{v}} = A^T\Vcol{\mathbf{e}}$ (KVL holds automatically), the element
+laws give $\Icol{\mathbf{i}}$, and KCL $A\Icol{\mathbf{i}} = \mathbf{0}$ gives $n - 1$ equations
+in the $n - 1$ node voltages.
+
+%==============================================================
+\section{Matrix form}
+
+With $G_k = 1/R_k$ and the terms collected, the three equations of Example 11.1 become
 \[
   \underbrace{\begin{bmatrix}
     G_1 + G_2 & -G_2 & 0\\
