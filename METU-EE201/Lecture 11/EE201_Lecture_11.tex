@@ -277,11 +277,11 @@
 \end{tabular}
 \end{center}
 
-\textbf{Motivation.} So far, circuits were solved by simplifying them. Simplifying changes the
-circuit: after $2\ohm \parallel 6\ohm = 1.5\ohm$, the current of each resistor is gone, and
-finding it means going back step by step. Some circuits cannot be simplified at all.
-\textbf{Node voltage analysis} writes the equations of the circuit as it is, with the same steps
-for every LTI resistive circuit. Its unknowns are only the $n-1$ node voltages; every branch
+\textbf{Motivation.} So far, circuits were solved by simplifying them. Simplifying
+fundamentally changes the circuit; that is its whole point. To find the quantities of the
+original circuit, we must go back step by step, and some circuits cannot be simplified at all.
+\textbf{Node voltage analysis} works on the original circuit, without changing it. It works
+for every LTI resistive circuit; voltage sources need small additions, such as the supernode. Its unknowns are only the $n-1$ node voltages; every branch
 voltage and current follows from them. Mesh current analysis comes later.
 
 %==============================================================

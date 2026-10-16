@@ -324,7 +324,7 @@
       \end{block}
     \end{column}
     \begin{column}{0.47\textwidth}
-      \begin{block}{Write its equations as it is}
+      \begin{block}{Keep the original circuit}
         \begin{itemize}\itemsep3pt
           \item KCL: $A\Icol{\mathbf{i}} = \mathbf{0}$.
           \item KVL: $\Vcol{\mathbf{v}} = A^T\Vcol{\mathbf{e}}$.
@@ -353,29 +353,28 @@
         \small
         \begin{itemize}\itemsep4pt
           \item So far, we solved circuits by simplifying them.
-          \item<2-> Simplifying \alert{changes} the circuit.
-          \item<3-> After $2\ohm \parallel 6\ohm = 1.5\ohm$, the current of each resistor is
-            gone.
-          \item<4-> To find them, we must go back step by step.
-          \item<5-> Some circuits cannot be simplified at all.
+          \item<2-> Simplifying \alert{fundamentally changes} the circuit; that is its whole
+            point.
+          \item<3-> To find the quantities of the original circuit, we must go back step by step.
+          \item<4-> Some circuits cannot be simplified at all.
         \end{itemize}
       \end{block}
     \end{column}
     \begin{column}{0.485\textwidth}
-      \onslide<6->{%
+      \onslide<5->{%
       \begin{block}{Node voltage analysis}
         \small
         \begin{itemize}\itemsep4pt
-          \item It writes the equations of the circuit \alert{as it is}.
-          \item<7-> Its unknowns are only the $n - 1$ \alert{node voltages}.
-          \item<8-> From them, \alert{every} branch voltage and current follows.
-          \item<9-> Its steps are the same for every LTI resistive circuit.
+          \item It works on the \alert{original} circuit, without changing it.
+          \item<6-> Its unknowns are only the $n - 1$ \alert{node voltages}.
+          \item<7-> From them, \alert{every} branch voltage and current follows.
+          \item<8-> It works for every LTI resistive circuit; voltage sources need small additions, such as the supernode.
         \end{itemize}
       \end{block}}
     \end{column}
   \end{columns}
   \vfill
-  \onslide<10->{\centering Later, mesh current analysis will do the same with mesh currents.\par}
+  \onslide<9->{\centering Later, mesh current analysis will do the same with mesh currents.\par}
   \vfill
 \end{frame}
 
