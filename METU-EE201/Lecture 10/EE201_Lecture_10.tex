@@ -247,21 +247,21 @@
 \newcommand{\exStep}[1]{%
   \ifcase#1\or
     \draw (0,0) to[american current source, l=$6\A$] (0,2);
-    \draw (0,2) -- (4.0,2); \draw (0,0) -- (4.0,0);
-    \draw (1.3,2) to[R, l_=$2\ohm$] (1.3,0);
-    \draw (2.2,2) to[R, l=$6\ohm$] (2.2,0);
+    \draw (0,2) -- (4.4,2); \draw (0,0) -- (4.4,0);
+    \draw (0.95,2) to[R, l=$2\ohm$] (0.95,0);
+    \draw (2.6,2) to[R, l=$6\ohm$] (2.6,0);
   \or
     \draw (0,0) to[american current source, l=$6\A$] (0,2);
-    \draw (0,2) -- (4.0,2); \draw (0,0) -- (4.0,0);
+    \draw (0,2) -- (4.4,2); \draw (0,0) -- (4.4,0);
     \draw (1.6,2) to[R, l=$1.5\ohm$] (1.6,0);
   \or
     \draw (0,0) to[american voltage source, invert, l=$9\V$] (0,2);
-    \draw (0,2) to[R, l=$1.5\ohm$] (2.2,2) -- (4.0,2); \draw (0,0) -- (4.0,0);
+    \draw (0,2) to[R, l=$1.5\ohm$] (2.2,2) -- (4.4,2); \draw (0,0) -- (4.4,0);
   \fi
-  \draw[dashed, metugray, rounded corners=3pt] (-0.95,-0.4) rectangle (2.9,2.95);
-  \draw (4.0,2) to[R, l=$R_L$] (4.0,0);
-  \draw[fill=white] (3.2,2) circle (1.8pt) node[above=1pt, font=\small] {$a$};
-  \draw[fill=white] (3.2,0) circle (1.8pt) node[below=1pt, font=\small] {$b$};}
+  \draw[dashed, metugray, rounded corners=3pt] (-0.95,-0.4) rectangle (3.3,2.95);
+  \draw (4.4,2) to[R, l=$R_L$] (4.4,0);
+  \draw[fill=white] (3.6,2) circle (1.8pt) node[above=1pt, font=\small] {$a$};
+  \draw[fill=white] (3.6,0) circle (1.8pt) node[below=1pt, font=\small] {$b$};}
 %  The part left of a-b alone (#1 = 0: 12 V, 2 ohm, 6 ohm;  1: 9 V with 1.5 ohm)
 \newcommand{\exLeft}[1]{%
   \draw[dashed, metugray, rounded corners=3pt] (-0.95,-0.4) rectangle (2.55,2.95);
@@ -447,12 +447,12 @@ sources.
 \begin{examplebox}[Example 10.2 --- what does $R_L$ see?]
 \begin{minipage}[c]{0.6\linewidth}
 \centering
-\begin{tabular}{@{}c@{\hspace{2mm}}c@{}}
+\begin{tabular}{@{}c@{\hspace{0.5mm}}c@{}}
 \begin{tikzpicture}[scale=0.66]\exN{3}\vilab{2.85}\end{tikzpicture} &
 \begin{tikzpicture}[scale=0.66]\exLeft{0}\vilab{2.85}\end{tikzpicture}\\[-2pt]
 {\scriptsize the circuit} & {\scriptsize the part left of $a$--$b$}\\[4pt]
 \begin{tikzpicture}[scale=0.66]\exLeft{1}\vilab{2.85}\end{tikzpicture} &
-\begin{tikzpicture}[scale=0.66]\exStep{3}\vilab{3.2}\end{tikzpicture}\\[-2pt]
+\begin{tikzpicture}[scale=0.66]\exStep{3}\vilab{3.6}\end{tikzpicture}\\[-2pt]
 {\scriptsize the same law $\Vcol{v} = 9 - 1.5\Icol{i}$} & {\scriptsize any load}
 \end{tabular}
 \end{minipage}%
