@@ -76,6 +76,13 @@
 \newcommand{\Sie}{\uni{S}}
 
 
+%  voltage sources: smaller + and - inside the circle, further apart
+\ctikzset{bipoles/vsourceam/inner plus={\tiny$+$},
+          bipoles/vsourceam/inner minus={\tiny$\vphantom{+}-$},
+          bipoles/vsourceam/margin=0.85,
+          bipoles/cvsourceam/inner plus={\tiny$+$},
+          bipoles/cvsourceam/inner minus={\tiny$\vphantom{+}-$},
+          bipoles/cvsourceam/margin=0.85}
 \ctikzset{bipoles/length=0.9cm, label/align=straight,
           bipoles/generic/height=0.28, bipoles/generic/width=0.62}
 \tikzset{
@@ -1181,39 +1188,6 @@
   \only<3>{Current divider: $\Icol{i_j} = \dfrac{G_j}{G_{eq}}\,\Icol{i}$. \quad Two
     resistors: $R_{eq} = \dfrac{R_1R_2}{R_1 + R_2}$}%
   \only<4>{All arrows towards $a$; a source turned the other way enters with $-$.}
-\end{frame}
-
-%--------------------------------------------------------------
-\begin{frame}{Two connections to avoid}
-  \begin{columns}[c,onlytextwidth]
-    \begin{column}{0.5\textwidth}
-      \centering
-      \begin{tikzpicture}[scale=1.0]
-        \draw (0,0) to[american voltage source, invert, l=$5\V$] (0,1.8);
-        \draw (0,1.8) -- (1.6,1.8); \draw (0,0) -- (1.6,0);
-        \draw (1.6,0) to[american voltage source, invert, l_=$3\V$] (1.6,1.8);
-      \end{tikzpicture}\\[4pt]
-      two voltage sources in parallel\\[10pt]
-      \onslide<2->{\alert{KVL fails}: $5 \ne 3$.}
-    \end{column}
-    \begin{column}{0.5\textwidth}
-      \centering
-      \begin{tikzpicture}[scale=1.0]
-        \draw (0,0) to[american current source, l=$2\A$] (0,1.8);
-        \draw (0,1.8) -- (1.6,1.8);
-        \draw (1.6,1.8) to[american current source, l=$1\A$] (1.6,0);
-        \draw (1.6,0) -- (0,0);
-      \end{tikzpicture}\\[4pt]
-      two current sources in series\\[10pt]
-      \onslide<2->{\alert{KCL fails}: $2 \ne 1$.}
-    \end{column}
-  \end{columns}
-  \vfill
-  \begin{center}
-    \only<1>{Are these allowed?}%
-    \only<2->{With \alert{equal} values they are allowed, but the shared current (or voltage)
-      is not fixed.}
-  \end{center}
 \end{frame}
 
 %==============================================================

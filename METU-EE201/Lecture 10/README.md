@@ -5,7 +5,7 @@ Lecture notes and slides for the tenth lecture of EE201 (Section 2, Fall 2026/27
 | File | What it is |
 |---|---|
 | `EE201_Lecture_10.tex` | Handout / lecture notes (article, 6 pages). Self-contained: definitions, six worked examples, a summary. |
-| `EE201_Lecture_10_slides.tex` | Beamer deck (41 slides, 135 PDF pages) for the lecture itself — visual, low text. |
+| `EE201_Lecture_10_slides.tex` | Beamer deck (40 slides, 133 PDF pages) for the lecture itself — visual, low text. |
 | `build.sh` | Compiles both, removes auxiliary files, opens the PDFs. |
 
 ## Compiling
@@ -51,8 +51,7 @@ Following pp. 21–23 of Prof. Emre Tuna's notes and his recorded Lecture 10 on
 4. **Ports and equivalent one-ports** (15:37, 19:43) — port condition, one-port, i–v
    characteristic; equivalent one-ports give the same branch values in any N₀
 5. **Series and parallel connections** (24:03, 27:53) — resistors and voltage sources in
-   series, resistors and current sources in parallel, voltage and current dividers; two
-   connections to avoid (parallel voltage sources, series current sources)
+   series, resistors and current sources in parallel, voltage and current dividers
 6. **One source and one resistor** (32:15, 41:05) — v = R₁i + v_s and v = R₂i + R₂i_s,
    equivalent when R₁ = R₂ = R and v_s = R i_s (i–v line, open-circuit voltage, short-circuit
    current); Example 10.5 (20 V, 10 Ω ≡ 2 A, 10 Ω); Example 10.6 reaches the same 9 V with
@@ -69,5 +68,5 @@ six main parts (done parts greyed with a check mark, the current one highlighted
 
 The definitions, the substitution theorem, the examples and the source transformation build
 up step by step with beamer overlays; questions are shown first and the answers on the next
-page. Each step is an ordinary extra PDF page; that is why the deck has 41 slides but 135
+page. Each step is an ordinary extra PDF page; that is why the deck has 40 slides but 133
 pages.

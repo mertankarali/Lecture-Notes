@@ -100,6 +100,13 @@
   before upper={\setlength{\parskip}{0.6ex plus .1ex}}}
 
 %-------------------- circuitikz defaults ---------------------
+%  voltage sources: smaller + and - inside the circle, further apart
+\ctikzset{bipoles/vsourceam/inner plus={\tiny$+$},
+          bipoles/vsourceam/inner minus={\tiny$\vphantom{+}-$},
+          bipoles/vsourceam/margin=0.85,
+          bipoles/cvsourceam/inner plus={\tiny$+$},
+          bipoles/cvsourceam/inner minus={\tiny$\vphantom{+}-$},
+          bipoles/cvsourceam/margin=0.85}
 \ctikzset{bipoles/length=0.9cm, color=black,
           label/align=straight,
           bipoles/generic/height=0.28, bipoles/generic/width=0.62}
@@ -754,12 +761,7 @@ G_{eq}\Vcol{v}$, so $G_{eq} = G_1 + \dots + G_k$. The share of $R_j$ is
 $\Icol{i_j} = (G_j/G_{eq})\,\Icol{i}$ (\textbf{current divider}). Two resistors:
 $R_{eq} = R_1R_2/(R_1 + R_2)$.
 
-\begin{cautionbox}[Two connections that are not allowed]
-Two voltage sources with $v_{s1} \ne v_{s2}$ in parallel break KVL. Two current sources with
-$i_{s1} \ne i_{s2}$ in series break KCL. With equal values the connection is allowed, but the
-current shared by the two voltage sources (or the voltage shared by the two current sources)
-is not fixed.
-\end{cautionbox}
+
 
 %==============================================================
 \section{One source and one resistor}
