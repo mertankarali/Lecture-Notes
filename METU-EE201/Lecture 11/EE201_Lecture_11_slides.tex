@@ -113,7 +113,7 @@
 %  Ground symbol below (#1,0)
 \newcommand{\gnd}[1]{\draw (#1,0) -- (#1,-0.2) node[ground] {};}
 %  Examples 11.1 and 11.2.
-%  #1 = 0: i_s1, R1..R5, i_s2 (11.1);  1: i_s, R1..R4, v_s to ground (11.2);
+%  #1 = 0: i_s1, R1..R5 (R5 from node 1 to node 3), i_s2 (11.1);  1: i_s, R1..R4, v_s to ground (11.2);
 %  2: as 1, e_3 not a label (11.2 revisited)
 %  Stage of Example 11.1 drawings: 0 bare, 1 with the ground, 2 also node voltages (default)
 \newcount\exAst \exAst=2
@@ -129,16 +129,17 @@
   \draw (3.8,2) to[R, l_=$R_3$] (3.8,0);
   \draw (0,0) -- (5.8,0);
   \ifnum#1=0
-    \draw (3.8,2) -- (3.8,3.0) to[R, l=$R_5$] (5.8,3.0) -- (5.8,2);
+    \draw (1.8,2) -- (1.8,3.0) to[R, l=$R_5$] (5.8,3.0) -- (5.8,2);
     \draw (5.8,2) to[american current source, l=$\Icol{i_{s2}}$] (5.8,0);
-    \nodeA{3.8,2}{above left}{$e_2$}
+    \nodeA{3.8,2}{above}{$e_2$}
     \nodeA{5.8,2}{above right}{$e_3$}
+    \nodeA{1.8,2}{above left}{$e_1$}
   \else
     \draw (5.8,0) to[american voltage source, invert, l_=$\Vcol{v_s}$] (5.8,2);
     \nodev{3.8,2}{above}{$e_2$}
     \ifnum#1=1 \nodev{5.8,2}{above}{$e_3$}\else \fill (5.8,2) circle (1.7pt);\fi
   \fi
-  \nodeA{1.8,2}{above}{$e_1$}
+  \ifnum#1=0\else\nodeA{1.8,2}{above}{$e_1$}\fi
   \ifnum\exAst>0 \gnd{3.8}\fi}
 %  Example 11.3: two voltage sources; v_s2 between nodes 1 and 2.
 %  #1 = 0: plain;  1: current i through v_s2;  2: the supernode
@@ -258,43 +259,56 @@
     \draw (-0.9,0.3) -- (-0.9,-0.1) node[ground] {};
     \draw[black!40] (0.9,0.3) -- (0.9,-0.1) node[ground, black!40] {};
   \fi}
-\newcommand{\rmstop}[3]{% #1 index, #2 title, #3 what is new
-  \pgfmathsetmacro{\yy}{-(#1-1)*0.86}
-  \ifnum#1<\rmcur\relax
-    \node[circle, fill=cpow, text=white, inner sep=0pt, minimum size=4.6mm, font=\scriptsize\bfseries] at (0,\yy) {\checkmark};
-    \node[anchor=west, text=black!40] at (0.45,\yy) {#2};
-    \node[anchor=west, text=black!35, font=\small] at (7.25,\yy) {#3};
-  \else\ifnum#1=\rmcur\relax
-    \node[circle, fill=metured, text=white, inner sep=0pt, minimum size=5.4mm, font=\scriptsize\bfseries] at (0,\yy) {#1};
-    \node[anchor=west, text=metured, font=\bfseries] at (0.45,\yy) {#2};
-    \node[anchor=west, text=metured, font=\small] at (7.25,\yy) {#3};
+%  Roadmap: four stations on a road; each station adds a new kind of source.
+%  Stops 1-7 are the sub-items: station of stop k = \rmst{k}
+\newcommand{\rmst}[1]{\ifcase#1\or1\or1\or2\or2\or2\or3\or4\fi}
+%  #1 station, #2 x, #3 title, #4 icon number
+\newcommand{\rmstation}[4]{%
+  \ifnum#1<\rmS\relax
+    \node[circle, fill=cpow, text=white, inner sep=0pt, minimum size=5.4mm, font=\scriptsize\bfseries] at (#2,0) {\checkmark};
+    \node[text=black!40, font=\bfseries] at (#2,0.62) {#3};
+  \else\ifnum#1=\rmS\relax
+    \node[circle, fill=metured, text=white, inner sep=0pt, minimum size=6.2mm, font=\small\bfseries] at (#2,0) {#1};
+    \node[text=metured, font=\bfseries] at (#2,0.62) {#3};
   \else
-    \node[circle, draw=metugray, fill=white, text=metugray, inner sep=0pt, minimum size=4.6mm, font=\scriptsize\bfseries] at (0,\yy) {#1};
-    \node[anchor=west] at (0.45,\yy) {#2};
-    \node[anchor=west, text=black!60, font=\small] at (7.25,\yy) {#3};
+    \node[circle, draw=metugray, fill=white, text=metugray, inner sep=0pt, minimum size=5.4mm, font=\scriptsize\bfseries] at (#2,0) {#1};
+    \node[font=\bfseries] at (#2,0.62) {#3};
   \fi\fi
-  \begin{scope}[shift={(12.95,\yy)}, scale=0.42, transform shape]
-    \ifnum#1>\rmcur\relax\begin{scope}[opacity=0.55]\rmicon{#1}\end{scope}\else\rmicon{#1}\fi
+  \begin{scope}[shift={(#2,1.45)}, scale=0.42, transform shape]
+    \ifnum#1>\rmS\relax\begin{scope}[opacity=0.5]\rmicon{#4}\end{scope}\else\rmicon{#4}\fi
   \end{scope}}
+%  #1 stop number, #2 x, #3 y, #4 text
+\newcommand{\rmsub}[4]{%
+  \ifnum#1<\rmcur\relax
+    \node[text width=3.05cm, align=center, font=\small, text=black!40] at (#2,#3) {#4\ \textcolor{cpow}{\checkmark}};
+  \else\ifnum#1=\rmcur\relax
+    \node[text width=3.05cm, align=center, font=\small\bfseries, text=metured,
+          draw=metured, rounded corners=2pt, inner sep=2pt] at (#2,#3) {#4};
+  \else
+    \node[text width=3.05cm, align=center, font=\small] at (#2,#3) {#4};
+  \fi\fi}
 \newcommand{\roadmapframe}[1]{%
   \begin{frame}{Roadmap}
-    \def\rmcur{#1}%
+    \def\rmcur{#1}\edef\rmS{\rmst{#1}}%
+    \vfill
     \centering
     \begin{tikzpicture}
-      \draw[metugray!50, line width=2pt] (0,0) -- (0,-5.16);
-      \pgfmathsetmacro{\yd}{-(#1-1)*0.86}
-      \ifnum#1>1 \draw[cpow, line width=2pt] (0,0) -- (0,\yd); \fi
-      \node[anchor=west, font=\scriptsize\bfseries, text=metugray] at (0.45,0.62) {STOP};
-      \node[anchor=west, font=\scriptsize\bfseries, text=metugray] at (7.25,0.62) {WHAT IS NEW};
-      \rmstop{1}{The procedure, on an example}{node voltages as unknowns}
-      \rmstop{2}{Matrix form}{$Y_n\Vcol{\mathbf{e}} = \Icol{\mathbf{i}_s}$, by inspection}
-      \rmstop{3}{A voltage source to the ground}{a known node voltage}
-      \rmstop{4}{A voltage source between two nodes}{its current as an unknown}
-      \rmstop{5}{The same, with a supernode}{one fewer unknown}
-      \rmstop{6}{Dependent sources}{a constraint equation}
-      \rmstop{7}{Choosing the ground}{the same answer}
-    \end{tikzpicture}\\[6pt]
-    {\small From circuits with current sources only to the general case.}
+      \draw[metugray!45, line width=3pt, -{Stealth[length=4mm]}] (0,0) -- (13.3,0);
+      \rmstation{1}{1.75}{Current sources}{1}
+      \rmstation{2}{5.0}{Voltage sources}{4}
+      \rmstation{3}{8.45}{Dependent sources}{6}
+      \rmstation{4}{11.65}{The ground}{7}
+      \rmsub{1}{1.75}{-0.8}{the procedure, on an example}
+      \rmsub{2}{1.75}{-1.75}{matrix form}
+      \rmsub{3}{5.0}{-0.8}{one end at the ground}
+      \rmsub{4}{5.0}{-1.75}{between two nodes: Method I}
+      \rmsub{5}{5.0}{-2.7}{Method II: the supernode}
+      \rmsub{6}{8.45}{-0.8}{a constraint equation}
+      \rmsub{7}{11.65}{-0.8}{does its choice matter?}
+    \end{tikzpicture}
+    \vfill
+    {\small Each station adds a new kind of source; the last one asks about the ground.}
+    \vfill
   \end{frame}}
 
 \begin{document}
@@ -431,8 +445,8 @@
       \centering
       \begin{tikzpicture}[scale=0.85]
         \only<3->{%
-          \node[pol] at (2.4,1.68) {$+$}; \node[pol] at (3.2,1.68) {$-$};
-          \node[font=\small, text=cvolt] at (2.8,1.62) {$v$};}
+          \node[pol] at (2.25,1.68) {$+$}; \node[pol] at (3.35,1.68) {$-$};
+          \node[font=\small, text=cvolt] at (2.8,1.58) {$v_{R_2}$};}
         \exA{0}
       \end{tikzpicture}
     \end{column}
@@ -442,10 +456,10 @@
       \onslide<2->{%
       These are the unknowns.\\[8pt]}
       \onslide<3->{%
-      Every branch voltage is a difference of node voltages: \ $\Vcol{v} = \e{1} - \e{2}$ for $R_2$.\\[8pt]}
+      Every branch voltage is a difference of node voltages: \ $\Vcol{v_{R_2}} = \e{1} - \e{2}$.\\[8pt]}
       \onslide<4->{%
       So KVL holds \alert{automatically}: around $R_1$, $R_2$, $R_3$,
-      $\e{1} = (\e{1} - \e{2}) + \e{2}$.}
+      $\Vcol{v_{R_1}} = \Vcol{v_{R_2}} + \Vcol{v_{R_3}}$ is $\e{1} = (\e{1} - \e{2}) + \e{2}$.}
     \end{column}
   \end{columns}
 \end{frame}
@@ -488,14 +502,14 @@
     \begin{column}{0.5\textwidth}
       \small
       \textbf{Node 1:}\\[2pt]
-      $\displaystyle -\Icol{i_{s1}} + \frac{\e{1}}{R_1} + \frac{\e{1} - \e{2}}{R_2} = 0$\\[6pt]
+      $\displaystyle -\Icol{i_{s1}} + \frac{\e{1}}{R_1} + \frac{\e{1} - \e{2}}{R_2}
+        + \frac{\e{1} - \e{3}}{R_5} = 0$\\[6pt]
       \onslide<2->{%
       \textbf{Node 2:}\\[2pt]
-      $\displaystyle \frac{\e{2} - \e{1}}{R_2} + \frac{\e{2}}{R_3} + \frac{\e{2} - \e{3}}{R_4}
-        + \frac{\e{2} - \e{3}}{R_5} = 0$\\[6pt]}
+      $\displaystyle \frac{\e{2} - \e{1}}{R_2} + \frac{\e{2}}{R_3} + \frac{\e{2} - \e{3}}{R_4} = 0$\\[6pt]}
       \onslide<3->{%
       \textbf{Node 3:}\\[2pt]
-      $\displaystyle \frac{\e{3} - \e{2}}{R_4} + \frac{\e{3} - \e{2}}{R_5} + \Icol{i_{s2}} = 0$\\[6pt]}
+      $\displaystyle \frac{\e{3} - \e{2}}{R_4} + \frac{\e{3} - \e{1}}{R_5} + \Icol{i_{s2}} = 0$\\[6pt]}
       \onslide<4->{%
       A source pointing \alert{into} the node enters with a minus sign.\\[3pt]}
       \onslide<5->{%
@@ -514,18 +528,18 @@
   With the conductances $G_k = 1/R_k$:
   \[
     \begin{aligned}
-      (G_1 + G_2)\,\e{1} - G_2\,\e{2} &= \Icol{i_{s1}}\\
-      -G_2\,\e{1} + (G_2 + G_3 + G_4 + G_5)\,\e{2} - (G_4 + G_5)\,\e{3} &= 0\\
-      -(G_4 + G_5)\,\e{2} + (G_4 + G_5)\,\e{3} &= -\Icol{i_{s2}}
+      (G_1 + G_2 + G_5)\,\e{1} - G_2\,\e{2} - G_5\,\e{3} &= \Icol{i_{s1}}\\
+      -G_2\,\e{1} + (G_2 + G_3 + G_4)\,\e{2} - G_4\,\e{3} &= 0\\
+      -G_5\,\e{1} - G_4\,\e{2} + (G_4 + G_5)\,\e{3} &= -\Icol{i_{s2}}
     \end{aligned}
   \]
   \vfill
   \onslide<2->{%
   \[
     \underbrace{\begin{bmatrix}
-      G_1 + G_2 & -G_2 & 0\\
-      -G_2 & G_2 + G_3 + G_4 + G_5 & -(G_4 + G_5)\\
-      0 & -(G_4 + G_5) & G_4 + G_5
+      G_1 + G_2 + G_5 & -G_2 & -G_5\\
+      -G_2 & G_2 + G_3 + G_4 & -G_4\\
+      -G_5 & -G_4 & G_4 + G_5
     \end{bmatrix}}_{Y_n}
     \underbrace{\begin{bmatrix} \e{1}\\ \e{2}\\ \e{3} \end{bmatrix}}_{\Vcol{\mathbf{e}}}
     =
@@ -539,7 +553,7 @@
 \end{frame}
 
 %--------------------------------------------------------------
-\begin{frame}{Writing $Y_n$ by inspection}
+\begin{frame}{Writing $Y_n$ directly from the circuit}
   \begin{columns}[c,onlytextwidth]
     \begin{column}{0.48\textwidth}
       \centering
@@ -548,9 +562,9 @@
       \end{tikzpicture}\\[8pt]
       {\small
       $\begin{bmatrix}
-        \alert{G_1 + G_2} & -G_2 & 0\\
-        -G_2 & \alert{G_2 + \dots + G_5} & -(G_4 + G_5)\\
-        0 & -(G_4 + G_5) & \alert{G_4 + G_5}
+        \alert{G_1 + G_2 + G_5} & -G_2 & -G_5\\
+        -G_2 & \alert{G_2 + G_3 + G_4} & -G_4\\
+        -G_5 & -G_4 & \alert{G_4 + G_5}
       \end{bmatrix}$}
     \end{column}
     \begin{column}{0.5\textwidth}
@@ -950,7 +964,7 @@
   \vfill
   \onslide<3->{%
   \begin{block}{Remark}
-    If a dependent voltage source is connected between node $k$ and the ground, do
+    If a dependent voltage source sits between node $k$ and the ground, do
     \alert{not} write KCL at node $k$: its current is not known.\\[4pt]
     Write the constraint that the dependent source gives instead.
   \end{block}}
@@ -1026,7 +1040,7 @@
   \toprule
   \textbf{In the circuit} & \textbf{What to do}\\
   \midrule
-  resistors and current sources & KCL at every non-ground node: $Y_n\Vcol{\mathbf{e}} = \Icol{\mathbf{i}_s}$, by inspection; $Y_n$ is symmetric\\
+  resistors and current sources & KCL at every non-ground node: $Y_n\Vcol{\mathbf{e}} = \Icol{\mathbf{i}_s}$, from three simple rules; $Y_n$ is symmetric\\
   a voltage source from the ground to node $k$ & $\e{k} = \Vcol{v_s}$ is known; no KCL at node $k$\\
   a voltage source between two nodes & Method I: its current as an unknown, plus the constraint\newline
     Method II: KCL at the supernode, plus the constraint\\

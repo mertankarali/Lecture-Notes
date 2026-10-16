@@ -31,7 +31,7 @@ first half of his recorded Lecture 12 (00:00–~35:00) on
    voltages) taught in four steps: choose a reference node; label the node voltages (every
    branch voltage is a difference, so KVL holds automatically); write the currents,
    (e_k − e_j)/R; KCL at every node except the ground
-2. **Matrix form** — Y_n e = i_s; Y_n by inspection (diagonal, off-diagonal, right side);
+2. **Matrix form** — Y_n e = i_s; Y_n written directly from the circuit with three rules (diagonal, off-diagonal, right side);
    why Y_n is symmetric: Y_n = A_R G A_Rᵀ, i_s = −A_S i_S
 3. **A voltage source to the ground** (Example II) — Example 11.2: KCL at node 3 gives nothing
    useful, but e₃ = v_s; remark (a known node voltage is not an unknown); Example 11.2

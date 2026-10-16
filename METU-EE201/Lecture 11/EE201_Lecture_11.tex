@@ -141,7 +141,7 @@
 %  Ground symbol below (#1,0)
 \newcommand{\gnd}[1]{\draw (#1,0) -- (#1,-0.2) node[ground] {};}
 %  Examples 11.1 and 11.2.
-%  #1 = 0: i_s1, R1..R5, i_s2 (11.1);  1: i_s, R1..R4, v_s to ground (11.2);
+%  #1 = 0: i_s1, R1..R5 (R5 from node 1 to node 3), i_s2 (11.1);  1: i_s, R1..R4, v_s to ground (11.2);
 %  2: as 1, e_3 not a label (11.2 revisited)
 %  Stage of Example 11.1 drawings: 0 bare, 1 with the ground, 2 also node voltages (default)
 \newcount\exAst \exAst=2
@@ -157,16 +157,17 @@
   \draw (3.8,2) to[R, l_=$R_3$] (3.8,0);
   \draw (0,0) -- (5.8,0);
   \ifnum#1=0
-    \draw (3.8,2) -- (3.8,3.0) to[R, l=$R_5$] (5.8,3.0) -- (5.8,2);
+    \draw (1.8,2) -- (1.8,3.0) to[R, l=$R_5$] (5.8,3.0) -- (5.8,2);
     \draw (5.8,2) to[american current source, l=$\Icol{i_{s2}}$] (5.8,0);
-    \nodeA{3.8,2}{above left}{$e_2$}
+    \nodeA{3.8,2}{above}{$e_2$}
     \nodeA{5.8,2}{above right}{$e_3$}
+    \nodeA{1.8,2}{above left}{$e_1$}
   \else
     \draw (5.8,0) to[american voltage source, invert, l_=$\Vcol{v_s}$] (5.8,2);
     \nodev{3.8,2}{above}{$e_2$}
     \ifnum#1=1 \nodev{5.8,2}{above}{$e_3$}\else \fill (5.8,2) circle (1.7pt);\fi
   \fi
-  \nodeA{1.8,2}{above}{$e_1$}
+  \ifnum#1=0\else\nodeA{1.8,2}{above}{$e_1$}\fi
   \ifnum\exAst>0 \gnd{3.8}\fi}
 %  Example 11.3: two voltage sources; v_s2 between nodes 1 and 2.
 %  #1 = 0: plain;  1: current i through v_s2;  2: the supernode
@@ -301,17 +302,17 @@ voltage analysis needs only $3$ unknowns. Four steps find them.
 \begin{enumerate}
   \item \textbf{Reference node.} Choose the bottom node as the ground; its node voltage is $0$.
   \item \textbf{Node voltages.} Label the others $\e{1}$, $\e{2}$, $\e{3}$. Every branch
-        voltage is a difference of them ($\e{1} - \e{2}$ for $R_2$), so KVL holds automatically.
+        voltage is a difference of them ($\Vcol{v_{R_2}} = \e{1} - \e{2}$), so KVL holds automatically.
   \item \textbf{Currents.} The current leaving node $k$ through $R$ to node $j$ is
         $(\e{k} - \e{j})/R$; to the ground, $\e{k}/R$.
   \item \textbf{KCL} at every node except the ground:
 \end{enumerate}
 \end{minipage}
 \begin{alignat*}{2}
-  &\text{node 1:}\qquad & -\Icol{i_{s1}} + \frac{\e{1}}{R_1} + \frac{\e{1} - \e{2}}{R_2} &= 0\\
-  &\text{node 2:}\qquad & \frac{\e{2} - \e{1}}{R_2} + \frac{\e{2}}{R_3} + \frac{\e{2} - \e{3}}{R_4}
-                    + \frac{\e{2} - \e{3}}{R_5} &= 0\\
-  &\text{node 3:}\qquad & \frac{\e{3} - \e{2}}{R_4} + \frac{\e{3} - \e{2}}{R_5} + \Icol{i_{s2}} &= 0
+  &\text{node 1:}\qquad & -\Icol{i_{s1}} + \frac{\e{1}}{R_1} + \frac{\e{1} - \e{2}}{R_2}
+                    + \frac{\e{1} - \e{3}}{R_5} &= 0\\
+  &\text{node 2:}\qquad & \frac{\e{2} - \e{1}}{R_2} + \frac{\e{2}}{R_3} + \frac{\e{2} - \e{3}}{R_4} &= 0\\
+  &\text{node 3:}\qquad & \frac{\e{3} - \e{2}}{R_4} + \frac{\e{3} - \e{1}}{R_5} + \Icol{i_{s2}} &= 0
 \end{alignat*}
 The source $\Icol{i_{s1}}$ points into node 1, so it enters with a minus sign. Three equations,
 three unknowns; then Steps 2 and 3 give every branch voltage and current.
@@ -327,9 +328,9 @@ in the $n - 1$ node voltages.
 With $G_k = 1/R_k$ and the terms collected, the three equations of Example 11.1 become
 \[
   \underbrace{\begin{bmatrix}
-    G_1 + G_2 & -G_2 & 0\\
-    -G_2 & G_2 + G_3 + G_4 + G_5 & -(G_4 + G_5)\\
-    0 & -(G_4 + G_5) & G_4 + G_5
+    G_1 + G_2 + G_5 & -G_2 & -G_5\\
+    -G_2 & G_2 + G_3 + G_4 & -G_4\\
+    -G_5 & -G_4 & G_4 + G_5
   \end{bmatrix}}_{Y_n}
   \underbrace{\begin{bmatrix} \e{1}\\ \e{2}\\ \e{3} \end{bmatrix}}_{\Vcol{\mathbf{e}}}
   =
@@ -339,7 +340,7 @@ $Y_n$ is the \textbf{node admittance matrix}, and $Y_n\Vcol{\mathbf{e}} = \Icol{
 are the \textbf{node equations}. For a circuit of resistors and current sources, they can be
 written down directly.
 
-\begin{ideabox}[Writing $Y_n$ by inspection]
+\begin{ideabox}[Writing $Y_n$ directly from the circuit: three rules]
 \begin{itemize}
   \item \textbf{Diagonal} entry $(k,k)$: the sum of the conductances connected to node $k$.
   \item \textbf{Off-diagonal} entry $(k,j)$: minus the sum of the conductances between nodes
@@ -608,7 +609,7 @@ known, or a supernode is avoided.
 \textbf{In the circuit} & \textbf{What to do}\\
 \midrule
 resistors and current sources & KCL at every non-ground node: $Y_n\Vcol{\mathbf{e}} =
-  \Icol{\mathbf{i}_s}$, written by inspection; $Y_n = A_R G A_R^T$ is symmetric\\
+  \Icol{\mathbf{i}_s}$, from three simple rules; $Y_n = A_R G A_R^T$ is symmetric\\
 a voltage source from the ground to node $k$ & $\e{k} = \Vcol{v_s}$ is known; no KCL at node $k$\\
 a voltage source between two nodes & Method I: its current as an unknown, plus the
   constraint;\newline Method II: KCL at the supernode, plus the constraint\\
