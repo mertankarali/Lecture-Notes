@@ -271,8 +271,8 @@
   \draw[fill=white] (2.85,0) circle (1.8pt) node[below=1pt, font=\small] {$b$};}
 %  Rest of the circuit with one element E (#1 = 0), a voltage source (1) or a current source (2)
 \newcommand{\oneE}[1]{%
-  \draw[elem, rounded corners=4pt] (0,0) rectangle (1.8,2.0);
-  \node[font=\small, align=center] at (0.9,1.0) {rest of\\the circuit};
+  \draw[elem, rounded corners=4pt] (-0.9,0) rectangle (1.8,2.0);
+  \node[font=\scriptsize, align=center] at (0.45,1.0) {rest of\\the circuit};
   \draw (1.8,1.7) -- (3.0,1.7); \draw (1.8,0.3) -- (3.0,0.3);
   \ifcase#1
     \draw[elem] (2.7,0.7) rectangle (3.3,1.3); \node[font=\small] at (3.0,1.0) {$E$};
@@ -571,14 +571,14 @@ since there too $\Vcol{v} = 6\V$.
 \textbf{Why it works, step 1: one element.} Take any element $E$ of a circuit, with
 $\Vcol{v_e^*}$ and $\Icol{i_e^*}$ in the solution, and replace only $E$ by a voltage source
 $\Vcol{v_e^*}$. Assume both circuits have a unique solution.
-\par\smallskip\noindent\begin{minipage}[c]{0.4\linewidth}
+\par\smallskip\noindent\begin{minipage}[c]{0.45\linewidth}
 \centering
-\begin{tikzpicture}[scale=0.55, baseline=(c.base)]\coordinate (c) at (0,1.0);\oneE{0}\end{tikzpicture}
+\begin{tikzpicture}[scale=0.52, baseline=(c.base)]\coordinate (c) at (0,1.0);\oneE{0}\end{tikzpicture}
 \,$\Rightarrow$\,
-\begin{tikzpicture}[scale=0.55, baseline=(c.base)]\coordinate (c) at (0,1.0);\oneE{1}\end{tikzpicture}
+\begin{tikzpicture}[scale=0.52, baseline=(c.base)]\coordinate (c) at (0,1.0);\oneE{1}\end{tikzpicture}
 \end{minipage}\hfill
-\begin{minipage}[c]{0.58\linewidth}
-\centering\footnotesize
+\begin{minipage}[c]{0.54\linewidth}
+\centering\scriptsize
 \renewcommand{\arraystretch}{1.1}
 \begin{tabular}{@{}l c c@{}}
 \toprule
