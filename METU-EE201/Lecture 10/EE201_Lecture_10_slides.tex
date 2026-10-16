@@ -673,8 +673,7 @@
     satisfies all $2b$ equations.
   \end{block}
   \vfill
-  \begin{center}LTI resistive: the $2b$ equations are linear, and the solution is unique when
-    their coefficient matrix is invertible.\end{center}
+  \begin{center}How do we check it? For an LTI resistive circuit: see the next slides.\end{center}
   \vfill
 \end{frame}
 
@@ -698,6 +697,46 @@
   \end{center}
   \vfill
   \vfill
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{A unique solution: in matrix form}
+  Collect the $2b$ unknowns in one vector $x = (\Vcol{v_1}, \dots, \Vcol{v_b}, \Icol{i_1}, \dots,
+  \Icol{i_b})$. In an LTI resistive circuit all $2b$ equations are linear: \ $T\,x = u$.\\[4pt]
+  {\small $T$, the \alert{coefficient matrix}: one row per equation, holding the numbers that
+  multiply the unknowns. \ $u$: the source values.}
+  \begin{center}
+  \colorbox{metulight}{\strut\ The solution is unique exactly when $T$ is invertible: $\det T \ne 0$. \ }
+  \end{center}
+  \onslide<2->{%
+  \begin{columns}[t,onlytextwidth]
+    \begin{column}{0.5\textwidth}
+      \centering (a) \ \begin{tikzpicture}[scale=0.45, baseline=(c.base)]\coordinate (c) at (0,0.8);
+          \draw (0,0) to[american voltage source, invert, l=$5\V$] (0,1.8);
+          \draw (0,1.8) -- (2.2,1.8); \draw (0,0) -- (2.2,0); \draw (2.2,1.8) to[R, l=$1\ohm$] (2.2,0);
+          
+        \end{tikzpicture}\\[2pt]
+      {\footnotesize$\begin{bmatrix}0&0&1&1\\1&-1&0&0\\1&0&0&0\\0&1&0&-1\end{bmatrix}
+        \begin{bmatrix}\Vcol{v_1}\\\Vcol{v_2}\\\Icol{i_1}\\\Icol{i_2}\end{bmatrix}
+        = \begin{bmatrix}0\\0\\5\\0\end{bmatrix}
+        \begin{array}{l}\text{\scriptsize KCL}\\\text{\scriptsize KVL}\\\text{\scriptsize source 1}\\\text{\scriptsize resistor 2}\end{array}$}\\[3pt]
+      $\det T = -1$: \yes\ unique
+    \end{column}
+    \begin{column}{0.5\textwidth}
+      \onslide<3->{\centering (b) \ \begin{tikzpicture}[scale=0.45, baseline=(c.base)]\coordinate (c) at (0,0.8);
+          \draw (0,0) to[american voltage source, invert, l=$5\V$] (0,1.8);
+          \draw (0,1.8) -- (2.2,1.8); \draw (0,0) -- (2.2,0); \draw (2.2,0) to[american voltage source, invert, l_=$5\V$] (2.2,1.8);
+          
+        \end{tikzpicture}\\[2pt]
+      {\footnotesize$\begin{bmatrix}0&0&1&1\\1&-1&0&0\\1&0&0&0\\0&1&0&0\end{bmatrix}
+        \begin{bmatrix}\Vcol{v_1}\\\Vcol{v_2}\\\Icol{i_1}\\\Icol{i_2}\end{bmatrix}
+        = \begin{bmatrix}0\\0\\5\\5\end{bmatrix}
+        \begin{array}{l}\text{\scriptsize KCL}\\\text{\scriptsize KVL}\\\text{\scriptsize source 1}\\\text{\scriptsize source 2}\end{array}$}\\[3pt]
+      $\det T = 0$: \no\ $\Icol{i_1}$, $\Icol{i_2}$ appear only in KCL}
+    \end{column}
+  \end{columns}}
+  \vfill
+  {\scriptsize Branch 1: the left source; branch 2: the right element; both oriented from top to bottom.}
 \end{frame}
 
 %--------------------------------------------------------------
@@ -743,7 +782,7 @@
 %--------------------------------------------------------------
 \begin{frame}{(I) and (II): one element first}
   \begin{center}
-  \begin{tikzpicture}[scale=0.85, baseline=(c.base)]
+  \begin{tikzpicture}[scale=0.72, baseline=(c.base)]
           \coordinate (c) at (0,1.0);
           \draw[elem, rounded corners=4pt] (0,0) rectangle (1.8,2.0);
           \node[font=\small, align=center] at (0.9,1.0) {rest of\\the circuit};
@@ -755,7 +794,7 @@
           \node[font=\small, text=cvolt] at (3.75,1.0) {$\Vcol{v_e}$};
         \end{tikzpicture}
   \qquad\onslide<2->{$\Longrightarrow$\qquad
-  \begin{tikzpicture}[scale=0.85, baseline=(c.base)]
+  \begin{tikzpicture}[scale=0.72, baseline=(c.base)]
           \coordinate (c) at (0,1.0);
           \draw[elem, rounded corners=4pt] (0,0) rectangle (1.8,2.0);
           \node[font=\small, align=center] at (0.9,1.0) {rest of\\the circuit};
@@ -768,25 +807,47 @@
     \only<1>{Any element $E$ of a circuit; in the solution of (I) it has $\Vcol{v_e^*}$ and $\Icol{i_e^*}$.}%
     \only<2->{Replace only $E$ by a voltage source. Assume both circuits have a unique solution.}
   \end{center}
-  \vspace{-2pt}
+  \vspace{-4pt}
   \onslide<3->{%
   \begin{center}\small
   \renewcommand{\arraystretch}{1.15}
   \begin{tabular}{@{}l c c@{}}
   \toprule
-   & \textbf{(I)} & \textbf{(II)}\\
+   & \textbf{(I)} & \onslide<4->{\textbf{(II)}}\\
   \midrule
-  KCL & $A\,\Icol{\mathbf{i}} = 0$ & \alert{the same} (same graph)\\
-  KVL & $B\,\Vcol{\mathbf{v}} = 0$ & \alert{the same} (same graph)\\
-  the other $b - 1$ elements & their laws & \alert{the same}\\
-  element $E$ & the law of $E$ & \alert{$\Vcol{v_e} = \Vcol{v_e^*}$}\\
+  KCL & $A\,\Icol{\mathbf{i}} = 0$ & \onslide<4->{the same (same graph)}\\
+  KVL & $B\,\Vcol{\mathbf{v}} = 0$ & \onslide<4->{the same (same graph)}\\
+  other $b - 1$ elements & their laws & \onslide<4->{the same}\\
+  element $E$ & the law of $E$ & \onslide<4->{\alert{$\Vcol{v_e} = \Vcol{v_e^*}$}}\\
   \bottomrule
   \end{tabular}
   \end{center}}
   \vspace{-4pt}
-  \begin{itemize}\itemsep2pt\small
-    \item<4-> The solution of (I) satisfies all equations of (II). \yes
-    \item<5-> (II) has only one solution, so this is it: nothing changes, also $\Icol{i_e} = \Icol{i_e^*}$.
+  \begin{itemize}\small
+    \item<5-> The solution of (I), $(\Vcol{\mathbf{v}^*}, \Icol{\mathbf{i}^*})$, satisfies every equation of (I), the law of $E$ included.
+  \end{itemize}
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{(I) and (II): one element, check the old solution}
+  Does $(\Vcol{\mathbf{v}^*}, \Icol{\mathbf{i}^*})$ also satisfy the equations of (II)?
+  \begin{center}\small
+  \renewcommand{\arraystretch}{1.15}
+  \begin{tabular}{@{}l c c c@{}}
+  \toprule
+   & \textbf{(I)} & \textbf{(II)} & \onslide<2->{\textbf{$(\Vcol{\mathbf{v}^*}, \Icol{\mathbf{i}^*})$ in (II)?}}\\
+  \midrule
+  KCL & $A\,\Icol{\mathbf{i}} = 0$ & the same (same graph) & \onslide<2->{\yes\ as in (I)}\\
+  KVL & $B\,\Vcol{\mathbf{v}} = 0$ & the same (same graph) & \onslide<2->{\yes\ as in (I)}\\
+  other $b - 1$ elements & their laws & the same & \onslide<2->{\yes\ as in (I)}\\
+  element $E$ & the law of $E$ & \alert{$\Vcol{v_e} = \Vcol{v_e^*}$} & \onslide<2->{\yes\ $\Vcol{v_e^*} = \Vcol{v_e^*}$}\\
+  \bottomrule
+  \end{tabular}
+  \end{center}
+  \begin{itemize}\itemsep4pt
+    \item<3-> A voltage source takes any current, so $\Icol{i_e} = \Icol{i_e^*}$ is allowed.
+    \item<4-> So $(\Vcol{\mathbf{v}^*}, \Icol{\mathbf{i}^*})$ solves (II); it has only one solution, so nothing changes, also $\Icol{i_e} = \Icol{i_e^*}$.
+    \item<5-> Uniqueness of (I) alone is not enough: in (a) of the three small circuits, replacing the $1\ohm$ by its voltage $5\V$ gives (b).
   \end{itemize}
 \end{frame}
 
@@ -879,7 +940,7 @@
 %--------------------------------------------------------------
 \begin{frame}{(I) and (III): one element first}
   \begin{center}
-  \begin{tikzpicture}[scale=0.85, baseline=(c.base)]
+  \begin{tikzpicture}[scale=0.72, baseline=(c.base)]
           \coordinate (c) at (0,1.0);
           \draw[elem, rounded corners=4pt] (0,0) rectangle (1.8,2.0);
           \node[font=\small, align=center] at (0.9,1.0) {rest of\\the circuit};
@@ -891,7 +952,7 @@
           \node[font=\small, text=cvolt] at (3.75,1.0) {$\Vcol{v_e}$};
         \end{tikzpicture}
   \qquad\onslide<2->{$\Longrightarrow$\qquad
-  \begin{tikzpicture}[scale=0.85, baseline=(c.base)]
+  \begin{tikzpicture}[scale=0.72, baseline=(c.base)]
           \coordinate (c) at (0,1.0);
           \draw[elem, rounded corners=4pt] (0,0) rectangle (1.8,2.0);
           \node[font=\small, align=center] at (0.9,1.0) {rest of\\the circuit};
@@ -904,25 +965,47 @@
     \only<1>{Any element $E$ of a circuit; in the solution of (I) it has $\Vcol{v_e^*}$ and $\Icol{i_e^*}$.}%
     \only<2->{Replace only $E$ by a current source. Assume both circuits have a unique solution.}
   \end{center}
-  \vspace{-2pt}
+  \vspace{-4pt}
   \onslide<3->{%
   \begin{center}\small
   \renewcommand{\arraystretch}{1.15}
   \begin{tabular}{@{}l c c@{}}
   \toprule
-   & \textbf{(I)} & \textbf{(III)}\\
+   & \textbf{(I)} & \onslide<4->{\textbf{(III)}}\\
   \midrule
-  KCL & $A\,\Icol{\mathbf{i}} = 0$ & \alert{the same} (same graph)\\
-  KVL & $B\,\Vcol{\mathbf{v}} = 0$ & \alert{the same} (same graph)\\
-  the other $b - 1$ elements & their laws & \alert{the same}\\
-  element $E$ & the law of $E$ & \alert{$\Icol{i_e} = \Icol{i_e^*}$}\\
+  KCL & $A\,\Icol{\mathbf{i}} = 0$ & \onslide<4->{the same (same graph)}\\
+  KVL & $B\,\Vcol{\mathbf{v}} = 0$ & \onslide<4->{the same (same graph)}\\
+  other $b - 1$ elements & their laws & \onslide<4->{the same}\\
+  element $E$ & the law of $E$ & \onslide<4->{\alert{$\Icol{i_e} = \Icol{i_e^*}$}}\\
   \bottomrule
   \end{tabular}
   \end{center}}
   \vspace{-4pt}
-  \begin{itemize}\itemsep2pt\small
-    \item<4-> The solution of (I) satisfies all equations of (III). \yes
-    \item<5-> (III) has only one solution, so this is it: nothing changes, also $\Vcol{v_e} = \Vcol{v_e^*}$.
+  \begin{itemize}\small
+    \item<5-> The solution of (I), $(\Vcol{\mathbf{v}^*}, \Icol{\mathbf{i}^*})$, satisfies every equation of (I), the law of $E$ included.
+  \end{itemize}
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{(I) and (III): one element, check the old solution}
+  Does $(\Vcol{\mathbf{v}^*}, \Icol{\mathbf{i}^*})$ also satisfy the equations of (III)?
+  \begin{center}\small
+  \renewcommand{\arraystretch}{1.15}
+  \begin{tabular}{@{}l c c c@{}}
+  \toprule
+   & \textbf{(I)} & \textbf{(III)} & \onslide<2->{\textbf{$(\Vcol{\mathbf{v}^*}, \Icol{\mathbf{i}^*})$ in (III)?}}\\
+  \midrule
+  KCL & $A\,\Icol{\mathbf{i}} = 0$ & the same (same graph) & \onslide<2->{\yes\ as in (I)}\\
+  KVL & $B\,\Vcol{\mathbf{v}} = 0$ & the same (same graph) & \onslide<2->{\yes\ as in (I)}\\
+  other $b - 1$ elements & their laws & the same & \onslide<2->{\yes\ as in (I)}\\
+  element $E$ & the law of $E$ & \alert{$\Icol{i_e} = \Icol{i_e^*}$} & \onslide<2->{\yes\ $\Icol{i_e^*} = \Icol{i_e^*}$}\\
+  \bottomrule
+  \end{tabular}
+  \end{center}
+  \begin{itemize}\itemsep4pt
+    \item<3-> A current source takes any voltage, so $\Vcol{v_e} = \Vcol{v_e^*}$ is allowed.
+    \item<4-> So $(\Vcol{\mathbf{v}^*}, \Icol{\mathbf{i}^*})$ solves (III); it has only one solution, so nothing changes, also $\Vcol{v_e} = \Vcol{v_e^*}$.
+    \item<5-> Uniqueness of (I) alone is not enough: a $2\A$ source with a $1\ohm$ becomes two $2\A$ sources in series.
   \end{itemize}
 \end{frame}
 

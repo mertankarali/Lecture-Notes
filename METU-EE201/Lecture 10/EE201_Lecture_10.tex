@@ -523,17 +523,29 @@ The circuit has a \textbf{unique solution} if exactly one $(\Vcol{\mathbf{v}}, \
 satisfies all $2b$ equations.
 \end{definitionbox}
 
+\textbf{In matrix form.} Collect the $2b$ unknowns in one vector
+$x = (\Vcol{v_1}, \dots, \Vcol{v_b}, \Icol{i_1}, \dots, \Icol{i_b})$. In an LTI resistive circuit all
+$2b$ equations are linear, so they stack into $T x = u$. Here $T$, the \emph{coefficient matrix},
+has one row per equation and holds the numbers that multiply the unknowns; $u$ holds the source
+values. The solution is unique exactly when $T$ is invertible, $\det T \ne 0$. Below, branch 1 is
+the left element, branch 2 the right one, both oriented downwards.
 \begin{center}
-\begin{tabular}{@{}c@{\hspace{10mm}}c@{\hspace{10mm}}c@{}}
-\begin{tikzpicture}[scale=0.55]\draw (0,0) to[american voltage source, invert, l=$5\V$] (0,1.8);
-  \draw (0,1.8) -- (2.2,1.8); \draw (0,0) -- (2.2,0); \draw (2.2,1.8) to[R, l=$1\ohm$] (2.2,0);\end{tikzpicture} & \begin{tikzpicture}[scale=0.55]\draw (0,0) to[american voltage source, invert, l=$5\V$] (0,1.8);
-  \draw (0,1.8) -- (2.2,1.8); \draw (0,0) -- (2.2,0); \draw (2.2,0) to[american voltage source, invert, l_=$5\V$] (2.2,1.8);\end{tikzpicture} & \begin{tikzpicture}[scale=0.55]\draw (0,0) to[american voltage source, invert, l=$5\V$] (0,1.8);
+\begin{tabular}{@{}c@{\hspace{8mm}}c@{\hspace{8mm}}c@{}}
+\begin{tikzpicture}[scale=0.5]\draw (0,0) to[american voltage source, invert, l=$5\V$] (0,1.8);
+  \draw (0,1.8) -- (2.2,1.8); \draw (0,0) -- (2.2,0); \draw (2.2,1.8) to[R, l=$1\ohm$] (2.2,0);\end{tikzpicture} & \begin{tikzpicture}[scale=0.5]\draw (0,0) to[american voltage source, invert, l=$5\V$] (0,1.8);
+  \draw (0,1.8) -- (2.2,1.8); \draw (0,0) -- (2.2,0); \draw (2.2,0) to[american voltage source, invert, l_=$5\V$] (2.2,1.8);\end{tikzpicture} & \begin{tikzpicture}[scale=0.5]\draw (0,0) to[american voltage source, invert, l=$5\V$] (0,1.8);
   \draw (0,1.8) -- (2.2,1.8); \draw (0,0) -- (2.2,0); \draw (2.2,0) to[american voltage source, invert, l_=$6\V$] (2.2,1.8);\end{tikzpicture}\\
-{\small (a) one: $\Icol{i} = 5\A$} & {\small (b) many: any current} & {\small (c) none: KVL fails}
+{\footnotesize$\setlength{\arraycolsep}{2.5pt}\begin{bmatrix}0&0&1&1\\1&-1&0&0\\1&0&0&0\\0&1&0&-1\end{bmatrix}\!
+\begin{bmatrix}\Vcol{v_1}\\\Vcol{v_2}\\\Icol{i_1}\\\Icol{i_2}\end{bmatrix}
+\!=\!\begin{bmatrix}0\\0\\5\\0\end{bmatrix}$} & {\footnotesize$\setlength{\arraycolsep}{2.5pt}\begin{bmatrix}0&0&1&1\\1&-1&0&0\\1&0&0&0\\0&1&0&0\end{bmatrix}\!
+\begin{bmatrix}\Vcol{v_1}\\\Vcol{v_2}\\\Icol{i_1}\\\Icol{i_2}\end{bmatrix}
+\!=\!\begin{bmatrix}0\\0\\5\\5\end{bmatrix}$} & {\footnotesize$\setlength{\arraycolsep}{2.5pt}\begin{bmatrix}0&0&1&1\\1&-1&0&0\\1&0&0&0\\0&1&0&0\end{bmatrix}\!
+\begin{bmatrix}\Vcol{v_1}\\\Vcol{v_2}\\\Icol{i_1}\\\Icol{i_2}\end{bmatrix}
+\!=\!\begin{bmatrix}0\\0\\5\\6\end{bmatrix}$}\\[2pt]
+{\small (a) $\det T = -1$: one solution} & {\small (b) $\det T = 0$: many} & {\small (c) $\det T = 0$: none (KVL fails)}
 \end{tabular}
 \end{center}
-In an LTI resistive circuit the $2b$ equations are linear, and the solution is unique when their
-coefficient matrix is invertible.
+In (b) and (c), $\Icol{i_1}$ and $\Icol{i_2}$ appear only in the KCL row, so $T$ is not invertible.
 
 \subsection*{(I) and (II): replacing $N_2$ by a voltage source}
 
@@ -578,8 +590,11 @@ element $E$ & the law of $E$ & $\Vcol{v_e} = \Vcol{v_e^*}$\\
 \bottomrule
 \end{tabular}
 \end{minipage}\par\smallskip
-The old solution satisfies every equation of the new circuit, and the new circuit has only one
-solution, so nothing changes, also $\Icol{i_e} = \Icol{i_e^*}$.
+The old solution $(\Vcol{\mathbf{v}^*}, \Icol{\mathbf{i}^*})$ satisfies all old equations, the law of
+$E$ included. So it satisfies the unchanged rows of the new circuit, and $\Vcol{v_e} =
+\Vcol{v_e^*}$ holds too; a voltage source takes any current, so $\Icol{i_e} = \Icol{i_e^*}$ is
+allowed. With a unique solution, nothing changes. Uniqueness of the old circuit alone is not
+enough: in (a), replacing the $1\ohm$ by its voltage $5\V$ gives (b).
 
 \textbf{Step 2: divide $N_1$ and $N_2$.} Let $\Vcol{v_1}$, $\Icol{i_1}$ be the port values of $N_1$ and
 $\Vcol{v_2}$, $\Icol{i_2}$ those of $N_2$. Divide the two parts and give each its own voltage source
@@ -601,15 +616,14 @@ the connection & $\Vcol{v_1} = \Vcol{v_2}$, \ $\Icol{i_1} = \Icol{i_2}$ & $\Vcol
 The solution of (I) satisfies these equations, since $\Vcol{v_1} = \Vcol{v_2} = \Vcol{v^*}$ there.
 With a unique solution, nothing changes in either part. The left part is exactly (II), so nothing
 inside $N_1$ changes, also $\Icol{i_1} = \Icol{i^*}$. $N_2$ is not needed at all: it can be anything,
-even nonlinear. Without uniqueness the step fails: if $N_1$ is a single $5\V$ source, (II) puts
-two $5\V$ sources in parallel, as in (b) above.
+even nonlinear.
 
 \subsection*{(I) and (III): replacing $N_2$ by a current source}
 
 \begin{examplebox}[Example 10.4 --- a current source in the first example]
 \begin{minipage}[c]{0.3\linewidth}
 \centering
-\begin{tikzpicture}[scale=0.62]\exN{2}\end{tikzpicture}\\[-2pt]
+\begin{tikzpicture}[scale=0.55]\exN{2}\end{tikzpicture}\\[-2pt]
 {\scriptsize (III) a $2\A$ source}
 \end{minipage}\hfill
 \begin{minipage}[c]{0.68\linewidth}
@@ -622,18 +636,16 @@ equation holds in (I), where $\Icol{i} = 2\A$.
 
 \textbf{Why it works.} The same two steps, now with current sources.
 \begin{center}
-\begin{tikzpicture}[scale=0.7, baseline=(c.base)]\coordinate (c) at (0,1.0);\oneE{0}\end{tikzpicture}
+\begin{tikzpicture}[scale=0.55, baseline=(c.base)]\coordinate (c) at (0,1.0);\oneE{0}\end{tikzpicture}
 \quad$\Longrightarrow$\quad
-\begin{tikzpicture}[scale=0.7, baseline=(c.base)]\coordinate (c) at (0,1.0);\oneE{2}\end{tikzpicture}
+\begin{tikzpicture}[scale=0.55, baseline=(c.base)]\coordinate (c) at (0,1.0);\oneE{2}\end{tikzpicture}
 \qquad\qquad
-\begin{tikzpicture}[scale=0.62, baseline=(c.base)]\coordinate (c) at (0,0.9);\divNN{2}\end{tikzpicture}
+\begin{tikzpicture}[scale=0.55, baseline=(c.base)]\coordinate (c) at (0,0.9);\divNN{2}\end{tikzpicture}
 \end{center}
-Step 1: replacing one element $E$ by a current source $\Icol{i_e^*}$ changes only its law, now
-$\Icol{i_e} = \Icol{i_e^*}$, so with a unique solution $\Vcol{v_e} = \Vcol{v_e^*}$. Step 2: divide
-$N_1$ and $N_2$ and give each a current source $\Icol{i^*}$; the connection becomes
-$\Icol{i_1} = \Icol{i_2} = \Icol{i^*}$, which the solution of (I) satisfies, so
-$\Vcol{v_1} = \Vcol{v^*}$. Uniqueness is needed again: if $N_1$ is a single $2\A$ source, (III)
-puts two $2\A$ sources in series, and the voltage is not fixed.
+Step 1: replacing $E$ by a current source $\Icol{i_e^*}$ changes only its law, to
+$\Icol{i_e} = \Icol{i_e^*}$, which the old solution satisfies; a current source takes any voltage.
+Step 2: the connection becomes $\Icol{i_1} = \Icol{i_2} = \Icol{i^*}$. So $\Vcol{v_1} = \Vcol{v^*}$.
+Uniqueness is needed: two $2\A$ sources in series have many solutions.
 
 %==============================================================
 \section{Ports and equivalent one-ports}
@@ -647,7 +659,7 @@ terminals accessible from outside.
 \begin{center}
 \begin{minipage}[c]{0.3\linewidth}
 \centering
-\begin{tikzpicture}[scale=0.85]
+\begin{tikzpicture}[scale=0.7]
   \oneport{$N$}
 \end{tikzpicture}
 \end{minipage}%
@@ -689,17 +701,17 @@ the voltages add (KVL).
 
 \begin{center}
 \begin{tabular}{@{}c@{\hspace{2mm}}c@{\hspace{2mm}}c@{\hspace{4mm}}l@{}}
-\begin{tikzpicture}[scale=0.75, baseline=(c.base)]
+\begin{tikzpicture}[scale=0.65, baseline=(c.base)]
   \seriesR \coordinate (c) at (0,0.5);
 \end{tikzpicture} & $\equiv$ &
-\begin{tikzpicture}[scale=0.75, baseline=(c.base)]
+\begin{tikzpicture}[scale=0.65, baseline=(c.base)]
   \eqone{1.2}{R, l=$R_{eq}$} \coordinate (c) at (0,0.5);
 \end{tikzpicture} &
 $R_{eq} = R_1 + R_2 + \dots + R_k$\\[6pt]
-\begin{tikzpicture}[scale=0.75, baseline=(c.base)]
+\begin{tikzpicture}[scale=0.65, baseline=(c.base)]
   \seriesV \coordinate (c) at (0,0.5);
 \end{tikzpicture} & $\equiv$ &
-\begin{tikzpicture}[scale=0.75, baseline=(c.base)]
+\begin{tikzpicture}[scale=0.65, baseline=(c.base)]
   \eqone{1.2}{american voltage source, l_=$v_{s,eq}$} \coordinate (c) at (0,0.5);
 \end{tikzpicture} &
 $v_{s,eq} = v_{s1} + v_{s2} + \dots + v_{sk}$
@@ -717,17 +729,17 @@ currents add (KCL).
 
 \begin{center}
 \begin{tabular}{@{}c@{\hspace{2mm}}c@{\hspace{2mm}}c@{\hspace{4mm}}l@{}}
-\begin{tikzpicture}[scale=0.85, baseline=(c.base)]
+\begin{tikzpicture}[scale=0.7, baseline=(c.base)]
   \parR \coordinate (c) at (0,0.65);
 \end{tikzpicture} & $\equiv$ &
-\begin{tikzpicture}[scale=0.85, baseline=(c.base)]
+\begin{tikzpicture}[scale=0.7, baseline=(c.base)]
   \eqone{1.5}{R, l=$R_{eq}$} \coordinate (c) at (0,0.65);
 \end{tikzpicture} &
 $\dfrac{1}{R_{eq}} = \dfrac{1}{R_1} + \dfrac{1}{R_2} + \dots + \dfrac{1}{R_k}$\\[12pt]
-\begin{tikzpicture}[scale=0.85, baseline=(c.base)]
+\begin{tikzpicture}[scale=0.7, baseline=(c.base)]
   \parI \coordinate (c) at (0,0.65);
 \end{tikzpicture} & $\equiv$ &
-\begin{tikzpicture}[scale=0.85, baseline=(c.base)]
+\begin{tikzpicture}[scale=0.7, baseline=(c.base)]
   \draw (1.0,0) to[american current source, l=$i_{s,eq}$] (1.0,1.5);
   \draw (0,1.5) -- (1.0,1.5); \draw (0,0) -- (1.0,0); \abterm{0}{1.5}{left}
   \coordinate (c) at (0,0.65);
@@ -755,21 +767,24 @@ is not fixed.
 Take a voltage source with a series resistor, and a current source with a parallel resistor.
 In both, $\Icol{i}$ enters at $a$.
 
-\begin{center}
-\begin{tabular}{@{}c@{\hspace{14mm}}c@{}}
-\begin{tikzpicture}[scale=0.75]
+\noindent\begin{minipage}[c]{0.62\linewidth}
+\centering
+\begin{tabular}{@{}c@{\hspace{6mm}}c@{}}
+\begin{tikzpicture}[scale=0.6]
   \vsR{$v_s$}{$R_1$} \stport
 \end{tikzpicture} &
-\begin{tikzpicture}[scale=0.75]
+\begin{tikzpicture}[scale=0.6]
   \isR{$i_s$}{$R_2$} \stport
 \end{tikzpicture}\\[2pt]
-$\Vcol{v} = R_1\Icol{i} + v_s \qquad (1)$ &
-$\Vcol{v} = R_2(\Icol{i} + i_s) = R_2\Icol{i} + R_2 i_s \qquad (2)$
+{\small $\Vcol{v} = R_1\Icol{i} + v_s$ \ (1)} &
+{\small $\Vcol{v} = R_2(\Icol{i} + i_s) = R_2\Icol{i} + R_2 i_s$ \ (2)}
 \end{tabular}
-\end{center}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.36\linewidth}
 In (2), $\Icol{i}$ and $i_s$ both flow into the top node, so $R_2$ carries $\Icol{i} + i_s$.
 Both characteristics are straight lines in the $i$--$v$ plane. They are the same line when the
 slopes and the intercepts agree.
+\end{minipage}
 
 \begin{center}
 \begin{minipage}[c]{0.5\linewidth}
@@ -785,7 +800,7 @@ $\Icol{i} = -i_s$.
 \hfill
 \begin{minipage}[c]{0.45\linewidth}
 \centering
-\begin{tikzpicture}[scale=0.75]
+\begin{tikzpicture}[scale=0.6]
   \draw[-{Stealth[length=2mm]}] (-2.6,0) -- (1.6,0) node[right] {$\Icol{i}$};
   \draw[-{Stealth[length=2mm]}] (0,-0.5) -- (0,2.4) node[above] {$\Vcol{v}$};
   \draw[metured, very thick] (-2.3,-0.3) -- (1.3,2.1);
@@ -799,11 +814,11 @@ $\Icol{i} = -i_s$.
 \begin{examplebox}[Example 10.5 --- a source transformation]
 \begin{minipage}[c]{0.58\linewidth}
 \centering
-\begin{tikzpicture}[scale=0.72, baseline=(c.base)]
+\begin{tikzpicture}[scale=0.62, baseline=(c.base)]
   \vsR{$20\V$}{$10\ohm$} \coordinate (c) at (0,0.8);
 \end{tikzpicture}
 \ $\equiv$\
-\begin{tikzpicture}[scale=0.72, baseline=(c.base)]
+\begin{tikzpicture}[scale=0.62, baseline=(c.base)]
   \isR{$2\A$}{$10\ohm$} \coordinate (c) at (0,0.8);
 \end{tikzpicture}
 \end{minipage}%
@@ -818,11 +833,11 @@ short-circuit current $2\A$ (out of $a$).
 \begin{minipage}[c]{0.6\linewidth}
 \centering
 \begin{tabular}{@{}c@{\hspace{2mm}}c@{}}
-\begin{tikzpicture}[scale=0.66]\exN{3}\end{tikzpicture} &
-\begin{tikzpicture}[scale=0.66]\exStep{1}\end{tikzpicture}\\[-2pt]
+\begin{tikzpicture}[scale=0.58]\exN{3}\end{tikzpicture} &
+\begin{tikzpicture}[scale=0.58]\exStep{1}\end{tikzpicture}\\[-2pt]
 {\scriptsize the circuit} & {\scriptsize step 1}\\[4pt]
-\begin{tikzpicture}[scale=0.66]\exStep{2}\end{tikzpicture} &
-\begin{tikzpicture}[scale=0.66]\exStep{3}\end{tikzpicture}\\[-2pt]
+\begin{tikzpicture}[scale=0.58]\exStep{2}\end{tikzpicture} &
+\begin{tikzpicture}[scale=0.58]\exStep{3}\end{tikzpicture}\\[-2pt]
 {\scriptsize step 2} & {\scriptsize step 3}
 \end{tabular}
 \end{minipage}%
