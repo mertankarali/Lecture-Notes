@@ -31,7 +31,7 @@ Following pp. 21–23 of Prof. Emre Tuna's notes and his recorded Lecture 10 on
    nonlinear / linear, time-varying / time-invariant, dynamic / resistive circuits, each
    defined by the elements the circuit contains; independent
    sources are external inputs (signals of time) and are not part of the classification; what
-   varies in time is the element law, not just the variables; Example 10.1 classifies five small circuits (on the slides in two rows: the same circuit with two inputs, then the 2 Ω replaced); KCL and KVL are
+   varies in time is the element law, not just the variables; Example 10.1 classifies five small circuits in two rows (the same circuit with two inputs; the same input with the 2 Ω replaced); KCL and KVL are
    always linear, and in an LTI resistive circuit the element equations are too
 2. **A first example** (added) — Example 10.2: 12 V, 2 Ω, 6 Ω with an arbitrary resistive load
    R_L; R_L is left aside and one KCL at a gives the law of the part left of a–b,

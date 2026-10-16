@@ -269,6 +269,45 @@
   \draw (0,0) -- (2.85,0);
   \draw[fill=white] (2.85,2) circle (1.8pt) node[above=1pt, font=\small] {$a$};
   \draw[fill=white] (2.85,0) circle (1.8pt) node[below=1pt, font=\small] {$b$};}
+%  Rest of the circuit with one element E (#1 = 0), a voltage source (1) or a current source (2)
+\newcommand{\oneE}[1]{%
+  \draw[elem, rounded corners=4pt] (0,0) rectangle (1.8,2.0);
+  \node[font=\small, align=center] at (0.9,1.0) {rest of\\the circuit};
+  \draw (1.8,1.7) -- (3.0,1.7); \draw (1.8,0.3) -- (3.0,0.3);
+  \ifcase#1
+    \draw[elem] (2.7,0.7) rectangle (3.3,1.3); \node[font=\small] at (3.0,1.0) {$E$};
+    \draw (3.0,1.7) -- (3.0,1.3); \draw (3.0,0.7) -- (3.0,0.3);
+    \draw[iar] (2.05,1.95) -- (2.65,1.95); \node[font=\small, text=ccur] at (2.35,2.28) {$i_e$};
+    \node[pol] at (3.6,1.45) {$+$}; \node[pol] at (3.6,0.55) {$-$};
+    \node[font=\small, text=cvolt] at (3.75,1.0) {$v_e$};
+  \or
+    \draw (3.0,0.3) to[american voltage source, invert] (3.0,1.7);
+    \node[font=\small, text=cvolt, right] at (3.35,1.0) {$v_e^*$};
+  \or
+    \draw (3.0,1.7) to[american current source] (3.0,0.3);
+    \node[font=\small, text=ccur, right] at (3.35,1.0) {$i_e^*$};
+  \fi}
+%  N1 and N2 divided, each with its own source: #1 = 1 voltage sources, 2 current sources
+\newcommand{\divNN}[1]{%
+  \draw[elem] (0,0) rectangle (1.5,1.8); \node at (0.75,0.9) {$N_1$};
+  \draw (1.5,1.5) -- (2.9,1.5); \draw (1.5,0.3) -- (2.9,0.3);
+  \draw (5.1,1.5) -- (6.5,1.5); \draw (5.1,0.3) -- (6.5,0.3);
+  \draw[elem] (6.5,0) rectangle (8.0,1.8); \node at (7.25,0.9) {$N_2$};
+  \ifcase#1\or
+    \draw (2.9,0.3) to[american voltage source, invert] (2.9,1.5);
+    \draw (5.1,0.3) to[american voltage source, invert] (5.1,1.5);
+    \node[font=\scriptsize, text=cvolt, right] at (3.2,0.9) {$v^*$};
+    \node[font=\scriptsize, text=cvolt, left] at (4.8,0.9) {$v^*$};
+  \or
+    \draw (2.9,1.5) to[american current source] (2.9,0.3);
+    \draw (5.1,0.3) to[american current source] (5.1,1.5);
+    \node[font=\scriptsize, text=ccur, right] at (3.2,0.9) {$i^*$};
+    \node[font=\scriptsize, text=ccur, left] at (4.8,0.9) {$i^*$};
+  \fi
+  \node[font=\scriptsize, text=cvolt] at (2.05,0.9) {$v_1$};
+  \node[font=\scriptsize, text=ccur] at (2.05,1.75) {$i_1$};
+  \node[font=\scriptsize, text=cvolt] at (5.95,0.9) {$v_2$};
+  \node[font=\scriptsize, text=ccur] at (5.95,1.75) {$i_2$};}
 %  Port voltage v and current i labels at terminals x = #1 (load to the right)
 \newcommand{\vilab}[1]{%
   \node[pol] at (#1,1.6) {$+$}; \node[pol] at (#1,0.4) {$-$};
@@ -361,23 +400,30 @@ R\,\Icol{i(t)}$ with the same $R$ at every instant; a time-varying one obeys $\V
 R(t)\,\Icol{i(t)}$: the law itself changes. Linear and nonlinear also refer to the element law.
 
 \begin{examplebox}[Example 10.1 --- which circuit is which?]
-Each circuit is a source, a $1\ohm$ resistor and one more element.
-\begin{center}
+\begin{minipage}[c]{0.6\linewidth}
+\centering
 \begin{tikzpicture}
-  \begin{scope}[shift={(0.4 cm,0)}, scale=0.62]\node[font=\small, rotate=90, transform shape=false] at (-0.9,0.75) {$5\V$};\mini{american voltage source, invert}{R, l=$2\ohm$}
+  \begin{scope}[shift={(0.4 cm,0 cm)}, scale=0.62]\node[font=\small, rotate=90, transform shape=false] at (-0.9,0.75) {$5\V$};\mini{american voltage source, invert}{R, l=$2\ohm$}
     \node[font=\small, transform shape=false, align=center, anchor=north] at (0.95,-0.3) {(a)\\ LTI resistive};\end{scope}
-  \begin{scope}[shift={(3.6 cm,0)}, scale=0.62]\node[font=\small, rotate=90, transform shape=false] at (-0.9,0.75) {$5\cos t$};\mini{american voltage source, invert}{R, l=$2\ohm$}
+  \begin{scope}[shift={(3.6 cm,0 cm)}, scale=0.62]\node[font=\small, rotate=90, transform shape=false] at (-0.9,0.75) {$5\cos t$};\mini{american voltage source, invert}{R, l=$2\ohm$}
     \node[font=\small, transform shape=false, align=center, anchor=north] at (0.95,-0.3) {(b)\\ LTI resistive};\end{scope}
-  \begin{scope}[shift={(6.8 cm,0)}, scale=0.62]\node[font=\small, rotate=90, transform shape=false] at (-0.9,0.75) {$5\V$};\mini{american voltage source, invert}{D}
+  \begin{scope}[shift={(0.4 cm,-2.7 cm)}, scale=0.62]\node[font=\small, rotate=90, transform shape=false] at (-0.9,0.75) {$5\V$};\mini{american voltage source, invert}{D}
     \node[font=\small, transform shape=false, align=center, anchor=north] at (0.95,-0.3) {(c) diode\\ nonlinear};\end{scope}
-  \begin{scope}[shift={(10.0 cm,0)}, scale=0.62]\node[font=\small, rotate=90, transform shape=false] at (-0.9,0.75) {$5\V$};\mini{american voltage source, invert}{vR, l=$R(t)$}
+  \begin{scope}[shift={(3.6 cm,-2.7 cm)}, scale=0.62]\node[font=\small, rotate=90, transform shape=false] at (-0.9,0.75) {$5\V$};\mini{american voltage source, invert}{vR, l=$R(t)$}
     \node[font=\small, transform shape=false, align=center, anchor=north] at (0.95,-0.3) {(d)\\ time-varying};\end{scope}
-  \begin{scope}[shift={(13.6 cm,0)}, scale=0.62]\node[font=\small, rotate=90, transform shape=false] at (-0.9,0.75) {$5\V$};\mini{american voltage source, invert}{C}
+  \begin{scope}[shift={(6.8 cm,-2.7 cm)}, scale=0.62]\node[font=\small, rotate=90, transform shape=false] at (-0.9,0.75) {$5\V$};\mini{american voltage source, invert}{C}
     \node[font=\small, transform shape=false, align=center, anchor=north] at (0.95,-0.3) {(e)\\ dynamic};\end{scope}
+  \draw[metugray!40] (-0.4,-1.15) -- (8.4,-1.15);
 \end{tikzpicture}
-\end{center}
-(b) is LTI resistive although its source varies in time. In (d), $R(t) = 2 + \sin t\ \Omega$.
-(c) and (d) are still resistive; (e) is still linear and time-invariant.
+\end{minipage}\hfill
+\begin{minipage}[c]{0.38\linewidth}
+\raggedright
+Each circuit is a source, a $1\ohm$ resistor and one more element.\par\smallskip
+\textbf{Top row:} the same circuit with two inputs. Both are LTI resistive: the input does not
+change the class.\par\smallskip
+\textbf{Bottom row:} the same input, the $2\ohm$ replaced. Each of (c), (d), (e) breaks exactly
+one property. In (d), $R(t) = 2 + \sin t\ \Omega$.
+\end{minipage}
 \end{examplebox}
 
 \textbf{What we gain.} KCL and KVL are \emph{always} linear: they come from the graph and
@@ -459,14 +505,35 @@ inside $N_1$ changes. An observer inside $N_1$ cannot tell (I), (II) and (III) a
 Condition: each circuit has a unique solution.
 \end{ideabox}
 
-\textbf{Unique solution.} A circuit with $n$ nodes and $b$ branches has $2b$ unknowns
-(the branch voltages $\Vcol{\mathbf{v}}$ and currents $\Icol{\mathbf{i}}$) and $2b$ equations: KCL
-$A\Icol{\mathbf{i}} = 0$ ($n - 1$), KVL $B\Vcol{\mathbf{v}} = 0$ ($b - n + 1$) and one element law
-per branch ($b$). The circuit has a \emph{unique solution} if exactly one
-$(\Vcol{\mathbf{v}}, \Icol{\mathbf{i}})$ satisfies all $2b$ equations. A $5\V$ source with a $1\ohm$
-resistor has one; two $5\V$ sources in parallel have many (any current); a $5\V$ and a $6\V$
-source in parallel have none (KVL fails). In an LTI resistive circuit the equations are linear,
-and the solution is unique when their coefficient matrix is invertible.
+\begin{definitionbox}{Unique solution}
+\begin{minipage}[c]{0.5\linewidth}
+A circuit with $n$ nodes and $b$ branches has $2b$ unknowns, the branch voltages
+$\Vcol{\mathbf{v}}$ and currents $\Icol{\mathbf{i}}$, and $2b$ equations:
+\end{minipage}\hfill
+\begin{minipage}[c]{0.46\linewidth}
+\centering\small
+\renewcommand{\arraystretch}{1.1}
+\begin{tabular}{@{}l l r@{}}
+KCL & $A\,\Icol{\mathbf{i}} = 0$ & $n - 1$\\
+KVL & $B\,\Vcol{\mathbf{v}} = 0$ & $b - n + 1$\\
+element laws & one per branch & $b$
+\end{tabular}
+\end{minipage}\par\smallskip
+The circuit has a \textbf{unique solution} if exactly one $(\Vcol{\mathbf{v}}, \Icol{\mathbf{i}})$
+satisfies all $2b$ equations.
+\end{definitionbox}
+
+\begin{center}
+\begin{tabular}{@{}c@{\hspace{10mm}}c@{\hspace{10mm}}c@{}}
+\begin{tikzpicture}[scale=0.55]\draw (0,0) to[american voltage source, invert, l=$5\V$] (0,1.8);
+  \draw (0,1.8) -- (2.2,1.8); \draw (0,0) -- (2.2,0); \draw (2.2,1.8) to[R, l=$1\ohm$] (2.2,0);\end{tikzpicture} & \begin{tikzpicture}[scale=0.55]\draw (0,0) to[american voltage source, invert, l=$5\V$] (0,1.8);
+  \draw (0,1.8) -- (2.2,1.8); \draw (0,0) -- (2.2,0); \draw (2.2,0) to[american voltage source, invert, l_=$5\V$] (2.2,1.8);\end{tikzpicture} & \begin{tikzpicture}[scale=0.55]\draw (0,0) to[american voltage source, invert, l=$5\V$] (0,1.8);
+  \draw (0,1.8) -- (2.2,1.8); \draw (0,0) -- (2.2,0); \draw (2.2,0) to[american voltage source, invert, l_=$6\V$] (2.2,1.8);\end{tikzpicture}\\
+{\small (a) one: $\Icol{i} = 5\A$} & {\small (b) many: any current} & {\small (c) none: KVL fails}
+\end{tabular}
+\end{center}
+In an LTI resistive circuit the $2b$ equations are linear, and the solution is unique when their
+coefficient matrix is invertible.
 
 \subsection*{(I) and (II): replacing $N_2$ by a voltage source}
 
@@ -489,34 +556,53 @@ since there too $\Vcol{v} = 6\V$.
 \end{minipage}
 \end{examplebox}
 
-\textbf{Why it works: one element first.} Take any element $E$ of a circuit, with
+\textbf{Why it works, step 1: one element.} Take any element $E$ of a circuit, with
 $\Vcol{v_e^*}$ and $\Icol{i_e^*}$ in the solution, and replace only $E$ by a voltage source
-$\Vcol{v_e^*}$. Assume both circuits have a unique solution. Compare the equations:
-\begin{center}
+$\Vcol{v_e^*}$. Assume both circuits have a unique solution.
+\par\smallskip\noindent\begin{minipage}[c]{0.4\linewidth}
+\centering
+\begin{tikzpicture}[scale=0.55, baseline=(c.base)]\coordinate (c) at (0,1.0);\oneE{0}\end{tikzpicture}
+\,$\Rightarrow$\,
+\begin{tikzpicture}[scale=0.55, baseline=(c.base)]\coordinate (c) at (0,1.0);\oneE{1}\end{tikzpicture}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.58\linewidth}
+\centering\footnotesize
 \renewcommand{\arraystretch}{1.1}
 \begin{tabular}{@{}l c c@{}}
 \toprule
  & before & after\\
 \midrule
-KCL, KVL & $A\Icol{\mathbf{i}} = 0$, \ $B\Vcol{\mathbf{v}} = 0$ & the same (same graph)\\
-the other $b - 1$ elements & their laws & the same\\
+KCL, KVL & $A\Icol{\mathbf{i}} = 0$, \ $B\Vcol{\mathbf{v}} = 0$ & same graph: the same\\
+other $b - 1$ elements & their laws & the same\\
 element $E$ & the law of $E$ & $\Vcol{v_e} = \Vcol{v_e^*}$\\
 \bottomrule
 \end{tabular}
-\end{center}
+\end{minipage}\par\smallskip
 The old solution satisfies every equation of the new circuit, and the new circuit has only one
 solution, so nothing changes, also $\Icol{i_e} = \Icol{i_e^*}$.
 
-\textbf{Divide $N_1$ and $N_2$.} Let $\Vcol{v_1}$, $\Icol{i_1}$ be the port values of $N_1$ and
-$\Vcol{v_2}$, $\Icol{i_2}$ those of $N_2$; in (I) the connection gives $\Vcol{v_1} = \Vcol{v_2}$
-and $\Icol{i_1} = \Icol{i_2}$. Now divide the two parts and give each its own voltage source
-$\Vcol{v^*}$. The equations inside $N_1$ and inside $N_2$ are the same as in (I); only the
-connection changes, to $\Vcol{v_1} = \Vcol{v^*}$ and $\Vcol{v_2} = \Vcol{v^*}$. The solution of (I)
-satisfies these, since $\Vcol{v_1} = \Vcol{v_2} = \Vcol{v^*}$ there. With a unique solution,
-nothing changes in either part. The left part is exactly (II), so nothing inside $N_1$ changes,
-also $\Icol{i_1} = \Icol{i^*}$. $N_2$ is not needed at all: it can be anything, even nonlinear.
-Without uniqueness the step fails: if $N_1$ is a single $5\V$ source, (II) puts two $5\V$ sources
-in parallel, and the current is not fixed.
+\textbf{Step 2: divide $N_1$ and $N_2$.} Let $\Vcol{v_1}$, $\Icol{i_1}$ be the port values of $N_1$ and
+$\Vcol{v_2}$, $\Icol{i_2}$ those of $N_2$. Divide the two parts and give each its own voltage source
+$\Vcol{v^*}$. Assume a unique solution.
+\begin{center}
+\begin{tikzpicture}[scale=0.62, baseline=(c.base)]\coordinate (c) at (0,0.9);\divNN{1}\end{tikzpicture}
+\quad
+\footnotesize
+\renewcommand{\arraystretch}{1.1}
+\begin{tabular}{@{}l c c@{}}
+\toprule
+ & (I) & divided\\
+\midrule
+inside $N_1$, inside $N_2$ & KCL, KVL, element laws & the same\\
+the connection & $\Vcol{v_1} = \Vcol{v_2}$, \ $\Icol{i_1} = \Icol{i_2}$ & $\Vcol{v_1} = \Vcol{v_2} = \Vcol{v^*}$\\
+\bottomrule
+\end{tabular}
+\end{center}
+The solution of (I) satisfies these equations, since $\Vcol{v_1} = \Vcol{v_2} = \Vcol{v^*}$ there.
+With a unique solution, nothing changes in either part. The left part is exactly (II), so nothing
+inside $N_1$ changes, also $\Icol{i_1} = \Icol{i^*}$. $N_2$ is not needed at all: it can be anything,
+even nonlinear. Without uniqueness the step fails: if $N_1$ is a single $5\V$ source, (II) puts
+two $5\V$ sources in parallel, as in (b) above.
 
 \subsection*{(I) and (III): replacing $N_2$ by a current source}
 
@@ -534,13 +620,20 @@ equation holds in (I), where $\Icol{i} = 2\A$.
 \end{minipage}
 \end{examplebox}
 
-\textbf{Why it works.} The same two steps. Replacing one element $E$ by a current source
-$\Icol{i_e^*}$ changes only its law, now $\Icol{i_e} = \Icol{i_e^*}$; KCL, KVL and the other laws stay
-the same, so with a unique solution $\Vcol{v_e} = \Vcol{v_e^*}$. Then divide $N_1$ and $N_2$ and
-give each a current source $\Icol{i^*}$: the connection becomes $\Icol{i_1} = \Icol{i_2} =
-\Icol{i^*}$, which the solution of (I) satisfies, so $\Vcol{v_1} = \Vcol{v^*}$. Uniqueness is
-needed again: if $N_1$ is a single $2\A$ source, (III) puts two $2\A$ sources in series, and the
-voltage is not fixed.
+\textbf{Why it works.} The same two steps, now with current sources.
+\begin{center}
+\begin{tikzpicture}[scale=0.7, baseline=(c.base)]\coordinate (c) at (0,1.0);\oneE{0}\end{tikzpicture}
+\quad$\Longrightarrow$\quad
+\begin{tikzpicture}[scale=0.7, baseline=(c.base)]\coordinate (c) at (0,1.0);\oneE{2}\end{tikzpicture}
+\qquad\qquad
+\begin{tikzpicture}[scale=0.62, baseline=(c.base)]\coordinate (c) at (0,0.9);\divNN{2}\end{tikzpicture}
+\end{center}
+Step 1: replacing one element $E$ by a current source $\Icol{i_e^*}$ changes only its law, now
+$\Icol{i_e} = \Icol{i_e^*}$, so with a unique solution $\Vcol{v_e} = \Vcol{v_e^*}$. Step 2: divide
+$N_1$ and $N_2$ and give each a current source $\Icol{i^*}$; the connection becomes
+$\Icol{i_1} = \Icol{i_2} = \Icol{i^*}$, which the solution of (I) satisfies, so
+$\Vcol{v_1} = \Vcol{v^*}$. Uniqueness is needed again: if $N_1$ is a single $2\A$ source, (III)
+puts two $2\A$ sources in series, and the voltage is not fixed.
 
 %==============================================================
 \section{Ports and equivalent one-ports}
@@ -574,20 +667,17 @@ them, every branch voltage and branch current inside $N_0$ is the same with $N_1
 $N_2$.
 \end{definitionbox}
 
-\begin{center}
-\begin{tabular}{@{}c@{\hspace{10mm}}c@{}}
-\begin{tikzpicture}[scale=0.8]
-  \pairbox{$N_0$}{$N_1$}
-\end{tikzpicture} &
-\begin{tikzpicture}[scale=0.8]
-  \pairbox{$N_0$}{$N_2$}
-\end{tikzpicture}
-\end{tabular}
-\end{center}
+\noindent\begin{minipage}[c]{0.46\linewidth}
+\centering
+\begin{tikzpicture}[scale=0.58]\pairbox{$N_0$}{$N_1$}\end{tikzpicture}\hspace{2mm}
+\begin{tikzpicture}[scale=0.58]\pairbox{$N_0$}{$N_2$}\end{tikzpicture}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.52\linewidth}
 $N_0$ meets the rest only through $\Vcol{v}$ and $\Icol{i}$. The equations of the whole
 circuit are those of $N_0$ plus the $i$--$v$ characteristic at the port. Equivalent one-ports
 give the same equations, so the same solution inside $N_0$. Inside $N_1$ and $N_2$ the
 branch values may differ.
+\end{minipage}
 
 %==============================================================
 \Needspace{14\baselineskip}
@@ -760,6 +850,7 @@ work for every LTI resistive circuit:
   \item \textbf{node voltage analysis} --- the $n - 1$ node voltages are the unknowns;
   \item \textbf{mesh current analysis} --- the $b - n + 1$ mesh currents are the unknowns.
 \end{enumerate}
+Both start from the matrices met earlier ($A$, $M$), now with linear element equations.
 
 %==============================================================
 \section*{Summary}
@@ -770,7 +861,7 @@ work for every LTI resistive circuit:
         one ($L$, $C$) has a derivative. In an LTI resistive circuit every element, apart from
         the independent sources (inputs), is linear, time-invariant and resistive.
   \item \textbf{Substitution:} a part may be replaced by a source equal to its port voltage
-        or current; nothing changes in the rest (if the solution stays unique).
+        or current; nothing changes in the rest (if each circuit has a unique solution).
   \item Two one-ports are \textbf{equivalent} if they have the same $i$--$v$ characteristic;
         the rest of the circuit cannot tell them apart.
   \item Series: $R_{eq} = \sum R_j$, $v_{s,eq} = \sum v_{sj}$. Parallel: $G_{eq} = \sum G_j$,
