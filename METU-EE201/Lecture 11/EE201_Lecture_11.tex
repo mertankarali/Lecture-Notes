@@ -218,6 +218,28 @@
       (1.55,4.45) -- (4.95,4.45) -- (4.95,1.6) -- (3.85,1.6) -- (3.85,2.9) -- (1.55,2.9) -- cycle;
     \node[nlab] at (5.25,4.45) {S};
   \fi}
+%  A first small example: i_s, R1, R2, R3.  #1 = 0: branch voltages and currents only;
+%  1: also the ground and the node voltages
+\newcommand{\exI}[1]{%
+  \draw (0,0) to[american current source, l=$\Icol{i_s}$] (0,2.6) -- (2.4,2.6)
+        to[R, l=$R_2$] (5.2,2.6);
+  \draw (2.4,2.6) to[R, l=$R_1$] (2.4,0);
+  \draw (5.2,2.6) to[R, l=$R_3$] (5.2,0);
+  \draw (0,0) -- (5.2,0);
+  \node[pol] at (2.05,1.75) {$+$}; \node[pol] at (2.05,0.85) {$-$};
+  \node[font=\small, text=cvolt] at (1.75,1.3) {$v_1$};
+  \node[pol] at (3.42,2.25) {$+$}; \node[pol] at (4.25,2.25) {$-$};
+  \node[font=\small, text=cvolt] at (3.8,2.22) {$v_2$};
+  \node[pol] at (4.85,1.75) {$+$}; \node[pol] at (4.85,0.85) {$-$};
+  \node[font=\small, text=cvolt] at (4.55,1.3) {$v_3$};
+  \draw[iar] (2.62,2.45) -- (2.62,2.0); \node[font=\small, text=ccur] at (2.88,2.22) {$i_1$};
+  \draw[iar] (2.65,2.85) -- (3.1,2.85); \node[font=\small, text=ccur] at (2.88,3.12) {$i_2$};
+  \draw[iar] (5.42,2.45) -- (5.42,2.0); \node[font=\small, text=ccur] at (5.68,2.22) {$i_3$};
+  \ifnum#1=1
+    \nodev{2.4,2.6}{above left}{$e_1$}
+    \nodev{5.2,2.6}{above}{$e_2$}
+    \gnd{3.8}
+  \fi}
 \tikzset{fbox/.style={draw=metugray, thick, fill=metulight, rounded corners=3pt,
                       minimum height=0.85cm, minimum width=1.4cm, align=center,
                       font=\small, inner sep=4pt}}
@@ -261,26 +283,38 @@ the same idea with KCL and KVL swapped, comes later.
 %==============================================================
 \section{The idea: node voltages as the unknowns}
 
-The incidence matrix gives KCL as $A\Icol{\mathbf{i}} = \mathbf{0}$ and KVL as
-$\Vcol{\mathbf{v}} = A^T\Vcol{\mathbf{e}}$. So if the node voltages $\Vcol{\mathbf{e}}$ are
-the unknowns, KVL holds automatically. The element laws then give every branch current in
-terms of $\Vcol{\mathbf{e}}$, and only KCL is left to write:
-\begin{center}
-\begin{tikzpicture}[node distance=2.2cm]
-  \node[fbox] (e) {$\Vcol{\mathbf{e}}$\\[-1pt]{\scriptsize $n-1$ unknowns}};
-  \node[fbox, right=of e] (v) {$\Vcol{\mathbf{v}}$};
-  \node[fbox, right=of v] (i) {$\Icol{\mathbf{i}}$};
-  \node[fbox, right=of i, draw=metured, fill=metured!8] (k) {$n-1$\\[-1pt]{\scriptsize equations}};
-  \draw[bigarr] (e) -- node[above, font=\scriptsize] {KVL}
-                        node[below, font=\scriptsize] {$\Vcol{\mathbf{v}} = A^T\Vcol{\mathbf{e}}$} (v);
-  \draw[bigarr] (v) -- node[above, font=\scriptsize] {element laws}
-                        node[below, font=\scriptsize] {$\Icol{i_k} = G_k\Vcol{v_k}$} (i);
-  \draw[bigarr] (i) -- node[above, font=\scriptsize] {KCL}
-                        node[below, font=\scriptsize] {$A\Icol{\mathbf{i}} = \mathbf{0}$} (k);
+The circuit below has $4$ branches, so $4$ branch voltages and $4$ branch currents: $8$
+unknowns. With node voltages, only $2$ unknowns are left. Three steps show how.
+
+\begin{examplebox}[A small example]
+\begin{minipage}[c]{0.43\linewidth}
+\centering
+\begin{tikzpicture}[scale=0.85]
+  \exI{1}
 \end{tikzpicture}
-\end{center}
-Once $\Vcol{\mathbf{e}}$ is found, $\Vcol{\mathbf{v}} = A^T\Vcol{\mathbf{e}}$ gives the branch
-voltages and the element laws give the branch currents.
+\end{minipage}\hfill
+\begin{minipage}[c]{0.55\linewidth}
+\textbf{Step 1: branch voltages.} With the bottom node as the ground,
+$\Vcol{v_1} = \e{1}$, $\Vcol{v_2} = \e{1} - \e{2}$, $\Vcol{v_3} = \e{2}$. KVL around the loop,
+$\Vcol{v_1} = \Vcol{v_2} + \Vcol{v_3}$, holds automatically: $\e{1} = (\e{1} - \e{2}) + \e{2}$.
+
+\textbf{Step 2: branch currents.} Ohm's law gives
+$\Icol{i_1} = \e{1}/R_1$, $\Icol{i_2} = (\e{1} - \e{2})/R_2$, $\Icol{i_3} = \e{2}/R_3$.
+
+\textbf{Step 3: KCL.} At nodes 1 and 2:
+\[
+  -\Icol{i_s} + \frac{\e{1}}{R_1} + \frac{\e{1} - \e{2}}{R_2} = 0, \qquad
+  -\frac{\e{1} - \e{2}}{R_2} + \frac{\e{2}}{R_3} = 0 .
+\]
+\end{minipage}
+
+\smallskip
+Two equations in $\e{1}$, $\e{2}$; then Steps 1 and 2 give every branch voltage and current.
+\end{examplebox}
+
+In general, $\Vcol{\mathbf{v}} = A^T\Vcol{\mathbf{e}}$ (KVL holds automatically), the element
+laws give $\Icol{\mathbf{i}}$, and KCL $A\Icol{\mathbf{i}} = \mathbf{0}$ gives $n - 1$ equations
+in the $n - 1$ node voltages.
 
 \begin{definitionbox}{Node voltage analysis: the procedure}
 \begin{minipage}[c]{0.55\linewidth}
@@ -414,17 +448,15 @@ The unknowns are only $\e{1}$ and $\e{2}$. Put $\e{3} = \Vcol{v_s}$ into the two
   =
   \begin{bmatrix} \Icol{i_s}\\[3pt] \Vcol{v_s}/R_4 \end{bmatrix} .
 \]
-The known $\Vcol{v_s}$ moves to the right side, where $\Vcol{v_s}/R_4$ acts like a current
-source into node 2 (a source transformation).
+The known $\Vcol{v_s}$ moves to the right side: $\Vcol{v_s}/R_4$ acts like a current into node 2.
 \end{examplebox}
 
 %==============================================================
 \section{A voltage source between two nodes: modified node analysis}
 
-If a voltage source, independent or dependent, is connected between two nodes and neither is
-the ground, KCL at these nodes needs its current. This current cannot be written with node
-voltages: the law of a voltage source fixes its voltage, not its current. \textbf{Modified
-node analysis} offers two ways out.
+If a voltage source (independent or dependent) lies between two nodes and neither is the
+ground, KCL there needs its current. Its law fixes its voltage, not its current, so this
+current cannot be written with node voltages. \textbf{Modified node analysis} offers two ways out.
 
 \begin{definitionbox}{Method I}
 Let the unknown current $\Icol{i}$ through the voltage source be one more unknown. Write KCL at

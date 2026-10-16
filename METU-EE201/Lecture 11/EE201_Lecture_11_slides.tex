@@ -190,6 +190,28 @@
       (1.55,4.45) -- (4.95,4.45) -- (4.95,1.6) -- (3.85,1.6) -- (3.85,2.9) -- (1.55,2.9) -- cycle;
     \node[nlab] at (5.25,4.45) {S};
   \fi}
+%  A first small example: i_s, R1, R2, R3.  #1 = 0: branch voltages and currents only;
+%  1: also the ground and the node voltages
+\newcommand{\exI}[1]{%
+  \draw (0,0) to[american current source, l=$\Icol{i_s}$] (0,2.6) -- (2.4,2.6)
+        to[R, l=$R_2$] (5.2,2.6);
+  \draw (2.4,2.6) to[R, l=$R_1$] (2.4,0);
+  \draw (5.2,2.6) to[R, l=$R_3$] (5.2,0);
+  \draw (0,0) -- (5.2,0);
+  \node[pol] at (2.05,1.75) {$+$}; \node[pol] at (2.05,0.85) {$-$};
+  \node[font=\small, text=cvolt] at (1.75,1.3) {$v_1$};
+  \node[pol] at (3.42,2.25) {$+$}; \node[pol] at (4.25,2.25) {$-$};
+  \node[font=\small, text=cvolt] at (3.8,2.22) {$v_2$};
+  \node[pol] at (4.85,1.75) {$+$}; \node[pol] at (4.85,0.85) {$-$};
+  \node[font=\small, text=cvolt] at (4.55,1.3) {$v_3$};
+  \draw[iar] (2.62,2.45) -- (2.62,2.0); \node[font=\small, text=ccur] at (2.88,2.22) {$i_1$};
+  \draw[iar] (2.65,2.85) -- (3.1,2.85); \node[font=\small, text=ccur] at (2.88,3.12) {$i_2$};
+  \draw[iar] (5.42,2.45) -- (5.42,2.0); \node[font=\small, text=ccur] at (5.68,2.22) {$i_3$};
+  \ifnum#1=1
+    \nodev{2.4,2.6}{above left}{$e_1$}
+    \nodev{5.2,2.6}{above}{$e_2$}
+    \gnd{3.8}
+  \fi}
 \newcommand{\yes}{\textcolor{cpow}{\checkmark}}
 \newcommand{\no}{\textcolor{metured}{$\boldsymbol{\times}$}}
 \hypersetup{colorlinks=true,allcolors=metured}
@@ -203,26 +225,44 @@
            Middle East Technical University}
 \date{}
 
-%  Roadmap of the lecture; #1 = current part (1-6)
-\newcommand{\rmitem}[3]{%
-  \item \ifnum#1<\rmcur\relax \textcolor{black!35}{\textbf{#2} --- #3}
-          \ \textcolor{cpow}{\checkmark}%
-        \else\ifnum#1=\rmcur\relax \textcolor{metured}{\textbf{#2}} --- #3%
-        \else \textbf{#2} --- \textcolor{black!60}{#3}\fi\fi}
+%  Roadmap of the lecture; #1 = current part (1-7)
+\newcommand{\rmitem}[2]{%
+  \item \ifnum#1<\rmcur\relax \textcolor{black!35}{#2}\ \textcolor{cpow}{\checkmark}%
+        \else\ifnum#1=\rmcur\relax \textcolor{metured}{\textbf{#2}}%
+        \else #2\fi\fi}
 \newcommand{\roadmapframe}[1]{%
   \begin{frame}{Roadmap}
     \def\rmcur{#1}%
     \vfill
-    \begin{enumerate}\itemsep9pt
-      \rmitem{1}{The idea}{node voltages as the unknowns}
-      \rmitem{2}{Only current sources}{$Y_n\Vcol{\mathbf{e}} = \Icol{\mathbf{i}_s}$, written by inspection}
-      \rmitem{3}{A voltage source to the ground}{a node voltage is known}
-      \rmitem{4}{A voltage source between two nodes}{Method I: a new unknown current}
-      \rmitem{5}{The supernode}{Method II: KCL around both nodes}
-      \rmitem{6}{Dependent sources and the ground}{constraint equations, another ground}
+    \begin{enumerate}\itemsep8pt
+      \rmitem{1}{The idea of node voltage analysis}
+      \rmitem{2}{Resistors and current sources}
+      \rmitem{3}{A voltage source connected to the ground}
+      \rmitem{4}{A voltage source between two nodes: Method I}
+      \rmitem{5}{A voltage source between two nodes: Method II, the supernode}
+      \rmitem{6}{Dependent sources}
+      \rmitem{7}{Choosing the ground}
     \end{enumerate}
     \vfill
   \end{frame}}
+
+
+%  The chain built up over the three steps: #1 = number of boxes (2-4)
+\newcommand{\chain}[1]{%
+  \begin{tikzpicture}[node distance=1.7cm, every node/.style={font=\small},
+                      fbox/.append style={minimum width=1.9cm, font=\scriptsize}]
+    \node[fbox] (e) {$\Vcol{\mathbf{e}}$\\[-2pt]{\scriptsize node voltages}};
+    \node[fbox, right=of e] (v) {$\Vcol{\mathbf{v}}$\\[-2pt]{\scriptsize branch voltages}};
+    \draw[bigarr] (e) -- node[above, font=\scriptsize, text=black] {KVL holds} (v);
+    \ifnum#1>2
+      \node[fbox, right=of v] (i) {$\Icol{\mathbf{i}}$\\[-2pt]{\scriptsize branch currents}};
+      \draw[bigarr] (v) -- node[above, font=\scriptsize, text=black] {Ohm's law} (i);
+    \fi
+    \ifnum#1>3
+      \node[fbox, right=of i, draw=metured, fill=metured!8] (k) {$n-1$ equations\\[-2pt]{\scriptsize in $\Vcol{\mathbf{e}}$}};
+      \draw[bigarr] (i) -- node[above, font=\scriptsize, text=black] {KCL} (k);
+    \fi
+  \end{tikzpicture}}
 
 \begin{document}
 
@@ -292,32 +332,100 @@
 \roadmapframe{1}
 
 %--------------------------------------------------------------
-\begin{frame}{The idea: node voltages as the unknowns}
+\begin{frame}{The idea: a small example}
+  \begin{columns}[c,onlytextwidth]
+    \begin{column}{0.5\textwidth}
+      \centering
+      \begin{tikzpicture}[scale=1.05]
+        \exI{0}
+      \end{tikzpicture}
+    \end{column}
+    \begin{column}{0.47\textwidth}
+      \textbf{Question.} How many unknowns does this circuit have?\\[12pt]
+      \onslide<2->{%
+      $4$ branches: $4$ branch voltages and $4$ branch currents.\\[8pt]}
+      \onslide<3->{%
+      So $8$ unknowns, and we would need $8$ equations.\\[12pt]}
+      \onslide<4->{%
+      With node voltages, only \alert{2} unknowns are left.\\[4pt]
+      Three steps show how.}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{Step 1: node voltages give the branch voltages}
+  \begin{columns}[c,onlytextwidth]
+    \begin{column}{0.5\textwidth}
+      \centering
+      \begin{tikzpicture}[scale=1.05]
+        \exI{1}
+      \end{tikzpicture}
+    \end{column}
+    \begin{column}{0.47\textwidth}
+      Choose the bottom node as the ground.\\[3pt]
+      Call the other node voltages $\e{1}$ and $\e{2}$.\\[10pt]
+      \onslide<2->{%
+      $\Vcol{v_1} = \e{1}, \qquad \Vcol{v_2} = \e{1} - \e{2}, \qquad \Vcol{v_3} = \e{2}$\\[10pt]}
+      \onslide<3->{%
+      \textbf{Question.} Does KVL hold around the loop $R_1$, $R_2$, $R_3$?\\[6pt]}
+      \onslide<4->{%
+      $\Vcol{v_1} = \Vcol{v_2} + \Vcol{v_3}$: \ $\e{1} = (\e{1} - \e{2}) + \e{2}$ \ \yes\\[4pt]
+      KVL holds \alert{automatically}, for any $\e{1}$, $\e{2}$.}
+    \end{column}
+  \end{columns}
   \vfill
-  \begin{center}
-  \begin{tikzpicture}[node distance=2.3cm]
-    \node[fbox, minimum width=1.5cm] (e) {$\Vcol{\mathbf{e}}$\\[-1pt]{\scriptsize $n-1$ unknowns}};
-    \node[fbox, minimum width=1.5cm, right=of e] (v) {$\Vcol{\mathbf{v}}$};
-    \node[fbox, minimum width=1.5cm, right=of v] (i) {$\Icol{\mathbf{i}}$};
-    \node[fbox, minimum width=1.5cm, right=of i, draw=metured, fill=metured!8] (k)
-          {$n-1$\\[-1pt]{\scriptsize equations}};
-    \draw[bigarr] (e) -- node[above, font=\scriptsize, text=black] {KVL}
-                          node[below, font=\scriptsize, text=black] {$\Vcol{\mathbf{v}} = A^T\Vcol{\mathbf{e}}$} (v);
-    \draw[bigarr] (v) -- node[above, font=\scriptsize, text=black] {element laws}
-                          node[below, font=\scriptsize, text=black] {$\Icol{i_k} = G_k\Vcol{v_k}$} (i);
-    \draw[bigarr] (i) -- node[above, font=\scriptsize, text=black] {KCL}
-                          node[below, font=\scriptsize, text=black] {$A\Icol{\mathbf{i}} = \mathbf{0}$} (k);
-  \end{tikzpicture}
-  \end{center}
+  \onslide<4->{\begin{center}\chain{2}\end{center}}
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{Step 2: the element laws give the branch currents}
+  \begin{columns}[c,onlytextwidth]
+    \begin{column}{0.5\textwidth}
+      \centering
+      \begin{tikzpicture}[scale=1.05]
+        \exI{1}
+      \end{tikzpicture}
+    \end{column}
+    \begin{column}{0.47\textwidth}
+      Each resistor obeys $\Icol{i} = \Vcol{v}/R$:\\[10pt]
+      \onslide<2->{%
+      $\displaystyle \Icol{i_1} = \frac{\e{1}}{R_1}, \qquad
+       \Icol{i_2} = \frac{\e{1} - \e{2}}{R_2}, \qquad
+       \Icol{i_3} = \frac{\e{2}}{R_3}$\\[10pt]}
+      \onslide<3->{%
+      Every branch current is now written with $\e{1}$ and $\e{2}$.}
+    \end{column}
+  \end{columns}
   \vfill
-  \begin{itemize}\itemsep8pt
-    \item<2-> Write KCL at each node \alert{except the reference node}, with every current in
-      terms of node voltages.
-    \item<3-> This gives $n - 1$ equations in $n - 1$ unknowns.
-    \item<4-> Once $\Vcol{\mathbf{e}}$ is known, $\Vcol{\mathbf{v}} = A^T\Vcol{\mathbf{e}}$
-      gives the branch voltages, and the element laws give the branch currents.
-  \end{itemize}
+  \begin{center}\chain{3}\end{center}
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{Step 3: KCL gives the equations}
+  \begin{columns}[c,onlytextwidth]
+    \begin{column}{0.5\textwidth}
+      \centering
+      \begin{tikzpicture}[scale=1.05]
+        \only<1>{\node[halo] at (2.4,2.6) {};}
+        \only<2>{\node[halo] at (5.2,2.6) {};}
+        \exI{1}
+      \end{tikzpicture}
+    \end{column}
+    \begin{column}{0.47\textwidth}
+      \textbf{Node 1:} \
+      $\displaystyle -\Icol{i_s} + \frac{\e{1}}{R_1} + \frac{\e{1} - \e{2}}{R_2} = 0$\\[10pt]
+      \onslide<2->{%
+      \textbf{Node 2:} \
+      $\displaystyle -\frac{\e{1} - \e{2}}{R_2} + \frac{\e{2}}{R_3} = 0$\\[12pt]}
+      \onslide<3->{%
+      Two equations, two unknowns: solve for $\e{1}$ and $\e{2}$.\\[6pt]}
+      \onslide<4->{%
+      Then Steps 1 and 2 give all branch voltages and currents.}
+    \end{column}
+  \end{columns}
   \vfill
+  \onslide<3->{\begin{center}\chain{4}\end{center}}
 \end{frame}
 
 %--------------------------------------------------------------
@@ -860,6 +968,9 @@
   \end{block}}
   \vfill
 \end{frame}
+
+%--------------------------------------------------------------
+\roadmapframe{7}
 
 %--------------------------------------------------------------
 \begin{frame}{Exercise: choose node 3 as the ground}

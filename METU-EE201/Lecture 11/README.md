@@ -5,7 +5,7 @@ Lecture notes and slides for the eleventh lecture of EE201 (Section 2, Fall 2026
 | File | What it is |
 |---|---|
 | `EE201_Lecture_11.tex` | Handout / lecture notes (article, 5 pages). Self-contained: procedure, five worked examples, a summary. |
-| `EE201_Lecture_11_slides.tex` | Beamer deck (32 slides, 105 PDF pages) for the lecture itself — visual, low text. |
+| `EE201_Lecture_11_slides.tex` | Beamer deck (36 slides, 117 PDF pages) for the lecture itself — visual, low text. |
 | `build.sh` | Compiles both, removes auxiliary files, opens the PDFs. |
 
 ## Compiling
@@ -27,10 +27,11 @@ Following pp. 24–27 of Prof. Emre Tuna's notes, his recorded Lecture 11 (00:00
 first half of his recorded Lecture 12 (00:00–~35:00) on
 [METU OCW](https://ocw.metu.edu.tr/course/view.php?id=351).
 
-1. **The idea** (L11 00:00) — node voltages as the unknowns: KVL v = Aᵀe holds automatically,
-   the element laws give the currents, only KCL is left (n − 1 equations); the procedure
-   (reference node, label node voltages, KCL); the current leaving node k through R is
-   (e_k − e_j)/R
+1. **The idea** (L11 00:00) — taught on a small example (i_s, R₁, R₂, R₃: 8 branch unknowns,
+   2 node voltages) in three steps: node voltages give the branch voltages (KVL holds
+   automatically), Ohm's law gives the currents, KCL gives the equations; the chain
+   e → v → i → KCL grows one box per step; then the general procedure (reference node, label
+   node voltages, KCL) and the current leaving node k through R, (e_k − e_j)/R
 2. **Resistors and current sources** — Example 11.1 (14 branch unknowns vs 3 node voltages),
    KCL at each node, Y_n e = i_s; Y_n by inspection (diagonal, off-diagonal, right side);
    why Y_n is symmetric: Y_n = A_R G A_Rᵀ, i_s = −A_S i_S
@@ -44,7 +45,7 @@ first half of his recorded Lecture 12 (00:00–~35:00) on
 6. **Dependent sources** (L12 11:20) — Example 11.4: dependent source v_x = e₁ between nodes
    3 and 2, supernode S, e₁ = 8 V, e₂ = 9 V, e₃ = 1 V, P₃Ω = 27 W; remark (dependent voltage
    source to ground: no KCL there, write its constraint)
-7. **Choosing a different ground** (L12 25:22, exercise) — Example 11.5: node 3 as the ground,
+7. **Choosing the ground** (L12 25:22, exercise) — Example 11.5: node 3 as the ground,
    e₁′ = 7 V, e₂′ = 8 V, e₀′ = −1 V, the same 27 W; every node voltage shifts by the same
    amount; tip: put the ground at one end of a voltage source
 
@@ -53,7 +54,7 @@ Then a summary table (situation → what to do).
 ## Slides
 
 After the review comes a "Motivation" slide, and a roadmap slide opens each of the
-six parts (done parts greyed with a check mark, the current one highlighted). Questions are
+seven parts (done parts greyed with a check mark, the current one highlighted). Questions are
 shown first and the answers on the next page; the node being written is highlighted in the
-circuit. Each step is an ordinary extra PDF page; that is why the deck has 32 slides but 105
+circuit. Each step is an ordinary extra PDF page; that is why the deck has 36 slides but 117
 pages.
