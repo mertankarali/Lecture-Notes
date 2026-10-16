@@ -507,12 +507,16 @@ element $E$ & the law of $E$ & $\Vcol{v_e} = \Vcol{v_e^*}$\\
 The old solution satisfies every equation of the new circuit, and the new circuit has only one
 solution, so nothing changes, also $\Icol{i_e} = \Icol{i_e^*}$.
 
-\textbf{From one element to $N_2$.} Seen from $N_1$, all of $N_2$ acts like one branch from $a$ to
-$b$, with $\Vcol{v}$ and $\Icol{i}$. Take $E = N_2$: replacing it by a source changes only its own
-equations, and those of $N_1$ stay the same. With a unique solution, nothing inside $N_1$
-changes. $N_2$ is removed, so it can be anything, even nonlinear. Without uniqueness the step
-fails: if $N_1$ is a single $5\V$ source, (II) puts two $5\V$ sources in parallel, and the
-current is not fixed.
+\textbf{Divide $N_1$ and $N_2$.} Let $\Vcol{v_1}$, $\Icol{i_1}$ be the port values of $N_1$ and
+$\Vcol{v_2}$, $\Icol{i_2}$ those of $N_2$; in (I) the connection gives $\Vcol{v_1} = \Vcol{v_2}$
+and $\Icol{i_1} = \Icol{i_2}$. Now divide the two parts and give each its own voltage source
+$\Vcol{v^*}$. The equations inside $N_1$ and inside $N_2$ are the same as in (I); only the
+connection changes, to $\Vcol{v_1} = \Vcol{v^*}$ and $\Vcol{v_2} = \Vcol{v^*}$. The solution of (I)
+satisfies these, since $\Vcol{v_1} = \Vcol{v_2} = \Vcol{v^*}$ there. With a unique solution,
+nothing changes in either part. The left part is exactly (II), so nothing inside $N_1$ changes,
+also $\Icol{i_1} = \Icol{i^*}$. $N_2$ is not needed at all: it can be anything, even nonlinear.
+Without uniqueness the step fails: if $N_1$ is a single $5\V$ source, (II) puts two $5\V$ sources
+in parallel, and the current is not fixed.
 
 \subsection*{(I) and (III): replacing $N_2$ by a current source}
 
@@ -532,7 +536,9 @@ equation holds in (I), where $\Icol{i} = 2\A$.
 
 \textbf{Why it works.} The same two steps. Replacing one element $E$ by a current source
 $\Icol{i_e^*}$ changes only its law, now $\Icol{i_e} = \Icol{i_e^*}$; KCL, KVL and the other laws stay
-the same, so with a unique solution $\Vcol{v_e} = \Vcol{v_e^*}$. Then take $E = N_2$. Uniqueness is
+the same, so with a unique solution $\Vcol{v_e} = \Vcol{v_e^*}$. Then divide $N_1$ and $N_2$ and
+give each a current source $\Icol{i^*}$: the connection becomes $\Icol{i_1} = \Icol{i_2} =
+\Icol{i^*}$, which the solution of (I) satisfies, so $\Vcol{v_1} = \Vcol{v^*}$. Uniqueness is
 needed again: if $N_1$ is a single $2\A$ source, (III) puts two $2\A$ sources in series, and the
 voltage is not fixed.
 

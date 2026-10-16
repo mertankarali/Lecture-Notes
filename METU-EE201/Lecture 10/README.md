@@ -5,7 +5,7 @@ Lecture notes and slides for the tenth lecture of EE201 (Section 2, Fall 2026/27
 | File | What it is |
 |---|---|
 | `EE201_Lecture_10.tex` | Handout / lecture notes (article, 6 pages). Self-contained: definitions, six worked examples, a summary. |
-| `EE201_Lecture_10_slides.tex` | Beamer deck (38 slides, 118 PDF pages) for the lecture itself — visual, low text. |
+| `EE201_Lecture_10_slides.tex` | Beamer deck (38 slides, 122 PDF pages) for the lecture itself — visual, low text. |
 | `build.sh` | Compiles both, removes auxiliary files, opens the PDFs. |
 
 ## Compiling
@@ -46,7 +46,7 @@ Following pp. 21–23 of Prof. Emre Tuna's notes and his recorded Lecture 10 on
    (I) and (II) — Example 10.3 (R_L = 3 Ω replaced by a 6 V source, i = 2 A again); why it
    works, first for one element E replaced by a voltage source v_e* (same graph, so the same
    KCL and KVL; only the law of E changes; the old solution satisfies all equations, unique, so
-   nothing changes), then from one element to N₂ (N₂ acts like one branch from a to b).
+   nothing changes), then divide N₁ and N₂ and give each its own source v* (the equations inside each part stay the same, only the connection v₁ = v₂, i₁ = i₂ becomes v₁ = v₂ = v*; the left part is exactly (II)).
    (I) and (III) — Example 10.4 (a 2 A source, v = 6 V again) and the same two steps
 4. **Ports and equivalent one-ports** (15:37, 19:43) — port condition, one-port, i–v
    characteristic; equivalent one-ports give the same branch values in any N₀
@@ -69,5 +69,5 @@ six main parts (done parts greyed with a check mark, the current one highlighted
 
 The definitions, the substitution theorem, the examples and the source transformation build
 up step by step with beamer overlays; questions are shown first and the answers on the next
-page. Each step is an ordinary extra PDF page; that is why the deck has 38 slides but 118
+page. Each step is an ordinary extra PDF page; that is why the deck has 38 slides but 122
 pages.
