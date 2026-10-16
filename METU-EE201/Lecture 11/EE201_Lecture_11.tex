@@ -1,0 +1,634 @@
+%==============================================================
+%  EE201 -- Circuit Theory I
+%  Lecture 11 : Node Voltage Analysis
+%  M. Mert Ankaralı, METU EEE
+%
+%  Compile:  ./build.sh      (or: pdflatex EE201_Lecture_11.tex, twice)
+%==============================================================
+\documentclass[11pt,a4paper]{article}
+
+%-------------------- packages --------------------------------
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{lmodern}
+\usepackage[margin=2.3cm,top=2.0cm,bottom=1.9cm,headheight=14pt,headsep=9pt]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{array,booktabs,tabularx}
+\usepackage{enumitem}
+\usepackage{needspace}
+\usepackage[table]{xcolor}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{graphicx}
+\usepackage[most]{tcolorbox}
+\usepackage{tikz}
+\usepackage[american,siunitx]{circuitikz}
+\usetikzlibrary{matrix,arrows.meta,positioning,calc,decorations.pathmorphing,decorations.pathreplacing,decorations.markings,patterns,shapes.geometric}
+\usepackage[colorlinks=true,allcolors=metured,breaklinks=true]{hyperref}
+
+%-------------------- colour system ---------------------------
+% One colour per physical quantity, used identically in the slides.
+\definecolor{metured}{RGB}{155,27,48}    % headings, structure
+\definecolor{metugray}{RGB}{88,89,91}
+\definecolor{ccur}{RGB}{0,102,170}       % CURRENT  -- blue
+\definecolor{cvolt}{RGB}{214,120,0}      % VOLTAGE  -- orange
+\definecolor{cpow}{RGB}{23,128,74}       % POWER / ENERGY -- green
+\definecolor{ccharge}{RGB}{124,60,160}   % CHARGE   -- purple
+\definecolor{cflux}{RGB}{0,138,138}      % FLUX -- teal
+\definecolor{boxgray}{RGB}{245,245,245}
+\definecolor{copper}{RGB}{184,98,30}
+
+\newcommand{\Icol}[1]{\textcolor{ccur}{#1}}
+\newcommand{\Vcol}[1]{\textcolor{cvolt}{#1}}
+\newcommand{\Pcol}[1]{\textcolor{cpow}{#1}}
+\newcommand{\Qcol}[1]{\textcolor{ccharge}{#1}}
+\newcommand{\Fcol}[1]{\textcolor{cflux}{#1}}
+
+%-------------------- units (no siunitx dependency) -----------
+\newcommand{\uni}[1]{\,\mathrm{#1}}
+\newcommand{\A}{\uni{A}}   \newcommand{\V}{\uni{V}}
+\newcommand{\W}{\uni{W}}   \newcommand{\J}{\uni{J}}
+\newcommand{\Cb}{\uni{C}}  \newcommand{\s}{\uni{s}}
+\newcommand{\Sie}{\uni{S}} \newcommand{\Wb}{\uni{Wb}}
+
+%-------------------- layout ----------------------------------
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\small\textcolor{metugray}{EE201 -- Circuit Theory I}}
+\rhead{\small\textcolor{metugray}{Lecture 11: Node Voltage Analysis}}
+\cfoot{\small\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\titleformat{\section}{\large\bfseries\color{metured}}{\thesection.}{0.6em}{}
+\titleformat{\subsection}{\normalsize\bfseries\color{metugray}}{\thesubsection.}{0.6em}{}
+\titlespacing*{\section}{0pt}{1.4ex plus .3ex}{0.7ex}
+\titlespacing*{\subsection}{0pt}{1.1ex plus .2ex}{0.5ex}
+
+\setlist[itemize]{itemsep=2pt,topsep=3pt,parsep=0pt,leftmargin=1.5em}
+\setlist[enumerate]{itemsep=2pt,topsep=3pt,parsep=0pt,leftmargin=1.7em}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.7ex plus .1ex}
+\raggedbottom
+\widowpenalty=10000
+\clubpenalty=10000
+\brokenpenalty=10000
+
+%-------------------- boxes -----------------------------------
+\newtcolorbox{definitionbox}[1]{enhanced,
+  colback=metured!4, colframe=metured, boxrule=0.9pt,
+  fonttitle=\bfseries, title={#1}, arc=2pt,
+  left=7pt,right=7pt,top=5pt,bottom=5pt, before skip=7pt, after skip=7pt,
+  before upper={\setlength{\parskip}{0.6ex plus .1ex}}}
+
+\newtcolorbox{ideabox}[1][Key idea]{enhanced,
+  colback=ccur!5, colframe=ccur, boxrule=0.9pt,
+  fonttitle=\bfseries, title={#1}, arc=2pt,
+  left=7pt,right=7pt,top=5pt,bottom=5pt, before skip=7pt, after skip=7pt,
+  before upper={\setlength{\parskip}{0.6ex plus .1ex}}}
+
+\newtcolorbox{examplebox}[1][Example]{enhanced,
+  colback=cpow!4, colframe=cpow, boxrule=0.9pt,
+  fonttitle=\bfseries, title={#1}, arc=2pt,
+  left=7pt,right=7pt,top=5pt,bottom=5pt, before skip=7pt, after skip=7pt,
+  before upper={\setlength{\parskip}{0.6ex plus .1ex}}}
+
+\newtcolorbox{cautionbox}[1][Careful]{enhanced,
+  colback=cvolt!6, colframe=cvolt, boxrule=0.9pt,
+  fonttitle=\bfseries, title={#1}, arc=2pt,
+  left=7pt,right=7pt,top=5pt,bottom=5pt, before skip=7pt, after skip=7pt,
+  before upper={\setlength{\parskip}{0.6ex plus .1ex}}}
+
+%-------------------- circuitikz defaults ---------------------
+%  voltage sources: smaller + and - inside the circle, further apart
+\ctikzset{bipoles/vsourceam/inner plus={\tiny$+$},
+          bipoles/vsourceam/inner minus={\tiny$\vphantom{+}-$},
+          bipoles/vsourceam/margin=0.85,
+          bipoles/cvsourceam/inner plus={\tiny$+$},
+          bipoles/cvsourceam/inner minus={\tiny$\vphantom{+}-$},
+          bipoles/cvsourceam/margin=0.85}
+\ctikzset{bipoles/length=0.9cm, color=black,
+          label/align=straight,
+          bipoles/generic/height=0.28, bipoles/generic/width=0.62}
+\tikzset{
+  iar/.style={-{Stealth[length=2.2mm]}, ccur, thick},
+  pol/.style={font=\small, text=cvolt},
+  glab/.style={font=\footnotesize, text=metured},
+  ttl/.style={font=\scriptsize\bfseries, text=metugray},
+  capn/.style={font=\scriptsize, text=metugray, align=center},
+  bigarr/.style={-{Stealth[length=3mm]}, very thick, metugray},
+  gnode/.style={circle, fill=metured, inner sep=0pt, minimum size=4.4pt},
+  nlab/.style={circle, draw=metured, text=metured, font=\scriptsize, inner sep=0.7pt},
+  blab/.style={font=\footnotesize, text=black!80},
+  gbr/.style={black!75, thick, postaction={decorate, decoration={markings,
+      mark=at position 0.56 with {\arrow{Stealth[length=2.5mm]}}}}},
+  apbr/.style={ccur, line width=1.7pt, postaction={decorate, decoration={markings,
+      mark=at position 0.56 with {\arrow{Stealth[length=2.8mm]}}}}},
+  hal/.style={draw=cpow!60, line width=6pt, opacity=0.35, line cap=round, line join=round},
+  elem/.style={draw=metugray, thick, fill=metulight},
+}
+\definecolor{metulight}{RGB}{243,240,241}
+
+%-------------------- Lecture 11 circuit macros ---------------
+\newcommand{\ohm}{\,\Omega}
+\newcommand{\e}[1]{\textcolor{cvolt}{e_{#1}}}
+\newcommand{\ep}[1]{\textcolor{cvolt}{e_{#1}'}}
+\newcommand{\nd}[1]{\tikz[baseline=(c.base)]\node[nlab](c){#1};}
+\newcommand{\vbf}[1]{\textcolor{cvolt}{\mathbf{#1}}}
+\newcommand{\ibf}[1]{\textcolor{ccur}{\mathbf{#1}}}
+%  A node: dot at (#1) with label #3 placed at anchor #2
+\newcommand{\nodev}[3]{\fill (#1) circle (1.7pt) node[#2, inner sep=2pt, font=\small, text=cvolt] {#3};}
+%  Ground symbol below (#1,0)
+\newcommand{\gnd}[1]{\draw (#1,0) -- (#1,-0.2) node[ground] {};}
+%  Examples 11.1 and 11.2.
+%  #1 = 0: i_s1, R1..R5, i_s2 (11.1);  1: i_s, R1..R4, v_s to ground (11.2);
+%  2: as 1, e_3 not a label (11.2 revisited)
+\newcommand{\exA}[1]{%
+  \ifnum#1=0
+    \draw (0,0) to[american current source, l=$\Icol{i_{s1}}$] (0,2);
+  \else
+    \draw (0,0) to[american current source, l=$\Icol{i_s}$] (0,2);
+  \fi
+  \draw (0,2) -- (1.8,2) to[R, l=$R_2$] (3.8,2) to[R, l_=$R_4$] (5.8,2);
+  \draw (1.8,2) to[R, l_=$R_1$] (1.8,0);
+  \draw (3.8,2) to[R, l_=$R_3$] (3.8,0);
+  \draw (0,0) -- (5.8,0);
+  \ifnum#1=0
+    \draw (3.8,2) -- (3.8,3.0) to[R, l=$R_5$] (5.8,3.0) -- (5.8,2);
+    \draw (5.8,2) to[american current source, l=$\Icol{i_{s2}}$] (5.8,0);
+    \nodev{3.8,2}{above left}{$e_2$}
+    \nodev{5.8,2}{above right}{$e_3$}
+  \else
+    \draw (5.8,0) to[american voltage source, invert, l_=$\Vcol{v_s}$] (5.8,2);
+    \nodev{3.8,2}{above}{$e_2$}
+    \ifnum#1=1 \nodev{5.8,2}{above}{$e_3$}\else \fill (5.8,2) circle (1.7pt);\fi
+  \fi
+  \nodev{1.8,2}{above}{$e_1$}
+  \gnd{3.8}}
+%  Example 11.3: two voltage sources; v_s2 between nodes 1 and 2.
+%  #1 = 0: plain;  1: current i through v_s2;  2: the supernode
+\newcommand{\exB}[1]{%
+  \draw (0,0) to[american voltage source, invert, l=$\Vcol{v_{s1}}$] (0,2);
+  \draw (0,2) to[R, l=$R_1$] (1.8,2) to[american voltage source, l=$\Vcol{v_{s2}}$] (3.6,2)
+        to[R, l=$R_4$] (5.4,2) -- (7.0,2);
+  \draw (1.8,2) to[R, l=$R_2$] (1.8,0);
+  \draw (3.6,2) to[R, l=$R_3$] (3.6,0);
+  \draw (5.4,0) to[american current source, l_=$\Icol{i_{s1}}$] (5.4,2);
+  \draw (7.0,2) to[R, l=$R_5$] (7.0,0);
+  \draw (0,0) -- (7.0,0);
+  \nodev{1.8,2}{above right}{$e_1$}
+  \nodev{3.6,2}{above left}{$e_2$}
+  \nodev{5.4,2}{above}{$e_3$}
+  \ifnum#1=1
+    \draw[iar] (2.55,1.5) -- (3.05,1.5);
+    \node[font=\small, text=ccur] at (2.8,1.25) {$i$};
+  \fi
+  \ifnum#1=2
+    \draw[dashed, metured, thick, rounded corners=4pt] (1.5,1.6) rectangle (3.9,2.95);
+    \node[font=\scriptsize, text=metured, anchor=south] at (2.7,2.95) {supernode};
+  \fi
+  \gnd{1.8}}
+%  Example 11.4: a dependent voltage source v_x between nodes 3 and 2.
+%  #1 = 0: plain;  1: the supernode S;  2: node 3 as the ground
+\newcommand{\exC}[1]{%
+  \draw (0,0) to[american current source, l=$5\A$] (0,2) -- (0,3.4)
+        to[R, l=$2\ohm$] (1.8,3.4)
+        to[american controlled voltage source, invert, l=$\Vcol{v_x}$] (4.2,3.4) -- (4.2,2);
+  \draw (0,2) -- (2.2,2) to[R, l=$2\ohm$] (4.2,2);
+  \draw (2.2,2) to[R, l=$4\ohm$] (2.2,0);
+  \draw (4.2,2) to[R, l=$3\ohm$] (4.2,0);
+  \draw (0,0) -- (4.2,0);
+  \fill (0,2) circle (1.7pt);
+  \node[pol] at (1.82,1.55) {$+$}; \node[pol] at (1.82,0.45) {$-$};
+  \node[font=\small, text=cvolt] at (1.5,1.0) {$v_x$};
+  \ifnum#1=2
+    \nodev{2.2,2}{above right}{$e_1'$}
+    \nodev{4.2,2}{right}{$e_2'$}
+    \fill (1.8,3.4) circle (1.7pt);
+    \draw (1.8,3.4) -- (1.8,3.1) node[ground] {};
+    \nodev{2.2,0}{below}{$e_0'$}
+  \else
+    \nodev{2.2,2}{above right}{$e_1$}
+    \nodev{4.2,2}{right}{$e_2$}
+    \nodev{1.8,3.4}{above right}{$e_3$}
+    \gnd{2.2}
+  \fi
+  \ifnum#1=1
+    \draw[dashed, metured, thick, rounded corners=4pt]
+      (1.55,4.45) -- (4.95,4.45) -- (4.95,1.6) -- (3.85,1.6) -- (3.85,2.9) -- (1.55,2.9) -- cycle;
+    \node[nlab] at (5.25,4.45) {S};
+  \fi}
+\tikzset{fbox/.style={draw=metugray, thick, fill=metulight, rounded corners=3pt,
+                      minimum height=0.85cm, minimum width=1.4cm, align=center,
+                      font=\small, inner sep=4pt}}
+
+\begin{document}
+
+%-------------------- title block -----------------------------
+\begin{center}
+\begin{tcolorbox}[enhanced, colback=metured!5, colframe=metured, boxrule=1pt,
+                  arc=3pt, left=10pt,right=10pt,top=7pt,bottom=7pt, width=\textwidth]
+\begin{center}
+  {\small\scshape Middle East Technical University}\\[2pt]
+  {\small\scshape Department of Electrical and Electronics Engineering}\\[7pt]
+  {\Large\bfseries\color{metured} EE201 -- Circuit Theory I}\\[4pt]
+  {\large\bfseries Lecture 11: Node Voltage Analysis}\\[6pt]
+  {\small M. Mert Ankaralı}
+\end{center}
+\end{tcolorbox}
+\end{center}
+\vspace{-0.5em}
+
+\begin{center}
+\small
+\begin{tabular}{@{}l l@{}}
+\toprule
+\multicolumn{2}{@{}l}{\textbf{Colour code used in these notes and in the slides}}\\
+\midrule
+\Icol{$\blacksquare$}~current $i$ \quad \Vcol{$\blacksquare$}~voltage $v$, node voltage $e$ &
+\textcolor{metured}{$\blacksquare$}~supernode, nodes \nd{S}\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\textbf{Why this lecture?} An LTI resistive circuit can be solved in two ways: by transforming
+it into a simpler circuit, or by writing its equations as it is. Transforming works for many
+circuits, but not for all. This lecture gives a systematic way to write the equations of
+\emph{any} LTI resistive circuit: \textbf{node voltage analysis}. Its unknowns are only the
+$n-1$ node voltages, instead of the $2b$ branch voltages and currents. Mesh current analysis,
+the same idea with KCL and KVL swapped, comes later.
+
+%==============================================================
+\section{The idea: node voltages as the unknowns}
+
+The incidence matrix gives KCL as $A\Icol{\mathbf{i}} = \mathbf{0}$ and KVL as
+$\Vcol{\mathbf{v}} = A^T\Vcol{\mathbf{e}}$. So if the node voltages $\Vcol{\mathbf{e}}$ are
+the unknowns, KVL holds automatically. The element laws then give every branch current in
+terms of $\Vcol{\mathbf{e}}$, and only KCL is left to write:
+\begin{center}
+\begin{tikzpicture}[node distance=2.2cm]
+  \node[fbox] (e) {$\Vcol{\mathbf{e}}$\\[-1pt]{\scriptsize $n-1$ unknowns}};
+  \node[fbox, right=of e] (v) {$\Vcol{\mathbf{v}}$};
+  \node[fbox, right=of v] (i) {$\Icol{\mathbf{i}}$};
+  \node[fbox, right=of i, draw=metured, fill=metured!8] (k) {$n-1$\\[-1pt]{\scriptsize equations}};
+  \draw[bigarr] (e) -- node[above, font=\scriptsize] {KVL}
+                        node[below, font=\scriptsize] {$\Vcol{\mathbf{v}} = A^T\Vcol{\mathbf{e}}$} (v);
+  \draw[bigarr] (v) -- node[above, font=\scriptsize] {element laws}
+                        node[below, font=\scriptsize] {$\Icol{i_k} = G_k\Vcol{v_k}$} (i);
+  \draw[bigarr] (i) -- node[above, font=\scriptsize] {KCL}
+                        node[below, font=\scriptsize] {$A\Icol{\mathbf{i}} = \mathbf{0}$} (k);
+\end{tikzpicture}
+\end{center}
+Once $\Vcol{\mathbf{e}}$ is found, $\Vcol{\mathbf{v}} = A^T\Vcol{\mathbf{e}}$ gives the branch
+voltages and the element laws give the branch currents.
+
+\begin{definitionbox}{Node voltage analysis: the procedure}
+\begin{minipage}[c]{0.55\linewidth}
+\begin{enumerate}
+  \item Choose a \textbf{reference node} (ground); its node voltage is $0$.
+  \item Label the other node voltages $\e{1}, \dots, \e{n-1}$.
+  \item Write \textbf{KCL} at every node except the ground, with each current written in
+        terms of node voltages.
+\end{enumerate}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.42\linewidth}
+\centering
+\begin{tikzpicture}[scale=0.85]
+  \draw (0,1.6) to[R, l=$R$] (2.4,1.6);
+  \nodev{0,1.6}{left}{$e_k$} \nodev{2.4,1.6}{right}{$e_j$}
+  \draw[iar] (0.25,1.25) -- (0.75,1.25); \node[font=\small, text=ccur] at (0.5,1.0) {$i$};
+  \node[font=\small] at (1.2,0.35) {$\Icol{i} = \dfrac{\e{k} - \e{j}}{R} = G\,(\e{k} - \e{j})$};
+\end{tikzpicture}\\[2pt]
+\small The current \emph{leaving} node $k$ through $R$; with the other end at the ground, it
+is $\e{k}/R$.
+\end{minipage}
+\end{definitionbox}
+
+%==============================================================
+\section{Resistors and current sources}
+
+Start with circuits whose elements are only resistors and current sources. Every branch
+current is then either known (a source) or a conductance times a difference of node voltages.
+The circuit of Example 11.1 has $b = 7$ branches, so $2b = 14$ branch voltages and currents.
+With the bottom node as the ground, only $n - 1 = 3$ node voltages are unknown.
+
+\begin{examplebox}[Example 11.1 --- only current sources: KCL at nodes 1, 2 and 3]
+
+\begin{minipage}[c]{0.42\linewidth}
+\centering
+\begin{tikzpicture}[scale=0.72]
+  \exA{0}
+\end{tikzpicture}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.56\linewidth}
+\small
+\begin{alignat*}{2}
+  &\text{node 1:}\ \ & -\Icol{i_{s1}} + \frac{\e{1}}{R_1} + \frac{\e{1} - \e{2}}{R_2} &= 0\\
+  &\text{node 2:}\ \ & \frac{\e{2} - \e{1}}{R_2} + \frac{\e{2}}{R_3} + \frac{\e{2} - \e{3}}{R_4}
+                    + \frac{\e{2} - \e{3}}{R_5} &= 0\\
+  &\text{node 3:}\ \ & \frac{\e{3} - \e{2}}{R_4} + \frac{\e{3} - \e{2}}{R_5} + \Icol{i_{s2}} &= 0
+\end{alignat*}
+\end{minipage}
+
+\end{examplebox}
+
+Every term is a current leaving the node; the source $\Icol{i_{s1}}$ points into node 1, so
+it enters with a minus sign. With $G_k = 1/R_k$ and the terms collected, the three equations of Example 11.1 become
+\[
+  \underbrace{\begin{bmatrix}
+    G_1 + G_2 & -G_2 & 0\\
+    -G_2 & G_2 + G_3 + G_4 + G_5 & -(G_4 + G_5)\\
+    0 & -(G_4 + G_5) & G_4 + G_5
+  \end{bmatrix}}_{Y_n}
+  \underbrace{\begin{bmatrix} \e{1}\\ \e{2}\\ \e{3} \end{bmatrix}}_{\Vcol{\mathbf{e}}}
+  =
+  \underbrace{\begin{bmatrix} \Icol{i_{s1}}\\ 0\\ -\Icol{i_{s2}} \end{bmatrix}}_{\Icol{\mathbf{i}_s}} .
+\]
+$Y_n$ is the \textbf{node admittance matrix}, and $Y_n\Vcol{\mathbf{e}} = \Icol{\mathbf{i}_s}$
+are the \textbf{node equations}. For a circuit of resistors and current sources, they can be
+written down directly.
+
+\begin{ideabox}[Writing $Y_n$ by inspection]
+\begin{itemize}
+  \item \textbf{Diagonal} entry $(k,k)$: the sum of the conductances connected to node $k$.
+  \item \textbf{Off-diagonal} entry $(k,j)$: minus the sum of the conductances between nodes
+        $k$ and $j$.
+  \item \textbf{Right side}, row $k$: the sum of the source currents entering node $k$.
+\end{itemize}
+So $Y_n$ is \textbf{symmetric}: the entry $(k,j)$ equals the entry $(j,k)$.
+\end{ideabox}
+
+\textbf{Why is $Y_n$ symmetric?} Split the columns of $A$ into the resistor branches and the
+current source branches, $A = [\,A_R\ \ A_S\,]$. KCL reads
+$A_R\Icol{\mathbf{i}_R} + A_S\Icol{\mathbf{i}_S} = \mathbf{0}$. The resistors obey
+$\Icol{\mathbf{i}_R} = G\,\Vcol{\mathbf{v}_R}$ with $G = \mathrm{diag}(G_1, \dots, G_5)$, and KVL
+gives $\Vcol{\mathbf{v}_R} = A_R^T\Vcol{\mathbf{e}}$. Together,
+\[
+  \underbrace{A_R\,G\,A_R^T}_{Y_n}\,\Vcol{\mathbf{e}} = \underbrace{-A_S\Icol{\mathbf{i}_S}}_{\Icol{\mathbf{i}_s}},
+  \qquad
+  Y_n^T = A_R\,G^T A_R^T = A_R\,G\,A_R^T = Y_n ,
+\]
+since $G$ is diagonal. $A_S\Icol{\mathbf{i}_S}$ adds up the source currents leaving each node,
+so $-A_S\Icol{\mathbf{i}_S}$ adds up those entering it.
+
+%==============================================================
+\section{A voltage source to the ground}
+
+\begin{examplebox}[Example 11.2 --- a voltage source between node 3 and the ground]
+\begin{minipage}[c]{0.45\linewidth}
+\centering
+\begin{tikzpicture}[scale=0.82]
+  \exA{1}
+\end{tikzpicture}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.52\linewidth}
+The unknowns are $\e{1}$, $\e{2}$, $\e{3}$, so three equations are needed. KCL at nodes 1 and 2:
+\begin{alignat*}{2}
+  &\text{node 1:}\quad & -\Icol{i_s} + \frac{\e{1}}{R_1} + \frac{\e{1} - \e{2}}{R_2} &= 0\\
+  &\text{node 2:}\quad & \frac{\e{2} - \e{1}}{R_2} + \frac{\e{2}}{R_3} + \frac{\e{2} - \e{3}}{R_4} &= 0
+\end{alignat*}
+\end{minipage}
+
+\smallskip
+\textbf{Question.} What does KCL at node 3 give?
+
+\textbf{Answer.} The current through $\Vcol{v_s}$ is unknown, and it cannot be written with
+node voltages. So KCL at node 3 gives no useful equation in $\e{1}$, $\e{2}$, $\e{3}$. But the
+source gives $\e{3} = \Vcol{v_s}$: this is the third equation.
+\end{examplebox}
+
+\begin{definitionbox}{Remark: a voltage source to the ground}
+If an independent voltage source $\Vcol{v_s}$ is connected between the ground and node $k$,
+then $\e{k} = \Vcol{v_s}$ is known. So $\e{k}$ is not an unknown, and KCL is not written at
+node $k$.
+\end{definitionbox}
+
+\begin{examplebox}[Example 11.2, revisited]
+The unknowns are only $\e{1}$ and $\e{2}$. Put $\e{3} = \Vcol{v_s}$ into the two KCL equations:
+\[
+  \begin{bmatrix}
+    \frac{1}{R_1} + \frac{1}{R_2} & -\frac{1}{R_2}\\[3pt]
+    -\frac{1}{R_2} & \frac{1}{R_2} + \frac{1}{R_3} + \frac{1}{R_4}
+  \end{bmatrix}
+  \begin{bmatrix} \e{1}\\[3pt] \e{2} \end{bmatrix}
+  =
+  \begin{bmatrix} \Icol{i_s}\\[3pt] \Vcol{v_s}/R_4 \end{bmatrix} .
+\]
+The known $\Vcol{v_s}$ moves to the right side, where $\Vcol{v_s}/R_4$ acts like a current
+source into node 2 (a source transformation).
+\end{examplebox}
+
+%==============================================================
+\section{A voltage source between two nodes: modified node analysis}
+
+If a voltage source, independent or dependent, is connected between two nodes and neither is
+the ground, KCL at these nodes needs its current. This current cannot be written with node
+voltages: the law of a voltage source fixes its voltage, not its current. \textbf{Modified
+node analysis} offers two ways out.
+
+\begin{definitionbox}{Method I}
+Let the unknown current $\Icol{i}$ through the voltage source be one more unknown. Write KCL at
+every node except the ground, and add the law of the source as a \textbf{constraint equation}.
+\end{definitionbox}
+
+\begin{examplebox}[Example 11.3 --- Method I]
+{\centering
+\begin{tikzpicture}[scale=0.78]
+  \exB{1}
+\end{tikzpicture}\par}
+The top of $\Vcol{v_{s1}}$ is at the known voltage $\Vcol{v_{s1}}$; $\Vcol{v_{s2}}$ is between
+nodes 1 and 2. Unknowns: $\e{1}$, $\e{2}$, $\e{3}$ and $\Icol{i}$.
+
+\begin{minipage}[c]{0.43\linewidth}
+\begin{alignat*}{2}
+  &\text{node 1:}\ \ & \frac{\e{1} - \Vcol{v_{s1}}}{R_1} + \frac{\e{1}}{R_2} + \Icol{i} &= 0\\
+  &\text{node 2:}\ \ & -\Icol{i} + \frac{\e{2}}{R_3} + \frac{\e{2} - \e{3}}{R_4} &= 0\\
+  &\text{node 3:}\ \ & \frac{\e{3} - \e{2}}{R_4} - \Icol{i_{s1}} + \frac{\e{3}}{R_5} &= 0\\
+  &\text{constraint:}\ \ & \e{1} - \e{2} &= \Vcol{v_{s2}}
+\end{alignat*}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.55\linewidth}
+\small
+\[
+  \begin{bmatrix}
+    G_1 + G_2 & 0 & 0 & 1\\
+    0 & G_3 + G_4 & -G_4 & -1\\
+    0 & -G_4 & G_4 + G_5 & 0\\
+    1 & -1 & 0 & 0
+  \end{bmatrix}
+  \begin{bmatrix} \e{1}\\ \e{2}\\ \e{3}\\ \Icol{i} \end{bmatrix}
+  =
+  \begin{bmatrix} G_1\Vcol{v_{s1}}\\ 0\\ \Icol{i_{s1}}\\ \Vcol{v_{s2}} \end{bmatrix}
+\]
+\end{minipage}
+
+\end{examplebox}
+
+\begin{definitionbox}{Method II: the supernode}
+Write KCL as if the two nodes of the voltage source were a single node, a
+\textbf{supernode}. Add the law of the source as a constraint equation.
+\end{definitionbox}
+
+\begin{examplebox}[Example 11.3, revisited --- Method II, three unknowns]
+\begin{minipage}[c]{0.44\linewidth}
+\centering
+\begin{tikzpicture}[scale=0.7]
+  \exB{2}
+\end{tikzpicture}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.54\linewidth}
+\small
+\begin{alignat*}{2}
+  &\text{supernode:}\ \ & \frac{\e{1} - \Vcol{v_{s1}}}{R_1} + \frac{\e{1}}{R_2} + \frac{\e{2}}{R_3}
+                       + \frac{\e{2} - \e{3}}{R_4} &= 0\\
+  &\text{node 3:}\ \ & \frac{\e{3} - \e{2}}{R_4} - \Icol{i_{s1}} + \frac{\e{3}}{R_5} &= 0\\
+  &\text{constraint:}\ \ & \e{1} - \e{2} &= \Vcol{v_{s2}}
+\end{alignat*}
+\end{minipage}
+\end{examplebox}
+
+\textbf{Why does it work?} Add the KCL equations of nodes 1 and 2 in Method I: $\Icol{i}$
+leaves node 1 and enters node 2, so it cancels. The sum is KCL around the supernode.
+The current $\Icol{i}$ is no longer needed. In matrix form, with three unknowns and three equations:
+\[
+  \begin{bmatrix}
+    G_1 + G_2 & G_3 + G_4 & -G_4\\
+    0 & -G_4 & G_4 + G_5\\
+    1 & -1 & 0
+  \end{bmatrix}
+  \begin{bmatrix} \e{1}\\ \e{2}\\ \e{3} \end{bmatrix}
+  =
+  \begin{bmatrix} G_1\Vcol{v_{s1}}\\ \Icol{i_{s1}}\\ \Vcol{v_{s2}} \end{bmatrix} .
+\]
+The matrix is no longer symmetric.
+
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.25}
+\begin{tabular}{@{}l l l@{}}
+\toprule
+ & \textbf{Method I} & \textbf{Method II}\\
+\midrule
+extra unknown & the current $\Icol{i}$ of the source & none\\
+KCL written & at every non-ground node & at the supernode and the other nodes\\
+extra equation & the constraint (law of the source) & the same constraint\\
+size in Example 11.3 & $4 \times 4$ & $3 \times 3$\\
+the current $\Icol{i}$ & part of the solution & from a KCL afterwards\\
+\bottomrule
+\end{tabular}
+\end{center}
+Both methods give the same node voltages.
+
+%==============================================================
+\section{Dependent sources}
+
+A dependent source is treated like an independent source of the same kind. Its control
+variable is written with node voltages; this gives one more constraint equation.
+
+\begin{examplebox}[Example 11.4 --- a dependent voltage source]
+\begin{minipage}[c]{0.42\linewidth}
+\centering
+\begin{tikzpicture}[scale=0.85]
+  \exC{1}
+\end{tikzpicture}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.55\linewidth}
+\textbf{Question.} Find the power absorbed by the $3\ohm$ resistor.
+
+The source $\Vcol{v_x}$ is between nodes 3 and 2, and neither is the ground. So use a
+supernode \nd{S} around nodes 2 and 3. The unknowns are $\e{1}$, $\e{2}$, $\e{3}$.
+\begin{alignat*}{2}
+  &\text{(1) node 1:}\ \ & -5 + \frac{\e{1} - \e{3}}{2} + \frac{\e{1}}{4} + \frac{\e{1} - \e{2}}{2} &= 0\\
+  &\text{(2) \nd{S}:}\ \ & \frac{\e{3} - \e{1}}{2} + \frac{\e{2} - \e{1}}{2} + \frac{\e{2}}{3} &= 0
+\end{alignat*}
+\end{minipage}
+
+\smallskip
+\textbf{Constraint.} The source gives $\e{2} - \e{3} = \Vcol{v_x}$, and its control
+$\Vcol{v_x}$ is the voltage of the $4\ohm$, so $\Vcol{v_x} = \e{1}$:
+\[
+  \e{2} - \e{3} = \e{1} . \qquad (3)
+\]
+\end{examplebox}
+
+\textbf{Solving Example 11.4.} Put $\e{1} = \e{2} - \e{3}$ into (1) and (2):
+\[
+  \tfrac54\e{1} - \tfrac12\e{2} - \tfrac12\e{3} = 5 \ \Rightarrow\ \tfrac34\e{2} - \tfrac74\e{3} = 5,
+  \qquad
+  -\e{1} + \tfrac56\e{2} + \tfrac12\e{3} = 0 \ \Rightarrow\ \e{3} = \tfrac19\e{2} .
+\]
+Then $\tfrac34\e{2} - \tfrac{7}{36}\e{2} = \tfrac{20}{36}\e{2} = 5$, so $\e{2} = 9\V$,
+$\e{3} = 1\V$ and $\e{1} = 8\V$. The $3\ohm$ is between node 2 and the ground:
+\[
+  \Pcol{P_{3\Omega}} = \frac{\e{2}^{\,2}}{3} = \frac{9^2}{3} = \Pcol{27\W} .
+\]
+
+\begin{definitionbox}{Remark: a dependent voltage source to the ground}
+If a dependent voltage source is connected between node $k$ and the ground, do not write KCL
+at node $k$: its current is not known. Write the constraint that the dependent source gives
+instead.
+\end{definitionbox}
+
+%==============================================================
+\section{Choosing a different ground}
+
+Any node can be the ground. Changing it shifts every node voltage by the same amount, so the
+branch voltages, the currents and the powers do not change.
+
+\begin{examplebox}[Example 11.5 --- Example 11.4 with node 3 as the ground]
+\begin{minipage}[c]{0.42\linewidth}
+\centering
+\begin{tikzpicture}[scale=0.85]
+  \exC{2}
+\end{tikzpicture}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.55\linewidth}
+\textbf{Question.} Redo Example 11.4 with node 3 as the ground. Does the answer change?
+
+Now $\Vcol{v_x}$ is between node 2 and the ground: no supernode is needed, and by the remark
+above, KCL is not written at node 2. The unknowns are $\ep{1}$, $\ep{2}$ and $\ep{0}$, the
+voltage of the old ground.
+\begin{alignat*}{2}
+  &\text{node 1:}\ \ & -5 + \frac{\ep{1}}{2} + \frac{\ep{1} - \ep{0}}{4} + \frac{\ep{1} - \ep{2}}{2} &= 0\\
+  &\text{node 0:}\ \ & 5 + \frac{\ep{0} - \ep{1}}{4} + \frac{\ep{0} - \ep{2}}{3} &= 0\\
+  &\text{constraint:}\ \ & \ep{2} = \Vcol{v_x} &= \ep{1} - \ep{0}
+\end{alignat*}
+\end{minipage}
+
+\end{examplebox}
+
+\textbf{Solving Example 11.5.} Put the constraint into the two KCL equations: $3\ep{1} + \ep{0} = 20$ and
+$-7\ep{1} + 11\ep{0} = -60$. So $\ep{1} = 7\V$, $\ep{0} = -1\V$, $\ep{2} = 8\V$, and
+\[
+  \Pcol{P_{3\Omega}} = \frac{(\ep{2} - \ep{0})^2}{3} = \frac{9^2}{3} = \Pcol{27\W}, \quad
+  \text{the same.}
+\]
+Every node voltage dropped by $\e{3} = 1\V$: $8 \to 7$, $9 \to 8$, $0 \to -1$.
+
+\textbf{Tip.} Put the ground at one end of a voltage source. Then its other node voltage is
+known, or a supernode is avoided.
+
+%==============================================================
+\section*{Summary}
+
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{@{}>{\raggedright}p{4.3cm} >{\raggedright\arraybackslash}p{10.7cm}@{}}
+\toprule
+\textbf{In the circuit} & \textbf{What to do}\\
+\midrule
+resistors and current sources & KCL at every non-ground node: $Y_n\Vcol{\mathbf{e}} =
+  \Icol{\mathbf{i}_s}$, written by inspection; $Y_n = A_R G A_R^T$ is symmetric\\
+a voltage source from the ground to node $k$ & $\e{k} = \Vcol{v_s}$ is known; no KCL at node $k$\\
+a voltage source between two nodes & Method I: its current as an unknown, plus the
+  constraint;\newline Method II: KCL at the supernode, plus the constraint\\
+a dependent source & write its control variable with node voltages: a constraint equation\\
+the choice of ground & any node; the branch voltages and currents do not change\\
+\bottomrule
+\end{tabular}
+\end{center}
+After the node voltages are found: $\Vcol{\mathbf{v}} = A^T\Vcol{\mathbf{e}}$, then the
+branch currents from the element laws.
+
+\end{document}
