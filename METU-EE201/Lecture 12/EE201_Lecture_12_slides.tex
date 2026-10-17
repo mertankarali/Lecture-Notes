@@ -103,6 +103,8 @@
 
 %-------------------- Lecture 12 circuit macros ---------------
 \newcommand{\ohm}{\,\Omega}
+%  An entry that appears on overlay #1, shown in red on that overlay
+\newcommand{\zin}[2]{\uncover<#1->{\alt<#1>{{\textcolor{metured}{#2}}}{{#2}}}}
 %  A highlighted matrix row entry: colour #1, content #2
 \newcommand{\hrow}[2]{{\setlength{\fboxsep}{1.5pt}\colorbox{#1}{\makebox[2.1em]{$\mathstrut #2$}}}}
 \newcommand{\yes}{\textcolor{cpow}{\checkmark}}
@@ -143,7 +145,7 @@
   \draw (0,0) -- (7,0);
   \foreach \p in {(0,2),(3.5,2),(7,2),(3.5,0)} \fill \p circle (1.7pt);
   \ifnum#2>0
-    \meshcw{1.75}{1.0}{1} \meshcw{5.25}{1.0}{2} \meshcw[0.33]{3.5}{2.8}{3}
+    \meshcw{1.6}{1.0}{1} \meshcw{5.5}{1.0}{2} \meshcw[0.33]{3.5}{2.8}{3}
   \fi}
 
 %  Examples 12.3 and 12.4: two meshes with a current source between them.
@@ -455,7 +457,7 @@
         \only<2->{%
           \fill[ccur!10] (0,0) rectangle (3.5,2); \fill[ccur!18] (3.5,0) rectangle (7,2);
           \fill[ccur!26] (0,2) rectangle (7,3.5);
-          \node[mlabst] at (1.75,1.0) {1}; \node[mlabst] at (5.25,1.0) {2};
+          \node[mlabst] at (1.6,1.0) {1}; \node[mlabst] at (5.5,1.0) {2};
           \node[mlabst] at (3.5,2.8) {3};}
         \exM{0}{0}
       \end{tikzpicture}
@@ -587,28 +589,74 @@
 \end{frame}
 
 %--------------------------------------------------------------
-\begin{frame}{Writing $Z_M$ directly from the circuit}
+\begin{frame}{Writing $Z_M$ directly from the circuit: three rules}
   \begin{columns}[c,onlytextwidth]
-    \begin{column}{0.44\textwidth}
+    \begin{column}{0.46\textwidth}
       \centering
-      \begin{tikzpicture}[scale=0.55]
+      \begin{tikzpicture}[scale=0.62]
         \exM{0}{1}
       \end{tikzpicture}
     \end{column}
-    \begin{column}{0.54\textwidth}
+    \begin{column}{0.52\textwidth}
       \small
-      \textbf{Question.} Can we read $Z_M$ from the circuit, without writing KVL?\\[8pt]
+      \textbf{Question.} Can we read $Z_M$ from the circuit, without writing KVL?\\[10pt]
       \onslide<2->{%
-      \textbf{Diagonal} $(k,k)$: the sum of the resistances around mesh $k$.\\[3pt]
-      \quad $(3,3)$: $R_1 + R_3 + R_4$.\\[7pt]}
+      \textbf{Diagonal} $(k,k)$: the sum of the resistances around mesh $k$.\\[8pt]}
       \onslide<3->{%
-      \textbf{Off-diagonal} $(k,j)$: minus the sum of the resistances shared by meshes $k$ and $j$.\\[3pt]
-      \quad $(1,2)$: $-R_2$.\\[7pt]}
+      \textbf{Off-diagonal} $(k,j)$: minus the sum of the resistances shared by meshes $k$
+      and $j$.\\[8pt]}
       \onslide<4->{%
-      \textbf{Right side} $k$: the sum of the source voltages \alert{rising} along mesh $k$.\\[3pt]
-      \quad row 1: $\Vcol{v_{s1}}$, met from $-$ to $+$.\\[7pt]}
+      \textbf{Right side} $k$: the sum of the source voltages \alert{rising} (met from $-$ to
+      $+$) along mesh $k$.\\[8pt]}
       \onslide<5->{%
       So $Z_M$ is \alert{symmetric}: entry $(k,j)$ equals entry $(j,k)$.}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{Writing $Z_M$ directly: Example 12.1}
+  \begin{columns}[c,onlytextwidth]
+    \begin{column}{0.46\textwidth}
+      \centering
+      \begin{tikzpicture}[scale=0.62]
+        \only<2>{\fill[ccur!14] (0,0) rectangle (3.5,2);}
+        \only<3>{\fill[ccur!14] (3.5,0) rectangle (7,2);}
+        \only<4>{\fill[ccur!14] (0,2) rectangle (7,3.5);}
+        \only<5>{\draw[hal] (3.5,2) -- (3.5,0);}
+        \only<6>{\draw[hal] (0,2) -- (3.5,2);}
+        \only<7>{\draw[hal] (3.5,2) -- (7,2);}
+        \only<8>{\draw[hal] (0,0) -- (0,2); \draw[hal] (7,0) -- (7,2);}
+        \exM{0}{1}
+      \end{tikzpicture}
+    \end{column}
+    \begin{column}{0.52\textwidth}
+      \small
+      \[
+        Z_M =
+        \begin{bmatrix}
+          \zin{2}{R_1 + R_2} & \zin{5}{-R_2} & \zin{6}{-R_1}\\[3pt]
+          \zin{5}{-R_2} & \zin{3}{R_2 + R_3} & \zin{7}{-R_3}\\[3pt]
+          \zin{6}{-R_1} & \zin{7}{-R_3} & \zin{4}{R_1 + R_3 + R_4}
+        \end{bmatrix}
+      \]
+      \[
+        \Vcol{\mathbf{v}_M} =
+        \begin{bmatrix}
+          \zin{8}{\Vcol{v_{s1}}}\\[3pt] \zin{8}{\Vcol{v_{s2}}}\\[3pt] \zin{8}{0}
+        \end{bmatrix}
+      \]
+      \vspace{4pt}
+      \only<1>{\textbf{Question.} Fill in $Z_M$ and $\Vcol{\mathbf{v}_M}$ from the circuit.}%
+      \only<2>{Diagonal $(1,1)$: around mesh 1 are $R_1$ and $R_2$.}%
+      \only<3>{Diagonal $(2,2)$: around mesh 2 are $R_2$ and $R_3$.}%
+      \only<4>{Diagonal $(3,3)$: around mesh 3 are $R_1$, $R_3$ and $R_4$.}%
+      \only<5>{Meshes 1 and 2 share $R_2$: entries $(1,2)$ and $(2,1)$ are $-R_2$.}%
+      \only<6>{Meshes 1 and 3 share $R_1$: entries $(1,3)$ and $(3,1)$ are $-R_1$.}%
+      \only<7>{Meshes 2 and 3 share $R_3$: entries $(2,3)$ and $(3,2)$ are $-R_3$.}%
+      \only<8>{Right side: mesh 1 meets $\Vcol{v_{s1}}$ from $-$ to $+$, mesh 2 meets
+        $\Vcol{v_{s2}}$ from $-$ to $+$, mesh 3 has no source.}%
+      \only<9>{The same $Z_M$ as from KVL \yes, and it is symmetric.}
     \end{column}
   \end{columns}
 \end{frame}

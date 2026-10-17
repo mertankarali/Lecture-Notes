@@ -5,7 +5,7 @@ Lecture notes and slides for the twelfth lecture of EE201 (Section 2, Fall 2026/
 | File | What it is |
 |---|---|
 | `EE201_Lecture_12.tex` | Handout / lecture notes (article, 5 pages). Self-contained: procedure, four worked examples, a summary. |
-| `EE201_Lecture_12_slides.tex` | Beamer deck (34 slides, 133 PDF pages) for the lecture itself — visual, low text. |
+| `EE201_Lecture_12_slides.tex` | Beamer deck (35 slides, 142 PDF pages) for the lecture itself — visual, low text. |
 | `build.sh` | Compiles both, removes auxiliary files, opens the PDFs. |
 
 ## Compiling
@@ -35,7 +35,8 @@ matrix lecture: mesh currents i_M = [i_M1 … i_Mℓ]ᵀ, i = Mᵀ i_M, KVL M v 
    around every inner mesh
 2. **Matrix form** — Z_M i_M = v_M (Z_M: mesh impedance matrix; v_M: source voltages rising
    along each mesh); Z_M directly from the circuit with three rules (diagonal, off-diagonal,
-   right side), symmetric; Z_M from the graph: the graph of Example 12.1 (branches 1–4
+   right side), symmetric, then Z_M of Example 12.1 built entry by entry (diagonal per mesh,
+   off-diagonal per shared resistor, right side, each highlighted in the circuit); Z_M from the graph: the graph of Example 12.1 (branches 1–4
    resistors, 5–6 sources), its mesh matrix M = [M_R M_S] built row by row; KVL, KCL and
    Ohm's law in block form (Mᵀ split into resistor rows i_R = M_Rᵀ i_M and source rows);
    Z_M = M_R R M_Rᵀ and v_M = −M_S v_S, checked on the example
@@ -63,7 +64,7 @@ currents: which law holds automatically, which one is written), and a roadmap sl
 each part: a road with four stations (voltage sources, current sources, dependent sources,
 node or mesh?). Questions are shown first and the answers on the next page; equations,
 matrix rows and constraints appear one per page, and the mesh being written is shaded in
-the circuit. Each step is an ordinary extra PDF page; that is why the deck has 34 slides but
-133 pages.
+the circuit. Each step is an ordinary extra PDF page; that is why the deck has 35 slides but
+142 pages.
 
 Every example is also written in matrix form.
