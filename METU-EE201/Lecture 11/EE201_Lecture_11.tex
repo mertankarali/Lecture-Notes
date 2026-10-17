@@ -131,6 +131,12 @@
 
 %-------------------- Lecture 11 circuit macros ---------------
 \newcommand{\ohm}{\,\Omega}
+%  Colour-coded matrix entries: diagonal, off-diagonal, right side (#1 = colour of the right side)
+\newcommand{\cbx}[2]{{\setlength{\fboxsep}{1.6pt}\colorbox{#1}{$\displaystyle #2\mathstrut$}}}
+\newcommand{\dg}[1]{\cbx{cpow!16}{#1}}
+\newcommand{\od}[1]{\cbx{metured!13}{#1}}
+\newcommand{\chip}[1]{\textcolor{#1}{$\blacksquare$}}
+
 %  A highlighted matrix row entry: colour #1, content #2
 \newcommand{\hrow}[2]{{\setlength{\fboxsep}{1.5pt}\colorbox{#1}{\makebox[2.1em]{$\mathstrut #2$}}}}
 \newcommand{\e}[1]{\textcolor{cvolt}{e_{#1}}}
@@ -409,26 +415,39 @@ in the $n - 1$ node voltages.
 With $G_k = 1/R_k$ and the terms collected, the three equations of Example 11.1 become
 \[
   \underbrace{\begin{bmatrix}
-    G_1 + G_2 + G_5 & -G_2 & -G_5\\
-    -G_2 & G_2 + G_3 + G_4 & -G_4\\
-    -G_5 & -G_4 & G_4 + G_5
+    \dg{G_1 + G_2 + G_5} & \od{-G_2} & \od{-G_5}\\[2pt]
+    \od{-G_2} & \dg{G_2 + G_3 + G_4} & \od{-G_4}\\[2pt]
+    \od{-G_5} & \od{-G_4} & \dg{G_4 + G_5}
   \end{bmatrix}}_{Y_n}
-  \underbrace{\begin{bmatrix} \e{1}\\ \e{2}\\ \e{3} \end{bmatrix}}_{\Vcol{\mathbf{e}}}
+  \underbrace{\begin{bmatrix} \e{1}\\[2pt] \e{2}\\[2pt] \e{3} \end{bmatrix}}_{\Vcol{\mathbf{e}}}
   =
-  \underbrace{\begin{bmatrix} \Icol{i_{s1}}\\ 0\\ -\Icol{i_{s2}} \end{bmatrix}}_{\Icol{\mathbf{i}_n}} .
+  \underbrace{\begin{bmatrix} \cbx{ccur!14}{\Icol{i_{s1}}}\\[2pt] \cbx{ccur!14}{0}\\[2pt] \cbx{ccur!14}{-\Icol{i_{s2}}} \end{bmatrix}}_{\Icol{\mathbf{i}_n}} .
 \]
 $Y_n$ is the \textbf{node admittance matrix}, and $Y_n\Vcol{\mathbf{e}} = \Icol{\mathbf{i}_n}$
-are the \textbf{node equations}; $\Icol{\mathbf{i}_n}$ holds the source currents entering each node. For a circuit of resistors and current sources, they can be
-written down directly.
+are the \textbf{node equations}; $\Icol{\mathbf{i}_n}$ holds the source currents entering each
+node. The three colours follow three rules, so for a circuit of resistors and current sources
+the node equations can be written down directly.
 
 \begin{ideabox}[Writing $Y_n$ directly from the circuit: three rules]
 \begin{itemize}
-  \item \textbf{Diagonal} entry $(k,k)$: the sum of the conductances connected to node $k$.
-  \item \textbf{Off-diagonal} entry $(k,j)$: minus the sum of the conductances between nodes
+  \item \chip{cpow!45} \textbf{Diagonal} entry $(k,k)$: the sum of the conductances connected to node $k$.
+  \item \chip{metured!50} \textbf{Off-diagonal} entry $(k,j)$: minus the sum of the conductances between nodes
         $k$ and $j$.
-  \item \textbf{Right side}, row $k$: the sum of the source currents entering node $k$.
+  \item \chip{ccur!45} \textbf{Right side}, row $k$: the sum of the source currents entering node $k$.
 \end{itemize}
-So $Y_n$ is \textbf{symmetric}: the entry $(k,j)$ equals the entry $(j,k)$.
+In Example 11.1:
+\par\smallskip
+{\centering\small
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{@{}lll@{}}
+  \cellcolor{cpow!16}\textbf{Diagonal} & \cellcolor{metured!13}\textbf{Off-diagonal} & \cellcolor{ccur!14}\textbf{Right side}\\
+  $(1,1)$: $G_1, G_2, G_5$ meet node 1 & $(1,2)$, $(2,1)$: $G_2$ between 1 and 2 & row 1: $\Icol{i_{s1}}$ enters node 1\\
+  $(2,2)$: $G_2, G_3, G_4$ meet node 2 & $(1,3)$, $(3,1)$: $G_5$ between 1 and 3 & row 2: no source\\
+  $(3,3)$: $G_4, G_5$ meet node 3 & $(2,3)$, $(3,2)$: $G_4$ between 2 and 3 & row 3: $\Icol{i_{s2}}$ leaves node 3
+\end{tabular}\par}
+\smallskip
+Each conductance between two nodes appears twice, at $(k,j)$ and $(j,k)$: $Y_n$ is
+\textbf{symmetric}.
 \end{ideabox}
 
 \textbf{$Y_n$ from the graph.} In the graph of Example 11.1, branches 1--5 are the resistors

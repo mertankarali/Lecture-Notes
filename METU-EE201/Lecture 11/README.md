@@ -4,7 +4,7 @@ Lecture notes and slides for the eleventh lecture of EE201 (Section 2, Fall 2026
 
 | File | What it is |
 |---|---|
-| `EE201_Lecture_11.tex` | Handout / lecture notes (article, 5 pages). Self-contained: procedure, six worked examples, a summary. |
+| `EE201_Lecture_11.tex` | Handout / lecture notes (article, 6 pages). Self-contained: procedure, six worked examples, a summary. |
 | `EE201_Lecture_11_slides.tex` | Beamer deck (36 slides, 141 PDF pages) for the lecture itself — visual, low text. |
 | `build.sh` | Compiles both, removes auxiliary files, opens the PDFs. |
 
@@ -72,3 +72,5 @@ pages.
 
 Every example is also written in matrix form (Example 11.4 shows how the dependent source
 changes one entry of Y_n; Example 11.6 checks the new-ground values in matrix form).
+
+In the notes, Y_n of the first example is colour-coded (diagonal, off-diagonal, right side), matching the three rules, with a small table giving the reason for each entry.

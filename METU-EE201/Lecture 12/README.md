@@ -69,3 +69,5 @@ the circuit. Each step is an ordinary extra PDF page; that is why the deck has 3
 140 pages.
 
 Every example is also written in matrix form.
+
+In the notes, Z_M of the first example is colour-coded (diagonal, off-diagonal, right side), matching the three rules, with a small table giving the reason for each entry.
