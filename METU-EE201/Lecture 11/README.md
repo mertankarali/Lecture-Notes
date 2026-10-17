@@ -4,8 +4,8 @@ Lecture notes and slides for the eleventh lecture of EE201 (Section 2, Fall 2026
 
 | File | What it is |
 |---|---|
-| `EE201_Lecture_11.tex` | Handout / lecture notes (article, 5 pages). Self-contained: procedure, five worked examples, a summary. |
-| `EE201_Lecture_11_slides.tex` | Beamer deck (32 slides, 110 PDF pages) for the lecture itself — visual, low text. |
+| `EE201_Lecture_11.tex` | Handout / lecture notes (article, 5 pages). Self-contained: procedure, six worked examples, a summary. |
+| `EE201_Lecture_11_slides.tex` | Beamer deck (29 slides, 102 PDF pages) for the lecture itself — visual, low text. |
 | `build.sh` | Compiles both, removes auxiliary files, opens the PDFs. |
 
 ## Compiling
@@ -37,15 +37,17 @@ first half of his recorded Lecture 12 (00:00–~35:00) on
    e₃ = v_s, so e₃ is known and no KCL is written at node 3; two KCL equations, 2 × 2 system,
    v_s/R₄ on the right side
 4. **A voltage source between two nodes** (Modified NVA, Method I) — Example 11.3: its current
-   i as an extra unknown plus the constraint e₁ − e₂ = v_s2; 4 × 4 system
+   i as an extra unknown plus the constraint e₁ − e₂ = v_s2 (one slide, no matrix)
 5. **Supernode** (L12 04:00, Method II) — adding KCL at nodes 1 and 2 cancels i; KCL at the
-   supernode plus the constraint; 3 × 3, not symmetric; Method I vs Method II table
-6. **Dependent sources** (L12 11:20) — Example 11.4: dependent source v_x = e₁ between nodes
-   3 and 2, supernode S, e₁ = 8 V, e₂ = 9 V, e₃ = 1 V, P₃Ω = 27 W; remark (dependent voltage
-   source to ground: no KCL there, write its constraint)
-7. **Choosing the ground** (L12 25:22, exercise) — Example 11.5: node 3 as the ground,
-   e₁′ = 7 V, e₂′ = 8 V, e₀′ = −1 V, the same 27 W; every node voltage shifts by the same
-   amount; tip: put the ground at one end of a voltage source
+   supernode plus the constraint; 3 × 3, one unknown fewer, not symmetric
+6. **Dependent sources** (L12 11:20) — Example 11.4 (added): a dependent current source
+   0.5 v_x, KCL as usual, v_x = e₁, e₁ = 3 V, e₂ = 6 V, Y_n not symmetric; Example 11.5: a
+   dependent voltage source v_x = e₁ between nodes 3 and 2, supernode S, e₁ = 8 V, e₂ = 9 V,
+   e₃ = 1 V, P₃Ω = 27 W; remark (dependent voltage source to ground: no KCL there)
+7. **Choosing the ground** (L12 25:22, exercise) — Example 11.6: node 3 as the ground; every
+   node voltage drops by e₃ = 1 V (7, 8, −1 V), branch voltages unchanged, the same 27 W; now
+   v_x is between node 2 and the ground, no supernode; tip: put the ground at one end of a
+   voltage source
 
 Then a summary table (situation → what to do).
 
@@ -55,5 +57,5 @@ After the review comes a "Motivation" slide (what simplifying cannot do, what no
 analysis does), and a roadmap slide opens each of the seven parts: a path of stops with
 what is new at each stop and a small circuit icon (done parts greyed with a check mark, the current one highlighted). Questions are
 shown first and the answers on the next page; the node being written is highlighted in the
-circuit. Each step is an ordinary extra PDF page; that is why the deck has 32 slides but 110
+circuit. Each step is an ordinary extra PDF page; that is why the deck has 29 slides but 102
 pages.

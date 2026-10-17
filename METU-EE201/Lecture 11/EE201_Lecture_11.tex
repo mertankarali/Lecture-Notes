@@ -245,6 +245,18 @@
     \nodev{5.2,2.6}{above}{$e_2$}
     \gnd{3.8}
   \fi}
+%  Example 11.4: a dependent current source 0.5 v_x into node 2, v_x the voltage of the 2 ohm
+\newcommand{\exD}{%
+  \draw (0,0) to[american current source, l=$1\A$] (0,2) -- (1.6,2) to[R, l=$6\ohm$] (3.6,2) -- (5.2,2);
+  \draw (1.6,2) to[R, l=$2\ohm$] (1.6,0);
+  \draw (3.6,2) to[R, l=$6\ohm$] (3.6,0);
+  \draw (5.2,0) to[american controlled current source, l_=$\Icol{0.5\,v_x}$] (5.2,2);
+  \draw (0,0) -- (5.2,0);
+  \node[pol] at (1.25,1.55) {$+$}; \node[pol] at (1.25,0.45) {$-$};
+  \node[font=\small, text=cvolt] at (0.95,1.0) {$v_x$};
+  \nodev{1.6,2}{above}{$e_1$}
+  \nodev{3.6,2}{above}{$e_2$}
+  \gnd{2.6}}
 \tikzset{fbox/.style={draw=metugray, thick, fill=metulight, rounded corners=3pt,
                       minimum height=0.85cm, minimum width=1.4cm, align=center,
                       font=\small, inner sep=4pt}}
@@ -429,19 +441,9 @@ nodes 1 and 2. Unknowns: $\e{1}$, $\e{2}$, $\e{3}$ and $\Icol{i}$.
   &\text{constraint:}\ \ & \e{1} - \e{2} &= \Vcol{v_{s2}}
 \end{alignat*}
 \end{minipage}\hfill
-\begin{minipage}[c]{0.55\linewidth}
-\small
-\[
-  \begin{bmatrix}
-    G_1 + G_2 & 0 & 0 & 1\\
-    0 & G_3 + G_4 & -G_4 & -1\\
-    0 & -G_4 & G_4 + G_5 & 0\\
-    1 & -1 & 0 & 0
-  \end{bmatrix}
-  \begin{bmatrix} \e{1}\\ \e{2}\\ \e{3}\\ \Icol{i} \end{bmatrix}
-  =
-  \begin{bmatrix} G_1\Vcol{v_{s1}}\\ 0\\ \Icol{i_{s1}}\\ \Vcol{v_{s2}} \end{bmatrix}
-\]
+\begin{minipage}[c]{0.52\linewidth}
+Four unknowns and four equations: the three KCL equations and the constraint, the law of
+the source. This works, but it adds the unknown $\Icol{i}$. The supernode below avoids it.
 \end{minipage}
 
 \end{examplebox}
@@ -492,9 +494,8 @@ The matrix is no longer symmetric.
  & \textbf{Method I} & \textbf{Method II}\\
 \midrule
 extra unknown & the current $\Icol{i}$ of the source & none\\
-KCL written & at every non-ground node & at the supernode and the other nodes\\
 extra equation & the constraint (law of the source) & the same constraint\\
-size in Example 11.3 & $4 \times 4$ & $3 \times 3$\\
+unknowns in Example 11.3 & $4$: $\e{1}$, $\e{2}$, $\e{3}$, $\Icol{i}$ & $3$: $\e{1}$, $\e{2}$, $\e{3}$\\
 the current $\Icol{i}$ & part of the solution & from a KCL afterwards\\
 \bottomrule
 \end{tabular}
@@ -505,9 +506,28 @@ Both methods give the same node voltages.
 \section{Dependent sources}
 
 A dependent source is treated like an independent source of the same kind. Its control
-variable is written with node voltages; this gives one more constraint equation.
+variable is written with node voltages; this gives one more constraint equation. A dependent
+source makes $Y_n$ not symmetric.
 
-\begin{examplebox}[Example 11.4 --- a dependent voltage source]
+\begin{examplebox}[Example 11.4 --- a dependent current source]
+\begin{minipage}[c]{0.42\linewidth}
+\centering
+\begin{tikzpicture}[scale=0.8]
+  \exD
+\end{tikzpicture}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.55\linewidth}
+\textbf{Question.} Find $\e{1}$ and $\e{2}$. Treat the dependent source as a current source
+$\Icol{0.5\,v_x}$; write its control $\Vcol{v_x}$ with node voltages:
+\begin{alignat*}{2}
+  &\text{node 1:}\ \ & -1 + \frac{\e{1}}{2} + \frac{\e{1} - \e{2}}{6} &= 0\\
+  &\text{node 2:}\ \ & \frac{\e{2} - \e{1}}{6} + \frac{\e{2}}{6} - \Icol{0.5\,v_x} &= 0
+\end{alignat*}
+With $\Vcol{v_x} = \e{1}$: $\e{2} = 2\e{1}$, so $\e{1} = 3\V$, $\e{2} = 6\V$.
+\end{minipage}
+\end{examplebox}
+
+\begin{examplebox}[Example 11.5 --- a dependent voltage source]
 \begin{minipage}[c]{0.42\linewidth}
 \centering
 \begin{tikzpicture}[scale=0.85]
@@ -533,7 +553,7 @@ $\Vcol{v_x}$ is the voltage of the $4\ohm$, so $\Vcol{v_x} = \e{1}$:
 \]
 \end{examplebox}
 
-\textbf{Solving Example 11.4.} Put $\e{1} = \e{2} - \e{3}$ into (1) and (2):
+\textbf{Solving Example 11.5.} Put $\e{1} = \e{2} - \e{3}$ into (1) and (2):
 \[
   \tfrac54\e{1} - \tfrac12\e{2} - \tfrac12\e{3} = 5 \ \Rightarrow\ \tfrac34\e{2} - \tfrac74\e{3} = 5,
   \qquad
@@ -557,7 +577,7 @@ instead.
 Any node can be the ground. Changing it shifts every node voltage by the same amount, so the
 branch voltages, the currents and the powers do not change.
 
-\begin{examplebox}[Example 11.5 --- Example 11.4 with node 3 as the ground]
+\begin{examplebox}[Example 11.6 --- Example 11.5 with node 3 as the ground]
 \begin{minipage}[c]{0.42\linewidth}
 \centering
 \begin{tikzpicture}[scale=0.85]
@@ -565,27 +585,18 @@ branch voltages, the currents and the powers do not change.
 \end{tikzpicture}
 \end{minipage}\hfill
 \begin{minipage}[c]{0.55\linewidth}
-\textbf{Question.} Redo Example 11.4 with node 3 as the ground. Does the answer change?
+\textbf{Question.} Take node 3 as the ground. Does $\Pcol{P_{3\Omega}}$ change?
 
-Now $\Vcol{v_x}$ is between node 2 and the ground: no supernode is needed, and by the remark
-above, KCL is not written at node 2. The unknowns are $\ep{1}$, $\ep{2}$ and $\ep{0}$, the
-voltage of the old ground.
-\begin{alignat*}{2}
-  &\text{node 1:}\ \ & -5 + \frac{\ep{1}}{2} + \frac{\ep{1} - \ep{0}}{4} + \frac{\ep{1} - \ep{2}}{2} &= 0\\
-  &\text{node 0:}\ \ & 5 + \frac{\ep{0} - \ep{1}}{4} + \frac{\ep{0} - \ep{2}}{3} &= 0\\
-  &\text{constraint:}\ \ & \ep{2} = \Vcol{v_x} &= \ep{1} - \ep{0}
-\end{alignat*}
-\end{minipage}
-
-\end{examplebox}
-
-\textbf{Solving Example 11.5.} Put the constraint into the two KCL equations: $3\ep{1} + \ep{0} = 20$ and
-$-7\ep{1} + 11\ep{0} = -60$. So $\ep{1} = 7\V$, $\ep{0} = -1\V$, $\ep{2} = 8\V$, and
+\textbf{Answer.} Every node voltage drops by the same $\e{3} = 1\V$: $\ep{1} = 7\V$,
+$\ep{2} = 8\V$, $\ep{0} = -1\V$. Branch voltages are differences, so they do not change:
 \[
   \Pcol{P_{3\Omega}} = \frac{(\ep{2} - \ep{0})^2}{3} = \frac{9^2}{3} = \Pcol{27\W}, \quad
   \text{the same.}
 \]
-Every node voltage dropped by $\e{3} = 1\V$: $8 \to 7$, $9 \to 8$, $0 \to -1$.
+With this ground, $\Vcol{v_x}$ is between node 2 and the ground, so $\ep{2} = \Vcol{v_x}$ is
+fixed by the source and no supernode is needed.
+\end{minipage}
+\end{examplebox}
 
 \textbf{Tip.} Put the ground at one end of a voltage source. Then its other node voltage is
 known, or a supernode is avoided.

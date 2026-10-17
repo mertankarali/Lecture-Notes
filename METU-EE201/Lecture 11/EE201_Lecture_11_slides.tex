@@ -217,6 +217,18 @@
     \nodev{5.2,2.6}{above}{$e_2$}
     \gnd{3.8}
   \fi}
+%  Example 11.4: a dependent current source 0.5 v_x into node 2, v_x the voltage of the 2 ohm
+\newcommand{\exD}{%
+  \draw (0,0) to[american current source, l=$1\A$] (0,2) -- (1.6,2) to[R, l=$6\ohm$] (3.6,2) -- (5.2,2);
+  \draw (1.6,2) to[R, l=$2\ohm$] (1.6,0);
+  \draw (3.6,2) to[R, l=$6\ohm$] (3.6,0);
+  \draw (5.2,0) to[american controlled current source, l_=$\Icol{0.5\,v_x}$] (5.2,2);
+  \draw (0,0) -- (5.2,0);
+  \node[pol] at (1.25,1.55) {$+$}; \node[pol] at (1.25,0.45) {$-$};
+  \node[font=\small, text=cvolt] at (0.95,1.0) {$v_x$};
+  \nodev{1.6,2}{above}{$e_1$}
+  \nodev{3.6,2}{above}{$e_2$}
+  \gnd{2.6}}
 \newcommand{\yes}{\textcolor{cpow}{\checkmark}}
 \newcommand{\no}{\textcolor{metured}{$\boldsymbol{\times}$}}
 \hypersetup{colorlinks=true,allcolors=metured}
@@ -303,7 +315,8 @@
       \rmsub{2}{2}{1.75}{-1.75}{matrix form}
       \rmsub{3}{3}{5.0}{-0.8}{one end at the ground}
       \rmsub{4}{5}{5.0}{-1.75}{between two nodes}
-      \rmsub{6}{6}{8.45}{-0.8}{a constraint equation}
+      \rmsub{6}{6}{8.45}{-0.8}{a dependent current source}
+      \rmsub{6}{6}{8.45}{-1.75}{a dependent voltage source}
       \rmsub{7}{7}{11.65}{-0.8}{does its choice matter?}
     \end{tikzpicture}
     \vfill
@@ -702,51 +715,23 @@
     \begin{column}{0.53\textwidth}
       \small
       \textbf{Node 1:} \
-      $\displaystyle \frac{\e{1} - \Vcol{v_{s1}}}{R_1} + \frac{\e{1}}{R_2} + \Icol{i} = 0$\\[5pt]
-      \onslide<2->{%
+      $\displaystyle \frac{\e{1} - \Vcol{v_{s1}}}{R_1} + \frac{\e{1}}{R_2} + \Icol{i} = 0$\\[4pt]
       \textbf{Node 2:} \
-      $\displaystyle -\Icol{i} + \frac{\e{2}}{R_3} + \frac{\e{2} - \e{3}}{R_4} = 0$\\[5pt]}
-      \onslide<3->{%
+      $\displaystyle -\Icol{i} + \frac{\e{2}}{R_3} + \frac{\e{2} - \e{3}}{R_4} = 0$\\[4pt]
       \textbf{Node 3:} \
-      $\displaystyle \frac{\e{3} - \e{2}}{R_4} - \Icol{i_{s1}} + \frac{\e{3}}{R_5} = 0$}
+      $\displaystyle \frac{\e{3} - \e{2}}{R_4} - \Icol{i_{s1}} + \frac{\e{3}}{R_5} = 0$
     \end{column}
     \begin{column}{0.44\textwidth}
       \small
-      Unknowns: $\e{1}$, $\e{2}$, $\e{3}$ and the current $\Icol{i}$.\\[8pt]
-      \onslide<4->{%
-      Four unknowns, three equations: one more is needed.\\[8pt]}
-      \onslide<5->{%
-      \textbf{Constraint:} \ $\e{1} - \e{2} = \Vcol{v_{s2}}$, the law of the source.}
+      Treat the current $\Icol{i}$ of $\Vcol{v_{s2}}$ as one more unknown.\\[6pt]
+      \onslide<2->{%
+      \textbf{Constraint:} \ $\e{1} - \e{2} = \Vcol{v_{s2}}$, the law of the source.\\[6pt]}
+      \onslide<3->{%
+      Four unknowns, four equations: it works.\\[3pt]
+      But it adds an unknown; the supernode avoids it.}
     \end{column}
   \end{columns}
 \end{frame}
-
-%--------------------------------------------------------------
-\begin{frame}{Method I: matrix form}
-  \vfill
-  \[
-    \begin{bmatrix}
-      G_1 + G_2 & 0 & 0 & 1\\
-      0 & G_3 + G_4 & -G_4 & -1\\
-      0 & -G_4 & G_4 + G_5 & 0\\
-      1 & -1 & 0 & 0
-    \end{bmatrix}
-    \begin{bmatrix} \e{1}\\ \e{2}\\ \e{3}\\ \Icol{i} \end{bmatrix}
-    =
-    \begin{bmatrix} G_1\Vcol{v_{s1}}\\ 0\\ \Icol{i_{s1}}\\ \Vcol{v_{s2}} \end{bmatrix},
-    \qquad G_k = \frac{1}{R_k}
-  \]
-  \vfill
-  \begin{itemize}\itemsep7pt
-    \item<2-> The first three rows are KCL; the last row is the constraint.
-    \item<3-> The unknown current $\Icol{i}$ is part of the solution: we get it directly.
-    \item<4-> The price: one more unknown and one more equation.
-  \end{itemize}
-  \vfill
-\end{frame}
-
-%==============================================================
-\roadmapframe{5}
 
 %--------------------------------------------------------------
 \begin{frame}{Method II: the supernode}
@@ -808,42 +793,48 @@
       \begin{bmatrix} G_1\Vcol{v_{s1}}\\ \Icol{i_{s1}}\\ \Vcol{v_{s2}} \end{bmatrix}
       \]\small}
       \onslide<3->{%
-      Three unknowns, three equations.\\[2pt]
+      Three unknowns: one fewer than Method I.\\[2pt]
       The matrix is \alert{not} symmetric any more.}
     \end{column}
   \end{columns}
 \end{frame}
 
 %--------------------------------------------------------------
-\begin{frame}{Method I or Method II?}
-  \vfill
-  \begin{center}
-  \renewcommand{\arraystretch}{1.4}
-  \begin{tabular}{@{}l l l@{}}
-  \toprule
-   & \textbf{Method I} & \textbf{Method II}\\
-  \midrule
-  extra unknown & the current $\Icol{i}$ of the source & none\\
-  KCL & at every non-ground node & at the supernode, and the others\\
-  extra equation & the constraint $\e{1} - \e{2} = \Vcol{v_{s2}}$ & the same constraint\\
-  size (this example) & $4 \times 4$ & $3 \times 3$\\
-  the current $\Icol{i}$ & part of the solution & from KCL afterwards\\
-  \bottomrule
-  \end{tabular}
-  \end{center}
-  \vfill
-  \onslide<2->{\begin{center}
-    Both give the same node voltages.\\[3pt]
-    The constraint is always the law of the voltage source.
-  \end{center}}
-  \vfill
-\end{frame}
+
 
 %==============================================================
 \roadmapframe{6}
 
 %--------------------------------------------------------------
-\begin{frame}{Example 11.4: a dependent source}
+\begin{frame}{Example 11.4: a dependent current source}
+  \begin{columns}[c,onlytextwidth]
+    \begin{column}{0.5\textwidth}
+      \centering
+      \begin{tikzpicture}[scale=0.85]
+        \exD
+      \end{tikzpicture}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \small
+      \textbf{Question.} Find $\e{1}$ and $\e{2}$.\\[8pt]
+      \onslide<2->{%
+      Treat the dependent source as a current source of value $\Icol{0.5\,v_x}$.\\[6pt]}
+      \onslide<3->{%
+      \textbf{Node 1:} \ $\displaystyle -1 + \frac{\e{1}}{2} + \frac{\e{1} - \e{2}}{6} = 0$\\[4pt]
+      \textbf{Node 2:} \ $\displaystyle \frac{\e{2} - \e{1}}{6} + \frac{\e{2}}{6} - \Icol{0.5\,v_x} = 0$\\[6pt]}
+      \onslide<4->{%
+      Write the control with node voltages: \ $\Vcol{v_x} = \e{1}$.\\[6pt]}
+      \onslide<5->{%
+      Node 2 gives $\e{2} = 2\e{1}$.\\[2pt]
+      Node 1 then gives $\e{1} = 3\V$, $\e{2} = 6\V$.\\[6pt]}
+      \onslide<6->{%
+      The dependent source makes $Y_n$ \alert{not} symmetric.}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{Example 11.5: a dependent voltage source}
   \begin{columns}[c,onlytextwidth]
     \begin{column}{0.47\textwidth}
       \centering
@@ -866,7 +857,7 @@
 \end{frame}
 
 %--------------------------------------------------------------
-\begin{frame}{Example 11.4: the equations}
+\begin{frame}{Example 11.5: the equations}
   \begin{columns}[c,onlytextwidth]
     \begin{column}{0.44\textwidth}
       \centering
@@ -897,7 +888,7 @@
 \end{frame}
 
 %--------------------------------------------------------------
-\begin{frame}{Example 11.4: solve}
+\begin{frame}{Example 11.5: solve}
   \vfill
   \begin{itemize}\itemsep8pt
     \item (1): \ $\tfrac{5}{4}\e{1} - \tfrac12\e{2} - \tfrac12\e{3} = 5$; \ put
@@ -942,59 +933,31 @@
 \roadmapframe{7}
 
 %--------------------------------------------------------------
-\begin{frame}{Exercise: choose node 3 as the ground}
+\begin{frame}{Example 11.6: another ground}
   \begin{columns}[c,onlytextwidth]
     \begin{column}{0.44\textwidth}
       \centering
       \begin{tikzpicture}[scale=0.95]
-        \only<1>{\exC{0}}%
-        \only<2->{\exC{2}}%
+        \exC{2}
       \end{tikzpicture}
     \end{column}
     \begin{column}{0.54\textwidth}
       \small
-      \textbf{Question.} Redo the example with node 3 as the ground. Does the answer
+      \textbf{Question.} Take node 3 of Example 11.5 as the ground. Does $\Pcol{P_{3\Omega}}$
       change?\\[8pt]
       \onslide<2->{%
-      Now $\Vcol{v_x}$ is between node 2 and the ground: no supernode is needed.\\[6pt]}
+      Every node voltage drops by the same $\e{3} = 1\V$:\\[2pt]
+      $\ep{1} = 7\V$, \ $\ep{2} = 8\V$, \ $\ep{0} = -1\V$.\\[6pt]}
       \onslide<3->{%
-      Unknowns: $\ep{1}$, $\ep{2}$ and $\ep{0}$, the old ground.\\[8pt]}
+      Branch voltages are differences, so they do not change:\\[2pt]
+      $\Pcol{P_{3\Omega}} = (\ep{2} - \ep{0})^2/3 = \Pcol{27\W}$, \alert{the same}.\\[8pt]}
       \onslide<4->{%
-      \textbf{Node 1:} \
-      $\displaystyle -5 + \frac{\ep{1}}{2} + \frac{\ep{1} - \ep{0}}{4} + \frac{\ep{1} - \ep{2}}{2} = 0$\\[5pt]
-      \textbf{Node 0:} \
-      $\displaystyle 5 + \frac{\ep{0} - \ep{1}}{4} + \frac{\ep{0} - \ep{2}}{3} = 0$\\[5pt]}
+      Now $\Vcol{v_x}$ is between node 2 and the ground: $\ep{2} = \Vcol{v_x}$ is fixed by the
+      source, and no supernode is needed.\\[6pt]}
       \onslide<5->{%
-      \textbf{Constraint:} \ $\ep{2} = \Vcol{v_x} = \ep{1} - \ep{0}$; \ no KCL at node 2.}
+      \alert{Tip:} put the ground at one end of a voltage source.}
     \end{column}
   \end{columns}
-\end{frame}
-
-%--------------------------------------------------------------
-\begin{frame}{Exercise: the solution}
-  \vfill
-  \begin{itemize}\itemsep8pt
-    \item Put the constraint into both KCL equations:
-      \[
-        3\ep{1} + \ep{0} = 20, \qquad -7\ep{1} + 11\ep{0} = -60 .
-      \]
-    \item<2-> So $\ep{1} = 7\V$, \ $\ep{0} = -1\V$, \ $\ep{2} = 8\V$.
-    \item<3-> The $3\ohm$ is between nodes 2 and 0:
-      $\Pcol{P_{3\Omega}} = \dfrac{(\ep{2} - \ep{0})^2}{3} = \dfrac{9^2}{3} = \Pcol{27\W}$,
-      \alert{the same}.
-  \end{itemize}
-  \vfill
-  \onslide<4->{%
-  \begin{center}
-    Every node voltage drops by the same $\e{3} = 1\V$: \ $8 \to 7$, \ $9 \to 8$, \ $0 \to -1$.\\[5pt]
-    The branch voltages, so the currents and the powers, do not change.
-  \end{center}}
-  \vfill
-  \onslide<5->{%
-  \begin{center}
-    \alert{Tip:} put the ground at one end of a voltage source; this saves a supernode.
-  \end{center}}
-  \vfill
 \end{frame}
 
 %--------------------------------------------------------------
