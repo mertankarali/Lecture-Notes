@@ -274,17 +274,27 @@
   \foreach \k/\pos in {1/left, 2/above, 3/right, 0/below}
     {\fill[metured] (g\k) circle (2.2pt); \node[nlab, \pos=3pt] at (g\k) {\k};}}
 %  The reduced incidence matrix of Example 11.1 (rows: nodes 1, 2, 3)
-\newcommand{\exAinc}{%
-  \incmat{AA}{7}{1,2,3}{%
-     1 \&  1 \&  0 \&  0 \&  1 \& |[text=ccur]| -1 \& |[text=ccur]| 0\\
-     0 \& -1 \&  1 \&  1 \&  0 \& |[text=ccur]| 0 \& |[text=ccur]| 0\\
-     0 \&  0 \&  0 \& -1 \& -1 \& |[text=ccur]| 0 \& |[text=ccur]| 1\\}{%
+%  \exAincN{k}: the reduced A of Example 11.1 with its first k rows filled in; k = 4 adds the
+%  A_R / A_S boxes
+\newcommand{\exAincN}[1]{%
+  \ifnum#1>0 \def\rowA{1 \& 1 \& 0 \& 0 \& 1 \& \textcolor{ccur}{-1} \& \textcolor{ccur}{0}}%
+  \else\def\rowA{\phantom{0} \& \phantom{0} \& \phantom{0} \& \phantom{0} \& \phantom{0} \& \phantom{0} \& \phantom{0}}\fi
+  \ifnum#1>1 \def\rowB{0 \& -1 \& 1 \& 1 \& 0 \& \textcolor{ccur}{0} \& \textcolor{ccur}{0}}%
+  \else\def\rowB{\phantom{0} \& \phantom{0} \& \phantom{0} \& \phantom{0} \& \phantom{0} \& \phantom{0} \& \phantom{0}}\fi
+  \ifnum#1>2 \def\rowC{0 \& 0 \& 0 \& -1 \& -1 \& \textcolor{ccur}{0} \& \textcolor{ccur}{1}}%
+  \else\def\rowC{\phantom{0} \& \phantom{0} \& \phantom{0} \& \phantom{0} \& \phantom{0} \& \phantom{0} \& \phantom{0}}\fi
+  \incmat{AA}{7}{1,2,3}{\rowA\\ \rowB\\ \rowC\\}{%
+    \ifnum#1>3
     \draw[metugray, thick, rounded corners=2pt]
       ([xshift=-2pt, yshift=1pt]AA-1-1.north west) rectangle ([xshift=2pt, yshift=-1pt]AA-3-5.south east);
     \draw[ccur, thick, rounded corners=2pt]
       ([xshift=-2pt, yshift=1pt]AA-1-6.north west) rectangle ([xshift=2pt, yshift=-1pt]AA-3-7.south east);
     \node[font=\small, text=metugray, below=3pt] at ($(AA-3-1.south)!0.5!(AA-3-5.south)$) {$A_R$: resistors};
-    \node[font=\small, text=ccur, below=3pt] at ($(AA-3-6.south)!0.5!(AA-3-7.south)$) {$A_S$: sources};}}
+    \node[font=\small, text=ccur, below=3pt] at ($(AA-3-6.south)!0.5!(AA-3-7.south)$) {$A_S$: sources};
+    \else
+    \node[font=\small, below=3pt] at ($(AA-3-1.south)!0.5!(AA-3-5.south)$) {\phantom{$A_R$: resistors}};
+    \fi}}
+\newcommand{\exAinc}{\exAincN{4}}
 \newcommand{\yes}{\textcolor{cpow}{\checkmark}}
 \newcommand{\no}{\textcolor{metured}{$\boldsymbol{\times}$}}
 \hypersetup{colorlinks=true,allcolors=metured}
@@ -407,6 +417,7 @@
       \end{block}
     \end{column}
     \begin{column}{0.47\textwidth}
+      \onslide<2->{%
       \begin{block}{Keep the original circuit}
         \begin{itemize}\itemsep3pt
           \item KCL: $A\Icol{\mathbf{i}} = \mathbf{0}$.
@@ -415,15 +426,16 @@
         \end{itemize}
         \vspace{3pt}
         Works for \alert{every} circuit.
-      \end{block}
+      \end{block}}
     \end{column}
   \end{columns}
   \vfill
+  \onslide<3->{%
   \begin{center}
     With the node voltages $\Vcol{\mathbf{e}}$ as the unknowns, KVL holds
     \alert{automatically}.\\[4pt]
-    Only KCL is left to write.
-  \end{center}
+    \onslide<4->{Only KCL is left to write.}
+  \end{center}}
   \vfill
 \end{frame}
 
@@ -610,6 +622,7 @@
     \end{aligned}
   \]
   \vfill
+  \only<1>{\begin{center}\textbf{Question.} Write the three equations as one matrix equation.\end{center}}%
   \onslide<2->{%
   \[
     \underbrace{\begin{bmatrix}
@@ -624,7 +637,7 @@
   \vfill
   \onslide<3->{\begin{center}
     $Y_n$ is the \alert{node admittance matrix}: \ $Y_n\Vcol{\mathbf{e}} = \Icol{\mathbf{i}_n}$.\\[3pt]
-    $\Icol{\mathbf{i}_n}$: the source currents \alert{entering} each node.
+    \onslide<4->{$\Icol{\mathbf{i}_n}$: the source currents \alert{entering} each node.}
   \end{center}}
   \vfill
 \end{frame}
@@ -665,14 +678,14 @@
   \begin{columns}[c,onlytextwidth]
     \begin{column}{0.45\textwidth}
       \centering
-      \begin{tikzpicture}[scale=0.72]
+      \begin{tikzpicture}[scale=0.66]
         \exA{0}
         \node[nlab] at (4.35,-0.35) {0};
       \end{tikzpicture}
     \end{column}
     \begin{column}{0.53\textwidth}
       \centering
-      \begin{tikzpicture}[scale=0.9]
+      \begin{tikzpicture}[scale=0.82]
         \exAgraph
       \end{tikzpicture}\\[4pt]
       {\small Branches 1--5: $R_1, \dots, R_5$; \ \textcolor{ccur}{6, 7: $i_{s1}$, $i_{s2}$}; \ node \nd{0}: the ground.}
@@ -685,11 +698,13 @@
       \textbf{Question.} Write the reduced incidence matrix $A$.\\[6pt]
       \onslide<2->{%
       One row for each node except the ground.\\[3pt]
-      Entry $+1$: the branch leaves the node; $-1$: it enters.}
+      Entry $+1$: the branch leaves the node; $-1$: it enters.}\\[1pt]
+      \onslide<3-5>{Row $k$: which branches touch node $k$?}
     \end{column}
     \begin{column}{0.56\textwidth}
       \centering
-      \onslide<2->{$A = \exAinc$}
+      \only<2>{$A = \exAincN{0}$}\only<3>{$A = \exAincN{1}$}\only<4>{$A = \exAincN{2}$}%
+      \only<5>{$A = \exAincN{3}$}\only<6->{$A = \exAincN{4}$}
     \end{column}
   \end{columns}
   \vfill
@@ -863,10 +878,11 @@
       So we do not write KCL at node 3; the unknowns are $\e{1}$, $\e{2}$.\\[8pt]}
       \onslide<3->{%
       \textbf{Node 1:} \
-      $\displaystyle -\Icol{i_s} + \frac{\e{1}}{R_1} + \frac{\e{1} - \e{2}}{R_2} = 0$\\[6pt]
+      $\displaystyle -\Icol{i_s} + \frac{\e{1}}{R_1} + \frac{\e{1} - \e{2}}{R_2} = 0$\\[6pt]}
+      \onslide<4->{%
       \textbf{Node 2:} \
       $\displaystyle \frac{\e{2} - \e{1}}{R_2} + \frac{\e{2}}{R_3} + \frac{\e{2} - \Vcol{v_s}}{R_4} = 0$\\[8pt]}
-      \onslide<4->{%
+      \onslide<5->{%
       $\begin{bmatrix}
         \frac{1}{R_1} + \frac{1}{R_2} & -\frac{1}{R_2}\\[3pt]
         -\frac{1}{R_2} & \frac{1}{R_2} + \frac{1}{R_3} + \frac{1}{R_4}
@@ -874,7 +890,7 @@
       \begin{bmatrix} \e{1}\\[3pt] \e{2} \end{bmatrix}
       =
       \begin{bmatrix} \Icol{i_s}\\[3pt] \Vcol{v_s}/R_4 \end{bmatrix}$\\[6pt]}
-      \onslide<5->{%
+      \onslide<6->{%
       The known $\Vcol{v_s}$ moves to the right side.}
     \end{column}
   \end{columns}
@@ -914,14 +930,14 @@
   \begin{columns}[t,onlytextwidth]
     \begin{column}{0.6\textwidth}
       \small
-      \only<1-2>{%
-      \textbf{Node 1:} \
-      $\displaystyle \frac{\e{1} - \Vcol{v_{s1}}}{R_1} + \frac{\e{1}}{R_2} + \Icol{i} = 0$\\[4pt]
-      \textbf{Node 2:} \
-      $\displaystyle -\Icol{i} + \frac{\e{2}}{R_3} + \frac{\e{2} - \e{3}}{R_4} = 0$\\[4pt]
-      \textbf{Node 3:} \
-      $\displaystyle \frac{\e{3} - \e{2}}{R_4} - \Icol{i_{s1}} + \frac{\e{3}}{R_5} = 0$}%
-      \only<3->{%
+      \only<-5>{%
+      \onslide<2->{\textbf{Node 1:} \
+      $\displaystyle \frac{\e{1} - \Vcol{v_{s1}}}{R_1} + \frac{\e{1}}{R_2} + \Icol{i} = 0$}\\[4pt]
+      \onslide<3->{\textbf{Node 2:} \
+      $\displaystyle -\Icol{i} + \frac{\e{2}}{R_3} + \frac{\e{2} - \e{3}}{R_4} = 0$}\\[4pt]
+      \onslide<4->{\textbf{Node 3:} \
+      $\displaystyle \frac{\e{3} - \e{2}}{R_4} - \Icol{i_{s1}} + \frac{\e{3}}{R_5} = 0$}}%
+      \only<6->{%
       \footnotesize
       $\begin{bmatrix}
         G_1 + G_2 & 0 & 0 & 1\\
@@ -936,11 +952,11 @@
     \begin{column}{0.38\textwidth}
       \small
       The current $\Icol{i}$ of $\Vcol{v_{s2}}$ is one more unknown.\\[4pt]
-      \onslide<2->{%
+      \onslide<5->{%
       \textbf{Constraint:} \ $\e{1} - \e{2} = \Vcol{v_{s2}}$.\\[4pt]}
-      \onslide<3->{%
+      \onslide<6->{%
       Four unknowns, four equations; the last row is the constraint.\\[4pt]}
-      \onslide<4->{%
+      \onslide<7->{%
       It works, but the supernode avoids the extra unknown.}
     \end{column}
   \end{columns}
@@ -984,16 +1000,17 @@
   \begin{columns}[t,onlytextwidth]
     \begin{column}{0.49\textwidth}
       \small
-      \textcolor{metured}{\textbf{Supernode:}} \
+      \only<1>{\textbf{Question.} Write KCL at the supernode.\\[4pt]}%
+      \onslide<2->{\textcolor{metured}{\textbf{Supernode:}} \
       $\displaystyle \frac{\e{1} - \Vcol{v_{s1}}}{R_1} + \frac{\e{1}}{R_2} + \frac{\e{2}}{R_3}
-        + \frac{\e{2} - \e{3}}{R_4} = 0$\\[4pt]
-      \textbf{Node 3:} \
-      $\displaystyle \frac{\e{3} - \e{2}}{R_4} - \Icol{i_{s1}} + \frac{\e{3}}{R_5} = 0$\\[4pt]
-      \textbf{Constraint:} \ $\e{1} - \e{2} = \Vcol{v_{s2}}$
+        + \frac{\e{2} - \e{3}}{R_4} = 0$\\[4pt]}
+      \onslide<3->{\textbf{Node 3:} \
+      $\displaystyle \frac{\e{3} - \e{2}}{R_4} - \Icol{i_{s1}} + \frac{\e{3}}{R_5} = 0$\\[4pt]}
+      \onslide<4->{\textbf{Constraint:} \ $\e{1} - \e{2} = \Vcol{v_{s2}}$}
     \end{column}
     \begin{column}{0.49\textwidth}
       \small
-      \onslide<2->{%
+      \onslide<5->{%
       \footnotesize
       \[
       \begin{bmatrix}
@@ -1005,9 +1022,9 @@
       =
       \begin{bmatrix} G_1\Vcol{v_{s1}}\\ \Icol{i_{s1}}\\ \Vcol{v_{s2}} \end{bmatrix}
       \]\small}
-      \onslide<3->{%
-      Three unknowns: one fewer than Method I.\\[2pt]
-      The matrix is \alert{not} symmetric any more.}
+      \onslide<6->{%
+      Three unknowns: one fewer than Method I.\\[2pt]}
+      \onslide<7->{The matrix is \alert{not} symmetric any more.}
     \end{column}
   \end{columns}
 \end{frame}
@@ -1033,10 +1050,13 @@
       \onslide<2->{%
       Treat the dependent source as a current source of value $\Icol{0.5\,v_x}$.\\[6pt]}
       \onslide<3->{%
-      \textbf{Node 1:} \ $\displaystyle -1 + \frac{\e{1}}{2} + \frac{\e{1} - \e{2}}{6} = 0$\\[4pt]
-      \textbf{Node 2:} \ $\displaystyle \frac{\e{2} - \e{1}}{6} + \frac{\e{2}}{6} - \Icol{0.5\,v_x} = 0$\\[6pt]}
+      \textbf{Node 1:} \ $\displaystyle -1 + \frac{\e{1}}{2} + \frac{\e{1} - \e{2}}{6} = 0$\\[4pt]}
       \onslide<4->{%
-      Write the control with node voltages: \ $\Vcol{v_x} = \e{1}$.}
+      \textbf{Node 2:} \ $\displaystyle \frac{\e{2} - \e{1}}{6} + \frac{\e{2}}{6} - \Icol{0.5\,v_x} = 0$\\[6pt]}
+      \onslide<5->{%
+      \textbf{Question.} What is $\Vcol{v_x}$ in node voltages?\\[4pt]}
+      \onslide<6->{%
+      The control with node voltages: \ $\Vcol{v_x} = \e{1}$.}
     \end{column}
   \end{columns}
 \end{frame}
@@ -1052,18 +1072,19 @@
     \begin{bmatrix} 1\\[3pt] \Icol{0.5\,v_x} \end{bmatrix}
   \]
   \vfill
-  \onslide<2->{%
+  \only<2>{\begin{center}\textbf{Question.} Put $\Vcol{v_x} = \e{1}$: which entry changes?\end{center}}%
+  \onslide<3->{%
   Put $\Vcol{v_x} = \e{1}$ and move $0.5\,\e{1}$ to the left side:
   \[
     \begin{bmatrix} \frac23 & -\frac16\\[3pt] -\frac16 \alert{- \frac12} & \frac13 \end{bmatrix}
     \begin{bmatrix} \e{1}\\[3pt] \e{2} \end{bmatrix}
     =
     \begin{bmatrix} 1\\[3pt] 0 \end{bmatrix}
-    \qquad\Rightarrow\qquad
-    \e{1} = 3\V, \quad \e{2} = 6\V
+    \qquad\onslide<4->{\Rightarrow\qquad
+    \e{1} = 3\V, \quad \e{2} = 6\V}
   \]}
   \vfill
-  \onslide<3->{%
+  \onslide<5->{%
   \begin{center}
     The dependent source changes one entry: $Y_n$ is \alert{not} symmetric any more.
   \end{center}}
@@ -1235,11 +1256,13 @@
       Unknowns: $\ep{1}$, $\ep{2}$, $\ep{4}$.\\[8pt]}
       \onslide<3->{%
       \textbf{Node 1:} \
-      $\displaystyle -5 + \frac{\ep{1}}{2} + \frac{\ep{1} - \ep{4}}{4} + \frac{\ep{1} - \ep{2}}{2} = 0$\\[6pt]
-      \textbf{Node 4:} \
-      $\displaystyle 5 + \frac{\ep{4} - \ep{1}}{4} + \frac{\ep{4} - \ep{2}}{3} = 0$\\[6pt]
-      No KCL at node 2: the current of $\Vcol{v_x}$ is not known.\\[8pt]}
+      $\displaystyle -5 + \frac{\ep{1}}{2} + \frac{\ep{1} - \ep{4}}{4} + \frac{\ep{1} - \ep{2}}{2} = 0$\\[6pt]}
       \onslide<4->{%
+      \textbf{Node 4:} \
+      $\displaystyle 5 + \frac{\ep{4} - \ep{1}}{4} + \frac{\ep{4} - \ep{2}}{3} = 0$\\[6pt]}
+      \onslide<5->{%
+      No KCL at node 2: the current of $\Vcol{v_x}$ is not known.\\[8pt]}
+      \onslide<6->{%
       \textbf{Constraint:} \ $\ep{2} = \Vcol{v_x} = \ep{1} - \ep{4}$}
     \end{column}
   \end{columns}

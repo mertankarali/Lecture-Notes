@@ -302,17 +302,27 @@
   \foreach \k/\pos in {1/left, 2/above, 3/right, 0/below}
     {\fill[metured] (g\k) circle (2.2pt); \node[nlab, \pos=3pt] at (g\k) {\k};}}
 %  The reduced incidence matrix of Example 11.1 (rows: nodes 1, 2, 3)
-\newcommand{\exAinc}{%
-  \incmat{AA}{7}{1,2,3}{%
-     1 \&  1 \&  0 \&  0 \&  1 \& |[text=ccur]| -1 \& |[text=ccur]| 0\\
-     0 \& -1 \&  1 \&  1 \&  0 \& |[text=ccur]| 0 \& |[text=ccur]| 0\\
-     0 \&  0 \&  0 \& -1 \& -1 \& |[text=ccur]| 0 \& |[text=ccur]| 1\\}{%
+%  \exAincN{k}: the reduced A of Example 11.1 with its first k rows filled in; k = 4 adds the
+%  A_R / A_S boxes
+\newcommand{\exAincN}[1]{%
+  \ifnum#1>0 \def\rowA{1 \& 1 \& 0 \& 0 \& 1 \& \textcolor{ccur}{-1} \& \textcolor{ccur}{0}}%
+  \else\def\rowA{\phantom{0} \& \phantom{0} \& \phantom{0} \& \phantom{0} \& \phantom{0} \& \phantom{0} \& \phantom{0}}\fi
+  \ifnum#1>1 \def\rowB{0 \& -1 \& 1 \& 1 \& 0 \& \textcolor{ccur}{0} \& \textcolor{ccur}{0}}%
+  \else\def\rowB{\phantom{0} \& \phantom{0} \& \phantom{0} \& \phantom{0} \& \phantom{0} \& \phantom{0} \& \phantom{0}}\fi
+  \ifnum#1>2 \def\rowC{0 \& 0 \& 0 \& -1 \& -1 \& \textcolor{ccur}{0} \& \textcolor{ccur}{1}}%
+  \else\def\rowC{\phantom{0} \& \phantom{0} \& \phantom{0} \& \phantom{0} \& \phantom{0} \& \phantom{0} \& \phantom{0}}\fi
+  \incmat{AA}{7}{1,2,3}{\rowA\\ \rowB\\ \rowC\\}{%
+    \ifnum#1>3
     \draw[metugray, thick, rounded corners=2pt]
       ([xshift=-2pt, yshift=1pt]AA-1-1.north west) rectangle ([xshift=2pt, yshift=-1pt]AA-3-5.south east);
     \draw[ccur, thick, rounded corners=2pt]
       ([xshift=-2pt, yshift=1pt]AA-1-6.north west) rectangle ([xshift=2pt, yshift=-1pt]AA-3-7.south east);
     \node[font=\small, text=metugray, below=3pt] at ($(AA-3-1.south)!0.5!(AA-3-5.south)$) {$A_R$: resistors};
-    \node[font=\small, text=ccur, below=3pt] at ($(AA-3-6.south)!0.5!(AA-3-7.south)$) {$A_S$: sources};}}
+    \node[font=\small, text=ccur, below=3pt] at ($(AA-3-6.south)!0.5!(AA-3-7.south)$) {$A_S$: sources};
+    \else
+    \node[font=\small, below=3pt] at ($(AA-3-1.south)!0.5!(AA-3-5.south)$) {\phantom{$A_R$: resistors}};
+    \fi}}
+\newcommand{\exAinc}{\exAincN{4}}
 \tikzset{fbox/.style={draw=metugray, thick, fill=metulight, rounded corners=3pt,
                       minimum height=0.85cm, minimum width=1.4cm, align=center,
                       font=\small, inner sep=4pt}}
