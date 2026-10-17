@@ -369,6 +369,12 @@ so $-A_S\Icol{\mathbf{i}_S}$ adds up those entering it.
 %==============================================================
 \section{A voltage source to the ground}
 
+\begin{definitionbox}{A voltage source to the ground}
+If an independent voltage source $\Vcol{v_s}$ is connected between the ground and node $k$,
+then $\e{k} = \Vcol{v_s}$ is known. So $\e{k}$ is not an unknown, and KCL is not written at
+node $k$.
+\end{definitionbox}
+
 \begin{examplebox}[Example 11.2 --- a voltage source between node 3 and the ground]
 \begin{minipage}[c]{0.45\linewidth}
 \centering
@@ -377,29 +383,12 @@ so $-A_S\Icol{\mathbf{i}_S}$ adds up those entering it.
 \end{tikzpicture}
 \end{minipage}\hfill
 \begin{minipage}[c]{0.52\linewidth}
-The unknowns are $\e{1}$, $\e{2}$, $\e{3}$, so three equations are needed. KCL at nodes 1 and 2:
+The source fixes $\e{3} = \Vcol{v_s}$, so the unknowns are only $\e{1}$, $\e{2}$:
 \begin{alignat*}{2}
   &\text{node 1:}\quad & -\Icol{i_s} + \frac{\e{1}}{R_1} + \frac{\e{1} - \e{2}}{R_2} &= 0\\
-  &\text{node 2:}\quad & \frac{\e{2} - \e{1}}{R_2} + \frac{\e{2}}{R_3} + \frac{\e{2} - \e{3}}{R_4} &= 0
+  &\text{node 2:}\quad & \frac{\e{2} - \e{1}}{R_2} + \frac{\e{2}}{R_3} + \frac{\e{2} - \Vcol{v_s}}{R_4} &= 0
 \end{alignat*}
 \end{minipage}
-
-\smallskip
-\textbf{Question.} What does KCL at node 3 give?
-
-\textbf{Answer.} The current through $\Vcol{v_s}$ is unknown, and it cannot be written with
-node voltages. So KCL at node 3 gives no useful equation in $\e{1}$, $\e{2}$, $\e{3}$. But the
-source gives $\e{3} = \Vcol{v_s}$: this is the third equation.
-\end{examplebox}
-
-\begin{definitionbox}{Remark: a voltage source to the ground}
-If an independent voltage source $\Vcol{v_s}$ is connected between the ground and node $k$,
-then $\e{k} = \Vcol{v_s}$ is known. So $\e{k}$ is not an unknown, and KCL is not written at
-node $k$.
-\end{definitionbox}
-
-\begin{examplebox}[Example 11.2, revisited]
-The unknowns are only $\e{1}$ and $\e{2}$. Put $\e{3} = \Vcol{v_s}$ into the two KCL equations:
 \[
   \begin{bmatrix}
     \frac{1}{R_1} + \frac{1}{R_2} & -\frac{1}{R_2}\\[3pt]

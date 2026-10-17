@@ -5,7 +5,7 @@ Lecture notes and slides for the eleventh lecture of EE201 (Section 2, Fall 2026
 | File | What it is |
 |---|---|
 | `EE201_Lecture_11.tex` | Handout / lecture notes (article, 5 pages). Self-contained: procedure, five worked examples, a summary. |
-| `EE201_Lecture_11_slides.tex` | Beamer deck (34 slides, 114 PDF pages) for the lecture itself — visual, low text. |
+| `EE201_Lecture_11_slides.tex` | Beamer deck (32 slides, 110 PDF pages) for the lecture itself — visual, low text. |
 | `build.sh` | Compiles both, removes auxiliary files, opens the PDFs. |
 
 ## Compiling
@@ -33,9 +33,9 @@ first half of his recorded Lecture 12 (00:00–~35:00) on
    (e_k − e_j)/R; KCL at every node except the ground
 2. **Matrix form** — Y_n e = i_s; Y_n written directly from the circuit with three rules (diagonal, off-diagonal, right side);
    why Y_n is symmetric: Y_n = A_R G A_Rᵀ, i_s = −A_S i_S
-3. **A voltage source to the ground** (Example II) — Example 11.2: KCL at node 3 gives nothing
-   useful, but e₃ = v_s; remark (a known node voltage is not an unknown); Example 11.2
-   revisited, 2 × 2, v_s/R₄ on the right side (a source transformation)
+3. **A voltage source to the ground** (Example II) — Example 11.2, one slide: the source fixes
+   e₃ = v_s, so e₃ is known and no KCL is written at node 3; two KCL equations, 2 × 2 system,
+   v_s/R₄ on the right side
 4. **A voltage source between two nodes** (Modified NVA, Method I) — Example 11.3: its current
    i as an extra unknown plus the constraint e₁ − e₂ = v_s2; 4 × 4 system
 5. **Supernode** (L12 04:00, Method II) — adding KCL at nodes 1 and 2 cancels i; KCL at the
@@ -55,5 +55,5 @@ After the review comes a "Motivation" slide (what simplifying cannot do, what no
 analysis does), and a roadmap slide opens each of the seven parts: a path of stops with
 what is new at each stop and a small circuit icon (done parts greyed with a check mark, the current one highlighted). Questions are
 shown first and the answers on the next page; the node being written is highlighted in the
-circuit. Each step is an ordinary extra PDF page; that is why the deck has 34 slides but 114
+circuit. Each step is an ordinary extra PDF page; that is why the deck has 32 slides but 110
 pages.
