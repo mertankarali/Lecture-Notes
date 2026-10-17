@@ -103,6 +103,8 @@
 
 %-------------------- Lecture 12 circuit macros ---------------
 \newcommand{\ohm}{\,\Omega}
+%  A highlighted matrix row entry: colour #1, content #2
+\newcommand{\hrow}[2]{{\setlength{\fboxsep}{1.5pt}\colorbox{#1}{\makebox[2.1em]{$\mathstrut #2$}}}}
 \newcommand{\yes}{\textcolor{cpow}{\checkmark}}
 \newcommand{\no}{\textcolor{metured}{$\boldsymbol{\times}$}}
 \newcommand{\e}[1]{\textcolor{cvolt}{e_{#1}}}
@@ -279,7 +281,7 @@
     \draw (-1.5,-0.6) rectangle (1.5,0.6);
     \draw (0,0.6) to[american current source] (0,-0.6);
   \or
-    \draw (-1.5,0) -- (-0.9,0) to[american controlled voltage source] (0.9,0) -- (1.5,0);
+    \draw (-1.5,0) -- (-0.9,0) to[american controlled current source] (0.9,0) -- (1.5,0);
   \or
     \fill[cvolt] (-0.9,0) circle (5pt);
     \node[font=\Large\bfseries] at (0,0) {?};
@@ -328,8 +330,7 @@
       \rmsub{2}{2}{1.75}{-1.75}{matrix form}
       \rmsub{3}{3}{5.0}{-0.8}{on one mesh only}
       \rmsub{4}{5}{5.0}{-1.75}{between two meshes}
-      \rmsub{6}{6}{8.45}{-0.8}{a dependent voltage source}
-      \rmsub{6}{6}{8.45}{-1.75}{a dependent current source}
+      \rmsub{6}{6}{8.45}{-0.8}{a dependent current source}
       \rmsub{7}{7}{11.65}{-0.8}{the same circuit both ways}
     \end{tikzpicture}
     \vfill
@@ -670,13 +671,13 @@
   \[
     \Icol{\mathbf{i}} = M^T\Icol{\mathbf{i}_M}: \qquad
     \begin{bmatrix}
-      \rowcolor{metugray!15} \Icol{\mathbf{i}_R}\\
-      \rowcolor{cvolt!12} \Icol{\mathbf{i}_S}
+      \hrow{metugray!15}{\Icol{\mathbf{i}_R}}\\
+      \hrow{cvolt!12}{\Icol{\mathbf{i}_S}}
     \end{bmatrix}
     =
     \begin{bmatrix}
-      \rowcolor{metugray!15} M_R^T\\
-      \rowcolor{cvolt!12} M_S^T
+      \hrow{metugray!15}{M_R^T}\\
+      \hrow{cvolt!12}{M_S^T}
     \end{bmatrix}
     \Icol{\mathbf{i}_M}
     \qquad
@@ -960,69 +961,7 @@
 \roadmapframe{6}
 
 %--------------------------------------------------------------
-\begin{frame}{Example 12.4: a dependent voltage source}
-  \begin{columns}[c,onlytextwidth]
-    \begin{column}{0.5\textwidth}
-      \centering
-      \begin{tikzpicture}[scale=0.7]
-        \only<1-2>{\exN{1}{1}}%
-        \only<3->{\exN{1}{2}}%
-      \end{tikzpicture}
-    \end{column}
-    \begin{column}{0.48\textwidth}
-      \small
-      \textbf{Question.} Write the mesh equations.\\[8pt]
-      \onslide<2->{%
-      Treat the dependent source as a voltage source of value $\Vcol{r_m i_x}$.\\[6pt]}
-      \onslide<3->{%
-      $\Icol{i_s}$ is between meshes 1 and 2: use the supermesh \nd{S}.\\[6pt]}
-      \onslide<4->{%
-      \textcolor{metured}{\textbf{Supermesh:}} \
-      $(R_1 + R_2)\,\im{1} + R_3\,\im{2} + \Vcol{r_m i_x} = 0$\\[6pt]}
-      \onslide<5->{%
-      \textbf{Constraint:} \ $\im{1} - \im{2} = \Icol{i_s}$\\[6pt]}
-      \onslide<6->{%
-      \textbf{Question.} What is $\Icol{i_x}$ in mesh currents?\\[4pt]}
-      \onslide<7->{%
-      The control: \ $\Icol{i_x} = \im{1}$.}
-    \end{column}
-  \end{columns}
-\end{frame}
-
-%--------------------------------------------------------------
-\begin{frame}{Example 12.4: matrix form}
-  \vfill
-  As if $\Vcol{r_m i_x}$ were an independent source:
-  \[
-    \begin{bmatrix} R_1 + R_2 & R_3\\[3pt] 1 & -1 \end{bmatrix}
-    \begin{bmatrix} \im{1}\\[3pt] \im{2} \end{bmatrix}
-    =
-    \begin{bmatrix} -\Vcol{r_m i_x}\\[3pt] \Icol{i_s} \end{bmatrix}
-  \]
-  \vfill
-  \only<2>{\begin{center}\textbf{Question.} Put $\Icol{i_x} = \im{1}$: which entry changes?\end{center}}%
-  \onslide<3->{%
-  Put $\Icol{i_x} = \im{1}$ and move $r_m\im{1}$ to the left side:
-  \[
-    \begin{bmatrix} R_1 + R_2 \alert{+ r_m} & R_3\\[3pt] 1 & -1 \end{bmatrix}
-    \begin{bmatrix} \im{1}\\[3pt] \im{2} \end{bmatrix}
-    =
-    \begin{bmatrix} 0\\[3pt] \Icol{i_s} \end{bmatrix}
-  \]}
-  \onslide<4->{%
-  \[
-    \im{1} = \frac{R_3\,\Icol{i_s}}{R_1 + R_2 + R_3 + r_m}, \qquad \im{2} = \im{1} - \Icol{i_s}
-  \]}
-  \vfill
-  \onslide<5->{%
-  \begin{center}
-    The dependent source changes one entry of the matrix.
-  \end{center}}
-  \vfill
-\end{frame}
-
-%--------------------------------------------------------------
-\begin{frame}{Example 12.5: a dependent current source}
+\begin{frame}{Example 12.4: a dependent current source}
   \begin{columns}[c,onlytextwidth]
     \begin{column}{0.53\textwidth}
       \centering
@@ -1049,7 +988,7 @@
 \end{frame}
 
 %--------------------------------------------------------------
-\begin{frame}{Example 12.5: the equations}
+\begin{frame}{Example 12.4: the equations}
   \begin{columns}[c,onlytextwidth]
     \begin{column}{0.53\textwidth}
       \centering
@@ -1078,7 +1017,7 @@
 \end{frame}
 
 %--------------------------------------------------------------
-\begin{frame}{Example 12.5: matrix form}
+\begin{frame}{Example 12.4: matrix form}
   \vfill
   Collect the terms of (1), (2) and (3):
   \[
@@ -1117,11 +1056,13 @@
   \vfill
   \begin{itemize}\itemsep10pt
     \item A dependent source is handled like an independent one of the same kind.
-    \item<2-> Its control variable ($\Icol{i_x}$, $\Vcol{v_x}$) is written with mesh currents:
-      this gives the \alert{constraint equation}.
+    \item<2-> Its control variable ($\Vcol{v_x}$ here) is written with mesh currents: this
+      gives the \alert{constraint equation}.
+    \item<3-> A dependent \alert{voltage} source is the easy case: it adds a term to KVL,
+      just as a dependent current source added a term to KCL previously.
   \end{itemize}
   \vfill
-  \onslide<3->{%
+  \onslide<4->{%
   \begin{block}{Remark}
     If a dependent current source is on mesh $k$ only, do \alert{not} write KVL around
     mesh $k$: its voltage is not known.\\[4pt]
@@ -1134,7 +1075,7 @@
 \roadmapframe{7}
 
 %--------------------------------------------------------------
-\begin{frame}{Example 12.5 with node voltages}
+\begin{frame}{Example 12.4 with node voltages}
   \begin{columns}[c,onlytextwidth]
     \begin{column}{0.53\textwidth}
       \centering
@@ -1162,7 +1103,7 @@
 \end{frame}
 
 %--------------------------------------------------------------
-\begin{frame}{Example 12.5 with node voltages: matrix form}
+\begin{frame}{Example 12.4 with node voltages: matrix form}
   \vfill
   Put $\Vcol{v_x} = \e{1} - \e{2}$ and collect the terms:
   \[
@@ -1191,7 +1132,7 @@
 %--------------------------------------------------------------
 \begin{frame}{Node or mesh?}
   \vfill
-  \textbf{Question.} For Example 12.5, which method needs fewer equations?
+  \textbf{Question.} For Example 12.4, which method needs fewer equations?
   \vfill
   \begin{columns}[t,onlytextwidth]
     \begin{column}{0.485\textwidth}

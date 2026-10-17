@@ -131,6 +131,8 @@
 
 %-------------------- Lecture 12 circuit macros ---------------
 \newcommand{\ohm}{\,\Omega}
+%  A highlighted matrix row entry: colour #1, content #2
+\newcommand{\hrow}[2]{{\setlength{\fboxsep}{1.5pt}\colorbox{#1}{\makebox[2.1em]{$\mathstrut #2$}}}}
 \newcommand{\yes}{\textcolor{cpow}{\checkmark}}
 \newcommand{\no}{\textcolor{metured}{$\boldsymbol{\times}$}}
 \newcommand{\e}[1]{\textcolor{cvolt}{e_{#1}}}
@@ -536,38 +538,11 @@ matrix is no longer symmetric.
 \section{Dependent sources}
 
 A dependent source is handled like an independent one of the same kind. Its control variable is
-then written with mesh currents; this gives one more constraint equation.
+then written with mesh currents; this gives one more constraint equation. A dependent voltage
+source is the easy case: it adds a term to KVL, just as a dependent current source added a term
+to KCL previously. The new case is a dependent current source.
 
-\begin{examplebox}[Example 12.4 --- a dependent voltage source]
-\begin{minipage}[c]{0.42\linewidth}
-\centering
-\begin{tikzpicture}[scale=0.68]
-  \exN{1}{2}
-\end{tikzpicture}
-\end{minipage}\hfill
-\begin{minipage}[c]{0.56\linewidth}
-\textbf{Question.} Write the mesh equations.
-
-\textbf{Answer.} Treat the dependent source as a voltage source $\Vcol{r_m i_x}$. The current
-source is between meshes 1 and 2, so use the supermesh \nd{S}:
-\begin{align*}
-  \text{supermesh:}\quad & (R_1 + R_2)\,\im{1} + R_3\,\im{2} + \Vcol{r_m i_x} = 0\\
-  \text{constraint:}\quad & \im{1} - \im{2} = \Icol{i_s}
-\end{align*}
-The control is $\Icol{i_x} = \im{1}$.
-\end{minipage}
-\[
-  \begin{bmatrix} R_1 + R_2 + r_m & R_3\\ 1 & -1 \end{bmatrix}
-  \begin{bmatrix} \im{1}\\ \im{2} \end{bmatrix}
-  = \begin{bmatrix} 0\\ \Icol{i_s} \end{bmatrix}
-  \quad\Rightarrow\quad
-  \im{1} = \frac{R_3\,\Icol{i_s}}{R_1 + R_2 + R_3 + r_m}, \quad \im{2} = \im{1} - \Icol{i_s}.
-\]
-With $\Icol{i_x} = \im{1}$, the term $r_m\im{1}$ moves to the left: the dependent source changes
-one entry of the matrix.
-\end{examplebox}
-
-\begin{examplebox}[Example 12.5 --- a dependent current source]
+\begin{examplebox}[Example 12.4 --- a dependent current source]
 \begin{minipage}[c]{0.44\linewidth}
 \centering
 \begin{tikzpicture}[scale=0.6]
@@ -605,20 +580,18 @@ is not known. Write its constraint instead.
 %==============================================================
 \section{Node or mesh?}
 
-Which method needs fewer equations for Example 12.5? Count before solving. With mesh currents
-there are $\ell = 3$ unknowns, and each current source fixes one of them: $3 - 2 = 1$ KVL
-equation is left. With node voltages there are $n - 1 = 3$ unknowns, and each voltage source
-fixes one of them: $3 - 1 = 2$ KCL equations are left.
+Which method needs fewer equations for Example 12.4? With mesh currents, $\ell = 3$ and each
+current source fixes one unknown: $3 - 2 = 1$ KVL equation is left. With node voltages,
+$n - 1 = 3$ and each voltage source fixes one: $3 - 1 = 2$ KCL equations are left.
 
 \textbf{Tip.} Count before you start: for mesh currents, $\ell$ minus the current sources; for
 node voltages, $n - 1$ minus the voltage sources. Mesh current analysis needs a planar circuit;
 node voltage analysis always works.
 
-To check, solve Example 12.5 with node voltages. Take the right node as the ground. The $12\V$
-source goes from the middle node to the ground, so that node is at $12\V$; the unknowns are
-$\e{1}$ and $\e{2}$.
+\begin{examplebox}[Example 12.4 with node voltages]
+The right node is the ground; the $12\V$ source fixes the middle node at $12\V$. The unknowns
+are $\e{1}$, $\e{2}$.
 
-\begin{examplebox}[Example 12.5 with node voltages]
 \begin{minipage}[c]{0.44\linewidth}
 \centering
 \begin{tikzpicture}[scale=0.62]
@@ -637,9 +610,8 @@ $\e{1}$ and $\e{2}$.
   \begin{bmatrix} \e{1}\\[2pt] \e{2} \end{bmatrix}
   = \begin{bmatrix} 3\\[2pt] -2 \end{bmatrix}
   \ \Rightarrow\ \e{1} = -28\V,\ \e{2} = -24\V, \quad
-  \Icol{i} = \frac{\e{1} - 12}{4} = \Icol{-10\A},
+  \Icol{i} = \frac{\e{1} - 12}{4} = \Icol{-10\A}, \ \text{the same.}
 \]
-the same answer.
 \end{examplebox}
 
 %==============================================================

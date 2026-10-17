@@ -103,6 +103,8 @@
 
 %-------------------- Lecture 11 circuit macros ---------------
 \newcommand{\ohm}{\,\Omega}
+%  A highlighted matrix row entry: colour #1, content #2
+\newcommand{\hrow}[2]{{\setlength{\fboxsep}{1.5pt}\colorbox{#1}{\makebox[2.1em]{$\mathstrut #2$}}}}
 \newcommand{\e}[1]{\textcolor{cvolt}{e_{#1}}}
 \newcommand{\ep}[1]{\textcolor{cvolt}{e_{#1}'}}
 \newcommand{\nd}[1]{\tikz[baseline=(c.base)]\node[nlab](c){#1};}
@@ -730,15 +732,15 @@
   \[
     \Vcol{\mathbf{v}} = A^T\Vcol{\mathbf{e}}:
     \qquad
-    \left[\begin{array}{c}
-      \rowcolor{metugray!15} \Vcol{\mathbf{v}_R}\\
-      \rowcolor{ccur!12} \Vcol{\mathbf{v}_S}
-    \end{array}\right]
+    \begin{bmatrix}
+      \hrow{metugray!15}{\Vcol{\mathbf{v}_R}}\\
+      \hrow{ccur!12}{\Vcol{\mathbf{v}_S}}
+    \end{bmatrix}
     =
-    \left[\begin{array}{c}
-      \rowcolor{metugray!15} A_R^T\\
-      \rowcolor{ccur!12} A_S^T
-    \end{array}\right]\Vcol{\mathbf{e}}
+    \begin{bmatrix}
+      \hrow{metugray!15}{A_R^T}\\
+      \hrow{ccur!12}{A_S^T}
+    \end{bmatrix}\Vcol{\mathbf{e}}
     \qquad
     \begin{array}{l}
       \textcolor{metugray}{b_R \text{ resistor rows:}} \ \ \Vcol{\mathbf{v}_R} = A_R^T\Vcol{\mathbf{e}}\\[2pt]
