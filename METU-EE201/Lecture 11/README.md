@@ -5,7 +5,7 @@ Lecture notes and slides for the eleventh lecture of EE201 (Section 2, Fall 2026
 | File | What it is |
 |---|---|
 | `EE201_Lecture_11.tex` | Handout / lecture notes (article, 5 pages). Self-contained: procedure, six worked examples, a summary. |
-| `EE201_Lecture_11_slides.tex` | Beamer deck (29 slides, 102 PDF pages) for the lecture itself — visual, low text. |
+| `EE201_Lecture_11_slides.tex` | Beamer deck (31 slides, 107 PDF pages) for the lecture itself — visual, low text. |
 | `build.sh` | Compiles both, removes auxiliary files, opens the PDFs. |
 
 ## Compiling
@@ -32,7 +32,10 @@ first half of his recorded Lecture 12 (00:00–~35:00) on
    branch voltage is a difference, so KVL holds automatically); write the currents,
    (e_k − e_j)/R; KCL at every node except the ground
 2. **Matrix form** — Y_n e = i_s; Y_n written directly from the circuit with three rules (diagonal, off-diagonal, right side);
-   why Y_n is symmetric: Y_n = A_R G A_Rᵀ, i_s = −A_S i_S
+   Y_n from the graph: the graph of Example 11.1 (branches 1–5 resistors, 6–7 sources,
+   node 0 the ground), its reduced incidence matrix A = [A_R A_S], then
+   Y_n = A_R G A_Rᵀ and i_s = −A_S i_S, checked on the example; Y_n symmetric since G is
+   diagonal
 3. **A voltage source to the ground** (Example II) — Example 11.2, one slide: the source fixes
    e₃ = v_s, so e₃ is known and no KCL is written at node 3; two KCL equations, 2 × 2 system,
    v_s/R₄ on the right side
@@ -57,5 +60,5 @@ After the review comes a "Motivation" slide (what simplifying cannot do, what no
 analysis does), and a roadmap slide opens each of the seven parts: a path of stops with
 what is new at each stop and a small circuit icon (done parts greyed with a check mark, the current one highlighted). Questions are
 shown first and the answers on the next page; the node being written is highlighted in the
-circuit. Each step is an ordinary extra PDF page; that is why the deck has 29 slides but 102
+circuit. Each step is an ordinary extra PDF page; that is why the deck has 31 slides but 107
 pages.

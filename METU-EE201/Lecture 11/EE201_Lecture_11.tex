@@ -257,6 +257,52 @@
   \nodev{1.6,2}{above}{$e_1$}
   \nodev{3.6,2}{above}{$e_2$}
   \gnd{2.6}}
+%  Graph branch from #1 to #2, label #4 on side #3 (angle), optional colour #5
+\newcommand{\gbranch}[5][black!75]{%
+  \draw[gbr, #1] (#2) -- (#3);
+  \node[blab, text=#1] at ($(#2)!0.5!(#3)!0.3cm!#4:(#3)$) {#5};}
+%  An incidence matrix with node labels on the left and branch numbers on top.
+%  #1 name, #2 number of columns, #3 node labels, #4 rows (entries separated by \&), #5 extra TikZ
+\newcommand{\incmat}[5]{%
+  \begin{tikzpicture}[baseline={([yshift=-0.6ex]#1.center)}]
+    \matrix (#1) [matrix of math nodes, ampersand replacement=\&,
+                  left delimiter={[}, right delimiter={]}, inner sep=1pt,
+                  column sep=0.45em,
+                  nodes={text width=1.35em, align=right, minimum height=1.25em,
+                         inner sep=1pt}] {#4};
+    \foreach \j in {1,...,#2}
+      \node[font=\scriptsize, text=metugray, anchor=south east, inner sep=1pt]
+        at ([yshift=2pt]#1-1-\j.north east) {\j};
+    \foreach \lab [count=\i] in {#3}
+      \node[nlab, left=11pt] at (#1.west |- #1-\i-1) {\lab};
+    #5
+  \end{tikzpicture}}
+%  The graph of Example 11.1: branches 1-5 the resistors R1-R5, 6 and 7 the sources i_s1, i_s2;
+%  node 0 is the ground
+\newcommand{\exAgraph}{%
+  \coordinate (g1) at (0,1.6); \coordinate (g2) at (2.2,1.6);
+  \coordinate (g3) at (4.4,1.6); \coordinate (g0) at (2.2,0);
+  \gbranch{g1}{g0}{90}{1}
+  \gbranch{g1}{g2}{90}{2}
+  \gbranch{g2}{g0}{90}{3}
+  \gbranch{g2}{g3}{90}{4}
+  \draw[gbr] (g1) to[bend left=45] (g3); \node[blab] at (2.2,2.75) {5};
+  \draw[gbr, ccur] (g0) to[bend left=50] (g1); \node[blab, text=ccur] at (0.45,0.25) {6};
+  \gbranch[ccur]{g3}{g0}{-90}{7}
+  \foreach \k/\pos in {1/left, 2/above, 3/right, 0/below}
+    {\fill[metured] (g\k) circle (2.2pt); \node[nlab, \pos=3pt] at (g\k) {\k};}}
+%  The reduced incidence matrix of Example 11.1 (rows: nodes 1, 2, 3)
+\newcommand{\exAinc}{%
+  \incmat{AA}{7}{1,2,3}{%
+     1 \&  1 \&  0 \&  0 \&  1 \& |[text=ccur]| -1 \& |[text=ccur]| 0\\
+     0 \& -1 \&  1 \&  1 \&  0 \& |[text=ccur]| 0 \& |[text=ccur]| 0\\
+     0 \&  0 \&  0 \& -1 \& -1 \& |[text=ccur]| 0 \& |[text=ccur]| 1\\}{%
+    \draw[metugray, thick, rounded corners=2pt]
+      ([xshift=-2pt, yshift=1pt]AA-1-1.north west) rectangle ([xshift=2pt, yshift=-1pt]AA-3-5.south east);
+    \draw[ccur, thick, rounded corners=2pt]
+      ([xshift=-2pt, yshift=1pt]AA-1-6.north west) rectangle ([xshift=2pt, yshift=-1pt]AA-3-7.south east);
+    \node[font=\small, text=metugray, below=3pt] at ($(AA-3-1.south)!0.5!(AA-3-5.south)$) {$A_R$: resistors};
+    \node[font=\small, text=ccur, below=3pt] at ($(AA-3-6.south)!0.5!(AA-3-7.south)$) {$A_S$: sources};}}
 \tikzset{fbox/.style={draw=metugray, thick, fill=metulight, rounded corners=3pt,
                       minimum height=0.85cm, minimum width=1.4cm, align=center,
                       font=\small, inner sep=4pt}}
@@ -363,20 +409,49 @@ written down directly.
 So $Y_n$ is \textbf{symmetric}: the entry $(k,j)$ equals the entry $(j,k)$.
 \end{ideabox}
 
-\textbf{Why is $Y_n$ symmetric?} Use the reduced incidence matrix $A$: one row for each node
-except the ground, one column for each branch, with entry $+1$ if the branch leaves the node,
-$-1$ if it enters, $0$ otherwise. Number the resistors first, then the current sources, so that
-$A = [\,A_R\ \ A_S\,]$. KCL reads
-$A_R\Icol{\mathbf{i}_R} + A_S\Icol{\mathbf{i}_S} = \mathbf{0}$. The resistors obey
-$\Icol{\mathbf{i}_R} = G\,\Vcol{\mathbf{v}_R}$ with $G = \mathrm{diag}(G_1, \dots, G_5)$, and KVL
-gives $\Vcol{\mathbf{v}_R} = A_R^T\Vcol{\mathbf{e}}$. Together,
+\textbf{$Y_n$ from the graph.} In the graph of Example 11.1, branches 1--5 are the resistors
+$R_1, \dots, R_5$, branches 6 and 7 are the sources $\Icol{i_{s1}}$, $\Icol{i_{s2}}$, and node
+\nd{0} is the ground. The reduced incidence matrix $A$ has one row for each node except the
+ground; an entry is $+1$ if the branch leaves the node and $-1$ if it enters.
+
+\begin{center}
+\begin{minipage}[c]{0.4\linewidth}
+\centering
+\begin{tikzpicture}[scale=0.85]
+  \exAgraph
+\end{tikzpicture}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.56\linewidth}
+\centering
+$A = \exAinc$
+\end{minipage}
+\end{center}
+
+KCL $A\Icol{\mathbf{i}} = \mathbf{0}$ reads $A_R\Icol{\mathbf{i}_R} + A_S\Icol{\mathbf{i}_S} = \mathbf{0}$.
+The resistors obey $\Icol{\mathbf{i}_R} = G\,\Vcol{\mathbf{v}_R}$ with
+$G = \mathrm{diag}(G_1, \dots, G_5)$, and KVL gives $\Vcol{\mathbf{v}_R} = A_R^T\Vcol{\mathbf{e}}$.
+Together,
 \[
-  \underbrace{A_R\,G\,A_R^T}_{Y_n}\,\Vcol{\mathbf{e}} = \underbrace{-A_S\Icol{\mathbf{i}_S}}_{\Icol{\mathbf{i}_s}},
-  \qquad
-  Y_n^T = A_R\,G^T A_R^T = A_R\,G\,A_R^T = Y_n ,
+  A_R\,G\,A_R^T\,\Vcol{\mathbf{e}} = -A_S\Icol{\mathbf{i}_S}
+  \quad\Rightarrow\quad
+  Y_n = A_R\,G\,A_R^T, \qquad \Icol{\mathbf{i}_s} = -A_S\Icol{\mathbf{i}_S}.
 \]
-since $G$ is diagonal. $A_S\Icol{\mathbf{i}_S}$ adds up the source currents leaving each node,
-so $-A_S\Icol{\mathbf{i}_S}$ adds up those entering it.
+For Example 11.1,
+\[
+  A_R\,G = \begin{bmatrix}
+      G_1 & G_2 & 0 & 0 & G_5\\
+      0 & -G_2 & G_3 & G_4 & 0\\
+      0 & 0 & 0 & -G_4 & -G_5
+    \end{bmatrix},
+  \qquad
+  -A_S\Icol{\mathbf{i}_S}
+    = -\begin{bmatrix} -1 & 0\\ 0 & 0\\ 0 & 1 \end{bmatrix}
+       \begin{bmatrix} \Icol{i_{s1}}\\ \Icol{i_{s2}} \end{bmatrix}
+    = \begin{bmatrix} \Icol{i_{s1}}\\ 0\\ -\Icol{i_{s2}} \end{bmatrix},
+\]
+and $A_R\,G\,A_R^T$ is exactly the $Y_n$ above: the three rules read this product off entry by
+entry. Finally, $Y_n^T = A_R\,G^T A_R^T = A_R\,G\,A_R^T = Y_n$, since $G$ is diagonal: with
+resistors and current sources, $Y_n$ is always symmetric.
 
 %==============================================================
 \section{A voltage source to the ground}
