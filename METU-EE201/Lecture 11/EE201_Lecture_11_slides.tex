@@ -860,29 +860,42 @@
 %--------------------------------------------------------------
 \begin{frame}{Method I: the current as an unknown}
   \begin{center}
-    \begin{tikzpicture}[scale=0.95]
+    \begin{tikzpicture}[scale=0.82]
       \exB{1}
     \end{tikzpicture}
   \end{center}
-  \vspace{-4pt}
+  \vspace{0pt}
   \begin{columns}[t,onlytextwidth]
-    \begin{column}{0.53\textwidth}
+    \begin{column}{0.6\textwidth}
       \small
+      \only<1-2>{%
       \textbf{Node 1:} \
       $\displaystyle \frac{\e{1} - \Vcol{v_{s1}}}{R_1} + \frac{\e{1}}{R_2} + \Icol{i} = 0$\\[4pt]
       \textbf{Node 2:} \
       $\displaystyle -\Icol{i} + \frac{\e{2}}{R_3} + \frac{\e{2} - \e{3}}{R_4} = 0$\\[4pt]
       \textbf{Node 3:} \
-      $\displaystyle \frac{\e{3} - \e{2}}{R_4} - \Icol{i_{s1}} + \frac{\e{3}}{R_5} = 0$
+      $\displaystyle \frac{\e{3} - \e{2}}{R_4} - \Icol{i_{s1}} + \frac{\e{3}}{R_5} = 0$}%
+      \only<3->{%
+      \footnotesize
+      $\begin{bmatrix}
+        G_1 + G_2 & 0 & 0 & 1\\
+        0 & G_3 + G_4 & -G_4 & -1\\
+        0 & -G_4 & G_4 + G_5 & 0\\
+        1 & -1 & 0 & 0
+      \end{bmatrix}
+      \begin{bmatrix} \e{1}\\ \e{2}\\ \e{3}\\ \Icol{i} \end{bmatrix}
+      =
+      \begin{bmatrix} G_1\Vcol{v_{s1}}\\ 0\\ \Icol{i_{s1}}\\ \Vcol{v_{s2}} \end{bmatrix}$}
     \end{column}
-    \begin{column}{0.44\textwidth}
+    \begin{column}{0.38\textwidth}
       \small
-      Treat the current $\Icol{i}$ of $\Vcol{v_{s2}}$ as one more unknown.\\[6pt]
+      The current $\Icol{i}$ of $\Vcol{v_{s2}}$ is one more unknown.\\[4pt]
       \onslide<2->{%
-      \textbf{Constraint:} \ $\e{1} - \e{2} = \Vcol{v_{s2}}$, the law of the source.\\[6pt]}
+      \textbf{Constraint:} \ $\e{1} - \e{2} = \Vcol{v_{s2}}$.\\[4pt]}
       \onslide<3->{%
-      Four unknowns, four equations: it works.\\[3pt]
-      But it adds an unknown; the supernode avoids it.}
+      Four unknowns, four equations; the last row is the constraint.\\[4pt]}
+      \onslide<4->{%
+      It works, but the supernode avoids the extra unknown.}
     \end{column}
   \end{columns}
 \end{frame}
@@ -977,14 +990,38 @@
       \textbf{Node 1:} \ $\displaystyle -1 + \frac{\e{1}}{2} + \frac{\e{1} - \e{2}}{6} = 0$\\[4pt]
       \textbf{Node 2:} \ $\displaystyle \frac{\e{2} - \e{1}}{6} + \frac{\e{2}}{6} - \Icol{0.5\,v_x} = 0$\\[6pt]}
       \onslide<4->{%
-      Write the control with node voltages: \ $\Vcol{v_x} = \e{1}$.\\[6pt]}
-      \onslide<5->{%
-      Node 2 gives $\e{2} = 2\e{1}$.\\[2pt]
-      Node 1 then gives $\e{1} = 3\V$, $\e{2} = 6\V$.\\[6pt]}
-      \onslide<6->{%
-      The dependent source makes $Y_n$ \alert{not} symmetric.}
+      Write the control with node voltages: \ $\Vcol{v_x} = \e{1}$.}
     \end{column}
   \end{columns}
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{Example 11.4: matrix form}
+  \vfill
+  As if $\Icol{0.5\,v_x}$ were an independent source:
+  \[
+    \begin{bmatrix} \frac23 & -\frac16\\[3pt] -\frac16 & \frac13 \end{bmatrix}
+    \begin{bmatrix} \e{1}\\[3pt] \e{2} \end{bmatrix}
+    =
+    \begin{bmatrix} 1\\[3pt] \Icol{0.5\,v_x} \end{bmatrix}
+  \]
+  \vfill
+  \onslide<2->{%
+  Put $\Vcol{v_x} = \e{1}$ and move $0.5\,\e{1}$ to the left side:
+  \[
+    \begin{bmatrix} \frac23 & -\frac16\\[3pt] -\frac16 \alert{- \frac12} & \frac13 \end{bmatrix}
+    \begin{bmatrix} \e{1}\\[3pt] \e{2} \end{bmatrix}
+    =
+    \begin{bmatrix} 1\\[3pt] 0 \end{bmatrix}
+    \qquad\Rightarrow\qquad
+    \e{1} = 3\V, \quad \e{2} = 6\V
+  \]}
+  \vfill
+  \onslide<3->{%
+  \begin{center}
+    The dependent source changes one entry: $Y_n$ is \alert{not} symmetric any more.
+  \end{center}}
+  \vfill
 \end{frame}
 
 %--------------------------------------------------------------
@@ -1042,20 +1079,31 @@
 \end{frame}
 
 %--------------------------------------------------------------
-\begin{frame}{Example 11.5: solve}
+\begin{frame}{Example 11.5: matrix form}
   \vfill
-  \begin{itemize}\itemsep8pt
-    \item (1): \ $\tfrac{5}{4}\e{1} - \tfrac12\e{2} - \tfrac12\e{3} = 5$; \ put
-      $\e{1} = \e{2} - \e{3}$ from (3): \quad
-      $\tfrac34\e{2} - \tfrac74\e{3} = 5 \quad (4)$
-    \item<2-> (2): \ $-\e{1} + \tfrac56\e{2} + \tfrac12\e{3} = 0$; \ put (3): \quad
-      $-\tfrac16\e{2} + \tfrac32\e{3} = 0 \ \Rightarrow\ \e{3} = \tfrac19\e{2} \quad (5)$
-    \item<3-> (4) and (5): \ $\tfrac34\e{2} - \tfrac{7}{36}\e{2} = \tfrac{20}{36}\e{2} = 5$
-      \quad$\Rightarrow$\quad $\e{2} = 9\V$
-    \item<4-> Then $\e{3} = 1\V$ and $\e{1} = \e{2} - \e{3} = 8\V$.
-  \end{itemize}
+  Collect the terms of (1), (2) and (3):
+  \[
+    \begin{bmatrix}
+      \frac54 & -\frac12 & -\frac12\\[3pt]
+      -1 & \frac56 & \frac12\\[3pt]
+      1 & -1 & 1
+    \end{bmatrix}
+    \begin{bmatrix} \e{1}\\[3pt] \e{2}\\[3pt] \e{3} \end{bmatrix}
+    =
+    \begin{bmatrix} 5\\[3pt] 0\\[3pt] 0 \end{bmatrix}
+  \]
   \vfill
-  \onslide<5->{%
+  \onslide<2->{%
+  \begin{center}
+    Rows: KCL at node 1, KCL at \nd{S}, the constraint $\e{1} - \e{2} + \e{3} = 0$.
+  \end{center}}
+  \vfill
+  \onslide<3->{%
+  \begin{center}
+    Solve: \ $\e{1} = 8\V$, \ $\e{2} = 9\V$, \ $\e{3} = 1\V$.
+  \end{center}}
+  \vfill
+  \onslide<4->{%
   \begin{center}
     \begin{tikzpicture}
       \node[draw=cpow, thick, fill=cpow!6, rounded corners=3pt, inner sep=7pt]
@@ -1098,16 +1146,26 @@
     \begin{column}{0.54\textwidth}
       \small
       \textbf{Question.} Take node 3 of Example 11.5 as the ground. Does $\Pcol{P_{3\Omega}}$
-      change?\\[8pt]
+      change?\\[5pt]
       \onslide<2->{%
       Every node voltage drops by the same $\e{3} = 1\V$:\\[2pt]
-      $\ep{1} = 7\V$, \ $\ep{2} = 8\V$, \ $\ep{0} = -1\V$.\\[6pt]}
+      $\ep{1} = 7\V$, \ $\ep{2} = 8\V$, \ $\ep{0} = -1\V$.\\[4pt]}
       \onslide<3->{%
       Branch voltages are differences, so they do not change:\\[2pt]
-      $\Pcol{P_{3\Omega}} = (\ep{2} - \ep{0})^2/3 = \Pcol{27\W}$, \alert{the same}.\\[8pt]}
+      $\Pcol{P_{3\Omega}} = (\ep{2} - \ep{0})^2/3 = \Pcol{27\W}$, \alert{the same}.\\[4pt]}
       \onslide<4->{%
-      Now $\Vcol{v_x}$ is between node 2 and the ground: $\ep{2} = \Vcol{v_x}$ is fixed by the
-      source, and no supernode is needed.\\[6pt]}
+      Now $\Vcol{v_x}$ is between node 2 and the ground: no supernode.\\[2pt]
+      KCL at nodes 1, 0 and $\ep{2} = \ep{1} - \ep{0}$:\\[2pt]
+      {\footnotesize
+      $\begin{bmatrix}
+        \frac54 & -\frac12 & -\frac14\\[2pt]
+        -\frac14 & -\frac13 & \frac{7}{12}\\[2pt]
+        1 & -1 & -1
+      \end{bmatrix}
+      \begin{bmatrix} \ep{1}\\[2pt] \ep{2}\\[2pt] \ep{0} \end{bmatrix}
+      =
+      \begin{bmatrix} 5\\[2pt] -5\\[2pt] 0 \end{bmatrix}$}\\[2pt]
+      It gives the same $7$, $8$, $-1\V$.\\[3pt]}
       \onslide<5->{%
       \alert{Tip:} put the ground at one end of a voltage source.}
     \end{column}

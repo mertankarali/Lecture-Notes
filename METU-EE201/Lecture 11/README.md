@@ -5,7 +5,7 @@ Lecture notes and slides for the eleventh lecture of EE201 (Section 2, Fall 2026
 | File | What it is |
 |---|---|
 | `EE201_Lecture_11.tex` | Handout / lecture notes (article, 5 pages). Self-contained: procedure, six worked examples, a summary. |
-| `EE201_Lecture_11_slides.tex` | Beamer deck (32 slides, 112 PDF pages) for the lecture itself — visual, low text. |
+| `EE201_Lecture_11_slides.tex` | Beamer deck (33 slides, 113 PDF pages) for the lecture itself — visual, low text. |
 | `build.sh` | Compiles both, removes auxiliary files, opens the PDFs. |
 
 ## Compiling
@@ -42,7 +42,8 @@ first half of his recorded Lecture 12 (00:00–~35:00) on
    e₃ = v_s, so e₃ is known and no KCL is written at node 3; two KCL equations, 2 × 2 system,
    v_s/R₄ on the right side
 4. **A voltage source between two nodes** (Modified NVA, Method I) — Example 11.3: its current
-   i as an extra unknown plus the constraint e₁ − e₂ = v_s2 (one slide, no matrix)
+   i as an extra unknown plus the constraint e₁ − e₂ = v_s2; one slide, the equations then
+   the 4 × 4 matrix form
 5. **Supernode** (L12 04:00, Method II) — adding KCL at nodes 1 and 2 cancels i; KCL at the
    supernode plus the constraint; 3 × 3, one unknown fewer, not symmetric (the notes no longer
    have the Method I vs Method II table)
@@ -63,5 +64,8 @@ After the review comes a "Motivation" slide (what simplifying cannot do, what no
 analysis does), and a roadmap slide opens each of the seven parts: a path of stops with
 what is new at each stop and a small circuit icon (done parts greyed with a check mark, the current one highlighted). Questions are
 shown first and the answers on the next page; the node being written is highlighted in the
-circuit. Each step is an ordinary extra PDF page; that is why the deck has 32 slides but 112
+circuit. Each step is an ordinary extra PDF page; that is why the deck has 33 slides but 113
 pages.
+
+Every example is also written in matrix form (Example 11.4 shows how the dependent source
+changes one entry of Y_n; Example 11.6 checks the new-ground values in matrix form).
