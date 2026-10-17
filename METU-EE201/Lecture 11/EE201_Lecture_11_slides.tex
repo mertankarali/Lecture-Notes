@@ -609,11 +609,12 @@
     \end{bmatrix}}_{Y_n}
     \underbrace{\begin{bmatrix} \e{1}\\ \e{2}\\ \e{3} \end{bmatrix}}_{\Vcol{\mathbf{e}}}
     =
-    \underbrace{\begin{bmatrix} \Icol{i_{s1}}\\ 0\\ -\Icol{i_{s2}} \end{bmatrix}}_{\Icol{\mathbf{i}_s}}
+    \underbrace{\begin{bmatrix} \Icol{i_{s1}}\\ 0\\ -\Icol{i_{s2}} \end{bmatrix}}_{\Icol{\mathbf{i}_n}}
   \]}
   \vfill
   \onslide<3->{\begin{center}
-    $Y_n$ is the \alert{node admittance matrix}: \ $Y_n\Vcol{\mathbf{e}} = \Icol{\mathbf{i}_s}$.
+    $Y_n$ is the \alert{node admittance matrix}: \ $Y_n\Vcol{\mathbf{e}} = \Icol{\mathbf{i}_n}$.\\[3pt]
+    $\Icol{\mathbf{i}_n}$: the source currents \alert{entering} each node.
   \end{center}}
   \vfill
 \end{frame}
@@ -745,7 +746,7 @@
   \begin{center}
     \begin{tikzpicture}
       \node[draw=metured, fill=metured!6, rounded corners=3pt, inner sep=6pt]
-        {$Y_n = A_R\, G\, A_R^T, \qquad \Icol{\mathbf{i}_s} = -A_S\Icol{\mathbf{i}_S}$};
+        {$Y_n = A_R\, G\, A_R^T, \qquad \Icol{\mathbf{i}_n} = -A_S\Icol{\mathbf{i}_S}$};
     \end{tikzpicture}
   \end{center}}
   \vfill
@@ -822,7 +823,7 @@
     -A_S\Icol{\mathbf{i}_S}
     = -\begin{bmatrix} -1 & 0\\ 0 & 0\\ 0 & 1 \end{bmatrix}
        \begin{bmatrix} \Icol{i_{s1}}\\ \Icol{i_{s2}} \end{bmatrix}
-    = \begin{bmatrix} \Icol{i_{s1}}\\ 0\\ -\Icol{i_{s2}} \end{bmatrix} = \Icol{\mathbf{i}_s} \ \ \yes
+    = \begin{bmatrix} \Icol{i_{s1}}\\ 0\\ -\Icol{i_{s2}} \end{bmatrix} = \Icol{\mathbf{i}_n} \ \ \yes
   \]}
   \vfill
   \onslide<5->{%
@@ -1217,7 +1218,7 @@
   \toprule
   \textbf{In the circuit} & \textbf{What to do}\\
   \midrule
-  resistors and current sources & KCL at every non-ground node: $Y_n\Vcol{\mathbf{e}} = \Icol{\mathbf{i}_s}$, from three simple rules; $Y_n$ is symmetric\\
+  resistors and current sources & KCL at every non-ground node: $Y_n\Vcol{\mathbf{e}} = \Icol{\mathbf{i}_n}$, from three simple rules; $Y_n$ is symmetric\\
   a voltage source from the ground to node $k$ & $\e{k} = \Vcol{v_s}$ is known; no KCL at node $k$\\
   a voltage source between two nodes & Method I: its current as an unknown, plus the constraint\newline
     Method II: KCL at the supernode, plus the constraint\\

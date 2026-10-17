@@ -31,13 +31,13 @@ first half of his recorded Lecture 12 (00:00–~35:00) on
    voltages) taught in four steps: choose a reference node; label the node voltages (every
    branch voltage is a difference, so KVL holds automatically); write the currents,
    (e_k − e_j)/R; KCL at every node except the ground
-2. **Matrix form** — Y_n e = i_s; Y_n written directly from the circuit with three rules (diagonal, off-diagonal, right side);
+2. **Matrix form** — Y_n e = i_n (i_n: source currents entering each node); Y_n written directly from the circuit with three rules (diagonal, off-diagonal, right side);
    Y_n from the graph: the graph of Example 11.1 (branches 1–5 resistors, 6–7 sources,
    node 0 the ground), its reduced incidence matrix A = [A_R A_S]; KVL v = Aᵀe and its
    resistor rows v_R = A_Rᵀe worked out on the example (each resistor voltage is tail minus
    head node voltage); KCL, KVL and Ohm's law in block form, with Aᵀ split into
    resistor rows (v_R = A_Rᵀe) and source rows (v_S = A_Sᵀe); then
-   Y_n = A_R G A_Rᵀ and i_s = −A_S i_S, checked on the example; Y_n symmetric since G is
+   Y_n = A_R G A_Rᵀ and i_n = −A_S i_S, checked on the example; Y_n symmetric since G is
    diagonal
 3. **A voltage source to the ground** (Example II) — Example 11.2, one slide: the source fixes
    e₃ = v_s, so e₃ is known and no KCL is written at node 3; two KCL equations, 2 × 2 system,
