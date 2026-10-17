@@ -165,7 +165,8 @@
   \fi
   \gnd{1.8}}
 %  Example 11.4: a dependent voltage source v_x between nodes 3 and 2.
-%  #1 = 0: plain;  1: the supernode S;  2: node 3 as the ground
+%  #1 = 0: plain;  1: the supernode S;  2: node 3 as the ground (e1', e2', e4');
+%  3: node numbers, ground at the bottom;  4: node numbers, node 3 as the ground
 \newcommand{\exC}[1]{%
   \draw (0,0) to[american current source, l=$5\A$] (0,2) -- (0,3.4)
         to[R, l=$2\ohm$] (1.8,3.4)
@@ -177,17 +178,26 @@
   \fill (0,2) circle (1.7pt);
   \node[pol] at (1.82,1.55) {$+$}; \node[pol] at (1.82,0.45) {$-$};
   \node[font=\small, text=cvolt] at (1.5,1.0) {$v_x$};
-  \ifnum#1=2
-    \nodev{2.2,2}{above right}{$e_1'$}
-    \nodev{4.2,2}{right}{$e_2'$}
-    \fill (1.8,3.4) circle (1.7pt);
-    \draw (1.8,3.4) -- (1.8,3.1) node[ground] {};
-    \nodev{2.2,0}{below}{$e_0'$}
-  \else
-    \nodev{2.2,2}{above right}{$e_1$}
-    \nodev{4.2,2}{right}{$e_2$}
-    \nodev{1.8,3.4}{above right}{$e_3$}
+  \ifcase#1
+    \nodev{2.2,2}{above right}{$e_1$}\nodev{4.2,2}{right}{$e_2$}\nodev{1.8,3.4}{above right}{$e_3$}\gnd{2.2}
+  \or
+    \nodev{2.2,2}{above right}{$e_1$}\nodev{4.2,2}{right}{$e_2$}\nodev{1.8,3.4}{above right}{$e_3$}\gnd{2.2}
+  \or
+    \nodev{2.2,2}{above right}{$e_1'$}\nodev{4.2,2}{right}{$e_2'$}
+    \fill (1.8,3.4) circle (1.7pt); \draw (1.8,3.4) -- (1.8,3.1) node[ground] {};
+    \nodev{2.2,0}{below}{$e_4'$}
+  \or
+    \fill (2.2,2) circle (1.7pt) node[nlab, above right=1pt] {1};
+    \fill (4.2,2) circle (1.7pt) node[nlab, right=2pt] {2};
+    \fill (1.8,3.4) circle (1.7pt) node[nlab, above right=1pt] {3};
+    \fill (3.2,0) circle (1.7pt) node[nlab, below=2pt] {4};
     \gnd{2.2}
+  \or
+    \fill (2.2,2) circle (1.7pt) node[nlab, above right=1pt] {1};
+    \fill (4.2,2) circle (1.7pt) node[nlab, right=2pt] {2};
+    \fill (1.8,3.4) circle (1.7pt) node[nlab, above right=1pt] {3};
+    \draw (1.8,3.4) -- (1.8,3.1) node[ground] {};
+    \fill (3.2,0) circle (1.7pt) node[nlab, below=2pt] {4};
   \fi
   \ifnum#1=1
     \draw[dashed, metured, thick, rounded corners=4pt]
@@ -1172,40 +1182,111 @@
 
 %--------------------------------------------------------------
 \begin{frame}{Example 11.6: another ground}
-  \begin{columns}[c,onlytextwidth]
-    \begin{column}{0.44\textwidth}
+  \small
+  \begin{columns}[t,onlytextwidth]
+    \begin{column}{0.5\textwidth}
       \centering
-      \begin{tikzpicture}[scale=0.95]
+      \begin{tikzpicture}[scale=0.66]
+        \exC{3}
+      \end{tikzpicture}\\[2pt]
+      Example 11.5: ground at node 4
+    \end{column}
+    \begin{column}{0.5\textwidth}
+      \centering
+      \begin{tikzpicture}[scale=0.66]
+        \exC{4}
+      \end{tikzpicture}\\[2pt]
+      The same circuit: ground at \alert{node 3}
+    \end{column}
+  \end{columns}
+  \vspace{5pt}
+  \only<1>{%
+  \begin{center}
+    \textbf{Question.} Move the ground to node 3.\\[3pt]
+    What happens to the node voltages and to $\Pcol{P_{3\Omega}}$?
+  \end{center}}%
+  \only<2->{%
+  \begin{columns}[t,onlytextwidth]
+    \begin{column}{0.47\textwidth}
+      A node voltage is measured from the ground:\\[3pt]
+      \centering $\ep{k} = \e{k} - \e{3} = \e{k} - 1\V$\\[5pt]
+      \renewcommand{\arraystretch}{1.15}
+      \begin{tabular}{c|cccc}
+        node & 1 & 2 & 3 & 4\\ \hline
+        $\e{k}$ (V) & $8$ & $9$ & $1$ & $0$\\
+        $\ep{k}$ (V) & $7$ & $8$ & $0$ & $-1$
+      \end{tabular}
+    \end{column}
+    \begin{column}{0.5\textwidth}
+      \onslide<3->{%
+      The $3\ohm$ is between nodes 2 and 4:\\[3pt]
+      \centering $\e{2} - \e{4} = 9 - 0 = 9\V$\\[2pt]
+      $\ep{2} - \ep{4} = 8 - (-1) = 9\V$\\[5pt]
+      \raggedright
+      Branch voltages do not change, so \ $\Pcol{P_{3\Omega}} = \Pcol{27\W}$, \alert{the same}.}
+    \end{column}
+  \end{columns}}
+  \vfill
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{Example 11.6: the equations with node 3 as the ground}
+  \begin{columns}[c,onlytextwidth]
+    \begin{column}{0.42\textwidth}
+      \centering
+      \begin{tikzpicture}[scale=0.9]
         \exC{2}
       \end{tikzpicture}
     \end{column}
-    \begin{column}{0.54\textwidth}
+    \begin{column}{0.56\textwidth}
       \small
-      \textbf{Question.} Take node 3 of Example 11.5 as the ground. Does $\Pcol{P_{3\Omega}}$
-      change?\\[5pt]
+      \textbf{Question.} With this ground, is a supernode needed?\\[8pt]
       \onslide<2->{%
-      Every node voltage drops by the same $\e{3} = 1\V$:\\[2pt]
-      $\ep{1} = 7\V$, \ $\ep{2} = 8\V$, \ $\ep{0} = -1\V$.\\[4pt]}
+      No: $\Vcol{v_x}$ is now between node 2 and the ground, so $\ep{2} = \Vcol{v_x}$.\\[3pt]
+      Unknowns: $\ep{1}$, $\ep{2}$, $\ep{4}$.\\[8pt]}
       \onslide<3->{%
-      Branch voltages are differences, so they do not change:\\[2pt]
-      $\Pcol{P_{3\Omega}} = (\ep{2} - \ep{0})^2/3 = \Pcol{27\W}$, \alert{the same}.\\[4pt]}
+      \textbf{Node 1:} \
+      $\displaystyle -5 + \frac{\ep{1}}{2} + \frac{\ep{1} - \ep{4}}{4} + \frac{\ep{1} - \ep{2}}{2} = 0$\\[6pt]
+      \textbf{Node 4:} \
+      $\displaystyle 5 + \frac{\ep{4} - \ep{1}}{4} + \frac{\ep{4} - \ep{2}}{3} = 0$\\[6pt]
+      No KCL at node 2: the current of $\Vcol{v_x}$ is not known.\\[8pt]}
       \onslide<4->{%
-      Now $\Vcol{v_x}$ is between node 2 and the ground: no supernode.\\[2pt]
-      KCL at nodes 1, 0 and $\ep{2} = \ep{1} - \ep{0}$:\\[2pt]
-      {\footnotesize
-      $\begin{bmatrix}
-        \frac54 & -\frac12 & -\frac14\\[2pt]
-        -\frac14 & -\frac13 & \frac{7}{12}\\[2pt]
-        1 & -1 & -1
-      \end{bmatrix}
-      \begin{bmatrix} \ep{1}\\[2pt] \ep{2}\\[2pt] \ep{0} \end{bmatrix}
-      =
-      \begin{bmatrix} 5\\[2pt] -5\\[2pt] 0 \end{bmatrix}$}\\[2pt]
-      It gives the same $7$, $8$, $-1\V$.\\[3pt]}
-      \onslide<5->{%
-      \alert{Tip:} put the ground at one end of a voltage source.}
+      \textbf{Constraint:} \ $\ep{2} = \Vcol{v_x} = \ep{1} - \ep{4}$}
     \end{column}
   \end{columns}
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{Example 11.6: matrix form}
+  \vfill
+  Collect the terms of the two KCL equations and the constraint:
+  \[
+    \begin{bmatrix}
+      \frac54 & -\frac12 & -\frac14\\[3pt]
+      -\frac14 & -\frac13 & \frac{7}{12}\\[3pt]
+      1 & -1 & -1
+    \end{bmatrix}
+    \begin{bmatrix} \ep{1}\\[3pt] \ep{2}\\[3pt] \ep{4} \end{bmatrix}
+    =
+    \begin{bmatrix} 5\\[3pt] -5\\[3pt] 0 \end{bmatrix}
+  \]
+  \vfill
+  \onslide<2->{%
+  \begin{center}
+    Solve: \ $\ep{1} = 7\V$, \ $\ep{2} = 8\V$, \ $\ep{4} = -1\V$: \ each is $\e{k} - 1\V$, as
+    predicted.
+  \end{center}}
+  \vfill
+  \onslide<3->{%
+  \begin{center}
+    \begin{tikzpicture}
+      \node[draw=metured, thick, fill=metured!5, rounded corners=3pt, inner sep=7pt,
+            text width=0.8\textwidth, align=center]
+        {\textbf{Tip.} Put the ground at one end of a voltage source.\\[2pt]
+         Then the other node voltage is known, or a supernode is avoided.};
+    \end{tikzpicture}
+  \end{center}}
+  \vfill
 \end{frame}
 
 %--------------------------------------------------------------

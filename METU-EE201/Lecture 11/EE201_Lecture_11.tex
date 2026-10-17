@@ -193,7 +193,8 @@
   \fi
   \gnd{1.8}}
 %  Example 11.4: a dependent voltage source v_x between nodes 3 and 2.
-%  #1 = 0: plain;  1: the supernode S;  2: node 3 as the ground
+%  #1 = 0: plain;  1: the supernode S;  2: node 3 as the ground (e1', e2', e4');
+%  3: node numbers, ground at the bottom;  4: node numbers, node 3 as the ground
 \newcommand{\exC}[1]{%
   \draw (0,0) to[american current source, l=$5\A$] (0,2) -- (0,3.4)
         to[R, l=$2\ohm$] (1.8,3.4)
@@ -205,17 +206,26 @@
   \fill (0,2) circle (1.7pt);
   \node[pol] at (1.82,1.55) {$+$}; \node[pol] at (1.82,0.45) {$-$};
   \node[font=\small, text=cvolt] at (1.5,1.0) {$v_x$};
-  \ifnum#1=2
-    \nodev{2.2,2}{above right}{$e_1'$}
-    \nodev{4.2,2}{right}{$e_2'$}
-    \fill (1.8,3.4) circle (1.7pt);
-    \draw (1.8,3.4) -- (1.8,3.1) node[ground] {};
-    \nodev{2.2,0}{below}{$e_0'$}
-  \else
-    \nodev{2.2,2}{above right}{$e_1$}
-    \nodev{4.2,2}{right}{$e_2$}
-    \nodev{1.8,3.4}{above right}{$e_3$}
+  \ifcase#1
+    \nodev{2.2,2}{above right}{$e_1$}\nodev{4.2,2}{right}{$e_2$}\nodev{1.8,3.4}{above right}{$e_3$}\gnd{2.2}
+  \or
+    \nodev{2.2,2}{above right}{$e_1$}\nodev{4.2,2}{right}{$e_2$}\nodev{1.8,3.4}{above right}{$e_3$}\gnd{2.2}
+  \or
+    \nodev{2.2,2}{above right}{$e_1'$}\nodev{4.2,2}{right}{$e_2'$}
+    \fill (1.8,3.4) circle (1.7pt); \draw (1.8,3.4) -- (1.8,3.1) node[ground] {};
+    \nodev{2.2,0}{below}{$e_4'$}
+  \or
+    \fill (2.2,2) circle (1.7pt) node[nlab, above right=1pt] {1};
+    \fill (4.2,2) circle (1.7pt) node[nlab, right=2pt] {2};
+    \fill (1.8,3.4) circle (1.7pt) node[nlab, above right=1pt] {3};
+    \fill (3.2,0) circle (1.7pt) node[nlab, below=2pt] {4};
     \gnd{2.2}
+  \or
+    \fill (2.2,2) circle (1.7pt) node[nlab, above right=1pt] {1};
+    \fill (4.2,2) circle (1.7pt) node[nlab, right=2pt] {2};
+    \fill (1.8,3.4) circle (1.7pt) node[nlab, above right=1pt] {3};
+    \draw (1.8,3.4) -- (1.8,3.1) node[ground] {};
+    \fill (3.2,0) circle (1.7pt) node[nlab, below=2pt] {4};
   \fi
   \ifnum#1=1
     \draw[dashed, metured, thick, rounded corners=4pt]
@@ -663,58 +673,76 @@ $\e{1} - \e{2} + \e{3} = 0$:
   = \begin{bmatrix} 5\\[2pt] 0\\[2pt] 0 \end{bmatrix}
   \quad\Rightarrow\quad \e{1} = 8\V, \ \e{2} = 9\V, \ \e{3} = 1\V .
 \]
-The $3\ohm$ is between node 2 and the ground:
-\[
-  \Pcol{P_{3\Omega}} = \frac{\e{2}^{\,2}}{3} = \frac{9^2}{3} = \Pcol{27\W} .
-\]
+The $3\ohm$ is between node 2 and the ground, so
+$\Pcol{P_{3\Omega}} = \e{2}^{\,2}/3 = 9^2/3 = \Pcol{27\W}$.
 
 \begin{definitionbox}{Remark: a dependent voltage source to the ground}
-If a dependent voltage source is connected between node $k$ and the ground, do not write KCL
-at node $k$: its current is not known. Write the constraint that the dependent source gives
-instead.
+If a dependent voltage source is between node $k$ and the ground, do not write KCL at node $k$:
+its current is not known. Write its constraint instead.
 \end{definitionbox}
 
 %==============================================================
 \section{Choosing a different ground}
 
-Any node can be the ground. Changing it shifts every node voltage by the same amount, so the
-branch voltages, the currents and the powers do not change.
+Moving the ground shifts all node voltages by the same amount; branch quantities do not change.
 
 \begin{examplebox}[Example 11.6 --- Example 11.5 with node 3 as the ground]
-\begin{minipage}[c]{0.42\linewidth}
+\begin{minipage}[c]{0.36\linewidth}
 \centering
-\begin{tikzpicture}[scale=0.85]
-  \exC{2}
-\end{tikzpicture}
+\begin{tikzpicture}[scale=0.56]
+  \exC{3}
+\end{tikzpicture}\\[1pt]
+{\small ground at node 4}
 \end{minipage}\hfill
-\begin{minipage}[c]{0.55\linewidth}
-\textbf{Question.} Take node 3 as the ground. Does $\Pcol{P_{3\Omega}}$ change?
-
-\textbf{Answer.} Every node voltage drops by the same $\e{3} = 1\V$: $\ep{1} = 7\V$,
-$\ep{2} = 8\V$, $\ep{0} = -1\V$. Branch voltages are differences, so they do not change:
-\[
-  \Pcol{P_{3\Omega}} = \frac{(\ep{2} - \ep{0})^2}{3} = \frac{9^2}{3} = \Pcol{27\W}, \quad
-  \text{the same.}
-\]
-With this ground, $\Vcol{v_x}$ is between node 2 and the ground: no supernode is needed.
+\begin{minipage}[c]{0.36\linewidth}
+\centering
+\begin{tikzpicture}[scale=0.56]
+  \exC{4}
+\end{tikzpicture}\\[1pt]
+{\small ground at node 3}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.25\linewidth}
+\centering
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{c|cc}
+  node & $\e{k}$ & $\ep{k}$\\ \hline
+  1 & $8$ & $7$\\
+  2 & $9$ & $8$\\
+  3 & $1$ & $0$\\
+  4 & $0$ & $-1$
+\end{tabular}\\[2pt]
+{\small (V)}
 \end{minipage}
 
 \smallskip
-\textbf{Check in matrix form.} KCL at nodes 1 and 0, and the constraint
-$\ep{2} = \Vcol{v_x} = \ep{1} - \ep{0}$:
+\textbf{Question.} Take node 3 as the ground. What happens to the node voltages and to
+$\Pcol{P_{3\Omega}}$? \
+\textbf{Answer.} Each node voltage drops by $\e{3} = 1\V$: $\ep{k} = \e{k} - \e{3}$ (table).
+The $3\ohm$ is between nodes 2 and 4, and its voltage does not change:
+$\e{2} - \e{4} = 9 - 0 = 9\V = \ep{2} - \ep{4} = 8 - (-1)$. So
+$\Pcol{P_{3\Omega}} = 9^2/3 = \Pcol{27\W}$, the same. \
+\textbf{Solving with the new ground.} Now $\Vcol{v_x}$ is between node 2 and the ground, so
+$\ep{2} = \Vcol{v_x}$ and no supernode is needed. KCL is written at nodes 1 and 4, not at
+node 2. With the constraint, and in matrix form:
 \[
+  \begin{aligned}
+    &-5 + \frac{\ep{1}}{2} + \frac{\ep{1} - \ep{4}}{4} + \frac{\ep{1} - \ep{2}}{2} = 0\\
+    &5 + \frac{\ep{4} - \ep{1}}{4} + \frac{\ep{4} - \ep{2}}{3} = 0\\
+    &\ep{2} = \Vcol{v_x} = \ep{1} - \ep{4}
+  \end{aligned}
+  \qquad\Rightarrow\qquad
   \begin{bmatrix}
     \frac54 & -\frac12 & -\frac14\\[2pt]
     -\frac14 & -\frac13 & \frac{7}{12}\\[2pt]
     1 & -1 & -1
   \end{bmatrix}
-  \begin{bmatrix} \ep{1}\\[2pt] \ep{2}\\[2pt] \ep{0} \end{bmatrix}
-  = \begin{bmatrix} 5\\[2pt] -5\\[2pt] 0 \end{bmatrix}
-  \quad\Rightarrow\quad \ep{1} = 7\V, \ \ep{2} = 8\V, \ \ep{0} = -1\V .
+  \begin{bmatrix} \ep{1}\\[2pt] \ep{2}\\[2pt] \ep{4} \end{bmatrix}
+  = \begin{bmatrix} 5\\[2pt] -5\\[2pt] 0 \end{bmatrix}.
 \]
+It gives $\ep{1} = 7\V$, $\ep{2} = 8\V$, $\ep{4} = -1\V$, as in the table.
 \end{examplebox}
 
-\textbf{Tip.} Put the ground at one end of a voltage source. Then its other node voltage is
+\textbf{Tip.} Put the ground at one end of a voltage source: then its other node voltage is
 known, or a supernode is avoided.
 
 %==============================================================
@@ -722,15 +750,15 @@ known, or a supernode is avoided.
 
 \begin{center}
 \small
-\renewcommand{\arraystretch}{1.3}
-\begin{tabular}{@{}>{\raggedright}p{4.3cm} >{\raggedright\arraybackslash}p{10.7cm}@{}}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{@{}>{\raggedright}p{5.4cm} >{\raggedright\arraybackslash}p{10.3cm}@{}}
 \toprule
 \textbf{In the circuit} & \textbf{What to do}\\
 \midrule
 resistors and current sources & KCL at every non-ground node: $Y_n\Vcol{\mathbf{e}} =
   \Icol{\mathbf{i}_n}$, from three simple rules; $Y_n = A_R G A_R^T$ is symmetric\\
-a voltage source from the ground to node $k$ & $\e{k} = \Vcol{v_s}$ is known; no KCL at node $k$\\
-a voltage source between two nodes & Method I: its current as an unknown, plus the
+a voltage source, ground to node $k$ & $\e{k} = \Vcol{v_s}$ is known; no KCL at node $k$\\
+a voltage source between nodes & Method I: its current as an unknown, plus the
   constraint;\newline Method II: KCL at the supernode, plus the constraint\\
 a dependent source & write its control variable with node voltages: a constraint equation\\
 the choice of ground & any node; the branch voltages and currents do not change\\

@@ -5,7 +5,7 @@ Lecture notes and slides for the eleventh lecture of EE201 (Section 2, Fall 2026
 | File | What it is |
 |---|---|
 | `EE201_Lecture_11.tex` | Handout / lecture notes (article, 5 pages). Self-contained: procedure, six worked examples, a summary. |
-| `EE201_Lecture_11_slides.tex` | Beamer deck (34 slides, 115 PDF pages) for the lecture itself — visual, low text. |
+| `EE201_Lecture_11_slides.tex` | Beamer deck (36 slides, 120 PDF pages) for the lecture itself — visual, low text. |
 | `build.sh` | Compiles both, removes auxiliary files, opens the PDFs. |
 
 ## Compiling
@@ -52,10 +52,12 @@ first half of his recorded Lecture 12 (00:00–~35:00) on
    0.5 v_x, KCL as usual, v_x = e₁, e₁ = 3 V, e₂ = 6 V, Y_n not symmetric; Example 11.5: a
    dependent voltage source v_x = e₁ between nodes 3 and 2, supernode S, e₁ = 8 V, e₂ = 9 V,
    e₃ = 1 V, P₃Ω = 27 W; remark (dependent voltage source to ground: no KCL there)
-7. **Choosing the ground** (L12 25:22, exercise) — Example 11.6: node 3 as the ground; every
-   node voltage drops by e₃ = 1 V (7, 8, −1 V), branch voltages unchanged, the same 27 W; now
-   v_x is between node 2 and the ground, no supernode; tip: put the ground at one end of a
-   voltage source
+7. **Choosing the ground** (L12 25:22, exercise) — Example 11.6, three slides: the two grounds
+   side by side with numbered nodes (bottom node = node 4) and a table e_k → e_k′ = e_k − e₃
+   (8, 9, 1, 0 → 7, 8, 0, −1 V); the 3Ω voltage 9 V either way, the same 27 W; then the
+   equations with node 3 as the ground (v_x now from node 2 to the ground, no supernode, KCL
+   at nodes 1 and 4, constraint e₂′ = e₁′ − e₄′) and the matrix form; tip: put the ground at
+   one end of a voltage source
 
 Then a summary table (situation → what to do).
 
@@ -65,7 +67,7 @@ After the review comes a "Motivation" slide (what simplifying cannot do, what no
 analysis does), and a roadmap slide opens each of the seven parts: a path of stops with
 what is new at each stop and a small circuit icon (done parts greyed with a check mark, the current one highlighted). Questions are
 shown first and the answers on the next page; the node being written is highlighted in the
-circuit. Each step is an ordinary extra PDF page; that is why the deck has 34 slides but 115
+circuit. Each step is an ordinary extra PDF page; that is why the deck has 36 slides but 120
 pages.
 
 Every example is also written in matrix form (Example 11.4 shows how the dependent source
