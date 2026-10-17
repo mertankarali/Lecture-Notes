@@ -1203,29 +1203,18 @@
   \only<1>{%
   \begin{center}
     \textbf{Question.} Move the ground to node 3.\\[3pt]
-    What happens to the node voltages and to $\Pcol{P_{3\Omega}}$?
+    What happens to the node voltages?
   \end{center}}%
   \only<2->{%
-  \begin{columns}[t,onlytextwidth]
-    \begin{column}{0.47\textwidth}
-      A node voltage is measured from the ground:\\[3pt]
-      \centering $\ep{k} = \e{k} - \e{3} = \e{k} - 1\V$\\[5pt]
-      \renewcommand{\arraystretch}{1.15}
-      \begin{tabular}{c|cccc}
-        node & 1 & 2 & 3 & 4\\ \hline
-        $\e{k}$ (V) & $8$ & $9$ & $1$ & $0$\\
-        $\ep{k}$ (V) & $7$ & $8$ & $0$ & $-1$
-      \end{tabular}
-    \end{column}
-    \begin{column}{0.5\textwidth}
-      \onslide<3->{%
-      The $3\ohm$ is between nodes 2 and 4:\\[3pt]
-      \centering $\e{2} - \e{4} = 9 - 0 = 9\V$\\[2pt]
-      $\ep{2} - \ep{4} = 8 - (-1) = 9\V$\\[5pt]
-      \raggedright
-      Branch voltages do not change, so \ $\Pcol{P_{3\Omega}} = \Pcol{27\W}$, \alert{the same}.}
-    \end{column}
-  \end{columns}}
+  \begin{center}
+    A node voltage is measured from the ground: \ $\ep{k} = \e{k} - \e{3} = \e{k} - 1\V$\\[6pt]
+    \renewcommand{\arraystretch}{1.15}
+    \begin{tabular}{c|cccc}
+      node & 1 & 2 & 3 & 4\\ \hline
+      $\e{k}$ (V) & $8$ & $9$ & $1$ & $0$\\
+      $\ep{k}$ (V) & $7$ & $8$ & $0$ & $-1$
+    \end{tabular}
+  \end{center}}
   \vfill
 \end{frame}
 

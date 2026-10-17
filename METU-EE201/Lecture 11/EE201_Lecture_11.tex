@@ -715,12 +715,10 @@ Moving the ground shifts all node voltages by the same amount; branch quantities
 \end{minipage}
 
 \smallskip
-\textbf{Question.} Take node 3 as the ground. What happens to the node voltages and to
-$\Pcol{P_{3\Omega}}$? \
+\textbf{Question.} Take node 3 as the ground. What happens to the node voltages?
+
 \textbf{Answer.} Each node voltage drops by $\e{3} = 1\V$: $\ep{k} = \e{k} - \e{3}$ (table).
-The $3\ohm$ is between nodes 2 and 4, and its voltage does not change:
-$\e{2} - \e{4} = 9 - 0 = 9\V = \ep{2} - \ep{4} = 8 - (-1)$. So
-$\Pcol{P_{3\Omega}} = 9^2/3 = \Pcol{27\W}$, the same. \
+
 \textbf{Solving with the new ground.} Now $\Vcol{v_x}$ is between node 2 and the ground, so
 $\ep{2} = \Vcol{v_x}$ and no supernode is needed. KCL is written at nodes 1 and 4, not at
 node 2. With the constraint, and in matrix form:
