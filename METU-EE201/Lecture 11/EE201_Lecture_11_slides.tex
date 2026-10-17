@@ -278,14 +278,15 @@
     \ifnum#1>\rmS\relax\begin{scope}[opacity=0.5]\rmicon{#4}\end{scope}\else\rmicon{#4}\fi
   \end{scope}}
 %  #1 stop number, #2 x, #3 y, #4 text
-\newcommand{\rmsub}[4]{%
-  \ifnum#1<\rmcur\relax
-    \node[text width=3.05cm, align=center, font=\small, text=black!40] at (#2,#3) {#4\ \textcolor{cpow}{\checkmark}};
-  \else\ifnum#1=\rmcur\relax
-    \node[text width=3.05cm, align=center, font=\small\bfseries, text=metured,
-          draw=metured, rounded corners=2pt, inner sep=2pt] at (#2,#3) {#4};
+%  #1 first stop, #2 last stop covered by this item, #3 x, #4 y, #5 text
+\newcommand{\rmsub}[5]{%
+  \ifnum#2<\rmcur\relax
+    \node[text width=3.05cm, align=center, font=\small, text=black!40] at (#3,#4) {#5\ \textcolor{cpow}{\checkmark}};
+  \else\ifnum#1>\rmcur\relax
+    \node[text width=3.05cm, align=center, font=\small] at (#3,#4) {#5};
   \else
-    \node[text width=3.05cm, align=center, font=\small] at (#2,#3) {#4};
+    \node[text width=3.05cm, align=center, font=\small\bfseries, text=metured,
+          draw=metured, rounded corners=2pt, inner sep=2pt] at (#3,#4) {#5};
   \fi\fi}
 \newcommand{\roadmapframe}[1]{%
   \begin{frame}{Roadmap}
@@ -298,13 +299,12 @@
       \rmstation{2}{5.0}{Voltage sources}{4}
       \rmstation{3}{8.45}{Dependent sources}{6}
       \rmstation{4}{11.65}{The ground}{7}
-      \rmsub{1}{1.75}{-0.8}{the procedure, on an example}
-      \rmsub{2}{1.75}{-1.75}{matrix form}
-      \rmsub{3}{5.0}{-0.8}{one end at the ground}
-      \rmsub{4}{5.0}{-1.75}{between two nodes: Method I}
-      \rmsub{5}{5.0}{-2.7}{Method II: the supernode}
-      \rmsub{6}{8.45}{-0.8}{a constraint equation}
-      \rmsub{7}{11.65}{-0.8}{does its choice matter?}
+      \rmsub{1}{1}{1.75}{-0.8}{the procedure, on an example}
+      \rmsub{2}{2}{1.75}{-1.75}{matrix form}
+      \rmsub{3}{3}{5.0}{-0.8}{one end at the ground}
+      \rmsub{4}{5}{5.0}{-1.75}{between two nodes}
+      \rmsub{6}{6}{8.45}{-0.8}{a constraint equation}
+      \rmsub{7}{7}{11.65}{-0.8}{does its choice matter?}
     \end{tikzpicture}
     \vfill
     {\small Each station adds a new kind of source; the last one asks about the ground.}
