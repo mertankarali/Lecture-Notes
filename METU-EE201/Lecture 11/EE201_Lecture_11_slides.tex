@@ -170,41 +170,41 @@
 %  #1 = 0: plain;  1: the supernode S;  2: node 3 as the ground (e1', e2', e4');
 %  3: node numbers, ground at the bottom;  4: node numbers, node 3 as the ground
 \newcommand{\exC}[1]{%
-  \draw (0,0) to[american current source, l=$5\A$] (0,2) -- (0,3.4)
-        to[R, l=$2\ohm$] (1.8,3.4)
-        to[american controlled voltage source, invert, l=$\Vcol{v_x}$] (4.2,3.4) -- (4.2,2);
-  \draw (0,2) -- (2.2,2) to[R, l=$2\ohm$] (4.2,2);
-  \draw (2.2,2) to[R, l=$4\ohm$] (2.2,0);
-  \draw (4.2,2) to[R, l=$3\ohm$] (4.2,0);
-  \draw (0,0) -- (4.2,0);
+  \draw (0,0) to[american current source, l=$5\A$] (0,2) -- (0,3.6)
+        to[R, l=$2\ohm$] (2.0,3.6)
+        to[american controlled voltage source, invert, l=$\Vcol{v_x}$] (5.4,3.6) -- (5.4,2);
+  \draw (0,2) -- (2.6,2) to[R, l=$2\ohm$] (5.4,2);
+  \draw (2.6,2) to[R, l=$4\ohm$] (2.6,0);
+  \draw (5.4,2) to[R, l=$3\ohm$] (5.4,0);
+  \draw (0,0) -- (5.4,0);
   \fill (0,2) circle (1.7pt);
-  \node[pol] at (1.82,1.55) {$+$}; \node[pol] at (1.82,0.45) {$-$};
-  \node[font=\small, text=cvolt] at (1.5,1.0) {$v_x$};
+  \node[pol] at (2.22,1.55) {$+$}; \node[pol] at (2.22,0.45) {$-$};
+  \node[font=\small, text=cvolt] at (1.85,1.0) {$v_x$};
   \ifcase#1
-    \nodev{2.2,2}{above right}{$e_1$}\nodev{4.2,2}{right}{$e_2$}\nodev{1.8,3.4}{above right}{$e_3$}\gnd{2.2}
+    \nodev{2.6,2}{above left}{$e_1$}\nodev{5.4,2}{above right}{$e_2$}\nodev{2.0,3.6}{above right}{$e_3$}\gnd{2.6}
   \or
-    \nodev{2.2,2}{above right}{$e_1$}\nodev{4.2,2}{right}{$e_2$}\nodev{1.8,3.4}{above right}{$e_3$}\gnd{2.2}
+    \nodev{2.6,2}{above left}{$e_1$}\nodev{5.4,2}{above right}{$e_2$}\nodev{2.0,3.6}{above right}{$e_3$}\gnd{2.6}
   \or
-    \nodev{2.2,2}{above right}{$e_1'$}\nodev{4.2,2}{right}{$e_2'$}
-    \fill (1.8,3.4) circle (1.7pt); \draw (1.8,3.4) -- (1.8,3.1) node[ground] {};
-    \nodev{2.2,0}{below}{$e_4'$}
+    \nodev{2.6,2}{above left}{$e_1'$}\nodev{5.4,2}{right}{$e_2'$}
+    \fill (2.0,3.6) circle (1.7pt); \draw (2.0,3.6) -- (2.0,3.3) node[ground] {};
+    \nodev{2.6,0}{below}{$e_4'$}
   \or
-    \fill (2.2,2) circle (1.7pt) node[nlab, above right=1pt] {1};
-    \fill (4.2,2) circle (1.7pt) node[nlab, right=2pt] {2};
-    \fill (1.8,3.4) circle (1.7pt) node[nlab, above right=1pt] {3};
-    \fill (3.2,0) circle (1.7pt) node[nlab, below=2pt] {4};
-    \gnd{2.2}
+    \fill (2.6,2) circle (1.7pt) node[nlab, above left=1pt] {1};
+    \fill (5.4,2) circle (1.7pt) node[nlab, right=2pt] {2};
+    \fill (2.0,3.6) circle (1.7pt) node[nlab, above right=1pt] {3};
+    \fill (4.0,0) circle (1.7pt) node[nlab, below=2pt] {4};
+    \gnd{2.6}
   \or
-    \fill (2.2,2) circle (1.7pt) node[nlab, above right=1pt] {1};
-    \fill (4.2,2) circle (1.7pt) node[nlab, right=2pt] {2};
-    \fill (1.8,3.4) circle (1.7pt) node[nlab, above right=1pt] {3};
-    \draw (1.8,3.4) -- (1.8,3.1) node[ground] {};
-    \fill (3.2,0) circle (1.7pt) node[nlab, below=2pt] {4};
+    \fill (2.6,2) circle (1.7pt) node[nlab, above left=1pt] {1};
+    \fill (5.4,2) circle (1.7pt) node[nlab, right=2pt] {2};
+    \fill (2.0,3.6) circle (1.7pt) node[nlab, above right=1pt] {3};
+    \draw (2.0,3.6) -- (2.0,3.3) node[ground] {};
+    \fill (4.0,0) circle (1.7pt) node[nlab, below=2pt] {4};
   \fi
   \ifnum#1=1
     \draw[dashed, metured, thick, rounded corners=4pt]
-      (1.55,4.45) -- (4.95,4.45) -- (4.95,1.6) -- (3.85,1.6) -- (3.85,2.9) -- (1.55,2.9) -- cycle;
-    \node[nlab] at (5.25,4.45) {S};
+      (1.7,4.4) -- (6.1,4.4) -- (6.1,1.55) -- (4.95,1.55) -- (4.95,3.05) -- (1.7,3.05) -- cycle;
+    \node[nlab] at (6.4,4.4) {S};
   \fi}
 %  A first small example: i_s1, R1, R2, R3, i_s2.  #1 = 0: branch voltages and currents only;
 %  1: also the ground and the node voltages
@@ -1098,7 +1098,7 @@
   \begin{columns}[c,onlytextwidth]
     \begin{column}{0.47\textwidth}
       \centering
-      \begin{tikzpicture}[scale=1.0]
+      \begin{tikzpicture}[scale=0.76]
         \only<1-2>{\exC{0}}%
         \only<3->{\exC{1}}%
       \end{tikzpicture}
@@ -1121,7 +1121,7 @@
   \begin{columns}[c,onlytextwidth]
     \begin{column}{0.44\textwidth}
       \centering
-      \begin{tikzpicture}[scale=0.92]
+      \begin{tikzpicture}[scale=0.76]
         \exC{1}
       \end{tikzpicture}
     \end{column}
@@ -1209,14 +1209,14 @@
   \begin{columns}[t,onlytextwidth]
     \begin{column}{0.5\textwidth}
       \centering
-      \begin{tikzpicture}[scale=0.66]
+      \begin{tikzpicture}[scale=0.6]
         \exC{3}
       \end{tikzpicture}\\[2pt]
       Example 11.5: ground at node 4
     \end{column}
     \begin{column}{0.5\textwidth}
       \centering
-      \begin{tikzpicture}[scale=0.66]
+      \begin{tikzpicture}[scale=0.6]
         \exC{4}
       \end{tikzpicture}\\[2pt]
       The same circuit: ground at \alert{node 3}
@@ -1246,7 +1246,7 @@
   \begin{columns}[c,onlytextwidth]
     \begin{column}{0.42\textwidth}
       \centering
-      \begin{tikzpicture}[scale=0.9]
+      \begin{tikzpicture}[scale=0.72]
         \exC{2}
       \end{tikzpicture}
     \end{column}
