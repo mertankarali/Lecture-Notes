@@ -267,25 +267,24 @@
 \newcommand{\rmicon}[1]{%
   \ifcase#1\or
     \draw (-1.1,-0.6) to[american voltage source] (-1.1,0.6) to[R] (1.1,0.6) to[R] (1.1,-0.6) -- (-1.1,-0.6);
-    \draw[ccur, very thick, -{Stealth[length=3mm]}] (0,0)+(150:0.32) arc[start angle=150, end angle=-150, radius=0.32];
+    \draw[ccur, line width=1.6pt, -{Stealth[length=1.7mm, width=1.7mm]}] (0,0)+(150:0.36) arc[start angle=150, end angle=-150, radius=0.36];
   \or
     \node[font=\LARGE] at (0,0) {$\begin{bmatrix} \ast & \ast\\ \ast & \ast \end{bmatrix}$};
   \or
     \draw (-1.1,-0.6) to[american current source] (-1.1,0.6) to[R] (1.1,0.6) to[R] (1.1,-0.6) -- (-1.1,-0.6);
   \or
-    \draw (-1.5,-0.6) -- (1.5,-0.6); \draw (-1.5,0.6) -- (1.5,0.6);
-    \draw (-1.5,-0.6) -- (-1.5,0.6); \draw (1.5,-0.6) -- (1.5,0.6);
+    \draw (-1.6,-0.6) to[R] (-1.6,0.6) -- (1.6,0.6) to[R] (1.6,-0.6) -- (-1.6,-0.6);
     \draw (0,0.6) to[american current source] (0,-0.6);
   \or
-    \draw[metured, line width=6pt, opacity=0.3] (-1.5,-0.6) rectangle (1.5,0.6);
-    \draw (-1.5,-0.6) rectangle (1.5,0.6);
+    \draw[metured, line width=6pt, opacity=0.3] (-1.6,-0.6) rectangle (1.6,0.6);
+    \draw (-1.6,-0.6) to[R] (-1.6,0.6) -- (1.6,0.6) to[R] (1.6,-0.6) -- (-1.6,-0.6);
     \draw (0,0.6) to[american current source] (0,-0.6);
   \or
     \draw (-1.5,0) -- (-0.9,0) to[american controlled current source] (0.9,0) -- (1.5,0);
   \or
-    \fill[cvolt] (-0.9,0) circle (5pt);
-    \node[font=\Large\bfseries] at (0,0) {?};
-    \draw[ccur, very thick, -{Stealth[length=3mm]}] (0.9,0)+(150:0.4) arc[start angle=150, end angle=-150, radius=0.4];
+    \fill[cvolt] (-0.9,0) circle (6pt);
+    \node[font=\LARGE\bfseries] at (0,0) {?};
+    \draw[ccur, line width=1.6pt, -{Stealth[length=1.7mm, width=1.7mm]}] (0.95,0)+(150:0.42) arc[start angle=150, end angle=-150, radius=0.42];
   \fi}
 %  Roadmap: four stations on a road; each station adds a new kind of source.
 %  Stops 1-7 are the sub-items: station of stop k = \rmst{k}
@@ -321,7 +320,7 @@
     \vfill
     \centering
     \begin{tikzpicture}
-      \draw[metugray!45, line width=3pt, -{Stealth[length=4mm]}] (0,0) -- (13.3,0);
+      \draw[metugray!45, line width=3pt, -{Stealth[length=2.6mm, width=3.2mm]}] (0,0) -- (13.3,0);
       \rmstation{1}{1.75}{Voltage sources}{1}
       \rmstation{2}{5.0}{Current sources}{4}
       \rmstation{3}{8.45}{Dependent sources}{6}
