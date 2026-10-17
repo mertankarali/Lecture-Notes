@@ -685,36 +685,71 @@
 \end{frame}
 
 %--------------------------------------------------------------
+\begin{frame}{$Y_n$ from the graph: KCL, KVL and Ohm's law in blocks}
+  \small
+  Number the $b_R$ resistors first, then the $b_S$ current sources:
+  \[
+    A = [\,A_R \ \ A_S\,], \qquad
+    \Icol{\mathbf{i}} = \begin{bmatrix} \Icol{\mathbf{i}_R}\\ \Icol{\mathbf{i}_S} \end{bmatrix}, \qquad
+    \Vcol{\mathbf{v}} = \begin{bmatrix} \Vcol{\mathbf{v}_R}\\ \Vcol{\mathbf{v}_S} \end{bmatrix}.
+  \]
+  \vfill
+  \onslide<2->{%
+  \textbf{KCL:} \
+  $A\Icol{\mathbf{i}} = [\,A_R \ \ A_S\,]\begin{bmatrix} \Icol{\mathbf{i}_R}\\ \Icol{\mathbf{i}_S} \end{bmatrix}
+   = A_R\Icol{\mathbf{i}_R} + A_S\Icol{\mathbf{i}_S} = \mathbf{0}$}
+  \vfill
+  \onslide<3->{%
+  \textbf{KVL:} \ $A^T$ splits into \alert{rows}:
+  \[
+    \Vcol{\mathbf{v}} = A^T\Vcol{\mathbf{e}}:
+    \qquad
+    \left[\begin{array}{c}
+      \rowcolor{metugray!15} \Vcol{\mathbf{v}_R}\\
+      \rowcolor{ccur!12} \Vcol{\mathbf{v}_S}
+    \end{array}\right]
+    =
+    \left[\begin{array}{c}
+      \rowcolor{metugray!15} A_R^T\\
+      \rowcolor{ccur!12} A_S^T
+    \end{array}\right]\Vcol{\mathbf{e}}
+    \qquad
+    \begin{array}{l}
+      \textcolor{metugray}{b_R \text{ resistor rows:}} \ \ \Vcol{\mathbf{v}_R} = A_R^T\Vcol{\mathbf{e}}\\[2pt]
+      \textcolor{ccur}{b_S \text{ source rows:}} \ \ \Vcol{\mathbf{v}_S} = A_S^T\Vcol{\mathbf{e}}
+    \end{array}
+  \]}
+  \onslide<4->{%
+  \begin{center}
+    Only the \alert{resistor rows} are needed: the source voltages follow afterwards.
+  \end{center}}
+  \vfill
+  \onslide<5->{%
+  \textbf{Resistors:} \ $\Icol{\mathbf{i}_R} = G\,\Vcol{\mathbf{v}_R}$, \
+  $G = \mathrm{diag}(G_1, \dots, G_{b_R})$, one conductance per resistor.}
+  \vfill
+\end{frame}
+
+%--------------------------------------------------------------
 \begin{frame}{$Y_n$ from the graph: the general result}
   \vfill
-  \begin{columns}[t,onlytextwidth]
-    \begin{column}{0.5\textwidth}
-      \begin{itemize}\itemsep8pt
-        \item KCL: \ $A\Icol{\mathbf{i}} = \mathbf{0}$, \ that is \
-          $A_R\Icol{\mathbf{i}_R} + A_S\Icol{\mathbf{i}_S} = \mathbf{0}$.
-        \item<2-> Resistors: \ $\Icol{\mathbf{i}_R} = G\,\Vcol{\mathbf{v}_R}$, \
-          $G = \mathrm{diag}(G_1, \dots, G_5)$.
-        \item<3-> KVL: \ $\Vcol{\mathbf{v}} = A^T\Vcol{\mathbf{e}}$.
-        \item<3-> Its resistor rows: \ $\Vcol{\mathbf{v}_R} = A_R^T\Vcol{\mathbf{e}}$.
-      \end{itemize}
-    \end{column}
-    \begin{column}{0.46\textwidth}
-      \onslide<4->{%
-      Put them together:
-      \[
-        A_R\, G\, A_R^T\,\Vcol{\mathbf{e}} = -A_S\Icol{\mathbf{i}_S}
-      \]}
-      \onslide<5->{%
-      \begin{center}
-        \begin{tikzpicture}
-          \node[draw=metured, fill=metured!6, rounded corners=3pt, inner sep=6pt]
-            {$Y_n = A_R\, G\, A_R^T, \qquad \Icol{\mathbf{i}_s} = -A_S\Icol{\mathbf{i}_S}$};
-        \end{tikzpicture}
-      \end{center}}
-    \end{column}
-  \end{columns}
+  Put Ohm's law and the resistor rows of KVL into KCL:
+  \[
+    A_R\Icol{\mathbf{i}_R} + A_S\Icol{\mathbf{i}_S}
+    = A_R\, G\, \underbrace{A_R^T\Vcol{\mathbf{e}}}_{\Vcol{\mathbf{v}_R}} + A_S\Icol{\mathbf{i}_S} = \mathbf{0}
+    \quad\Rightarrow\quad
+    A_R\, G\, A_R^T\,\Vcol{\mathbf{e}} = -A_S\Icol{\mathbf{i}_S}
+  \]
   \vfill
-  \onslide<6->{%
+  \onslide<2->{%
+  \begin{center}
+    \begin{tikzpicture}
+      \node[draw=metured, fill=metured!6, rounded corners=3pt, inner sep=6pt]
+        {$Y_n = A_R\, G\, A_R^T, \qquad \Icol{\mathbf{i}_s} = -A_S\Icol{\mathbf{i}_S}$};
+    \end{tikzpicture}
+  \end{center}}
+  \vfill
+  \onslide<3->{%
   \begin{center}
     $Y_n^T = A_R\, G^T A_R^T = A_R\, G\, A_R^T = Y_n$, \ since $G$ is diagonal.\\[4pt]
     So $Y_n$ is \alert{always symmetric} for resistors and current sources.

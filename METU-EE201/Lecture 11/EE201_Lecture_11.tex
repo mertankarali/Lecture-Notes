@@ -429,9 +429,11 @@ $A = \exAinc$
 
 KCL $A\Icol{\mathbf{i}} = \mathbf{0}$ reads $A_R\Icol{\mathbf{i}_R} + A_S\Icol{\mathbf{i}_S} = \mathbf{0}$.
 The resistors obey $\Icol{\mathbf{i}_R} = G\,\Vcol{\mathbf{v}_R}$ with
-$G = \mathrm{diag}(G_1, \dots, G_5)$. KVL, $\Vcol{\mathbf{v}} = A^T\Vcol{\mathbf{e}}$, splits the
-same way into $\Vcol{\mathbf{v}_R} = A_R^T\Vcol{\mathbf{e}}$ and
-$\Vcol{\mathbf{v}_S} = A_S^T\Vcol{\mathbf{e}}$; only the resistor rows are needed. In
+$G = \mathrm{diag}(G_1, \dots, G_5)$. KVL, $\Vcol{\mathbf{v}} = A^T\Vcol{\mathbf{e}}$, splits into rows:
+$\left[\begin{smallmatrix} \Vcol{\mathbf{v}_R}\\ \Vcol{\mathbf{v}_S} \end{smallmatrix}\right]
+= \left[\begin{smallmatrix} A_R^T\\ A_S^T \end{smallmatrix}\right]\Vcol{\mathbf{e}}$, so
+$\Vcol{\mathbf{v}_R} = A_R^T\Vcol{\mathbf{e}}$ (resistor rows) and
+$\Vcol{\mathbf{v}_S} = A_S^T\Vcol{\mathbf{e}}$ (source rows); only the resistor rows are needed. In
 Example 11.1, $A_R^T$ is the resistor columns 1--5 of $A$ written as rows, and
 \[
   \Vcol{\mathbf{v}_R} = A_R^T\Vcol{\mathbf{e}}
