@@ -592,32 +592,38 @@
 
 %--------------------------------------------------------------
 \begin{frame}{Why is $Y_n$ symmetric?}
-  \vfill
-  Split $A$ into the resistor branches and the current source branches:
-  $A = [\,A_R \ \ A_S\,]$.
+  \begin{block}{The reduced incidence matrix $A$}
+    \small
+    One row for each node except the ground, one column for each branch.\\[2pt]
+    Entry $+1$ if the branch leaves the node, $-1$ if it enters, $0$ otherwise.
+  \end{block}
+  \vspace{6pt}
+  \onslide<2->{%
+  Number the resistors first, then the current sources:
+  \ $A = [\,A_R \ \ A_S\,]$, \ $\Icol{\mathbf{i}} = \begin{bmatrix} \Icol{\mathbf{i}_R}\\ \Icol{\mathbf{i}_S} \end{bmatrix}$.}
   \vfill
   \begin{columns}[t,onlytextwidth]
     \begin{column}{0.5\textwidth}
       \begin{itemize}\itemsep6pt
-        \item<2-> KCL: \ $A_R\Icol{\mathbf{i}_R} + A_S\Icol{\mathbf{i}_S} = \mathbf{0}$.
-        \item<3-> Resistors: \ $\Icol{\mathbf{i}_R} = G\,\Vcol{\mathbf{v}_R}$, \
+        \item<3-> KCL: \ $A_R\Icol{\mathbf{i}_R} + A_S\Icol{\mathbf{i}_S} = \mathbf{0}$.
+        \item<4-> Resistors: \ $\Icol{\mathbf{i}_R} = G\,\Vcol{\mathbf{v}_R}$, \
           $G = \mathrm{diag}(G_1, \dots, G_5)$.
-        \item<4-> KVL: \ $\Vcol{\mathbf{v}_R} = A_R^T\Vcol{\mathbf{e}}$.
+        \item<5-> KVL: \ $\Vcol{\mathbf{v}_R} = A_R^T\Vcol{\mathbf{e}}$.
       \end{itemize}
     \end{column}
     \begin{column}{0.46\textwidth}
-      \onslide<5->{%
+      \onslide<6->{%
       \[
         \underbrace{A_R\, G\, A_R^T}_{Y_n}\,\Vcol{\mathbf{e}} = \underbrace{-A_S\Icol{\mathbf{i}_S}}_{\Icol{\mathbf{i}_s}}
       \]}
-      \onslide<6->{%
+      \onslide<7->{%
       \[
         Y_n^T = A_R\, G^T A_R^T = A_R\, G\, A_R^T = Y_n
       \]}
     \end{column}
   \end{columns}
   \vfill
-  \onslide<7->{\begin{center}
+  \onslide<8->{\begin{center}
     $G$ is diagonal, so $Y_n$ is symmetric.\\[3pt]
     $-A_S\Icol{\mathbf{i}_S}$ adds up the source currents entering each node.
   \end{center}}

@@ -351,8 +351,10 @@ written down directly.
 So $Y_n$ is \textbf{symmetric}: the entry $(k,j)$ equals the entry $(j,k)$.
 \end{ideabox}
 
-\textbf{Why is $Y_n$ symmetric?} Split the columns of $A$ into the resistor branches and the
-current source branches, $A = [\,A_R\ \ A_S\,]$. KCL reads
+\textbf{Why is $Y_n$ symmetric?} Use the reduced incidence matrix $A$: one row for each node
+except the ground, one column for each branch, with entry $+1$ if the branch leaves the node,
+$-1$ if it enters, $0$ otherwise. Number the resistors first, then the current sources, so that
+$A = [\,A_R\ \ A_S\,]$. KCL reads
 $A_R\Icol{\mathbf{i}_R} + A_S\Icol{\mathbf{i}_S} = \mathbf{0}$. The resistors obey
 $\Icol{\mathbf{i}_R} = G\,\Vcol{\mathbf{v}_R}$ with $G = \mathrm{diag}(G_1, \dots, G_5)$, and KVL
 gives $\Vcol{\mathbf{v}_R} = A_R^T\Vcol{\mathbf{e}}$. Together,
