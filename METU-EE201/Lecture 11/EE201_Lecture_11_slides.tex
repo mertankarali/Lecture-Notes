@@ -694,7 +694,8 @@
           $A_R\Icol{\mathbf{i}_R} + A_S\Icol{\mathbf{i}_S} = \mathbf{0}$.
         \item<2-> Resistors: \ $\Icol{\mathbf{i}_R} = G\,\Vcol{\mathbf{v}_R}$, \
           $G = \mathrm{diag}(G_1, \dots, G_5)$.
-        \item<3-> KVL: \ $\Vcol{\mathbf{v}_R} = A_R^T\Vcol{\mathbf{e}}$.
+        \item<3-> KVL: \ $\Vcol{\mathbf{v}} = A^T\Vcol{\mathbf{e}}$.
+        \item<3-> Its resistor rows: \ $\Vcol{\mathbf{v}_R} = A_R^T\Vcol{\mathbf{e}}$.
       \end{itemize}
     \end{column}
     \begin{column}{0.46\textwidth}
@@ -722,7 +723,42 @@
 \end{frame}
 
 %--------------------------------------------------------------
-\begin{frame}{$Y_n$ from the graph: Example 11.1}
+\begin{frame}{$Y_n$ from the graph: Example 11.1, the resistor voltages}
+  \begin{columns}[c,onlytextwidth]
+    \begin{column}{0.36\textwidth}
+      \centering
+      \begin{tikzpicture}[scale=0.85]
+        \exAgraph
+      \end{tikzpicture}
+    \end{column}
+    \begin{column}{0.62\textwidth}
+      $A_R^T$: the resistor columns 1--5 of $A$, written as rows.\\[8pt]
+      \onslide<2->{%
+      \[
+        \underbrace{\begin{bmatrix} \Vcol{v_1}\\ \Vcol{v_2}\\ \Vcol{v_3}\\ \Vcol{v_4}\\ \Vcol{v_5} \end{bmatrix}}_{\Vcol{\mathbf{v}_R}}
+        =
+        \underbrace{\begin{bmatrix}
+          1 & 0 & 0\\
+          1 & -1 & 0\\
+          0 & 1 & 0\\
+          0 & 1 & -1\\
+          1 & 0 & -1
+        \end{bmatrix}}_{A_R^T}
+        \underbrace{\begin{bmatrix} \e{1}\\ \e{2}\\ \e{3} \end{bmatrix}}_{\Vcol{\mathbf{e}}}
+        \onslide<3->{%
+        =
+        \begin{bmatrix} \e{1}\\ \e{1} - \e{2}\\ \e{2}\\ \e{2} - \e{3}\\ \e{1} - \e{3} \end{bmatrix}}
+      \]}
+      \onslide<4->{%
+      Each resistor voltage: tail node voltage minus head node voltage.\\[4pt]}
+      \onslide<5->{%
+      Then Ohm's law: \ $\Icol{\mathbf{i}_R} = G\,\Vcol{\mathbf{v}_R}$, \ $\Icol{i_k} = G_k\Vcol{v_k}$.}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{$Y_n$ from the graph: Example 11.1, the matrix}
   \vfill
   \small
   \[

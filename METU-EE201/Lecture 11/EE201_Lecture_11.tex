@@ -429,8 +429,21 @@ $A = \exAinc$
 
 KCL $A\Icol{\mathbf{i}} = \mathbf{0}$ reads $A_R\Icol{\mathbf{i}_R} + A_S\Icol{\mathbf{i}_S} = \mathbf{0}$.
 The resistors obey $\Icol{\mathbf{i}_R} = G\,\Vcol{\mathbf{v}_R}$ with
-$G = \mathrm{diag}(G_1, \dots, G_5)$, and KVL gives $\Vcol{\mathbf{v}_R} = A_R^T\Vcol{\mathbf{e}}$.
-Together,
+$G = \mathrm{diag}(G_1, \dots, G_5)$. KVL, $\Vcol{\mathbf{v}} = A^T\Vcol{\mathbf{e}}$, splits the
+same way into $\Vcol{\mathbf{v}_R} = A_R^T\Vcol{\mathbf{e}}$ and
+$\Vcol{\mathbf{v}_S} = A_S^T\Vcol{\mathbf{e}}$; only the resistor rows are needed. In
+Example 11.1, $A_R^T$ is the resistor columns 1--5 of $A$ written as rows, and
+\[
+  \Vcol{\mathbf{v}_R} = A_R^T\Vcol{\mathbf{e}}
+  = \begin{bmatrix}
+    1 & 1 & 0 & 0 & 1\\
+    0 & -1 & 1 & 1 & 0\\
+    0 & 0 & 0 & -1 & -1
+  \end{bmatrix}^T
+  \begin{bmatrix} \e{1}\\ \e{2}\\ \e{3} \end{bmatrix}
+  = \big[\, \e{1} \ \ \ \e{1} - \e{2} \ \ \ \e{2} \ \ \ \e{2} - \e{3} \ \ \ \e{1} - \e{3} \,\big]^T :
+\]
+each resistor voltage is its tail node voltage minus its head node voltage. Together,
 \[
   A_R\,G\,A_R^T\,\Vcol{\mathbf{e}} = -A_S\Icol{\mathbf{i}_S}
   \quad\Rightarrow\quad
@@ -561,21 +574,8 @@ The current $\Icol{i}$ is no longer needed. In matrix form, with three unknowns 
 \]
 The matrix is no longer symmetric.
 
-\begin{center}
-\small
-\renewcommand{\arraystretch}{1.25}
-\begin{tabular}{@{}l l l@{}}
-\toprule
- & \textbf{Method I} & \textbf{Method II}\\
-\midrule
-extra unknown & the current $\Icol{i}$ of the source & none\\
-extra equation & the constraint (law of the source) & the same constraint\\
-unknowns in Example 11.3 & $4$: $\e{1}$, $\e{2}$, $\e{3}$, $\Icol{i}$ & $3$: $\e{1}$, $\e{2}$, $\e{3}$\\
-the current $\Icol{i}$ & part of the solution & from a KCL afterwards\\
-\bottomrule
-\end{tabular}
-\end{center}
-Both methods give the same node voltages.
+Method II needs one unknown fewer than Method I and gives the same node voltages; the current
+$\Icol{i}$, if needed, follows from a KCL afterwards.
 
 %==============================================================
 \section{Dependent sources}

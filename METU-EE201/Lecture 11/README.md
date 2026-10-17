@@ -5,7 +5,7 @@ Lecture notes and slides for the eleventh lecture of EE201 (Section 2, Fall 2026
 | File | What it is |
 |---|---|
 | `EE201_Lecture_11.tex` | Handout / lecture notes (article, 5 pages). Self-contained: procedure, six worked examples, a summary. |
-| `EE201_Lecture_11_slides.tex` | Beamer deck (31 slides, 107 PDF pages) for the lecture itself — visual, low text. |
+| `EE201_Lecture_11_slides.tex` | Beamer deck (32 slides, 112 PDF pages) for the lecture itself — visual, low text. |
 | `build.sh` | Compiles both, removes auxiliary files, opens the PDFs. |
 
 ## Compiling
@@ -33,7 +33,9 @@ first half of his recorded Lecture 12 (00:00–~35:00) on
    (e_k − e_j)/R; KCL at every node except the ground
 2. **Matrix form** — Y_n e = i_s; Y_n written directly from the circuit with three rules (diagonal, off-diagonal, right side);
    Y_n from the graph: the graph of Example 11.1 (branches 1–5 resistors, 6–7 sources,
-   node 0 the ground), its reduced incidence matrix A = [A_R A_S], then
+   node 0 the ground), its reduced incidence matrix A = [A_R A_S]; KVL v = Aᵀe and its
+   resistor rows v_R = A_Rᵀe worked out on the example (each resistor voltage is tail minus
+   head node voltage); then
    Y_n = A_R G A_Rᵀ and i_s = −A_S i_S, checked on the example; Y_n symmetric since G is
    diagonal
 3. **A voltage source to the ground** (Example II) — Example 11.2, one slide: the source fixes
@@ -42,7 +44,8 @@ first half of his recorded Lecture 12 (00:00–~35:00) on
 4. **A voltage source between two nodes** (Modified NVA, Method I) — Example 11.3: its current
    i as an extra unknown plus the constraint e₁ − e₂ = v_s2 (one slide, no matrix)
 5. **Supernode** (L12 04:00, Method II) — adding KCL at nodes 1 and 2 cancels i; KCL at the
-   supernode plus the constraint; 3 × 3, one unknown fewer, not symmetric
+   supernode plus the constraint; 3 × 3, one unknown fewer, not symmetric (the notes no longer
+   have the Method I vs Method II table)
 6. **Dependent sources** (L12 11:20) — Example 11.4 (added): a dependent current source
    0.5 v_x, KCL as usual, v_x = e₁, e₁ = 3 V, e₂ = 6 V, Y_n not symmetric; Example 11.5: a
    dependent voltage source v_x = e₁ between nodes 3 and 2, supernode S, e₁ = 8 V, e₂ = 9 V,
@@ -60,5 +63,5 @@ After the review comes a "Motivation" slide (what simplifying cannot do, what no
 analysis does), and a roadmap slide opens each of the seven parts: a path of stops with
 what is new at each stop and a small circuit icon (done parts greyed with a check mark, the current one highlighted). Questions are
 shown first and the answers on the next page; the node being written is highlighted in the
-circuit. Each step is an ordinary extra PDF page; that is why the deck has 31 slides but 107
+circuit. Each step is an ordinary extra PDF page; that is why the deck has 32 slides but 112
 pages.
