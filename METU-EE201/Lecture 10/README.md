@@ -5,7 +5,7 @@ Lecture notes and slides for the tenth lecture of EE201 (Section 2, Fall 2026/27
 | File | What it is |
 |---|---|
 | `EE201_Lecture_10.tex` | Handout / lecture notes (article, 6 pages). Self-contained: definitions, six worked examples, a summary. |
-| `EE201_Lecture_10_slides.tex` | Beamer deck (40 slides, 135 PDF pages) for the lecture itself — visual, low text. |
+| `EE201_Lecture_10_slides.tex` | Beamer deck (41 slides, 140 PDF pages) for the lecture itself — visual, low text. |
 | `build.sh` | Compiles both, removes auxiliary files, opens the PDFs. |
 
 ## Compiling
@@ -68,5 +68,5 @@ six main parts (done parts greyed with a check mark, the current one highlighted
 
 The definitions, the substitution theorem, the examples and the source transformation build
 up step by step with beamer overlays; questions are shown first and the answers on the next
-page. Each step is an ordinary extra PDF page; that is why the deck has 40 slides but 135
+page. Each step is an ordinary extra PDF page; that is why the deck has 41 slides but 140
 pages.

@@ -806,6 +806,76 @@
 \end{frame}
 
 %--------------------------------------------------------------
+\begin{frame}{(I) and (II): the example in matrix form}
+  \begin{columns}[c,onlytextwidth]
+    \begin{column}{0.32\textwidth}
+      \centering
+      \begin{tikzpicture}[scale=0.6, bt/.style={draw=metugray, rounded corners=1pt, inner sep=1pt, font=\scriptsize, text=metugray}]
+        \only<1-2>{\exN{0}}\only<3->{\exN{1}}
+        \node[bt] at (-0.6,0.35) {1};
+        \node[bt] at (1.6,2.45) {2};
+        \node[bt] at (2.45,0.4) {3};
+        \node[bt] at (4.05,0.4) {4};
+      \end{tikzpicture}\\[2pt]
+      {\scriptsize Branch 1 from $+$ to $-$, branch 2 to the right, branches 3, 4 downwards.\par}
+      \vspace{6pt}
+      \small
+      \only<1>{\textbf{(I)}: branch 4 is the $3\ohm$.}%
+      \only<2>{\textbf{Question.} In (II), which row changes?}%
+      \only<3>{\textbf{(II)}: only the \alert{last row} changes, $\Vcol{v_4} = 6$.}%
+      \only<4->{Put in the solution of (I):\\[2pt]
+        $x^* = (12, 6, 6, 6, -3, 3, 1, 2)$\\[3pt]
+        rows 1--7: as in (I) \yes\\
+        row 8: $\Vcol{v_4^*} = 6$ \yes}
+    \end{column}
+    \begin{column}{0.67\textwidth}
+      \centering
+      \only<1-2>{{\scriptsize\setlength{\arraycolsep}{2.4pt}
+      $\left[\begin{array}{rrrr|rrrr}
+        0&0&0&0&1&1&0&0\\
+        0&0&0&0&0&-1&1&1\\
+        -1&1&1&0&0&0&0&0\\
+        0&0&-1&1&0&0&0&0\\
+        1&0&0&0&0&0&0&0\\
+        0&1&0&0&0&-2&0&0\\
+        0&0&1&0&0&0&-6&0\\
+        0&0&0&1&0&0&0&-3
+      \end{array}\right]
+      \begin{bmatrix}\Vcol{v_1}\\\Vcol{v_2}\\\Vcol{v_3}\\\Vcol{v_4}\\\Icol{i_1}\\\Icol{i_2}\\\Icol{i_3}\\\Icol{i_4}\end{bmatrix}
+      =
+      \begin{bmatrix}0\\0\\0\\0\\12\\0\\0\\0\end{bmatrix}
+      \begin{array}{l}
+        \text{\scriptsize KCL, top left}\\\text{\scriptsize KCL, node $a$}\\
+        \text{\scriptsize KVL, left loop}\\\text{\scriptsize KVL, right loop}\\
+        \text{\scriptsize $12\V$ source}\\\text{\scriptsize $2\ohm$}\\\text{\scriptsize $6\ohm$}\\
+        \text{\scriptsize branch 4}
+      \end{array}$}}%
+      \only<3->{{\scriptsize\setlength{\arraycolsep}{2.4pt}
+      $\left[\begin{array}{rrrr|rrrr}
+        0&0&0&0&1&1&0&0\\
+        0&0&0&0&0&-1&1&1\\
+        -1&1&1&0&0&0&0&0\\
+        0&0&-1&1&0&0&0&0\\
+        1&0&0&0&0&0&0&0\\
+        0&1&0&0&0&-2&0&0\\
+        0&0&1&0&0&0&-6&0\\
+        \textcolor{metured}{0}&\textcolor{metured}{0}&\textcolor{metured}{0}&\textcolor{metured}{1}&\textcolor{metured}{0}&\textcolor{metured}{0}&\textcolor{metured}{0}&\textcolor{metured}{0}
+      \end{array}\right]
+      \begin{bmatrix}\Vcol{v_1}\\\Vcol{v_2}\\\Vcol{v_3}\\\Vcol{v_4}\\\Icol{i_1}\\\Icol{i_2}\\\Icol{i_3}\\\Icol{i_4}\end{bmatrix}
+      =
+      \begin{bmatrix}0\\0\\0\\0\\12\\0\\0\\\textcolor{metured}{6}\end{bmatrix}
+      \begin{array}{l}
+        \text{\scriptsize KCL, top left}\\\text{\scriptsize KCL, node $a$}\\
+        \text{\scriptsize KVL, left loop}\\\text{\scriptsize KVL, right loop}\\
+        \text{\scriptsize $12\V$ source}\\\text{\scriptsize $2\ohm$}\\\text{\scriptsize $6\ohm$}\\
+        \text{\scriptsize branch 4}
+      \end{array}$}}\\[6pt]
+      \onslide<5->{$\det T_{\mathrm{II}} = -12 \ne 0$: $x^*$ is the \alert{only} solution of (II).}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+%--------------------------------------------------------------
 \begin{frame}{(I) and (II): one element first}
   \begin{center}
   \begin{tikzpicture}[scale=0.72, baseline=(c.base)]
