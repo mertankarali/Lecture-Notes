@@ -63,7 +63,7 @@ Then a summary.
 
 ## Slides
 
-After the review comes a "Why this lecture?" slide, and a roadmap slide opens each of the
+After the review comes a "Motivation" slide, and a roadmap slide opens each of the
 six main parts (done parts greyed with a check mark, the current one highlighted).
 
 The definitions, the substitution theorem, the examples and the source transformation build
