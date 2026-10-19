@@ -943,8 +943,40 @@
   \begin{itemize}\itemsep4pt
     \item<3-> A voltage source takes any current, so $\Icol{i_e} = \Icol{i_e^*}$ is allowed.
     \item<4-> So $(\Vcol{\mathbf{v}^*}, \Icol{\mathbf{i}^*})$ solves (II); it has only one solution, so nothing changes, also $\Icol{i_e} = \Icol{i_e^*}$.
-    \item<5-> Uniqueness of (I) alone is not enough: in (a) of the three small circuits, replacing the $1\ohm$ by its voltage $5\V$ gives (b).
+    \item<5-> This needs (II) to have \alert{one} solution; (I) having one is not enough (next slide).
   \end{itemize}
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{(I) and (II): why (II) must also have one solution}
+  \begin{center}
+      \begin{tabular}{@{}c@{\hspace{16mm}}c@{}}
+      \begin{tikzpicture}[scale=0.8]
+        \draw (0,0) to[american voltage source, invert, l=$5\V$] (0,1.8);
+        \draw (0,1.8) -- (2.2,1.8); \draw (0,0) -- (2.2,0);
+        \draw (2.2,1.8) to[R, l=$1\ohm$] (2.2,0);
+        \draw[iar] (0.75,2.1) -- (1.45,2.1); \node[font=\small, text=ccur, above] at (1.1,2.15) {$5\A$};
+      \end{tikzpicture} &
+      \onslide<2->{\begin{tikzpicture}[scale=0.8]
+        \draw (0,0) to[american voltage source, invert, l=$5\V$] (0,1.8);
+        \draw (0,1.8) -- (2.2,1.8); \draw (0,0) -- (2.2,0);
+        \draw (2.2,0) to[american voltage source, invert, l_=$5\V$] (2.2,1.8);
+        \onslide<4->{\draw[ccur, thick, -{Stealth[length=2mm]}] (1.1,0.9)+(150:0.35) arc[start angle=150, end angle=-150, radius=0.35];
+          \node[font=\small, text=ccur] at (1.1,0.9) {$I$};}
+      \end{tikzpicture}}\\[2pt]
+      (I) & \onslide<2->{(II)}
+      \end{tabular}
+  \end{center}
+  \vspace{2pt}
+  {\small
+      \textbf{(I)}: a $5\V$ source and a $1\ohm$. One solution: $\Vcol{v} = 5\V$, $\Icol{i} = 5\A$.\\[5pt]
+      \onslide<2->{\textbf{(II)}: replace the $1\ohm$ by a source equal to its voltage, $5\V$.\\[5pt]}
+      \onslide<3->{\textbf{Question.} Does (II) have one solution?\\[5pt]}
+      \onslide<4->{No: KVL holds for any current $\Icol{I}$ around the loop.\\[3pt]
+        Both sources take any current.\\[5pt]}
+      \onslide<5->{$\Icol{I} = 5\A$ is one solution of (II), but not the only one.\\[5pt]}
+      \onslide<6->{So the theorem asks that (II) \alert{also} has one solution.}
+}
 \end{frame}
 
 %--------------------------------------------------------------
@@ -1101,8 +1133,41 @@
   \begin{itemize}\itemsep4pt
     \item<3-> A current source takes any voltage, so $\Vcol{v_e} = \Vcol{v_e^*}$ is allowed.
     \item<4-> So $(\Vcol{\mathbf{v}^*}, \Icol{\mathbf{i}^*})$ solves (III); it has only one solution, so nothing changes, also $\Vcol{v_e} = \Vcol{v_e^*}$.
-    \item<5-> Uniqueness of (I) alone is not enough: a $2\A$ source with a $1\ohm$ becomes two $2\A$ sources in series.
+    \item<5-> This needs (III) to have \alert{one} solution; (I) having one is not enough (next slide).
   \end{itemize}
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{(I) and (III): why (III) must also have one solution}
+  \begin{center}
+      \begin{tabular}{@{}c@{\hspace{16mm}}c@{}}
+      \begin{tikzpicture}[scale=0.8]
+        \draw (0,0) to[american current source, l=$2\A$] (0,1.8);
+        \draw (0,1.8) -- (2.2,1.8); \draw (0,0) -- (2.2,0);
+        \draw (2.2,1.8) to[R, l=$1\ohm$] (2.2,0);
+        \node[pol] at (1.75,1.45) {$+$}; \node[pol] at (1.75,0.35) {$-$};
+        \node[font=\small, text=cvolt] at (1.65,0.9) {$2\V$};
+      \end{tikzpicture} &
+      \onslide<2->{\begin{tikzpicture}[scale=0.8]
+        \draw (0,0) to[american current source, l=$2\A$] (0,1.8);
+        \draw (0,1.8) -- (2.2,1.8); \draw (0,0) -- (2.2,0);
+        \draw (2.2,1.8) to[american current source, l=$2\A$] (2.2,0);
+        \onslide<4->{\node[pol] at (1.7,1.45) {$+$}; \node[pol] at (1.7,0.35) {$-$};
+          \node[font=\small, text=cvolt] at (1.7,0.9) {$V$};}
+      \end{tikzpicture}}\\[2pt]
+      (I) & \onslide<2->{(III)}
+      \end{tabular}
+  \end{center}
+  \vspace{2pt}
+  {\small
+      \textbf{(I)}: a $2\A$ source and a $1\ohm$. One solution: $\Icol{i} = 2\A$, $\Vcol{v} = 2\V$.\\[5pt]
+      \onslide<2->{\textbf{(III)}: replace the $1\ohm$ by a source equal to its current, $2\A$.\\[5pt]}
+      \onslide<3->{\textbf{Question.} Does (III) have one solution?\\[5pt]}
+      \onslide<4->{No: KCL holds for any voltage $\Vcol{V}$ across the two sources.\\[3pt]
+        Both sources take any voltage.\\[5pt]}
+      \onslide<5->{$\Vcol{V} = 2\V$ is one solution of (III), but not the only one.\\[5pt]}
+      \onslide<6->{So the theorem asks that (III) \alert{also} has one solution.}
+}
 \end{frame}
 
 %--------------------------------------------------------------
