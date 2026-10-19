@@ -580,6 +580,7 @@
 %--------------------------------------------------------------
 \begin{frame}{Read the result as a circuit}
   \begin{center}\colorbox{metulight}{$\Vcol{v} = 9 - 1.5\,\Icol{i}$}\end{center}
+  \only<-2>{%
   \onslide<2->{%
   \begin{center}
   \begin{tikzpicture}[scale=0.85, baseline=(c.base)]
@@ -590,13 +591,31 @@
     \exLeft{1}\vilab{2.85} \coordinate (c) at (0,1);
   \end{tikzpicture}
   \end{center}
-  \begin{center}The right one obeys $\Vcol{v} = 9 - 1.5\,\Icol{i}$ too (KVL): the \alert{same law}.\end{center}}
-  \vfill
-  \onslide<3->{%
-  \begin{center}
-  Any load: \ $\Vcol{v} = R_L\Icol{i}$, \ so \ $\Icol{i} = \dfrac{9}{1.5 + R_L}$.
-  \quad For $R_L = 3\ohm$: $\Icol{i} = 2\A$, $\Vcol{v} = 6\V$.
-  \end{center}}
+  \begin{center}The right one obeys $\Vcol{v} = 9 - 1.5\,\Icol{i}$ too (KVL): the \alert{same law}.\end{center}}}%
+  \only<3->{%
+  \begin{columns}[c,onlytextwidth]
+    \begin{column}{0.44\textwidth}
+      \centering
+      \begin{tikzpicture}[scale=0.9]
+        \exLeft{1}
+        \draw (2.85,2) -- (4.25,2) to[R, l=$R_L$] (4.25,0) -- (2.85,0);
+        \node[pol] at (3.45,1.6) {$+$}; \node[pol] at (3.45,0.4) {$-$};
+        \node[font=\small, text=cvolt] at (3.45,1.0) {$v$};
+        \draw[iar] (3.05,2.25) -- (3.5,2.25);
+        \node[font=\small, text=ccur] at (3.3,2.55) {$i$};
+      \end{tikzpicture}
+    \end{column}
+    \begin{column}{0.54\textwidth}
+      Connect any load $R_L$ to the simple circuit.\\[8pt]
+      \onslide<4->{%
+      The $1.5\ohm$ and $R_L$ are in series: a \alert{voltage divider}.\\[4pt]
+      $\displaystyle \Vcol{v} = \frac{R_L}{1.5 + R_L}\cdot 9\V,
+        \qquad \Icol{i} = \frac{\Vcol{v}}{R_L} = \frac{9}{1.5 + R_L}$\\[10pt]}
+      \onslide<5->{%
+      For $R_L = 3\ohm$: \quad $\displaystyle \Vcol{v} = \frac{3}{4.5}\cdot 9 = \Vcol{6\V}$,
+        \quad $\Icol{i} = \Icol{2\A}$.}
+    \end{column}
+  \end{columns}}
 \end{frame}
 
 %--------------------------------------------------------------

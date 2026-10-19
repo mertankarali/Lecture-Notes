@@ -467,8 +467,11 @@ across it, the $6\ohm$ has $\Vcol{v}$. KCL at $a$:
 A $9\V$ source in series with $1.5\ohm$ obeys the same law (KVL), so $R_L$ cannot tell the two
 apart.
 \end{minipage}\par\medskip
-\textbf{Any load.} With $\Vcol{v} = R_L\Icol{i}$: $\Icol{i} = 9/(1.5 + R_L)$. For
-$R_L = 3\ohm$: $\Icol{i} = 2\A$, $\Vcol{v} = 6\V$.
+\textbf{Any load.} Connected to $R_L$, the $1.5\ohm$ and $R_L$ form a voltage divider:
+\[
+  \Vcol{v} = \frac{R_L}{1.5 + R_L}\cdot 9\V, \qquad \Icol{i} = \frac{\Vcol{v}}{R_L} = \frac{9}{1.5 + R_L}.
+\]
+For $R_L = 3\ohm$: $\Vcol{v} = \tfrac{3}{4.5}\cdot 9 = 6\V$ and $\Icol{i} = 2\A$.
 \end{examplebox}
 
 \textbf{What did we use?} The part left of $a$--$b$ became one source and one resistor, and
