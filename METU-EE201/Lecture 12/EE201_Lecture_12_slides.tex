@@ -103,6 +103,12 @@
 
 %-------------------- Lecture 12 circuit macros ---------------
 \newcommand{\ohm}{\,\Omega}
+%  Colour-coded matrix entries: diagonal, off-diagonal, right side (#1 = colour of the right side)
+\newcommand{\cbx}[2]{{\setlength{\fboxsep}{1.6pt}\colorbox{#1}{$\displaystyle #2\mathstrut$}}}
+\newcommand{\dg}[1]{\cbx{cpow!16}{#1}}
+\newcommand{\od}[1]{\cbx{metured!13}{#1}}
+\newcommand{\chip}[1]{\textcolor{#1}{$\blacksquare$}}
+
 %  An entry that appears on overlay #1, shown in red on that overlay
 \newcommand{\zin}[2]{\uncover<#1->{\alt<#1>{{\textcolor{metured}{#2}}}{{#2}}}}
 %  A highlighted matrix row entry: colour #1, content #2
@@ -335,7 +341,7 @@
       \rmsub{7}{7}{11.65}{-0.8}{the same circuit both ways}
     \end{tikzpicture}
     \vfill
-    {\small Each station adds a new kind of source; the last one compares the two methods.}
+    \mbox{}
     \vfill
   \end{frame}}
 
@@ -357,10 +363,10 @@
     \begin{column}{0.47\textwidth}
       \begin{block}{The procedure}
         \begin{itemize}\itemsep3pt
-          \item Choose the ground; label the node voltages $\Vcol{\mathbf{e}}$.
-          \item KVL holds automatically: $\Vcol{\mathbf{v}} = A^T\Vcol{\mathbf{e}}$.
-          \item Write KCL at every node except the ground.
-          \item Matrix form: $Y_n\Vcol{\mathbf{e}} = \Icol{\mathbf{i}_n}$.
+          \item Ground; node voltages $\Vcol{\mathbf{e}}$
+          \item KVL automatic: $\Vcol{\mathbf{v}} = A^T\Vcol{\mathbf{e}}$
+          \item KCL at non-ground nodes
+          \item $Y_n\Vcol{\mathbf{e}} = \Icol{\mathbf{i}_n}$
         \end{itemize}
       \end{block}
     \end{column}
@@ -368,9 +374,9 @@
       \onslide<2->{%
       \begin{block}{Voltage sources}
         \begin{itemize}\itemsep3pt
-          \item From the ground to node $k$: $\e{k}$ is known.
-          \item Between two nodes: a supernode.
-          \item A dependent source: one more constraint.
+          \item To the ground: $\e{k}$ known
+          \item Between two nodes: supernode
+          \item Dependent: one more constraint
         \end{itemize}
       \end{block}}
     \end{column}
@@ -378,8 +384,8 @@
   \vfill
   \onslide<3->{%
   \begin{center}
-    Node voltages make \alert{KVL} automatic, and we write \alert{KCL}.\\[4pt]
-    \onslide<4->{Can we do the opposite?}
+    \alert{KVL} automatic, we write \alert{KCL}\\[4pt]
+    \onslide<4->{The opposite?}
   \end{center}}
   \vfill
 \end{frame}
@@ -388,32 +394,27 @@
 \begin{frame}{Motivation}
   \vspace{2pt}
   \begin{columns}[t,onlytextwidth]
-    \begin{column}{0.485\textwidth}
+    \begin{column}{0.47\textwidth}
       \begin{block}{Node voltages}
-        \small
-        \begin{itemize}\itemsep4pt
-          \item Unknowns: the $n - 1$ node voltages $\Vcol{\mathbf{e}}$.
-          \item KVL holds automatically: $\Vcol{\mathbf{v}} = A^T\Vcol{\mathbf{e}}$.
-          \item We write KCL: $n - 1$ equations.
+        \begin{itemize}\itemsep5pt
+          \item Unknowns: $n - 1$ node voltages
+          \item KVL automatic
+          \item Write KCL
         \end{itemize}
       \end{block}
     \end{column}
-    \begin{column}{0.485\textwidth}
+    \begin{column}{0.47\textwidth}
       \onslide<2->{%
       \begin{block}{Mesh currents}
-        \small
-        \begin{itemize}\itemsep4pt
-          \item Unknowns: the $\ell = b - n + 1$ mesh currents $\Icol{\mathbf{i}_M}$.
-          \item<3-> KCL holds automatically: $\Icol{\mathbf{i}} = M^T\Icol{\mathbf{i}_M}$ (previously).
-          \item<4-> We write KVL: $\ell$ equations.
-          \item<5-> Meshes need a \alert{planar} circuit.
+        \begin{itemize}\itemsep5pt
+          \item Unknowns: $\ell = b - n + 1$ mesh currents
+          \item<3-> KCL automatic: $\Icol{\mathbf{i}} = M^T\Icol{\mathbf{i}_M}$
+          \item<4-> Write KVL
+          \item<5-> Needs a \alert{planar} circuit
         \end{itemize}
       \end{block}}
     \end{column}
   \end{columns}
-  \vfill
-  \onslide<6->{\centering Mesh current analysis follows the same plan, with KCL and KVL
-    swapped.\par}
   \vfill
 \end{frame}
 
@@ -423,27 +424,21 @@
 %--------------------------------------------------------------
 \begin{frame}{Example 12.1: mesh current analysis step by step}
   \begin{center}
-    \begin{tikzpicture}
-      \node[draw=metured, fill=metured!8, rounded corners=3pt, inner sep=5pt, font=\small]
-        {\textbf{For now:} the circuit has only \alert{resistors} and \alert{independent voltage sources}.};
-    \end{tikzpicture}
+    {\small For now: only \alert{resistors} and \alert{independent voltage sources}}
   \end{center}
-  \vspace{-4pt}
   \begin{columns}[c,onlytextwidth]
-    \begin{column}{0.5\textwidth}
+    \begin{column}{0.55\textwidth}
       \centering
       \begin{tikzpicture}[scale=0.69]
         \exM{0}{0}
       \end{tikzpicture}
     \end{column}
-    \begin{column}{0.46\textwidth}
-      \textbf{Question.} How many unknowns does this circuit have?\\[10pt]
+    \begin{column}{0.41\textwidth}
+      \textbf{Question.} How many unknowns?\\[12pt]
       \onslide<2->{%
-      $b = 6$ branches: $12$ branch voltages and currents.\\[8pt]}
+      $b = 6$: \ $12$ unknowns\\[12pt]}
       \onslide<3->{%
-      Mesh current analysis needs only \alert{3} of them.\\[8pt]}
-      \onslide<4->{%
-      We find them in four steps, on this circuit.}
+      Mesh current analysis: \alert{3}}
     \end{column}
   \end{columns}
 \end{frame}
@@ -451,7 +446,7 @@
 %--------------------------------------------------------------
 \begin{frame}{Step 1: find the inner meshes}
   \begin{columns}[c,onlytextwidth]
-    \begin{column}{0.5\textwidth}
+    \begin{column}{0.55\textwidth}
       \centering
       \begin{tikzpicture}[scale=0.69]
         \only<2->{%
@@ -462,14 +457,12 @@
         \exM{0}{0}
       \end{tikzpicture}
     \end{column}
-    \begin{column}{0.46\textwidth}
-      The circuit is \alert{planar}: it is drawn with no crossing branches.\\[8pt]
+    \begin{column}{0.41\textwidth}
+      \alert{Planar}: no crossing branches\\[12pt]
       \onslide<2->{%
-      Its \alert{inner meshes} are the windows of the drawing.\\[8pt]}
+      \alert{Inner meshes}: the windows\\[12pt]}
       \onslide<3->{%
-      Here there are three: \ $\ell = b - n + 1 = 6 - 4 + 1 = 3$.\\[8pt]}
-      \onslide<4->{%
-      Mesh current analysis has one unknown per inner mesh.}
+      $\ell = b - n + 1 = 6 - 4 + 1 = 3$}
     \end{column}
   \end{columns}
 \end{frame}
@@ -477,24 +470,20 @@
 %--------------------------------------------------------------
 \begin{frame}{Step 2: assign the mesh currents}
   \begin{columns}[c,onlytextwidth]
-    \begin{column}{0.5\textwidth}
+    \begin{column}{0.55\textwidth}
       \centering
       \begin{tikzpicture}[scale=0.69]
         \exM{0}{1}
-        \only<3->{\draw[iar] (3.1,1.45) -- (3.1,0.75);
+        \only<2->{\draw[iar] (3.1,1.45) -- (3.1,0.75);
           \node[font=\small, text=ccur, anchor=east] at (3.05,1.1) {$i_{R_2}$};}
       \end{tikzpicture}
     \end{column}
-    \begin{column}{0.46\textwidth}
-      Each inner mesh gets a \alert{mesh current}, clockwise: $\im{1}$, $\im{2}$, $\im{3}$.\\[8pt]
+    \begin{column}{0.41\textwidth}
+      Unknowns, clockwise: \ $\im{1}$, $\im{2}$, $\im{3}$\\[12pt]
       \onslide<2->{%
-      These are the unknowns.\\[8pt]}
+      $\Icol{i_{R_2}} = \im{1} - \im{2}$\\[12pt]}
       \onslide<3->{%
-      Every branch current is a combination of them:\\[3pt]
-      $R_2$ carries $\im{1}$ down and $\im{2}$ up: \ $\Icol{i_{R_2}} = \im{1} - \im{2}$.\\[8pt]}
-      \onslide<4->{%
-      A mesh current enters and leaves every node it passes, so KCL holds
-      \alert{automatically}.}
+      KCL holds \alert{automatically}}
     \end{column}
   \end{columns}
 \end{frame}
@@ -502,22 +491,21 @@
 %--------------------------------------------------------------
 \begin{frame}{Step 3: write the resistor voltages with mesh currents}
   \begin{columns}[c,onlytextwidth]
-    \begin{column}{0.5\textwidth}
+    \begin{column}{0.55\textwidth}
       \centering
       \begin{tikzpicture}[scale=0.69]
         \exM{0}{1}
-        \only<2-3>{\node[pol] at (3.12,1.55) {$+$}; \node[pol] at (3.12,0.45) {$-$};}
+        \only<1-2>{\node[pol] at (3.12,1.55) {$+$}; \node[pol] at (3.12,0.45) {$-$};}
       \end{tikzpicture}
     \end{column}
-    \begin{column}{0.46\textwidth}
-      Ohm's law gives each resistor voltage from its mesh currents.\\[8pt]
+    \begin{column}{0.41\textwidth}
+      \textbf{Question.} $\Vcol{v}$ of $R_2$ along mesh 1?\\[10pt]
       \onslide<2->{%
-      The voltage of $R_2$ along mesh 1 (top to bottom):\\[3pt]
-      $\Vcol{v} = R_2(\im{1} - \im{2})$\\[8pt]}
+      $\Vcol{v} = R_2(\im{1} - \im{2})$\\[10pt]}
       \onslide<3->{%
-      $R_4$ is on mesh 3 only: \ $\Vcol{v} = R_4\,\im{3}$\\[8pt]}
+      $R_4$: \ $\Vcol{v} = R_4\,\im{3}$\\[10pt]}
       \onslide<4->{%
-      The rule: $R$ times (own mesh current minus the other one).}
+      \fbox{\ $R\,(\text{own} - \text{other})$\ }}
     \end{column}
   \end{columns}
 \end{frame}
@@ -543,12 +531,11 @@
       $R_2(\im{2} - \im{1}) + R_3(\im{2} - \im{3}) - \Vcol{v_{s2}} = 0$\\[6pt]}
       \onslide<3->{%
       \textbf{Mesh 3:}\\[2pt]
-      $R_4\,\im{3} + R_3(\im{3} - \im{2}) + R_1(\im{3} - \im{1}) = 0$\\[6pt]}
+      $R_4\,\im{3} + R_3(\im{3} - \im{2}) + R_1(\im{3} - \im{1}) = 0$\\[8pt]}
       \onslide<4->{%
-      A source met from $-$ to $+$ enters with a minus sign.\\[3pt]}
+      Source met $-$ to $+$: minus\\[4pt]}
       \onslide<5->{%
-      Three equations, three unknowns.\\[3pt]
-      Then Steps 2 and 3 give every branch current and voltage.}
+      3 equations, 3 unknowns}
     \end{column}
   \end{columns}
 \end{frame}
@@ -559,7 +546,6 @@
 %--------------------------------------------------------------
 \begin{frame}{Example 12.1 in matrix form}
   \vfill
-  Collect the terms of each mesh:
   \[
     \begin{aligned}
       (R_1 + R_2)\,\im{1} - R_2\,\im{2} - R_1\,\im{3} &= \Vcol{v_{s1}}\\
@@ -568,7 +554,7 @@
     \end{aligned}
   \]
   \vfill
-  \only<1>{\begin{center}\textbf{Question.} Write the three equations as one matrix equation.\end{center}}%
+  \only<1>{\begin{center}\textbf{Question.} One matrix equation?\end{center}}%
   \onslide<2->{%
   \[
     \underbrace{\begin{bmatrix}
@@ -582,8 +568,8 @@
   \]}
   \vfill
   \onslide<3->{\begin{center}
-    $Z_M$ is the \alert{mesh impedance matrix}: \ $Z_M\Icol{\mathbf{i}_M} = \Vcol{\mathbf{v}_M}$.\\[3pt]
-    \onslide<4->{$\Vcol{\mathbf{v}_M}$: the source voltages \alert{rising} along each mesh.}
+    $Z_M$: \alert{mesh impedance matrix}\\[3pt]
+    \onslide<4->{$\Vcol{\mathbf{v}_M}$: source voltages \alert{rising} along each mesh}
   \end{center}}
   \vfill
 \end{frame}
@@ -605,16 +591,13 @@
       \end{tikzpicture}
     \end{column}
     \begin{column}{0.54\textwidth}
-      \small
-      \textbf{Question.} Can we read $Z_M$ from the circuit, without writing KVL?\\[8pt]
+      \textbf{Question.} Read $Z_M$ from the circuit?\\[10pt]
       \onslide<2->{%
-      \textbf{Diagonal} $(k,k)$: the sum of the resistances around mesh $k$.\\[7pt]}
+      \textbf{Diagonal} $(k,k)$: \ $+\sum R$ \alert{around} mesh $k$\\[8pt]}
       \onslide<6->{%
-      \textbf{Off-diagonal} $(k,j)$: minus the sum of the resistances shared by meshes $k$
-      and $j$.\\[7pt]}
+      \textbf{Off-diagonal} $(k,j)$: \ $-\sum R$ \alert{shared} by $k$, $j$\\[8pt]}
       \onslide<10->{%
-      \textbf{Right side} $k$: the sum of the source voltages \alert{rising} (met from $-$ to
-      $+$) along mesh $k$.}
+      \textbf{Right side} $k$: \ $\sum \Vcol{v_s}$ \alert{rising} along mesh $k$}
     \end{column}
   \end{columns}
   \vfill
@@ -631,8 +614,7 @@
     \end{bmatrix}}_{\Vcol{\mathbf{v}_M}}
   \]
   \vfill
-  \onslide<12->{\centering The same $Z_M$ as from KVL \yes; it is \alert{symmetric}: entry
-    $(k,j)$ equals entry $(j,k)$.\par}
+  \onslide<12->{\centering Same as KVL \yes \quad $Z_M$ is \alert{symmetric}\par}
   \vfill
 \end{frame}
 
@@ -650,19 +632,17 @@
       \begin{tikzpicture}[scale=0.82]
         \exMgraph{1}
       \end{tikzpicture}\\[4pt]
-      {\small Branches 1--4: $R_1, \dots, R_4$; \ \textcolor{cvolt}{5, 6: $v_{s1}$, $v_{s2}$}; \
-      a source branch points from $+$ to $-$.}
+      {\small 1--4: $R_1, \dots, R_4$; \ \textcolor{cvolt}{5, 6: $v_{s1}$, $v_{s2}$} ($+$ to $-$)}
     \end{column}
   \end{columns}
   \vfill
   \begin{columns}[c,onlytextwidth]
     \begin{column}{0.42\textwidth}
       \small
-      \textbf{Question.} Write the mesh matrix $M$.\\[6pt]
+      \textbf{Question.} Mesh matrix $M$?\\[6pt]
       \onslide<2->{%
-      One row for each inner mesh.\\[3pt]
-      Entry $+1$: the branch goes along the mesh; $-1$: against it.}\\[1pt]
-      \onslide<3-5>{Row $k$: which branches are on mesh $k$?}
+      One row per inner mesh\\[3pt]
+      $+1$ along, \ $-1$ against}
     \end{column}
     \begin{column}{0.56\textwidth}
       \centering
@@ -675,12 +655,11 @@
 
 %--------------------------------------------------------------
 \begin{frame}{$Z_M$ from the graph: KVL, KCL and Ohm's law in blocks}
-  \small
-  Number the $b_R$ resistors first, then the $b_S$ voltage sources:
+  Resistors first, then voltage sources:
   \[
     M = [\,M_R \ \ M_S\,], \qquad
     \Icol{\mathbf{i}} = \begin{bmatrix} \Icol{\mathbf{i}_R}\\ \Icol{\mathbf{i}_S} \end{bmatrix}, \qquad
-    \Vcol{\mathbf{v}} = \begin{bmatrix} \Vcol{\mathbf{v}_R}\\ \Vcol{\mathbf{v}_S} \end{bmatrix}.
+    \Vcol{\mathbf{v}} = \begin{bmatrix} \Vcol{\mathbf{v}_R}\\ \Vcol{\mathbf{v}_S} \end{bmatrix}
   \]
   \vfill
   \onslide<2->{%
@@ -689,9 +668,8 @@
    = M_R\Vcol{\mathbf{v}_R} + M_S\Vcol{\mathbf{v}_S} = \mathbf{0}$}
   \vfill
   \onslide<3->{%
-  \textbf{KCL:} \ $M^T$ splits into \alert{rows}:
+  \textbf{KCL:}
   \[
-    \Icol{\mathbf{i}} = M^T\Icol{\mathbf{i}_M}: \qquad
     \begin{bmatrix}
       \hrow{metugray!15}{\Icol{\mathbf{i}_R}}\\
       \hrow{cvolt!12}{\Icol{\mathbf{i}_S}}
@@ -703,24 +681,20 @@
     \end{bmatrix}
     \Icol{\mathbf{i}_M}
     \qquad
-    \begin{array}{l}
-      \textcolor{metugray}{b_R \text{ resistor rows: } \Icol{\mathbf{i}_R} = M_R^T\Icol{\mathbf{i}_M}}\\[4pt]
-      \textcolor{cvolt}{b_S \text{ source rows: } \Icol{\mathbf{i}_S} = M_S^T\Icol{\mathbf{i}_M}}
-    \end{array}
+    \onslide<4->{\Rightarrow\qquad
+    \Icol{\mathbf{i}_R} = M_R^T\Icol{\mathbf{i}_M} \ \ \text{(resistor rows only)}}
   \]}
   \vfill
-  \onslide<4->{\centering Only the resistor rows are needed: the source currents follow afterwards.\par}
-  \vfill
   \onslide<5->{%
-  \textbf{Resistors:} \ $\Vcol{\mathbf{v}_R} = R\,\Icol{\mathbf{i}_R}$, \
-  $R = \mathrm{diag}(R_1, \dots, R_{b_R})$, one resistance per resistor.}
+  \textbf{Ohm:} \ $\Vcol{\mathbf{v}_R} = R\,\Icol{\mathbf{i}_R}$, \quad
+  $R = \mathrm{diag}(R_1, \dots, R_{b_R})$}
   \vfill
 \end{frame}
 
 %--------------------------------------------------------------
 \begin{frame}{$Z_M$ from the graph: the general result}
   \vfill
-  Put Ohm's law and the resistor rows of KCL into KVL:
+  Ohm and KCL into KVL:
   \[
     M_R\Vcol{\mathbf{v}_R} + M_S\Vcol{\mathbf{v}_S}
     = M_R\, R\, \underbrace{M_R^T\Icol{\mathbf{i}_M}}_{\Icol{\mathbf{i}_R}} + M_S\Vcol{\mathbf{v}_S} = \mathbf{0}
@@ -738,8 +712,7 @@
   \vfill
   \onslide<3->{%
   \begin{center}
-    $Z_M^T = M_R\, R^T M_R^T = M_R\, R\, M_R^T = Z_M$, \ since $R$ is diagonal.\\[4pt]
-    So $Z_M$ is \alert{always symmetric} for resistors and voltage sources.
+    $Z_M^T = M_R\, R^T M_R^T = Z_M$: \ \alert{always symmetric}
   \end{center}}
   \vfill
 \end{frame}
@@ -754,8 +727,7 @@
       \end{tikzpicture}
     \end{column}
     \begin{column}{0.62\textwidth}
-      \small
-      $M_R^T$: the resistor columns 1--4 of $M$, written as rows.\\[6pt]
+      $M_R^T$: columns 1--4 of $M$, as rows\\[8pt]
       \onslide<2->{%
       \[
         \underbrace{\begin{bmatrix}
@@ -772,9 +744,9 @@
         \end{bmatrix}}
       \]}
       \onslide<4->{%
-      Each resistor current: the mesh currents along its arrow minus those against it.\\[6pt]}
+      Along minus against\\[4pt]}
       \onslide<5->{%
-      Then Ohm's law: \ $\Vcol{\mathbf{v}_R} = R\,\Icol{\mathbf{i}_R}$, \ $\Vcol{v_{R_k}} = R_k\Icol{i_{R_k}}$.}
+      Ohm: \ $\Vcol{v_{R_k}} = R_k\Icol{i_{R_k}}$}
     \end{column}
   \end{columns}
 \end{frame}
@@ -812,7 +784,7 @@
     \onslide<5->{= \Vcol{\mathbf{v}_M} \ \ \yes}
   \]}
   \vfill
-  \onslide<6->{\centering The three rules read this product off, entry by entry.\par}
+  \onslide<6->{\centering The rules = this product\par}
   \vfill
 \end{frame}
 
@@ -831,16 +803,15 @@
     \end{column}
     \begin{column}{0.52\textwidth}
       \small
-      $\Icol{i_s}$ is on mesh 1 only: \ $\im{1} = \Icol{i_s}$ is \alert{known}.\\[4pt]
+      $\im{1} = \Icol{i_s}$: \alert{known}\\[6pt]
       \onslide<2->{%
-      We do not write KVL around mesh 1: the voltage of $\Icol{i_s}$ is not known.\\[3pt]
-      The unknowns are $\im{2}$, $\im{3}$.\\[8pt]}
+      No KVL around mesh 1. \ Unknowns: $\im{2}$, $\im{3}$\\[10pt]}
       \onslide<3->{%
       \textbf{Mesh 2:} \
       $R_2(\im{2} - \Icol{i_s}) + R_3(\im{2} - \im{3}) - \Vcol{v_s} = 0$\\[6pt]}
       \onslide<4->{%
       \textbf{Mesh 3:} \
-      $R_1(\im{3} - \Icol{i_s}) + R_3(\im{3} - \im{2}) + R_4\,\im{3} = 0$\\[8pt]}
+      $R_1(\im{3} - \Icol{i_s}) + R_3(\im{3} - \im{2}) + R_4\,\im{3} = 0$\\[10pt]}
       \onslide<5->{%
       $\begin{bmatrix}
         R_2 + R_3 & -R_3\\
@@ -848,9 +819,7 @@
       \end{bmatrix}
       \begin{bmatrix} \im{2}\\ \im{3} \end{bmatrix}
       =
-      \begin{bmatrix} \Vcol{v_s} + R_2\Icol{i_s}\\ R_1\Icol{i_s} \end{bmatrix}$\\[6pt]}
-      \onslide<6->{%
-      The known $\Icol{i_s}$ moves to the right side.}
+      \begin{bmatrix} \Vcol{v_s} + \alert{R_2\Icol{i_s}}\\ \alert{R_1\Icol{i_s}} \end{bmatrix}$}
     \end{column}
   \end{columns}
 \end{frame}
@@ -868,12 +837,10 @@
     \end{tikzpicture}
   \end{center}
   \vfill
-  \begin{itemize}\itemsep6pt
-    \item \textbf{Question.} Write KVL around mesh 1: what is the voltage across $\Icol{i_s}$?
-    \item<2-> It \alert{cannot} be written with $\im{1}$ and $\im{2}$: the law of a current
-      source fixes its current, not its voltage.
-    \item<3-> \textbf{Modified mesh current analysis} offers two ways out:
-      \alert{Method I} (its voltage is a new unknown) and \alert{Method II} (a supermesh).
+  \begin{itemize}\itemsep8pt
+    \item \textbf{Question.} KVL around mesh 1: voltage across $\Icol{i_s}$?
+    \item<2-> Not given by $\im{1}$, $\im{2}$: a current source fixes $\Icol{i}$, not $\Vcol{v}$
+    \item<3-> \alert{Method I}: its voltage as an unknown \quad \alert{Method II}: supermesh
   \end{itemize}
   \vfill
 \end{frame}
@@ -889,11 +856,11 @@
   \begin{columns}[t,onlytextwidth]
     \begin{column}{0.58\textwidth}
       \small
-      \only<-5>{%
+      \only<-4>{%
       \onslide<2->{\textbf{Mesh 1:} \ $(R_1 + R_2)\,\im{1} + \Vcol{v} = 0$}\\[6pt]
       \onslide<3->{\textbf{Mesh 2:} \ $R_3\,\im{2} + \Vcol{v_s} - \Vcol{v} = 0$}\\[6pt]
       \onslide<4->{\textbf{Constraint:} \ $\im{1} - \im{2} = \Icol{i_s}$}}%
-      \only<6->{%
+      \only<5->{%
       $\begin{bmatrix}
         R_1 + R_2 & 0 & 1\\
         0 & R_3 & -1\\
@@ -905,13 +872,9 @@
     \end{column}
     \begin{column}{0.4\textwidth}
       \small
-      The voltage $\Vcol{v}$ of $\Icol{i_s}$ is one more unknown.\\[4pt]
+      New unknown: $\Vcol{v}$\\[6pt]
       \onslide<5->{%
-      The constraint: $\Icol{i_s}$ carries $\im{1}$ down and $\im{2}$ up.\\[4pt]}
-      \onslide<6->{%
-      Three unknowns, three equations; the last row is the constraint.\\[4pt]}
-      \onslide<7->{%
-      It works, but the supermesh avoids the extra unknown.}
+      3 unknowns, 3 equations}
     \end{column}
   \end{columns}
 \end{frame}
@@ -927,18 +890,17 @@
   \vspace{-4pt}
   \begin{columns}[t,onlytextwidth]
     \begin{column}{0.5\textwidth}
-      \textbf{Question.} Can we get rid of the unknown $\Vcol{v}$?\\[8pt]
+      \textbf{Question.} Can we get rid of $\Vcol{v}$?\\[8pt]
       \onslide<2->{%
-      Add the KVL equations of meshes 1 and 2.\\[3pt]
-      $\Vcol{v}$ enters mesh 1 with $+$ and mesh 2 with $-$, so it \alert{cancels}.}
+      Add KVL of meshes 1 and 2:\\[3pt]
+      $\Vcol{v}$ \alert{cancels}}
     \end{column}
     \begin{column}{0.47\textwidth}
       \onslide<3->{%
-      This is KVL around the outer loop \nd{S} of the two meshes; it avoids $\Icol{i_s}$.\\[6pt]}
+      = KVL around the outer loop \nd{S}\\[6pt]}
       \onslide<4->{%
       \begin{block}{Supermesh}
-        Write KVL around two meshes as if they were a single mesh, skipping the current
-        source between them.
+        Two meshes as one, skipping the current source
       \end{block}}
     \end{column}
   \end{columns}
@@ -955,7 +917,7 @@
   \begin{columns}[t,onlytextwidth]
     \begin{column}{0.49\textwidth}
       \small
-      \only<1>{\textbf{Question.} Write KVL around the supermesh.\\[4pt]}%
+      \only<1>{\textbf{Question.} KVL around the supermesh?\\[4pt]}%
       \onslide<2->{\textcolor{metured}{\textbf{Supermesh:}} \
       $(R_1 + R_2)\,\im{1} + R_3\,\im{2} + \Vcol{v_s} = 0$\\[6pt]}
       \onslide<3->{\textbf{Constraint:} \ $\im{1} - \im{2} = \Icol{i_s}$}
@@ -973,8 +935,8 @@
       \begin{bmatrix} -\Vcol{v_s}\\ \Icol{i_s} \end{bmatrix}
       \]}
       \onslide<5->{%
-      Two unknowns: one fewer than Method I.\\[2pt]}
-      \onslide<6->{The matrix is \alert{not} symmetric any more.}
+      2 unknowns (one fewer)\\[2pt]}
+      \onslide<6->{\alert{Not} symmetric}
     \end{column}
   \end{columns}
 \end{frame}
@@ -993,18 +955,15 @@
       \end{tikzpicture}
     \end{column}
     \begin{column}{0.45\textwidth}
-      \small
-      \textbf{Question.} Find $\Icol{i}$, the current of the $4\ohm$.\\[8pt]
+      \textbf{Question.} Find $\Icol{i}$ of the $4\ohm$.\\[10pt]
       \onslide<2->{%
-      Treat the dependent source as a current source of value $\Icol{3\,v_x}$.\\[6pt]}
+      Treat $\Icol{3\,v_x}$ as a current source\\[8pt]}
       \onslide<3->{%
-      Three inner meshes: unknowns $\im{1}$, $\im{2}$, $\im{3}$.\\[6pt]}
+      Unknowns: $\im{1}$, $\im{2}$, $\im{3}$\\[8pt]}
       \onslide<4->{%
-      The $2\A$ source is between meshes 1 and 2: a supermesh.\\[6pt]}
+      $2\A$ between meshes 1, 2: supermesh\\[8pt]}
       \onslide<5->{%
-      The dependent source is on mesh 3 only: it fixes $\im{3}$.\\[6pt]}
-      \onslide<6->{%
-      Equations: KVL around the supermesh and two constraints.}
+      $\Icol{3\,v_x}$ on mesh 3 only: fixes $\im{3}$}
     \end{column}
   \end{columns}
 \end{frame}
@@ -1020,18 +979,18 @@
     \end{column}
     \begin{column}{0.45\textwidth}
       \small
-      \only<1>{\textbf{Question.} Write KVL around the supermesh.\\[4pt]}%
+      \only<1>{\textbf{Question.} KVL around the supermesh?\\[4pt]}%
       \onslide<2->{%
       \textcolor{metured}{\textbf{Supermesh:}}\\[2pt]
-      $2\,\im{1} + 4(\im{1} - \im{3}) + 12 + 6\,\im{2} = 0 \quad (1)$\\[7pt]}
+      $2\,\im{1} + 4(\im{1} - \im{3}) + 12 + 6\,\im{2} = 0 \quad (1)$\\[8pt]}
       \onslide<3->{%
-      \textbf{The $2\A$ source:} \ $\im{2} - \im{1} = 2 \quad (2)$\\[7pt]}
+      \textbf{$2\A$ source:} \ $\im{2} - \im{1} = 2 \quad (2)$\\[8pt]}
       \onslide<4->{%
-      \textbf{The dependent source:} \ $\im{3} = -3\,\Vcol{v_x}$\\[5pt]}
+      \textbf{Dependent source:} \ $\im{3} = -3\,\Vcol{v_x}$\\[8pt]}
       \onslide<5->{%
-      \textbf{Question.} What is $\Vcol{v_x}$ in mesh currents?\\[4pt]}
+      \textbf{Question.} $\Vcol{v_x}$ in mesh currents?\\[4pt]}
       \onslide<6->{%
-      $\im{1}$ flows up through the $2\ohm$, from $-$ to $+$: \ $\Vcol{v_x} = -2\,\im{1}$.\\[5pt]}
+      $\Vcol{v_x} = -2\,\im{1}$\\[8pt]}
       \onslide<7->{%
       \textbf{Constraint:} \ $\im{3} = 6\,\im{1} \quad (3)$}
     \end{column}
@@ -1041,7 +1000,7 @@
 %--------------------------------------------------------------
 \begin{frame}{Example 12.4: matrix form}
   \vfill
-  Collect the terms of (1), (2) and (3):
+  (1), (2), (3):
   \[
     \begin{bmatrix}
       6 & 6 & -4\\[3pt]
@@ -1055,15 +1014,10 @@
   \vfill
   \onslide<2->{%
   \begin{center}
-    Rows: KVL around the supermesh, the $2\A$ source, the dependent source.
+    $\im{1} = 2\A$, \ $\im{2} = 4\A$, \ $\im{3} = 12\A$
   \end{center}}
   \vfill
   \onslide<3->{%
-  \begin{center}
-    Solve: \ $\im{1} = 2\A$, \ $\im{2} = 4\A$, \ $\im{3} = 12\A$.
-  \end{center}}
-  \vfill
-  \onslide<4->{%
   \begin{center}
     \begin{tikzpicture}
       \node[draw=ccur, thick, fill=ccur!6, rounded corners=3pt, inner sep=7pt]
@@ -1076,19 +1030,16 @@
 %--------------------------------------------------------------
 \begin{frame}{Dependent sources}
   \vfill
-  \begin{itemize}\itemsep10pt
-    \item A dependent source is handled like an independent one of the same kind.
-    \item<2-> Its control variable ($\Vcol{v_x}$ here) is written with mesh currents: this
-      gives the \alert{constraint equation}.
-    \item<3-> A dependent \alert{voltage} source is the easy case: it adds a term to KVL,
-      just as a dependent current source added a term to KCL previously.
+  \begin{itemize}\itemsep12pt
+    \item Like an independent source of the same kind
+    \item<2-> Control variable in mesh currents: a \alert{constraint}
+    \item<3-> Dependent \alert{voltage} source: one more term in KVL
   \end{itemize}
   \vfill
   \onslide<4->{%
   \begin{block}{Remark}
-    If a dependent current source is on mesh $k$ only, do \alert{not} write KVL around
-    mesh $k$: its voltage is not known.\\[4pt]
-    Write the constraint that the dependent source gives instead.
+    Dependent current source on mesh $k$ only:\\[3pt]
+    \alert{no} KVL around mesh $k$; write the constraint instead
   \end{block}}
   \vfill
 \end{frame}
@@ -1107,17 +1058,16 @@
     \end{column}
     \begin{column}{0.45\textwidth}
       \small
-      \textbf{Question.} Solve the same circuit with node voltages.\\[8pt]
+      \textbf{Question.} Same circuit, node voltages?\\[10pt]
       \onslide<2->{%
-      Take the right node as the ground.\\[3pt]
-      The $12\V$ source goes from the middle node to the ground: that node is at $12\V$.\\[3pt]
-      Unknowns: $\e{1}$, $\e{2}$.\\[7pt]}
+      Middle node: $12\V$ known\\[3pt]
+      Unknowns: $\e{1}$, $\e{2}$\\[10pt]}
       \onslide<3->{%
       \textbf{Node 1:} \
       $\displaystyle \frac{\e{1} - \e{2}}{2} + \frac{\e{1} - 12}{4} - 3\,\Vcol{v_x} = 0$\\[6pt]}
       \onslide<4->{%
       \textbf{Node 2:} \
-      $\displaystyle 2 + \frac{\e{2} - \e{1}}{2} + \frac{\e{2}}{6} = 0$\\[6pt]}
+      $\displaystyle 2 + \frac{\e{2} - \e{1}}{2} + \frac{\e{2}}{6} = 0$\\[8pt]}
       \onslide<5->{%
       \textbf{Constraint:} \ $\Vcol{v_x} = \e{1} - \e{2}$}
     \end{column}
@@ -1127,7 +1077,7 @@
 %--------------------------------------------------------------
 \begin{frame}{Example 12.4 with node voltages: matrix form}
   \vfill
-  Put $\Vcol{v_x} = \e{1} - \e{2}$ and collect the terms:
+  $\Vcol{v_x} = \e{1} - \e{2}$:
   \[
     \begin{bmatrix} -\frac94 & \frac52\\[3pt] -\frac12 & \frac23 \end{bmatrix}
     \begin{bmatrix} \e{1}\\[3pt] \e{2} \end{bmatrix}
@@ -1140,13 +1090,8 @@
   \begin{center}
     \begin{tikzpicture}
       \node[draw=ccur, thick, fill=ccur!6, rounded corners=3pt, inner sep=7pt]
-        {$\displaystyle \Icol{i} = \frac{\e{1} - 12}{4} = \frac{-28 - 12}{4} = \Icol{-10\A}$};
+        {$\displaystyle \Icol{i} = \frac{\e{1} - 12}{4} = \frac{-28 - 12}{4} = \Icol{-10\A}$ \ \ \yes};
     \end{tikzpicture}
-  \end{center}}
-  \vfill
-  \onslide<4->{%
-  \begin{center}
-    The same answer, as it must be.
   \end{center}}
   \vfill
 \end{frame}
@@ -1154,23 +1099,21 @@
 %--------------------------------------------------------------
 \begin{frame}{Node or mesh?}
   \vfill
-  \textbf{Question.} For Example 12.4, which method needs fewer equations?
+  \textbf{Question.} Example 12.4: which needs fewer equations?
   \vfill
   \begin{columns}[t,onlytextwidth]
-    \begin{column}{0.485\textwidth}
+    \begin{column}{0.47\textwidth}
       \onslide<2->{%
       \begin{block}{Mesh currents}
-        \small
-        $\ell = 3$ unknowns.\\[3pt]
-        Each current source fixes one of them: $3 - 2 = \alert{1}$ KVL equation is left.
+        $\ell = 3$, \ 2 current sources\\[3pt]
+        $3 - 2 = \alert{1}$ equation
       \end{block}}
     \end{column}
-    \begin{column}{0.485\textwidth}
+    \begin{column}{0.47\textwidth}
       \onslide<3->{%
       \begin{block}{Node voltages}
-        \small
-        $n - 1 = 3$ unknowns.\\[3pt]
-        Each voltage source fixes one of them: $3 - 1 = \alert{2}$ KCL equations are left.
+        $n - 1 = 3$, \ 1 voltage source\\[3pt]
+        $3 - 1 = \alert{2}$ equations
       \end{block}}
     \end{column}
   \end{columns}
@@ -1178,11 +1121,8 @@
   \onslide<4->{%
   \begin{center}
     \begin{tikzpicture}
-      \node[draw=metured, thick, fill=metured!5, rounded corners=3pt, inner sep=7pt,
-            text width=0.82\textwidth, align=center]
-        {\textbf{Tip.} Count before you start: mesh, $\ell$ minus the current sources;
-         node, $n - 1$ minus the voltage sources.\\[2pt]
-         Mesh current analysis needs a planar circuit; node voltage analysis always works.};
+      \node[draw=metured, thick, fill=metured!5, rounded corners=3pt, inner sep=7pt, align=center]
+        {\textbf{Tip.} Count first. \ Mesh needs a planar circuit.};
     \end{tikzpicture}
   \end{center}}
   \vfill
@@ -1190,26 +1130,26 @@
 
 %--------------------------------------------------------------
 \begin{frame}{Summary}
-  \small
-  \renewcommand{\arraystretch}{1.35}
-  \begin{tabular}{@{}>{\raggedright}p{4.1cm} >{\raggedright\arraybackslash}p{9.4cm}@{}}
+  \vfill
+  \begin{center}
+  \renewcommand{\arraystretch}{1.5}
+  \begin{tabular}{@{}>{\raggedright}p{4.9cm} >{\raggedright\arraybackslash}p{7.4cm}@{}}
     \toprule
     \textbf{In the circuit} & \textbf{What to do}\\
     \midrule
-    resistors and voltage sources & KVL around every inner mesh: $Z_M\Icol{\mathbf{i}_M} =
-      \Vcol{\mathbf{v}_M}$, from three simple rules; $Z_M = M_R R M_R^T$ is symmetric\\
-    a current source on one mesh only & that mesh current is known; no KVL around that mesh\\
-    a current source between two meshes & Method I: its voltage as an unknown, plus the
-      constraint; Method II: KVL around the supermesh, plus the constraint\\
-    a dependent source & write its control variable with mesh currents: a constraint equation\\
-    node or mesh? & count the equations; mesh needs a planar circuit\\
+    resistors, voltage sources & $Z_M\Icol{\mathbf{i}_M} = \Vcol{\mathbf{v}_M}$, by the rules; symmetric\\
+    current source on one mesh & $\im{k}$ known; no KVL around mesh $k$\\
+    current source between meshes & Method I or supermesh, plus constraint\\
+    dependent source & control in mesh currents: constraint\\
+    node or mesh? & count; mesh needs planar\\
     \bottomrule
   \end{tabular}
+  \end{center}
   \vfill
   \begin{center}
-    After the mesh currents are found: $\Icol{\mathbf{i}} = M^T\Icol{\mathbf{i}_M}$, then the
-    branch voltages from the element laws.
+    Then $\Icol{\mathbf{i}} = M^T\Icol{\mathbf{i}_M}$ and the element laws
   \end{center}
+  \vfill
 \end{frame}
 
 \end{document}

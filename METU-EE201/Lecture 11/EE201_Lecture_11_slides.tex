@@ -103,6 +103,12 @@
 
 %-------------------- Lecture 11 circuit macros ---------------
 \newcommand{\ohm}{\,\Omega}
+%  Colour-coded matrix entries: diagonal, off-diagonal, right side (#1 = colour of the right side)
+\newcommand{\cbx}[2]{{\setlength{\fboxsep}{1.6pt}\colorbox{#1}{$\displaystyle #2\mathstrut$}}}
+\newcommand{\dg}[1]{\cbx{cpow!16}{#1}}
+\newcommand{\od}[1]{\cbx{metured!13}{#1}}
+\newcommand{\chip}[1]{\textcolor{#1}{$\blacksquare$}}
+
 %  A highlighted matrix row entry: colour #1, content #2
 \newcommand{\hrow}[2]{{\setlength{\fboxsep}{1.5pt}\colorbox{#1}{\makebox[2.1em]{$\mathstrut #2$}}}}
 \newcommand{\e}[1]{\textcolor{cvolt}{e_{#1}}}
@@ -388,7 +394,7 @@
       \rmsub{7}{7}{11.65}{-0.8}{does its choice matter?}
     \end{tikzpicture}
     \vfill
-    {\small Each station adds a new kind of source; the last one asks about the ground.}
+    \mbox{}
     \vfill
   \end{frame}}
 
@@ -410,33 +416,32 @@
     \begin{column}{0.47\textwidth}
       \begin{block}{Transform the circuit}
         \begin{itemize}\itemsep3pt
-          \item Substitution, equivalent one-ports.
-          \item Series and parallel connections.
-          \item Source transformation.
+          \item Substitution, equivalents
+          \item Series, parallel
+          \item Source transformation
         \end{itemize}
         \vspace{3pt}
-        Works for \alert{many} circuits, but not all.
+        \alert{Many} circuits, not all
       \end{block}
     \end{column}
     \begin{column}{0.47\textwidth}
       \onslide<2->{%
       \begin{block}{Keep the original circuit}
         \begin{itemize}\itemsep3pt
-          \item KCL: $A\Icol{\mathbf{i}} = \mathbf{0}$.
-          \item KVL: $\Vcol{\mathbf{v}} = A^T\Vcol{\mathbf{e}}$.
-          \item One element law per branch.
+          \item KCL: $A\Icol{\mathbf{i}} = \mathbf{0}$
+          \item KVL: $\Vcol{\mathbf{v}} = A^T\Vcol{\mathbf{e}}$
+          \item Element laws
         \end{itemize}
         \vspace{3pt}
-        Works for \alert{every} circuit.
+        \alert{Every} circuit
       \end{block}}
     \end{column}
   \end{columns}
   \vfill
   \onslide<3->{%
   \begin{center}
-    With the node voltages $\Vcol{\mathbf{e}}$ as the unknowns, KVL holds
-    \alert{automatically}.\\[4pt]
-    \onslide<4->{Only KCL is left to write.}
+    Unknowns $\Vcol{\mathbf{e}}$ \ $\Rightarrow$ \ KVL holds \alert{automatically}\\[4pt]
+    \onslide<4->{Only KCL is left}
   \end{center}}
   \vfill
 \end{frame}
@@ -445,33 +450,28 @@
 \begin{frame}{Motivation}
   \vspace{2pt}
   \begin{columns}[t,onlytextwidth]
-    \begin{column}{0.485\textwidth}
+    \begin{column}{0.47\textwidth}
       \begin{block}{Simplifying the circuit}
-        \small
-        \begin{itemize}\itemsep4pt
-          \item So far, we solved circuits by simplifying them.
-          \item<2-> Simplifying \alert{fundamentally changes} the circuit; that is its whole
-            point.
-          \item<3-> To find the quantities of the original circuit, we must go back step by step.
-          \item<4-> Some circuits cannot be simplified at all.
+        \begin{itemize}\itemsep5pt
+          \item So far: simplify
+          \item<2-> \alert{Changes} the circuit
+          \item<3-> Go back step by step
+          \item<4-> Not always possible
         \end{itemize}
       \end{block}
     \end{column}
-    \begin{column}{0.485\textwidth}
+    \begin{column}{0.47\textwidth}
       \onslide<5->{%
       \begin{block}{Node voltage analysis}
-        \small
-        \begin{itemize}\itemsep4pt
-          \item It works on the \alert{original} circuit, without changing it.
-          \item<6-> Its unknowns are only the $n - 1$ \alert{node voltages}.
-          \item<7-> From them, \alert{every} branch voltage and current follows.
-          \item<8-> It works for every LTI resistive circuit; voltage sources need small additions, such as the supernode.
+        \begin{itemize}\itemsep5pt
+          \item \alert{Original} circuit
+          \item<6-> Unknowns: $n - 1$ \alert{node voltages}
+          \item<7-> Then \alert{every} $\Vcol{v}$ and $\Icol{i}$
+          \item<8-> Every LTI resistive circuit
         \end{itemize}
       \end{block}}
     \end{column}
   \end{columns}
-  \vfill
-  \onslide<9->{\centering Later, mesh current analysis will do the same with mesh currents.\par}
   \vfill
 \end{frame}
 
@@ -481,27 +481,21 @@
 %--------------------------------------------------------------
 \begin{frame}{Example 11.1: node voltage analysis step by step}
   \begin{center}
-    \begin{tikzpicture}
-      \node[draw=metured, fill=metured!8, rounded corners=3pt, inner sep=5pt, font=\small]
-        {\textbf{For now:} the circuit has only \alert{resistors} and \alert{independent current sources}.};
-    \end{tikzpicture}
+    {\small For now: only \alert{resistors} and \alert{independent current sources}}
   \end{center}
-  \vspace{-4pt}
   \begin{columns}[c,onlytextwidth]
-    \begin{column}{0.5\textwidth}
+    \begin{column}{0.55\textwidth}
       \centering
       \begin{tikzpicture}[scale=0.85]
         \exAst=0 \exA{0}
       \end{tikzpicture}
     \end{column}
-    \begin{column}{0.46\textwidth}
-      \textbf{Question.} How many unknowns does this circuit have?\\[10pt]
+    \begin{column}{0.41\textwidth}
+      \textbf{Question.} How many unknowns?\\[12pt]
       \onslide<2->{%
-      $b = 7$ branches: $14$ branch voltages and currents.\\[8pt]}
+      $b = 7$: \ $14$ unknowns\\[12pt]}
       \onslide<3->{%
-      Node voltage analysis needs only \alert{3} of them.\\[8pt]}
-      \onslide<4->{%
-      We find them in four steps, on this circuit.}
+      Node voltage analysis: \alert{3}}
     \end{column}
   \end{columns}
 \end{frame}
@@ -509,21 +503,19 @@
 %--------------------------------------------------------------
 \begin{frame}{Step 1: choose a reference node}
   \begin{columns}[c,onlytextwidth]
-    \begin{column}{0.5\textwidth}
+    \begin{column}{0.55\textwidth}
       \centering
       \begin{tikzpicture}[scale=0.85]
         \exAst=1 \exA{0}
         \node[font=\scriptsize, text=metugray, anchor=west] at (4.05,-0.45) {ground};
       \end{tikzpicture}
     \end{column}
-    \begin{column}{0.46\textwidth}
-      Choose one node as the \alert{reference node}, the ground.\\[8pt]
+    \begin{column}{0.41\textwidth}
+      \alert{Reference node}: the ground\\[12pt]
       \onslide<2->{%
-      Its node voltage is $0$.\\[8pt]}
+      Its node voltage: $0$\\[12pt]}
       \onslide<3->{%
-      Here we take the bottom node.\\[8pt]}
-      \onslide<4->{%
-      Any node can be the ground; we come back to this at the end.}
+      Any node can be the ground}
     \end{column}
   \end{columns}
 \end{frame}
@@ -531,25 +523,23 @@
 %--------------------------------------------------------------
 \begin{frame}{Step 2: label the node voltages}
   \begin{columns}[c,onlytextwidth]
-    \begin{column}{0.5\textwidth}
+    \begin{column}{0.55\textwidth}
       \centering
       \begin{tikzpicture}[scale=0.85]
-        \only<3->{%
+        \only<2->{%
           \node[pol] at (2.25,1.68) {$+$}; \node[pol] at (3.35,1.68) {$-$};
           \node[font=\small, text=cvolt] at (2.8,1.58) {$v_{R_2}$};}
         \exA{0}
       \end{tikzpicture}
     \end{column}
-    \begin{column}{0.46\textwidth}
-      Each other node gets a \alert{node voltage}, measured from the ground: $\e{1}$, $\e{2}$,
-      $\e{3}$.\\[8pt]
+    \begin{column}{0.41\textwidth}
+      Unknowns: \ $\e{1}$, $\e{2}$, $\e{3}$\\[12pt]
       \onslide<2->{%
-      These are the unknowns.\\[8pt]}
+      $\Vcol{v_{R_2}} = \e{1} - \e{2}$\\[12pt]}
       \onslide<3->{%
-      Every branch voltage is a difference of node voltages: \ $\Vcol{v_{R_2}} = \e{1} - \e{2}$.\\[8pt]}
-      \onslide<4->{%
-      So KVL holds \alert{automatically}: around $R_1$, $R_2$, $R_3$,
-      $\Vcol{v_{R_1}} = \Vcol{v_{R_2}} + \Vcol{v_{R_3}}$ is $\e{1} = (\e{1} - \e{2}) + \e{2}$.}
+      KVL holds \alert{automatically}:\\[4pt]
+      $\Vcol{v_{R_1}} = \Vcol{v_{R_2}} + \Vcol{v_{R_3}}$\\[3pt]
+      $\e{1} = (\e{1} - \e{2}) + \e{2}$}
     \end{column}
   \end{columns}
 \end{frame}
@@ -557,22 +547,21 @@
 %--------------------------------------------------------------
 \begin{frame}{Step 3: write the currents with node voltages}
   \begin{columns}[c,onlytextwidth]
-    \begin{column}{0.5\textwidth}
+    \begin{column}{0.55\textwidth}
       \centering
       \begin{tikzpicture}[scale=0.85]
-        \only<2->{\draw[iar] (2.4,1.72) -- (3.0,1.72); \node[font=\small, text=ccur] at (2.7,1.45) {$i$};}
+        \draw[iar] (2.4,1.72) -- (3.0,1.72); \node[font=\small, text=ccur] at (2.7,1.45) {$i$};
         \exA{0}
       \end{tikzpicture}
     \end{column}
-    \begin{column}{0.46\textwidth}
-      Ohm's law gives each resistor current from its two node voltages.\\[8pt]
+    \begin{column}{0.41\textwidth}
+      \textbf{Question.} $\Icol{i}$ leaving node 1 through $R_2$?\\[10pt]
       \onslide<2->{%
-      The current \alert{leaving} node 1 through $R_2$:\\[3pt]
-      $\displaystyle \Icol{i} = \frac{\e{1} - \e{2}}{R_2}$\\[8pt]}
+      $\displaystyle \Icol{i} = \frac{\e{1} - \e{2}}{R_2}$\\[10pt]}
       \onslide<3->{%
-      Through $R_1$ to the ground: \ $\displaystyle \frac{\e{1} - 0}{R_1} = \frac{\e{1}}{R_1}$\\[8pt]}
+      Through $R_1$: \ $\displaystyle \frac{\e{1}}{R_1}$\\[10pt]}
       \onslide<4->{%
-      The rule: own node voltage minus the other one, over $R$.}
+      \fbox{\ $\dfrac{\text{own} - \text{other}}{R}$\ }}
     \end{column}
   \end{columns}
 \end{frame}
@@ -599,12 +588,11 @@
       $\displaystyle \frac{\e{2} - \e{1}}{R_2} + \frac{\e{2}}{R_3} + \frac{\e{2} - \e{3}}{R_4} = 0$\\[6pt]}
       \onslide<3->{%
       \textbf{Node 3:}\\[2pt]
-      $\displaystyle \frac{\e{3} - \e{2}}{R_4} + \frac{\e{3} - \e{1}}{R_5} + \Icol{i_{s2}} = 0$\\[6pt]}
+      $\displaystyle \frac{\e{3} - \e{2}}{R_4} + \frac{\e{3} - \e{1}}{R_5} + \Icol{i_{s2}} = 0$\\[8pt]}
       \onslide<4->{%
-      A source pointing \alert{into} the node enters with a minus sign.\\[3pt]}
+      Source \alert{into} the node: minus\\[4pt]}
       \onslide<5->{%
-      Three equations, three unknowns.\\[3pt]
-      Then Steps 2 and 3 give every branch voltage and current.}
+      3 equations, 3 unknowns}
     \end{column}
   \end{columns}
 \end{frame}
@@ -615,7 +603,7 @@
 %--------------------------------------------------------------
 \begin{frame}{Example 11.1 in matrix form}
   \vfill
-  With the conductances $G_k = 1/R_k$:
+  $G_k = 1/R_k$:
   \[
     \begin{aligned}
       (G_1 + G_2 + G_5)\,\e{1} - G_2\,\e{2} - G_5\,\e{3} &= \Icol{i_{s1}}\\
@@ -624,7 +612,7 @@
     \end{aligned}
   \]
   \vfill
-  \only<1>{\begin{center}\textbf{Question.} Write the three equations as one matrix equation.\end{center}}%
+  \only<1>{\begin{center}\textbf{Question.} One matrix equation?\end{center}}%
   \onslide<2->{%
   \[
     \underbrace{\begin{bmatrix}
@@ -638,8 +626,8 @@
   \]}
   \vfill
   \onslide<3->{\begin{center}
-    $Y_n$ is the \alert{node admittance matrix}: \ $Y_n\Vcol{\mathbf{e}} = \Icol{\mathbf{i}_n}$.\\[3pt]
-    \onslide<4->{$\Icol{\mathbf{i}_n}$: the source currents \alert{entering} each node.}
+    $Y_n$: \alert{node admittance matrix}\\[3pt]
+    \onslide<4->{$\Icol{\mathbf{i}_n}$: source currents \alert{entering} each node}
   \end{center}}
   \vfill
 \end{frame}
@@ -660,17 +648,15 @@
       \end{bmatrix}$}
     \end{column}
     \begin{column}{0.5\textwidth}
-      \small
-      \textbf{Question.} Can you read each entry of $Y_n$ directly from the circuit?\\[10pt]
+      \textbf{Question.} Read $Y_n$ from the circuit?\\[12pt]
       \onslide<2->{%
-      \textbf{Diagonal} $(k,k)$: the sum of the conductances \alert{connected to} node $k$.\\[7pt]}
+      \textbf{Diagonal} $(k,k)$:\\ $+\sum G$ \alert{at} node $k$\\[10pt]}
       \onslide<3->{%
-      \textbf{Off-diagonal} $(k,j)$: minus the sum of the conductances \alert{between} nodes $k$
-      and $j$.\\[7pt]}
+      \textbf{Off-diagonal} $(k,j)$:\\ $-\sum G$ \alert{between} $k$ and $j$\\[10pt]}
       \onslide<4->{%
-      \textbf{Right side} $k$: the sum of the source currents \alert{entering} node $k$.\\[7pt]}
+      \textbf{Right side} $k$:\\ $\sum \Icol{i_s}$ \alert{entering} node $k$\\[10pt]}
       \onslide<5->{%
-      So $Y_n$ is \alert{symmetric}: the entry $(k,j)$ equals the entry $(j,k)$.}
+      $Y_n$ is \alert{symmetric}}
     \end{column}
   \end{columns}
 \end{frame}
@@ -690,18 +676,17 @@
       \begin{tikzpicture}[scale=0.82]
         \exAgraph
       \end{tikzpicture}\\[4pt]
-      {\small Branches 1--5: $R_1, \dots, R_5$; \ \textcolor{ccur}{6, 7: $i_{s1}$, $i_{s2}$}; \ node \nd{0}: the ground.}
+      {\small 1--5: $R_1, \dots, R_5$; \ \textcolor{ccur}{6, 7: $i_{s1}$, $i_{s2}$}; \ \nd{0}: ground}
     \end{column}
   \end{columns}
   \vfill
   \begin{columns}[c,onlytextwidth]
     \begin{column}{0.42\textwidth}
       \small
-      \textbf{Question.} Write the reduced incidence matrix $A$.\\[6pt]
+      \textbf{Question.} Reduced incidence matrix $A$?\\[6pt]
       \onslide<2->{%
-      One row for each node except the ground.\\[3pt]
-      Entry $+1$: the branch leaves the node; $-1$: it enters.}\\[1pt]
-      \onslide<3-5>{Row $k$: which branches touch node $k$?}
+      One row per non-ground node\\[3pt]
+      $+1$ leaves, \ $-1$ enters}
     \end{column}
     \begin{column}{0.56\textwidth}
       \centering
@@ -714,12 +699,11 @@
 
 %--------------------------------------------------------------
 \begin{frame}{$Y_n$ from the graph: KCL, KVL and Ohm's law in blocks}
-  \small
-  Number the $b_R$ resistors first, then the $b_S$ current sources:
+  Resistors first, then current sources:
   \[
     A = [\,A_R \ \ A_S\,], \qquad
     \Icol{\mathbf{i}} = \begin{bmatrix} \Icol{\mathbf{i}_R}\\ \Icol{\mathbf{i}_S} \end{bmatrix}, \qquad
-    \Vcol{\mathbf{v}} = \begin{bmatrix} \Vcol{\mathbf{v}_R}\\ \Vcol{\mathbf{v}_S} \end{bmatrix}.
+    \Vcol{\mathbf{v}} = \begin{bmatrix} \Vcol{\mathbf{v}_R}\\ \Vcol{\mathbf{v}_S} \end{bmatrix}
   \]
   \vfill
   \onslide<2->{%
@@ -728,10 +712,8 @@
    = A_R\Icol{\mathbf{i}_R} + A_S\Icol{\mathbf{i}_S} = \mathbf{0}$}
   \vfill
   \onslide<3->{%
-  \textbf{KVL:} \ $A^T$ splits into \alert{rows}:
+  \textbf{KVL:}
   \[
-    \Vcol{\mathbf{v}} = A^T\Vcol{\mathbf{e}}:
-    \qquad
     \begin{bmatrix}
       \hrow{metugray!15}{\Vcol{\mathbf{v}_R}}\\
       \hrow{ccur!12}{\Vcol{\mathbf{v}_S}}
@@ -742,26 +724,20 @@
       \hrow{ccur!12}{A_S^T}
     \end{bmatrix}\Vcol{\mathbf{e}}
     \qquad
-    \begin{array}{l}
-      \textcolor{metugray}{b_R \text{ resistor rows:}} \ \ \Vcol{\mathbf{v}_R} = A_R^T\Vcol{\mathbf{e}}\\[2pt]
-      \textcolor{ccur}{b_S \text{ source rows:}} \ \ \Vcol{\mathbf{v}_S} = A_S^T\Vcol{\mathbf{e}}
-    \end{array}
+    \onslide<4->{\Rightarrow\qquad
+    \Vcol{\mathbf{v}_R} = A_R^T\Vcol{\mathbf{e}} \ \ \text{(resistor rows only)}}
   \]}
-  \onslide<4->{%
-  \begin{center}
-    Only the \alert{resistor rows} are needed: the source voltages follow afterwards.
-  \end{center}}
   \vfill
   \onslide<5->{%
-  \textbf{Resistors:} \ $\Icol{\mathbf{i}_R} = G\,\Vcol{\mathbf{v}_R}$, \
-  $G = \mathrm{diag}(G_1, \dots, G_{b_R})$, one conductance per resistor.}
+  \textbf{Ohm:} \ $\Icol{\mathbf{i}_R} = G\,\Vcol{\mathbf{v}_R}$, \quad
+  $G = \mathrm{diag}(G_1, \dots, G_{b_R})$}
   \vfill
 \end{frame}
 
 %--------------------------------------------------------------
 \begin{frame}{$Y_n$ from the graph: the general result}
   \vfill
-  Put Ohm's law and the resistor rows of KVL into KCL:
+  Ohm and KVL into KCL:
   \[
     A_R\Icol{\mathbf{i}_R} + A_S\Icol{\mathbf{i}_S}
     = A_R\, G\, \underbrace{A_R^T\Vcol{\mathbf{e}}}_{\Vcol{\mathbf{v}_R}} + A_S\Icol{\mathbf{i}_S} = \mathbf{0}
@@ -779,8 +755,7 @@
   \vfill
   \onslide<3->{%
   \begin{center}
-    $Y_n^T = A_R\, G^T A_R^T = A_R\, G\, A_R^T = Y_n$, \ since $G$ is diagonal.\\[4pt]
-    So $Y_n$ is \alert{always symmetric} for resistors and current sources.
+    $Y_n^T = A_R\, G^T A_R^T = Y_n$: \ \alert{always symmetric}
   \end{center}}
   \vfill
 \end{frame}
@@ -795,7 +770,7 @@
       \end{tikzpicture}
     \end{column}
     \begin{column}{0.62\textwidth}
-      $A_R^T$: the resistor columns 1--5 of $A$, written as rows.\\[8pt]
+      $A_R^T$: columns 1--5 of $A$, as rows\\[8pt]
       \onslide<2->{%
       \[
         \underbrace{\begin{bmatrix} \Vcol{v_1}\\ \Vcol{v_2}\\ \Vcol{v_3}\\ \Vcol{v_4}\\ \Vcol{v_5} \end{bmatrix}}_{\Vcol{\mathbf{v}_R}}
@@ -813,9 +788,9 @@
         \begin{bmatrix} \e{1}\\ \e{1} - \e{2}\\ \e{2}\\ \e{2} - \e{3}\\ \e{1} - \e{3} \end{bmatrix}}
       \]}
       \onslide<4->{%
-      Each resistor voltage: tail node voltage minus head node voltage.\\[4pt]}
+      Tail minus head\\[4pt]}
       \onslide<5->{%
-      Then Ohm's law: \ $\Icol{\mathbf{i}_R} = G\,\Vcol{\mathbf{v}_R}$, \ $\Icol{i_k} = G_k\Vcol{v_k}$.}
+      Ohm: \ $\Icol{i_k} = G_k\Vcol{v_k}$}
     \end{column}
   \end{columns}
 \end{frame}
@@ -838,12 +813,8 @@
       -G_2 & G_2 + G_3 + G_4 & -G_4\\
       -G_5 & -G_4 & G_4 + G_5
     \end{bmatrix}
+    \onslide<3->{\ \ \yes}
   \]}
-  \vfill
-  \onslide<3->{%
-  \begin{center}
-    The same $Y_n$ as from the three rules. \ \yes
-  \end{center}}
   \vfill
   \onslide<4->{%
   \[
@@ -855,7 +826,7 @@
   \vfill
   \onslide<5->{%
   \begin{center}
-    The rules are this product, read off entry by entry.
+    The rules = this product
   \end{center}}
   \vfill
 \end{frame}
@@ -875,15 +846,15 @@
     \end{column}
     \begin{column}{0.52\textwidth}
       \small
-      The source fixes node 3: \ $\e{3} = \Vcol{v_s}$ is \alert{known}.\\[4pt]
+      $\e{3} = \Vcol{v_s}$: \alert{known}\\[6pt]
       \onslide<2->{%
-      So we do not write KCL at node 3; the unknowns are $\e{1}$, $\e{2}$.\\[8pt]}
+      No KCL at node 3. \ Unknowns: $\e{1}$, $\e{2}$\\[10pt]}
       \onslide<3->{%
       \textbf{Node 1:} \
       $\displaystyle -\Icol{i_s} + \frac{\e{1}}{R_1} + \frac{\e{1} - \e{2}}{R_2} = 0$\\[6pt]}
       \onslide<4->{%
       \textbf{Node 2:} \
-      $\displaystyle \frac{\e{2} - \e{1}}{R_2} + \frac{\e{2}}{R_3} + \frac{\e{2} - \Vcol{v_s}}{R_4} = 0$\\[8pt]}
+      $\displaystyle \frac{\e{2} - \e{1}}{R_2} + \frac{\e{2}}{R_3} + \frac{\e{2} - \Vcol{v_s}}{R_4} = 0$\\[10pt]}
       \onslide<5->{%
       $\begin{bmatrix}
         \frac{1}{R_1} + \frac{1}{R_2} & -\frac{1}{R_2}\\[3pt]
@@ -891,9 +862,7 @@
       \end{bmatrix}
       \begin{bmatrix} \e{1}\\[3pt] \e{2} \end{bmatrix}
       =
-      \begin{bmatrix} \Icol{i_s}\\[3pt] \Vcol{v_s}/R_4 \end{bmatrix}$\\[6pt]}
-      \onslide<6->{%
-      The known $\Vcol{v_s}$ moves to the right side.}
+      \begin{bmatrix} \Icol{i_s}\\[3pt] \alert{\Vcol{v_s}/R_4} \end{bmatrix}$}
     \end{column}
   \end{columns}
 \end{frame}
@@ -911,12 +880,10 @@
     \end{tikzpicture}
   \end{center}
   \vfill
-  \begin{itemize}\itemsep6pt
-    \item \textbf{Question.} Write KCL at node 1: what is the current through $\Vcol{v_{s2}}$?
-    \item<2-> It \alert{cannot} be written with $\e{1}$ and $\e{2}$: the law of a voltage source
-      fixes its voltage, not its current.
-    \item<3-> \textbf{Modified node voltage analysis} offers two ways out:
-      \alert{Method I} (its current is a new unknown) and \alert{Method II} (a supernode).
+  \begin{itemize}\itemsep8pt
+    \item \textbf{Question.} KCL at node 1: current through $\Vcol{v_{s2}}$?
+    \item<2-> Not given by $\e{1}$, $\e{2}$: a voltage source fixes $\Vcol{v}$, not $\Icol{i}$
+    \item<3-> \alert{Method I}: its current as an unknown \quad \alert{Method II}: supernode
   \end{itemize}
   \vfill
 \end{frame}
@@ -953,13 +920,11 @@
     \end{column}
     \begin{column}{0.38\textwidth}
       \small
-      The current $\Icol{i}$ of $\Vcol{v_{s2}}$ is one more unknown.\\[4pt]
+      New unknown: $\Icol{i}$\\[6pt]
       \onslide<5->{%
-      \textbf{Constraint:} \ $\e{1} - \e{2} = \Vcol{v_{s2}}$.\\[4pt]}
+      \textbf{Constraint:} \ $\e{1} - \e{2} = \Vcol{v_{s2}}$\\[6pt]}
       \onslide<6->{%
-      Four unknowns, four equations; the last row is the constraint.\\[4pt]}
-      \onslide<7->{%
-      It works, but the supernode avoids the extra unknown.}
+      4 unknowns, 4 equations}
     \end{column}
   \end{columns}
 \end{frame}
@@ -975,17 +940,17 @@
   \vspace{-4pt}
   \begin{columns}[t,onlytextwidth]
     \begin{column}{0.5\textwidth}
-      \textbf{Question.} Can we get rid of the unknown $\Icol{i}$?\\[8pt]
+      \textbf{Question.} Can we get rid of $\Icol{i}$?\\[8pt]
       \onslide<2->{%
-      Add the KCL equations of nodes 1 and 2.\\[3pt]
-      $\Icol{i}$ leaves node 1 and enters node 2, so it \alert{cancels}.}
+      Add KCL of nodes 1 and 2:\\[3pt]
+      $\Icol{i}$ \alert{cancels}}
     \end{column}
     \begin{column}{0.47\textwidth}
       \onslide<3->{%
-      This is KCL for a closed surface around both nodes and the source.\\[6pt]}
+      = KCL on a closed surface\\[6pt]}
       \onslide<4->{%
       \begin{block}{Supernode}
-        Write KCL as if the two nodes of the voltage source were a single node.
+        Two nodes of the source as one node
       \end{block}}
     \end{column}
   \end{columns}
@@ -1002,7 +967,7 @@
   \begin{columns}[t,onlytextwidth]
     \begin{column}{0.49\textwidth}
       \small
-      \only<1>{\textbf{Question.} Write KCL at the supernode.\\[4pt]}%
+      \only<1>{\textbf{Question.} KCL at the supernode?\\[4pt]}%
       \onslide<2->{\textcolor{metured}{\textbf{Supernode:}} \
       $\displaystyle \frac{\e{1} - \Vcol{v_{s1}}}{R_1} + \frac{\e{1}}{R_2} + \frac{\e{2}}{R_3}
         + \frac{\e{2} - \e{3}}{R_4} = 0$\\[4pt]}
@@ -1025,14 +990,11 @@
       \begin{bmatrix} G_1\Vcol{v_{s1}}\\ \Icol{i_{s1}}\\ \Vcol{v_{s2}} \end{bmatrix}
       \]\small}
       \onslide<6->{%
-      Three unknowns: one fewer than Method I.\\[2pt]}
-      \onslide<7->{The matrix is \alert{not} symmetric any more.}
+      3 unknowns (one fewer)\\[2pt]}
+      \onslide<7->{\alert{Not} symmetric}
     \end{column}
   \end{columns}
 \end{frame}
-
-%--------------------------------------------------------------
-
 
 %==============================================================
 \roadmapframe{6}
@@ -1048,17 +1010,17 @@
     \end{column}
     \begin{column}{0.48\textwidth}
       \small
-      \textbf{Question.} Find $\e{1}$ and $\e{2}$.\\[8pt]
+      \textbf{Question.} Find $\e{1}$ and $\e{2}$.\\[10pt]
       \onslide<2->{%
-      Treat the dependent source as a current source of value $\Icol{0.5\,v_x}$.\\[6pt]}
+      Treat $\Icol{0.5\,v_x}$ as a current source\\[8pt]}
       \onslide<3->{%
       \textbf{Node 1:} \ $\displaystyle -1 + \frac{\e{1}}{2} + \frac{\e{1} - \e{2}}{6} = 0$\\[4pt]}
       \onslide<4->{%
-      \textbf{Node 2:} \ $\displaystyle \frac{\e{2} - \e{1}}{6} + \frac{\e{2}}{6} - \Icol{0.5\,v_x} = 0$\\[6pt]}
+      \textbf{Node 2:} \ $\displaystyle \frac{\e{2} - \e{1}}{6} + \frac{\e{2}}{6} - \Icol{0.5\,v_x} = 0$\\[10pt]}
       \onslide<5->{%
-      \textbf{Question.} What is $\Vcol{v_x}$ in node voltages?\\[4pt]}
+      \textbf{Question.} $\Vcol{v_x}$ in node voltages?\\[4pt]}
       \onslide<6->{%
-      The control with node voltages: \ $\Vcol{v_x} = \e{1}$.}
+      $\Vcol{v_x} = \e{1}$}
     \end{column}
   \end{columns}
 \end{frame}
@@ -1066,7 +1028,7 @@
 %--------------------------------------------------------------
 \begin{frame}{Example 11.4: matrix form}
   \vfill
-  As if $\Icol{0.5\,v_x}$ were an independent source:
+  As if $\Icol{0.5\,v_x}$ were independent:
   \[
     \begin{bmatrix} \frac23 & -\frac16\\[3pt] -\frac16 & \frac13 \end{bmatrix}
     \begin{bmatrix} \e{1}\\[3pt] \e{2} \end{bmatrix}
@@ -1076,7 +1038,7 @@
   \vfill
   \only<2>{\begin{center}\textbf{Question.} Put $\Vcol{v_x} = \e{1}$: which entry changes?\end{center}}%
   \onslide<3->{%
-  Put $\Vcol{v_x} = \e{1}$ and move $0.5\,\e{1}$ to the left side:
+  $\Vcol{v_x} = \e{1}$, move $0.5\,\e{1}$ to the left:
   \[
     \begin{bmatrix} \frac23 & -\frac16\\[3pt] -\frac16 \alert{- \frac12} & \frac13 \end{bmatrix}
     \begin{bmatrix} \e{1}\\[3pt] \e{2} \end{bmatrix}
@@ -1088,7 +1050,7 @@
   \vfill
   \onslide<5->{%
   \begin{center}
-    The dependent source changes one entry: $Y_n$ is \alert{not} symmetric any more.
+    One entry changes: \alert{not} symmetric
   \end{center}}
   \vfill
 \end{frame}
@@ -1096,22 +1058,21 @@
 %--------------------------------------------------------------
 \begin{frame}{Example 11.5: a dependent voltage source}
   \begin{columns}[c,onlytextwidth]
-    \begin{column}{0.47\textwidth}
+    \begin{column}{0.52\textwidth}
       \centering
       \begin{tikzpicture}[scale=0.76]
         \only<1-2>{\exC{0}}%
         \only<3->{\exC{1}}%
       \end{tikzpicture}
     \end{column}
-    \begin{column}{0.52\textwidth}
-      \textbf{Question.} Find the power absorbed by the $3\ohm$ resistor.\\[10pt]
+    \begin{column}{0.46\textwidth}
+      \textbf{Question.} Power absorbed by the $3\ohm$?\\[12pt]
       \onslide<2->{%
-      The voltage source $\Vcol{v_x}$ is between nodes 3 and 2; neither is the ground.\\[8pt]}
+      $\Vcol{v_x}$: between nodes 3 and 2, no ground\\[12pt]}
       \onslide<3->{%
-      So use a supernode \nd{S} around nodes 2 and 3.\\[8pt]}
+      $\Rightarrow$ supernode \nd{S}\\[12pt]}
       \onslide<4->{%
-      Unknowns: $\e{1}$, $\e{2}$, $\e{3}$.\\[3pt]
-      Equations: KCL at node 1, KCL at \nd{S}, and a constraint.}
+      Unknowns: $\e{1}$, $\e{2}$, $\e{3}$}
     \end{column}
   \end{columns}
 \end{frame}
@@ -1133,16 +1094,15 @@
       \onslide<2->{%
       \textbf{Supernode \nd{S}:} \
       $\displaystyle \frac{\e{3} - \e{1}}{2} + \frac{\e{2} - \e{1}}{2} + \frac{\e{2}}{3} = 0
-      \ \ (2)$\\[10pt]}
+      \ \ (2)$\\[12pt]}
       \onslide<3->{%
-      \textbf{Question.} What is the constraint?\\[6pt]}
+      \textbf{Question.} The constraint?\\[8pt]}
       \onslide<4->{%
-      The source: $\e{2} - \e{3} = \Vcol{v_x}$.\\[4pt]}
+      Source: \ $\e{2} - \e{3} = \Vcol{v_x}$\\[4pt]}
       \onslide<5->{%
-      Its control: $\Vcol{v_x} = \e{1}$, the voltage of the $4\ohm$.\\[6pt]}
+      Control: \ $\Vcol{v_x} = \e{1}$\\[8pt]}
       \onslide<6->{%
-      \textbf{Constraint:} \ $\e{2} - \e{3} = \e{1} \quad (3)$\\[6pt]
-      Three equations, three unknowns.}
+      \textbf{Constraint:} \ $\e{2} - \e{3} = \e{1} \quad (3)$}
     \end{column}
   \end{columns}
 \end{frame}
@@ -1150,7 +1110,7 @@
 %--------------------------------------------------------------
 \begin{frame}{Example 11.5: matrix form}
   \vfill
-  Collect the terms of (1), (2) and (3):
+  (1), (2), (3):
   \[
     \begin{bmatrix}
       \frac54 & -\frac12 & -\frac12\\[3pt]
@@ -1164,15 +1124,10 @@
   \vfill
   \onslide<2->{%
   \begin{center}
-    Rows: KCL at node 1, KCL at \nd{S}, the constraint $\e{1} - \e{2} + \e{3} = 0$.
+    $\e{1} = 8\V$, \ $\e{2} = 9\V$, \ $\e{3} = 1\V$
   \end{center}}
   \vfill
   \onslide<3->{%
-  \begin{center}
-    Solve: \ $\e{1} = 8\V$, \ $\e{2} = 9\V$, \ $\e{3} = 1\V$.
-  \end{center}}
-  \vfill
-  \onslide<4->{%
   \begin{center}
     \begin{tikzpicture}
       \node[draw=cpow, thick, fill=cpow!6, rounded corners=3pt, inner sep=7pt]
@@ -1185,17 +1140,15 @@
 %--------------------------------------------------------------
 \begin{frame}{Dependent sources}
   \vfill
-  \begin{itemize}\itemsep10pt
-    \item A dependent source is handled like an independent one of the same kind.
-    \item<2-> Its control variable ($\Vcol{v_x}$ here) is written with node voltages: this
-      gives the \alert{constraint equation}.
+  \begin{itemize}\itemsep12pt
+    \item Like an independent source of the same kind
+    \item<2-> Control variable in node voltages: a \alert{constraint}
   \end{itemize}
   \vfill
   \onslide<3->{%
   \begin{block}{Remark}
-    If a dependent voltage source sits between node $k$ and the ground, do
-    \alert{not} write KCL at node $k$: its current is not known.\\[4pt]
-    Write the constraint that the dependent source gives instead.
+    Dependent voltage source from node $k$ to the ground:\\[3pt]
+    \alert{no} KCL at node $k$; write the constraint instead
   \end{block}}
   \vfill
 \end{frame}
@@ -1212,25 +1165,24 @@
       \begin{tikzpicture}[scale=0.6]
         \exC{3}
       \end{tikzpicture}\\[2pt]
-      Example 11.5: ground at node 4
+      Ground at node 4
     \end{column}
     \begin{column}{0.5\textwidth}
       \centering
       \begin{tikzpicture}[scale=0.6]
         \exC{4}
       \end{tikzpicture}\\[2pt]
-      The same circuit: ground at \alert{node 3}
+      Ground at \alert{node 3}
     \end{column}
   \end{columns}
   \vspace{5pt}
   \only<1>{%
   \begin{center}
-    \textbf{Question.} Move the ground to node 3.\\[3pt]
-    What happens to the node voltages?
+    \textbf{Question.} What happens to the node voltages?
   \end{center}}%
   \only<2->{%
   \begin{center}
-    A node voltage is measured from the ground: \ $\ep{k} = \e{k} - \e{3} = \e{k} - 1\V$\\[6pt]
+    $\ep{k} = \e{k} - \e{3} = \e{k} - 1\V$\\[6pt]
     \renewcommand{\arraystretch}{1.15}
     \begin{tabular}{c|cccc}
       node & 1 & 2 & 3 & 4\\ \hline
@@ -1252,18 +1204,18 @@
     \end{column}
     \begin{column}{0.56\textwidth}
       \small
-      \textbf{Question.} With this ground, is a supernode needed?\\[8pt]
+      \textbf{Question.} Supernode needed?\\[10pt]
       \onslide<2->{%
-      No: $\Vcol{v_x}$ is now between node 2 and the ground, so $\ep{2} = \Vcol{v_x}$.\\[3pt]
-      Unknowns: $\ep{1}$, $\ep{2}$, $\ep{4}$.\\[8pt]}
+      No: \ $\ep{2} = \Vcol{v_x}$\\[3pt]
+      Unknowns: $\ep{1}$, $\ep{2}$, $\ep{4}$\\[10pt]}
       \onslide<3->{%
       \textbf{Node 1:} \
       $\displaystyle -5 + \frac{\ep{1}}{2} + \frac{\ep{1} - \ep{4}}{4} + \frac{\ep{1} - \ep{2}}{2} = 0$\\[6pt]}
       \onslide<4->{%
       \textbf{Node 4:} \
-      $\displaystyle 5 + \frac{\ep{4} - \ep{1}}{4} + \frac{\ep{4} - \ep{2}}{3} = 0$\\[6pt]}
+      $\displaystyle 5 + \frac{\ep{4} - \ep{1}}{4} + \frac{\ep{4} - \ep{2}}{3} = 0$\\[8pt]}
       \onslide<5->{%
-      No KCL at node 2: the current of $\Vcol{v_x}$ is not known.\\[8pt]}
+      No KCL at node 2\\[8pt]}
       \onslide<6->{%
       \textbf{Constraint:} \ $\ep{2} = \Vcol{v_x} = \ep{1} - \ep{4}$}
     \end{column}
@@ -1273,7 +1225,6 @@
 %--------------------------------------------------------------
 \begin{frame}{Example 11.6: matrix form}
   \vfill
-  Collect the terms of the two KCL equations and the constraint:
   \[
     \begin{bmatrix}
       \frac54 & -\frac12 & -\frac14\\[3pt]
@@ -1287,17 +1238,14 @@
   \vfill
   \onslide<2->{%
   \begin{center}
-    Solve: \ $\ep{1} = 7\V$, \ $\ep{2} = 8\V$, \ $\ep{4} = -1\V$: \ each is $\e{k} - 1\V$, as
-    predicted.
+    $\ep{1} = 7\V$, \ $\ep{2} = 8\V$, \ $\ep{4} = -1\V$ \quad $= \e{k} - 1\V$ \ \yes
   \end{center}}
   \vfill
   \onslide<3->{%
   \begin{center}
     \begin{tikzpicture}
-      \node[draw=metured, thick, fill=metured!5, rounded corners=3pt, inner sep=7pt,
-            text width=0.8\textwidth, align=center]
-        {\textbf{Tip.} Put the ground at one end of a voltage source.\\[2pt]
-         Then the other node voltage is known, or a supernode is avoided.};
+      \node[draw=metured, thick, fill=metured!5, rounded corners=3pt, inner sep=7pt, align=center]
+        {\textbf{Tip.} Ground at one end of a voltage source};
     \end{tikzpicture}
   \end{center}}
   \vfill
@@ -1307,24 +1255,22 @@
 \begin{frame}{Summary}
   \vfill
   \begin{center}
-  \renewcommand{\arraystretch}{1.45}
-  \small
-  \begin{tabular}{@{}>{\raggedright}p{4.1cm} >{\raggedright\arraybackslash}p{8.6cm}@{}}
+  \renewcommand{\arraystretch}{1.5}
+  \begin{tabular}{@{}>{\raggedright}p{4.6cm} >{\raggedright\arraybackslash}p{7.6cm}@{}}
   \toprule
   \textbf{In the circuit} & \textbf{What to do}\\
   \midrule
-  resistors and current sources & KCL at every non-ground node: $Y_n\Vcol{\mathbf{e}} = \Icol{\mathbf{i}_n}$, from three simple rules; $Y_n$ is symmetric\\
-  a voltage source from the ground to node $k$ & $\e{k} = \Vcol{v_s}$ is known; no KCL at node $k$\\
-  a voltage source between two nodes & Method I: its current as an unknown, plus the constraint\newline
-    Method II: KCL at the supernode, plus the constraint\\
-  a dependent source & write its control variable with node voltages: a constraint\\
-  the choice of ground & any node; the branch voltages and currents do not change\\
+  resistors, current sources & $Y_n\Vcol{\mathbf{e}} = \Icol{\mathbf{i}_n}$, by the rules; symmetric\\
+  voltage source to the ground & $\e{k}$ known; no KCL at node $k$\\
+  voltage source between nodes & Method I or supernode, plus constraint\\
+  dependent source & control in node voltages: constraint\\
+  choice of ground & any node\\
   \bottomrule
   \end{tabular}
   \end{center}
   \vfill
   \begin{center}
-    After the node voltages: $\Vcol{\mathbf{v}} = A^T\Vcol{\mathbf{e}}$, then the currents from the element laws.
+    Then $\Vcol{\mathbf{v}} = A^T\Vcol{\mathbf{e}}$ and the element laws
   \end{center}
   \vfill
 \end{frame}
