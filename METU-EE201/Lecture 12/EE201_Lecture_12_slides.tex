@@ -1077,16 +1077,23 @@
 %--------------------------------------------------------------
 \begin{frame}{Example 12.4 with node voltages: matrix form}
   \vfill
-  $\Vcol{v_x} = \e{1} - \e{2}$:
+  \textbf{First} plug $\Vcol{v_x} = \e{1} - \e{2}$ into node 1:
+  \[
+    \frac{\e{1} - \e{2}}{2} + \frac{\e{1} - 12}{4} - 3(\e{1} - \e{2}) = 0
+    \onslide<2->{\qquad\Rightarrow\qquad -\tfrac94\,\e{1} + \tfrac52\,\e{2} = 3}
+  \]
+  \vfill
+  \only<3>{\begin{center}\textbf{Question.} \textbf{Then} the matrix?\end{center}}%
+  \onslide<4->{%
   \[
     \begin{bmatrix} -\frac94 & \frac52\\[3pt] -\frac12 & \frac23 \end{bmatrix}
     \begin{bmatrix} \e{1}\\[3pt] \e{2} \end{bmatrix}
     =
     \begin{bmatrix} 3\\[3pt] -2 \end{bmatrix}
-    \qquad\onslide<2->{\Rightarrow\qquad \e{1} = -28\V, \quad \e{2} = -24\V}
-  \]
+    \qquad\onslide<5->{\Rightarrow\qquad \e{1} = -28\V, \quad \e{2} = -24\V}
+  \]}
   \vfill
-  \onslide<3->{%
+  \onslide<6->{%
   \begin{center}
     \begin{tikzpicture}
       \node[draw=ccur, thick, fill=ccur!6, rounded corners=3pt, inner sep=7pt]

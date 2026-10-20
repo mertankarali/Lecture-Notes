@@ -1028,29 +1028,26 @@
 %--------------------------------------------------------------
 \begin{frame}{Example 11.4: matrix form}
   \vfill
-  As if $\Icol{0.5\,v_x}$ were independent:
+  \textbf{First} plug $\Vcol{v_x} = \e{1}$ into node 2:
   \[
-    \begin{bmatrix} \frac23 & -\frac16\\[3pt] -\frac16 & \frac13 \end{bmatrix}
-    \begin{bmatrix} \e{1}\\[3pt] \e{2} \end{bmatrix}
-    =
-    \begin{bmatrix} 1\\[3pt] \Icol{0.5\,v_x} \end{bmatrix}
+    \frac{\e{2} - \e{1}}{6} + \frac{\e{2}}{6} - 0.5\,\e{1} = 0
+    \onslide<2->{\qquad\Rightarrow\qquad \alert{-\tfrac23}\,\e{1} + \tfrac13\,\e{2} = 0}
   \]
   \vfill
-  \only<2>{\begin{center}\textbf{Question.} Put $\Vcol{v_x} = \e{1}$: which entry changes?\end{center}}%
-  \onslide<3->{%
-  $\Vcol{v_x} = \e{1}$, move $0.5\,\e{1}$ to the left:
+  \only<3>{\begin{center}\textbf{Question.} \textbf{Then} the matrix?\end{center}}%
+  \onslide<4->{%
   \[
-    \begin{bmatrix} \frac23 & -\frac16\\[3pt] -\frac16 \alert{- \frac12} & \frac13 \end{bmatrix}
+    \begin{bmatrix} \frac23 & -\frac16\\[3pt] \alert{-\frac23} & \frac13 \end{bmatrix}
     \begin{bmatrix} \e{1}\\[3pt] \e{2} \end{bmatrix}
     =
     \begin{bmatrix} 1\\[3pt] 0 \end{bmatrix}
-    \qquad\onslide<4->{\Rightarrow\qquad
+    \qquad\onslide<5->{\Rightarrow\qquad
     \e{1} = 3\V, \quad \e{2} = 6\V}
   \]}
   \vfill
-  \onslide<5->{%
+  \onslide<6->{%
   \begin{center}
-    One entry changes: \alert{not} symmetric
+    $-\frac16 \neq -\frac23$: \ \alert{not} symmetric
   \end{center}}
   \vfill
 \end{frame}
@@ -1142,10 +1139,11 @@
   \vfill
   \begin{itemize}\itemsep12pt
     \item Like an independent source of the same kind
-    \item<2-> Control variable in node voltages: a \alert{constraint}
+    \item<2-> Control variable in node voltages
+    \item<3-> \alert{First} plug it in, \alert{then} form the matrix
   \end{itemize}
   \vfill
-  \onslide<3->{%
+  \onslide<4->{%
   \begin{block}{Remark}
     Dependent voltage source from node $k$ to the ground:\\[3pt]
     \alert{no} KCL at node $k$; write the constraint instead

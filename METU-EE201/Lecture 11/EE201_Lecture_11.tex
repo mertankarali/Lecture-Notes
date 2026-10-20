@@ -640,8 +640,8 @@ $\Icol{i}$, if needed, follows from a KCL afterwards.
 \section{Dependent sources}
 
 A dependent source is treated like an independent source of the same kind. Its control
-variable is written with node voltages; this gives one more constraint equation. A dependent
-source makes $Y_n$ not symmetric.
+variable is written with node voltages. First plug this into the equations, then form the
+matrix. A dependent source makes $Y_n$ not symmetric.
 
 \begin{examplebox}[Example 11.4 --- a dependent current source]
 \begin{minipage}[c]{0.42\linewidth}
@@ -657,9 +657,10 @@ $\Icol{0.5\,v_x}$; write its control $\Vcol{v_x}$ with node voltages:
   &\text{node 1:}\ \ & -1 + \frac{\e{1}}{2} + \frac{\e{1} - \e{2}}{6} &= 0\\
   &\text{node 2:}\ \ & \frac{\e{2} - \e{1}}{6} + \frac{\e{2}}{6} - \Icol{0.5\,v_x} &= 0
 \end{alignat*}
-With $\Vcol{v_x} = \e{1}$, the term $0.5\,\e{1}$ moves to the left side:
+First plug $\Vcol{v_x} = \e{1}$ into node 2: $-\frac23\,\e{1} + \frac13\,\e{2} = 0$.
+Then the matrix:
 \[
-  \begin{bmatrix} \frac23 & -\frac16\\[2pt] -\frac16 - \frac12 & \frac13 \end{bmatrix}
+  \begin{bmatrix} \frac23 & -\frac16\\[2pt] -\frac23 & \frac13 \end{bmatrix}
   \begin{bmatrix} \e{1}\\[2pt] \e{2} \end{bmatrix}
   = \begin{bmatrix} 1\\[2pt] 0 \end{bmatrix},
   \quad \e{1} = 3\V, \ \e{2} = 6\V.
