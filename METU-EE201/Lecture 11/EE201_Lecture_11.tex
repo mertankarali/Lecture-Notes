@@ -331,6 +331,26 @@
     \node[font=\small, below=3pt] at ($(AA-3-1.south)!0.5!(AA-3-5.south)$) {\phantom{$A_R$: resistors}};
     \fi}}
 \newcommand{\exAinc}{\exAincN{4}}
+%  Example 11.6: one circuit, two grounds.  #1 = ground node (3: bottom, 2: top right);
+%  #2 = 0: node numbers; 1: node voltages
+\newcommand{\exG}[2]{%
+  \path (-1.2,-0.8) rectangle (6.1,2.45);
+  \draw (0,0) to[american current source, l=$7\A$] (0,1.8) -- (2.2,1.8)
+        to[R, l=$2\ohm$] (5.0,1.8);
+  \draw (2.2,1.8) to[R, l_=$1\ohm$] (2.2,0);
+  \draw (5.0,1.8) to[R, l_=$4\ohm$] (5.0,0);
+  \draw (0,0) -- (5.0,0);
+  \ifnum#1=3 \gnd{3.6}\else \draw (5.0,1.8) -- (5.7,1.8) -- (5.7,1.6) node[ground] {};\fi
+  \ifnum#2=0
+    \fill (2.2,1.8) circle (1.7pt) node[nlab, above left=1pt] {1};
+    \fill (5.0,1.8) circle (1.7pt) node[nlab, above=2pt] {2};
+    \fill (3.6,0) circle (1.7pt) node[nlab, below right=1pt] {3};
+  \else\ifnum#1=3
+    \nodev{2.2,1.8}{above left}{$e_1$}\nodev{5.0,1.8}{above}{$e_2$}
+  \else
+    \nodev{2.2,1.8}{above left}{$e_1'$}\fill (5.0,1.8) circle (1.7pt);
+    \nodev{3.6,0}{below}{$e_3'$}
+  \fi\fi}
 \tikzset{fbox/.style={draw=metugray, thick, fill=metulight, rounded corners=3pt,
                       minimum height=0.85cm, minimum width=1.4cm, align=center,
                       font=\small, inner sep=4pt}}
@@ -718,58 +738,46 @@ its current is not known. Write its constraint instead.
 
 Moving the ground shifts all node voltages by the same amount; branch quantities do not change.
 
-\begin{examplebox}[Example 11.6 --- Example 11.5 with node 3 as the ground]
-\begin{minipage}[c]{0.36\linewidth}
+\begin{examplebox}[Example 11.6 --- one circuit, two grounds]
+\begin{minipage}[t]{0.48\linewidth}
 \centering
-\begin{tikzpicture}[scale=0.6]
-  \exC{3}
-\end{tikzpicture}\\[1pt]
-{\small ground at node 4}
-\end{minipage}\hfill
-\begin{minipage}[c]{0.36\linewidth}
-\centering
-\begin{tikzpicture}[scale=0.6]
-  \exC{4}
-\end{tikzpicture}\\[1pt]
+\begin{tikzpicture}[scale=0.62]
+  \exG{3}{1}
+\end{tikzpicture}\\
 {\small ground at node 3}
+\begin{align*}
+  &\text{node 1:}\ \ -7 + \frac{\e{1}}{1} + \frac{\e{1} - \e{2}}{2} = 0\\
+  &\text{node 2:}\ \ \frac{\e{2} - \e{1}}{2} + \frac{\e{2}}{4} = 0
+\end{align*}
+\[
+  \begin{bmatrix} \frac32 & -\frac12\\[2pt] -\frac12 & \frac34 \end{bmatrix}
+  \begin{bmatrix} \e{1}\\[2pt] \e{2} \end{bmatrix}
+  = \begin{bmatrix} 7\\[2pt] 0 \end{bmatrix}
+  \ \Rightarrow\ \begin{array}{l} \e{1} = 6\V\\ \e{2} = 4\V \end{array}
+\]
 \end{minipage}\hfill
-\begin{minipage}[c]{0.25\linewidth}
+\begin{minipage}[t]{0.48\linewidth}
 \centering
-\renewcommand{\arraystretch}{1.15}
-\begin{tabular}{c|cc}
-  node & $\e{k}$ & $\ep{k}$\\ \hline
-  1 & $8$ & $7$\\
-  2 & $9$ & $8$\\
-  3 & $1$ & $0$\\
-  4 & $0$ & $-1$
-\end{tabular}\\[2pt]
-{\small (V)}
+\begin{tikzpicture}[scale=0.62]
+  \exG{2}{1}
+\end{tikzpicture}\\
+{\small ground at node 2}
+\begin{align*}
+  &\text{node 1:}\ \ -7 + \frac{\ep{1} - \ep{3}}{1} + \frac{\ep{1}}{2} = 0\\
+  &\text{node 3:}\ \ 7 + \frac{\ep{3} - \ep{1}}{1} + \frac{\ep{3}}{4} = 0
+\end{align*}
+\[
+  \begin{bmatrix} \frac32 & -1\\[2pt] -1 & \frac54 \end{bmatrix}
+  \begin{bmatrix} \ep{1}\\[2pt] \ep{3} \end{bmatrix}
+  = \begin{bmatrix} 7\\[2pt] -7 \end{bmatrix}
+  \ \Rightarrow\ \begin{array}{l} \ep{1} = 2\V\\ \ep{3} = -4\V \end{array}
+\]
 \end{minipage}
 
 \smallskip
-\textbf{Question.} Take node 3 as the ground. What happens to the node voltages?
-
-\textbf{Answer.} Each node voltage drops by $\e{3} = 1\V$: $\ep{k} = \e{k} - \e{3}$ (table).
-
-\textbf{Solving with the new ground.} Now $\Vcol{v_x}$ is between node 2 and the ground, so
-$\ep{2} = \Vcol{v_x}$ and no supernode is needed. KCL is written at nodes 1 and 4, not at
-node 2. With the constraint, and in matrix form:
-\[
-  \begin{aligned}
-    &-5 + \frac{\ep{1}}{2} + \frac{\ep{1} - \ep{4}}{4} + \frac{\ep{1} - \ep{2}}{2} = 0\\
-    &5 + \frac{\ep{4} - \ep{1}}{4} + \frac{\ep{4} - \ep{2}}{3} = 0\\
-    &\ep{2} = \Vcol{v_x} = \ep{1} - \ep{4}
-  \end{aligned}
-  \qquad\Rightarrow\qquad
-  \begin{bmatrix}
-    \frac54 & -\frac12 & -\frac14\\[2pt]
-    -\frac14 & -\frac13 & \frac{7}{12}\\[2pt]
-    1 & -1 & -1
-  \end{bmatrix}
-  \begin{bmatrix} \ep{1}\\[2pt] \ep{2}\\[2pt] \ep{4} \end{bmatrix}
-  = \begin{bmatrix} 5\\[2pt] -5\\[2pt] 0 \end{bmatrix}.
-\]
-It gives $\ep{1} = 7\V$, $\ep{2} = 8\V$, $\ep{4} = -1\V$, as in the table.
+\textbf{What changes?} $Y_n$ and the node voltages change: every node voltage shifts by
+$-4\V$. The branch voltages do not: $\Vcol{v_{1\Omega}} = 6\V$, $\Vcol{v_{2\Omega}} = 2\V$,
+$\Vcol{v_{4\Omega}} = 4\V$ in both. So the currents do not change either.
 \end{examplebox}
 
 \textbf{Tip.} Put the ground at one end of a voltage source: then its other node voltage is
