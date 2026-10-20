@@ -303,24 +303,27 @@
     \node[font=\small, below=3pt] at ($(AA-3-1.south)!0.5!(AA-3-5.south)$) {\phantom{$A_R$: resistors}};
     \fi}}
 \newcommand{\exAinc}{\exAincN{4}}
-%  Example 11.6: one circuit, two grounds.  #1 = ground node (3: bottom, 2: top right);
-%  #2 = 0: node numbers; 1: node voltages
+%  Example 11.6: where to put the ground.  #1 = ground node (3: bottom, 2: minus terminal of v_s);
+%  #2 = 0: node numbers; 1: node voltages (and the supernode for ground 3)
 \newcommand{\exG}[2]{%
-  \path (-1.2,-0.8) rectangle (6.1,2.45);
-  \draw (0,0) to[american current source, l=$7\A$] (0,1.8) -- (2.2,1.8)
-        to[R, l=$2\ohm$] (5.0,1.8);
-  \draw (2.2,1.8) to[R, l_=$1\ohm$] (2.2,0);
-  \draw (5.0,1.8) to[R, l_=$4\ohm$] (5.0,0);
-  \draw (0,0) -- (5.0,0);
-  \ifnum#1=3 \gnd{3.6}\else \draw (5.0,1.8) -- (5.7,1.8) -- (5.7,1.6) node[ground] {};\fi
+  \path (-1.2,-0.8) rectangle (6.8,2.75);
+  \draw (0,0) to[american current source, l=$3\A$] (0,1.8) -- (1.8,1.8)
+        to[american voltage source, l_=$\Vcol{12\V}$] (5.4,1.8);
+  \draw (1.8,1.8) to[R, l_=$2\ohm$] (1.8,0);
+  \draw (5.4,1.8) to[R, l_=$4\ohm$] (5.4,0);
+  \draw (0,0) -- (5.4,0);
+  \ifnum#1=3 \gnd{3.6}\else \draw (5.4,1.8) -- (6.1,1.8) -- (6.1,1.6) node[ground] {};\fi
   \ifnum#2=0
-    \fill (2.2,1.8) circle (1.7pt) node[nlab, above left=1pt] {1};
-    \fill (5.0,1.8) circle (1.7pt) node[nlab, above=2pt] {2};
+    \fill (1.8,1.8) circle (1.7pt) node[nlab, above left=1pt] {1};
+    \fill (5.4,1.8) circle (1.7pt) node[nlab, above right=1pt] {2};
     \fill (3.6,0) circle (1.7pt) node[nlab, below right=1pt] {3};
   \else\ifnum#1=3
-    \nodev{2.2,1.8}{above left}{$e_1$}\nodev{5.0,1.8}{above}{$e_2$}
+    \fill (1.8,1.8) circle (1.7pt); \fill (5.4,1.8) circle (1.7pt);
+    \node[font=\small, text=cvolt] at (1.8,2.5) {$e_1$}; \node[font=\small, text=cvolt] at (5.4,2.5) {$e_2$};
+    \draw[dashed, metured, thick, rounded corners=4pt] (1.5,1.45) rectangle (5.7,2.2);
+    \node[nlab] at (6.05,2.2) {S};
   \else
-    \nodev{2.2,1.8}{above left}{$e_1'$}\fill (5.0,1.8) circle (1.7pt);
+    \nodev{1.8,1.8}{above left}{$e_1'$}\fill (5.4,1.8) circle (1.7pt);
     \nodev{3.6,0}{below}{$e_3'$}
   \fi\fi}
 \newcommand{\yes}{\textcolor{cpow}{\checkmark}}
@@ -1108,27 +1111,27 @@
 \roadmapframe{7}
 
 %--------------------------------------------------------------
-\begin{frame}{Example 11.6: one circuit, two grounds}
+\begin{frame}{Example 11.6: where to put the ground?}
   \vfill
   \begin{columns}[t,onlytextwidth]
     \begin{column}{0.5\textwidth}
       \centering
-      \begin{tikzpicture}[scale=0.85]
+      \begin{tikzpicture}[scale=0.8]
         \exG{3}{0}
       \end{tikzpicture}\\[6pt]
       Ground at node 3
     \end{column}
     \begin{column}{0.5\textwidth}
       \centering
-      \begin{tikzpicture}[scale=0.85]
+      \begin{tikzpicture}[scale=0.8]
         \exG{2}{0}
       \end{tikzpicture}\\[6pt]
-      Ground at \alert{node 2}
+      Ground at node 2: the \alert{$-$ terminal} of $\Vcol{12\V}$
     \end{column}
   \end{columns}
   \vfill
   \begin{center}
-    \textbf{Question.} Solve both. \ What changes?
+    \textbf{Question.} Solve both. \ Which is easier?
   \end{center}
   \vfill
 \end{frame}
@@ -1138,63 +1141,61 @@
   \begin{columns}[t,onlytextwidth]
     \begin{column}{0.49\textwidth}
       \centering
-      \begin{tikzpicture}[scale=0.62]
+      \begin{tikzpicture}[scale=0.7]
         \exG{3}{1}
       \end{tikzpicture}\\[4pt]
       \small
-      \onslide<2->{\textbf{Node 1:} \ $\displaystyle -7 + \frac{\e{1}}{1} + \frac{\e{1} - \e{2}}{2} = 0$}\\[5pt]
-      \onslide<3->{\textbf{Node 2:} \ $\displaystyle \frac{\e{2} - \e{1}}{2} + \frac{\e{2}}{4} = 0$}\\[7pt]
-      \onslide<4->{%
-      $\begin{bmatrix} \frac32 & -\frac12\\[3pt] -\frac12 & \frac34 \end{bmatrix}
+      \onslide<2->{$\Vcol{12\V}$ between two nodes: supernode}\\[6pt]
+      \onslide<3->{\textcolor{metured}{\textbf{S:}} \ $\displaystyle -3 + \frac{\e{1}}{2} + \frac{\e{2}}{4} = 0$}\\[6pt]
+      \onslide<4->{\textbf{Constraint:} \ $\e{1} - \e{2} = 12$}\\[6pt]
+      \onslide<5->{%
+      $\begin{bmatrix} \frac12 & \frac14\\[3pt] 1 & -1 \end{bmatrix}
       \begin{bmatrix} \e{1}\\[3pt] \e{2} \end{bmatrix}
-      = \begin{bmatrix} 7\\[3pt] 0 \end{bmatrix}$}
-      \onslide<8->{$\ \Rightarrow\ \begin{array}{l} \e{1} = 6\V\\[3pt] \e{2} = 4\V \end{array}$}
+      = \begin{bmatrix} 3\\[3pt] 12 \end{bmatrix}
+      \ \Rightarrow\ \begin{array}{l} \e{1} = 8\V\\[3pt] \e{2} = -4\V \end{array}$}
     \end{column}
     \begin{column}{0.49\textwidth}
       \centering
-      \begin{tikzpicture}[scale=0.62]
+      \begin{tikzpicture}[scale=0.7]
         \exG{2}{1}
       \end{tikzpicture}\\[4pt]
       \small
-      \onslide<5->{\textbf{Node 1:} \ $\displaystyle -7 + \frac{\ep{1} - \ep{3}}{1} + \frac{\ep{1}}{2} = 0$}\\[5pt]
-      \onslide<6->{\textbf{Node 3:} \ $\displaystyle 7 + \frac{\ep{3} - \ep{1}}{1} + \frac{\ep{3}}{4} = 0$}\\[7pt]
-      \onslide<7->{%
-      $\begin{bmatrix} \frac32 & -1\\[3pt] -1 & \frac54 \end{bmatrix}
-      \begin{bmatrix} \ep{1}\\[3pt] \ep{3} \end{bmatrix}
-      = \begin{bmatrix} 7\\[3pt] -7 \end{bmatrix}$}
-      \onslide<8->{$\ \Rightarrow\ \begin{array}{l} \ep{1} = 2\V\\[3pt] \ep{3} = -4\V \end{array}$}
+      \onslide<6->{$\ep{1} = 12\V$: \alert{known}}\\[6pt]
+      \onslide<7->{\textbf{Node 3:} \ $\displaystyle 3 + \frac{\ep{3} - 12}{2} + \frac{\ep{3}}{4} = 0$}\\[6pt]
+      \onslide<8->{$\tfrac34\,\ep{3} = 3 \ \Rightarrow\ \ep{3} = 4\V$}
     \end{column}
   \end{columns}
   \vfill
-  \onslide<9->{\centering Different $Y_n$, different node voltages\par}
+  \onslide<9->{%
+  \begin{center}
+    \begin{tabular}{c|c}
+      2 unknowns & \alert{1 unknown}
+    \end{tabular}
+  \end{center}}
   \vfill
 \end{frame}
 
 %--------------------------------------------------------------
-\begin{frame}{Example 11.6: what changes?}
+\begin{frame}{Example 11.6: the same branch voltages}
   \vfill
   \begin{center}
     \renewcommand{\arraystretch}{1.3}
     \begin{tabular}{l|c|c}
       & ground at 3 & ground at 2\\ \hline
-      node 1 & $\e{1} = 6$ & $\ep{1} = 2$\\
-      node 2 & $\e{2} = 4$ & $\ep{2} = 0$\\
-      node 3 & $\e{3} = 0$ & $\ep{3} = -4$\\
-      \hline
-      \onslide<3->{$\Vcol{v_{1\Omega}}$: node 1 to 3} & \onslide<3->{$6$} & \onslide<3->{$2 - (-4) = 6$}\\
-      \onslide<3->{$\Vcol{v_{2\Omega}}$: node 1 to 2} & \onslide<3->{$2$} & \onslide<3->{$2 - 0 = 2$}\\
-      \onslide<3->{$\Vcol{v_{4\Omega}}$: node 2 to 3} & \onslide<3->{$4$} & \onslide<3->{$0 - (-4) = 4$}
+      $\Vcol{v_{2\Omega}}$: node 1 to 3 & $8 - 0 = 8$ & $12 - 4 = 8$\\
+      $\Vcol{v_{4\Omega}}$: node 2 to 3 & $-4 - 0 = -4$ & $0 - 4 = -4$
     \end{tabular}\\[2pt]
     {\small (V)}
   \end{center}
   \vfill
-  \onslide<2->{\begin{center}Every node voltage shifts by $-4\V$\end{center}}
+  \onslide<2->{\begin{center}Node voltages shift by $4\V$; \ branch voltages and currents do \alert{not} change\end{center}}
   \vfill
-  \onslide<4->{%
+  \onslide<3->{%
   \begin{center}
     \begin{tikzpicture}
       \node[draw=metured, thick, fill=metured!5, rounded corners=3pt, inner sep=7pt, align=center]
-        {Branch voltages and currents do \alert{not} change};
+        {\textbf{Tip.} Put the ground at the $-$ terminal of a voltage source:\\[2pt]
+         one node voltage is known, and no supernode is needed};
     \end{tikzpicture}
   \end{center}}
   \vfill
@@ -1213,7 +1214,7 @@
   voltage source to the ground & $\e{k}$ known; no KCL at node $k$\\
   voltage source between nodes & Method I or supernode, plus constraint\\
   dependent source & control in node voltages: constraint\\
-  choice of ground & any node; branch values do not change\\
+  choice of ground & any node; best at the $-$ terminal of a voltage source\\
   \bottomrule
   \end{tabular}
   \end{center}

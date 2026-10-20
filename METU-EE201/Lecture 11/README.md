@@ -5,7 +5,7 @@ Lecture notes and slides for the eleventh lecture of EE201 (Section 2, Fall 2026
 | File | What it is |
 |---|---|
 | `EE201_Lecture_11.tex` | Handout / lecture notes (article, 6 pages). Self-contained: procedure, six worked examples, a summary. |
-| `EE201_Lecture_11_slides.tex` | Beamer deck (34 slides, 132 PDF pages) for the lecture itself — visual, low text. |
+| `EE201_Lecture_11_slides.tex` | Beamer deck (34 slides, 131 PDF pages) for the lecture itself — visual, low text. |
 | `build.sh` | Compiles both, removes auxiliary files, opens the PDFs. |
 
 ## Compiling
@@ -50,10 +50,11 @@ first half of his recorded Lecture 12 (00:00–~35:00) on
    0.5 v_x, KCL as usual, v_x = e₁, e₁ = 3 V, e₂ = 6 V, Y_n not symmetric; Example 11.5: a
    dependent voltage source v_x = e₁ between nodes 3 and 2, supernode S, e₁ = 8 V, e₂ = 9 V,
    e₃ = 1 V, P₃Ω = 27 W; remark (dependent voltage source to ground: no KCL there)
-7. **Choosing the ground** (L12 25:22, exercise) — Example 11.6, three slides: a new circuit
-   with only resistors and a current source (7 A, 1 Ω, 2 Ω, 4 Ω), solved side by side with
-   the ground at node 3 (e₁ = 6 V, e₂ = 4 V) and at node 2 (e₁′ = 2 V, e₃′ = −4 V). Y_n and
-   the node voltages change (all shift by −4 V); a table shows the branch voltages do not
+7. **Choosing the ground** (L12 25:22, exercise) — Example 11.6, three slides: a circuit with a
+   floating 12 V source (3 A, 2 Ω, 4 Ω), solved side by side with the ground at node 3
+   (supernode + constraint, two unknowns: e₁ = 8 V, e₂ = −4 V) and at the − terminal of the
+   source (e₁′ = 12 V known, one KCL: e₃′ = 4 V); the branch voltages agree; tip: put the
+   ground at the − terminal of a voltage source
 
 Then a summary table (situation → what to do).
 
@@ -63,10 +64,10 @@ After the review comes a "Motivation" slide (what simplifying cannot do, what no
 analysis does), and a roadmap slide opens each of the seven parts: a path of stops with
 what is new at each stop and a small circuit icon (done parts greyed with a check mark, the current one highlighted). Questions are
 shown first and the answers on the next page; the node being written is highlighted in the
-circuit. Each step is an ordinary extra PDF page; that is why the deck has 34 slides but 132
+circuit. Each step is an ordinary extra PDF page; that is why the deck has 34 slides but 131
 pages.
 
 Every example is also written in matrix form (Example 11.4 plugs the control in first,
-then forms the matrix; Example 11.6 forms Y_n for both grounds).
+then forms the matrix; Example 11.6 compares two grounds).
 
 In the notes, Y_n of the first example is colour-coded (diagonal, off-diagonal, right side), matching the three rules, with a small table giving the reason for each entry.

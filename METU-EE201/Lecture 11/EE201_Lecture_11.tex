@@ -331,24 +331,27 @@
     \node[font=\small, below=3pt] at ($(AA-3-1.south)!0.5!(AA-3-5.south)$) {\phantom{$A_R$: resistors}};
     \fi}}
 \newcommand{\exAinc}{\exAincN{4}}
-%  Example 11.6: one circuit, two grounds.  #1 = ground node (3: bottom, 2: top right);
-%  #2 = 0: node numbers; 1: node voltages
+%  Example 11.6: where to put the ground.  #1 = ground node (3: bottom, 2: minus terminal of v_s);
+%  #2 = 0: node numbers; 1: node voltages (and the supernode for ground 3)
 \newcommand{\exG}[2]{%
-  \path (-1.2,-0.8) rectangle (6.1,2.45);
-  \draw (0,0) to[american current source, l=$7\A$] (0,1.8) -- (2.2,1.8)
-        to[R, l=$2\ohm$] (5.0,1.8);
-  \draw (2.2,1.8) to[R, l_=$1\ohm$] (2.2,0);
-  \draw (5.0,1.8) to[R, l_=$4\ohm$] (5.0,0);
-  \draw (0,0) -- (5.0,0);
-  \ifnum#1=3 \gnd{3.6}\else \draw (5.0,1.8) -- (5.7,1.8) -- (5.7,1.6) node[ground] {};\fi
+  \path (-1.2,-0.8) rectangle (6.8,2.75);
+  \draw (0,0) to[american current source, l=$3\A$] (0,1.8) -- (1.8,1.8)
+        to[american voltage source, l_=$\Vcol{12\V}$] (5.4,1.8);
+  \draw (1.8,1.8) to[R, l_=$2\ohm$] (1.8,0);
+  \draw (5.4,1.8) to[R, l_=$4\ohm$] (5.4,0);
+  \draw (0,0) -- (5.4,0);
+  \ifnum#1=3 \gnd{3.6}\else \draw (5.4,1.8) -- (6.1,1.8) -- (6.1,1.6) node[ground] {};\fi
   \ifnum#2=0
-    \fill (2.2,1.8) circle (1.7pt) node[nlab, above left=1pt] {1};
-    \fill (5.0,1.8) circle (1.7pt) node[nlab, above=2pt] {2};
+    \fill (1.8,1.8) circle (1.7pt) node[nlab, above left=1pt] {1};
+    \fill (5.4,1.8) circle (1.7pt) node[nlab, above right=1pt] {2};
     \fill (3.6,0) circle (1.7pt) node[nlab, below right=1pt] {3};
   \else\ifnum#1=3
-    \nodev{2.2,1.8}{above left}{$e_1$}\nodev{5.0,1.8}{above}{$e_2$}
+    \fill (1.8,1.8) circle (1.7pt); \fill (5.4,1.8) circle (1.7pt);
+    \node[font=\small, text=cvolt] at (1.8,2.5) {$e_1$}; \node[font=\small, text=cvolt] at (5.4,2.5) {$e_2$};
+    \draw[dashed, metured, thick, rounded corners=4pt] (1.5,1.45) rectangle (5.7,2.2);
+    \node[nlab] at (6.05,2.2) {S};
   \else
-    \nodev{2.2,1.8}{above left}{$e_1'$}\fill (5.0,1.8) circle (1.7pt);
+    \nodev{1.8,1.8}{above left}{$e_1'$}\fill (5.4,1.8) circle (1.7pt);
     \nodev{3.6,0}{below}{$e_3'$}
   \fi\fi}
 \tikzset{fbox/.style={draw=metugray, thick, fill=metulight, rounded corners=3pt,
@@ -738,50 +741,52 @@ its current is not known. Write its constraint instead.
 
 Moving the ground shifts all node voltages by the same amount; branch quantities do not change.
 
-\begin{examplebox}[Example 11.6 --- one circuit, two grounds]
+\begin{examplebox}[Example 11.6 --- where to put the ground]
 \begin{minipage}[t]{0.48\linewidth}
 \centering
-\begin{tikzpicture}[scale=0.62]
+\begin{tikzpicture}[scale=0.78]
   \exG{3}{1}
 \end{tikzpicture}\\
 {\small ground at node 3}
+
+\smallskip
+\raggedright
+The $\Vcol{12\V}$ source is between two nodes: supernode \nd{S}.
 \begin{align*}
-  &\text{node 1:}\ \ -7 + \frac{\e{1}}{1} + \frac{\e{1} - \e{2}}{2} = 0\\
-  &\text{node 2:}\ \ \frac{\e{2} - \e{1}}{2} + \frac{\e{2}}{4} = 0
+  &\text{\nd{S}:}\ \ -3 + \frac{\e{1}}{2} + \frac{\e{2}}{4} = 0\\
+  &\text{constraint:}\ \ \e{1} - \e{2} = 12
 \end{align*}
 \[
-  \begin{bmatrix} \frac32 & -\frac12\\[2pt] -\frac12 & \frac34 \end{bmatrix}
+  \begin{bmatrix} \frac12 & \frac14\\[2pt] 1 & -1 \end{bmatrix}
   \begin{bmatrix} \e{1}\\[2pt] \e{2} \end{bmatrix}
-  = \begin{bmatrix} 7\\[2pt] 0 \end{bmatrix}
-  \ \Rightarrow\ \begin{array}{l} \e{1} = 6\V\\ \e{2} = 4\V \end{array}
+  = \begin{bmatrix} 3\\[2pt] 12 \end{bmatrix}
+  \ \Rightarrow\ \begin{array}{l} \e{1} = 8\V\\ \e{2} = -4\V \end{array}
 \]
 \end{minipage}\hfill
 \begin{minipage}[t]{0.48\linewidth}
 \centering
-\begin{tikzpicture}[scale=0.62]
+\begin{tikzpicture}[scale=0.78]
   \exG{2}{1}
 \end{tikzpicture}\\
-{\small ground at node 2}
-\begin{align*}
-  &\text{node 1:}\ \ -7 + \frac{\ep{1} - \ep{3}}{1} + \frac{\ep{1}}{2} = 0\\
-  &\text{node 3:}\ \ 7 + \frac{\ep{3} - \ep{1}}{1} + \frac{\ep{3}}{4} = 0
-\end{align*}
+{\small ground at node 2, the $-$ terminal}
+
+\smallskip
+\raggedright
+Now $\ep{1} = 12\V$ is known. One unknown, one KCL:
 \[
-  \begin{bmatrix} \frac32 & -1\\[2pt] -1 & \frac54 \end{bmatrix}
-  \begin{bmatrix} \ep{1}\\[2pt] \ep{3} \end{bmatrix}
-  = \begin{bmatrix} 7\\[2pt] -7 \end{bmatrix}
-  \ \Rightarrow\ \begin{array}{l} \ep{1} = 2\V\\ \ep{3} = -4\V \end{array}
+  \text{node 3:}\ \ 3 + \frac{\ep{3} - 12}{2} + \frac{\ep{3}}{4} = 0
+  \ \Rightarrow\ \ep{3} = 4\V
 \]
 \end{minipage}
 
 \smallskip
-\textbf{What changes?} $Y_n$ and the node voltages change: every node voltage shifts by
-$-4\V$. The branch voltages do not: $\Vcol{v_{1\Omega}} = 6\V$, $\Vcol{v_{2\Omega}} = 2\V$,
-$\Vcol{v_{4\Omega}} = 4\V$ in both. So the currents do not change either.
+\textbf{Same branch voltages.} $\Vcol{v_{2\Omega}} = 8 - 0 = 12 - 4 = 8\V$ and
+$\Vcol{v_{4\Omega}} = -4 - 0 = 0 - 4 = -4\V$. The node voltages shift by $4\V$; the branch
+voltages and currents do not change.
 \end{examplebox}
 
-\textbf{Tip.} Put the ground at one end of a voltage source: then its other node voltage is
-known, or a supernode is avoided.
+\textbf{Tip.} Put the ground at the $-$ terminal of a voltage source: one node voltage is then
+known, and no supernode is needed.
 
 %==============================================================
 \section*{Summary}
@@ -799,7 +804,7 @@ a voltage source, ground to node $k$ & $\e{k} = \Vcol{v_s}$ is known; no KCL at 
 a voltage source between nodes & Method I: its current as an unknown, plus the
   constraint;\newline Method II: KCL at the supernode, plus the constraint\\
 a dependent source & write its control variable with node voltages: a constraint equation\\
-the choice of ground & any node; the branch voltages and currents do not change\\
+the choice of ground & any node; best at the $-$ terminal of a voltage source\\
 \bottomrule
 \end{tabular}
 \end{center}
