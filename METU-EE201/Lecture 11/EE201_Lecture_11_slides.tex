@@ -718,107 +718,41 @@
 \end{frame}
 
 %--------------------------------------------------------------
-\begin{frame}{$Y_n$ from the graph: KCL, KVL and Ohm's law in blocks}
-  Resistors first, then current sources:
-  \[
-    A = [\,A_R \ \ A_S\,], \qquad
-    \Icol{\mathbf{i}} = \begin{bmatrix} \Icol{\mathbf{i}_R}\\ \Icol{\mathbf{i}_S} \end{bmatrix}, \qquad
-    \Vcol{\mathbf{v}} = \begin{bmatrix} \Vcol{\mathbf{v}_R}\\ \Vcol{\mathbf{v}_S} \end{bmatrix}
-  \]
-  \vfill
-  \onslide<2->{%
-  \textbf{KCL:} \
-  $A\Icol{\mathbf{i}} = [\,A_R \ \ A_S\,]\begin{bmatrix} \Icol{\mathbf{i}_R}\\ \Icol{\mathbf{i}_S} \end{bmatrix}
-   = A_R\Icol{\mathbf{i}_R} + A_S\Icol{\mathbf{i}_S} = \mathbf{0}$}
-  \vfill
-  \onslide<3->{%
-  \textbf{KVL:}
-  \[
-    \begin{bmatrix}
-      \hrow{metugray!15}{\Vcol{\mathbf{v}_R}}\\
-      \hrow{ccur!12}{\Vcol{\mathbf{v}_S}}
-    \end{bmatrix}
-    =
-    \begin{bmatrix}
-      \hrow{metugray!15}{A_R^T}\\
-      \hrow{ccur!12}{A_S^T}
-    \end{bmatrix}\Vcol{\mathbf{e}}
-    \qquad
-    \onslide<4->{\Rightarrow\qquad
-    \Vcol{\mathbf{v}_R} = A_R^T\Vcol{\mathbf{e}} \ \ \text{(resistor rows only)}}
-  \]}
-  \vfill
-  \onslide<5->{%
-  \textbf{Ohm:} \ $\Icol{\mathbf{i}_R} = G\,\Vcol{\mathbf{v}_R}$, \quad
-  $G = \mathrm{diag}(G_1, \dots, G_{b_R})$}
-  \vfill
-\end{frame}
-
-%--------------------------------------------------------------
 \begin{frame}{$Y_n$ from the graph: the general result}
   \vfill
-  Ohm and KVL into KCL:
-  \[
-    A_R\Icol{\mathbf{i}_R} + A_S\Icol{\mathbf{i}_S}
-    = A_R\, G\, \underbrace{A_R^T\Vcol{\mathbf{e}}}_{\Vcol{\mathbf{v}_R}} + A_S\Icol{\mathbf{i}_S} = \mathbf{0}
-    \quad\Rightarrow\quad
-    A_R\, G\, A_R^T\,\Vcol{\mathbf{e}} = -A_S\Icol{\mathbf{i}_S}
-  \]
+  Resistors first, then current sources: \ $A = [\,A_R \ \ A_S\,]$
   \vfill
-  \onslide<2->{%
+  \begin{center}
+    \renewcommand{\arraystretch}{1.5}
+    \begin{tabular}{r@{\quad}l}
+      \onslide<2->{\textbf{KCL:}} & \onslide<2->{$A_R\Icol{\mathbf{i}_R} + A_S\Icol{\mathbf{i}_S} = \mathbf{0}$}\\
+      \onslide<3->{\textbf{KVL:}} & \onslide<3->{$\Vcol{\mathbf{v}_R} = A_R^T\Vcol{\mathbf{e}}$}\\
+      \onslide<4->{\textbf{Ohm:}} & \onslide<4->{$\Icol{\mathbf{i}_R} = G\,\Vcol{\mathbf{v}_R}$, \quad
+        $G = \mathrm{diag}(G_1, \dots, G_{b_R})$}
+    \end{tabular}
+  \end{center}
+  \vfill
+  \onslide<5->{%
+  \[
+    A_R\, G\, A_R^T\,\Vcol{\mathbf{e}} = -A_S\Icol{\mathbf{i}_S}
+  \]}
+  \vfill
+  \onslide<6->{%
   \begin{center}
     \begin{tikzpicture}
       \node[draw=metured, fill=metured!6, rounded corners=3pt, inner sep=6pt]
         {$Y_n = A_R\, G\, A_R^T, \qquad \Icol{\mathbf{i}_n} = -A_S\Icol{\mathbf{i}_S}$};
-    \end{tikzpicture}
-  \end{center}}
-  \vfill
-  \onslide<3->{%
-  \begin{center}
-    $Y_n^T = A_R\, G^T A_R^T = Y_n$: \ \alert{always symmetric}
+    \end{tikzpicture}\\[6pt]
+    \onslide<7->{$Y_n^T = Y_n$: \ \alert{always symmetric}}
   \end{center}}
   \vfill
 \end{frame}
 
 %--------------------------------------------------------------
-\begin{frame}{$Y_n$ from the graph: Example 11.1, the resistor voltages}
-  \begin{columns}[c,onlytextwidth]
-    \begin{column}{0.36\textwidth}
-      \centering
-      \begin{tikzpicture}[scale=0.85]
-        \exAgraph
-      \end{tikzpicture}
-    \end{column}
-    \begin{column}{0.62\textwidth}
-      $A_R^T$: columns 1--5 of $A$, as rows\\[8pt]
-      \onslide<2->{%
-      \[
-        \underbrace{\begin{bmatrix} \Vcol{v_1}\\ \Vcol{v_2}\\ \Vcol{v_3}\\ \Vcol{v_4}\\ \Vcol{v_5} \end{bmatrix}}_{\Vcol{\mathbf{v}_R}}
-        =
-        \underbrace{\begin{bmatrix}
-          1 & 0 & 0\\
-          1 & -1 & 0\\
-          0 & 1 & 0\\
-          0 & 1 & -1\\
-          1 & 0 & -1
-        \end{bmatrix}}_{A_R^T}
-        \underbrace{\begin{bmatrix} \e{1}\\ \e{2}\\ \e{3} \end{bmatrix}}_{\Vcol{\mathbf{e}}}
-        \onslide<3->{%
-        =
-        \begin{bmatrix} \e{1}\\ \e{1} - \e{2}\\ \e{2}\\ \e{2} - \e{3}\\ \e{1} - \e{3} \end{bmatrix}}
-      \]}
-      \onslide<4->{%
-      Tail minus head\\[4pt]}
-      \onslide<5->{%
-      Ohm: \ $\Icol{i_k} = G_k\Vcol{v_k}$}
-    \end{column}
-  \end{columns}
-\end{frame}
-
-%--------------------------------------------------------------
-\begin{frame}{$Y_n$ from the graph: Example 11.1, the matrix}
+\begin{frame}{$Y_n$ from the graph: Example 11.1}
   \vfill
   \small
+  From $A$: \ $A_R$ = columns 1--5, \ $A_S$ = columns 6, 7
   \[
     A_R\,G = \begin{bmatrix}
       G_1 & G_2 & 0 & 0 & G_5\\

@@ -5,7 +5,7 @@ Lecture notes and slides for the eleventh lecture of EE201 (Section 2, Fall 2026
 | File | What it is |
 |---|---|
 | `EE201_Lecture_11.tex` | Handout / lecture notes (article, 6 pages). Self-contained: procedure, six worked examples, a summary. |
-| `EE201_Lecture_11_slides.tex` | Beamer deck (36 slides, 138 PDF pages) for the lecture itself — visual, low text. |
+| `EE201_Lecture_11_slides.tex` | Beamer deck (34 slides, 132 PDF pages) for the lecture itself — visual, low text. |
 | `build.sh` | Compiles both, removes auxiliary files, opens the PDFs. |
 
 ## Compiling
@@ -33,11 +33,9 @@ first half of his recorded Lecture 12 (00:00–~35:00) on
    (e_k − e_j)/R; KCL at every node except the ground
 2. **Matrix form** — Y_n e = i_n (i_n: source currents entering each node); Y_n written directly from the circuit with three rules (diagonal, off-diagonal, right side);
    Y_n from the graph: the graph of Example 11.1 (branches 1–5 resistors, 6–7 sources,
-   node 0 the ground), its reduced incidence matrix A = [A_R A_S]; KVL v = Aᵀe and its
-   resistor rows v_R = A_Rᵀe worked out on the example (each resistor voltage is tail minus
-   head node voltage); KCL, KVL and Ohm's law in block form, with Aᵀ split into
-   resistor rows (v_R = A_Rᵀe) and source rows (v_S = A_Sᵀe); then
-   Y_n = A_R G A_Rᵀ and i_n = −A_S i_S, checked on the example; Y_n symmetric since G is
+   node 0 the ground), its reduced incidence matrix A = [A_R A_S]; one slide with KCL
+   (A_R i_R + A_S i_S = 0), KVL (v_R = A_Rᵀe) and Ohm's law (i_R = G v_R), giving
+   Y_n = A_R G A_Rᵀ and i_n = −A_S i_S; one slide checking this on the example; Y_n symmetric since G is
    diagonal
 3. **A voltage source to the ground** (Example II) — Example 11.2, one slide: the source fixes
    e₃ = v_s, so e₃ is known and no KCL is written at node 3; two KCL equations, 2 × 2 system,
@@ -65,7 +63,7 @@ After the review comes a "Motivation" slide (what simplifying cannot do, what no
 analysis does), and a roadmap slide opens each of the seven parts: a path of stops with
 what is new at each stop and a small circuit icon (done parts greyed with a check mark, the current one highlighted). Questions are
 shown first and the answers on the next page; the node being written is highlighted in the
-circuit. Each step is an ordinary extra PDF page; that is why the deck has 36 slides but 138
+circuit. Each step is an ordinary extra PDF page; that is why the deck has 34 slides but 132
 pages.
 
 Every example is also written in matrix form (Example 11.4 plugs the control in first,
