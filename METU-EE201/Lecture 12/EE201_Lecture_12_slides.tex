@@ -434,11 +434,14 @@
       \end{tikzpicture}
     \end{column}
     \begin{column}{0.41\textwidth}
-      How many unknowns?\\[12pt]
-      \onslide<2->{%
-      $b = 6$: \ $12$ unknowns\\[12pt]}
-      \onslide<3->{%
-      Mesh current analysis: \alert{3}}
+      \textbf{Goal:} every branch current and voltage\\[12pt]
+      \textbf{Four steps:}
+      \begin{enumerate}\itemsep4pt
+        \item Find the inner meshes
+        \item Assign the mesh currents
+        \item Resistor voltages with mesh currents
+        \item KVL around every inner mesh
+      \end{enumerate}
     \end{column}
   \end{columns}
 \end{frame}
