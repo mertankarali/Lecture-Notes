@@ -434,7 +434,7 @@
       \end{tikzpicture}
     \end{column}
     \begin{column}{0.41\textwidth}
-      \textbf{Question.} How many unknowns?\\[12pt]
+      How many unknowns?\\[12pt]
       \onslide<2->{%
       $b = 6$: \ $12$ unknowns\\[12pt]}
       \onslide<3->{%
@@ -495,17 +495,14 @@
       \centering
       \begin{tikzpicture}[scale=0.69]
         \exM{0}{1}
-        \only<1-2>{\node[pol] at (3.12,1.55) {$+$}; \node[pol] at (3.12,0.45) {$-$};}
+        \node[pol] at (3.12,1.55) {$+$}; \node[pol] at (3.12,0.45) {$-$};
       \end{tikzpicture}
     \end{column}
     \begin{column}{0.41\textwidth}
-      \textbf{Question.} $\Vcol{v}$ of $R_2$ along mesh 1?\\[10pt]
-      \onslide<2->{%
-      $\Vcol{v} = R_2(\im{1} - \im{2})$\\[10pt]}
-      \onslide<3->{%
-      $R_4$: \ $\Vcol{v} = R_4\,\im{3}$\\[10pt]}
-      \onslide<4->{%
-      \fbox{\ $R\,(\text{own} - \text{other})$\ }}
+      $R_2$, along mesh 1:\\[3pt]
+      $\Vcol{v} = R_2(\im{1} - \im{2})$\\[12pt]
+      $R_4$: \ $\Vcol{v} = R_4\,\im{3}$\\[12pt]
+      \fbox{\ $R\,(\text{own} - \text{other})$\ }
     \end{column}
   \end{columns}
 \end{frame}
@@ -554,7 +551,7 @@
     \end{aligned}
   \]
   \vfill
-  \only<1>{\begin{center}\textbf{Question.} One matrix equation?\end{center}}%
+  \only<1>{\begin{center}One matrix equation?\end{center}}%
   \onslide<2->{%
   \[
     \underbrace{\begin{bmatrix}
@@ -591,7 +588,7 @@
       \end{tikzpicture}
     \end{column}
     \begin{column}{0.54\textwidth}
-      \textbf{Question.} Read $Z_M$ from the circuit?\\[10pt]
+      Read $Z_M$ from the circuit?\\[10pt]
       \onslide<2->{%
       \textbf{Diagonal} $(k,k)$: \ $+\sum R$ \alert{around} mesh $k$\\[8pt]}
       \onslide<6->{%
@@ -639,7 +636,7 @@
   \begin{columns}[c,onlytextwidth]
     \begin{column}{0.42\textwidth}
       \small
-      \textbf{Question.} Mesh matrix $M$?\\[6pt]
+      Mesh matrix $M$?\\[6pt]
       \onslide<2->{%
       One row per inner mesh\\[3pt]
       $+1$ along, \ $-1$ against}
@@ -838,7 +835,7 @@
   \end{center}
   \vfill
   \begin{itemize}\itemsep8pt
-    \item \textbf{Question.} KVL around mesh 1: voltage across $\Icol{i_s}$?
+    \item KVL around mesh 1: voltage across $\Icol{i_s}$?
     \item<2-> Not given by $\im{1}$, $\im{2}$: a current source fixes $\Icol{i}$, not $\Vcol{v}$
     \item<3-> \alert{Method I}: its voltage as an unknown \quad \alert{Method II}: supermesh
   \end{itemize}
@@ -890,7 +887,7 @@
   \vspace{-4pt}
   \begin{columns}[t,onlytextwidth]
     \begin{column}{0.5\textwidth}
-      \textbf{Question.} Can we get rid of $\Vcol{v}$?\\[8pt]
+      Can we get rid of $\Vcol{v}$?\\[8pt]
       \onslide<2->{%
       Add KVL of meshes 1 and 2:\\[3pt]
       $\Vcol{v}$ \alert{cancels}}
@@ -917,7 +914,7 @@
   \begin{columns}[t,onlytextwidth]
     \begin{column}{0.49\textwidth}
       \small
-      \only<1>{\textbf{Question.} KVL around the supermesh?\\[4pt]}%
+      \only<1>{KVL around the supermesh?\\[4pt]}%
       \onslide<2->{\textcolor{metured}{\textbf{Supermesh:}} \
       $(R_1 + R_2)\,\im{1} + R_3\,\im{2} + \Vcol{v_s} = 0$\\[6pt]}
       \onslide<3->{\textbf{Constraint:} \ $\im{1} - \im{2} = \Icol{i_s}$}
@@ -955,7 +952,7 @@
       \end{tikzpicture}
     \end{column}
     \begin{column}{0.45\textwidth}
-      \textbf{Question.} Find $\Icol{i}$ of the $4\ohm$.\\[10pt]
+      Find $\Icol{i}$ of the $4\ohm$.\\[10pt]
       \onslide<2->{%
       Treat $\Icol{3\,v_x}$ as a current source\\[8pt]}
       \onslide<3->{%
@@ -979,7 +976,7 @@
     \end{column}
     \begin{column}{0.45\textwidth}
       \small
-      \only<1>{\textbf{Question.} KVL around the supermesh?\\[4pt]}%
+      \only<1>{KVL around the supermesh?\\[4pt]}%
       \onslide<2->{%
       \textcolor{metured}{\textbf{Supermesh:}}\\[2pt]
       $2\,\im{1} + 4(\im{1} - \im{3}) + 12 + 6\,\im{2} = 0 \quad (1)$\\[8pt]}
@@ -988,7 +985,7 @@
       \onslide<4->{%
       \textbf{Dependent source:} \ $\im{3} = -3\,\Vcol{v_x}$\\[8pt]}
       \onslide<5->{%
-      \textbf{Question.} $\Vcol{v_x}$ in mesh currents?\\[4pt]}
+      $\Vcol{v_x}$ in mesh currents?\\[4pt]}
       \onslide<6->{%
       $\Vcol{v_x} = -2\,\im{1}$\\[8pt]}
       \onslide<7->{%
@@ -1058,7 +1055,7 @@
     \end{column}
     \begin{column}{0.45\textwidth}
       \small
-      \textbf{Question.} Same circuit, node voltages?\\[10pt]
+      Same circuit, node voltages?\\[10pt]
       \onslide<2->{%
       Middle node: $12\V$ known\\[3pt]
       Unknowns: $\e{1}$, $\e{2}$\\[10pt]}
@@ -1105,7 +1102,7 @@
 %--------------------------------------------------------------
 \begin{frame}{Node or mesh?}
   \vfill
-  \textbf{Question.} Example 12.4: which needs fewer equations?
+  Example 12.4: which needs fewer equations?
   \vfill
   \begin{columns}[t,onlytextwidth]
     \begin{column}{0.47\textwidth}

@@ -5,7 +5,7 @@ Lecture notes and slides for the twelfth lecture of EE201 (Section 2, Fall 2026/
 | File | What it is |
 |---|---|
 | `EE201_Lecture_12.tex` | Handout / lecture notes (article, 5 pages). Self-contained: procedure, four worked examples, a summary. |
-| `EE201_Lecture_12_slides.tex` | Beamer deck (34 slides, 132 PDF pages) for the lecture itself — visual, low text. |
+| `EE201_Lecture_12_slides.tex` | Beamer deck (34 slides, 129 PDF pages) for the lecture itself — visual, low text. |
 | `build.sh` | Compiles both, removes auxiliary files, opens the PDFs. |
 
 ## Compiling
@@ -66,7 +66,7 @@ each part: a road with four stations (voltage sources, current sources, dependen
 node or mesh?). Questions are shown first and the answers on the next page; equations,
 matrix rows and constraints appear one per page, and the mesh being written is shaded in
 the circuit. Each step is an ordinary extra PDF page; that is why the deck has 34 slides but
-132 pages.
+129 pages.
 
 Every example is also written in matrix form.
 
