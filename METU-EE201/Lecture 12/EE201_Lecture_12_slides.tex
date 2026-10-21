@@ -158,7 +158,7 @@
 %  Examples 12.3 and 12.4: two meshes with a current source between them.
 %  #1 = 0: v_s on the right (12.3);  1: the CCVS r_m i_x on the right (12.4).
 %  #2 = 0: no mesh currents;  1: mesh currents;  2: mesh currents and the supermesh;
-%       3: mesh currents and the voltage v of the current source (Method I).
+%       3: mesh currents and the voltage v of the current source (the source voltage as an unknown).
 \newcommand{\exN}[2]{%
   \draw (0,0) to[R, l=$R_1$] (0,2.2) to[R, l=$R_2$] (3,2.2) to[R, l=$R_3$] (6,2.2);
   \draw (3,2.2) to[american current source, l=$\Icol{i_s}$] (3,0);
@@ -352,7 +352,7 @@
       \rmsub{4}{5}{5.0}{-1.75}{between two meshes}
       \rmsub{6}{6}{8.45}{-0.8}{a dependent current source}
       \rmsub{6}{6}{8.45}{-1.75}{a dependent voltage source}
-      \rmsub{7}{7}{11.65}{-0.8}{count the equations}
+      \rmsub{7}{7}{11.65}{-0.8}{which one to choose?}
     \end{tikzpicture}
     \vfill
     \mbox{}
@@ -678,13 +678,13 @@
   \begin{itemize}\itemsep8pt
     \item Voltage across $\Icol{i_s}$: \ ?
     \item<2-> Not given by $\im{1}$, $\im{2}$: a current source fixes $\Icol{i}$, not $\Vcol{v}$
-    \item<3-> \alert{Method I}: its voltage as an unknown \quad \alert{Method II}: supermesh
+    \item<3-> $\Vcol{v}$ as an \alert{unknown}, \ or a \alert{supermesh}
   \end{itemize}
   \vfill
 \end{frame}
 
 %--------------------------------------------------------------
-\begin{frame}{Method I: the voltage as an unknown}
+\begin{frame}{Example 12.3: $\Vcol{v}$ as an unknown}
   \begin{center}
     \begin{tikzpicture}[scale=0.82]
       \exN{0}{3}
@@ -718,7 +718,7 @@
 \end{frame}
 
 %--------------------------------------------------------------
-\begin{frame}{Method II: the supermesh}
+\begin{frame}{Example 12.3: the supermesh}
   \begin{center}
     \begin{tikzpicture}[scale=0.9]
       \only<1-2>{\exN{0}{3}}%
@@ -745,7 +745,7 @@
 \end{frame}
 
 %--------------------------------------------------------------
-\begin{frame}{Method II: the equations}
+\begin{frame}{Example 12.3: the supermesh equations}
   \begin{center}
     \begin{tikzpicture}[scale=0.85]
       \exN{0}{2}
@@ -946,32 +946,27 @@
 %--------------------------------------------------------------
 \begin{frame}{Node or mesh?}
   \vfill
-  Example 12.4: which needs fewer equations?
-  \vfill
   \begin{columns}[t,onlytextwidth]
     \begin{column}{0.47\textwidth}
-      \onslide<2->{%
       \begin{block}{Mesh currents}
-        $\ell = 3$, \ 2 current sources\\[3pt]
-        $3 - 2 = \alert{1}$ equation
-      \end{block}}
+        Unknowns: $\ell$ minus the current sources\\[3pt]
+        Needs a \alert{planar} circuit
+      \end{block}
     \end{column}
     \begin{column}{0.47\textwidth}
-      \onslide<3->{%
       \begin{block}{Node voltages}
-        $n - 1 = 3$, \ 1 voltage source\\[3pt]
-        $3 - 1 = \alert{2}$ equations
-      \end{block}}
+        Unknowns: $n - 1$ minus the voltage sources\\[3pt]
+        Always works
+      \end{block}
     \end{column}
   \end{columns}
   \vfill
-  \onslide<4->{%
   \begin{center}
     \begin{tikzpicture}
       \node[draw=metured, thick, fill=metured!5, rounded corners=3pt, inner sep=7pt, align=center]
-        {\textbf{Tip.} Count first. \ Mesh needs a planar circuit.};
+        {\textbf{Hint.} Compare the number of equations \alert{and} how complex they are};
     \end{tikzpicture}
-  \end{center}}
+  \end{center}
   \vfill
 \end{frame}
 
@@ -986,9 +981,9 @@
     \midrule
     resistors, voltage sources & $Z_M\Icol{\mathbf{i}_M} = \Vcol{\mathbf{v}_M}$, by the rules; symmetric\\
     current source on one mesh & $\im{k}$ known; no KVL around mesh $k$\\
-    current source between meshes & Method I or supermesh, plus constraint\\
+    current source between meshes & its voltage $\Vcol{v}$ as an unknown, or supermesh; plus constraint\\
     dependent source & control in mesh currents: constraint\\
-    node or mesh? & count; mesh needs planar\\
+    node or mesh? & fewer, simpler equations; mesh needs planar\\
     \bottomrule
   \end{tabular}
   \end{center}

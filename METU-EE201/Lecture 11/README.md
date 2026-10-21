@@ -40,12 +40,12 @@ first half of his recorded Lecture 12 (00:00–~35:00) on
 3. **A voltage source to the ground** (Example II) — Example 11.2, one slide: the source fixes
    e₃ = v_s, so e₃ is known and no KCL is written at node 3; two KCL equations, 2 × 2 system,
    v_s/R₄ on the right side
-4. **A voltage source between two nodes** (Modified NVA, Method I) — Example 11.3: its current
+4. **A voltage source between two nodes** (modified node voltage analysis) — Example 11.3: the source current
    i as an extra unknown plus the constraint e₁ − e₂ = v_s2; one slide, the equations then
    the 4 × 4 matrix form
-5. **Supernode** (L12 04:00, Method II) — adding KCL at nodes 1 and 2 cancels i; KCL at the
-   supernode plus the constraint; 3 × 3, one unknown fewer, not symmetric (the notes no longer
-   have the Method I vs Method II table)
+5. **Supernode** (L12 04:00) — adding KCL at nodes 1 and 2 cancels i; KCL at the
+   supernode plus the constraint; 3 × 3, one unknown fewer, not symmetric. The slides and notes name the two ways by what they do
+   ("the source current as an unknown", "the supernode"), not "Method I/II"
 6. **Dependent sources** (L12 11:20) — Example 11.4 (added): a dependent current source
    0.5 v_x, KCL as usual, v_x = e₁, e₁ = 3 V, e₂ = 6 V, Y_n not symmetric; Example 11.5: a
    dependent voltage source v_x = e₁ between nodes 3 and 2, supernode S, e₁ = 8 V, e₂ = 9 V,

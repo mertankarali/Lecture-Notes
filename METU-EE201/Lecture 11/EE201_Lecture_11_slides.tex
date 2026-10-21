@@ -738,13 +738,13 @@
   \begin{itemize}\itemsep8pt
     \item Current through $\Vcol{v_{s2}}$: \ ?
     \item<2-> Not given by $\e{1}$, $\e{2}$: a voltage source fixes $\Vcol{v}$, not $\Icol{i}$
-    \item<3-> \alert{Method I}: its current as an unknown \quad \alert{Method II}: supernode
+    \item<3-> $\Icol{i}$ as an \alert{unknown}, \ or a \alert{supernode}
   \end{itemize}
   \vfill
 \end{frame}
 
 %--------------------------------------------------------------
-\begin{frame}{Method I: the current as an unknown}
+\begin{frame}{Example 11.3: $\Icol{i}$ as an unknown}
   \begin{center}
     \begin{tikzpicture}[scale=0.82]
       \exB{1}
@@ -785,7 +785,7 @@
 \end{frame}
 
 %--------------------------------------------------------------
-\begin{frame}{Method II: the supernode}
+\begin{frame}{Example 11.3: the supernode}
   \begin{center}
     \begin{tikzpicture}[scale=0.95]
       \only<1-2>{\exB{1}}%
@@ -812,7 +812,7 @@
 \end{frame}
 
 %--------------------------------------------------------------
-\begin{frame}{Method II: the equations}
+\begin{frame}{Example 11.3: the supernode equations}
   \begin{center}
     \begin{tikzpicture}[scale=0.85]
       \exB{2}
@@ -1107,7 +1107,7 @@
   \midrule
   resistors, current sources & $Y_n\Vcol{\mathbf{e}} = \Icol{\mathbf{i}_n}$, by the rules; symmetric\\
   voltage source to the ground & $\e{k}$ known; no KCL at node $k$\\
-  voltage source between nodes & Method I or supernode, plus constraint\\
+  voltage source between nodes & its current $\Icol{i}$ as an unknown, or supernode; plus constraint\\
   dependent source & control in node voltages: constraint\\
   choice of ground & any node; best at the $-$ terminal of a voltage source\\
   \bottomrule

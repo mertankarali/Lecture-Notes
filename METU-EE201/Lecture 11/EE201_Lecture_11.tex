@@ -576,12 +576,12 @@ If a voltage source (independent or dependent) lies between two nodes and neithe
 ground, KCL there needs its current. Its law fixes its voltage, not its current, so this
 current cannot be written with node voltages. \textbf{Modified node analysis} offers two ways out.
 
-\begin{definitionbox}{Method I}
+\begin{definitionbox}{The source current as an unknown}
 Let the unknown current $\Icol{i}$ through the voltage source be one more unknown. Write KCL at
 every node except the ground, and add the law of the source as a \textbf{constraint equation}.
 \end{definitionbox}
 
-\begin{examplebox}[Example 11.3 --- Method I]
+\begin{examplebox}[Example 11.3 --- the source current as an unknown]
 {\centering
 \begin{tikzpicture}[scale=0.78]
   \exB{1}
@@ -618,12 +618,12 @@ unknown $\Icol{i}$; the supernode below avoids it.
 
 \end{examplebox}
 
-\begin{definitionbox}{Method II: the supernode}
+\begin{definitionbox}{The supernode}
 Write KCL as if the two nodes of the voltage source were a single node, a
 \textbf{supernode}. Add the law of the source as a constraint equation.
 \end{definitionbox}
 
-\begin{examplebox}[Example 11.3, revisited --- Method II, three unknowns]
+\begin{examplebox}[Example 11.3, revisited --- the supernode, three unknowns]
 \begin{minipage}[c]{0.44\linewidth}
 \centering
 \begin{tikzpicture}[scale=0.7]
@@ -641,7 +641,7 @@ Write KCL as if the two nodes of the voltage source were a single node, a
 \end{minipage}
 \end{examplebox}
 
-\textbf{Why does it work?} Add the KCL equations of nodes 1 and 2 in Method I: $\Icol{i}$
+\textbf{Why does it work?} Add the KCL equations of nodes 1 and 2 above: $\Icol{i}$
 leaves node 1 and enters node 2, so it cancels. The sum is KCL around the supernode.
 The current $\Icol{i}$ is no longer needed. In matrix form, with three unknowns and three equations:
 \[
@@ -656,7 +656,7 @@ The current $\Icol{i}$ is no longer needed. In matrix form, with three unknowns 
 \]
 The matrix is no longer symmetric.
 
-Method II needs one unknown fewer than Method I and gives the same node voltages; the current
+The supernode needs one unknown fewer and gives the same node voltages; the current
 $\Icol{i}$, if needed, follows from a KCL afterwards.
 
 %==============================================================
@@ -801,8 +801,8 @@ known, and no supernode is needed.
 resistors and current sources & KCL at every non-ground node: $Y_n\Vcol{\mathbf{e}} =
   \Icol{\mathbf{i}_n}$, from three simple rules; $Y_n = A_R G A_R^T$ is symmetric\\
 a voltage source, ground to node $k$ & $\e{k} = \Vcol{v_s}$ is known; no KCL at node $k$\\
-a voltage source between nodes & Method I: its current as an unknown, plus the
-  constraint;\newline Method II: KCL at the supernode, plus the constraint\\
+a voltage source between nodes & its current as an unknown, plus the constraint;\newline
+  or KCL at the supernode, plus the constraint\\
 a dependent source & write its control variable with node voltages: a constraint equation\\
 the choice of ground & any node; best at the $-$ terminal of a voltage source\\
 \bottomrule

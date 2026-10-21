@@ -5,7 +5,7 @@ Lecture notes and slides for the twelfth lecture of EE201 (Section 2, Fall 2026/
 | File | What it is |
 |---|---|
 | `EE201_Lecture_12.tex` | Handout / lecture notes (article, 5 pages). Self-contained: procedure, five worked examples, a summary. |
-| `EE201_Lecture_12_slides.tex` | Beamer deck (29 slides and a 4-slide appendix, 121 PDF pages) for the lecture itself — visual, low text. |
+| `EE201_Lecture_12_slides.tex` | Beamer deck (29 slides and a 4-slide appendix, 118 PDF pages) for the lecture itself — visual, low text. |
 | `build.sh` | Compiles both, removes auxiliary files, opens the PDFs. |
 
 ## Compiling
@@ -44,16 +44,17 @@ matrix lecture: mesh currents i_M = [i_M1 … i_Mℓ]ᵀ, i = Mᵀ i_M, KVL M v 
 3. **A current source on one mesh only** (L12 42:55, Example II) — Example 12.2: i_s on the
    outer branch of mesh 1 fixes i_M1 = i_s; no KVL around mesh 1; 2 × 2 system
 4. **A current source between two meshes** (L13 01:09, modified mesh analysis) — Example
-   12.3: Method I (its voltage v as an extra unknown, plus the constraint i_M1 − i_M2 = i_s,
-   3 × 3) and Method II (the supermesh: v cancels, KVL around the outer loop, 2 × 2, not
+   12.3: the source voltage v as an extra unknown (plus the constraint i_M1 − i_M2 = i_s,
+   3 × 3), and the supermesh (v cancels, KVL around the outer loop, 2 × 2, not
    symmetric)
 5. **Dependent sources** (L13 20:59) — Example 12.4, a dependent current source 3 v_x on
    mesh 3 only and a 2 A source between meshes 1 and 2; supermesh plus two constraints,
    i_M = (2, 4, 12) A, i = −10 A. Example 12.5, a dependent voltage source 2 i_x: KVL as usual,
    first plug i_x = i_M1 − i_M2, then the matrix; i_M = (4, 2) A, i_x = 2 A, Z_M not
    symmetric. Remark (dependent current source on one mesh: no KVL there)
-6. **Node or mesh?** — counting rule on Example 12.4: mesh, ℓ minus the current sources
-   (1 equation); node, n − 1 minus the voltage sources (2 equations)
+6. **Node or mesh?** — one slide: mesh, ℓ minus the current sources (planar circuits only);
+   node, n − 1 minus the voltage sources (always works); hint: compare the number of
+   equations and how complex they are
 
 Then a summary table (situation → what to do).
 
@@ -66,7 +67,7 @@ currents: which law holds automatically, which one is written), and a roadmap sl
 each part: a road with four stations (voltage sources, current sources, dependent sources,
 node or mesh?). Questions are shown first and the answers on the next page; equations,
 matrix rows and constraints appear one per page, and the mesh being written is shaded in
-the circuit. Each step is an ordinary extra PDF page; that is why the deck has 33 slides but 121 pages.
+the circuit. Each step is an ordinary extra PDF page; that is why the deck has 33 slides but 118 pages.
 
 Every example is also written in matrix form.
 
