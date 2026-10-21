@@ -60,6 +60,8 @@ Then a summary table (situation → what to do).
 
 ## Slides
 
+The "Y_n from the graph" slides are at the end of the deck, after the summary.
+
 After the review comes a "Motivation" slide (what simplifying cannot do, what node voltage
 analysis does), and a roadmap slide opens each of the seven parts: a path of stops with
 what is new at each stop and a small circuit icon (done parts greyed with a check mark, the current one highlighted). Questions are

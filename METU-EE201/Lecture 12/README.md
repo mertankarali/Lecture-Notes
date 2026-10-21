@@ -60,6 +60,8 @@ Then a summary table (situation → what to do).
 
 ## Slides
 
+The "Z_M from the graph" slides are at the end of the deck, after the summary.
+
 After the review of node voltage analysis comes a "Motivation" slide (node voltages vs mesh
 currents: which law holds automatically, which one is written), and a roadmap slide opens
 each part: a road with four stations (voltage sources, current sources, dependent sources,

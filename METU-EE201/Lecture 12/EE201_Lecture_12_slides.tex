@@ -616,176 +616,6 @@
   \vfill
 \end{frame}
 
-%--------------------------------------------------------------
-\begin{frame}{$Z_M$ from the graph: the mesh matrix}
-  \begin{columns}[c,onlytextwidth]
-    \begin{column}{0.45\textwidth}
-      \centering
-      \begin{tikzpicture}[scale=0.53]
-        \exM{0}{0}
-      \end{tikzpicture}
-    \end{column}
-    \begin{column}{0.53\textwidth}
-      \centering
-      \begin{tikzpicture}[scale=0.82]
-        \exMgraph{1}
-      \end{tikzpicture}\\[4pt]
-      {\small 1--4: $R_1, \dots, R_4$; \ \textcolor{cvolt}{5, 6: $v_{s1}$, $v_{s2}$} ($+$ to $-$)}
-    \end{column}
-  \end{columns}
-  \vfill
-  \begin{columns}[c,onlytextwidth]
-    \begin{column}{0.42\textwidth}
-      \small
-      Mesh matrix $M$?\\[6pt]
-      \onslide<2->{%
-      One row per inner mesh\\[3pt]
-      $+1$ along, \ $-1$ against}
-    \end{column}
-    \begin{column}{0.56\textwidth}
-      \centering
-      \only<2>{$M = \exMmatN{0}$}\only<3>{$M = \exMmatN{1}$}\only<4>{$M = \exMmatN{2}$}%
-      \only<5>{$M = \exMmatN{3}$}\only<6->{$M = \exMmatN{4}$}
-    \end{column}
-  \end{columns}
-  \vfill
-\end{frame}
-
-%--------------------------------------------------------------
-\begin{frame}{$Z_M$ from the graph: KVL, KCL and Ohm's law in blocks}
-  Resistors first, then voltage sources:
-  \[
-    M = [\,M_R \ \ M_S\,], \qquad
-    \Icol{\mathbf{i}} = \begin{bmatrix} \Icol{\mathbf{i}_R}\\ \Icol{\mathbf{i}_S} \end{bmatrix}, \qquad
-    \Vcol{\mathbf{v}} = \begin{bmatrix} \Vcol{\mathbf{v}_R}\\ \Vcol{\mathbf{v}_S} \end{bmatrix}
-  \]
-  \vfill
-  \onslide<2->{%
-  \textbf{KVL:} \
-  $M\Vcol{\mathbf{v}} = [\,M_R \ \ M_S\,]\begin{bmatrix} \Vcol{\mathbf{v}_R}\\ \Vcol{\mathbf{v}_S} \end{bmatrix}
-   = M_R\Vcol{\mathbf{v}_R} + M_S\Vcol{\mathbf{v}_S} = \mathbf{0}$}
-  \vfill
-  \onslide<3->{%
-  \textbf{KCL:}
-  \[
-    \begin{bmatrix}
-      \hrow{metugray!15}{\Icol{\mathbf{i}_R}}\\
-      \hrow{cvolt!12}{\Icol{\mathbf{i}_S}}
-    \end{bmatrix}
-    =
-    \begin{bmatrix}
-      \hrow{metugray!15}{M_R^T}\\
-      \hrow{cvolt!12}{M_S^T}
-    \end{bmatrix}
-    \Icol{\mathbf{i}_M}
-    \qquad
-    \onslide<4->{\Rightarrow\qquad
-    \Icol{\mathbf{i}_R} = M_R^T\Icol{\mathbf{i}_M} \ \ \text{(resistor rows only)}}
-  \]}
-  \vfill
-  \onslide<5->{%
-  \textbf{Ohm:} \ $\Vcol{\mathbf{v}_R} = R\,\Icol{\mathbf{i}_R}$, \quad
-  $R = \mathrm{diag}(R_1, \dots, R_{b_R})$}
-  \vfill
-\end{frame}
-
-%--------------------------------------------------------------
-\begin{frame}{$Z_M$ from the graph: the general result}
-  \vfill
-  Ohm and KCL into KVL:
-  \[
-    M_R\Vcol{\mathbf{v}_R} + M_S\Vcol{\mathbf{v}_S}
-    = M_R\, R\, \underbrace{M_R^T\Icol{\mathbf{i}_M}}_{\Icol{\mathbf{i}_R}} + M_S\Vcol{\mathbf{v}_S} = \mathbf{0}
-    \quad\Rightarrow\quad
-    M_R\, R\, M_R^T\,\Icol{\mathbf{i}_M} = -M_S\Vcol{\mathbf{v}_S}
-  \]
-  \vfill
-  \onslide<2->{%
-  \begin{center}
-    \begin{tikzpicture}
-      \node[draw=metured, thick, fill=metured!5, rounded corners=3pt, inner sep=8pt]
-        {$Z_M = M_R\, R\, M_R^T, \qquad \Vcol{\mathbf{v}_M} = -M_S\Vcol{\mathbf{v}_S}$};
-    \end{tikzpicture}
-  \end{center}}
-  \vfill
-  \onslide<3->{%
-  \begin{center}
-    $Z_M^T = M_R\, R^T M_R^T = Z_M$: \ \alert{always symmetric}
-  \end{center}}
-  \vfill
-\end{frame}
-
-%--------------------------------------------------------------
-\begin{frame}{$Z_M$ from the graph: Example 12.1, the resistor currents}
-  \begin{columns}[c,onlytextwidth]
-    \begin{column}{0.36\textwidth}
-      \centering
-      \begin{tikzpicture}[scale=0.8]
-        \exMgraph{1}
-      \end{tikzpicture}
-    \end{column}
-    \begin{column}{0.62\textwidth}
-      $M_R^T$: columns 1--4 of $M$, as rows\\[8pt]
-      \onslide<2->{%
-      \[
-        \underbrace{\begin{bmatrix}
-          \Icol{i_{R_1}}\\ \Icol{i_{R_2}}\\ \Icol{i_{R_3}}\\ \Icol{i_{R_4}}
-        \end{bmatrix}}_{\Icol{\mathbf{i}_R}}
-        =
-        \underbrace{\begin{bmatrix}
-          1 & 0 & -1\\ 1 & -1 & 0\\ 0 & 1 & -1\\ 0 & 0 & 1
-        \end{bmatrix}}_{M_R^T}
-        \begin{bmatrix} \im{1}\\ \im{2}\\ \im{3} \end{bmatrix}
-        \onslide<3->{=
-        \begin{bmatrix}
-          \im{1} - \im{3}\\ \im{1} - \im{2}\\ \im{2} - \im{3}\\ \im{3}
-        \end{bmatrix}}
-      \]}
-      \onslide<4->{%
-      Along minus against\\[4pt]}
-      \onslide<5->{%
-      Ohm: \ $\Vcol{v_{R_k}} = R_k\Icol{i_{R_k}}$}
-    \end{column}
-  \end{columns}
-\end{frame}
-
-%--------------------------------------------------------------
-\begin{frame}{$Z_M$ from the graph: Example 12.1, the matrix}
-  \vfill
-  \[
-    M_R\, R =
-    \begin{bmatrix}
-      R_1 & R_2 & 0 & 0\\
-      0 & -R_2 & R_3 & 0\\
-      -R_1 & 0 & -R_3 & R_4
-    \end{bmatrix}
-  \]
-  \vfill
-  \onslide<2->{%
-  \[
-    M_R\, R\, M_R^T =
-    \begin{bmatrix}
-      R_1 + R_2 & -R_2 & -R_1\\
-      -R_2 & R_2 + R_3 & -R_3\\
-      -R_1 & -R_3 & R_1 + R_3 + R_4
-    \end{bmatrix}
-    \onslide<3->{= Z_M \ \ \yes}
-  \]}
-  \vfill
-  \onslide<4->{%
-  \[
-    -M_S\Vcol{\mathbf{v}_S} =
-    -\begin{bmatrix} -1 & 0\\ 0 & -1\\ 0 & 0 \end{bmatrix}
-    \begin{bmatrix} \Vcol{v_{s1}}\\ \Vcol{v_{s2}} \end{bmatrix}
-    =
-    \begin{bmatrix} \Vcol{v_{s1}}\\ \Vcol{v_{s2}}\\ 0 \end{bmatrix}
-    \onslide<5->{= \Vcol{\mathbf{v}_M} \ \ \yes}
-  \]}
-  \vfill
-  \onslide<6->{\centering The rules = this product\par}
-  \vfill
-\end{frame}
-
 %==============================================================
 \roadmapframe{3}
 
@@ -1155,5 +985,176 @@
   \end{center}
   \vfill
 \end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{$Z_M$ from the graph: the mesh matrix}
+  \begin{columns}[c,onlytextwidth]
+    \begin{column}{0.45\textwidth}
+      \centering
+      \begin{tikzpicture}[scale=0.53]
+        \exM{0}{0}
+      \end{tikzpicture}
+    \end{column}
+    \begin{column}{0.53\textwidth}
+      \centering
+      \begin{tikzpicture}[scale=0.82]
+        \exMgraph{1}
+      \end{tikzpicture}\\[4pt]
+      {\small 1--4: $R_1, \dots, R_4$; \ \textcolor{cvolt}{5, 6: $v_{s1}$, $v_{s2}$} ($+$ to $-$)}
+    \end{column}
+  \end{columns}
+  \vfill
+  \begin{columns}[c,onlytextwidth]
+    \begin{column}{0.42\textwidth}
+      \small
+      Mesh matrix $M$?\\[6pt]
+      \onslide<2->{%
+      One row per inner mesh\\[3pt]
+      $+1$ along, \ $-1$ against}
+    \end{column}
+    \begin{column}{0.56\textwidth}
+      \centering
+      \only<2>{$M = \exMmatN{0}$}\only<3>{$M = \exMmatN{1}$}\only<4>{$M = \exMmatN{2}$}%
+      \only<5>{$M = \exMmatN{3}$}\only<6->{$M = \exMmatN{4}$}
+    \end{column}
+  \end{columns}
+  \vfill
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{$Z_M$ from the graph: KVL, KCL and Ohm's law in blocks}
+  Resistors first, then voltage sources:
+  \[
+    M = [\,M_R \ \ M_S\,], \qquad
+    \Icol{\mathbf{i}} = \begin{bmatrix} \Icol{\mathbf{i}_R}\\ \Icol{\mathbf{i}_S} \end{bmatrix}, \qquad
+    \Vcol{\mathbf{v}} = \begin{bmatrix} \Vcol{\mathbf{v}_R}\\ \Vcol{\mathbf{v}_S} \end{bmatrix}
+  \]
+  \vfill
+  \onslide<2->{%
+  \textbf{KVL:} \
+  $M\Vcol{\mathbf{v}} = [\,M_R \ \ M_S\,]\begin{bmatrix} \Vcol{\mathbf{v}_R}\\ \Vcol{\mathbf{v}_S} \end{bmatrix}
+   = M_R\Vcol{\mathbf{v}_R} + M_S\Vcol{\mathbf{v}_S} = \mathbf{0}$}
+  \vfill
+  \onslide<3->{%
+  \textbf{KCL:}
+  \[
+    \begin{bmatrix}
+      \hrow{metugray!15}{\Icol{\mathbf{i}_R}}\\
+      \hrow{cvolt!12}{\Icol{\mathbf{i}_S}}
+    \end{bmatrix}
+    =
+    \begin{bmatrix}
+      \hrow{metugray!15}{M_R^T}\\
+      \hrow{cvolt!12}{M_S^T}
+    \end{bmatrix}
+    \Icol{\mathbf{i}_M}
+    \qquad
+    \onslide<4->{\Rightarrow\qquad
+    \Icol{\mathbf{i}_R} = M_R^T\Icol{\mathbf{i}_M} \ \ \text{(resistor rows only)}}
+  \]}
+  \vfill
+  \onslide<5->{%
+  \textbf{Ohm:} \ $\Vcol{\mathbf{v}_R} = R\,\Icol{\mathbf{i}_R}$, \quad
+  $R = \mathrm{diag}(R_1, \dots, R_{b_R})$}
+  \vfill
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{$Z_M$ from the graph: the general result}
+  \vfill
+  Ohm and KCL into KVL:
+  \[
+    M_R\Vcol{\mathbf{v}_R} + M_S\Vcol{\mathbf{v}_S}
+    = M_R\, R\, \underbrace{M_R^T\Icol{\mathbf{i}_M}}_{\Icol{\mathbf{i}_R}} + M_S\Vcol{\mathbf{v}_S} = \mathbf{0}
+    \quad\Rightarrow\quad
+    M_R\, R\, M_R^T\,\Icol{\mathbf{i}_M} = -M_S\Vcol{\mathbf{v}_S}
+  \]
+  \vfill
+  \onslide<2->{%
+  \begin{center}
+    \begin{tikzpicture}
+      \node[draw=metured, thick, fill=metured!5, rounded corners=3pt, inner sep=8pt]
+        {$Z_M = M_R\, R\, M_R^T, \qquad \Vcol{\mathbf{v}_M} = -M_S\Vcol{\mathbf{v}_S}$};
+    \end{tikzpicture}
+  \end{center}}
+  \vfill
+  \onslide<3->{%
+  \begin{center}
+    $Z_M^T = M_R\, R^T M_R^T = Z_M$: \ \alert{always symmetric}
+  \end{center}}
+  \vfill
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{$Z_M$ from the graph: Example 12.1, the resistor currents}
+  \begin{columns}[c,onlytextwidth]
+    \begin{column}{0.36\textwidth}
+      \centering
+      \begin{tikzpicture}[scale=0.8]
+        \exMgraph{1}
+      \end{tikzpicture}
+    \end{column}
+    \begin{column}{0.62\textwidth}
+      $M_R^T$: columns 1--4 of $M$, as rows\\[8pt]
+      \onslide<2->{%
+      \[
+        \underbrace{\begin{bmatrix}
+          \Icol{i_{R_1}}\\ \Icol{i_{R_2}}\\ \Icol{i_{R_3}}\\ \Icol{i_{R_4}}
+        \end{bmatrix}}_{\Icol{\mathbf{i}_R}}
+        =
+        \underbrace{\begin{bmatrix}
+          1 & 0 & -1\\ 1 & -1 & 0\\ 0 & 1 & -1\\ 0 & 0 & 1
+        \end{bmatrix}}_{M_R^T}
+        \begin{bmatrix} \im{1}\\ \im{2}\\ \im{3} \end{bmatrix}
+        \onslide<3->{=
+        \begin{bmatrix}
+          \im{1} - \im{3}\\ \im{1} - \im{2}\\ \im{2} - \im{3}\\ \im{3}
+        \end{bmatrix}}
+      \]}
+      \onslide<4->{%
+      Along minus against\\[4pt]}
+      \onslide<5->{%
+      Ohm: \ $\Vcol{v_{R_k}} = R_k\Icol{i_{R_k}}$}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{$Z_M$ from the graph: Example 12.1, the matrix}
+  \vfill
+  \[
+    M_R\, R =
+    \begin{bmatrix}
+      R_1 & R_2 & 0 & 0\\
+      0 & -R_2 & R_3 & 0\\
+      -R_1 & 0 & -R_3 & R_4
+    \end{bmatrix}
+  \]
+  \vfill
+  \onslide<2->{%
+  \[
+    M_R\, R\, M_R^T =
+    \begin{bmatrix}
+      R_1 + R_2 & -R_2 & -R_1\\
+      -R_2 & R_2 + R_3 & -R_3\\
+      -R_1 & -R_3 & R_1 + R_3 + R_4
+    \end{bmatrix}
+    \onslide<3->{= Z_M \ \ \yes}
+  \]}
+  \vfill
+  \onslide<4->{%
+  \[
+    -M_S\Vcol{\mathbf{v}_S} =
+    -\begin{bmatrix} -1 & 0\\ 0 & -1\\ 0 & 0 \end{bmatrix}
+    \begin{bmatrix} \Vcol{v_{s1}}\\ \Vcol{v_{s2}} \end{bmatrix}
+    =
+    \begin{bmatrix} \Vcol{v_{s1}}\\ \Vcol{v_{s2}}\\ 0 \end{bmatrix}
+    \onslide<5->{= \Vcol{\mathbf{v}_M} \ \ \yes}
+  \]}
+  \vfill
+  \onslide<6->{\centering The rules = this product\par}
+  \vfill
+\end{frame}
+
 
 \end{document}

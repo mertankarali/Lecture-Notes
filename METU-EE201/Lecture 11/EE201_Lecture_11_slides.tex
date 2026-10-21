@@ -684,110 +684,6 @@
   \end{columns}
 \end{frame}
 
-%--------------------------------------------------------------
-\begin{frame}{$Y_n$ from the graph: the reduced incidence matrix}
-  \begin{columns}[c,onlytextwidth]
-    \begin{column}{0.45\textwidth}
-      \centering
-      \begin{tikzpicture}[scale=0.66]
-        \exA{0}
-        \node[nlab] at (4.35,-0.35) {0};
-      \end{tikzpicture}
-    \end{column}
-    \begin{column}{0.53\textwidth}
-      \centering
-      \begin{tikzpicture}[scale=0.82]
-        \exAgraph
-      \end{tikzpicture}\\[4pt]
-      {\small 1--5: $R_1, \dots, R_5$; \ \textcolor{ccur}{6, 7: $i_{s1}$, $i_{s2}$}; \ \nd{0}: ground}
-    \end{column}
-  \end{columns}
-  \vfill
-  \begin{columns}[c,onlytextwidth]
-    \begin{column}{0.42\textwidth}
-      \small
-      \textbf{Question.} Reduced incidence matrix $A$?\\[6pt]
-      \onslide<2->{%
-      One row per non-ground node\\[3pt]
-      $+1$ leaves, \ $-1$ enters}
-    \end{column}
-    \begin{column}{0.56\textwidth}
-      \centering
-      \only<2>{$A = \exAincN{0}$}\only<3>{$A = \exAincN{1}$}\only<4>{$A = \exAincN{2}$}%
-      \only<5>{$A = \exAincN{3}$}\only<6->{$A = \exAincN{4}$}
-    \end{column}
-  \end{columns}
-  \vfill
-\end{frame}
-
-%--------------------------------------------------------------
-\begin{frame}{$Y_n$ from the graph: the general result}
-  \vfill
-  Resistors first, then current sources: \ $A = [\,A_R \ \ A_S\,]$
-  \vfill
-  \begin{center}
-    \renewcommand{\arraystretch}{1.5}
-    \begin{tabular}{r@{\quad}l}
-      \onslide<2->{\textbf{KCL:}} & \onslide<2->{$A_R\Icol{\mathbf{i}_R} + A_S\Icol{\mathbf{i}_S} = \mathbf{0}$}\\
-      \onslide<3->{\textbf{KVL:}} & \onslide<3->{$\Vcol{\mathbf{v}_R} = A_R^T\Vcol{\mathbf{e}}$}\\
-      \onslide<4->{\textbf{Ohm:}} & \onslide<4->{$\Icol{\mathbf{i}_R} = G\,\Vcol{\mathbf{v}_R}$, \quad
-        $G = \mathrm{diag}(G_1, \dots, G_{b_R})$}
-    \end{tabular}
-  \end{center}
-  \vfill
-  \onslide<5->{%
-  \[
-    A_R\, G\, A_R^T\,\Vcol{\mathbf{e}} = -A_S\Icol{\mathbf{i}_S}
-  \]}
-  \vfill
-  \onslide<6->{%
-  \begin{center}
-    \begin{tikzpicture}
-      \node[draw=metured, fill=metured!6, rounded corners=3pt, inner sep=6pt]
-        {$Y_n = A_R\, G\, A_R^T, \qquad \Icol{\mathbf{i}_n} = -A_S\Icol{\mathbf{i}_S}$};
-    \end{tikzpicture}\\[6pt]
-    \onslide<7->{$Y_n^T = Y_n$: \ \alert{always symmetric}}
-  \end{center}}
-  \vfill
-\end{frame}
-
-%--------------------------------------------------------------
-\begin{frame}{$Y_n$ from the graph: Example 11.1}
-  \vfill
-  \small
-  From $A$: \ $A_R$ = columns 1--5, \ $A_S$ = columns 6, 7
-  \[
-    A_R\,G = \begin{bmatrix}
-      G_1 & G_2 & 0 & 0 & G_5\\
-      0 & -G_2 & G_3 & G_4 & 0\\
-      0 & 0 & 0 & -G_4 & -G_5
-    \end{bmatrix}
-  \]
-  \onslide<2->{%
-  \[
-    A_R\,G\,A_R^T = \begin{bmatrix}
-      G_1 + G_2 + G_5 & -G_2 & -G_5\\
-      -G_2 & G_2 + G_3 + G_4 & -G_4\\
-      -G_5 & -G_4 & G_4 + G_5
-    \end{bmatrix}
-    \onslide<3->{\ \ \yes}
-  \]}
-  \vfill
-  \onslide<4->{%
-  \[
-    -A_S\Icol{\mathbf{i}_S}
-    = -\begin{bmatrix} -1 & 0\\ 0 & 0\\ 0 & 1 \end{bmatrix}
-       \begin{bmatrix} \Icol{i_{s1}}\\ \Icol{i_{s2}} \end{bmatrix}
-    = \begin{bmatrix} \Icol{i_{s1}}\\ 0\\ -\Icol{i_{s2}} \end{bmatrix} = \Icol{\mathbf{i}_n} \ \ \yes
-  \]}
-  \vfill
-  \onslide<5->{%
-  \begin{center}
-    The rules = this product
-  \end{center}}
-  \vfill
-\end{frame}
-
 %==============================================================
 \roadmapframe{3}
 
@@ -1224,5 +1120,110 @@
   \end{center}
   \vfill
 \end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{$Y_n$ from the graph: the reduced incidence matrix}
+  \begin{columns}[c,onlytextwidth]
+    \begin{column}{0.45\textwidth}
+      \centering
+      \begin{tikzpicture}[scale=0.66]
+        \exA{0}
+        \node[nlab] at (4.35,-0.35) {0};
+      \end{tikzpicture}
+    \end{column}
+    \begin{column}{0.53\textwidth}
+      \centering
+      \begin{tikzpicture}[scale=0.82]
+        \exAgraph
+      \end{tikzpicture}\\[4pt]
+      {\small 1--5: $R_1, \dots, R_5$; \ \textcolor{ccur}{6, 7: $i_{s1}$, $i_{s2}$}; \ \nd{0}: ground}
+    \end{column}
+  \end{columns}
+  \vfill
+  \begin{columns}[c,onlytextwidth]
+    \begin{column}{0.42\textwidth}
+      \small
+      \textbf{Question.} Reduced incidence matrix $A$?\\[6pt]
+      \onslide<2->{%
+      One row per non-ground node\\[3pt]
+      $+1$ leaves, \ $-1$ enters}
+    \end{column}
+    \begin{column}{0.56\textwidth}
+      \centering
+      \only<2>{$A = \exAincN{0}$}\only<3>{$A = \exAincN{1}$}\only<4>{$A = \exAincN{2}$}%
+      \only<5>{$A = \exAincN{3}$}\only<6->{$A = \exAincN{4}$}
+    \end{column}
+  \end{columns}
+  \vfill
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{$Y_n$ from the graph: the general result}
+  \vfill
+  Resistors first, then current sources: \ $A = [\,A_R \ \ A_S\,]$
+  \vfill
+  \begin{center}
+    \renewcommand{\arraystretch}{1.5}
+    \begin{tabular}{r@{\quad}l}
+      \onslide<2->{\textbf{KCL:}} & \onslide<2->{$A_R\Icol{\mathbf{i}_R} + A_S\Icol{\mathbf{i}_S} = \mathbf{0}$}\\
+      \onslide<3->{\textbf{KVL:}} & \onslide<3->{$\Vcol{\mathbf{v}_R} = A_R^T\Vcol{\mathbf{e}}$}\\
+      \onslide<4->{\textbf{Ohm:}} & \onslide<4->{$\Icol{\mathbf{i}_R} = G\,\Vcol{\mathbf{v}_R}$, \quad
+        $G = \mathrm{diag}(G_1, \dots, G_{b_R})$}
+    \end{tabular}
+  \end{center}
+  \vfill
+  \onslide<5->{%
+  \[
+    A_R\, G\, A_R^T\,\Vcol{\mathbf{e}} = -A_S\Icol{\mathbf{i}_S}
+  \]}
+  \vfill
+  \onslide<6->{%
+  \begin{center}
+    \begin{tikzpicture}
+      \node[draw=metured, fill=metured!6, rounded corners=3pt, inner sep=6pt]
+        {$Y_n = A_R\, G\, A_R^T, \qquad \Icol{\mathbf{i}_n} = -A_S\Icol{\mathbf{i}_S}$};
+    \end{tikzpicture}\\[6pt]
+    \onslide<7->{$Y_n^T = Y_n$: \ \alert{always symmetric}}
+  \end{center}}
+  \vfill
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{$Y_n$ from the graph: Example 11.1}
+  \vfill
+  \small
+  From $A$: \ $A_R$ = columns 1--5, \ $A_S$ = columns 6, 7
+  \[
+    A_R\,G = \begin{bmatrix}
+      G_1 & G_2 & 0 & 0 & G_5\\
+      0 & -G_2 & G_3 & G_4 & 0\\
+      0 & 0 & 0 & -G_4 & -G_5
+    \end{bmatrix}
+  \]
+  \onslide<2->{%
+  \[
+    A_R\,G\,A_R^T = \begin{bmatrix}
+      G_1 + G_2 + G_5 & -G_2 & -G_5\\
+      -G_2 & G_2 + G_3 + G_4 & -G_4\\
+      -G_5 & -G_4 & G_4 + G_5
+    \end{bmatrix}
+    \onslide<3->{\ \ \yes}
+  \]}
+  \vfill
+  \onslide<4->{%
+  \[
+    -A_S\Icol{\mathbf{i}_S}
+    = -\begin{bmatrix} -1 & 0\\ 0 & 0\\ 0 & 1 \end{bmatrix}
+       \begin{bmatrix} \Icol{i_{s1}}\\ \Icol{i_{s2}} \end{bmatrix}
+    = \begin{bmatrix} \Icol{i_{s1}}\\ 0\\ -\Icol{i_{s2}} \end{bmatrix} = \Icol{\mathbf{i}_n} \ \ \yes
+  \]}
+  \vfill
+  \onslide<5->{%
+  \begin{center}
+    The rules = this product
+  \end{center}}
+  \vfill
+\end{frame}
+
 
 \end{document}
