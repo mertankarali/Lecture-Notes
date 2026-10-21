@@ -5,7 +5,7 @@ Lecture notes and slides for the eleventh lecture of EE201 (Section 2, Fall 2026
 | File | What it is |
 |---|---|
 | `EE201_Lecture_11.tex` | Handout / lecture notes (article, 6 pages). Self-contained: procedure, six worked examples, a summary. |
-| `EE201_Lecture_11_slides.tex` | Beamer deck (34 slides, 128 PDF pages) for the lecture itself — visual, low text. |
+| `EE201_Lecture_11_slides.tex` | Beamer deck (31 slides and a 4-slide appendix, 129 PDF pages) for the lecture itself — visual, low text. |
 | `build.sh` | Compiles both, removes auxiliary files, opens the PDFs. |
 
 ## Compiling
@@ -60,14 +60,13 @@ Then a summary table (situation → what to do).
 
 ## Slides
 
-The "Y_n from the graph" slides are at the end of the deck, after the summary.
+The "Y_n from the graph" slides are in an appendix after the summary (own divider slide, footer "Appendix", not counted in the slide numbers).
 
 After the review comes a "Motivation" slide (what simplifying cannot do, what node voltage
 analysis does), and a roadmap slide opens each of the seven parts: a path of stops with
 what is new at each stop and a small circuit icon (done parts greyed with a check mark, the current one highlighted). Questions are
 shown first and the answers on the next page; the node being written is highlighted in the
-circuit. Each step is an ordinary extra PDF page; that is why the deck has 34 slides but 128
-pages.
+circuit. Each step is an ordinary extra PDF page; that is why the deck has 35 slides but 129 pages.
 
 Every example is also written in matrix form (Example 11.4 plugs the control in first,
 then forms the matrix; Example 11.6 compares two grounds).

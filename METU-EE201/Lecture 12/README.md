@@ -5,7 +5,7 @@ Lecture notes and slides for the twelfth lecture of EE201 (Section 2, Fall 2026/
 | File | What it is |
 |---|---|
 | `EE201_Lecture_12.tex` | Handout / lecture notes (article, 5 pages). Self-contained: procedure, five worked examples, a summary. |
-| `EE201_Lecture_12_slides.tex` | Beamer deck (32 slides, 121 PDF pages) for the lecture itself — visual, low text. |
+| `EE201_Lecture_12_slides.tex` | Beamer deck (29 slides and a 4-slide appendix, 122 PDF pages) for the lecture itself — visual, low text. |
 | `build.sh` | Compiles both, removes auxiliary files, opens the PDFs. |
 
 ## Compiling
@@ -59,15 +59,14 @@ Then a summary table (situation → what to do).
 
 ## Slides
 
-The "Z_M from the graph" slides are at the end of the deck, after the summary.
+The "Z_M from the graph" slides are in an appendix after the summary (own divider slide, footer "Appendix", not counted in the slide numbers).
 
 After the review of node voltage analysis comes a "Motivation" slide (node voltages vs mesh
 currents: which law holds automatically, which one is written), and a roadmap slide opens
 each part: a road with four stations (voltage sources, current sources, dependent sources,
 node or mesh?). Questions are shown first and the answers on the next page; equations,
 matrix rows and constraints appear one per page, and the mesh being written is shaded in
-the circuit. Each step is an ordinary extra PDF page; that is why the deck has 32 slides but
-121 pages.
+the circuit. Each step is an ordinary extra PDF page; that is why the deck has 33 slides but 122 pages.
 
 Every example is also written in matrix form.
 
