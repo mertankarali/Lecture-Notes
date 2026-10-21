@@ -419,57 +419,7 @@ In Example 12.1:
 Each shared resistance appears twice, at $(k,j)$ and $(j,k)$: $Z_M$ is \textbf{symmetric}.
 \end{ideabox}
 
-\textbf{$Z_M$ from the graph.} In the graph of Example 12.1, branches 1--4 are the resistors
-$R_1, \dots, R_4$, and branches 5 and 6 are the sources $\Vcol{v_{s1}}$, $\Vcol{v_{s2}}$; a
-source branch points from $+$ to $-$. The mesh matrix $M$ has one row for each inner mesh; an
-entry is $+1$ if the branch goes along the mesh and $-1$ if against it.
-
-\begin{center}
-\begin{minipage}[c]{0.36\linewidth}
-\centering
-\begin{tikzpicture}[scale=0.82]
-  \exMgraph{1}
-\end{tikzpicture}
-\end{minipage}%
-\begin{minipage}[c]{0.6\linewidth}
-\centering
-$M = \exMmat$
-\end{minipage}
-\end{center}
-
-KVL $M\Vcol{\mathbf{v}} = \mathbf{0}$ reads $M_R\Vcol{\mathbf{v}_R} + M_S\Vcol{\mathbf{v}_S} = \mathbf{0}$.
-The resistors obey $\Vcol{\mathbf{v}_R} = R\,\Icol{\mathbf{i}_R}$ with
-$R = \mathrm{diag}(R_1, \dots, R_4)$. KCL, $\Icol{\mathbf{i}} = M^T\Icol{\mathbf{i}_M}$, splits into
-rows: $\left[\begin{smallmatrix} \Icol{\mathbf{i}_R}\\ \Icol{\mathbf{i}_S} \end{smallmatrix}\right]
-= \left[\begin{smallmatrix} M_R^T\\ M_S^T \end{smallmatrix}\right]\Icol{\mathbf{i}_M}$, so
-$\Icol{\mathbf{i}_R} = M_R^T\Icol{\mathbf{i}_M}$ (resistor rows) and
-$\Icol{\mathbf{i}_S} = M_S^T\Icol{\mathbf{i}_M}$ (source rows); only the resistor rows are
-needed. In Example 12.1, $M_R^T$ is the resistor columns 1--4 of $M$ written
-as rows, and
-\[
-  \Icol{\mathbf{i}_R} = M_R^T\Icol{\mathbf{i}_M} =
-  \begin{bmatrix} 1 & 0 & -1\\ 1 & -1 & 0\\ 0 & 1 & -1\\ 0 & 0 & 1 \end{bmatrix}
-  \begin{bmatrix} \im{1}\\ \im{2}\\ \im{3} \end{bmatrix}
-  = \big[\, \im{1} - \im{3} \quad \im{1} - \im{2} \quad \im{2} - \im{3} \quad \im{3} \,\big]^T :
-\]
-each resistor current is the mesh currents along its arrow minus those against it. Together,
-\[
-  M_R\, R\, M_R^T\,\Icol{\mathbf{i}_M} = -M_S\Vcol{\mathbf{v}_S}
-  \quad\Rightarrow\quad
-  Z_M = M_R\, R\, M_R^T, \qquad \Vcol{\mathbf{v}_M} = -M_S\Vcol{\mathbf{v}_S}.
-\]
-For Example 12.1,
-\[
-  M_R\, R = \begin{bmatrix}
-    R_1 & R_2 & 0 & 0\\ 0 & -R_2 & R_3 & 0\\ -R_1 & 0 & -R_3 & R_4
-  \end{bmatrix}, \qquad
-  -M_S\Vcol{\mathbf{v}_S} = -\begin{bmatrix} -1 & 0\\ 0 & -1\\ 0 & 0 \end{bmatrix}
-  \begin{bmatrix} \Vcol{v_{s1}}\\ \Vcol{v_{s2}} \end{bmatrix}
-  = \begin{bmatrix} \Vcol{v_{s1}}\\ \Vcol{v_{s2}}\\ 0 \end{bmatrix},
-\]
-and $M_R\, R\, M_R^T$ is exactly the $Z_M$ above: the three rules read this product off entry by
-entry. Finally, $Z_M^T = M_R R^T M_R^T = Z_M$, since $R$ is diagonal: with resistors and voltage
-sources, $Z_M$ is always symmetric.
+Appendix~A obtains $Z_M$ from the graph of the circuit.
 
 %==============================================================
 \section{A current source on one mesh only}
@@ -662,5 +612,61 @@ node or mesh? & compare the number of equations and how complex they are; mesh c
 \end{center}
 After the mesh currents are found: $\Icol{\mathbf{i}} = M^T\Icol{\mathbf{i}_M}$, then the
 branch voltages from the element laws.
+
+\clearpage
+\appendix
+\section{$Z_M$ from the graph}
+
+In the graph of Example 12.1, branches 1--4 are the resistors
+$R_1, \dots, R_4$, and branches 5 and 6 are the sources $\Vcol{v_{s1}}$, $\Vcol{v_{s2}}$; a
+source branch points from $+$ to $-$. The mesh matrix $M$ has one row for each inner mesh; an
+entry is $+1$ if the branch goes along the mesh and $-1$ if against it.
+
+\begin{center}
+\begin{minipage}[c]{0.36\linewidth}
+\centering
+\begin{tikzpicture}[scale=0.82]
+  \exMgraph{1}
+\end{tikzpicture}
+\end{minipage}%
+\begin{minipage}[c]{0.6\linewidth}
+\centering
+$M = \exMmat$
+\end{minipage}
+\end{center}
+
+KVL $M\Vcol{\mathbf{v}} = \mathbf{0}$ reads $M_R\Vcol{\mathbf{v}_R} + M_S\Vcol{\mathbf{v}_S} = \mathbf{0}$.
+The resistors obey $\Vcol{\mathbf{v}_R} = R\,\Icol{\mathbf{i}_R}$ with
+$R = \mathrm{diag}(R_1, \dots, R_4)$. KCL, $\Icol{\mathbf{i}} = M^T\Icol{\mathbf{i}_M}$, splits into
+rows: $\left[\begin{smallmatrix} \Icol{\mathbf{i}_R}\\ \Icol{\mathbf{i}_S} \end{smallmatrix}\right]
+= \left[\begin{smallmatrix} M_R^T\\ M_S^T \end{smallmatrix}\right]\Icol{\mathbf{i}_M}$, so
+$\Icol{\mathbf{i}_R} = M_R^T\Icol{\mathbf{i}_M}$ (resistor rows) and
+$\Icol{\mathbf{i}_S} = M_S^T\Icol{\mathbf{i}_M}$ (source rows); only the resistor rows are
+needed. In Example 12.1, $M_R^T$ is the resistor columns 1--4 of $M$ written
+as rows, and
+\[
+  \Icol{\mathbf{i}_R} = M_R^T\Icol{\mathbf{i}_M} =
+  \begin{bmatrix} 1 & 0 & -1\\ 1 & -1 & 0\\ 0 & 1 & -1\\ 0 & 0 & 1 \end{bmatrix}
+  \begin{bmatrix} \im{1}\\ \im{2}\\ \im{3} \end{bmatrix}
+  = \big[\, \im{1} - \im{3} \quad \im{1} - \im{2} \quad \im{2} - \im{3} \quad \im{3} \,\big]^T :
+\]
+each resistor current is the mesh currents along its arrow minus those against it. Together,
+\[
+  M_R\, R\, M_R^T\,\Icol{\mathbf{i}_M} = -M_S\Vcol{\mathbf{v}_S}
+  \quad\Rightarrow\quad
+  Z_M = M_R\, R\, M_R^T, \qquad \Vcol{\mathbf{v}_M} = -M_S\Vcol{\mathbf{v}_S}.
+\]
+For Example 12.1,
+\[
+  M_R\, R = \begin{bmatrix}
+    R_1 & R_2 & 0 & 0\\ 0 & -R_2 & R_3 & 0\\ -R_1 & 0 & -R_3 & R_4
+  \end{bmatrix}, \qquad
+  -M_S\Vcol{\mathbf{v}_S} = -\begin{bmatrix} -1 & 0\\ 0 & -1\\ 0 & 0 \end{bmatrix}
+  \begin{bmatrix} \Vcol{v_{s1}}\\ \Vcol{v_{s2}} \end{bmatrix}
+  = \begin{bmatrix} \Vcol{v_{s1}}\\ \Vcol{v_{s2}}\\ 0 \end{bmatrix},
+\]
+and $M_R\, R\, M_R^T$ is exactly the $Z_M$ above: the three rules read this product off entry by
+entry. Finally, $Z_M^T = M_R R^T M_R^T = Z_M$, since $R$ is diagonal: with resistors and voltage
+sources, $Z_M$ is always symmetric.
 
 \end{document}

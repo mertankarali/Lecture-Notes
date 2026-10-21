@@ -4,7 +4,7 @@ Lecture notes and slides for the eleventh lecture of EE201 (Section 2, Fall 2026
 
 | File | What it is |
 |---|---|
-| `EE201_Lecture_11.tex` | Handout / lecture notes (article, 6 pages). Self-contained: procedure, six worked examples, a summary. |
+| `EE201_Lecture_11.tex` | Handout / lecture notes (article, 6 pages). Self-contained: procedure, six worked examples, a summary; Appendix A: Y_n from the graph (on its own page). |
 | `EE201_Lecture_11_slides.tex` | Beamer deck (31 slides and a 4-slide appendix, 129 PDF pages) for the lecture itself — visual, low text. |
 | `build.sh` | Compiles both, removes auxiliary files, opens the PDFs. |
 

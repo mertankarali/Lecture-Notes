@@ -4,7 +4,7 @@ Lecture notes and slides for the twelfth lecture of EE201 (Section 2, Fall 2026/
 
 | File | What it is |
 |---|---|
-| `EE201_Lecture_12.tex` | Handout / lecture notes (article, 5 pages). Self-contained: procedure, five worked examples, a summary. |
+| `EE201_Lecture_12.tex` | Handout / lecture notes (article, 5 pages). Self-contained: procedure, five worked examples, a summary; Appendix A: Z_M from the graph (on its own page). |
 | `EE201_Lecture_12_slides.tex` | Beamer deck (29 slides and a 4-slide appendix, 118 PDF pages) for the lecture itself — visual, low text. |
 | `build.sh` | Compiles both, removes auxiliary files, opens the PDFs. |
 

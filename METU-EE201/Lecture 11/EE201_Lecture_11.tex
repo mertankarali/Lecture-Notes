@@ -473,64 +473,7 @@ Each conductance between two nodes appears twice, at $(k,j)$ and $(j,k)$: $Y_n$ 
 \textbf{symmetric}.
 \end{ideabox}
 
-\textbf{$Y_n$ from the graph.} In the graph of Example 11.1, branches 1--5 are the resistors
-$R_1, \dots, R_5$, branches 6 and 7 are the sources $\Icol{i_{s1}}$, $\Icol{i_{s2}}$, and node
-\nd{0} is the ground. The reduced incidence matrix $A$ has one row for each node except the
-ground; an entry is $+1$ if the branch leaves the node and $-1$ if it enters.
-
-\begin{center}
-\begin{minipage}[c]{0.4\linewidth}
-\centering
-\begin{tikzpicture}[scale=0.85]
-  \exAgraph
-\end{tikzpicture}
-\end{minipage}\hfill
-\begin{minipage}[c]{0.56\linewidth}
-\centering
-$A = \exAinc$
-\end{minipage}
-\end{center}
-
-KCL $A\Icol{\mathbf{i}} = \mathbf{0}$ reads $A_R\Icol{\mathbf{i}_R} + A_S\Icol{\mathbf{i}_S} = \mathbf{0}$.
-The resistors obey $\Icol{\mathbf{i}_R} = G\,\Vcol{\mathbf{v}_R}$ with
-$G = \mathrm{diag}(G_1, \dots, G_5)$. KVL, $\Vcol{\mathbf{v}} = A^T\Vcol{\mathbf{e}}$, splits into rows:
-$\left[\begin{smallmatrix} \Vcol{\mathbf{v}_R}\\ \Vcol{\mathbf{v}_S} \end{smallmatrix}\right]
-= \left[\begin{smallmatrix} A_R^T\\ A_S^T \end{smallmatrix}\right]\Vcol{\mathbf{e}}$, so
-$\Vcol{\mathbf{v}_R} = A_R^T\Vcol{\mathbf{e}}$ (resistor rows) and
-$\Vcol{\mathbf{v}_S} = A_S^T\Vcol{\mathbf{e}}$ (source rows); only the resistor rows are needed. In
-Example 11.1, $A_R^T$ is the resistor columns 1--5 of $A$ written as rows, and
-\[
-  \Vcol{\mathbf{v}_R} = A_R^T\Vcol{\mathbf{e}}
-  = \begin{bmatrix}
-    1 & 1 & 0 & 0 & 1\\
-    0 & -1 & 1 & 1 & 0\\
-    0 & 0 & 0 & -1 & -1
-  \end{bmatrix}^T
-  \begin{bmatrix} \e{1}\\ \e{2}\\ \e{3} \end{bmatrix}
-  = \big[\, \e{1} \ \ \ \e{1} - \e{2} \ \ \ \e{2} \ \ \ \e{2} - \e{3} \ \ \ \e{1} - \e{3} \,\big]^T :
-\]
-each resistor voltage is its tail node voltage minus its head node voltage. Together,
-\[
-  A_R\,G\,A_R^T\,\Vcol{\mathbf{e}} = -A_S\Icol{\mathbf{i}_S}
-  \quad\Rightarrow\quad
-  Y_n = A_R\,G\,A_R^T, \qquad \Icol{\mathbf{i}_n} = -A_S\Icol{\mathbf{i}_S}.
-\]
-For Example 11.1,
-\[
-  A_R\,G = \begin{bmatrix}
-      G_1 & G_2 & 0 & 0 & G_5\\
-      0 & -G_2 & G_3 & G_4 & 0\\
-      0 & 0 & 0 & -G_4 & -G_5
-    \end{bmatrix},
-  \qquad
-  -A_S\Icol{\mathbf{i}_S}
-    = -\begin{bmatrix} -1 & 0\\ 0 & 0\\ 0 & 1 \end{bmatrix}
-       \begin{bmatrix} \Icol{i_{s1}}\\ \Icol{i_{s2}} \end{bmatrix}
-    = \begin{bmatrix} \Icol{i_{s1}}\\ 0\\ -\Icol{i_{s2}} \end{bmatrix},
-\]
-and $A_R\,G\,A_R^T$ is exactly the $Y_n$ above: the three rules read this product off entry by
-entry. Finally, $Y_n^T = A_R\,G^T A_R^T = A_R\,G\,A_R^T = Y_n$, since $G$ is diagonal: with
-resistors and current sources, $Y_n$ is always symmetric.
+Appendix~A obtains $Y_n$ from the graph of the circuit.
 
 %==============================================================
 \section{A voltage source to the ground}
@@ -810,5 +753,68 @@ the choice of ground & any node; best at the $-$ terminal of a voltage source\\
 \end{center}
 After the node voltages are found: $\Vcol{\mathbf{v}} = A^T\Vcol{\mathbf{e}}$, then the
 branch currents from the element laws.
+
+\clearpage
+\appendix
+\section{$Y_n$ from the graph}
+
+In the graph of Example 11.1, branches 1--5 are the resistors
+$R_1, \dots, R_5$, branches 6 and 7 are the sources $\Icol{i_{s1}}$, $\Icol{i_{s2}}$, and node
+\nd{0} is the ground. The reduced incidence matrix $A$ has one row for each node except the
+ground; an entry is $+1$ if the branch leaves the node and $-1$ if it enters.
+
+\begin{center}
+\begin{minipage}[c]{0.4\linewidth}
+\centering
+\begin{tikzpicture}[scale=0.85]
+  \exAgraph
+\end{tikzpicture}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.56\linewidth}
+\centering
+$A = \exAinc$
+\end{minipage}
+\end{center}
+
+KCL $A\Icol{\mathbf{i}} = \mathbf{0}$ reads $A_R\Icol{\mathbf{i}_R} + A_S\Icol{\mathbf{i}_S} = \mathbf{0}$.
+The resistors obey $\Icol{\mathbf{i}_R} = G\,\Vcol{\mathbf{v}_R}$ with
+$G = \mathrm{diag}(G_1, \dots, G_5)$. KVL, $\Vcol{\mathbf{v}} = A^T\Vcol{\mathbf{e}}$, splits into rows:
+$\left[\begin{smallmatrix} \Vcol{\mathbf{v}_R}\\ \Vcol{\mathbf{v}_S} \end{smallmatrix}\right]
+= \left[\begin{smallmatrix} A_R^T\\ A_S^T \end{smallmatrix}\right]\Vcol{\mathbf{e}}$, so
+$\Vcol{\mathbf{v}_R} = A_R^T\Vcol{\mathbf{e}}$ (resistor rows) and
+$\Vcol{\mathbf{v}_S} = A_S^T\Vcol{\mathbf{e}}$ (source rows); only the resistor rows are needed. In
+Example 11.1, $A_R^T$ is the resistor columns 1--5 of $A$ written as rows, and
+\[
+  \Vcol{\mathbf{v}_R} = A_R^T\Vcol{\mathbf{e}}
+  = \begin{bmatrix}
+    1 & 1 & 0 & 0 & 1\\
+    0 & -1 & 1 & 1 & 0\\
+    0 & 0 & 0 & -1 & -1
+  \end{bmatrix}^T
+  \begin{bmatrix} \e{1}\\ \e{2}\\ \e{3} \end{bmatrix}
+  = \big[\, \e{1} \ \ \ \e{1} - \e{2} \ \ \ \e{2} \ \ \ \e{2} - \e{3} \ \ \ \e{1} - \e{3} \,\big]^T :
+\]
+each resistor voltage is its tail node voltage minus its head node voltage. Together,
+\[
+  A_R\,G\,A_R^T\,\Vcol{\mathbf{e}} = -A_S\Icol{\mathbf{i}_S}
+  \quad\Rightarrow\quad
+  Y_n = A_R\,G\,A_R^T, \qquad \Icol{\mathbf{i}_n} = -A_S\Icol{\mathbf{i}_S}.
+\]
+For Example 11.1,
+\[
+  A_R\,G = \begin{bmatrix}
+      G_1 & G_2 & 0 & 0 & G_5\\
+      0 & -G_2 & G_3 & G_4 & 0\\
+      0 & 0 & 0 & -G_4 & -G_5
+    \end{bmatrix},
+  \qquad
+  -A_S\Icol{\mathbf{i}_S}
+    = -\begin{bmatrix} -1 & 0\\ 0 & 0\\ 0 & 1 \end{bmatrix}
+       \begin{bmatrix} \Icol{i_{s1}}\\ \Icol{i_{s2}} \end{bmatrix}
+    = \begin{bmatrix} \Icol{i_{s1}}\\ 0\\ -\Icol{i_{s2}} \end{bmatrix},
+\]
+and $A_R\,G\,A_R^T$ is exactly the $Y_n$ above: the three rules read this product off entry by
+entry. Finally, $Y_n^T = A_R\,G^T A_R^T = A_R\,G\,A_R^T = Y_n$, since $G$ is diagonal: with
+resistors and current sources, $Y_n$ is always symmetric.
 
 \end{document}
