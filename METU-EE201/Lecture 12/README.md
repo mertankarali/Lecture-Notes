@@ -5,7 +5,7 @@ Lecture notes and slides for the twelfth lecture of EE201 (Section 2, Fall 2026/
 | File | What it is |
 |---|---|
 | `EE201_Lecture_12.tex` | Handout / lecture notes (article, 5 pages). Self-contained: procedure, five worked examples, a summary. |
-| `EE201_Lecture_12_slides.tex` | Beamer deck (34 slides, 128 PDF pages) for the lecture itself — visual, low text. |
+| `EE201_Lecture_12_slides.tex` | Beamer deck (32 slides, 121 PDF pages) for the lecture itself — visual, low text. |
 | `build.sh` | Compiles both, removes auxiliary files, opens the PDFs. |
 
 ## Compiling
@@ -38,9 +38,9 @@ matrix lecture: mesh currents i_M = [i_M1 … i_Mℓ]ᵀ, i = Mᵀ i_M, KVL M v 
    right side) on one slide: each rule appears, then its entries of Example 12.1 are filled in
    (diagonal per mesh, off-diagonal per shared resistor, right side; each highlighted in the
    circuit), symmetric; Z_M from the graph: the graph of Example 12.1 (branches 1–4
-   resistors, 5–6 sources), its mesh matrix M = [M_R M_S] built row by row; KVL, KCL and
-   Ohm's law in block form (Mᵀ split into resistor rows i_R = M_Rᵀ i_M and source rows);
-   Z_M = M_R R M_Rᵀ and v_M = −M_S v_S, checked on the example
+   resistors, 5–6 sources), its mesh matrix M = [M_R M_S] built row by row; one slide with
+   KVL, KCL (i_R = M_Rᵀ i_M) and Ohm's law giving Z_M = M_R R M_Rᵀ and v_M = −M_S v_S; one
+   slide checking this on the example
 3. **A current source on one mesh only** (L12 42:55, Example II) — Example 12.2: i_s on the
    outer branch of mesh 1 fixes i_M1 = i_s; no KVL around mesh 1; 2 × 2 system
 4. **A current source between two meshes** (L13 01:09, modified mesh analysis) — Example
@@ -66,8 +66,8 @@ currents: which law holds automatically, which one is written), and a roadmap sl
 each part: a road with four stations (voltage sources, current sources, dependent sources,
 node or mesh?). Questions are shown first and the answers on the next page; equations,
 matrix rows and constraints appear one per page, and the mesh being written is shaded in
-the circuit. Each step is an ordinary extra PDF page; that is why the deck has 34 slides but
-128 pages.
+the circuit. Each step is an ordinary extra PDF page; that is why the deck has 32 slides but
+121 pages.
 
 Every example is also written in matrix form.
 
