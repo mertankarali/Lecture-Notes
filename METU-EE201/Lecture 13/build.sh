@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #--------------------------------------------------------------
-#  EE201 -- Lecture 13: Input Resistance and the Delta-Y Transform -- build script
+#  EE201 -- Lecture 13: Equivalent Resistances and Linearity -- build script
 #
 #  Usage:   ./build.sh              compile both, clean, open PDFs
 #           ./build.sh --no-open    compile and clean, do not open

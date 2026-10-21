@@ -1,6 +1,6 @@
 %==============================================================
 %  EE201 -- Circuit Theory I
-%  Lecture 13 : Input Resistance and the Delta-Y Transform -- slides
+%  Lecture 13 : Equivalent Resistances and Linearity -- slides
 %  M. Mert Ankaralı, METU EEE
 %
 %  Compile:  ./build.sh      (or: pdflatex EE201_Lecture_13_slides.tex, twice)
@@ -57,7 +57,7 @@
 
 \setbeamertemplate{footline}{%
   \hbox{\begin{beamercolorbox}[wd=\paperwidth,ht=2.4ex,dp=1.4ex,leftskip=1.2em,rightskip=1.2em]{}%
-  \tiny\color{metugray}\coursecode\ \textbar\ Lecture 13: Input Resistance and the $\Delta$--Y Transform
+  \tiny\color{metugray}\coursecode\ \textbar\ Lecture 13: Equivalent Resistances and Linearity
   \hfill \insertframenumber/\inserttotalframenumber
   \end{beamercolorbox}}}
 
@@ -256,7 +256,61 @@
     \node[tlab, left] at (-0.1,2.0) {A}; \node[tlab, right] at (4.1,2.0) {B};
     \node[tlab, below right] at (2.05,-0.65) {C};
   \fi}
-\title{Lecture 13: Input Resistance and the \texorpdfstring{$\Delta$}{Delta}--Y Transform}
+
+%  Example 13.3: v_s, R_1 (current i), R_2, i_s
+\newcommand{\exL}{%
+  \draw (0,2) to[american voltage source, l_=$\Vcol{v_s}$] (0,0);
+  \draw (0,2) to[R, l=$R_1$] (3,2) to[R, l_=$R_2$] (3,0);
+  \draw (3,2) -- (5.2,2); \draw (0,0) -- (5.2,0);
+  \draw (5.2,0) to[american current source, l_=$\Icol{i_s}$] (5.2,2);
+  \fill (3,2) circle (1.7pt); \fill (3,0) circle (1.7pt);
+  \draw[iar] (1.1,1.55) -- (1.9,1.55); \node[font=\small, text=ccur] at (1.5,1.25) {$i$};}
+
+%  Example 13.4: 20 V, 15 Ohm (i_x), 4 A, 10 Ohm (i), CCVS 5 i_x (+ at the bottom).
+%  #1 = 0: all sources;  1: current source killed (open), i_1;  2: voltage source killed (short), i_2
+\newcommand{\exS}[1]{%
+  \ifnum#1=2
+    \draw (0,2.2) -- (0,0);
+    \node[font=\small, text=metured, rotate=90] at (-0.3,1.1) {short};
+  \else
+    \draw (0,2.2) to[american voltage source, l_=$\Vcol{20\V}$] (0,0);
+  \fi
+  \draw (0,2.2) to[R, l=$15\ohm$] (3.4,2.2) to[R, l=$10\ohm$] (6.8,2.2);
+  \ifnum#1=1
+    \draw (3.4,2.2) -- (3.4,1.75); \draw (3.4,0) -- (3.4,0.45);
+    \draw (3.4,1.75) node[ocirc] {}; \draw (3.4,0.45) node[ocirc] {};
+    \node[font=\small, text=metured] at (2.85,1.1) {open};
+  \else
+    \draw (3.4,0) to[american current source, l=$\Icol{4\A}$] (3.4,2.2);
+  \fi
+  \draw (6.8,0) to[american controlled voltage source, l_=$\Vcol{5\,i_x}$] (6.8,2.2);
+  \draw (0,0) -- (6.8,0);
+  \fill (3.4,2.2) circle (1.7pt); \fill (3.4,0) circle (1.7pt);
+  \draw[iar] (0.6,1.8) -- (1.4,1.8); \node[font=\small, text=ccur] at (1.0,1.48) {$i_x$};
+  \draw[iar] (4.6,1.8) -- (5.4,1.8);
+  \node[font=\small, text=ccur] at (5.0,1.48) {\ifcase#1 $i$\or $i_1$\or $i_2$\fi};}
+
+%  Example 13.5: v_s, R_1, CCVS r i_x (+ at the top), R_2 (voltage v), R_3 (current i_x), i_s
+\newcommand{\exT}{%
+  \draw (0,2) to[american voltage source, l_=$\Vcol{v_s}$] (0,0);
+  \draw (0,2) to[R, l=$R_1$] (2.2,2) to[R, l=$R_2$] (4.8,2);
+  \draw (2.2,2) to[american controlled voltage source, l_=$\Vcol{r\,i_x}$] (2.2,0);
+  \draw (4.8,2) to[R, l_=$R_3$] (4.8,0);
+  \draw (4.8,2) -- (6.6,2); \draw (0,0) -- (6.6,0);
+  \draw (6.6,0) to[american current source, l_=$\Icol{i_s}$] (6.6,2);
+  \foreach \p in {(2.2,2),(4.8,2),(2.2,0),(4.8,0)} \fill \p circle (1.7pt);
+  \node[pol] at (2.85,1.62) {$+$}; \node[pol] at (4.15,1.62) {$-$};
+  \node[font=\small, text=cvolt] at (3.5,1.62) {$v$};
+  \draw[iar] (5.25,1.4) -- (5.25,0.7); \node[font=\small, text=ccur, anchor=west] at (5.3,1.05) {$i_x$};}
+
+%  Linearity: block diagram
+\newcommand{\blockdiag}{%
+  \draw[elem] (0,0) rectangle (2.8,1.2);
+  \node[align=center, font=\small] at (1.4,0.6) {LTI resistive\\circuit};
+  \draw[-{Stealth[length=2.5mm]}, thick] (-1.5,0.6) -- (0,0.6) node[midway, above] {$\mathbf{u}$};
+  \draw[-{Stealth[length=2.5mm]}, thick] (2.8,0.6) -- (4.3,0.6) node[midway, above] {$y$};
+  \node[capn] at (-0.75,0.25) {input}; \node[capn] at (3.55,0.25) {output};}
+\title{Lecture 13: Equivalent Resistances and Linearity}
 \subtitle{EE201 -- Circuit Theory I}
 \author{M. Mert Ankaralı}
 \institute{\small Department of Electrical and Electronics Engineering\\
@@ -272,15 +326,17 @@
   \or
     \draw (-1.1,-0.7) to[R] (1.1,-0.7) to[R] (0,1.0) to[R] (-1.1,-0.7);
   \or
-    \draw (-1.1,-0.7) to[R] (0,0); \draw (1.1,-0.7) to[R] (0,0); \draw (0,1.1) to[R] (0,0);
-    \fill (0,0) circle (3pt);
+    \draw[thick] (-0.8,-0.5) rectangle (0.8,0.5);
+    \draw[-{Stealth[length=3mm]}, very thick] (-1.9,0) -- (-0.8,0);
+    \draw[-{Stealth[length=3mm]}, very thick] (0.8,0) -- (1.9,0);
+    \node[font=\LARGE] at (-1.4,0.45) {$\mathbf{u}$}; \node[font=\LARGE] at (1.4,0.45) {$y$};
   \or
-    \draw (0,1.0) to[R] (-1.2,0) to[R] (0,-1.0); \draw (0,1.0) to[R] (1.2,0) to[R] (0,-1.0);
-    \draw (-1.2,0) -- (1.2,0);
-    \foreach \p in {(0,1.0),(-1.2,0),(1.2,0),(0,-1.0)} \fill \p circle (3pt);
+    \draw (-2.0,-0.6) to[american voltage source] (-2.0,0.6) -- (-0.6,0.6) to[R] (-0.6,-0.6) -- (-2.0,-0.6);
+    \node[font=\LARGE] at (0,0) {$+$};
+    \draw (0.6,-0.6) to[american current source] (0.6,0.6) -- (2.0,0.6) to[R] (2.0,-0.6) -- (0.6,-0.6);
   \fi}
-%  Stops 1-6: station of stop k = \rmst{k}
-\newcommand{\rmst}[1]{\ifcase#1\or1\or1\or2\or3\or3\or4\fi}
+%  Stops 1-7: station of stop k = \rmst{k}
+\newcommand{\rmst}[1]{\ifcase#1\or1\or2\or2\or2\or3\or4\or4\fi}
 %  #1 station, #2 x, #3 title, #4 icon number
 \newcommand{\rmstation}[4]{%
   \ifnum#1<\rmS\relax
@@ -314,15 +370,18 @@
     \begin{tikzpicture}
       \draw[metugray!45, line width=3pt, -{Stealth[length=2.6mm, width=3.2mm]}] (0,0) -- (13.3,0);
       \rmstation{1}{1.75}{Input resistance}{1}
-      \rmstation{2}{5.0}{$\boldsymbol{\Delta}$ to Y}{2}
-      \rmstation{3}{8.45}{Y to $\boldsymbol{\Delta}$}{3}
-      \rmstation{4}{11.65}{An example}{4}
-      \rmsub{1}{2}{1.75}{-0.8}{the idea: a test source}
-      \rmsub{1}{2}{1.75}{-1.75}{with a dependent source}
-      \rmsub{3}{3}{5.0}{-0.8}{the same resistance between terminals}
-      \rmsub{4}{5}{8.45}{-0.8}{the inverse relations}
-      \rmsub{4}{5}{8.45}{-1.75}{equal resistors}
-      \rmsub{6}{6}{11.65}{-0.8}{a bridge}
+      \rmstation{2}{5.0}{$\boldsymbol{\Delta}$ and Y}{2}
+      \rmstation{3}{8.45}{Linearity}{3}
+      \rmstation{4}{11.65}{Superposition}{4}
+      \rmsub{1}{1}{1.75}{-0.8}{a test source}
+      \rmsub{1}{1}{1.75}{-1.55}{with a dependent source}
+      \rmsub{2}{3}{5.0}{-0.8}{$\Delta$ to Y}
+      \rmsub{2}{3}{5.0}{-1.45}{Y to $\Delta$}
+      \rmsub{4}{4}{5.0}{-2.1}{a bridge}
+      \rmsub{5}{5}{8.45}{-0.8}{$y = \mathbf{k}\,\mathbf{u}$}
+      \rmsub{5}{5}{8.45}{-1.45}{the implication}
+      \rmsub{6}{6}{11.65}{-0.8}{one source at a time}
+      \rmsub{7}{7}{11.65}{-1.55}{three experiments}
     \end{tikzpicture}
     \vfill
     \mbox{}
@@ -496,7 +555,7 @@
 \end{frame}
 
 %==============================================================
-\roadmapframe{3}
+\roadmapframe{2}
 
 %--------------------------------------------------------------
 \begin{frame}{Three-terminal circuits: $\Delta$ and Y}
@@ -576,9 +635,6 @@
   \vfill
 \end{frame}
 
-%==============================================================
-\roadmapframe{4}
-
 %--------------------------------------------------------------
 \begin{frame}{Y to $\Delta$}
   \vfill
@@ -633,7 +689,7 @@
 \end{frame}
 
 %==============================================================
-\roadmapframe{6}
+\roadmapframe{4}
 
 %--------------------------------------------------------------
 \begin{frame}{Example 13.2: a bridge}
@@ -696,6 +752,282 @@
 \end{frame}
 
 %--------------------------------------------------------------
+\begin{frame}{Motivation: many sources}
+  \vfill
+  \begin{center}
+    \begin{tikzpicture}[scale=0.85]
+      \exS{0}
+    \end{tikzpicture}
+  \end{center}
+  \vfill
+  \begin{itemize}\itemsep8pt
+    \item Two independent sources: the \alert{inputs}
+    \item<2-> One source at a time: two simpler circuits?
+    \item<3-> Yes: the circuit is \alert{linear}
+  \end{itemize}
+  \vfill
+\end{frame}
+
+%==============================================================
+\roadmapframe{5}
+
+%--------------------------------------------------------------
+\begin{frame}{Linearity: inputs and outputs}
+  \begin{columns}[c,onlytextwidth]
+    \begin{column}{0.5\textwidth}
+      \centering
+      \begin{tikzpicture}[scale=0.85]
+        \exL
+      \end{tikzpicture}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \textbf{Input} vector: the independent sources\\[4pt]
+      $\mathbf{u} = \begin{bmatrix} \Vcol{v_s}\\ \Icol{i_s} \end{bmatrix}$\\[14pt]
+      \onslide<2->{%
+      \textbf{Output} $y$: any branch voltage or current\\[4pt]
+      e.g. $y = \Icol{i}$}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{Linearity}
+  \vfill
+  \begin{center}
+    \begin{tikzpicture}
+      \node[draw=metured, thick, fill=metured!5, rounded corners=3pt, inner sep=8pt, align=center]
+        {For each output $y$, there is $\mathbf{k} = [\,k_1 \ \cdots \ k_m\,]$ such that\\[6pt]
+         $y = \mathbf{k}\,\mathbf{u} = k_1u_1 + k_2u_2 + \cdots + k_mu_m$};
+    \end{tikzpicture}
+  \end{center}
+  \vfill
+  \onslide<2->{%
+  \begin{center}
+    \begin{tikzpicture}
+      \blockdiag
+    \end{tikzpicture}\\[6pt]
+    $y = y(\mathbf{u})$
+  \end{center}}
+  \vfill
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{Example 13.3: $\mathbf{k}$ for $y = \Icol{i}$}
+  \begin{columns}[c,onlytextwidth]
+    \begin{column}{0.5\textwidth}
+      \centering
+      \begin{tikzpicture}[scale=0.85]
+        \exL
+      \end{tikzpicture}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      $\Icol{i} = k_1\Vcol{v_s} + k_2\Icol{i_s}$: \ $k_1, k_2 = \ ?$\\[12pt]
+      \onslide<2->{%
+      \textbf{KVL:} \ $-\Vcol{v_s} + R_1\Icol{i} + R_2(\Icol{i} + \Icol{i_s}) = 0$\\[10pt]}
+      \onslide<3->{%
+      $\displaystyle \Icol{i} = \frac{1}{R_1 + R_2}\,\Vcol{v_s} - \frac{R_2}{R_1 + R_2}\,\Icol{i_s}$\\[12pt]}
+      \onslide<4->{%
+      \begin{tikzpicture}
+        \node[draw=metured, thick, fill=metured!5, rounded corners=3pt, inner sep=6pt]
+          {$\displaystyle k_1 = \frac{1}{R_1 + R_2}, \qquad k_2 = -\frac{R_2}{R_1 + R_2}$};
+      \end{tikzpicture}}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{Linearity: the implication}
+  \vfill
+  \begin{center}
+    \begin{tikzpicture}
+      \node[draw=metured, thick, fill=metured!5, rounded corners=3pt, inner sep=8pt]
+        {$y(\alpha\,\mathbf{u} + \beta\,\mathbf{w}) = \alpha\,y(\mathbf{u}) + \beta\,y(\mathbf{w})$};
+    \end{tikzpicture}\\[6pt]
+    {\small $\mathbf{u}$, $\mathbf{w}$: input vectors; \ $\alpha$, $\beta$: numbers}
+  \end{center}
+  \vfill
+  \onslide<2->{%
+  \[
+    y\!\left(\begin{bmatrix} \Vcol{v_s}\\ \Icol{i_s} \end{bmatrix}\right)
+    = y\!\left(\begin{bmatrix} \Vcol{v_s}\\ 0 \end{bmatrix}\right)
+    + y\!\left(\begin{bmatrix} 0\\ \Icol{i_s} \end{bmatrix}\right)
+  \]}
+  \vfill
+  \onslide<3->{%
+  \begin{center}
+    \textbf{Superposition:} one independent source at a time
+  \end{center}}
+  \vfill
+\end{frame}
+
+%==============================================================
+\roadmapframe{6}
+
+%--------------------------------------------------------------
+\begin{frame}{Killing a source}
+  \vfill
+  \begin{columns}[t,onlytextwidth]
+    \begin{column}{0.47\textwidth}
+      \begin{block}{Voltage source}
+        \centering
+        \begin{tikzpicture}[scale=0.8]
+          \draw (0,1.6) node[ocirc] {} to[american voltage source, l_=$\Vcol{v_s}$] (0,0) node[ocirc] {};
+          \node[font=\Large] at (1.2,0.8) {$\to$};
+          \draw (2.4,1.6) node[ocirc] {} -- (2.4,0) node[ocirc] {};
+        \end{tikzpicture}\\[4pt]
+        $\Vcol{v_s} = 0$: \ a \alert{short circuit}
+      \end{block}
+    \end{column}
+    \begin{column}{0.47\textwidth}
+      \onslide<2->{%
+      \begin{block}{Current source}
+        \centering
+        \begin{tikzpicture}[scale=0.8]
+          \draw (0,0) node[ocirc] {} to[american current source, l=$\Icol{i_s}$] (0,1.6) node[ocirc] {};
+          \node[font=\Large] at (1.2,0.8) {$\to$};
+          \draw (2.4,1.6) node[ocirc] {}; \draw (2.4,0) node[ocirc] {};
+        \end{tikzpicture}\\[4pt]
+        $\Icol{i_s} = 0$: \ an \alert{open circuit}
+      \end{block}}
+    \end{column}
+  \end{columns}
+  \vfill
+  \onslide<3->{%
+  \begin{center}
+    \begin{tikzpicture}
+      \node[draw=metured, thick, fill=metured!5, rounded corners=3pt, inner sep=7pt]
+        {Do \alert{not} kill dependent sources: they are not inputs};
+    \end{tikzpicture}
+  \end{center}}
+  \vfill
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{Example 13.4: superposition}
+  \vfill
+  \begin{center}
+    \begin{tikzpicture}[scale=0.9]
+      \exS{0}
+    \end{tikzpicture}
+  \end{center}
+  \vfill
+  \begin{center}
+    Find $\Icol{i}$, one source at a time\\[10pt]
+    \onslide<2->{$\Icol{i} = \Icol{i_1} + \Icol{i_2}$: \quad
+    $\Icol{i_1}$: only $20\V$, \quad $\Icol{i_2}$: only $4\A$}
+  \end{center}
+  \vfill
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{Example 13.4: kill the current source}
+  \begin{columns}[c,onlytextwidth]
+    \begin{column}{0.52\textwidth}
+      \centering
+      \begin{tikzpicture}[scale=0.72]
+        \exS{1}
+      \end{tikzpicture}
+    \end{column}
+    \begin{column}{0.46\textwidth}
+      \textbf{KVL:}\\[2pt]
+      $-20 + 15\,\Icol{i_x} + 10\,\Icol{i_1} - 5\,\Icol{i_x} = 0$\\[10pt]
+      \onslide<2->{%
+      $\Icol{i_x} = \ ?$\\[4pt]}
+      \onslide<3->{%
+      $\Icol{i_x} = \Icol{i_1}$ \ $\Rightarrow$ \ $20\,\Icol{i_1} = 20$\\[10pt]
+      \begin{tikzpicture}
+        \node[draw=ccur, thick, fill=ccur!6, rounded corners=3pt, inner sep=6pt]
+          {$\Icol{i_1} = 1\A$};
+      \end{tikzpicture}}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{Example 13.4: kill the voltage source}
+  \begin{columns}[c,onlytextwidth]
+    \begin{column}{0.52\textwidth}
+      \centering
+      \begin{tikzpicture}[scale=0.72]
+        \exS{2}
+      \end{tikzpicture}
+    \end{column}
+    \begin{column}{0.46\textwidth}
+      \textbf{KVL:}\\[2pt]
+      $15\,\Icol{i_x} + 10\,\Icol{i_2} - 5\,\Icol{i_x} = 0$\\[10pt]
+      \onslide<2->{%
+      $\Icol{i_x} = \ ?$\\[4pt]}
+      \onslide<3->{%
+      $\Icol{i_x} = \Icol{i_2} - 4$ \ $\Rightarrow$ \ $20\,\Icol{i_2} = 40$\\[10pt]
+      \begin{tikzpicture}
+        \node[draw=ccur, thick, fill=ccur!6, rounded corners=3pt, inner sep=6pt]
+          {$\Icol{i_2} = 2\A$};
+      \end{tikzpicture}\\[12pt]}
+      \onslide<4->{%
+      \begin{tikzpicture}
+        \node[draw=metured, thick, fill=metured!5, rounded corners=3pt, inner sep=6pt]
+          {$\Icol{i} = \Icol{i_1} + \Icol{i_2} = 3\A$};
+      \end{tikzpicture}}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+%==============================================================
+\roadmapframe{7}
+
+%--------------------------------------------------------------
+\begin{frame}{Example 13.5: three experiments}
+  \begin{center}
+    \begin{tikzpicture}[scale=0.8]
+      \exT
+    \end{tikzpicture}
+  \end{center}
+  \begin{columns}[c,onlytextwidth]
+    \begin{column}{0.48\textwidth}
+      \centering
+      \renewcommand{\arraystretch}{1.2}
+      \begin{tabular}{l|c|c|c}
+        & $\Vcol{v_s}$ & $\Icol{i_s}$ & $\Vcol{v}$\\ \hline
+        Exp.\ 1 & $12\V$ & $0$ & $\Vcol{v_1}$\\
+        Exp.\ 2 & $-6\V$ & $6\A$ & $\Vcol{v_2}$\\
+        Exp.\ 3 & $4\V$ & $4\A$ & $\Vcol{v_3}$
+      \end{tabular}
+    \end{column}
+    \begin{column}{0.5\textwidth}
+      $\Vcol{v_3}$ in terms of $\Vcol{v_1}$ and $\Vcol{v_2}$?\\[10pt]
+      \onslide<2->{%
+      Linearity: \ $\Vcol{v} = \mathbf{k}\begin{bmatrix} \Vcol{v_s}\\ \Icol{i_s} \end{bmatrix}$}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{Example 13.5: the solution}
+  \vfill
+  \[
+    \begin{bmatrix} 4\\ 4 \end{bmatrix}
+    = \alpha \begin{bmatrix} 12\\ 0 \end{bmatrix} + \beta \begin{bmatrix} -6\\ 6 \end{bmatrix}
+    \onslide<2->{\qquad\Rightarrow\qquad \beta = \tfrac23, \quad \alpha = \tfrac23}
+  \]
+  \vfill
+  \onslide<3->{%
+  \[
+    \Vcol{v_3} = \Vcol{v}\!\left(\alpha \begin{bmatrix} 12\\ 0 \end{bmatrix} + \beta \begin{bmatrix} -6\\ 6 \end{bmatrix}\right)
+    = \alpha\,\Vcol{v_1} + \beta\,\Vcol{v_2}
+  \]}
+  \vfill
+  \onslide<4->{%
+  \begin{center}
+    \begin{tikzpicture}
+      \node[draw=metured, thick, fill=metured!5, rounded corners=3pt, inner sep=7pt]
+        {$\Vcol{v_3} = \tfrac23\,\Vcol{v_1} + \tfrac23\,\Vcol{v_2}$};
+    \end{tikzpicture}\\[8pt]
+    No element values needed
+  \end{center}}
+  \vfill
+\end{frame}
+
+%--------------------------------------------------------------
 \begin{frame}{Summary}
   \vfill
   \begin{center}
@@ -708,6 +1040,8 @@
     a $\Delta$ & Y: \ $R_1 = R_B R_C/(\SD)$, \dots\\
     a Y & $\Delta$: \ $R_A = (R_1R_2 + R_2R_3 + R_3R_1)/R_1$, \dots\\
     equal resistors & $\Delta$ with $R$ \ $\equiv$ \ Y with $R/3$\\
+    linear circuit & $y = \mathbf{k}\,\mathbf{u}$: \ $y(\alpha\mathbf{u} + \beta\mathbf{w}) = \alpha y(\mathbf{u}) + \beta y(\mathbf{w})$\\
+    several sources & superposition: \ killed $\Vcol{v_s}$ = short, \ killed $\Icol{i_s}$ = open\\
     \bottomrule
   \end{tabular}
   \end{center}

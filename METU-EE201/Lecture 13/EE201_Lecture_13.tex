@@ -1,6 +1,6 @@
 %==============================================================
 %  EE201 -- Circuit Theory I
-%  Lecture 13 : Input Resistance and the Delta-Y Transform
+%  Lecture 13 : Equivalent Resistances and Linearity
 %  M. Mert Ankaralı, METU EEE
 %
 %  Compile:  ./build.sh      (or: pdflatex EE201_Lecture_13.tex, twice)
@@ -56,7 +56,7 @@
 \pagestyle{fancy}
 \fancyhf{}
 \lhead{\small\textcolor{metugray}{EE201 -- Circuit Theory I}}
-\rhead{\small\textcolor{metugray}{Lecture 13: Input Resistance and the $\Delta$--Y Transform}}
+\rhead{\small\textcolor{metugray}{Lecture 13: Equivalent Resistances and Linearity}}
 \cfoot{\small\thepage}
 \renewcommand{\headrulewidth}{0.4pt}
 
@@ -283,6 +283,60 @@
     \node[tlab, left] at (-0.1,2.0) {A}; \node[tlab, right] at (4.1,2.0) {B};
     \node[tlab, below right] at (2.05,-0.65) {C};
   \fi}
+
+%  Example 13.3: v_s, R_1 (current i), R_2, i_s
+\newcommand{\exL}{%
+  \draw (0,2) to[american voltage source, l_=$\Vcol{v_s}$] (0,0);
+  \draw (0,2) to[R, l=$R_1$] (3,2) to[R, l_=$R_2$] (3,0);
+  \draw (3,2) -- (5.2,2); \draw (0,0) -- (5.2,0);
+  \draw (5.2,0) to[american current source, l_=$\Icol{i_s}$] (5.2,2);
+  \fill (3,2) circle (1.7pt); \fill (3,0) circle (1.7pt);
+  \draw[iar] (1.1,1.55) -- (1.9,1.55); \node[font=\small, text=ccur] at (1.5,1.25) {$i$};}
+
+%  Example 13.4: 20 V, 15 Ohm (i_x), 4 A, 10 Ohm (i), CCVS 5 i_x (+ at the bottom).
+%  #1 = 0: all sources;  1: current source killed (open), i_1;  2: voltage source killed (short), i_2
+\newcommand{\exS}[1]{%
+  \ifnum#1=2
+    \draw (0,2.2) -- (0,0);
+    \node[font=\small, text=metured, rotate=90] at (-0.3,1.1) {short};
+  \else
+    \draw (0,2.2) to[american voltage source, l_=$\Vcol{20\V}$] (0,0);
+  \fi
+  \draw (0,2.2) to[R, l=$15\ohm$] (3.4,2.2) to[R, l=$10\ohm$] (6.8,2.2);
+  \ifnum#1=1
+    \draw (3.4,2.2) -- (3.4,1.75); \draw (3.4,0) -- (3.4,0.45);
+    \draw (3.4,1.75) node[ocirc] {}; \draw (3.4,0.45) node[ocirc] {};
+    \node[font=\small, text=metured] at (2.85,1.1) {open};
+  \else
+    \draw (3.4,0) to[american current source, l=$\Icol{4\A}$] (3.4,2.2);
+  \fi
+  \draw (6.8,0) to[american controlled voltage source, l_=$\Vcol{5\,i_x}$] (6.8,2.2);
+  \draw (0,0) -- (6.8,0);
+  \fill (3.4,2.2) circle (1.7pt); \fill (3.4,0) circle (1.7pt);
+  \draw[iar] (0.6,1.8) -- (1.4,1.8); \node[font=\small, text=ccur] at (1.0,1.48) {$i_x$};
+  \draw[iar] (4.6,1.8) -- (5.4,1.8);
+  \node[font=\small, text=ccur] at (5.0,1.48) {\ifcase#1 $i$\or $i_1$\or $i_2$\fi};}
+
+%  Example 13.5: v_s, R_1, CCVS r i_x (+ at the top), R_2 (voltage v), R_3 (current i_x), i_s
+\newcommand{\exT}{%
+  \draw (0,2) to[american voltage source, l_=$\Vcol{v_s}$] (0,0);
+  \draw (0,2) to[R, l=$R_1$] (2.2,2) to[R, l=$R_2$] (4.8,2);
+  \draw (2.2,2) to[american controlled voltage source, l_=$\Vcol{r\,i_x}$] (2.2,0);
+  \draw (4.8,2) to[R, l_=$R_3$] (4.8,0);
+  \draw (4.8,2) -- (6.6,2); \draw (0,0) -- (6.6,0);
+  \draw (6.6,0) to[american current source, l_=$\Icol{i_s}$] (6.6,2);
+  \foreach \p in {(2.2,2),(4.8,2),(2.2,0),(4.8,0)} \fill \p circle (1.7pt);
+  \node[pol] at (2.85,1.62) {$+$}; \node[pol] at (4.15,1.62) {$-$};
+  \node[font=\small, text=cvolt] at (3.5,1.62) {$v$};
+  \draw[iar] (5.25,1.4) -- (5.25,0.7); \node[font=\small, text=ccur, anchor=west] at (5.3,1.05) {$i_x$};}
+
+%  Linearity: block diagram
+\newcommand{\blockdiag}{%
+  \draw[elem] (0,0) rectangle (2.8,1.2);
+  \node[align=center, font=\small] at (1.4,0.6) {LTI resistive\\circuit};
+  \draw[-{Stealth[length=2.5mm]}, thick] (-1.5,0.6) -- (0,0.6) node[midway, above] {$\mathbf{u}$};
+  \draw[-{Stealth[length=2.5mm]}, thick] (2.8,0.6) -- (4.3,0.6) node[midway, above] {$y$};
+  \node[capn] at (-0.75,0.25) {input}; \node[capn] at (3.55,0.25) {output};}
 \begin{document}
 
 %-------------------- title block -----------------------------
@@ -293,7 +347,7 @@
   {\small\scshape Middle East Technical University}\\[2pt]
   {\small\scshape Department of Electrical and Electronics Engineering}\\[7pt]
   {\Large\bfseries\color{metured} EE201 -- Circuit Theory I}\\[4pt]
-  {\large\bfseries Lecture 13: Input Resistance and the $\boldsymbol{\Delta}$--Y Transform}\\[6pt]
+  {\large\bfseries Lecture 13: Equivalent Resistances and Linearity}\\[6pt]
   {\small M. Mert Ankaralı}
 \end{center}
 \end{tcolorbox}
@@ -316,9 +370,11 @@
 \textbf{Motivation.} Previously, we simplified circuits with equivalent one-ports: series and
 parallel connections and source transformation. Two cases need more. A one-port with
 dependent sources is not a series--parallel connection of resistors. A bridge has no two
-resistors in series or in parallel. This lecture finds one equivalent resistor in both cases:
-the \textbf{input resistance} of a one-port, and the \textbf{$\boldsymbol{\Delta}$--Y transform}
-of three resistors.
+resistors in series or in parallel. The first part finds one equivalent resistor in both
+cases: the \textbf{input resistance} of a one-port, and the \textbf{$\boldsymbol{\Delta}$--Y
+transform} of three resistors. The second part shows that an LTI resistive circuit is
+\textbf{linear} in its independent sources. Then \textbf{superposition} solves a circuit with
+several sources one source at a time.
 
 %==============================================================
 \section{The input resistance of a one-port}
@@ -518,6 +574,165 @@ voltage of $28\V$. \ \yes
 \end{examplebox}
 
 %==============================================================
+\section{Linearity}
+
+In an LTI resistive circuit, the independent sources are the \textbf{inputs}. Collect the
+voltages of the independent voltage sources and the currents of the independent current
+sources in the \textbf{input vector} $\mathbf{u} = [\,u_1 \ \cdots \ u_m\,]^T$. An
+\textbf{output} $y$ is any branch voltage or current.
+
+\begin{definitionbox}{Linearity}
+\begin{minipage}[c]{0.52\linewidth}
+For each output $y$ of an LTI resistive circuit, there is a row vector
+$\mathbf{k} = [\,k_1 \ \cdots \ k_m\,]$ such that
+\[
+  y = \mathbf{k}\,\mathbf{u} = k_1u_1 + k_2u_2 + \cdots + k_mu_m .
+\]
+\end{minipage}\hfill
+\begin{minipage}[c]{0.44\linewidth}
+\centering
+\begin{tikzpicture}[scale=0.85]
+  \blockdiag
+\end{tikzpicture}\\[2pt]
+{\small $y$ is a function of $\mathbf{u}$: $y = y(\mathbf{u})$}
+\end{minipage}
+\end{definitionbox}
+
+\begin{examplebox}[Example 13.3 --- the row vector $\mathbf{k}$]
+\begin{minipage}[c]{0.44\linewidth}
+\centering
+\begin{tikzpicture}[scale=0.72]
+  \exL
+\end{tikzpicture}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.54\linewidth}
+\textbf{Question.} The inputs are $\mathbf{u} = [\,\Vcol{v_s} \ \ \Icol{i_s}\,]^T$. For the
+output $y = \Icol{i}$, find $k_1$, $k_2$ with $\Icol{i} = k_1\Vcol{v_s} + k_2\Icol{i_s}$.
+
+\textbf{Answer.} KVL around the left mesh, with $\Icol{i} + \Icol{i_s}$ down through $R_2$:
+\[
+  -\Vcol{v_s} + R_1\Icol{i} + R_2(\Icol{i} + \Icol{i_s}) = 0 ,
+\]
+\[
+  \Icol{i} = \frac{1}{R_1 + R_2}\,\Vcol{v_s} - \frac{R_2}{R_1 + R_2}\,\Icol{i_s} ,
+\]
+so $k_1 = 1/(R_1 + R_2)$ and $k_2 = -R_2/(R_1 + R_2)$.
+\end{minipage}
+\end{examplebox}
+
+\begin{ideabox}[The implication of linearity]
+For input vectors $\mathbf{u}$, $\mathbf{w}$ and numbers $\alpha$, $\beta$:
+\[
+  y(\alpha\,\mathbf{u} + \beta\,\mathbf{w}) = \alpha\,y(\mathbf{u}) + \beta\,y(\mathbf{w}) .
+\]
+\end{ideabox}
+
+%==============================================================
+\section{Superposition}
+
+Split the input vector into one source at a time. With two sources,
+\[
+  y\!\left(\begin{bmatrix} \Vcol{v_s}\\ \Icol{i_s} \end{bmatrix}\right)
+  = y\!\left(\begin{bmatrix} \Vcol{v_s}\\ 0 \end{bmatrix}\right)
+  + y\!\left(\begin{bmatrix} 0\\ \Icol{i_s} \end{bmatrix}\right) :
+\]
+the output is the sum of the outputs with one independent source at a time. The other
+sources are \textbf{killed}.
+
+\begin{definitionbox}{Killing a source}
+Killing an independent voltage source ($\Vcol{v_s} = 0$) replaces it with a \textbf{short
+circuit}. Killing an independent current source ($\Icol{i_s} = 0$) replaces it with an
+\textbf{open circuit}. Do \textbf{not} kill dependent sources: they are not inputs.
+\end{definitionbox}
+
+\begin{examplebox}[Example 13.4 --- superposition]
+\begin{minipage}[c]{0.46\linewidth}
+\centering
+\begin{tikzpicture}[scale=0.62]
+  \exS{0}
+\end{tikzpicture}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.52\linewidth}
+\textbf{Question.} Find $\Icol{i}$ by superposition.
+
+\textbf{Answer.} $\Icol{i} = \Icol{i_1} + \Icol{i_2}$: $\Icol{i_1}$ with the $4\A$ source killed,
+$\Icol{i_2}$ with the $20\V$ source killed.
+\end{minipage}
+
+\smallskip
+\begin{minipage}[t]{0.48\linewidth}
+\centering
+\begin{tikzpicture}[scale=0.55]
+  \exS{1}
+\end{tikzpicture}
+
+\raggedright
+\textbf{Kill the current source} (open). One loop, $\Icol{i_x} = \Icol{i_1}$:
+\[
+  -20 + 15\,\Icol{i_x} + 10\,\Icol{i_1} - 5\,\Icol{i_x} = 0
+\]
+\[
+  \Rightarrow\ 20\,\Icol{i_1} = 20 \ \Rightarrow\ \Icol{i_1} = 1\A .
+\]
+\end{minipage}\hfill
+\begin{minipage}[t]{0.48\linewidth}
+\centering
+\begin{tikzpicture}[scale=0.55]
+  \exS{2}
+\end{tikzpicture}
+
+\raggedright
+\textbf{Kill the voltage source} (short). KCL: $\Icol{i_x} = \Icol{i_2} - 4$:
+\[
+  15\,\Icol{i_x} + 10\,\Icol{i_2} - 5\,\Icol{i_x} = 0
+\]
+\[
+  \Rightarrow\ 20\,\Icol{i_2} = 40 \ \Rightarrow\ \Icol{i_2} = 2\A .
+\]
+\end{minipage}
+
+\smallskip
+So $\Icol{i} = \Icol{i_1} + \Icol{i_2} = 3\A$. The dependent source $5\,\Icol{i_x}$ stays in
+both circuits.
+\end{examplebox}
+
+\begin{examplebox}[Example 13.5 --- three experiments]
+\begin{minipage}[c]{0.5\linewidth}
+\centering
+\begin{tikzpicture}[scale=0.62]
+  \exT
+\end{tikzpicture}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.46\linewidth}
+\centering
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{l|c|c|c}
+  & $\Vcol{v_s}$ & $\Icol{i_s}$ & $\Vcol{v}$\\ \hline
+  Exp.\ 1 & $12\V$ & $0$ & $\Vcol{v_1}$\\
+  Exp.\ 2 & $-6\V$ & $6\A$ & $\Vcol{v_2}$\\
+  Exp.\ 3 & $4\V$ & $4\A$ & $\Vcol{v_3}$
+\end{tabular}
+\end{minipage}
+
+\smallskip
+\textbf{Question.} Three experiments are made on the circuit. Express $\Vcol{v_3}$ in terms of
+$\Vcol{v_1}$ and $\Vcol{v_2}$.
+
+\textbf{Answer.} By linearity, $\Vcol{v} = \mathbf{k}\,[\,\Vcol{v_s} \ \ \Icol{i_s}\,]^T$
+for some $\mathbf{k}$. Write the third input with the first two:
+\[
+  \begin{bmatrix} 4\\ 4 \end{bmatrix}
+  = \alpha \begin{bmatrix} 12\\ 0 \end{bmatrix} + \beta \begin{bmatrix} -6\\ 6 \end{bmatrix}
+  \ \Rightarrow\ 6\beta = 4, \ \ 12\alpha - 6\beta = 4
+  \ \Rightarrow\ \alpha = \beta = \tfrac23 .
+\]
+Then $\Vcol{v_3} = \alpha\,\Vcol{v_1} + \beta\,\Vcol{v_2} = \frac23\,\Vcol{v_1} + \frac23\,\Vcol{v_2}$.
+Equivalently, $\mathbf{k} = [\,\Vcol{v_1} \ \ \Vcol{v_2}\,]
+\left[\begin{smallmatrix} 12 & -6\\ 0 & 6 \end{smallmatrix}\right]^{-1}$. No element value is
+needed.
+\end{examplebox}
+
+%==============================================================
 \section*{Summary}
 
 \begin{center}
@@ -532,6 +747,9 @@ a one-port of resistors and dependent sources & connect a $1\A$ test source;
 a $\Delta$ & Y: $R_1 = R_B R_C/(\SD)$, $R_2 = R_C R_A/(\SD)$, $R_3 = R_A R_B/(\SD)$\\
 a Y & $\Delta$: $R_A = (R_1R_2 + R_2R_3 + R_3R_1)/R_1$, and so on\\
 equal resistors & $\Delta$ with $R$ $\equiv$ Y with $R/3$\\
+a linear circuit & $y = \mathbf{k}\,\mathbf{u}$; \ $y(\alpha\mathbf{u} + \beta\mathbf{w}) = \alpha\,y(\mathbf{u}) + \beta\,y(\mathbf{w})$\\
+several independent sources & superposition: one source at a time; a killed voltage source is a
+  short circuit, a killed current source an open circuit; dependent sources stay\\
 \bottomrule
 \end{tabular}
 \end{center}

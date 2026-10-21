@@ -1,11 +1,11 @@
-# EE201 — Lecture 13: Input Resistance and the Δ–Y Transform
+# EE201 — Lecture 13: Equivalent Resistances and Linearity
 
 Lecture notes and slides for the thirteenth lecture of EE201 (Section 2, Fall 2026/27).
 
 | File | What it is |
 |---|---|
-| `EE201_Lecture_13.tex` | Handout / lecture notes (article, 3 pages). Self-contained: input resistance with a test source, the Δ–Y and Y–Δ transforms, two worked examples, a summary. |
-| `EE201_Lecture_13_slides.tex` | Beamer deck (20 slides, 52 PDF pages) for the lecture itself — visual, low text. |
+| `EE201_Lecture_13.tex` | Handout / lecture notes (article, 5 pages). Self-contained: input resistance with a test source, the Δ–Y and Y–Δ transforms, linearity and superposition, five worked examples, a summary. |
+| `EE201_Lecture_13_slides.tex` | Beamer deck (33 slides, 86 PDF pages) for the lecture itself — visual, low text. |
 | `build.sh` | Compiles both, removes auxiliary files, opens the PDFs. |
 
 ## Compiling
@@ -23,9 +23,11 @@ Uses `latexmk` when available, otherwise two `pdflatex` passes. All figures are 
 
 ## Contents
 
-Following pp. 31–33 of Prof. Emre Tuna's notes (one-ports, input resistance, Δ–Y transform),
-in the order of his recorded lecture (one-ports 01:04, input resistance 06:25, Δ to Y 16:13,
-Y to Δ 30:52, symmetric case 34:24, example 36:11).
+Following pp. 31–36 of Prof. Emre Tuna's notes, in the order of two of his recorded lectures:
+one-ports and input resistance (01:04, 06:25), Δ to Y (16:13), Y to Δ (30:52), the symmetric
+case (34:24) and the bridge example (36:11); then linearity (00:31), its block diagram (14:07)
+and implication (17:19), superposition with killed sources (22:18–34:46) and the three
+experiments example (40:24).
 
 1. **Review and motivation** — equivalent one-ports (previously); two cases that series and
    parallel cannot simplify: a one-port with a dependent source, and a bridge
@@ -41,12 +43,21 @@ Y to Δ 30:52, symmetric case 34:24, example 36:11).
 5. **Example 13.2** — a bridge (7, 20, 10, 50, 40 Ω): the Δ A–B–C becomes a Y with 5, 4, 20 Ω,
    then (7 + 5) ∥ (20 + 4) + 20 = 28 Ω; checked with node voltages
 
+6. **Linearity** — inputs u (independent source values), output y (any branch voltage or
+   current), y = k u; block diagram; Example 13.3: k₁ = 1/(R₁ + R₂), k₂ = −R₂/(R₁ + R₂) for
+   y = i; the implication y(αu + βw) = α y(u) + β y(w)
+7. **Superposition** — one independent source at a time; a killed voltage source is a short,
+   a killed current source an open; dependent sources are not killed. Example 13.4: 20 V,
+   4 A and a CCVS 5 i_x: i₁ = 1 A, i₂ = 2 A, i = 3 A. Example 13.5: three experiments,
+   v₃ = (2/3) v₁ + (2/3) v₂ without any element value
+
 Then a summary table (situation → what to do).
 
 ## Slides
 
 After the review comes a "Motivation" slide, and a roadmap slide opens each part: a road with
-four stations (input resistance, Δ to Y, Y to Δ, an example). Circuits and questions come
+four stations (input resistance, Δ and Y, linearity, superposition); a second "Motivation"
+slide opens the linearity part. Circuits and questions come
 first and the answers on later pages; no "Question" labels. The Δ is marked in red and the Y
-in blue. Each step is an ordinary extra PDF page; that is why the deck has 20 slides but 52
+in blue. Each step is an ordinary extra PDF page; that is why the deck has 33 slides but 86
 pages.
