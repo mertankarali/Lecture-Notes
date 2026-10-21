@@ -4,8 +4,8 @@ Lecture notes and slides for the twelfth lecture of EE201 (Section 2, Fall 2026/
 
 | File | What it is |
 |---|---|
-| `EE201_Lecture_12.tex` | Handout / lecture notes (article, 5 pages). Self-contained: procedure, four worked examples, a summary. |
-| `EE201_Lecture_12_slides.tex` | Beamer deck (34 slides, 126 PDF pages) for the lecture itself — visual, low text. |
+| `EE201_Lecture_12.tex` | Handout / lecture notes (article, 5 pages). Self-contained: procedure, five worked examples, a summary. |
+| `EE201_Lecture_12_slides.tex` | Beamer deck (34 slides, 128 PDF pages) for the lecture itself — visual, low text. |
 | `build.sh` | Compiles both, removes auxiliary files, opens the PDFs. |
 
 ## Compiling
@@ -47,14 +47,13 @@ matrix lecture: mesh currents i_M = [i_M1 … i_Mℓ]ᵀ, i = Mᵀ i_M, KVL M v 
    12.3: Method I (its voltage v as an extra unknown, plus the constraint i_M1 − i_M2 = i_s,
    3 × 3) and Method II (the supermesh: v cancels, KVL around the outer loop, 2 × 2, not
    symmetric)
-5. **Dependent sources** (L13 20:59) — one type only: Example 12.4, a dependent current
-   source 3 v_x on mesh 3 only and a 2 A source between meshes 1 and 2; supermesh plus two
-   constraints, i_M = (2, 4, 12) A, i = −10 A; a dependent voltage source is mentioned as the
-   easy case (it adds a term to KVL, as a dependent current source added a term to KCL
-   previously); remark (dependent current source on one mesh: no KVL there)
-6. **Node or mesh?** (L13 ~34:00, node voltage formulation) — Example 12.4 again with node voltages (ground at the right
-   node, the middle node at 12 V, e₁ = −28 V, e₂ = −24 V, the same i = −10 A); counting rule:
-   mesh, ℓ minus the current sources; node, n − 1 minus the voltage sources
+5. **Dependent sources** (L13 20:59) — Example 12.4, a dependent current source 3 v_x on
+   mesh 3 only and a 2 A source between meshes 1 and 2; supermesh plus two constraints,
+   i_M = (2, 4, 12) A, i = −10 A. Example 12.5, a dependent voltage source 2 i_x: KVL as usual,
+   first plug i_x = i_M1 − i_M2, then the matrix; i_M = (4, 2) A, i_x = 2 A, Z_M not
+   symmetric. Remark (dependent current source on one mesh: no KVL there)
+6. **Node or mesh?** — counting rule on Example 12.4: mesh, ℓ minus the current sources
+   (1 equation); node, n − 1 minus the voltage sources (2 equations)
 
 Then a summary table (situation → what to do).
 
@@ -68,7 +67,7 @@ each part: a road with four stations (voltage sources, current sources, dependen
 node or mesh?). Questions are shown first and the answers on the next page; equations,
 matrix rows and constraints appear one per page, and the mesh being written is shaded in
 the circuit. Each step is an ordinary extra PDF page; that is why the deck has 34 slides but
-126 pages.
+128 pages.
 
 Every example is also written in matrix form.
 

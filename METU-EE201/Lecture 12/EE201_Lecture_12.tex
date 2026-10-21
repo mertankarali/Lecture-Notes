@@ -235,6 +235,18 @@
     \draw (7.2,3.8) -- (7.8,3.8) -- (7.8,3.6) node[ground] {};
   \fi}
 
+%  Example 12.5: a dependent voltage source 2 i_x on the right branch.
+%  #1 = 0: bare;  1: mesh currents.
+\newcommand{\exQ}[1]{%
+  \draw (0,2.2) to[american voltage source, l_=$\Vcol{16\V}$] (0,0);
+  \draw (0,2.2) to[R, l=$2\ohm$] (3.5,2.2) to[R, l=$2\ohm$] (7,2.2);
+  \draw (3.5,2.2) to[R, l=$4\ohm$] (3.5,0);
+  \draw (7,2.2) to[american controlled voltage source, l=$\Vcol{2\,i_x}$] (7,0);
+  \draw (0,0) -- (7,0);
+  \foreach \p in {(3.5,2.2),(3.5,0)} \fill \p circle (1.7pt);
+  \draw[iar] (3.12,1.45) -- (3.12,0.75); \node[font=\small, text=ccur, anchor=east] at (3.07,1.1) {$i_x$};
+  \ifnum#1>0 \meshcw{1.55}{1.1}{1} \meshcw{5.25}{1.1}{2} \fi}
+
 %  Graph branch from #2 to #3, label #5 on side #4 (angle), optional colour #1
 \newcommand{\gbranch}[5][black!75]{%
   \draw[gbr, #1] (#2) -- (#3);
@@ -558,9 +570,7 @@ matrix is no longer symmetric.
 \section{Dependent sources}
 
 A dependent source is handled like an independent one of the same kind. Its control variable is
-then written with mesh currents; this gives one more constraint equation. A dependent voltage
-source is the easy case: it adds a term to KVL, just as a dependent current source added a term
-to KCL previously. The new case is a dependent current source.
+then written with mesh currents. First plug it into the equations, then form the matrix.
 
 \begin{examplebox}[Example 12.4 --- a dependent current source]
 \begin{minipage}[c]{0.44\linewidth}
@@ -592,6 +602,31 @@ $\Vcol{v_x} = -2\,\im{1}$ and $\im{3} = 6\,\im{1}$ (3). In matrix form,
 so $\Icol{i} = \im{1} - \im{3} = 2 - 12 = \Icol{-10\A}$.
 \end{examplebox}
 
+\begin{examplebox}[Example 12.5 --- a dependent voltage source]
+\begin{minipage}[c]{0.44\linewidth}
+\centering
+\begin{tikzpicture}[scale=0.6]
+  \exQ{1}
+\end{tikzpicture}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.54\linewidth}
+\textbf{Question.} Find $\Icol{i_x}$. Treat $\Vcol{2\,i_x}$ as a voltage source:
+\begin{alignat*}{2}
+  &\text{mesh 1:}\ \ & -16 + 2\,\im{1} + 4(\im{1} - \im{2}) &= 0\\
+  &\text{mesh 2:}\ \ & 4(\im{2} - \im{1}) + 2\,\im{2} + \Vcol{2\,i_x} &= 0
+\end{alignat*}
+First plug $\Icol{i_x} = \im{1} - \im{2}$ into mesh 2: $-2\,\im{1} + 4\,\im{2} = 0$.
+Then the matrix:
+\[
+  \begin{bmatrix} 6 & -4\\ -2 & 4 \end{bmatrix}
+  \begin{bmatrix} \im{1}\\ \im{2} \end{bmatrix}
+  = \begin{bmatrix} 16\\ 0 \end{bmatrix}
+  \ \Rightarrow\ \begin{array}{l} \im{1} = 4\A\\ \im{2} = 2\A \end{array}
+\]
+So $\Icol{i_x} = 4 - 2 = \Icol{2\A}$. $Z_M$ is not symmetric.
+\end{minipage}
+\end{examplebox}
+
 \begin{definitionbox}{Remark: a dependent current source on one mesh only}
 If a dependent current source is on mesh $k$ only, do not write KVL around mesh $k$: its voltage
 is not known. Write its constraint instead.
@@ -607,34 +642,6 @@ $n - 1 = 3$ and each voltage source fixes one: $3 - 1 = 2$ KCL equations are lef
 \textbf{Tip.} Count before you start: for mesh currents, $\ell$ minus the current sources; for
 node voltages, $n - 1$ minus the voltage sources. Mesh current analysis needs a planar circuit;
 node voltage analysis always works.
-
-\begin{examplebox}[Example 12.4 with node voltages]
-The right node is the ground; the $12\V$ source fixes the middle node at $12\V$. The unknowns
-are $\e{1}$, $\e{2}$.
-
-\begin{minipage}[c]{0.44\linewidth}
-\centering
-\begin{tikzpicture}[scale=0.62]
-  \exP{3}
-\end{tikzpicture}
-\end{minipage}\hfill
-\begin{minipage}[c]{0.54\linewidth}
-\begin{align*}
-  \text{node 1:}\quad & \frac{\e{1} - \e{2}}{2} + \frac{\e{1} - 12}{4} - 3\,\Vcol{v_x} = 0\\
-  \text{node 2:}\quad & 2 + \frac{\e{2} - \e{1}}{2} + \frac{\e{2}}{6} = 0\\
-  \text{constraint:}\quad & \Vcol{v_x} = \e{1} - \e{2}
-\end{align*}
-\end{minipage}
-First plug $\Vcol{v_x} = \e{1} - \e{2}$ into node 1: $-\frac94\,\e{1} + \frac52\,\e{2} = 3$.
-Then the matrix:
-\[
-  \begin{bmatrix} -\frac94 & \frac52\\[2pt] -\frac12 & \frac23 \end{bmatrix}
-  \begin{bmatrix} \e{1}\\[2pt] \e{2} \end{bmatrix}
-  = \begin{bmatrix} 3\\[2pt] -2 \end{bmatrix}
-  \ \Rightarrow\ \e{1} = -28\V,\ \e{2} = -24\V, \quad
-  \Icol{i} = \frac{\e{1} - 12}{4} = \Icol{-10\A}, \ \text{the same.}
-\]
-\end{examplebox}
 
 %==============================================================
 \section*{Summary}

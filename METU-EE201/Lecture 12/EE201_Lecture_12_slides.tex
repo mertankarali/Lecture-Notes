@@ -207,6 +207,18 @@
     \draw (7.2,3.8) -- (7.8,3.8) -- (7.8,3.6) node[ground] {};
   \fi}
 
+%  Example 12.5: a dependent voltage source 2 i_x on the right branch.
+%  #1 = 0: bare;  1: mesh currents.
+\newcommand{\exQ}[1]{%
+  \draw (0,2.2) to[american voltage source, l_=$\Vcol{16\V}$] (0,0);
+  \draw (0,2.2) to[R, l=$2\ohm$] (3.5,2.2) to[R, l=$2\ohm$] (7,2.2);
+  \draw (3.5,2.2) to[R, l=$4\ohm$] (3.5,0);
+  \draw (7,2.2) to[american controlled voltage source, l=$\Vcol{2\,i_x}$] (7,0);
+  \draw (0,0) -- (7,0);
+  \foreach \p in {(3.5,2.2),(3.5,0)} \fill \p circle (1.7pt);
+  \draw[iar] (3.12,1.45) -- (3.12,0.75); \node[font=\small, text=ccur, anchor=east] at (3.07,1.1) {$i_x$};
+  \ifnum#1>0 \meshcw{1.55}{1.1}{1} \meshcw{5.25}{1.1}{2} \fi}
+
 %  Graph branch from #2 to #3, label #5 on side #4 (angle), optional colour #1
 \newcommand{\gbranch}[5][black!75]{%
   \draw[gbr, #1] (#2) -- (#3);
@@ -338,7 +350,8 @@
       \rmsub{3}{3}{5.0}{-0.8}{on one mesh only}
       \rmsub{4}{5}{5.0}{-1.75}{between two meshes}
       \rmsub{6}{6}{8.45}{-0.8}{a dependent current source}
-      \rmsub{7}{7}{11.65}{-0.8}{the same circuit both ways}
+      \rmsub{6}{6}{8.45}{-1.75}{a dependent voltage source}
+      \rmsub{7}{7}{11.65}{-0.8}{count the equations}
     \end{tikzpicture}
     \vfill
     \mbox{}
@@ -856,12 +869,72 @@
 \end{frame}
 
 %--------------------------------------------------------------
+\begin{frame}{Example 12.5: a dependent voltage source}
+  \begin{columns}[c,onlytextwidth]
+    \begin{column}{0.52\textwidth}
+      \centering
+      \begin{tikzpicture}[scale=0.66]
+        \only<1-2>{\exQ{0}}%
+        \only<3->{\exQ{1}}%
+      \end{tikzpicture}
+    \end{column}
+    \begin{column}{0.46\textwidth}
+      \small
+      Find $\Icol{i_x}$.\\[10pt]
+      \onslide<2->{%
+      Treat $\Vcol{2\,i_x}$ as a voltage source\\[8pt]}
+      \onslide<3->{%
+      \textbf{Mesh 1:} \ $-16 + 2\,\im{1} + 4(\im{1} - \im{2}) = 0$\\[6pt]}
+      \onslide<4->{%
+      \textbf{Mesh 2:} \ $4(\im{2} - \im{1}) + 2\,\im{2} + \Vcol{2\,i_x} = 0$\\[10pt]}
+      \onslide<5->{%
+      $\Icol{i_x}$ in mesh currents?\\[4pt]}
+      \onslide<6->{%
+      $\Icol{i_x} = \im{1} - \im{2}$}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{Example 12.5: matrix form}
+  \vfill
+  \textbf{First} plug $\Icol{i_x} = \im{1} - \im{2}$ into mesh 2:
+  \[
+    4(\im{2} - \im{1}) + 2\,\im{2} + 2(\im{1} - \im{2}) = 0
+    \onslide<2->{\qquad\Rightarrow\qquad \alert{-2}\,\im{1} + 4\,\im{2} = 0}
+  \]
+  \vfill
+  \onslide<3->{%
+  \[
+    \begin{bmatrix} 6 & -4\\ \alert{-2} & 4 \end{bmatrix}
+    \begin{bmatrix} \im{1}\\ \im{2} \end{bmatrix}
+    =
+    \begin{bmatrix} 16\\ 0 \end{bmatrix}
+    \qquad\onslide<4->{\Rightarrow\qquad \im{1} = 4\A, \quad \im{2} = 2\A}
+  \]}
+  \vfill
+  \onslide<5->{%
+  \begin{center}
+    \begin{tikzpicture}
+      \node[draw=ccur, thick, fill=ccur!6, rounded corners=3pt, inner sep=7pt]
+        {$\Icol{i_x} = \im{1} - \im{2} = 4 - 2 = \Icol{2\A}$};
+    \end{tikzpicture}
+  \end{center}}
+  \vfill
+  \onslide<6->{%
+  \begin{center}
+    $-4 \neq -2$: \ \alert{not} symmetric
+  \end{center}}
+  \vfill
+\end{frame}
+
+%--------------------------------------------------------------
 \begin{frame}{Dependent sources}
   \vfill
   \begin{itemize}\itemsep12pt
     \item Like an independent source of the same kind
-    \item<2-> Control variable in mesh currents: a \alert{constraint}
-    \item<3-> Dependent \alert{voltage} source: one more term in KVL
+    \item<2-> Control variable in mesh currents
+    \item<3-> \alert{First} plug it in, \alert{then} form the matrix
   \end{itemize}
   \vfill
   \onslide<4->{%
@@ -874,61 +947,6 @@
 
 %==============================================================
 \roadmapframe{7}
-
-%--------------------------------------------------------------
-\begin{frame}{Example 12.4 with node voltages}
-  \begin{columns}[c,onlytextwidth]
-    \begin{column}{0.53\textwidth}
-      \centering
-      \begin{tikzpicture}[scale=0.68]
-        \exP{3}
-      \end{tikzpicture}
-    \end{column}
-    \begin{column}{0.45\textwidth}
-      \small
-      Same circuit, node voltages?\\[10pt]
-      \onslide<2->{%
-      Middle node: $12\V$ known\\[3pt]
-      Unknowns: $\e{1}$, $\e{2}$\\[10pt]}
-      \onslide<3->{%
-      \textbf{Node 1:} \
-      $\displaystyle \frac{\e{1} - \e{2}}{2} + \frac{\e{1} - 12}{4} - 3\,\Vcol{v_x} = 0$\\[6pt]}
-      \onslide<4->{%
-      \textbf{Node 2:} \
-      $\displaystyle 2 + \frac{\e{2} - \e{1}}{2} + \frac{\e{2}}{6} = 0$\\[8pt]}
-      \onslide<5->{%
-      \textbf{Constraint:} \ $\Vcol{v_x} = \e{1} - \e{2}$}
-    \end{column}
-  \end{columns}
-\end{frame}
-
-%--------------------------------------------------------------
-\begin{frame}{Example 12.4 with node voltages: matrix form}
-  \vfill
-  \textbf{First} plug $\Vcol{v_x} = \e{1} - \e{2}$ into node 1:
-  \[
-    \frac{\e{1} - \e{2}}{2} + \frac{\e{1} - 12}{4} - 3(\e{1} - \e{2}) = 0
-    \onslide<2->{\qquad\Rightarrow\qquad -\tfrac94\,\e{1} + \tfrac52\,\e{2} = 3}
-  \]
-  \vfill
-  \onslide<3->{%
-  \[
-    \begin{bmatrix} -\frac94 & \frac52\\[3pt] -\frac12 & \frac23 \end{bmatrix}
-    \begin{bmatrix} \e{1}\\[3pt] \e{2} \end{bmatrix}
-    =
-    \begin{bmatrix} 3\\[3pt] -2 \end{bmatrix}
-    \qquad\onslide<4->{\Rightarrow\qquad \e{1} = -28\V, \quad \e{2} = -24\V}
-  \]}
-  \vfill
-  \onslide<5->{%
-  \begin{center}
-    \begin{tikzpicture}
-      \node[draw=ccur, thick, fill=ccur!6, rounded corners=3pt, inner sep=7pt]
-        {$\displaystyle \Icol{i} = \frac{\e{1} - 12}{4} = \frac{-28 - 12}{4} = \Icol{-10\A}$ \ \ \yes};
-    \end{tikzpicture}
-  \end{center}}
-  \vfill
-\end{frame}
 
 %--------------------------------------------------------------
 \begin{frame}{Node or mesh?}
