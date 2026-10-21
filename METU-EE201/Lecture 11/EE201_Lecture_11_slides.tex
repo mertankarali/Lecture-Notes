@@ -514,11 +514,14 @@
       \end{tikzpicture}
     \end{column}
     \begin{column}{0.41\textwidth}
-      \textbf{Question.} How many unknowns?\\[12pt]
-      \onslide<2->{%
-      $b = 7$: \ $14$ unknowns\\[12pt]}
-      \onslide<3->{%
-      Node voltage analysis: \alert{3}}
+      \textbf{Goal:} every branch voltage and current\\[12pt]
+      \textbf{Four steps:}
+      \begin{enumerate}\itemsep4pt
+        \item Choose a reference node
+        \item Label the node voltages
+        \item Currents with node voltages
+        \item KCL at every node except the ground
+      \end{enumerate}
     \end{column}
   \end{columns}
 \end{frame}
@@ -578,7 +581,7 @@
       \end{tikzpicture}
     \end{column}
     \begin{column}{0.41\textwidth}
-      \textbf{Question.} $\Icol{i}$ leaving node 1 through $R_2$?\\[10pt]
+      $\Icol{i}$ leaving node 1 through $R_2$?\\[10pt]
       \onslide<2->{%
       $\displaystyle \Icol{i} = \frac{\e{1} - \e{2}}{R_2}$\\[10pt]}
       \onslide<3->{%
@@ -635,7 +638,7 @@
     \end{aligned}
   \]
   \vfill
-  \only<1>{\begin{center}\textbf{Question.} One matrix equation?\end{center}}%
+  \only<1>{\begin{center}One matrix equation?\end{center}}%
   \onslide<2->{%
   \[
     \underbrace{\begin{bmatrix}
@@ -671,7 +674,7 @@
       \end{bmatrix}$}
     \end{column}
     \begin{column}{0.5\textwidth}
-      \textbf{Question.} Read $Y_n$ from the circuit?\\[12pt]
+      Read $Y_n$ from the circuit?\\[12pt]
       \onslide<2->{%
       \textbf{Diagonal} $(k,k)$:\\ $+\sum G$ \alert{at} node $k$\\[10pt]}
       \onslide<3->{%
@@ -734,7 +737,7 @@
   \end{center}
   \vfill
   \begin{itemize}\itemsep8pt
-    \item \textbf{Question.} KCL at node 1: current through $\Vcol{v_{s2}}$?
+    \item KCL at node 1: current through $\Vcol{v_{s2}}$?
     \item<2-> Not given by $\e{1}$, $\e{2}$: a voltage source fixes $\Vcol{v}$, not $\Icol{i}$
     \item<3-> \alert{Method I}: its current as an unknown \quad \alert{Method II}: supernode
   \end{itemize}
@@ -793,7 +796,7 @@
   \vspace{-4pt}
   \begin{columns}[t,onlytextwidth]
     \begin{column}{0.5\textwidth}
-      \textbf{Question.} Can we get rid of $\Icol{i}$?\\[8pt]
+      Can we get rid of $\Icol{i}$?\\[8pt]
       \onslide<2->{%
       Add KCL of nodes 1 and 2:\\[3pt]
       $\Icol{i}$ \alert{cancels}}
@@ -820,7 +823,7 @@
   \begin{columns}[t,onlytextwidth]
     \begin{column}{0.49\textwidth}
       \small
-      \only<1>{\textbf{Question.} KCL at the supernode?\\[4pt]}%
+      \only<1>{KCL at the supernode?\\[4pt]}%
       \onslide<2->{\textcolor{metured}{\textbf{Supernode:}} \
       $\displaystyle \frac{\e{1} - \Vcol{v_{s1}}}{R_1} + \frac{\e{1}}{R_2} + \frac{\e{2}}{R_3}
         + \frac{\e{2} - \e{3}}{R_4} = 0$\\[4pt]}
@@ -863,7 +866,7 @@
     \end{column}
     \begin{column}{0.48\textwidth}
       \small
-      \textbf{Question.} Find $\e{1}$ and $\e{2}$.\\[10pt]
+      Find $\e{1}$ and $\e{2}$.\\[10pt]
       \onslide<2->{%
       Treat $\Icol{0.5\,v_x}$ as a current source\\[8pt]}
       \onslide<3->{%
@@ -871,7 +874,7 @@
       \onslide<4->{%
       \textbf{Node 2:} \ $\displaystyle \frac{\e{2} - \e{1}}{6} + \frac{\e{2}}{6} - \Icol{0.5\,v_x} = 0$\\[10pt]}
       \onslide<5->{%
-      \textbf{Question.} $\Vcol{v_x}$ in node voltages?\\[4pt]}
+      $\Vcol{v_x}$ in node voltages?\\[4pt]}
       \onslide<6->{%
       $\Vcol{v_x} = \e{1}$}
     \end{column}
@@ -915,7 +918,7 @@
       \end{tikzpicture}
     \end{column}
     \begin{column}{0.46\textwidth}
-      \textbf{Question.} Power absorbed by the $3\ohm$?\\[12pt]
+      Power absorbed by the $3\ohm$?\\[12pt]
       \onslide<2->{%
       $\Vcol{v_x}$: between nodes 3 and 2, no ground\\[12pt]}
       \onslide<3->{%
@@ -945,7 +948,7 @@
       $\displaystyle \frac{\e{3} - \e{1}}{2} + \frac{\e{2} - \e{1}}{2} + \frac{\e{2}}{3} = 0
       \ \ (2)$\\[12pt]}
       \onslide<3->{%
-      \textbf{Question.} The constraint?\\[8pt]}
+      The constraint?\\[8pt]}
       \onslide<4->{%
       Source: \ $\e{2} - \e{3} = \Vcol{v_x}$\\[4pt]}
       \onslide<5->{%
@@ -1027,7 +1030,7 @@
   \end{columns}
   \vfill
   \begin{center}
-    \textbf{Question.} Solve both. \ Which is easier?
+    Solve both. \ Which is easier?
   \end{center}
   \vfill
 \end{frame}
@@ -1143,7 +1146,7 @@
   \begin{columns}[c,onlytextwidth]
     \begin{column}{0.42\textwidth}
       \small
-      \textbf{Question.} Reduced incidence matrix $A$?\\[6pt]
+      Reduced incidence matrix $A$?\\[6pt]
       \onslide<2->{%
       One row per non-ground node\\[3pt]
       $+1$ leaves, \ $-1$ enters}
