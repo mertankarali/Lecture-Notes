@@ -5,7 +5,7 @@ Lecture notes and slides for the thirteenth lecture of EE201 (Section 2, Fall 20
 | File | What it is |
 |---|---|
 | `EE201_Lecture_13.tex` | Handout / lecture notes (article, 7 pages). Self-contained: input resistance with a test source, linearity and superposition, Thévenin and Norton equivalents, a summary; Appendix A (take-home, new page): the Δ–Y and Y–Δ transforms. Eight worked examples. |
-| `EE201_Lecture_13_slides.tex` | Beamer deck (43 slides and a 9-slide take-home part, 134 PDF pages) for the lecture itself — visual, low text. |
+| `EE201_Lecture_13_slides.tex` | Beamer deck (43 slides and a 9-slide take-home part, 131 PDF pages) for the lecture itself — visual, low text. |
 | `build.sh` | Compiles both, removes auxiliary files, opens the PDFs. |
 
 ## Compiling
@@ -65,4 +65,4 @@ as a "Take-home" part (its own divider slide, footer "Take-home", not counted in
 numbers); the Δ is marked in red and the Y in blue. Circuits and questions come first and the
 answers on later pages; no "Question" labels. Dependent-source values are plugged in before
 the equations are written. Each step is an ordinary extra PDF page; that is why the deck has
-52 slides but 134 pages.
+52 slides but 131 pages.
