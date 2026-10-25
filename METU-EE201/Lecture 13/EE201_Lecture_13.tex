@@ -334,11 +334,13 @@
 
 %  Linearity: block diagram
 \newcommand{\blockdiag}{%
-  \draw[elem] (0,0) rectangle (2.8,1.2);
-  \node[align=center, font=\small] at (1.4,0.6) {LTI resistive\\circuit};
-  \draw[-{Stealth[length=2.5mm]}, thick] (-1.5,0.6) -- (0,0.6) node[midway, above] {$\mathbf{u}$};
-  \draw[-{Stealth[length=2.5mm]}, thick] (2.8,0.6) -- (4.3,0.6) node[midway, above] {$y$};
-  \node[capn] at (-0.75,0.25) {input}; \node[capn] at (3.55,0.25) {output};}
+  \draw[elem] (0,0) rectangle (2.8,2.0);
+  \node[align=center, font=\small] at (1.4,1.0) {LTI resistive\\circuit};
+  \foreach \yy/\lab in {1.7/u_1, 1.15/u_2, 0.3/u_m}
+    \draw[-{Stealth[length=2.2mm]}, thick] (-1.0,\yy) node[left] {$\lab$} -- (0,\yy);
+  \node at (-0.5,0.8) {$\vdots$};
+  \draw[-{Stealth[length=2.2mm]}, thick] (2.8,1.0) -- (3.8,1.0) node[right] {$y$};
+  \node[capn] at (-0.8,-0.35) {inputs}; \node[capn] at (3.45,0.6) {output};}
 
 %-------------------- Thevenin / Norton part ---------------
 %  Labels beside a vertical element at (#1,#2), a fixed distance to the right (\lR) or left (\lL)
@@ -629,19 +631,24 @@ sources in the \textbf{input vector} $\mathbf{u} = [\,u_1 \ \cdots \ u_m\,]^T$. 
 \textbf{output} $y$ is any branch voltage or current.
 
 \begin{definitionbox}{Linearity}
-\begin{minipage}[c]{0.52\linewidth}
-For each output $y$ of an LTI resistive circuit, there is a row vector
-$\mathbf{k} = [\,k_1 \ \cdots \ k_m\,]$ such that
+\begin{minipage}[c]{0.56\linewidth}
+\textbf{Input $u_j$ alone} (the other inputs zero): the output is
 \[
-  y = \mathbf{k}\,\mathbf{u} = k_1u_1 + k_2u_2 + \cdots + k_mu_m .
+  y_j = k_j\,u_j ,
 \]
+with $k_j$ a constant set by the resistors and the dependent-source gains.
+
+\textbf{All inputs:} the output is the sum of these parts,
+\[
+  y = y_1 + y_2 + \cdots + y_m = k_1u_1 + \cdots + k_mu_m = \mathbf{k}\,\mathbf{u},
+\]
+with the row vector $\mathbf{k} = [\,k_1 \ \cdots \ k_m\,]$.
 \end{minipage}\hfill
-\begin{minipage}[c]{0.44\linewidth}
+\begin{minipage}[c]{0.4\linewidth}
 \centering
 \begin{tikzpicture}[scale=0.85]
   \blockdiag
-\end{tikzpicture}\\[2pt]
-{\small $y$ is a function of $\mathbf{u}$: $y = y(\mathbf{u})$}
+\end{tikzpicture}
 \end{minipage}
 \end{definitionbox}
 
@@ -654,14 +661,16 @@ $\mathbf{k} = [\,k_1 \ \cdots \ k_m\,]$ such that
 \end{minipage}\hfill
 \begin{minipage}[c]{0.54\linewidth}
 \textbf{Question.} The inputs are $\mathbf{u} = [\,\Vcol{v_s} \ \ \Icol{i_s}\,]^T$. For the
-output $y = \Icol{i}$, find $k_1$, $k_2$ with $\Icol{i} = k_1\Vcol{v_s} + k_2\Icol{i_s}$.
+output $y = \Icol{i}$, find $k_1$, $k_2$ with $\Icol{i} = \Icol{i_1} + \Icol{i_2}$,
+$\Icol{i_1} = k_1\Vcol{v_s}$, $\Icol{i_2} = k_2\Icol{i_s}$.
 
 \textbf{Answer.} KVL around the left mesh, with $\Icol{i} + \Icol{i_s}$ down through $R_2$:
 \[
   -\Vcol{v_s} + R_1\Icol{i} + R_2(\Icol{i} + \Icol{i_s}) = 0 ,
 \]
 \[
-  \Icol{i} = \frac{1}{R_1 + R_2}\,\Vcol{v_s} - \frac{R_2}{R_1 + R_2}\,\Icol{i_s} ,
+  \Icol{i} = \underbrace{\frac{1}{R_1 + R_2}\,\Vcol{v_s}}_{\Icol{i_1}}
+  \ \underbrace{-\,\frac{R_2}{R_1 + R_2}\,\Icol{i_s}}_{\Icol{i_2}} ,
 \]
 so $k_1 = 1/(R_1 + R_2)$ and $k_2 = -R_2/(R_1 + R_2)$.
 \end{minipage}

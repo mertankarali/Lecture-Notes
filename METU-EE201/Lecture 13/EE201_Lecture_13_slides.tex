@@ -307,11 +307,13 @@
 
 %  Linearity: block diagram
 \newcommand{\blockdiag}{%
-  \draw[elem] (0,0) rectangle (2.8,1.2);
-  \node[align=center, font=\small] at (1.4,0.6) {LTI resistive\\circuit};
-  \draw[-{Stealth[length=2.5mm]}, thick] (-1.5,0.6) -- (0,0.6) node[midway, above] {$\mathbf{u}$};
-  \draw[-{Stealth[length=2.5mm]}, thick] (2.8,0.6) -- (4.3,0.6) node[midway, above] {$y$};
-  \node[capn] at (-0.75,0.25) {input}; \node[capn] at (3.55,0.25) {output};}
+  \draw[elem] (0,0) rectangle (2.8,2.0);
+  \node[align=center, font=\small] at (1.4,1.0) {LTI resistive\\circuit};
+  \foreach \yy/\lab in {1.7/u_1, 1.15/u_2, 0.3/u_m}
+    \draw[-{Stealth[length=2.2mm]}, thick] (-1.0,\yy) node[left] {$\lab$} -- (0,\yy);
+  \node at (-0.5,0.8) {$\vdots$};
+  \draw[-{Stealth[length=2.2mm]}, thick] (2.8,1.0) -- (3.8,1.0) node[right] {$y$};
+  \node[capn] at (-0.8,-0.35) {inputs}; \node[capn] at (3.45,0.6) {output};}
 
 %-------------------- Thevenin / Norton part ---------------
 %  Labels beside a vertical element at (#1,#2), a fixed distance to the right (\lR) or left (\lL)
@@ -745,23 +747,27 @@
 
 %--------------------------------------------------------------
 \begin{frame}{Linearity}
-  \vfill
-  \begin{center}
-    \begin{tikzpicture}
-      \node[draw=metured, thick, fill=metured!5, rounded corners=3pt, inner sep=8pt, align=center]
-        {For each output $y$, there is $\mathbf{k} = [\,k_1 \ \cdots \ k_m\,]$ such that\\[6pt]
-         $y = \mathbf{k}\,\mathbf{u} = k_1u_1 + k_2u_2 + \cdots + k_mu_m$};
-    \end{tikzpicture}
-  \end{center}
-  \vfill
-  \onslide<2->{%
-  \begin{center}
-    \begin{tikzpicture}
-      \blockdiag
-    \end{tikzpicture}\\[6pt]
-    $y = y(\mathbf{u})$
-  \end{center}}
-  \vfill
+  \begin{columns}[c,onlytextwidth]
+    \begin{column}{0.42\textwidth}
+      \centering
+      \begin{tikzpicture}[scale=0.9]
+        \blockdiag
+      \end{tikzpicture}
+    \end{column}
+    \begin{column}{0.56\textwidth}
+      \textbf{Input $u_j$ alone} (the others zero):\\[4pt]
+      \hspace*{1.2em}$y_j = k_j\,u_j$\\[2pt]
+      \hspace*{1.2em}{\small $k_j$: a constant (resistors, gains)}\\[14pt]
+      \onslide<2->{%
+      \textbf{All inputs:} the sum\\[4pt]
+      \hspace*{1.2em}$y = y_1 + y_2 + \cdots + y_m$\\[14pt]}
+      \onslide<3->{%
+      \begin{tikzpicture}
+        \node[draw=metured, thick, fill=metured!5, rounded corners=3pt, inner sep=6pt]
+          {$y = k_1u_1 + \cdots + k_mu_m = \mathbf{k}\,\mathbf{u}$};
+      \end{tikzpicture}}
+    \end{column}
+  \end{columns}
 \end{frame}
 
 %--------------------------------------------------------------
@@ -774,11 +780,13 @@
       \end{tikzpicture}
     \end{column}
     \begin{column}{0.48\textwidth}
-      $\Icol{i} = k_1\Vcol{v_s} + k_2\Icol{i_s}$: \ $k_1, k_2 = \ ?$\\[12pt]
+      $\Icol{i} = \Icol{i_1} + \Icol{i_2}$, \ $\Icol{i_1} = k_1\Vcol{v_s}$, \ $\Icol{i_2} = k_2\Icol{i_s}$\\[4pt]
+      $k_1, k_2 = \ ?$\\[12pt]
       \onslide<2->{%
       \textbf{KVL:} \ $-\Vcol{v_s} + R_1\Icol{i} + R_2(\Icol{i} + \Icol{i_s}) = 0$\\[10pt]}
       \onslide<3->{%
-      $\displaystyle \Icol{i} = \frac{1}{R_1 + R_2}\,\Vcol{v_s} - \frac{R_2}{R_1 + R_2}\,\Icol{i_s}$\\[12pt]}
+      $\displaystyle \Icol{i} = \underbrace{\frac{1}{R_1 + R_2}\,\Vcol{v_s}}_{\Icol{i_1}}
+        \ \underbrace{-\,\frac{R_2}{R_1 + R_2}\,\Icol{i_s}}_{\Icol{i_2}}$\\[12pt]}
       \onslide<4->{%
       \begin{tikzpicture}
         \node[draw=metured, thick, fill=metured!5, rounded corners=3pt, inner sep=6pt]
