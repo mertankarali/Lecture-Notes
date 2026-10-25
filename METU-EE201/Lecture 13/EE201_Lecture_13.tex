@@ -1,6 +1,6 @@
 %==============================================================
 %  EE201 -- Circuit Theory I
-%  Lecture 13 : Equivalent Resistances and Linearity
+%  Lecture 13 : Linearity, Thevenin and Norton Equivalents
 %  M. Mert Ankaralı, METU EEE
 %
 %  Compile:  ./build.sh      (or: pdflatex EE201_Lecture_13.tex, twice)
@@ -56,7 +56,7 @@
 \pagestyle{fancy}
 \fancyhf{}
 \lhead{\small\textcolor{metugray}{EE201 -- Circuit Theory I}}
-\rhead{\small\textcolor{metugray}{Lecture 13: Equivalent Resistances and Linearity}}
+\rhead{\small\textcolor{metugray}{Lecture 13: Linearity, Th\'evenin and Norton Equivalents}}
 \cfoot{\small\thepage}
 \renewcommand{\headrulewidth}{0.4pt}
 
@@ -142,7 +142,9 @@
 \tikzset{tlab/.style={font=\small\bfseries, text=black!80},
          hterm/.style={circle, draw=metured, line width=1.6pt, minimum size=9pt, inner sep=0pt},
          sdel/.style={draw=metured, line width=5pt, opacity=0.25, line join=round, line cap=round},
-         swye/.style={draw=ccur, line width=5pt, opacity=0.25, line join=round, line cap=round}}
+         swye/.style={draw=ccur, line width=5pt, opacity=0.25, line join=round, line cap=round},
+         dotm/.style={circle, fill=black, inner sep=0pt, minimum size=4.2pt},
+         core/.style={line width=1.1pt, metugray}}
 
 %  A one-port N (box, text #1) with terminals a, b on the right; port current i into a, voltage v
 \newcommand{\oneport}[2][1.9]{%
@@ -247,7 +249,7 @@
   \node[font=\small] at (2.0,1.8) {$#1$};
   \foreach \p in {(0,0),(3,0),(1.5,2.5)} \draw \p node[ocirc] {};}
 
-%  Example 13.2: a bridge between the terminals (top and bottom on the left).
+%  Example 13.8: a bridge between the terminals (top and bottom on the left).
 %  #1 = 0: bare;  1: node names and the Delta A-B-C highlighted;  2: after Delta -> Y
 \newcommand{\exBr}[1]{%
   \ifnum#1<2
@@ -284,7 +286,7 @@
     \node[tlab, below right] at (2.05,-0.65) {C};
   \fi}
 
-%  Example 13.3: v_s, R_1 (current i), R_2, i_s
+%  Example 13.2: v_s, R_1 (current i), R_2, i_s
 \newcommand{\exL}{%
   \draw (0,2) to[american voltage source, l_=$\Vcol{v_s}$] (0,0);
   \draw (0,2) to[R, l=$R_1$] (3,2) to[R, l_=$R_2$] (3,0);
@@ -293,7 +295,7 @@
   \fill (3,2) circle (1.7pt); \fill (3,0) circle (1.7pt);
   \draw[iar] (1.1,1.55) -- (1.9,1.55); \node[font=\small, text=ccur] at (1.5,1.25) {$i$};}
 
-%  Example 13.4: 20 V, 15 Ohm (i_x), 4 A, 10 Ohm (i), CCVS 5 i_x (+ at the bottom).
+%  Example 13.3: 20 V, 15 Ohm (i_x), 4 A, 10 Ohm (i), CCVS 5 i_x (+ at the bottom).
 %  #1 = 0: all sources;  1: current source killed (open), i_1;  2: voltage source killed (short), i_2
 \newcommand{\exS}[1]{%
   \ifnum#1=2
@@ -317,7 +319,7 @@
   \draw[iar] (4.6,1.8) -- (5.4,1.8);
   \node[font=\small, text=ccur] at (5.0,1.48) {\ifcase#1 $i$\or $i_1$\or $i_2$\fi};}
 
-%  Example 13.5: v_s, R_1, CCVS r i_x (+ at the top), R_2 (voltage v), R_3 (current i_x), i_s
+%  Example 13.4: v_s, R_1, CCVS r i_x (+ at the top), R_2 (voltage v), R_3 (current i_x), i_s
 \newcommand{\exT}{%
   \draw (0,2) to[american voltage source, l_=$\Vcol{v_s}$] (0,0);
   \draw (0,2) to[R, l=$R_1$] (2.2,2) to[R, l=$R_2$] (4.8,2);
@@ -337,6 +339,173 @@
   \draw[-{Stealth[length=2.5mm]}, thick] (-1.5,0.6) -- (0,0.6) node[midway, above] {$\mathbf{u}$};
   \draw[-{Stealth[length=2.5mm]}, thick] (2.8,0.6) -- (4.3,0.6) node[midway, above] {$y$};
   \node[capn] at (-0.75,0.25) {input}; \node[capn] at (3.55,0.25) {output};}
+
+%-------------------- Thevenin / Norton part ---------------
+%  Labels beside a vertical element at (#1,#2), a fixed distance to the right (\lR) or left (\lL)
+\newcommand{\lR}[3]{\node[anchor=west, xshift=7pt, font=\small] at (#1,#2) {#3};}
+\newcommand{\lL}[3]{\node[anchor=east, xshift=-7pt, font=\small] at (#1,#2) {#3};}
+\newcommand{\Rth}{R_{\mathrm{th}}}
+\newcommand{\RN}{R_{\mathrm{N}}}
+\newcommand{\vth}{\Vcol{v_{\mathrm{th}}}}
+\newcommand{\iN}{\Icol{i_{\mathrm{N}}}}
+\newcommand{\voc}{\Vcol{v_{\mathrm{oc}}}}
+\newcommand{\isc}{\Icol{i_{\mathrm{sc}}}}
+%  Ideal transformer: primary at x = #1, secondary at x = #1 + 1.6, height #2 (from y = 0)
+\newcommand{\xfmr}[2]{%
+  \begin{scope}[xshift=#1 cm]
+    \ctikzset{bipoles/length=1.2cm}
+    \draw (0,0) to[L] (0,#2);
+    \draw (1.6,#2) to[L] (1.6,0);
+    \draw[core] (0.72,-0.05) -- (0.72,#2+0.05);
+    \draw[core] (0.88,-0.05) -- (0.88,#2+0.05);
+    \node[dotm] at (0.36,#2-0.2) {};
+    \node[dotm] at (1.24,#2-0.2) {};
+  \end{scope}}
+
+%  A box N with the port open (#1 = 0), shorted (#1 = 1) or with sources killed (#1 = 2)
+\newcommand{\Nport}[1]{%
+  \ifnum#1=2
+    \draw[elem] (0,0) rectangle (1.9,2);
+    \node[align=center, font=\scriptsize] at (0.95,1) {$N$\\sources\\killed};
+  \else
+    \draw[elem] (0,0) rectangle (1.9,2); \node at (0.95,1) {$N$};
+  \fi
+  \draw (1.9,1.7) -- (3.0,1.7) node[ocirc] {} node[above, tlab] {a};
+  \draw (1.9,0.3) -- (3.0,0.3) node[ocirc] {} node[below, tlab] {b};
+  \ifcase#1
+    \node[pol] at (2.75,1.3) {$+$}; \node[pol] at (2.75,0.62) {$-$};
+    \node[font=\small, text=cvolt] at (2.75,0.95) {$v_{\mathrm{oc}}$};
+    \node[font=\small, text=ccur, right] at (3.4,1.7) {$i = 0$};
+  \or
+    \draw (3.0,1.7) -- (3.6,1.7) -- (3.6,0.3) -- (3.0,0.3);
+    \draw[iar] (3.85,1.35) -- (3.85,0.65); \node[font=\small, text=ccur, right] at (3.9,1.0) {$i_{\mathrm{sc}}$};
+    \node[font=\small, text=cvolt] at (2.6,1.0) {$v = 0$};
+  \or
+    \draw[bigarr] (4.0,1.0) -- (3.3,1.0); \node[right] at (4.0,1.0) {$\Rin$};
+  \fi}
+
+%  Thevenin equivalent: source #1 (+ at the top), series resistor #2, terminals a, b
+\newcommand{\thev}[2]{%
+  \draw (0,1.7) to[american voltage source, l_=#1] (0,0.3);
+  \draw (0,1.7) to[R, l=#2] (2.4,1.7);
+  \draw (0,0.3) -- (2.4,0.3);
+  \draw (2.4,1.7) node[ocirc] {} node[right, tlab] {a};
+  \draw (2.4,0.3) node[ocirc] {} node[right, tlab] {b};}
+%  Norton equivalent: source #1 (arrow up, towards a), parallel resistor #2, terminals a, b
+\newcommand{\nort}[2]{%
+  \draw (0,0.3) to[american current source, l=#1] (0,1.7) -- (2.6,1.7);
+  \draw (1.4,1.7) to[R, l=#2] (1.4,0.3);
+  \draw (0,0.3) -- (2.6,0.3);
+  \fill (1.4,1.7) circle (1.6pt); \fill (1.4,0.3) circle (1.6pt);
+  \draw (2.6,1.7) node[ocirc] {} node[right, tlab] {a};
+  \draw (2.6,0.3) node[ocirc] {} node[right, tlab] {b};}
+%  Port current i into a, port voltage v, at x = #1
+\newcommand{\portiv}[1]{%
+  \draw[iar] (#1+0.05,1.95) -- (#1-0.5,1.95); \node[font=\small, text=ccur] at (#1-0.22,2.22) {$i$};
+  \node[pol] at (#1+0.05,1.35) {$+$}; \node[pol] at (#1+0.05,0.65) {$-$};
+  \node[font=\small, text=cvolt] at (#1+0.05,1.0) {$v$};}
+
+%  Example 13.5: R in series with v_s (left), i_s (down), CCCS 5 i_x (up), port a-b.
+%  #1 = 0: bare;  1: open circuit (v_oc);  2: short circuit (i_sc);  3: sources killed, 1 V test source
+\newcommand{\exA}[1]{%
+  \ifnum#1=3
+    \draw (0,2.2) to[R] (0,1.1) -- (0,0);
+    \node[font=\small, text=metured, rotate=90] at (0.3,0.5) {short};
+    \draw (1.6,2.2) -- (1.6,1.75); \draw (1.6,0) -- (1.6,0.45);
+    \draw (1.6,1.75) node[ocirc] {}; \draw (1.6,0.45) node[ocirc] {};
+    \node[font=\small, text=metured] at (2.15,1.1) {open};
+  \else
+    \draw (0,2.2) to[R] (0,1.1) to[american voltage source] (0,0);
+    \lL{0}{0.55}{$\Vcol{v_s}$}
+    \draw (1.6,2.2) to[american current source] (1.6,0);
+    \lL{1.6}{1.1}{$\Icol{i_s}$}
+  \fi
+  \lL{0}{1.65}{$R$}
+  \draw (3.4,0) to[american controlled current source] (3.4,2.2);
+  \lR{3.4}{1.1}{$\Icol{5\,i_x}$}
+  \draw (0,2.2) -- (5.8,2.2); \draw (0,0) -- (5.8,0);
+  \foreach \p in {(1.6,2.2),(3.4,2.2),(1.6,0),(3.4,0)} \fill \p circle (1.7pt);
+  \draw[iar] (1.15,2.5) -- (0.45,2.5); \node[font=\small, text=ccur] at (0.8,2.8) {$i_x$};
+  \node[nlab] at (1.6,2.62) {1};
+  \ifcase#1
+    \draw (5.8,2.2) node[ocirc] {} node[right, tlab] {a};
+    \draw (5.8,0) node[ocirc] {} node[right, tlab] {b};
+  \or
+    \draw (5.8,2.2) node[ocirc] {} node[right, tlab] {a};
+    \draw (5.8,0) node[ocirc] {} node[right, tlab] {b};
+    \node[pol] at (5.5,1.6) {$+$}; \node[pol] at (5.5,0.6) {$-$};
+    \node[font=\small, text=cvolt] at (5.5,1.1) {$v_{\mathrm{oc}}$};
+  \or
+    \draw (5.8,2.2) -- (5.8,0);
+    \draw[iar] (6.1,1.45) -- (6.1,0.75); \node[font=\small, text=ccur, right] at (6.15,1.1) {$i_{\mathrm{sc}}$};
+  \or
+    \draw (6.8,2.2) to[american voltage source] (6.8,0);
+    \lR{6.8}{1.1}{$\Vcol{1\V}$}
+    \draw (5.8,2.2) -- (6.8,2.2); \draw (5.8,0) -- (6.8,0);
+    \draw[iar] (6.5,2.5) -- (5.8,2.5); \node[font=\small, text=ccur] at (6.15,2.8) {$i_{\mathrm{t}}$};
+  \fi}
+
+%  Example 13.6: 10 V, 5 Ohm (v_x), 10 Ohm, R between nodes 1 and 2 (v_R), VCCS v_x/2, 20 Ohm, 1 A.
+%  #1 = 0: with R;  1: R removed, open circuit (v_oc);  2: a and b shorted (i_sc)
+\newcommand{\exB}[1]{%
+  \draw (0,2.2) to[american voltage source, l_=$\Vcol{10\V}$] (0,0);
+  \draw (0,2.2) to[R, l=$5\ohm$] (2.0,2.2);
+  \node[pol] at (0.45,1.85) {$+$}; \node[pol] at (1.55,1.85) {$-$};
+  \node[font=\small, text=cvolt] at (1.0,1.85) {$v_x$};
+  \draw (2.0,2.2) to[R] (2.0,0); \lL{2.0}{1.1}{$10\ohm$}
+  \ifcase#1
+    \draw (2.0,2.2) to[R, l=$R$] (5.0,2.2);
+    \node[pol] at (2.85,1.82) {$+$}; \node[pol] at (4.15,1.82) {$-$};
+    \node[font=\small, text=cvolt] at (3.5,1.82) {$v_R$};
+  \or
+    \draw (2.0,2.2) -- (3.0,2.2) node[ocirc] {} node[above, tlab] {a};
+    \draw (5.0,2.2) -- (4.0,2.2) node[ocirc] {} node[above, tlab] {b};
+    \node[pol] at (3.05,1.82) {$+$}; \node[pol] at (3.95,1.82) {$-$};
+    \node[font=\small, text=cvolt] at (3.5,1.82) {$v_{\mathrm{oc}}$};
+  \or
+    \draw (2.0,2.2) -- (5.0,2.2);
+    \draw[iar] (3.15,1.9) -- (3.85,1.9); \node[font=\small, text=ccur] at (3.5,1.6) {$i_{\mathrm{sc}}$};
+  \fi
+  \draw (5.0,0) to[american controlled current source] (5.0,2.2); \lR{5.0}{1.1}{$\Icol{\tfrac12 v_x}$}
+  \draw (5.0,2.2) -- (9.4,2.2); \draw (0,0) -- (9.4,0);
+  \draw (7.2,2.2) to[R] (7.2,0); \lR{7.2}{1.1}{$20\ohm$}
+  \draw (9.4,0) to[american current source] (9.4,2.2); \lR{9.4}{1.1}{$\Icol{1\A}$}
+  \foreach \p in {(2.0,2.2),(5.0,2.2),(7.2,2.2),(2.0,0),(5.0,0),(7.2,0)} \fill \p circle (1.7pt);
+  \ifnum#1>0
+    \node[font=\small, text=cvolt, above] at (1.85,2.25) {$e_1$};
+    \ifnum#1=1 \node[font=\small, text=cvolt, above] at (5.15,2.25) {$e_2$}; \fi
+    \gnd{3.5}{0}
+  \fi}
+%  Example 13.6: the Thevenin equivalent seen by R, with R connected
+\newcommand{\exBth}{%
+  \draw (0,2) to[american voltage source, l_={$\Vcol{-\tfrac{140}{3}\V}$}] (0,0);
+  \draw (0,2) to[R] (2.6,2); \node[above] at (1.3,2.2) {$\tfrac{170}{3}\ohm$};
+  \draw (2.6,2) to[R, l=$R$] (2.6,0) -- (0,0);
+  \node[pol] at (3.7,1.45) {$+$}; \node[pol] at (3.7,0.55) {$-$};
+  \node[font=\small, text=cvolt] at (3.7,1.0) {$v_R$};
+  \draw[dashed, metugray] (-2.6,-0.3) rectangle (2.2,3.3);}
+
+%  Example 13.7: 1 A (port), 4 Ohm, 3 Ohm, ideal transformer 3:2, 2 Ohm bridge, 2 Ohm load
+\newcommand{\exC}{%
+  \draw (-0.6,0) to[american current source] (-0.6,2.2); \lR{-0.6}{1.1}{$\Icol{1\A}$}
+  \draw (-0.6,2.2) to[R, l=$4\ohm$] (2.2,2.2);
+  \draw (2.2,2.2) to[R] (2.2,0); \lL{2.2}{1.1}{$3\ohm$}
+  \draw (2.2,2.2) -- (3.4,2.2) -- (3.4,1.7);
+  \xfmr{3.4}{1.7}
+  \draw (2.2,0) -- (5.0,0);
+  \draw (5.0,1.7) -- (5.0,2.2) -- (6.4,2.2);
+  \draw (6.4,2.2) to[R, l=$2\ohm$] (6.4,0) -- (5.0,0);
+  \draw (2.2,2.2) -- (2.2,3.2) to[R, l=$2\ohm$] (6.4,3.2) -- (6.4,2.2);
+  \draw (-0.6,0) -- (2.2,0);
+  \foreach \p in {(2.2,2.2),(2.2,0),(6.4,2.2),(5.0,0)} \fill \p circle (1.7pt);
+  \node[font=\small] at (4.2,2.1) {$3:2$};
+  \draw[iar] (2.6,2.48) -- (3.15,2.48); \node[font=\small, text=ccur] at (2.88,2.75) {$i_1$};
+  \draw[iar] (5.95,2.48) -- (5.3,2.48); \node[font=\small, text=ccur] at (5.62,2.75) {$i_2$};
+  \node[font=\small, text=cvolt, above left] at (2.2,2.2) {$e_1$};
+  \node[font=\small, text=cvolt, above right] at (6.4,2.2) {$e_2$};
+  \node[pol] at (-1.2,1.75) {$+$}; \node[pol] at (-1.2,0.45) {$-$};
+  \node[font=\small, text=cvolt] at (-1.2,1.1) {$v$};
+  \gnd{2.9}{0}}
 \begin{document}
 
 %-------------------- title block -----------------------------
@@ -347,7 +516,7 @@
   {\small\scshape Middle East Technical University}\\[2pt]
   {\small\scshape Department of Electrical and Electronics Engineering}\\[7pt]
   {\Large\bfseries\color{metured} EE201 -- Circuit Theory I}\\[4pt]
-  {\large\bfseries Lecture 13: Equivalent Resistances and Linearity}\\[6pt]
+  {\large\bfseries Lecture 13: Linearity, Th\'evenin and Norton Equivalents}\\[6pt]
   {\small M. Mert Ankaralı}
 \end{center}
 \end{tcolorbox}
@@ -368,13 +537,14 @@
 \end{center}
 
 \textbf{Motivation.} Previously, we simplified circuits with equivalent one-ports: series and
-parallel connections and source transformation. Two cases need more. A one-port with
-dependent sources is not a series--parallel connection of resistors. A bridge has no two
-resistors in series or in parallel. The first part finds one equivalent resistor in both
-cases: the \textbf{input resistance} of a one-port, and the \textbf{$\boldsymbol{\Delta}$--Y
-transform} of three resistors. The second part shows that an LTI resistive circuit is
-\textbf{linear} in its independent sources. Then \textbf{superposition} solves a circuit with
-several sources one source at a time.
+parallel connections and source transformation. A one-port with dependent sources is not a
+series--parallel connection of resistors. The first part finds its one equivalent resistor: the
+\textbf{input resistance}. The second part shows that an LTI resistive circuit is
+\textbf{linear} in its independent sources; \textbf{superposition} then solves a circuit with
+several sources one source at a time. The last part adds independent sources inside the
+one-port: the \textbf{Th\'evenin and Norton} equivalents. A take-home part (appendix) gives the
+\textbf{$\boldsymbol{\Delta}$--Y transform} for three resistors that are neither in series nor
+in parallel.
 
 %==============================================================
 \section{The input resistance of a one-port}
@@ -451,7 +621,405 @@ the dependent source changes the input resistance.
 \end{examplebox}
 
 %==============================================================
-\section{The $\boldsymbol{\Delta}$--Y transform}
+\section{Linearity}
+
+In an LTI resistive circuit, the independent sources are the \textbf{inputs}. Collect the
+voltages of the independent voltage sources and the currents of the independent current
+sources in the \textbf{input vector} $\mathbf{u} = [\,u_1 \ \cdots \ u_m\,]^T$. An
+\textbf{output} $y$ is any branch voltage or current.
+
+\begin{definitionbox}{Linearity}
+\begin{minipage}[c]{0.52\linewidth}
+For each output $y$ of an LTI resistive circuit, there is a row vector
+$\mathbf{k} = [\,k_1 \ \cdots \ k_m\,]$ such that
+\[
+  y = \mathbf{k}\,\mathbf{u} = k_1u_1 + k_2u_2 + \cdots + k_mu_m .
+\]
+\end{minipage}\hfill
+\begin{minipage}[c]{0.44\linewidth}
+\centering
+\begin{tikzpicture}[scale=0.85]
+  \blockdiag
+\end{tikzpicture}\\[2pt]
+{\small $y$ is a function of $\mathbf{u}$: $y = y(\mathbf{u})$}
+\end{minipage}
+\end{definitionbox}
+
+\begin{examplebox}[Example 13.2 --- the row vector $\mathbf{k}$]
+\begin{minipage}[c]{0.44\linewidth}
+\centering
+\begin{tikzpicture}[scale=0.72]
+  \exL
+\end{tikzpicture}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.54\linewidth}
+\textbf{Question.} The inputs are $\mathbf{u} = [\,\Vcol{v_s} \ \ \Icol{i_s}\,]^T$. For the
+output $y = \Icol{i}$, find $k_1$, $k_2$ with $\Icol{i} = k_1\Vcol{v_s} + k_2\Icol{i_s}$.
+
+\textbf{Answer.} KVL around the left mesh, with $\Icol{i} + \Icol{i_s}$ down through $R_2$:
+\[
+  -\Vcol{v_s} + R_1\Icol{i} + R_2(\Icol{i} + \Icol{i_s}) = 0 ,
+\]
+\[
+  \Icol{i} = \frac{1}{R_1 + R_2}\,\Vcol{v_s} - \frac{R_2}{R_1 + R_2}\,\Icol{i_s} ,
+\]
+so $k_1 = 1/(R_1 + R_2)$ and $k_2 = -R_2/(R_1 + R_2)$.
+\end{minipage}
+\end{examplebox}
+
+\begin{ideabox}[The implication of linearity]
+For input vectors $\mathbf{u}$, $\mathbf{w}$ and numbers $\alpha$, $\beta$:
+\[
+  y(\alpha\,\mathbf{u} + \beta\,\mathbf{w}) = \alpha\,y(\mathbf{u}) + \beta\,y(\mathbf{w}) .
+\]
+\end{ideabox}
+
+%==============================================================
+\section{Superposition}
+
+Split the input vector into one source at a time. With two sources,
+\[
+  y\!\left(\begin{bmatrix} \Vcol{v_s}\\ \Icol{i_s} \end{bmatrix}\right)
+  = y\!\left(\begin{bmatrix} \Vcol{v_s}\\ 0 \end{bmatrix}\right)
+  + y\!\left(\begin{bmatrix} 0\\ \Icol{i_s} \end{bmatrix}\right) :
+\]
+the output is the sum of the outputs with one independent source at a time. The other
+sources are \textbf{killed}.
+
+\begin{definitionbox}{Killing a source}
+Killing an independent voltage source ($\Vcol{v_s} = 0$) replaces it with a \textbf{short
+circuit}. Killing an independent current source ($\Icol{i_s} = 0$) replaces it with an
+\textbf{open circuit}. Do \textbf{not} kill dependent sources: they are not inputs.
+\end{definitionbox}
+
+\begin{examplebox}[Example 13.3 --- superposition]
+\begin{minipage}[c]{0.46\linewidth}
+\centering
+\begin{tikzpicture}[scale=0.62]
+  \exS{0}
+\end{tikzpicture}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.52\linewidth}
+\textbf{Question.} Find $\Icol{i}$ by superposition.
+
+\textbf{Answer.} $\Icol{i} = \Icol{i_1} + \Icol{i_2}$: $\Icol{i_1}$ with the $4\A$ source killed,
+$\Icol{i_2}$ with the $20\V$ source killed.
+\end{minipage}
+
+\smallskip
+\begin{minipage}[t]{0.48\linewidth}
+\centering
+\begin{tikzpicture}[scale=0.55]
+  \exS{1}
+\end{tikzpicture}
+
+\raggedright
+\textbf{Kill the current source} (open). One loop, $\Icol{i_x} = \Icol{i_1}$:
+\[
+  -20 + 15\,\Icol{i_x} + 10\,\Icol{i_1} - 5\,\Icol{i_x} = 0
+\]
+\[
+  \Rightarrow\ 20\,\Icol{i_1} = 20 \ \Rightarrow\ \Icol{i_1} = 1\A .
+\]
+\end{minipage}\hfill
+\begin{minipage}[t]{0.48\linewidth}
+\centering
+\begin{tikzpicture}[scale=0.55]
+  \exS{2}
+\end{tikzpicture}
+
+\raggedright
+\textbf{Kill the voltage source} (short). KCL: $\Icol{i_x} = \Icol{i_2} - 4$:
+\[
+  15\,\Icol{i_x} + 10\,\Icol{i_2} - 5\,\Icol{i_x} = 0
+\]
+\[
+  \Rightarrow\ 20\,\Icol{i_2} = 40 \ \Rightarrow\ \Icol{i_2} = 2\A .
+\]
+\end{minipage}
+
+\smallskip
+So $\Icol{i} = \Icol{i_1} + \Icol{i_2} = 3\A$. The dependent source $5\,\Icol{i_x}$ stays in
+both circuits.
+\end{examplebox}
+
+\begin{examplebox}[Example 13.4 --- three experiments]
+\begin{minipage}[c]{0.5\linewidth}
+\centering
+\begin{tikzpicture}[scale=0.62]
+  \exT
+\end{tikzpicture}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.46\linewidth}
+\centering
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{l|c|c|c}
+  & $\Vcol{v_s}$ & $\Icol{i_s}$ & $\Vcol{v}$\\ \hline
+  Exp.\ 1 & $12\V$ & $0$ & $\Vcol{v_1}$\\
+  Exp.\ 2 & $-6\V$ & $6\A$ & $\Vcol{v_2}$\\
+  Exp.\ 3 & $4\V$ & $4\A$ & $\Vcol{v_3}$
+\end{tabular}
+\end{minipage}
+
+\smallskip
+\textbf{Question.} Three experiments are made on the circuit. Express $\Vcol{v_3}$ in terms of
+$\Vcol{v_1}$ and $\Vcol{v_2}$.
+
+\textbf{Answer.} By linearity, $\Vcol{v} = \mathbf{k}\,[\,\Vcol{v_s} \ \ \Icol{i_s}\,]^T$
+for some $\mathbf{k}$. Write the third input with the first two:
+\[
+  \begin{bmatrix} 4\\ 4 \end{bmatrix}
+  = \alpha \begin{bmatrix} 12\\ 0 \end{bmatrix} + \beta \begin{bmatrix} -6\\ 6 \end{bmatrix}
+  \ \Rightarrow\ 6\beta = 4, \ \ 12\alpha - 6\beta = 4
+  \ \Rightarrow\ \alpha = \beta = \tfrac23 .
+\]
+Then $\Vcol{v_3} = \alpha\,\Vcol{v_1} + \beta\,\Vcol{v_2} = \frac23\,\Vcol{v_1} + \frac23\,\Vcol{v_2}$.
+Equivalently, $\mathbf{k} = [\,\Vcol{v_1} \ \ \Vcol{v_2}\,]
+\left[\begin{smallmatrix} 12 & -6\\ 0 & 6 \end{smallmatrix}\right]^{-1}$. No element value is
+needed.
+\end{examplebox}
+
+%==============================================================
+%==============================================================
+\section{Th\'evenin and Norton equivalent circuits}
+
+With independent sources inside, a one-port is no longer one resistor: it needs one more
+element, a source. A load connected to a large circuit can then be studied with a two-element
+circuit, solved once.
+
+\begin{definitionbox}{Th\'evenin's theorem}
+\begin{minipage}[c]{0.44\linewidth}
+Let $N$ be an LTI resistive one-port, possibly with independent sources, such that
+\begin{itemize}[leftmargin=2.4em, itemsep=1pt]
+  \item[(A1)] every dependent source in $N$ has its control variable in $N$;
+  \item[(A2)] the port is both voltage- and current-controlled.
+\end{itemize}
+Then there are $\vth$ and $\Rth$ with $N$ equivalent to the circuit on the right:
+\[
+  \Vcol{v} = \Rth\,\Icol{i} + \vth .
+\]
+\end{minipage}\hfill
+\begin{minipage}[c]{0.54\linewidth}
+\centering
+\begin{tikzpicture}[scale=0.85]
+  \oneport{$N$}
+  \node[font=\large] at (4.0,1) {$\equiv$};
+  \begin{scope}[shift={(5.6,0)}]
+    \thev{$\vth$}{$\Rth$}
+    \portiv{2.4}
+  \end{scope}
+\end{tikzpicture}
+\end{minipage}
+\end{definitionbox}
+
+\begin{definitionbox}{Norton's theorem}
+\begin{minipage}[c]{0.44\linewidth}
+Under the same conditions (A1), (A2), there are $\iN$ and $\RN$ with $N$ equivalent to the
+circuit on the right:
+\[
+  \Vcol{v} = \RN\,\Icol{i} + \RN\,\iN .
+\]
+\end{minipage}\hfill
+\begin{minipage}[c]{0.54\linewidth}
+\centering
+\begin{tikzpicture}[scale=0.85]
+  \oneport{$N$}
+  \node[font=\large] at (4.0,1) {$\equiv$};
+  \begin{scope}[shift={(5.6,0)}]
+    \nort{$\iN$}{$\RN$}
+    \portiv{2.95}
+  \end{scope}
+\end{tikzpicture}
+\end{minipage}
+\end{definitionbox}
+
+\begin{minipage}[c]{0.62\linewidth}
+\textbf{Th\'evenin and Norton describe the same line.} Both characteristics are the same
+straight line in the $i$--$v$ plane, so
+\[
+  \Rth = \RN \qquad\text{and}\qquad \vth = \Rth\,\iN .
+\]
+Moving between the two is the source transformation (previously). The line meets the $v$ axis
+at $\vth$ and the $i$ axis at $-\iN$; its slope is $\Rth$.
+\end{minipage}\hfill
+\begin{minipage}[c]{0.34\linewidth}
+\centering
+\begin{tikzpicture}[scale=0.8]
+  \draw[-{Stealth[length=2.2mm]}] (-2.4,0) -- (1.8,0) node[right] {$\Icol{i}$};
+  \draw[-{Stealth[length=2.2mm]}] (0,-0.9) -- (0,2.6) node[above] {$\Vcol{v}$};
+  \draw[very thick, ccur] (-2.2,-0.6) -- (1.4,2.4);
+  \fill (0,1.233) circle (2pt) node[below right, font=\small] {$\vth$};
+  \fill (-1.48,0) circle (2pt) node[below right, font=\small] {$-\iN$};
+  \node[font=\small, text=ccur] at (1.65,1.15) {slope $\Rth$};
+\end{tikzpicture}
+\end{minipage}
+
+%==============================================================
+\section{Computing $\vth$, $\iN$ and $\Rth$}
+
+\begin{center}
+\begin{tikzpicture}[xscale=0.7, yscale=0.9]
+  \Nport{0}
+  \begin{scope}[shift={(6.0,0)}] \Nport{1} \end{scope}
+  \begin{scope}[shift={(12.4,0)}] \Nport{2} \end{scope}
+\end{tikzpicture}
+\end{center}
+
+\begin{enumerate}\itemsep2pt
+  \item \textbf{Open circuit.} With the port open, $\Icol{i} = 0$ and the Th\'evenin
+    characteristic gives $\Vcol{v} = \vth$: \ $\vth = \voc$.
+  \item \textbf{Short circuit.} With the port shorted, $\Vcol{v} = 0$, so $\Icol{i} = -\iN$.
+    The current through the short, from a to b, is $\isc = -\Icol{i}$: \ $\iN = \isc$.
+  \item \textbf{$\boldsymbol{\Rth}$.} Once $\vth$ and $\iN$ are known, $\Rth = \vth/\iN =
+    \voc/\isc$. Another way: kill all independent sources in $N$ (voltage source: short,
+    current source: open) and compute the input resistance, $\Rth = \Rin$. Killing the
+    independent sources sets $\vth = 0$ and $\iN = 0$; only $\Rth$ is left. The second way also
+    works when $\voc = \isc = 0$.
+\end{enumerate}
+
+%==============================================================
+\section{Examples}
+
+\begin{examplebox}[Example 13.5 --- Th\'evenin and Norton equivalents]
+\begin{minipage}[c]{0.44\linewidth}
+\centering
+\begin{tikzpicture}[scale=0.7]
+  \exA{0}
+\end{tikzpicture}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.54\linewidth}
+Find the Th\'evenin and Norton equivalents of the one-port a--b.
+
+\textbf{Step 1: open circuit.} KCL at node 1 with $\Icol{i} = 0$:
+\begin{gather*}
+  \Icol{i_x} + \Icol{i_s} - 5\,\Icol{i_x} = 0 \ \Rightarrow\ \Icol{i_x} = \tfrac14\,\Icol{i_s},\\
+  \vth = \voc = R\,\Icol{i_x} + \Vcol{v_s} = \tfrac{R}{4}\,\Icol{i_s} + \Vcol{v_s} .
+\end{gather*}
+\end{minipage}
+
+\smallskip
+\textbf{Step 2: short circuit.} Node 1 is at $0\V$, so $\Icol{i_x} = -\Vcol{v_s}/R$. KCL at
+node 1: $\Icol{i_x} + \Icol{i_s} - 5\,\Icol{i_x} + \isc = 0$, so
+$\iN = \isc = -\Icol{i_s} + 4\,\Icol{i_x} = -\Icol{i_s} - \tfrac{4}{R}\,\Vcol{v_s}$.
+
+\textbf{Step 3: $\boldsymbol{\Rth}$.} \ $\Rth = \vth/\iN = -R/4$. It is negative: the
+dependent source supplies power.
+
+\smallskip
+\begin{minipage}[c]{0.5\linewidth}
+\centering
+\begin{tikzpicture}[scale=0.7]
+  \exA{3}
+\end{tikzpicture}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.48\linewidth}
+\textbf{Another way.} Kill $\Vcol{v_s}$ (short) and $\Icol{i_s}$ (open) and connect a $1\V$
+test source. Then $\Icol{i_x} = 1/R$, and KCL at node 1 gives
+$\Icol{i_x} - 5\,\Icol{i_x} - \Icol{i_{\mathrm{t}}} = 0$, so $\Icol{i_{\mathrm{t}}} = -4/R$ and
+$\Rth = \Rin = 1\V/\Icol{i_{\mathrm{t}}} = -R/4$, as expected.
+\end{minipage}
+\end{examplebox}
+
+\begin{examplebox}[Example 13.6 --- a load to design]
+\begin{minipage}[c]{0.62\linewidth}
+\centering
+\begin{tikzpicture}[scale=0.78]
+  \exB{0}
+\end{tikzpicture}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.36\linewidth}
+Find the Th\'evenin equivalent seen by the resistor $R$. Then find $R$ such that
+$\Vcol{v_R} = -7\V$.
+\end{minipage}
+
+\smallskip
+\begin{minipage}[c]{0.62\linewidth}
+\centering
+\begin{tikzpicture}[scale=0.78]
+  \exB{1}
+\end{tikzpicture}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.36\linewidth}
+\textbf{Open circuit} (remove $R$). Node 1: $\frac{\e{1} - 10}{5} + \frac{\e{1}}{10} = 0$, so
+$\e{1} = \frac{20}{3}\V$ and $\Vcol{v_x} = 10 - \e{1} = \frac{10}{3}\V$. Node 2:
+$-\frac12\Vcol{v_x} + \frac{\e{2}}{20} - 1 = 0$, so $\e{2} = \frac{160}{3}\V$ and
+$\vth = \e{1} - \e{2} = -\frac{140}{3}\V$.
+\end{minipage}
+
+\medskip
+\begin{minipage}[c]{0.62\linewidth}
+\centering
+\begin{tikzpicture}[scale=0.78]
+  \exB{2}
+\end{tikzpicture}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.36\linewidth}
+\textbf{Short circuit.} One node $\e{1}$:
+$\frac{\e{1} - 10}{5} + \frac{\e{1}}{10} - \frac12\Vcol{v_x} + \frac{\e{1}}{20} - 1 = 0$.
+Plug $\Vcol{v_x} = 10 - \e{1}$ first: $\frac{17}{20}\,\e{1} = 8$, $\e{1} = \frac{160}{17}\V$.
+Left of the short, $\frac{\e{1} - 10}{5} + \frac{\e{1}}{10} + \isc = 0$, so
+$\iN = \isc = -\frac{14}{17}\A$.
+\end{minipage}
+
+\medskip
+So $\Rth = \vth/\iN = \frac{170}{3}\ohm$. With $R$ connected to this Th\'evenin equivalent, a
+voltage divider gives
+\[
+  \Vcol{v_R} = \frac{R}{R + \frac{170}{3}}\left(-\frac{140}{3}\right) = -7
+  \ \Rightarrow\ 140\,R = 21\,R + 1190 \ \Rightarrow\ R = 10\ohm .
+\]
+\textbf{Check.} Killing the sources (the dependent one stays) also gives
+$\Rth = \frac{10}{3} + \frac{160}{3} = \frac{170}{3}\ohm$.
+\end{examplebox}
+
+\begin{examplebox}[Example 13.7 --- an input resistance with an ideal transformer]
+\begin{minipage}[c]{0.5\linewidth}
+\centering
+\begin{tikzpicture}[scale=0.85]
+  \exC
+\end{tikzpicture}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.48\linewidth}
+Find $\Rin$. There is no independent source inside, so the Th\'evenin
+equivalent is $\Rin$ alone; the $1\A$ source is the test source.
+
+\smallskip
+Recall the ideal transformer $N_1 : N_2$ (previously):
+$\Vcol{v_1}/N_1 = \Vcol{v_2}/N_2$ and $N_1\Icol{i_1} + N_2\Icol{i_2} = 0$.
+\end{minipage}
+
+\smallskip
+\textbf{Answer.} Two node equations and the two transformer equations:
+\[
+  -1 + \frac{\e{1}}{3} + \Icol{i_1} + \frac{\e{1} - \e{2}}{2} = 0, \qquad
+  \Icol{i_2} + \frac{\e{2}}{2} + \frac{\e{2} - \e{1}}{2} = 0, \qquad
+  \frac{\e{1}}{3} = \frac{\e{2}}{2}, \qquad 3\,\Icol{i_1} + 2\,\Icol{i_2} = 0 .
+\]
+Four equations, four unknowns: $\e{1} = \frac{18}{11}\V$. Then
+$\Vcol{v} = 4 \cdot 1 + \e{1} = \frac{62}{11}\V$, so $\Rin = \frac{62}{11}\ohm$.
+\end{examplebox}
+
+%==============================================================
+\section*{Summary}
+
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.12}
+\begin{tabular}{@{}>{\raggedright}p{4.2cm} >{\raggedright\arraybackslash}p{11.5cm}@{}}
+\toprule
+\textbf{In the circuit} & \textbf{What to do}\\
+\midrule
+resistors, dependent sources & a $1\A$ test source: $\Rin = \Vcol{v}/1\A$\\
+a linear circuit & $y = \mathbf{k}\,\mathbf{u}$; \ $y(\alpha\mathbf{u} + \beta\mathbf{w}) = \alpha\,y(\mathbf{u}) + \beta\,y(\mathbf{w})$\\
+several independent sources & superposition; killed $\Vcol{v_s}$: short, killed $\Icol{i_s}$: open; dependent sources stay\\
+independent sources inside & $\vth = \voc$, \ $\iN = \isc$, \ $\Rth = \RN = \voc/\isc$ or $\Rin$ with the sources killed\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\clearpage
+\appendix
+\section{Take-home: the $\boldsymbol{\Delta}$--Y transform}
 
 Three resistors may form a $\Delta$ or a Y between three terminals A, B, C. In the $\Delta$,
 $R_A$ is opposite A (between B and C), $R_B$ is opposite B and $R_C$ is opposite C. In the Y,
@@ -535,10 +1103,9 @@ form of $\Delta$ to Y with resistances.
 \end{tikzpicture}
 \end{minipage}
 
-%==============================================================
-\section{An example: a bridge}
+\subsection*{An example: a bridge}
 
-\begin{examplebox}[Example 13.2 --- a bridge]
+\begin{examplebox}[Example 13.8 --- a bridge]
 \textbf{Question.} Find the resistance $R$ between the two terminals. No two resistors are in
 series or in parallel.
 
@@ -573,185 +1140,5 @@ In the new circuit, $7 + 5 = 12\ohm$ and $20 + 4 = 24\ohm$ are in parallel, $12 
 voltage of $28\V$. \ \yes
 \end{examplebox}
 
-%==============================================================
-\section{Linearity}
-
-In an LTI resistive circuit, the independent sources are the \textbf{inputs}. Collect the
-voltages of the independent voltage sources and the currents of the independent current
-sources in the \textbf{input vector} $\mathbf{u} = [\,u_1 \ \cdots \ u_m\,]^T$. An
-\textbf{output} $y$ is any branch voltage or current.
-
-\begin{definitionbox}{Linearity}
-\begin{minipage}[c]{0.52\linewidth}
-For each output $y$ of an LTI resistive circuit, there is a row vector
-$\mathbf{k} = [\,k_1 \ \cdots \ k_m\,]$ such that
-\[
-  y = \mathbf{k}\,\mathbf{u} = k_1u_1 + k_2u_2 + \cdots + k_mu_m .
-\]
-\end{minipage}\hfill
-\begin{minipage}[c]{0.44\linewidth}
-\centering
-\begin{tikzpicture}[scale=0.85]
-  \blockdiag
-\end{tikzpicture}\\[2pt]
-{\small $y$ is a function of $\mathbf{u}$: $y = y(\mathbf{u})$}
-\end{minipage}
-\end{definitionbox}
-
-\begin{examplebox}[Example 13.3 --- the row vector $\mathbf{k}$]
-\begin{minipage}[c]{0.44\linewidth}
-\centering
-\begin{tikzpicture}[scale=0.72]
-  \exL
-\end{tikzpicture}
-\end{minipage}\hfill
-\begin{minipage}[c]{0.54\linewidth}
-\textbf{Question.} The inputs are $\mathbf{u} = [\,\Vcol{v_s} \ \ \Icol{i_s}\,]^T$. For the
-output $y = \Icol{i}$, find $k_1$, $k_2$ with $\Icol{i} = k_1\Vcol{v_s} + k_2\Icol{i_s}$.
-
-\textbf{Answer.} KVL around the left mesh, with $\Icol{i} + \Icol{i_s}$ down through $R_2$:
-\[
-  -\Vcol{v_s} + R_1\Icol{i} + R_2(\Icol{i} + \Icol{i_s}) = 0 ,
-\]
-\[
-  \Icol{i} = \frac{1}{R_1 + R_2}\,\Vcol{v_s} - \frac{R_2}{R_1 + R_2}\,\Icol{i_s} ,
-\]
-so $k_1 = 1/(R_1 + R_2)$ and $k_2 = -R_2/(R_1 + R_2)$.
-\end{minipage}
-\end{examplebox}
-
-\begin{ideabox}[The implication of linearity]
-For input vectors $\mathbf{u}$, $\mathbf{w}$ and numbers $\alpha$, $\beta$:
-\[
-  y(\alpha\,\mathbf{u} + \beta\,\mathbf{w}) = \alpha\,y(\mathbf{u}) + \beta\,y(\mathbf{w}) .
-\]
-\end{ideabox}
-
-%==============================================================
-\section{Superposition}
-
-Split the input vector into one source at a time. With two sources,
-\[
-  y\!\left(\begin{bmatrix} \Vcol{v_s}\\ \Icol{i_s} \end{bmatrix}\right)
-  = y\!\left(\begin{bmatrix} \Vcol{v_s}\\ 0 \end{bmatrix}\right)
-  + y\!\left(\begin{bmatrix} 0\\ \Icol{i_s} \end{bmatrix}\right) :
-\]
-the output is the sum of the outputs with one independent source at a time. The other
-sources are \textbf{killed}.
-
-\begin{definitionbox}{Killing a source}
-Killing an independent voltage source ($\Vcol{v_s} = 0$) replaces it with a \textbf{short
-circuit}. Killing an independent current source ($\Icol{i_s} = 0$) replaces it with an
-\textbf{open circuit}. Do \textbf{not} kill dependent sources: they are not inputs.
-\end{definitionbox}
-
-\begin{examplebox}[Example 13.4 --- superposition]
-\begin{minipage}[c]{0.46\linewidth}
-\centering
-\begin{tikzpicture}[scale=0.62]
-  \exS{0}
-\end{tikzpicture}
-\end{minipage}\hfill
-\begin{minipage}[c]{0.52\linewidth}
-\textbf{Question.} Find $\Icol{i}$ by superposition.
-
-\textbf{Answer.} $\Icol{i} = \Icol{i_1} + \Icol{i_2}$: $\Icol{i_1}$ with the $4\A$ source killed,
-$\Icol{i_2}$ with the $20\V$ source killed.
-\end{minipage}
-
-\smallskip
-\begin{minipage}[t]{0.48\linewidth}
-\centering
-\begin{tikzpicture}[scale=0.55]
-  \exS{1}
-\end{tikzpicture}
-
-\raggedright
-\textbf{Kill the current source} (open). One loop, $\Icol{i_x} = \Icol{i_1}$:
-\[
-  -20 + 15\,\Icol{i_x} + 10\,\Icol{i_1} - 5\,\Icol{i_x} = 0
-\]
-\[
-  \Rightarrow\ 20\,\Icol{i_1} = 20 \ \Rightarrow\ \Icol{i_1} = 1\A .
-\]
-\end{minipage}\hfill
-\begin{minipage}[t]{0.48\linewidth}
-\centering
-\begin{tikzpicture}[scale=0.55]
-  \exS{2}
-\end{tikzpicture}
-
-\raggedright
-\textbf{Kill the voltage source} (short). KCL: $\Icol{i_x} = \Icol{i_2} - 4$:
-\[
-  15\,\Icol{i_x} + 10\,\Icol{i_2} - 5\,\Icol{i_x} = 0
-\]
-\[
-  \Rightarrow\ 20\,\Icol{i_2} = 40 \ \Rightarrow\ \Icol{i_2} = 2\A .
-\]
-\end{minipage}
-
-\smallskip
-So $\Icol{i} = \Icol{i_1} + \Icol{i_2} = 3\A$. The dependent source $5\,\Icol{i_x}$ stays in
-both circuits.
-\end{examplebox}
-
-\begin{examplebox}[Example 13.5 --- three experiments]
-\begin{minipage}[c]{0.5\linewidth}
-\centering
-\begin{tikzpicture}[scale=0.62]
-  \exT
-\end{tikzpicture}
-\end{minipage}\hfill
-\begin{minipage}[c]{0.46\linewidth}
-\centering
-\renewcommand{\arraystretch}{1.15}
-\begin{tabular}{l|c|c|c}
-  & $\Vcol{v_s}$ & $\Icol{i_s}$ & $\Vcol{v}$\\ \hline
-  Exp.\ 1 & $12\V$ & $0$ & $\Vcol{v_1}$\\
-  Exp.\ 2 & $-6\V$ & $6\A$ & $\Vcol{v_2}$\\
-  Exp.\ 3 & $4\V$ & $4\A$ & $\Vcol{v_3}$
-\end{tabular}
-\end{minipage}
-
-\smallskip
-\textbf{Question.} Three experiments are made on the circuit. Express $\Vcol{v_3}$ in terms of
-$\Vcol{v_1}$ and $\Vcol{v_2}$.
-
-\textbf{Answer.} By linearity, $\Vcol{v} = \mathbf{k}\,[\,\Vcol{v_s} \ \ \Icol{i_s}\,]^T$
-for some $\mathbf{k}$. Write the third input with the first two:
-\[
-  \begin{bmatrix} 4\\ 4 \end{bmatrix}
-  = \alpha \begin{bmatrix} 12\\ 0 \end{bmatrix} + \beta \begin{bmatrix} -6\\ 6 \end{bmatrix}
-  \ \Rightarrow\ 6\beta = 4, \ \ 12\alpha - 6\beta = 4
-  \ \Rightarrow\ \alpha = \beta = \tfrac23 .
-\]
-Then $\Vcol{v_3} = \alpha\,\Vcol{v_1} + \beta\,\Vcol{v_2} = \frac23\,\Vcol{v_1} + \frac23\,\Vcol{v_2}$.
-Equivalently, $\mathbf{k} = [\,\Vcol{v_1} \ \ \Vcol{v_2}\,]
-\left[\begin{smallmatrix} 12 & -6\\ 0 & 6 \end{smallmatrix}\right]^{-1}$. No element value is
-needed.
-\end{examplebox}
-
-%==============================================================
-\section*{Summary}
-
-\begin{center}
-\small
-\renewcommand{\arraystretch}{1.25}
-\begin{tabular}{@{}>{\raggedright}p{5.4cm} >{\raggedright\arraybackslash}p{10.3cm}@{}}
-\toprule
-\textbf{In the circuit} & \textbf{What to do}\\
-\midrule
-a one-port of resistors and dependent sources & connect a $1\A$ test source;
-  $\Rin = \Vcol{v}/1\A$\\
-a $\Delta$ & Y: $R_1 = R_B R_C/(\SD)$, $R_2 = R_C R_A/(\SD)$, $R_3 = R_A R_B/(\SD)$\\
-a Y & $\Delta$: $R_A = (R_1R_2 + R_2R_3 + R_3R_1)/R_1$, and so on\\
-equal resistors & $\Delta$ with $R$ $\equiv$ Y with $R/3$\\
-a linear circuit & $y = \mathbf{k}\,\mathbf{u}$; \ $y(\alpha\mathbf{u} + \beta\mathbf{w}) = \alpha\,y(\mathbf{u}) + \beta\,y(\mathbf{w})$\\
-several independent sources & superposition: one source at a time; a killed voltage source is a
-  short circuit, a killed current source an open circuit; dependent sources stay\\
-\bottomrule
-\end{tabular}
-\end{center}
 
 \end{document}

@@ -1,11 +1,11 @@
-# EE201 — Lecture 13: Equivalent Resistances and Linearity
+# EE201 — Lecture 13: Linearity, Thévenin and Norton Equivalents
 
 Lecture notes and slides for the thirteenth lecture of EE201 (Section 2, Fall 2026/27).
 
 | File | What it is |
 |---|---|
-| `EE201_Lecture_13.tex` | Handout / lecture notes (article, 5 pages). Self-contained: input resistance with a test source, the Δ–Y and Y–Δ transforms, linearity and superposition, five worked examples, a summary. |
-| `EE201_Lecture_13_slides.tex` | Beamer deck (33 slides, 86 PDF pages) for the lecture itself — visual, low text. |
+| `EE201_Lecture_13.tex` | Handout / lecture notes (article, 7 pages). Self-contained: input resistance with a test source, linearity and superposition, Thévenin and Norton equivalents, a summary; Appendix A (take-home, new page): the Δ–Y and Y–Δ transforms. Eight worked examples. |
+| `EE201_Lecture_13_slides.tex` | Beamer deck (43 slides and a 9-slide take-home part, 134 PDF pages) for the lecture itself — visual, low text. |
 | `build.sh` | Compiles both, removes auxiliary files, opens the PDFs. |
 
 ## Compiling
@@ -23,41 +23,46 @@ Uses `latexmk` when available, otherwise two `pdflatex` passes. All figures are 
 
 ## Contents
 
-Following pp. 31–36 of Prof. Emre Tuna's notes, in the order of two of his recorded lectures:
-one-ports and input resistance (01:04, 06:25), Δ to Y (16:13), Y to Δ (30:52), the symmetric
-case (34:24) and the bridge example (36:11); then linearity (00:31), its block diagram (14:07)
-and implication (17:19), superposition with killed sources (22:18–34:46) and the three
-experiments example (40:24).
+Following pp. 31–41 of Prof. Emre Tuna's notes, in the order of four of his recorded lectures:
+one-ports and input resistance, linearity and superposition, Thévenin's and Norton's theorems
+with the three-step example, then the load-design and ideal-transformer examples. The Δ–Y
+transform is a take-home part.
 
-1. **Review and motivation** — equivalent one-ports (previously); two cases that series and
-   parallel cannot simplify: a one-port with a dependent source, and a bridge
+1. **Review and motivation** — equivalent one-ports (previously); a one-port with a dependent
+   source: series and parallel are not enough
 2. **Input resistance** — a one-port of LTI resistors, dependent sources (controls inside) and
-   ideal transformers is equivalent to one resistor R_in; the idea of a 1 A test source
-   (circuits I and II); Example 13.1: CCVS (3/2) i_x with 3 Ω and 2 Ω, i_x = −1 A plugged in
-   first, e₁ = 3/5 V, R_in = 3/5 Ω (without the dependent source it would be 6/5 Ω)
-3. **Δ to Y** — equal resistance between every two terminals (third one open), equations
-   (1)–(3), their half-sum (4), and R₁ = R_B R_C /(R_A + R_B + R_C), …; rule: product of the
-   two Δ resistors at the terminal over the sum
-4. **Y to Δ** — R_A = (R₁R₂ + R₂R₃ + R₃R₁)/R₁, …; rule: sum of the products over the Y
-   resistor opposite; equal resistors: Δ with R ≡ Y with R/3; exercise in conductances (notes)
-5. **Example 13.2** — a bridge (7, 20, 10, 50, 40 Ω): the Δ A–B–C becomes a Y with 5, 4, 20 Ω,
-   then (7 + 5) ∥ (20 + 4) + 20 = 28 Ω; checked with node voltages
-
-6. **Linearity** — inputs u (independent source values), output y (any branch voltage or
-   current), y = k u; block diagram; Example 13.3: k₁ = 1/(R₁ + R₂), k₂ = −R₂/(R₁ + R₂) for
-   y = i; the implication y(αu + βw) = α y(u) + β y(w)
-7. **Superposition** — one independent source at a time; a killed voltage source is a short,
-   a killed current source an open; dependent sources are not killed. Example 13.4: 20 V,
-   4 A and a CCVS 5 i_x: i₁ = 1 A, i₂ = 2 A, i = 3 A. Example 13.5: three experiments,
+   ideal transformers is equivalent to one resistor R_in; a 1 A test source (circuits I and
+   II); Example 13.1: CCVS (3/2) i_x with 3 Ω and 2 Ω, R_in = 3/5 Ω
+3. **Linearity** — inputs u, output y, y = k u; block diagram; Example 13.2: k₁ = 1/(R₁ + R₂),
+   k₂ = −R₂/(R₁ + R₂) for y = i; the implication y(αu + βw) = α y(u) + β y(w)
+4. **Superposition** — one independent source at a time; a killed voltage source is a short,
+   a killed current source an open; dependent sources are not killed. Example 13.3: 20 V,
+   4 A and a CCVS 5 i_x: i = 1 A + 2 A = 3 A. Example 13.4: three experiments,
    v₃ = (2/3) v₁ + (2/3) v₂ without any element value
+5. **Thévenin and Norton** — conditions (A1) controls of the dependent sources inside N,
+   (A2) the port both voltage- and current-controlled; v = R_th i + v_th and
+   v = R_N i + R_N i_N; the same line in the i–v plane: R_th = R_N, v_th = R_th i_N
+6. **Computing** — open circuit: v_oc = v_th; short circuit: i_sc = i_N; R_th = v_oc / i_sc,
+   or kill the independent sources (dependent sources stay) and find R_in
+7. **Examples** — Example 13.5: v_s with R, i_s and a CCCS 5 i_x: v_th = (R/4) i_s + v_s,
+   i_N = −i_s − (4/R) v_s, R_th = −R/4 (also from a 1 V test source). Example 13.6: the
+   Thévenin equivalent seen by R is −140/3 V with 170/3 Ω, and v_R = −7 V needs R = 10 Ω.
+   Example 13.7: an ideal transformer 3 : 2; a 1 A test source gives R_in = 62/11 Ω
 
 Then a summary table (situation → what to do).
 
+**Take-home (appendix): the Δ–Y transform** — Δ to Y (equal resistance between every two
+terminals, R₁ = R_B R_C /(R_A + R_B + R_C), …), Y to Δ (R_A = (R₁R₂ + R₂R₃ + R₃R₁)/R₁, …),
+equal resistors (Δ with R ≡ Y with R/3), an exercise in conductances (notes), and Example 13.8:
+a bridge (7, 20, 10, 50, 40 Ω) whose Δ A–B–C becomes a Y with 5, 4, 20 Ω, giving 28 Ω.
+
 ## Slides
 
-After the review comes a "Motivation" slide, and a roadmap slide opens each part: a road with
-four stations (input resistance, Δ and Y, linearity, superposition); a second "Motivation"
-slide opens the linearity part. Circuits and questions come
-first and the answers on later pages; no "Question" labels. The Δ is marked in red and the Y
-in blue. Each step is an ordinary extra PDF page; that is why the deck has 33 slides but 86
-pages.
+After the review comes a "Motivation" slide, and roadmap slides lead through four stations
+(input resistance, linearity, superposition, Thévenin and Norton); "Motivation" slides also
+open the linearity and the Thévenin–Norton parts. The Δ–Y transform comes after the summary
+as a "Take-home" part (its own divider slide, footer "Take-home", not counted in the slide
+numbers); the Δ is marked in red and the Y in blue. Circuits and questions come first and the
+answers on later pages; no "Question" labels. Dependent-source values are plugged in before
+the equations are written. Each step is an ordinary extra PDF page; that is why the deck has
+52 slides but 134 pages.
