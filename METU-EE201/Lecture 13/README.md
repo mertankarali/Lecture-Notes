@@ -58,9 +58,9 @@ a bridge (7, 20, 10, 50, 40 Ω) whose Δ A–B–C becomes a Y with 5, 4, 20 Ω,
 
 ## Slides
 
-After the review comes a "Motivation" slide, and roadmap slides lead through four stations
-(input resistance, linearity, superposition, Thévenin and Norton); "Motivation" slides also
-open the linearity and the Thévenin–Norton parts. The Δ–Y transform comes after the summary
+Right after the review comes the roadmap: a road with four stations (input resistance,
+linearity, superposition, Thévenin and Norton). A roadmap slide opens each part, followed by a
+"Motivation" slide for the input-resistance, linearity and Thévenin–Norton parts. The Δ–Y transform comes after the summary
 as a "Take-home" part (its own divider slide, footer "Take-home", not counted in the slide
 numbers); the Δ is marked in red and the Y in blue. Circuits and questions come first and the
 answers on later pages; no "Question" labels. Dependent-source values are plugged in before
