@@ -222,7 +222,7 @@
   \node[font=\small] at (2.0,1.8) {$#1$};
   \foreach \p in {(0,0),(3,0),(1.5,2.5)} \draw \p node[ocirc] {};}
 
-%  Example 13.8: a bridge between the terminals (top and bottom on the left).
+%  Example 13.9: a bridge between the terminals (top and bottom on the left).
 %  #1 = 0: bare;  1: node names and the Delta A-B-C highlighted;  2: after Delta -> Y
 \newcommand{\exBr}[1]{%
   \ifnum#1<2
@@ -487,6 +487,71 @@
     \node[font=\small, text=cvolt] at (-1.15,1.1) {$v$};
     \gnd{2.7}{0}
   \fi}
+
+%-------------------- maximum power transfer ---------------
+\newcommand{\kohm}{\,\mathrm{k}\Omega}
+\newcommand{\mA}{\,\mathrm{mA}}
+\newcommand{\PL}{P_L}
+%  A fixed circuit (box) feeding a load R_L; #1 = 0: box,  1: its Thevenin equivalent
+\newcommand{\mptbox}[1]{%
+  \ifnum#1=0
+    \draw[elem] (0,0) rectangle (2.6,2);
+    \node[align=center, font=\footnotesize] at (1.3,1) {LTI resistive\\circuit (fixed)};
+    \draw (2.6,1.7) -- (3.8,1.7); \draw (2.6,0.3) -- (3.8,0.3);
+  \else
+    \draw (0.4,1.7) to[american voltage source, l_=$\vth$] (0.4,0.3);
+    \draw (0.4,1.7) to[R, l=$\Rth$] (2.6,1.7) -- (3.8,1.7);
+    \draw (0.4,0.3) -- (3.8,0.3);
+  \fi
+  \draw (3.8,1.7) to[R] (3.8,0.3); \lR{3.8}{1.0}{$R_L$}
+  \draw[iar] (3.15,1.95) -- (3.65,1.95); \node[font=\small, text=ccur] at (3.4,2.25) {$i$};}
+%  P_L versus R_L (R_th = 1 unit on the axis)
+\newcommand{\mptplot}{%
+  \draw[-{Stealth[length=2.2mm]}] (0,0) -- (5.4,0) node[right] {$R_L$};
+  \draw[-{Stealth[length=2.2mm]}] (0,0) -- (0,2.5) node[above] {$\PL$};
+  \draw[very thick, ccur, domain=0:5.1, samples=80, smooth] plot (\x,{8*\x/(1+\x)^2});
+  \draw[dashed, metugray] (1,0) node[below, text=black] {$\Rth$} -- (1,2) -- (0,2) node[left, text=black] {$P_{L,\max}$};
+  \fill[ccur] (1,2) circle (2pt);}
+%  Example 13.8: N (20 mA, 2k shunt, 1k top and bottom) and the load (R parallel 6k).
+%  #1 = 0: with the load;  1: N alone, open circuit;  2: N with the source killed
+\newcommand{\exM}[1]{%
+  \ifnum#1=2
+    \draw (0,2.2) -- (0,1.65); \draw (0,0) -- (0,0.55);
+    \draw (0,1.65) node[ocirc] {}; \draw (0,0.55) node[ocirc] {};
+    \node[font=\small, text=metured, anchor=east] at (-0.15,1.1) {open};
+  \else
+    \draw (0,0) to[american current source] (0,2.2); \lL{0}{1.1}{$\Icol{20\mA}$}
+  \fi
+  \draw (0,2.2) -- (1.4,2.2); \draw (0,0) -- (1.4,0);
+  \draw (1.4,2.2) to[R] (1.4,0); \lR{1.4}{1.1}{$2\kohm$}
+  \draw (1.4,2.2) to[R, l=$1\kohm$] (3.4,2.2) -- (3.8,2.2);
+  \draw (1.4,0) to[R, l_=$1\kohm$] (3.4,0) -- (3.8,0);
+  \fill (1.4,2.2) circle (1.7pt); \fill (1.4,0) circle (1.7pt);
+  \ifcase#1
+    \draw (3.8,2.2) -- (6.6,2.2); \draw (3.8,0) -- (6.6,0);
+    \draw (5.2,2.2) to[R] (5.2,0); \lR{5.2}{1.1}{$R$}
+    \draw (6.6,2.2) to[R] (6.6,0); \lR{6.6}{1.1}{$6\kohm$}
+    \fill (5.2,2.2) circle (1.7pt); \fill (5.2,0) circle (1.7pt);
+    \draw (3.8,2.2) node[ocirc] {} node[above, tlab] {a};
+    \draw (3.8,0) node[ocirc] {} node[below, tlab] {b};
+    \draw[dashed, metugray] (-2.1,-1.0) rectangle (3.55,3.2); \node[font=\small, text=metugray] at (0.7,-1.3) {$N$};
+    \draw[dashed, metugray] (4.3,-1.0) rectangle (8.3,3.2); \node[font=\small, text=metugray] at (6.3,-1.3) {the load};
+  \or
+    \draw (3.8,2.2) node[ocirc] {} node[above, tlab] {a};
+    \draw (3.8,0) node[ocirc] {} node[below, tlab] {b};
+    \node[pol] at (4.25,1.6) {$+$}; \node[pol] at (4.25,0.6) {$-$};
+    \node[font=\small, text=cvolt] at (4.3,1.1) {$v_{\mathrm{oc}}$};
+  \or
+    \draw (3.8,2.2) node[ocirc] {} node[above, tlab] {a};
+    \draw (3.8,0) node[ocirc] {} node[below, tlab] {b};
+    \draw[bigarr] (5.0,1.1) -- (4.1,1.1); \node[right] at (5.0,1.1) {$\Rth$};
+  \fi}
+%  Example 13.8: the Thevenin equivalent with the load R_L = R || 6k
+\newcommand{\exMth}{%
+  \draw (0,2.2) to[american voltage source, l_=$\Vcol{40\V}$] (0,0);
+  \draw (0,2.2) to[R, l=$4\kohm$] (2.4,2.2) -- (3.2,2.2);
+  \draw (0,0) -- (3.2,0);
+  \draw (3.2,2.2) to[R] (3.2,0); \lR{3.2}{1.1}{$R_L = R \parallel 6\kohm$}}
 \title{Lecture 13: Linearity, Th\'evenin and Norton Equivalents}
 \subtitle{EE201 -- Circuit Theory I}
 \author{M. Mert Ankaralı}
@@ -516,8 +581,8 @@
     \draw (-1.4,0.6) to[R] (0.9,0.6); \draw (-1.4,-0.6) -- (0.9,-0.6);
     \draw (0.9,0.6) node[ocirc] {}; \draw (0.9,-0.6) node[ocirc] {};
   \fi}
-%  Stops 1-10: station of stop k = \rmst{k}
-\newcommand{\rmst}[1]{\ifcase#1\or1\or1\or1\or1\or2\or3\or3\or4\or4\or4\fi}
+%  Stops 1-11: station of stop k = \rmst{k}
+\newcommand{\rmst}[1]{\ifcase#1\or1\or1\or1\or1\or2\or3\or3\or4\or4\or4\or4\fi}
 %  #1 station, #2 x, #3 title, #4 icon number
 \newcommand{\rmstation}[4]{%
   \ifnum#1<\rmS\relax
@@ -564,6 +629,7 @@
       \rmsub{8}{8}{11.8}{-1.45}{open, short}
       \rmsub{9}{9}{11.8}{-2.1}{a negative $\Rth$}
       \rmsub{10}{10}{11.8}{-2.75}{two examples}
+      \rmsub{11}{11}{11.8}{-3.4}{maximum power}
     \end{tikzpicture}
     \vfill
     \mbox{}
@@ -1422,11 +1488,115 @@
   \end{columns}
 \end{frame}
 
+%==============================================================
+\roadmapframe{11}
+
+%--------------------------------------------------------------
+\begin{frame}{Maximum power transfer}
+  \vfill
+  \begin{center}
+    \begin{tikzpicture}[scale=0.85]
+      \mptbox{0}
+      \node[font=\small, text=metugray, align=center] at (4.3,-0.4) {design parameter};
+      \node[font=\Large] at (5.8,1.0) {$\equiv$};
+      \begin{scope}[shift={(7.8,0)}] \mptbox{1} \end{scope}
+    \end{tikzpicture}
+  \end{center}
+  \vfill
+  \begin{itemize}\itemsep8pt
+    \item $R_L = \ ?$ \ for the maximum power $\PL$ to the load
+    \item<2-> $\displaystyle \PL = R_L\,\Icol{i}^2 = R_L\left(\frac{\vth}{\Rth + R_L}\right)^{\!2}$
+  \end{itemize}
+  \vfill
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{Maximum power transfer: $R_L = \Rth$}
+  \begin{columns}[c,onlytextwidth]
+    \begin{column}{0.52\textwidth}
+      $\displaystyle \frac{d\PL}{dR_L} = \vth^2\,\frac{\Rth - R_L}{(\Rth + R_L)^3} = 0$\\[14pt]
+      \onslide<2->{%
+      \begin{tikzpicture}
+        \node[draw=metured, thick, fill=metured!5, rounded corners=3pt, inner sep=6pt, align=left]
+          {$R_L = \Rth$\\[4pt] $\displaystyle P_{L,\max} = \frac{\vth^2}{4\Rth}$};
+      \end{tikzpicture}}
+    \end{column}
+    \begin{column}{0.46\textwidth}
+      \centering
+      \onslide<2->{%
+      \begin{tikzpicture}[scale=0.8]
+        \mptplot
+      \end{tikzpicture}}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{Example 13.8: maximum power}
+  \vfill
+  \begin{center}
+    \begin{tikzpicture}[scale=0.85]
+      \exM{0}
+    \end{tikzpicture}
+  \end{center}
+  \vfill
+  \begin{center}
+    $R = \ ?$ \ for the maximum power to the load\\[6pt]
+    $P_{L,\max} = \ ?$
+  \end{center}
+  \vfill
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{Example 13.8: the Th\'evenin equivalent of $N$}
+  \begin{columns}[t,onlytextwidth]
+    \begin{column}{0.48\textwidth}
+      \centering
+      \textbf{Open circuit}\\[6pt]
+      \begin{tikzpicture}[scale=0.7]
+        \exM{1}
+      \end{tikzpicture}\\[8pt]
+      $\vth = \voc = 20\mA \times 2\kohm = 40\V$
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \centering
+      \onslide<2->{%
+      \textbf{Kill the source}\\[6pt]
+      \begin{tikzpicture}[scale=0.7]
+        \exM{2}
+      \end{tikzpicture}\\[8pt]
+      $\Rth = 1 + 2 + 1 = 4\kohm$}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{Example 13.8: $R$ and the maximum power}
+  \begin{columns}[c,onlytextwidth]
+    \begin{column}{0.47\textwidth}
+      \centering
+      \begin{tikzpicture}[scale=0.8]
+        \exMth
+      \end{tikzpicture}
+    \end{column}
+    \begin{column}{0.51\textwidth}
+      $R_L = \Rth = 4\kohm$:\\[4pt]
+      $\dfrac1R + \dfrac16 = \dfrac14$ \ $\Rightarrow$ \ $R = 12\kohm$\\[14pt]
+      \onslide<2->{%
+      $P_{L,\max} = 4\kohm\left(\dfrac{40\V}{8\kohm}\right)^{\!2} = 4\kohm\,(5\mA)^2$\\[10pt]
+      \begin{tikzpicture}
+        \node[draw=metured, thick, fill=metured!5, rounded corners=3pt, inner sep=6pt]
+          {$P_{L,\max} = 0.1\W$};
+      \end{tikzpicture}}
+    \end{column}
+  \end{columns}
+\end{frame}
+
 %--------------------------------------------------------------
 \begin{frame}{Summary}
   \vfill
   \begin{center}
-  \renewcommand{\arraystretch}{1.55}
+  \renewcommand{\arraystretch}{1.45}
   \begin{tabular}{@{}>{\raggedright}p{3.9cm} >{\raggedright\arraybackslash}p{8.3cm}@{}}
     \toprule
     \textbf{In the circuit} & \textbf{What to do}\\
@@ -1435,6 +1605,7 @@
     linear circuit & $y = \mathbf{k}\,\mathbf{u}$: \ $y(\alpha\mathbf{u} + \beta\mathbf{w}) = \alpha y(\mathbf{u}) + \beta y(\mathbf{w})$\\
     several sources & superposition: \ killed $\Vcol{v_s}$ = short, \ killed $\Icol{i_s}$ = open\\
     independent sources inside & $\vth = \voc$, \ $\iN = \isc$, \ $\Rth = \RN = \voc/\isc$ or $\Rin$ with the sources killed\\
+    maximum power to $R_L$ & $R_L = \Rth$, \ $P_{L,\max} = \vth^2/(4\Rth)$\\
     \bottomrule
   \end{tabular}
   \end{center}
@@ -1598,7 +1769,7 @@
 
 
 %--------------------------------------------------------------
-\begin{frame}{Example 13.8: a bridge}
+\begin{frame}{Example 13.9: a bridge}
   \vfill
   \begin{center}
     \begin{tikzpicture}[scale=0.85]
@@ -1613,7 +1784,7 @@
 \end{frame}
 
 %--------------------------------------------------------------
-\begin{frame}{Example 13.8: $\Delta$ to Y}
+\begin{frame}{Example 13.9: $\Delta$ to Y}
   \begin{columns}[c,onlytextwidth]
     \begin{column}{0.5\textwidth}
       \centering
@@ -1635,7 +1806,7 @@
 \end{frame}
 
 %--------------------------------------------------------------
-\begin{frame}{Example 13.8: the new circuit}
+\begin{frame}{Example 13.9: the new circuit}
   \begin{columns}[c,onlytextwidth]
     \begin{column}{0.5\textwidth}
       \centering
