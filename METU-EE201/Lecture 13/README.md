@@ -4,8 +4,8 @@ Lecture notes and slides for the thirteenth lecture of EE201 (Section 2, Fall 20
 
 | File | What it is |
 |---|---|
-| `EE201_Lecture_13.tex` | Handout / lecture notes (article, 8 pages). Self-contained: input resistance with a test source, linearity and superposition, Thévenin and Norton equivalents, maximum power transfer, a summary; Appendix A (take-home, new page): the Δ–Y and Y–Δ transforms. Nine worked examples. |
-| `EE201_Lecture_13_slides.tex` | Beamer deck (49 slides and a 9-slide take-home part, 137 PDF pages) for the lecture itself — visual, low text. |
+| `EE201_Lecture_13.tex` | Handout / lecture notes (article, 9 pages). Self-contained: input resistance with a test source, linearity and superposition, Thévenin and Norton equivalents, maximum power transfer, a summary; Appendix A (take-home, new page): the Δ–Y and Y–Δ transforms. Nine worked examples. |
+| `EE201_Lecture_13_slides.tex` | Beamer deck (54 slides and a 9-slide take-home part, 147 PDF pages) for the lecture itself — visual, low text. |
 | `build.sh` | Compiles both, removes auxiliary files, opens the PDFs. |
 
 ## Compiling
@@ -48,8 +48,10 @@ transform is a take-home part.
    i_N = −i_s − (4/R) v_s, R_th = −R/4 (also from a 1 V test source). Example 13.6: the
    Thévenin equivalent seen by R is −140/3 V with 170/3 Ω, and v_R = −7 V needs R = 10 Ω.
    Example 13.7: an ideal transformer 3 : 2 with a 2 Ω bridge and a 2 Ω load; a 1 A test source at the port gives R_in = 18/5 Ω
-8. **Maximum power transfer** — P_L = R_L (v_th/(R_th + R_L))², dP_L/dR_L = 0 gives R_L = R_th and
-   P_L,max = v_th²/(4R_th). Example 13.8: 20 mA, 2 kΩ and two 1 kΩ feed a load R ∥ 6 kΩ:
+8. **Maximum power transfer** — motivation (a fixed circuit, the load R_L as the design
+   parameter); the power P_L = R_L v_th²/(R_th + R_L)² and its two extremes (short, open);
+   dP_L/dR_L = 0 gives R_L = R_th and P_L,max = v_th²/(4R_th) = R_N i_N²/4; at maximum power
+   v_L = v_th/2 and, in the equivalent, half of the source power reaches the load. Example 13.8: 20 mA, 2 kΩ and two 1 kΩ feed a load R ∥ 6 kΩ:
    v_th = 40 V, R_th = 4 kΩ, so R = 12 kΩ and P_L,max = 0.1 W
 
 Then a summary table (situation → what to do).
@@ -61,12 +63,12 @@ a bridge (7, 20, 10, 50, 40 Ω) whose Δ A–B–C becomes a Y with 5, 4, 20 Ω,
 
 ## Slides
 
-Right after the review comes the roadmap: a road with four stations (input resistance,
-linearity, superposition, Thévenin and Norton; maximum power transfer is the last stop of the
-fourth station). A roadmap slide opens each part, followed by a
-"Motivation" slide for the input-resistance, linearity and Thévenin–Norton parts. The Δ–Y transform comes after the summary
+Right after the review comes the roadmap: a road with five stations (input resistance,
+linearity, superposition, Thévenin and Norton, maximum power). A roadmap slide opens each part,
+followed by a "Motivation" slide for the input-resistance, linearity, Thévenin–Norton and
+maximum-power parts. The Δ–Y transform comes after the summary
 as a "Take-home" part (its own divider slide, footer "Take-home", not counted in the slide
 numbers); the Δ is marked in red and the Y in blue. Circuits and questions come first and the
 answers on later pages; no "Question" labels. Dependent-source values are plugged in before
 the equations are written. Each step is an ordinary extra PDF page; that is why the deck has
-58 slides but 137 pages.
+63 slides but 147 pages.

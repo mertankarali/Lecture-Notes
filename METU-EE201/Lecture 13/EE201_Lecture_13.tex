@@ -579,6 +579,15 @@
   \draw (0,2.2) to[R, l=$4\kohm$] (2.4,2.2) -- (3.2,2.2);
   \draw (0,0) -- (3.2,0);
   \draw (3.2,2.2) to[R] (3.2,0); \lR{3.2}{1.1}{$R_L = R \parallel 6\kohm$}}
+%  The Thevenin equivalent with a load R_L, its current i and voltage v_L
+\newcommand{\mptload}{%
+  \draw (0,2) to[american voltage source, l_=$\vth$] (0,0);
+  \draw (0,2) to[R, l=$\Rth$] (2.4,2) -- (3.4,2);
+  \draw (0,0) -- (3.4,0);
+  \draw (3.4,2) to[R] (3.4,0); \lL{3.4}{1.0}{$R_L$}
+  \draw[iar] (2.55,2.3) -- (3.15,2.3); \node[font=\small, text=ccur] at (2.85,2.6) {$i$};
+  \node[pol] at (4.0,1.55) {$+$}; \node[pol] at (4.0,0.45) {$-$};
+  \node[font=\small, text=cvolt] at (4.05,1.0) {$v_L$};}
 \begin{document}
 
 %-------------------- title block -----------------------------
@@ -1080,16 +1089,41 @@ Then $\Vcol{v} = \e{1}$ and $\Rin = \frac{18}{5}\ohm$.
 %==============================================================
 \section{Maximum power transfer}
 
-\begin{ideabox}[Maximum power transfer]
+In many applications a fixed circuit should deliver as much power as possible to a load: an
+amplifier drives a speaker, an antenna feeds a receiver. The circuit is fixed; the load
+resistance $R_L$ is the design parameter.
+
+\begin{center}
+\begin{tikzpicture}[scale=0.8]
+  \mptbox{0}
+  \node[font=\small, text=metugray] at (4.3,-0.4) {design parameter};
+  \node[font=\Large] at (5.8,1.0) {$\equiv$};
+  \begin{scope}[shift={(8.0,0)}] \mptload \end{scope}
+\end{tikzpicture}
+\end{center}
+
+\subsection{The power delivered to the load}
+
+Replace the fixed circuit by its Th\'evenin equivalent; $\vth$ and $\Rth$ do not depend on
+$R_L$. Then
+\[
+  \Icol{i} = \frac{\vth}{\Rth + R_L}, \qquad
+  \PL = R_L\,\Icol{i}^2 = \frac{R_L\,\vth^2}{(\Rth + R_L)^2} ,
+\]
+a function of $R_L$ only. Two extremes give no power: $R_L = 0$ is a short circuit, so
+$\Vcol{v_L} = 0$; $R_L \to \infty$ is an open circuit, so $\Icol{i} = 0$. The maximum is in
+between.
+
+\subsection{The maximum}
+
 \begin{minipage}[c]{0.58\linewidth}
-A fixed circuit feeds a load $R_L$, the design parameter. With the Th\'evenin equivalent,
+Differentiate with respect to $R_L$:
 \[
-  \PL = R_L\,\Icol{i}^2 = R_L\left(\frac{\vth}{\Rth + R_L}\right)^{\!2} .
+  \frac{d\PL}{dR_L} = \vth^2\,\frac{(\Rth + R_L) - 2R_L}{(\Rth + R_L)^3}
+  = \vth^2\,\frac{\Rth - R_L}{(\Rth + R_L)^3} .
 \]
-Then $\dfrac{d\PL}{dR_L} = \vth^2\,\dfrac{\Rth - R_L}{(\Rth + R_L)^3} = 0$ gives
-\[
-  R_L = \Rth , \qquad P_{L,\max} = \frac{\vth^2}{4\Rth} .
-\]
+The derivative is positive for $R_L < \Rth$ and negative for $R_L > \Rth$, so $\PL$ has its
+maximum at $R_L = \Rth$.
 \end{minipage}\hfill
 \begin{minipage}[c]{0.38\linewidth}
 \centering
@@ -1097,7 +1131,23 @@ Then $\dfrac{d\PL}{dR_L} = \vth^2\,\dfrac{\Rth - R_L}{(\Rth + R_L)^3} = 0$ gives
   \mptplot
 \end{tikzpicture}
 \end{minipage}
+
+\begin{ideabox}[Maximum power transfer]
+A load $R_L$ receives the maximum power from a circuit when $R_L = \Rth$:
+\[
+  P_{L,\max} = \frac{\vth^2}{4\Rth} = \frac14\,\RN\,\iN^2 .
+\]
 \end{ideabox}
+
+\subsection{At maximum power}
+
+With $R_L = \Rth$, the load voltage is $\Vcol{v_L} = \frac12\,\vth$ and the current is
+$\Icol{i} = \vth/(2\Rth)$. In the Th\'evenin equivalent the source supplies
+$\vth\,\Icol{i} = \vth^2/(2\Rth)$: half of it reaches the load and half is dissipated in $\Rth$.
+This statement is about the equivalent; the power dissipated inside the original circuit can be
+different.
+
+\subsection{An example}
 
 \begin{examplebox}[Example 13.8 --- maximum power]
 \begin{minipage}[c]{0.54\linewidth}

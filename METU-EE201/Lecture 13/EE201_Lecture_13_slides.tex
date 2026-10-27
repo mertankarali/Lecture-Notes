@@ -552,6 +552,15 @@
   \draw (0,2.2) to[R, l=$4\kohm$] (2.4,2.2) -- (3.2,2.2);
   \draw (0,0) -- (3.2,0);
   \draw (3.2,2.2) to[R] (3.2,0); \lR{3.2}{1.1}{$R_L = R \parallel 6\kohm$}}
+%  The Thevenin equivalent with a load R_L, its current i and voltage v_L
+\newcommand{\mptload}{%
+  \draw (0,2) to[american voltage source, l_=$\vth$] (0,0);
+  \draw (0,2) to[R, l=$\Rth$] (2.4,2) -- (3.4,2);
+  \draw (0,0) -- (3.4,0);
+  \draw (3.4,2) to[R] (3.4,0); \lL{3.4}{1.0}{$R_L$}
+  \draw[iar] (2.55,2.3) -- (3.15,2.3); \node[font=\small, text=ccur] at (2.85,2.6) {$i$};
+  \node[pol] at (4.0,1.55) {$+$}; \node[pol] at (4.0,0.45) {$-$};
+  \node[font=\small, text=cvolt] at (4.05,1.0) {$v_L$};}
 \title{Lecture 13: Linearity, Th\'evenin and Norton Equivalents}
 \subtitle{EE201 -- Circuit Theory I}
 \author{M. Mert Ankaralı}
@@ -580,32 +589,35 @@
     \draw (-1.4,0.6) to[american voltage source] (-1.4,-0.6);
     \draw (-1.4,0.6) to[R] (0.9,0.6); \draw (-1.4,-0.6) -- (0.9,-0.6);
     \draw (0.9,0.6) node[ocirc] {}; \draw (0.9,-0.6) node[ocirc] {};
+  \or
+    \draw (-1.4,0.6) to[american voltage source] (-1.4,-0.6);
+    \draw (-1.4,0.6) to[R] (0.9,0.6) to[vR] (0.9,-0.6) -- (-1.4,-0.6);
   \fi}
-%  Stops 1-11: station of stop k = \rmst{k}
-\newcommand{\rmst}[1]{\ifcase#1\or1\or1\or1\or1\or2\or3\or3\or4\or4\or4\or4\fi}
+%  Stops 1-13: station of stop k = \rmst{k}
+\newcommand{\rmst}[1]{\ifcase#1\or1\or1\or1\or1\or2\or3\or3\or4\or4\or4\or5\or5\or5\fi}
 %  #1 station, #2 x, #3 title, #4 icon number
 \newcommand{\rmstation}[4]{%
   \ifnum#1<\rmS\relax
     \node[circle, fill=cpow, text=white, inner sep=0pt, minimum size=5.4mm, font=\scriptsize\bfseries] at (#2,0) {\checkmark};
-    \node[text=black!40, font=\bfseries] at (#2,0.62) {#3};
+    \node[text=black!40, font=\small\bfseries, align=center, anchor=south, inner sep=1pt] at (#2,0.36) {#3};
   \else\ifnum#1=\rmS\relax
     \node[circle, fill=metured, text=white, inner sep=0pt, minimum size=6.2mm, font=\small\bfseries] at (#2,0) {#1};
-    \node[text=metured, font=\bfseries] at (#2,0.62) {#3};
+    \node[text=metured, font=\small\bfseries, align=center, anchor=south, inner sep=1pt] at (#2,0.36) {#3};
   \else
     \node[circle, draw=metugray, fill=white, text=metugray, inner sep=0pt, minimum size=5.4mm, font=\scriptsize\bfseries] at (#2,0) {#1};
-    \node[font=\bfseries] at (#2,0.62) {#3};
+    \node[font=\small\bfseries, align=center, anchor=south, inner sep=1pt] at (#2,0.36) {#3};
   \fi\fi
-  \begin{scope}[shift={(#2,1.5)}, scale=0.42, transform shape]
+  \begin{scope}[shift={(#2,1.75)}, scale=0.42, transform shape]
     \ifnum#1>\rmS\relax\begin{scope}[opacity=0.5]\rmicon{#4}\end{scope}\else\rmicon{#4}\fi
   \end{scope}}
 %  #1 first stop, #2 last stop covered by this item, #3 x, #4 y, #5 text
 \newcommand{\rmsub}[5]{%
   \ifnum#2<\rmcur\relax
-    \node[text width=3.3cm, align=center, font=\small, text=black!40] at (#3,#4) {#5\ \textcolor{cpow}{\checkmark}};
+    \node[text width=2.5cm, align=center, font=\footnotesize, text=black!40] at (#3,#4) {#5\ \textcolor{cpow}{\checkmark}};
   \else\ifnum#1>\rmcur\relax
-    \node[text width=3.3cm, align=center, font=\small] at (#3,#4) {#5};
+    \node[text width=2.5cm, align=center, font=\footnotesize] at (#3,#4) {#5};
   \else
-    \node[text width=3.3cm, align=center, font=\small\bfseries, text=metured,
+    \node[text width=2.5cm, align=center, font=\footnotesize\bfseries, text=metured,
           draw=metured, rounded corners=2pt, inner sep=2pt] at (#3,#4) {#5};
   \fi\fi}
 \newcommand{\roadmapframe}[1]{%
@@ -614,22 +626,25 @@
     \vfill
     \centering
     \begin{tikzpicture}
-      \draw[metugray!45, line width=3pt, -{Stealth[length=2.6mm, width=3.2mm]}] (0,0) -- (13.3,0);
-      \rmstation{1}{1.6}{Input resistance}{1}
-      \rmstation{2}{5.0}{Linearity}{3}
-      \rmstation{3}{8.4}{Superposition}{4}
-      \rmstation{4}{11.8}{Th\'evenin, Norton}{5}
-      \rmsub{1}{1}{1.6}{-0.8}{a test source}
-      \rmsub{1}{1}{1.6}{-1.45}{a dependent source}
-      \rmsub{5}{5}{5.0}{-0.8}{$y = \mathbf{k}\,\mathbf{u}$}
-      \rmsub{5}{5}{5.0}{-1.45}{the implication}
-      \rmsub{6}{6}{8.4}{-0.8}{one at a time}
-      \rmsub{7}{7}{8.4}{-1.45}{three experiments}
-      \rmsub{8}{8}{11.8}{-0.8}{the two theorems}
-      \rmsub{8}{8}{11.8}{-1.45}{open, short}
-      \rmsub{9}{9}{11.8}{-2.1}{a negative $\Rth$}
-      \rmsub{10}{10}{11.8}{-2.75}{two examples}
-      \rmsub{11}{11}{11.8}{-3.4}{maximum power}
+      \draw[metugray!45, line width=3pt, -{Stealth[length=2.6mm, width=3.2mm]}] (0,0) -- (13.5,0);
+      \rmstation{1}{1.35}{Input resistance}{1}
+      \rmstation{2}{4.05}{Linearity}{3}
+      \rmstation{3}{6.75}{Superposition}{4}
+      \rmstation{4}{9.45}{Th\'evenin,\\ Norton}{5}
+      \rmstation{5}{12.15}{Maximum\\ power}{6}
+      \rmsub{1}{1}{1.35}{-0.8}{a test source}
+      \rmsub{1}{1}{1.35}{-1.4}{a dependent source}
+      \rmsub{5}{5}{4.05}{-0.8}{$y = \mathbf{k}\,\mathbf{u}$}
+      \rmsub{5}{5}{4.05}{-1.4}{the implication}
+      \rmsub{6}{6}{6.75}{-0.8}{one at a time}
+      \rmsub{7}{7}{6.75}{-1.4}{three experiments}
+      \rmsub{8}{8}{9.45}{-0.8}{two theorems}
+      \rmsub{8}{8}{9.45}{-1.4}{open, short}
+      \rmsub{9}{9}{9.45}{-2.0}{negative $\Rth$}
+      \rmsub{10}{10}{9.45}{-2.6}{two examples}
+      \rmsub{11}{11}{12.15}{-0.8}{the power $\PL$}
+      \rmsub{12}{12}{12.15}{-1.4}{$R_L = \Rth$}
+      \rmsub{13}{13}{12.15}{-2.0}{an example}
     \end{tikzpicture}
     \vfill
     \mbox{}
@@ -1492,44 +1507,111 @@
 \roadmapframe{11}
 
 %--------------------------------------------------------------
-\begin{frame}{Maximum power transfer}
+\begin{frame}{Motivation: the most power}
   \vfill
   \begin{center}
     \begin{tikzpicture}[scale=0.85]
       \mptbox{0}
       \node[font=\small, text=metugray, align=center] at (4.3,-0.4) {design parameter};
-      \node[font=\Large] at (5.8,1.0) {$\equiv$};
-      \begin{scope}[shift={(7.8,0)}] \mptbox{1} \end{scope}
     \end{tikzpicture}
   \end{center}
   \vfill
   \begin{itemize}\itemsep8pt
-    \item $R_L = \ ?$ \ for the maximum power $\PL$ to the load
-    \item<2-> $\displaystyle \PL = R_L\,\Icol{i}^2 = R_L\left(\frac{\vth}{\Rth + R_L}\right)^{\!2}$
+    \item An amplifier drives a speaker; an antenna feeds a receiver
+    \item The circuit is fixed; we choose the load $R_L$
+    \item<2-> $R_L = \ ?$ \ for the maximum power to the load
   \end{itemize}
   \vfill
 \end{frame}
 
 %--------------------------------------------------------------
-\begin{frame}{Maximum power transfer: $R_L = \Rth$}
+\begin{frame}{The power delivered to the load}
+  \begin{columns}[c,onlytextwidth]
+    \begin{column}{0.44\textwidth}
+      \centering
+      \begin{tikzpicture}[scale=0.9]
+        \mptload
+      \end{tikzpicture}\\[6pt]
+      {\small $\vth$, $\Rth$: fixed}
+    \end{column}
+    \begin{column}{0.54\textwidth}
+      $\displaystyle \Icol{i} = \frac{\vth}{\Rth + R_L}$\\[12pt]
+      \onslide<2->{%
+      $\displaystyle \PL = R_L\,\Icol{i}^2 = \frac{R_L\,\vth^2}{(\Rth + R_L)^2}$\\[12pt]
+      $\PL$: a function of $R_L$ only}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{Two extremes}
   \begin{columns}[c,onlytextwidth]
     \begin{column}{0.52\textwidth}
-      $\displaystyle \frac{d\PL}{dR_L} = \vth^2\,\frac{\Rth - R_L}{(\Rth + R_L)^3} = 0$\\[14pt]
-      \onslide<2->{%
-      \begin{tikzpicture}
-        \node[draw=metured, thick, fill=metured!5, rounded corners=3pt, inner sep=6pt, align=left]
-          {$R_L = \Rth$\\[4pt] $\displaystyle P_{L,\max} = \frac{\vth^2}{4\Rth}$};
-      \end{tikzpicture}}
+      \textbf{$R_L = 0$} (short): \ $\Vcol{v_L} = 0$, \ $\PL = 0$\\[10pt]
+      \textbf{$R_L \to \infty$} (open): \ $\Icol{i} = 0$, \ $\PL \to 0$\\[16pt]
+      \onslide<2->{The maximum is in between}
     \end{column}
     \begin{column}{0.46\textwidth}
       \centering
       \onslide<2->{%
       \begin{tikzpicture}[scale=0.8]
+        \draw[-{Stealth[length=2.2mm]}] (0,0) -- (5.4,0) node[right] {$R_L$};
+        \draw[-{Stealth[length=2.2mm]}] (0,0) -- (0,2.5) node[above] {$\PL$};
+        \draw[very thick, ccur, domain=0:5.1, samples=80, smooth] plot (\x,{8*\x/(1+\x)^2});
+      \end{tikzpicture}}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+%==============================================================
+\roadmapframe{12}
+
+%--------------------------------------------------------------
+\begin{frame}{Maximum power transfer: $R_L = \Rth$}
+  \begin{columns}[c,onlytextwidth]
+    \begin{column}{0.54\textwidth}
+      $\displaystyle \frac{d\PL}{dR_L} = \vth^2\,\frac{(\Rth + R_L) - 2R_L}{(\Rth + R_L)^3}$\\[8pt]
+      \hspace*{2.6em}$\displaystyle = \vth^2\,\frac{\Rth - R_L}{(\Rth + R_L)^3}$\\[12pt]
+      \onslide<2->{%
+      $> 0$ for $R_L < \Rth$, \ $< 0$ for $R_L > \Rth$\\[12pt]}
+      \onslide<3->{%
+      \begin{tikzpicture}
+        \node[draw=metured, thick, fill=metured!5, rounded corners=3pt, inner sep=6pt, align=left]
+          {$R_L = \Rth$\\[4pt] $\displaystyle P_{L,\max} = \frac{\vth^2}{4\Rth}$};
+      \end{tikzpicture}}
+    \end{column}
+    \begin{column}{0.44\textwidth}
+      \centering
+      \onslide<3->{%
+      \begin{tikzpicture}[scale=0.62]
         \mptplot
       \end{tikzpicture}}
     \end{column}
   \end{columns}
 \end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{At maximum power}
+  \begin{columns}[c,onlytextwidth]
+    \begin{column}{0.44\textwidth}
+      \centering
+      \begin{tikzpicture}[scale=0.9]
+        \mptload
+        \node[font=\small] at (3.4,-0.5) {$R_L = \Rth$};
+      \end{tikzpicture}
+    \end{column}
+    \begin{column}{0.54\textwidth}
+      \begin{itemize}\itemsep8pt
+        \item $\Vcol{v_L} = \tfrac12\,\vth$, \ $\Icol{i} = \dfrac{\vth}{2\Rth}$
+        \item<2-> Norton form: $P_{L,\max} = \tfrac14\,\RN\,\iN^2$
+        \item<3-> In the equivalent, half of the source power reaches the load
+      \end{itemize}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+%==============================================================
+\roadmapframe{13}
 
 %--------------------------------------------------------------
 \begin{frame}{Example 13.8: maximum power}
