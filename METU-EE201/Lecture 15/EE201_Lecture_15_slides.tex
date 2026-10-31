@@ -151,7 +151,7 @@
 \newcommand{\loadpic}{%
   \ivq{5.4}{2.7}
   \draw[crv, domain=0:1.12, samples=60, smooth] plot (\x,{2*\x*\x});
-  \node[font=\scriptsize, text=metured] at (1.55,2.45) {$i = g(v)$};
+  \node[font=\scriptsize, text=metured, anchor=west] at (1.35,2.4) {$i = g(v)$};
   \draw[lline] (0,2.0) -- (5.0,0);
   \node[font=\scriptsize, text=ccur, anchor=west] at (3.2,1.05) {load line $R\,i + v = E$};
   \node[font=\scriptsize, left] at (0,2.0) {$E/R$};
@@ -535,7 +535,7 @@
         \item A resistor: a curve in the $v$--$i$ plane
         \item LTI: a line through the origin
         \item Nonlinear: any other curve, e.g.\ $\Icol{i} = g(\Vcol{v})$
-        \item A diode and a resistor: the load line (previously)
+        \item So far: LTI circuits only
       \end{itemize}
     \end{column}
   \end{columns}
@@ -687,7 +687,8 @@
     \item The rest of the circuit is linear
     \item<2-> \textbf{Step 1:} the Th\'evenin equivalent seen by the nonlinear resistor
     \item<3-> \textbf{Step 2:} the load line gives its operating point $(\Vcol{v_R}, \Icol{i_R})$
-    \item<4-> \textbf{Step 3:} substitution theorem (previously): replace it by a source $\Vcol{v_R}$ or $\Icol{i_R}$
+    \item<4-> \textbf{Step 3:} substitution theorem: replace it by a source $\Vcol{v_R}$ or $\Icol{i_R}$
+    \item<4-> No other voltage or current changes
     \item<4-> Then any other voltage or current from a linear circuit
   \end{itemize}
   \vfill

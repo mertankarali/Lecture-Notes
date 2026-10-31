@@ -32,8 +32,10 @@ given characteristic; linear time-varying resistive circuits.
 Omitted on purpose: **small-signal analysis** (Tuna's L24, pp. 57–60) and everything built on it,
 the **common-mode rejection ratio**, and general (arbitrary) nonlinear or time-varying circuits.
 Only piecewise-linear circuits and one simple linear time-varying example are covered.
-The element curves, the ideal diode and the load line were introduced previously (Lecture 3),
-and the substitution theorem previously (Lecture 10); here they are reused.
+The lecture is self-contained: the load line and the ideal diode are developed here from
+scratch. Only the element curve (a resistor as a curve in the v–i plane), Thévenin equivalents
+and the substitution theorem (Lecture 10) are assumed; the review slide recalls the first,
+and the substitution theorem is stated where it is used.
 
 1. **One nonlinear resistor** — E, R and a voltage-controlled resistor i = g(v): the algebraic
    solution and the load line R i + v = E. Example 15.1: 10 V, 100 Ω, i = 3v²/100 (v ≥ 0) gives
