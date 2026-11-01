@@ -147,6 +147,26 @@
   \node[pol] at (2.05,1.55) {$+$}; \node[pol] at (2.05,0.45) {$-$};
   \node[font=\small, text=cvolt] at (2.0,1.0) {$v$};}
 
+%  A nonlinear resistor at port a-b of a linear circuit (#1 = 0) or of its Thevenin equivalent (#1 = 1)
+\newcommand{\nlport}[1]{%
+  \ifcase#1
+    \draw[thick, fill=gray!8] (0,0) rectangle (2.6,2.4);
+    \node[font=\small\bfseries] at (1.3,1.5) {linear};
+    \node[font=\scriptsize, align=center] at (1.3,0.9) {resistors,\\ sources};
+    \draw (2.6,2.0) -- (3.3,2.0); \draw (2.6,0.4) -- (3.3,0.4);
+  \or
+    \draw (0.4,2.0) to[R, l=$\Rth$] (2.0,2.0) -- (3.3,2.0);
+    \draw (0.4,2.0) to[american voltage source, l_=$\vth$] (0.4,0.4);
+    \draw (0.4,0.4) -- (3.3,0.4);
+  \fi
+  \draw (3.3,2.0) -- (4.2,2.0) to[generic] (4.2,0.4) -- (3.3,0.4);
+  \draw (3.3,2.0) node[ocirc] {}; \draw (3.3,0.4) node[ocirc] {};
+  \node[font=\small, anchor=south] at (3.3,2.05) {a}; \node[font=\small, anchor=north] at (3.3,0.35) {b};
+  \node[pol] at (3.75,1.75) {$+$}; \node[pol] at (3.75,0.65) {$-$};
+  \node[font=\small, text=cvolt] at (3.72,1.2) {$v_R$};
+  \draw[iar] (4.6,1.55) -- (4.6,0.95); \node[font=\small, text=ccur, anchor=west] at (4.65,1.25) {$i_R$};
+  \node[font=\scriptsize, text=metured, anchor=west] at (4.45,2.1) {nonlinear};}
+
 %  The load line picture: a bent curve, the line R i + v = E, the operating point
 \newcommand{\loadpic}{%
   \ivq{5.4}{2.7}
@@ -156,11 +176,11 @@
   \node[font=\scriptsize, text=ccur, anchor=west] at (3.2,1.05) {load line $R\,i + v = E$};
   \node[font=\scriptsize, left] at (0,2.0) {$E/R$};
   \node[font=\scriptsize, below] at (5.0,0) {$E$};
-  \node[opt] at (0.87,1.51) {};
-  \draw[dotted, gray] (0.87,0) -- (0.87,1.51) -- (0,1.51);
-  \node[font=\scriptsize, below] at (0.87,0) {$v_o$};
-  \node[font=\scriptsize, left] at (0,1.51) {$i_o$};
-  \node[font=\scriptsize, anchor=west] at (1.0,1.75) {operating point};}
+  \node[opt] at (0.905,1.638) {};
+  \draw[dotted, gray] (0.905,0) -- (0.905,1.638) -- (0,1.638);
+  \node[font=\scriptsize, below] at (0.905,0) {$v_o$};
+  \node[font=\scriptsize, left] at (0,1.638) {$i_o$};
+  \node[font=\scriptsize, anchor=west] at (1.05,1.9) {operating point};}
 
 %  Example 15.1: v from 0 to 10 V (x = v/2), i from 0 to 0.12 A (y = 20 i)
 \newcommand{\exOnePlot}{%
@@ -178,8 +198,9 @@
 %  Many or no operating points
 \newcommand{\manypic}{%
   \ivq{5.2}{2.6}
-  \draw[crv, domain=0:4.6, samples=90, smooth] plot (\x,{1.9*\x*exp(-0.9*\x) + 0.06*\x*\x*\x*0.5});
-  \draw[lline] (0,1.45) -- (4.9,0.12);}
+  \draw[crv, domain=0:4.6, samples=90, smooth] plot (\x,{1.4 - 0.25*\x + 0.239*(\x-0.7)*(\x-2.2)*(\x-3.8)});
+  \draw[lline] (0,1.4) -- (4.9,0.175);
+  \foreach \x in {0.7,2.2,3.8} \node[opt] at (\x,{1.4-0.25*\x}) {};}
 \newcommand{\nonepic}{%
   \ivq{5.2}{2.6}
   \draw[crv, domain=0.5:5.0, samples=60, smooth] plot (\x,{1.25/\x});
@@ -595,14 +616,13 @@
       Two constraints on $(\Vcol{v}, \Icol{i})$:\\[8pt]
       \textcolor{ccur}{circuit:} \ $R\,\Icol{i} + \Vcol{v} = E$\\[4pt]
       \textcolor{metured}{element:} \ $\Icol{i} = g(\Vcol{v})$\\[14pt]
-      \onslide<2->{The solution is on both}
+      The solution is on both
     \end{column}
     \begin{column}{0.58\textwidth}
       \centering
-      \onslide<2->{%
       \begin{tikzpicture}[scale=0.85]
         \loadpic
-      \end{tikzpicture}}
+      \end{tikzpicture}
     \end{column}
   \end{columns}
 \end{frame}
@@ -683,13 +703,36 @@
 %--------------------------------------------------------------
 \begin{frame}{A nonlinear resistor in a larger circuit}
   \vfill
-  \begin{itemize}\itemsep10pt
-    \item The rest of the circuit is linear
-    \item<2-> \textbf{Step 1:} the Th\'evenin equivalent seen by the nonlinear resistor
-    \item<3-> \textbf{Step 2:} the load line gives its operating point $(\Vcol{v_R}, \Icol{i_R})$
-    \item<4-> \textbf{Step 3:} substitution theorem: replace it by a source $\Vcol{v_R}$ or $\Icol{i_R}$
-    \item<4-> No other voltage or current changes
-    \item<4-> Then any other voltage or current from a linear circuit
+  \begin{center}
+    \begin{tikzpicture}[scale=0.95]
+      \nlport{0}
+      \begin{scope}[visible on=<2->]
+        \draw[-{Stealth[length=3mm]}, thick, gray] (5.5,1.2) -- (6.7,1.2);
+        \node[font=\small, anchor=south] at (6.1,1.3) {Th\'evenin};
+        \begin{scope}[xshift=8.1cm] \nlport{1} \end{scope}
+      \end{scope}
+    \end{tikzpicture}
+  \end{center}
+  \vfill
+  \begin{center}
+    One nonlinear resistor; the rest of the circuit is linear\\[6pt]
+    \onslide<2->{Seen from a--b, the rest is a source and a resistor: the case we just solved}
+  \end{center}
+  \vfill
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{Three steps}
+  \vfill
+  \begin{center}
+    \begin{tikzpicture}[scale=0.75] \nlport{1} \end{tikzpicture}
+  \end{center}
+  \begin{itemize}\itemsep6pt
+    \item \textbf{Step 1:} the Th\'evenin equivalent seen from a--b
+    \item \textbf{Step 2:} the load line gives the operating point $(\Vcol{v_R}, \Icol{i_R})$
+    \item \textbf{Step 3:} substitution theorem: replace the nonlinear resistor by a source $\Vcol{v_R}$ (or $\Icol{i_R}$)
+    \item No other voltage or current changes
+    \item Any other voltage or current then follows from a linear circuit
   \end{itemize}
   \vfill
 \end{frame}
@@ -781,25 +824,6 @@
 \roadmapframe{4}
 
 %--------------------------------------------------------------
-\begin{frame}{Motivation: piecewise-linear}
-  \vfill
-  \begin{center}
-    \begin{tikzpicture}[scale=1.0]
-      \ivax{2.2}{1.3}{}
-      \draw[crv] (-2.0,-1.1) -- (-0.8,0) -- (0.6,0.35) -- (1.6,1.2);
-      \fill (-0.8,0) circle (1.8pt); \fill (0.6,0.35) circle (1.8pt);
-      \node[font=\scriptsize, text=metugray, anchor=north] at (0.6,0.3) {breakpoint};
-    \end{tikzpicture}
-  \end{center}
-  \vfill
-  \begin{itemize}\itemsep8pt
-    \item Straight pieces: each piece is a linear circuit
-    \item The building block: the ideal diode
-  \end{itemize}
-  \vfill
-\end{frame}
-
-%--------------------------------------------------------------
 \begin{frame}{The ideal diode}
   \begin{columns}[c,onlytextwidth]
     \begin{column}{0.3\textwidth}
@@ -821,7 +845,8 @@
       \textbf{ON:} \ $\Vcol{v} = 0$, \ $\Icol{i} \geq 0$\\[2pt]
       {\small a short circuit}\\[10pt]
       \textbf{OFF:} \ $\Icol{i} = 0$, \ $\Vcol{v} \leq 0$\\[2pt]
-      {\small an open circuit}
+      {\small an open circuit}\\[14pt]
+      Two straight pieces: \alert{piecewise linear}
     \end{column}
   \end{columns}
 \end{frame}
