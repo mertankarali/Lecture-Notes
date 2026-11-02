@@ -4,8 +4,8 @@ Lecture notes and slides for the thirteenth lecture of EE201 (Section 2, Fall 20
 
 | File | What it is |
 |---|---|
-| `EE201_Lecture_13.tex` | Handout / lecture notes (article, 9 pages). Self-contained: input resistance with a test source, linearity and superposition, Thévenin and Norton equivalents, maximum power transfer, a summary; Appendix A (take-home, new page): the Δ–Y and Y–Δ transforms. Nine worked examples. |
-| `EE201_Lecture_13_slides.tex` | Beamer deck (54 slides and a 9-slide take-home part, 147 PDF pages) for the lecture itself — visual, low text. |
+| `EE201_Lecture_13.tex` | Handout / lecture notes (article, 14 pages). Self-contained: input resistance with a test source, linearity and superposition, Thévenin and Norton equivalents, maximum power transfer, a summary; Appendix A (take-home, new page): the Δ–Y and Y–Δ transforms. Ten worked examples; each gives the problem in a box and a step-by-step solution below it. |
+| `EE201_Lecture_13_slides.tex` | Beamer deck (58 slides and a 9-slide take-home part, 154 PDF pages) for the lecture itself — visual, low text. |
 | `build.sh` | Compiles both, removes auxiliary files, opens the PDFs. |
 
 ## Compiling
@@ -52,13 +52,15 @@ transform is a take-home part.
    parameter); the power P_L = R_L v_th²/(R_th + R_L)² and its two extremes (short, open);
    dP_L/dR_L = 0 gives R_L = R_th and P_L,max = v_th²/(4R_th) = R_N i_N²/4; at maximum power
    v_L = v_th/2 and, in the equivalent, half of the source power reaches the load. Example 13.8: 20 mA, 2 kΩ and two 1 kΩ feed a load R ∥ 6 kΩ:
-   v_th = 40 V, R_th = 4 kΩ, so R = 12 kΩ and P_L,max = 0.1 W
+   v_th = 40 V, R_th = 4 kΩ, so R = 12 kΩ and P_L,max = 0.1 W. Example 13.9: 18 V, 6 Ω, 3 Ω (i_x),
+   2 Ω and a CCCS i_x/2: open circuit v_th = 12 V, short circuit i_N = 2 A, R_th = R_N = 6 Ω;
+   both equivalents, R_L = 6 Ω and P_L,max = 6 W
 
 Then a summary table (situation → what to do).
 
 **Take-home (appendix): the Δ–Y transform** — Δ to Y (equal resistance between every two
 terminals, R₁ = R_B R_C /(R_A + R_B + R_C), …), Y to Δ (R_A = (R₁R₂ + R₂R₃ + R₃R₁)/R₁, …),
-equal resistors (Δ with R ≡ Y with R/3), an exercise in conductances (notes), and Example 13.9:
+equal resistors (Δ with R ≡ Y with R/3), an exercise in conductances (notes), and Example 13.10:
 a bridge (7, 20, 10, 50, 40 Ω) whose Δ A–B–C becomes a Y with 5, 4, 20 Ω, giving 28 Ω.
 
 ## Slides
@@ -71,4 +73,4 @@ as a "Take-home" part (its own divider slide, footer "Take-home", not counted in
 numbers); the Δ is marked in red and the Y in blue. Circuits and questions come first and the
 answers on later pages; no "Question" labels. Dependent-source values are plugged in before
 the equations are written. Each step is an ordinary extra PDF page; that is why the deck has
-63 slides but 147 pages.
+67 slides but 154 pages.

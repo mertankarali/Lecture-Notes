@@ -93,6 +93,12 @@
   left=7pt,right=7pt,top=5pt,bottom=5pt, before skip=7pt, after skip=7pt,
   before upper={\setlength{\parskip}{0.6ex plus .1ex}}}
 
+%  Example solutions: a heading and numbered steps outside the example box
+\newif\ifsolfirst
+\newcommand{\solution}{\par\smallskip\noindent{\color{cpow}\bfseries Solution}\par\nobreak\smallskip\global\solfirsttrue}
+\newcommand{\solstep}[2]{\par\ifsolfirst\global\solfirstfalse\else\medskip\needspace{5\baselineskip}\fi
+  \noindent{\color{cpow}\bfseries Step #1.}\ {\bfseries #2}\par\nobreak\smallskip}
+
 \newtcolorbox{cautionbox}[1][Careful]{enhanced,
   colback=cvolt!6, colframe=cvolt, boxrule=0.9pt,
   fonttitle=\bfseries, title={#1}, arc=2pt,
@@ -249,7 +255,7 @@
   \node[font=\small] at (2.0,1.8) {$#1$};
   \foreach \p in {(0,0),(3,0),(1.5,2.5)} \draw \p node[ocirc] {};}
 
-%  Example 13.9: a bridge between the terminals (top and bottom on the left).
+%  Example 13.10: a bridge between the terminals (top and bottom on the left).
 %  #1 = 0: bare;  1: node names and the Delta A-B-C highlighted;  2: after Delta -> Y
 \newcommand{\exBr}[1]{%
   \ifnum#1<2
@@ -588,6 +594,47 @@
   \draw[iar] (2.55,2.3) -- (3.15,2.3); \node[font=\small, text=ccur] at (2.85,2.6) {$i$};
   \node[pol] at (4.0,1.55) {$+$}; \node[pol] at (4.0,0.45) {$-$};
   \node[font=\small, text=cvolt] at (4.05,1.0) {$v_L$};}
+%  Example 13.9: 18 V, 6 Ohm, 3 Ohm (i_x), 2 Ohm, CCCS i_x/2 into node a; port a-b.
+%  #1 = 0: with the load R_L;  1: open circuit (v_oc);  2: short circuit (i_sc)
+\newcommand{\exN}[1]{%
+  \draw (0,2.2) to[american voltage source, l_=$\Vcol{18\V}$] (0,0);
+  \draw (0,2.2) to[R, l=$6\ohm$] (2.2,2.2) to[R, l=$2\ohm$] (4.4,2.2) -- (6.3,2.2);
+  \draw (2.2,2.2) to[R] (2.2,0); \lL{2.2}{1.1}{$3\ohm$}
+  \draw[iar] (2.5,1.45) -- (2.5,0.75); \node[font=\small, text=ccur, anchor=west] at (2.55,1.1) {$i_x$};
+  \draw (4.4,0) to[american controlled current source] (4.4,2.2); \lR{4.4}{1.1}{$\Icol{\tfrac12 i_x}$}
+  \draw (0,0) -- (6.3,0);
+  \foreach \p in {(2.2,2.2),(4.4,2.2),(2.2,0),(4.4,0)} \fill \p circle (1.7pt);
+  \node[font=\small, text=cvolt, above] at (2.2,2.25) {$e_1$};
+  \node[font=\small, text=cvolt, above] at (4.4,2.25) {$e_a$};
+  \ifcase#1
+    \draw (6.3,2.2) -- (7.3,2.2); \draw (6.3,0) -- (7.3,0);
+    \draw (7.3,2.2) to[vR] (7.3,0); \lR{7.3}{1.1}{$R_L$}
+    \draw (6.3,2.2) node[ocirc] {} node[above, tlab] {a};
+    \draw (6.3,0) node[ocirc] {} node[below, tlab] {b};
+  \or
+    \draw (6.3,2.2) node[ocirc] {} node[above, tlab] {a};
+    \draw (6.3,0) node[ocirc] {} node[below, tlab] {b};
+    \node[pol] at (6.65,1.6) {$+$}; \node[pol] at (6.65,0.6) {$-$};
+    \node[font=\small, text=cvolt] at (6.75,1.1) {$v_{\mathrm{oc}}$};
+    \gnd{3.3}{0}
+  \or
+    \draw (6.3,2.2) -- (6.3,0);
+    \draw[iar] (6.6,1.45) -- (6.6,0.75); \node[font=\small, text=ccur, anchor=west] at (6.65,1.1) {$i_{\mathrm{sc}}$};
+    \gnd{3.3}{0}
+  \fi}
+%  Example 13.9: Thevenin and Norton equivalents with R_L
+\newcommand{\exNeq}{%
+  \draw (0,2) to[american voltage source, l_=$\Vcol{12\V}$] (0,0);
+  \draw (0,2) to[R, l=$6\ohm$] (2.2,2) -- (3.0,2); \draw (0,0) -- (3.0,0);
+  \draw (3.0,2) to[vR] (3.0,0); \lR{3.0}{1.0}{$R_L$}
+  \node[font=\Large] at (4.7,1.0) {$\equiv$};
+  \begin{scope}[shift={(6.9,0)}]
+    \draw (0,0) to[american current source] (0,2) -- (3.0,2); \lL{0}{1.0}{$\Icol{2\A}$}
+    \draw (1.4,2) to[R] (1.4,0); \lR{1.4}{1.0}{$6\ohm$}
+    \draw (0,0) -- (3.0,0);
+    \fill (1.4,2) circle (1.6pt); \fill (1.4,0) circle (1.6pt);
+    \draw (3.0,2) to[vR] (3.0,0); \lR{3.0}{1.0}{$R_L$}
+  \end{scope}}
 \begin{document}
 
 %-------------------- title block -----------------------------
@@ -670,37 +717,58 @@ $\Vcol{v_{\mathrm{I}}} = \Vcol{v_{\mathrm{II}}} = \Rin \cdot 1\A$, so
 \end{minipage}
 
 \medskip
+\bigskip
 \begin{examplebox}[Example 13.1 --- an input resistance]
-\begin{minipage}[c]{0.46\linewidth}
+\begin{minipage}[c]{0.5\linewidth}
 \centering
-\begin{tikzpicture}[scale=0.72]
+\begin{tikzpicture}[scale=0.8]
   \exR{0}
-\end{tikzpicture}\\[6pt]
-\begin{tikzpicture}[scale=0.72]
+\end{tikzpicture}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.46\linewidth}
+The one-port a--b contains a current-controlled voltage source $\frac32\,\Icol{i_x}$ and two
+resistors. Find its input resistance $\Rin$.
+\end{minipage}
+\end{examplebox}
+
+\solution
+
+\solstep{1}{Connect a test source}
+\begin{minipage}[c]{0.5\linewidth}
+\centering
+\begin{tikzpicture}[scale=0.8]
   \exR{1}
 \end{tikzpicture}
 \end{minipage}\hfill
-\begin{minipage}[c]{0.5\linewidth}
-\textbf{Question.} Find $\Rin$.
-
-\textbf{Answer.} Connect a $1\A$ test source and take the bottom node as the ground. KCL at
-node 1:
+\begin{minipage}[c]{0.46\linewidth}
+Connect a $1\A$ current source to the port and take b as the ground. Then the port voltage is
+$\Vcol{v_{\mathrm{I}}} = \e{1}$ and
 \[
-  \frac{\e{1} - \frac32\,\Icol{i_x}}{3} + \frac{\e{1}}{2} - 1 = 0 .
+  \Rin = \frac{\Vcol{v_{\mathrm{I}}}}{1\A} .
 \]
-The test current enters at a and leaves at b, so $\Icol{i_x} = -1\A$. First plug it in:
-\[
-  \frac{\e{1} + \frac32}{3} + \frac{\e{1}}{2} - 1 = 0
-  \ \Rightarrow\ \tfrac56\,\e{1} = \tfrac12
-  \ \Rightarrow\ \e{1} = \tfrac35\V .
-\]
-So $\Vcol{v_{\mathrm{I}}} = \e{1} = \frac35\V$ and $\Rin = \frac35\ohm$.
 \end{minipage}
 
-\smallskip
-With the dependent source replaced by a short circuit, $\Rin$ would be $3 \parallel 2 = \frac65\ohm$:
-the dependent source changes the input resistance.
-\end{examplebox}
+\solstep{2}{The control variable first}
+The test current enters at a and leaves at b, so $\Icol{i_x} = -1\A$. The dependent source
+is then a $\frac32\,\Icol{i_x} = -\frac32\V$ source.
+
+\solstep{3}{KCL at node 1}
+The current through the $3\ohm$ resistor, the current through the $2\ohm$ resistor and the test
+current:
+\begin{align*}
+  \frac{\e{1} - \frac32\,\Icol{i_x}}{3} + \frac{\e{1}}{2} - 1 &= 0\\
+  \frac{\e{1} + \frac32}{3} + \frac{\e{1}}{2} - 1 &= 0\\
+  \tfrac56\,\e{1} &= \tfrac12
+  \quad\Rightarrow\quad \e{1} = \tfrac35\V .
+\end{align*}
+
+\solstep{4}{The input resistance}
+\[
+  \Rin = \frac{\e{1}}{1\A} = \frac35\ohm .
+\]
+With the dependent source replaced by a short circuit, $\Rin$ would be
+$3 \parallel 2 = \frac65\ohm$: the dependent source changes the input resistance.
+
 
 %==============================================================
 \section{Linearity}
@@ -732,29 +800,48 @@ with the row vector $\mathbf{k} = [\,k_1 \ \cdots \ k_m\,]$.
 \end{minipage}
 \end{definitionbox}
 
+\bigskip
 \begin{examplebox}[Example 13.2 --- the row vector $\mathbf{k}$]
-\begin{minipage}[c]{0.44\linewidth}
+\begin{minipage}[c]{0.5\linewidth}
 \centering
-\begin{tikzpicture}[scale=0.72]
+\begin{tikzpicture}[scale=0.8]
   \exL
 \end{tikzpicture}
 \end{minipage}\hfill
-\begin{minipage}[c]{0.54\linewidth}
-\textbf{Question.} The inputs are $\mathbf{u} = [\,\Vcol{v_s} \ \ \Icol{i_s}\,]^T$. For the
-output $y = \Icol{i}$, find $k_1$, $k_2$ with $\Icol{i} = \Icol{i_1} + \Icol{i_2}$,
-$\Icol{i_1} = k_1\Vcol{v_s}$, $\Icol{i_2} = k_2\Icol{i_s}$.
-
-\textbf{Answer.} KVL around the left mesh, with $\Icol{i} + \Icol{i_s}$ down through $R_2$:
+\begin{minipage}[c]{0.46\linewidth}
+The inputs are $\mathbf{u} = [\,\Vcol{v_s} \ \ \Icol{i_s}\,]^T$ and the output is
+$y = \Icol{i}$. Find $k_1$ and $k_2$ such that
 \[
-  -\Vcol{v_s} + R_1\Icol{i} + R_2(\Icol{i} + \Icol{i_s}) = 0 ,
+  \Icol{i} = \Icol{i_1} + \Icol{i_2}, \quad \Icol{i_1} = k_1\Vcol{v_s}, \quad
+  \Icol{i_2} = k_2\Icol{i_s} .
 \]
-\[
-  \Icol{i} = \underbrace{\frac{1}{R_1 + R_2}\,\Vcol{v_s}}_{\Icol{i_1}}
-  \ \underbrace{-\,\frac{R_2}{R_1 + R_2}\,\Icol{i_s}}_{\Icol{i_2}} ,
-\]
-so $k_1 = 1/(R_1 + R_2)$ and $k_2 = -R_2/(R_1 + R_2)$.
 \end{minipage}
 \end{examplebox}
+
+\solution
+
+\solstep{1}{KVL around the left mesh}
+The current source pushes $\Icol{i_s}$ into the top node, so the current down through $R_2$ is
+$\Icol{i} + \Icol{i_s}$:
+\[
+  -\Vcol{v_s} + R_1\,\Icol{i} + R_2\,(\Icol{i} + \Icol{i_s}) = 0 .
+\]
+
+\solstep{2}{Solve for the output}
+\[
+  (R_1 + R_2)\,\Icol{i} = \Vcol{v_s} - R_2\,\Icol{i_s}
+  \quad\Rightarrow\quad
+  \Icol{i} = \underbrace{\frac{1}{R_1 + R_2}\,\Vcol{v_s}}_{\Icol{i_1}}
+  \ \underbrace{-\,\frac{R_2}{R_1 + R_2}\,\Icol{i_s}}_{\Icol{i_2}} .
+\]
+
+\solstep{3}{Read off $\boldsymbol{\mathbf{k}}$}
+\[
+  k_1 = \frac{1}{R_1 + R_2}, \qquad k_2 = -\frac{R_2}{R_1 + R_2} .
+\]
+$\Icol{i_1}$ is the current with $\Icol{i_s} = 0$, and $\Icol{i_2}$ is the current with
+$\Vcol{v_s} = 0$ (a current divider).
+
 
 \begin{ideabox}[The implication of linearity]
 For input vectors $\mathbf{u}$, $\mathbf{w}$ and numbers $\alpha$, $\beta$:
@@ -781,67 +868,78 @@ circuit}. Killing an independent current source ($\Icol{i_s} = 0$) replaces it w
 \textbf{open circuit}. Do \textbf{not} kill dependent sources: they are not inputs.
 \end{definitionbox}
 
+\bigskip
 \begin{examplebox}[Example 13.3 --- superposition]
-\begin{minipage}[c]{0.46\linewidth}
+\begin{minipage}[c]{0.56\linewidth}
 \centering
-\begin{tikzpicture}[scale=0.62]
+\begin{tikzpicture}[scale=0.75]
   \exS{0}
 \end{tikzpicture}
 \end{minipage}\hfill
-\begin{minipage}[c]{0.52\linewidth}
-\textbf{Question.} Find $\Icol{i}$ by superposition.
-
-\textbf{Answer.} $\Icol{i} = \Icol{i_1} + \Icol{i_2}$: $\Icol{i_1}$ with the $4\A$ source killed,
-$\Icol{i_2}$ with the $20\V$ source killed.
+\begin{minipage}[c]{0.4\linewidth}
+The circuit has two independent sources and a current-controlled voltage source
+$5\,\Icol{i_x}$. Find $\Icol{i}$ by superposition.
 \end{minipage}
-
-\smallskip
-\begin{minipage}[t]{0.48\linewidth}
-\centering
-\begin{tikzpicture}[scale=0.55]
-  \exS{1}
-\end{tikzpicture}
-
-\raggedright
-\textbf{Kill the current source} (open). One loop, $\Icol{i_x} = \Icol{i_1}$:
-\[
-  -20 + 15\,\Icol{i_x} + 10\,\Icol{i_1} - 5\,\Icol{i_x} = 0
-\]
-\[
-  \Rightarrow\ 20\,\Icol{i_1} = 20 \ \Rightarrow\ \Icol{i_1} = 1\A .
-\]
-\end{minipage}\hfill
-\begin{minipage}[t]{0.48\linewidth}
-\centering
-\begin{tikzpicture}[scale=0.55]
-  \exS{2}
-\end{tikzpicture}
-
-\raggedright
-\textbf{Kill the voltage source} (short). KCL: $\Icol{i_x} = \Icol{i_2} - 4$:
-\[
-  15\,\Icol{i_x} + 10\,\Icol{i_2} - 5\,\Icol{i_x} = 0
-\]
-\[
-  \Rightarrow\ 20\,\Icol{i_2} = 40 \ \Rightarrow\ \Icol{i_2} = 2\A .
-\]
-\end{minipage}
-
-\smallskip
-So $\Icol{i} = \Icol{i_1} + \Icol{i_2} = 3\A$. The dependent source $5\,\Icol{i_x}$ stays in
-both circuits.
 \end{examplebox}
 
-\begin{examplebox}[Example 13.4 --- three experiments]
-\begin{minipage}[c]{0.5\linewidth}
+\solution
+
+\solstep{1}{Split the output}
+\[
+  \Icol{i} = \Icol{i_1} + \Icol{i_2},
+\]
+with $\Icol{i_1}$ from the $20\V$ source alone and $\Icol{i_2}$ from the $4\A$ source alone.
+The dependent source stays in both circuits.
+
+\solstep{2}{Kill the current source (open)}
+\begin{minipage}[c]{0.56\linewidth}
 \centering
-\begin{tikzpicture}[scale=0.62]
+\begin{tikzpicture}[scale=0.75]
+  \exS{1}
+\end{tikzpicture}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.4\linewidth}
+One loop remains, so $\Icol{i_x} = \Icol{i_1}$. KVL:
+\begin{align*}
+  -20 + 15\,\Icol{i_x} + 10\,\Icol{i_1} - 5\,\Icol{i_x} &= 0\\
+  20\,\Icol{i_1} &= 20\\
+  \Icol{i_1} &= 1\A .
+\end{align*}
+\end{minipage}
+
+\solstep{3}{Kill the voltage source (short)}
+\begin{minipage}[c]{0.56\linewidth}
+\centering
+\begin{tikzpicture}[scale=0.75]
+  \exS{2}
+\end{tikzpicture}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.4\linewidth}
+KCL at the middle node: $\Icol{i_x} = \Icol{i_2} - 4$. KVL around the outer loop:
+\begin{align*}
+  15\,\Icol{i_x} + 10\,\Icol{i_2} - 5\,\Icol{i_x} &= 0\\
+  10\,(\Icol{i_2} - 4) + 10\,\Icol{i_2} &= 0\\
+  \Icol{i_2} &= 2\A .
+\end{align*}
+\end{minipage}
+
+\solstep{4}{Add}
+\[
+  \Icol{i} = \Icol{i_1} + \Icol{i_2} = 1 + 2 = 3\A .
+\]
+
+
+\bigskip
+\begin{examplebox}[Example 13.4 --- three experiments]
+\begin{minipage}[c]{0.56\linewidth}
+\centering
+\begin{tikzpicture}[scale=0.72]
   \exT
 \end{tikzpicture}
 \end{minipage}\hfill
-\begin{minipage}[c]{0.46\linewidth}
+\begin{minipage}[c]{0.4\linewidth}
 \centering
-\renewcommand{\arraystretch}{1.15}
+\renewcommand{\arraystretch}{1.2}
 \begin{tabular}{l|c|c|c}
   & $\Vcol{v_s}$ & $\Icol{i_s}$ & $\Vcol{v}$\\ \hline
   Exp.\ 1 & $12\V$ & $0$ & $\Vcol{v_1}$\\
@@ -851,22 +949,33 @@ both circuits.
 \end{minipage}
 
 \smallskip
-\textbf{Question.} Three experiments are made on the circuit. Express $\Vcol{v_3}$ in terms of
-$\Vcol{v_1}$ and $\Vcol{v_2}$.
+Three experiments are made on the circuit; the element values are not known. Express
+$\Vcol{v_3}$ in terms of $\Vcol{v_1}$ and $\Vcol{v_2}$.
+\end{examplebox}
 
-\textbf{Answer.} By linearity, $\Vcol{v} = \mathbf{k}\,[\,\Vcol{v_s} \ \ \Icol{i_s}\,]^T$
-for some $\mathbf{k}$. Write the third input with the first two:
+\solution
+
+\solstep{1}{Linearity}
+The circuit is LTI resistive, so for some constants $k_1$, $k_2$
+\[
+  \Vcol{v} = k_1\,\Vcol{v_s} + k_2\,\Icol{i_s} .
+\]
+
+\solstep{2}{Write the third input with the first two}
 \[
   \begin{bmatrix} 4\\ 4 \end{bmatrix}
   = \alpha \begin{bmatrix} 12\\ 0 \end{bmatrix} + \beta \begin{bmatrix} -6\\ 6 \end{bmatrix}
-  \ \Rightarrow\ 6\beta = 4, \ \ 12\alpha - 6\beta = 4
-  \ \Rightarrow\ \alpha = \beta = \tfrac23 .
+  \quad\Rightarrow\quad
+  \begin{cases} 12\alpha - 6\beta = 4\\ 6\beta = 4 \end{cases}
+  \quad\Rightarrow\quad \alpha = \beta = \tfrac23 .
 \]
-Then $\Vcol{v_3} = \alpha\,\Vcol{v_1} + \beta\,\Vcol{v_2} = \frac23\,\Vcol{v_1} + \frac23\,\Vcol{v_2}$.
-Equivalently, $\mathbf{k} = [\,\Vcol{v_1} \ \ \Vcol{v_2}\,]
-\left[\begin{smallmatrix} 12 & -6\\ 0 & 6 \end{smallmatrix}\right]^{-1}$. No element value is
-needed.
-\end{examplebox}
+
+\solstep{3}{Use the implication of linearity}
+\[
+  \Vcol{v_3} = \alpha\,\Vcol{v_1} + \beta\,\Vcol{v_2} = \tfrac23\,\Vcol{v_1} + \tfrac23\,\Vcol{v_2} .
+\]
+No element value is needed.
+
 
 %==============================================================
 %==============================================================
@@ -969,121 +1078,245 @@ at $\vth$ and the $i$ axis at $-\iN$; its slope is $\Rth$.
 %==============================================================
 \section{Examples}
 
+\bigskip
 \begin{examplebox}[Example 13.5 --- Th\'evenin and Norton equivalents]
-\begin{minipage}[c]{0.44\linewidth}
+\begin{minipage}[c]{0.56\linewidth}
 \centering
-\begin{tikzpicture}[scale=0.7]
+\begin{tikzpicture}[scale=0.78]
   \exA{0}
 \end{tikzpicture}
 \end{minipage}\hfill
-\begin{minipage}[c]{0.54\linewidth}
-Find the Th\'evenin and Norton equivalents of the one-port a--b.
-
-\textbf{Step 1: open circuit.} KCL at node 1 with $\Icol{i} = 0$:
-\begin{gather*}
-  \Icol{i_x} + \Icol{i_s} - 5\,\Icol{i_x} = 0 \ \Rightarrow\ \Icol{i_x} = \tfrac14\,\Icol{i_s},\\
-  \vth = \voc = R\,\Icol{i_x} + \Vcol{v_s} = \tfrac{R}{4}\,\Icol{i_s} + \Vcol{v_s} .
-\end{gather*}
-\end{minipage}
-
-\smallskip
-\textbf{Step 2: short circuit.} Node 1 is at $0\V$, so $\Icol{i_x} = -\Vcol{v_s}/R$. KCL at
-node 1: $\Icol{i_x} + \Icol{i_s} - 5\,\Icol{i_x} + \isc = 0$, so
-$\iN = \isc = -\Icol{i_s} + 4\,\Icol{i_x} = -\Icol{i_s} - \tfrac{4}{R}\,\Vcol{v_s}$.
-
-\textbf{Step 3: $\boldsymbol{\Rth}$.} \ $\Rth = \vth/\iN = -R/4$. It is negative: the
-dependent source supplies power.
-
-\smallskip
-\begin{minipage}[c]{0.5\linewidth}
-\centering
-\begin{tikzpicture}[scale=0.7]
-  \exA{3}
-\end{tikzpicture}
-\end{minipage}\hfill
-\begin{minipage}[c]{0.48\linewidth}
-\textbf{Another way.} Kill $\Vcol{v_s}$ (short) and $\Icol{i_s}$ (open) and connect a $1\V$
-test source. Then $\Icol{i_x} = 1/R$, and KCL at node 1 gives
-$\Icol{i_x} - 5\,\Icol{i_x} - \Icol{i_{\mathrm{t}}} = 0$, so $\Icol{i_{\mathrm{t}}} = -4/R$ and
-$\Rth = \Rin = 1\V/\Icol{i_{\mathrm{t}}} = -R/4$, as expected.
+\begin{minipage}[c]{0.4\linewidth}
+The one-port a--b contains two independent sources $\Vcol{v_s}$, $\Icol{i_s}$ and a
+current-controlled current source $5\,\Icol{i_x}$. Find its Th\'evenin and Norton
+equivalents.
 \end{minipage}
 \end{examplebox}
 
-\begin{examplebox}[Example 13.6 --- a load to design]
-\begin{minipage}[c]{0.62\linewidth}
+\solution
+
+\solstep{1}{Open circuit: $\boldsymbol{\vth}$}
+\begin{minipage}[c]{0.56\linewidth}
 \centering
 \begin{tikzpicture}[scale=0.78]
-  \exB{0}
+  \exA{1}
 \end{tikzpicture}
 \end{minipage}\hfill
-\begin{minipage}[c]{0.36\linewidth}
-The load is $R$. Find the Th\'evenin equivalent seen by $R$. Then find $R$ such that
-$\Vcol{v_R} = -7\V$.
+\begin{minipage}[c]{0.4\linewidth}
+With the port open, $\Icol{i} = 0$. KCL at node 1 (currents leaving):
+\[
+  \Icol{i_x} + \Icol{i_s} - 5\,\Icol{i_x} = 0
+  \ \Rightarrow\ \Icol{i_x} = \tfrac14\,\Icol{i_s} .
+\]
 \end{minipage}
 
 \smallskip
-\begin{minipage}[c]{0.62\linewidth}
+The node voltage is the drop across $R$ plus $\Vcol{v_s}$:
+\[
+  \vth = \voc = R\,\Icol{i_x} + \Vcol{v_s} = \tfrac{R}{4}\,\Icol{i_s} + \Vcol{v_s} .
+\]
+
+\solstep{2}{Short circuit: $\boldsymbol{\iN}$}
+\begin{minipage}[c]{0.56\linewidth}
 \centering
 \begin{tikzpicture}[scale=0.78]
+  \exA{2}
+\end{tikzpicture}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.4\linewidth}
+Node 1 is now at $0\V$:
+\[
+  R\,\Icol{i_x} + \Vcol{v_s} = 0
+  \ \Rightarrow\ \Icol{i_x} = -\frac{\Vcol{v_s}}{R} .
+\]
+\end{minipage}
+
+\smallskip
+KCL at node 1, with $\isc$ leaving into the short:
+\[
+  \Icol{i_x} + \Icol{i_s} - 5\,\Icol{i_x} + \isc = 0
+  \ \Rightarrow\ \iN = \isc = 4\,\Icol{i_x} - \Icol{i_s} = -\Icol{i_s} - \frac{4}{R}\,\Vcol{v_s} .
+\]
+
+\solstep{3}{$\boldsymbol{\Rth}$}
+The numerator is $\frac{R}{4}$ times the bracket in the denominator:
+\[
+  \Rth = \frac{\vth}{\iN}
+  = \frac{\frac{R}{4}\big(\Icol{i_s} + \frac{4}{R}\,\Vcol{v_s}\big)}{-\big(\Icol{i_s} + \frac{4}{R}\,\Vcol{v_s}\big)}
+  = -\frac{R}{4} .
+\]
+It is negative: the dependent source supplies power.
+
+\solstep{4}{Check: kill the sources}
+\begin{minipage}[c]{0.56\linewidth}
+\centering
+\begin{tikzpicture}[scale=0.78]
+  \exA{3}
+\end{tikzpicture}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.4\linewidth}
+$\Vcol{v_s}$ becomes a short, $\Icol{i_s}$ an open; connect a $1\V$ test source. Node 1 is at
+$1\V$, so $\Icol{i_x} = 1/R$. KCL:
+\[
+  \Icol{i_x} - 5\,\Icol{i_x} - \Icol{i_{\mathrm{t}}} = 0
+  \ \Rightarrow\ \Icol{i_{\mathrm{t}}} = -\frac{4}{R} .
+\]
+\end{minipage}
+
+\smallskip
+So $\Rth = \Rin = 1\V/\Icol{i_{\mathrm{t}}} = -R/4$, as before. \ \yes
+
+
+\bigskip
+\begin{examplebox}[Example 13.6 --- a load to design]
+\begin{center}
+\begin{tikzpicture}[scale=0.85]
+  \exB{0}
+\end{tikzpicture}
+\end{center}
+The load is $R$. Find the Th\'evenin equivalent of the rest of the circuit, seen by $R$. Then
+find $R$ such that $\Vcol{v_R} = -7\V$.
+\end{examplebox}
+
+\solution
+
+\solstep{1}{Open circuit: remove $R$}
+\begin{minipage}[c]{0.6\linewidth}
+\centering
+\begin{tikzpicture}[scale=0.8]
   \exB{1}
 \end{tikzpicture}
 \end{minipage}\hfill
 \begin{minipage}[c]{0.36\linewidth}
-\textbf{Open circuit} (remove $R$). Node 1: $\frac{\e{1} - 10}{5} + \frac{\e{1}}{10} = 0$, so
-$\e{1} = \frac{20}{3}\V$ and $\Vcol{v_x} = 10 - \e{1} = \frac{10}{3}\V$. Node 2:
-$-\frac12\Vcol{v_x} + \frac{\e{2}}{20} - 1 = 0$, so $\e{2} = \frac{160}{3}\V$ and
-$\vth = \e{1} - \e{2} = -\frac{140}{3}\V$.
+The port a--b is where $R$ was. Take the bottom node as the ground. The two sides are now
+separate.
 \end{minipage}
 
-\medskip
-\begin{minipage}[c]{0.62\linewidth}
+\smallskip
+Node 1 (left side):
+\[
+  \frac{\e{1} - 10}{5} + \frac{\e{1}}{10} = 0
+  \ \Rightarrow\ \e{1} = \frac{20}{3}\V,
+  \qquad \Vcol{v_x} = 10 - \e{1} = \frac{10}{3}\V .
+\]
+Node 2 (right side), with $\Vcol{v_x}$ plugged in:
+\[
+  -\tfrac12\,\Vcol{v_x} + \frac{\e{2}}{20} - 1 = 0
+  \ \Rightarrow\ \frac{\e{2}}{20} = \frac53 + 1
+  \ \Rightarrow\ \e{2} = \frac{160}{3}\V .
+\]
+So
+\[
+  \vth = \voc = \e{1} - \e{2} = -\frac{140}{3}\V .
+\]
+
+\solstep{2}{Short circuit}
+\begin{minipage}[c]{0.6\linewidth}
 \centering
-\begin{tikzpicture}[scale=0.78]
+\begin{tikzpicture}[scale=0.8]
   \exB{2}
 \end{tikzpicture}
 \end{minipage}\hfill
 \begin{minipage}[c]{0.36\linewidth}
-\textbf{Short circuit.} One node $\e{1}$:
-$\frac{\e{1} - 10}{5} + \frac{\e{1}}{10} - \frac12\Vcol{v_x} + \frac{\e{1}}{20} - 1 = 0$.
-Plug $\Vcol{v_x} = 10 - \e{1}$ first: $\frac{17}{20}\,\e{1} = 8$, $\e{1} = \frac{160}{17}\V$.
-Left of the short, $\frac{\e{1} - 10}{5} + \frac{\e{1}}{10} + \isc = 0$, so
-$\iN = \isc = -\frac{14}{17}\A$.
+With a and b shorted, nodes 1 and 2 merge into one node $\e{1}$.
 \end{minipage}
 
-\medskip
-So $\Rth = \vth/\iN = \frac{170}{3}\ohm$. With $R$ connected to this Th\'evenin equivalent, a
-voltage divider gives
+\smallskip
+Plug $\Vcol{v_x} = 10 - \e{1}$ first, then KCL at the merged node:
+\begin{align*}
+  \frac{\e{1} - 10}{5} + \frac{\e{1}}{10} - \frac{10 - \e{1}}{2} + \frac{\e{1}}{20} - 1 &= 0\\
+  \tfrac{17}{20}\,\e{1} &= 8
+  \quad\Rightarrow\quad \e{1} = \frac{160}{17}\V .
+\end{align*}
+The current through the short, from a to b, follows from KCL on the left side:
 \[
-  \Vcol{v_R} = \frac{R}{R + \frac{170}{3}}\left(-\frac{140}{3}\right) = -7
-  \ \Rightarrow\ 140\,R = 21\,R + 1190 \ \Rightarrow\ R = 10\ohm .
+  \frac{\e{1} - 10}{5} + \frac{\e{1}}{10} + \isc = 0
+  \ \Rightarrow\ \iN = \isc = -\frac{14}{17}\A .
 \]
-\textbf{Check.} Killing the sources (the dependent one stays) also gives
-$\Rth = \frac{10}{3} + \frac{160}{3} = \frac{170}{3}\ohm$.
+
+\solstep{3}{$\boldsymbol{\Rth}$}
+\[
+  \Rth = \frac{\vth}{\iN} = \frac{-140/3}{-14/17} = \frac{170}{3}\ohm .
+\]
+Check: killing the independent sources (the dependent one stays) also gives
+$\Rth = \frac{10}{3} + \frac{160}{3} = \frac{170}{3}\ohm$. \ \yes
+
+\solstep{4}{Connect $R$}
+\begin{minipage}[c]{0.4\linewidth}
+\centering
+\begin{tikzpicture}[scale=0.8]
+  \exBth
+\end{tikzpicture}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.56\linewidth}
+A voltage divider on the Th\'evenin equivalent:
+\begin{align*}
+  \Vcol{v_R} = \frac{R}{R + \frac{170}{3}}\left(-\frac{140}{3}\right) &= -7\\
+  140\,R &= 21\,R + 1190\\
+  R &= 10\ohm .
+\end{align*}
+\end{minipage}
+
+
+\bigskip
+\begin{examplebox}[Example 13.7 --- an input resistance with an ideal transformer]
+\begin{minipage}[c]{0.56\linewidth}
+\centering
+\begin{tikzpicture}[scale=0.8]
+  \exC{0}
+\end{tikzpicture}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.4\linewidth}
+The one-port a--b contains two $2\ohm$ resistors and an ideal transformer $3:2$. Find its
+input resistance $\Rin$.
+\end{minipage}
 \end{examplebox}
 
-\begin{examplebox}[Example 13.7 --- an input resistance with an ideal transformer]
-\begin{minipage}[c]{0.5\linewidth}
+\solution
+
+\solstep{1}{Connect a test source}
+\begin{minipage}[c]{0.56\linewidth}
 \centering
-\begin{tikzpicture}[scale=0.72]
+\begin{tikzpicture}[scale=0.8]
   \exC{1}
 \end{tikzpicture}
 \end{minipage}\hfill
-\begin{minipage}[c]{0.48\linewidth}
-Find $\Rin$ at the port a--b. There is no independent source inside, so the Th\'evenin
-equivalent is $\Rin$ alone; connect a $1\A$ test source.
-
-\smallskip
-The ideal transformer $3:2$ (previously): $\e{1}/3 = \e{2}/2$ and
-$3\,\Icol{i_1} + 2\,\Icol{i_2} = 0$.
+\begin{minipage}[c]{0.4\linewidth}
+There is no independent source inside, so the Th\'evenin equivalent is $\Rin$ alone. With a
+$1\A$ test source and b as the ground, $\Vcol{v} = \e{1}$ and $\Rin = \e{1}/1\A$.
 \end{minipage}
 
-\smallskip
-\textbf{Answer.} \ Node 1: $-1 + \Icol{i_1} + \tfrac12(\e{1} - \e{2}) = 0$; \
-node 2: $\Icol{i_2} + \tfrac12\e{2} + \tfrac12(\e{2} - \e{1}) = 0$.
-Plug $\e{2} = \frac23\,\e{1}$ and $\Icol{i_2} = -\frac32\,\Icol{i_1}$: node 2 gives
-$\Icol{i_1} = \e{1}/9$, and node 1 gives $\frac{5}{18}\,\e{1} = 1$, so $\e{1} = \frac{18}{5}\V$.
-Then $\Vcol{v} = \e{1}$ and $\Rin = \frac{18}{5}\ohm$.
-\end{examplebox}
+\solstep{2}{The transformer equations first}
+For the ideal transformer $N_1 : N_2 = 3 : 2$ (previously):
+\[
+  \frac{\e{1}}{3} = \frac{\e{2}}{2}, \quad 3\,\Icol{i_1} + 2\,\Icol{i_2} = 0
+  \quad\Rightarrow\quad
+  \e{2} = \tfrac23\,\e{1}, \quad \Icol{i_2} = -\tfrac32\,\Icol{i_1} .
+\]
+
+\solstep{3}{Node equations}
+\begin{align*}
+  \text{Node 1:}\quad & -1 + \Icol{i_1} + \frac{\e{1} - \e{2}}{2} = 0\\
+  \text{Node 2:}\quad & \Icol{i_2} + \frac{\e{2}}{2} + \frac{\e{2} - \e{1}}{2} = 0
+\end{align*}
+
+\solstep{4}{Plug in and solve}
+Node 2 with $\e{2} = \frac23\,\e{1}$ and $\Icol{i_2} = -\frac32\,\Icol{i_1}$:
+\[
+  -\tfrac32\,\Icol{i_1} + \tfrac13\,\e{1} - \tfrac16\,\e{1} = 0
+  \ \Rightarrow\ \Icol{i_1} = \tfrac19\,\e{1} .
+\]
+Node 1:
+\[
+  -1 + \tfrac19\,\e{1} + \tfrac16\,\e{1} = 0
+  \ \Rightarrow\ \tfrac{5}{18}\,\e{1} = 1
+  \ \Rightarrow\ \e{1} = \tfrac{18}{5}\V .
+\]
+So
+\[
+  \Rin = \frac{\e{1}}{1\A} = \frac{18}{5}\ohm .
+\]
+
 
 %==============================================================
 %==============================================================
@@ -1147,25 +1380,158 @@ $\vth\,\Icol{i} = \vth^2/(2\Rth)$: half of it reaches the load and half is dissi
 This statement is about the equivalent; the power dissipated inside the original circuit can be
 different.
 
-\subsection{An example}
+\subsection{Two examples}
 
+\bigskip
 \begin{examplebox}[Example 13.8 --- maximum power]
-\begin{minipage}[c]{0.54\linewidth}
-\centering
+\begin{center}
 \begin{tikzpicture}[scale=0.8]
   \exM{0}
 \end{tikzpicture}
-\end{minipage}\hfill
-\begin{minipage}[c]{0.44\linewidth}
-Find $R$ so that the maximum power is delivered to the load, and find this power.
-
-\textbf{Th\'evenin equivalent of $N$.} Open circuit: $\vth = 20\mA \times 2\kohm = 40\V$.
-Kill the source (open): $\Rth = 1 + 2 + 1 = 4\kohm$.
-
-\textbf{The load.} $R \parallel 6\kohm = \Rth = 4\kohm$ gives $R = 12\kohm$, and
-$P_{L,\max} = \vth^2/(4\Rth) = 0.1\W$.
-\end{minipage}
+\end{center}
+(a) Find $R$ so that the maximum power is delivered to the load. \ (b) Find this power.
 \end{examplebox}
+
+\solution
+
+\solstep{1}{Th\'evenin equivalent of $N$}
+\begin{minipage}[t]{0.48\linewidth}
+\centering
+\begin{tikzpicture}[scale=0.72]
+  \exM{1}
+\end{tikzpicture}
+
+\raggedright
+\textbf{Open circuit.} No current flows in the two $1\kohm$ resistors, so $\voc$ is the voltage
+of the $2\kohm$ resistor:
+\[
+  \vth = \voc = 20\mA \times 2\kohm = 40\V .
+\]
+\end{minipage}\hfill
+\begin{minipage}[t]{0.48\linewidth}
+\centering
+\begin{tikzpicture}[scale=0.72]
+  \exM{2}
+\end{tikzpicture}
+
+\raggedright
+\textbf{Kill the source} (open). The three resistors are in series:
+\[
+  \Rth = 1 + 2 + 1 = 4\kohm .
+\]
+\end{minipage}
+
+\solstep{2}{Choose $R$}
+\begin{minipage}[c]{0.46\linewidth}
+\centering
+\begin{tikzpicture}[scale=0.8]
+  \exMth
+\end{tikzpicture}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.5\linewidth}
+The load is $R_L = R \parallel 6\kohm$. Maximum power needs $R_L = \Rth$:
+\[
+  \frac1R + \frac16 = \frac14
+  \ \Rightarrow\ \frac1R = \frac1{12}
+  \ \Rightarrow\ R = 12\kohm .
+\]
+\end{minipage}
+
+\solstep{3}{The maximum power}
+\[
+  P_{L,\max} = \frac{\vth^2}{4\Rth} = \frac{40^2}{4 \cdot 4000} = 0.1\W .
+\]
+The same from the current: $\Icol{i} = 40\V/8\kohm = 5\mA$ and
+$\PL = 4\kohm \times (5\mA)^2 = 0.1\W$.
+
+
+\bigskip
+\begin{examplebox}[Example 13.9 --- Th\'evenin, Norton and maximum power]
+\begin{center}
+\begin{tikzpicture}[scale=0.85]
+  \exN{0}
+\end{tikzpicture}
+\end{center}
+Find the Th\'evenin and Norton equivalents seen by the load $R_L$. Then find $R_L$ for the
+maximum power and this power.
+\end{examplebox}
+
+\solution
+
+\solstep{1}{Open circuit: $\boldsymbol{\vth}$}
+\begin{minipage}[c]{0.56\linewidth}
+\centering
+\begin{tikzpicture}[scale=0.78]
+  \exN{1}
+\end{tikzpicture}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.4\linewidth}
+Two unknown node voltages, $\e{1}$ and $\e{a}$. The control variable is the current of the
+$3\ohm$ resistor; plug $\Icol{i_x} = \e{1}/3$ first.
+\end{minipage}
+
+\smallskip
+Node a (the dependent source pushes $\frac12\,\Icol{i_x}$ into it):
+\[
+  \frac{\e{a} - \e{1}}{2} - \frac12 \cdot \frac{\e{1}}{3} = 0
+  \ \Rightarrow\ \e{a} = \tfrac43\,\e{1} .
+\]
+Node 1:
+\[
+  \frac{\e{1} - 18}{6} + \frac{\e{1}}{3} + \frac{\e{1} - \e{a}}{2} = 0
+  \ \Rightarrow\ \frac{\e{1}}{6} - 3 + \frac{\e{1}}{3} - \frac{\e{1}}{6} = 0
+  \ \Rightarrow\ \e{1} = 9\V .
+\]
+So
+\[
+  \vth = \voc = \e{a} = 12\V .
+\]
+
+\solstep{2}{Short circuit: $\boldsymbol{\iN}$}
+\begin{minipage}[c]{0.56\linewidth}
+\centering
+\begin{tikzpicture}[scale=0.78]
+  \exN{2}
+\end{tikzpicture}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.4\linewidth}
+Now $\e{a} = 0$, and node 1 is the only unknown.
+\end{minipage}
+
+\smallskip
+Node 1:
+\[
+  \frac{\e{1} - 18}{6} + \frac{\e{1}}{3} + \frac{\e{1}}{2} = 0
+  \ \Rightarrow\ \e{1} = 3\V, \qquad \Icol{i_x} = 1\A .
+\]
+The short carries the current of the $2\ohm$ resistor and of the dependent source:
+\[
+  \iN = \isc = \frac{\e{1}}{2} + \tfrac12\,\Icol{i_x} = 1.5 + 0.5 = 2\A .
+\]
+
+\solstep{3}{$\boldsymbol{\Rth = \RN}$}
+\[
+  \Rth = \RN = \frac{\vth}{\iN} = \frac{12}{2} = 6\ohm .
+\]
+A $1\A$ test source with the $18\V$ source killed gives the same value.
+
+\solstep{4}{The equivalents}
+\begin{center}
+\begin{tikzpicture}[scale=0.8]
+  \exNeq
+\end{tikzpicture}
+\end{center}
+
+\solstep{5}{Maximum power}
+The load receives the maximum power for $R_L = \Rth = 6\ohm$:
+\[
+  P_{L,\max} = \frac{\vth^2}{4\Rth} = \frac{12^2}{24} = 6\W
+  \qquad\text{or}\qquad
+  P_{L,\max} = \tfrac14\,\RN\,\iN^2 = \tfrac14 \cdot 6 \cdot 2^2 = 6\W .
+\]
+Then $\Vcol{v_L} = \frac12\,\vth = 6\V$ and $\Icol{i} = 1\A$.
+
+
 
 \section*{Summary}
 
@@ -1273,40 +1639,64 @@ form of $\Delta$ to Y with resistances.
 
 \subsection*{An example: a bridge}
 
-\begin{examplebox}[Example 13.9 --- a bridge]
-\textbf{Question.} Find the resistance $R$ between the two terminals. No two resistors are in
-series or in parallel.
-
-\smallskip
-\begin{minipage}[c]{0.48\linewidth}
+\bigskip
+\begin{examplebox}[Example 13.10 --- a bridge]
+\begin{minipage}[c]{0.5\linewidth}
 \centering
-\begin{tikzpicture}[scale=0.62]
+\begin{tikzpicture}[scale=0.7]
+  \exBr{0}
+\end{tikzpicture}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.46\linewidth}
+Find the resistance $R$ between the two terminals. No two resistors are in series or in
+parallel.
+\end{minipage}
+\end{examplebox}
+
+\solution
+
+\solstep{1}{Find a $\boldsymbol{\Delta}$}
+\begin{minipage}[c]{0.5\linewidth}
+\centering
+\begin{tikzpicture}[scale=0.7]
   \exBr{1}
 \end{tikzpicture}
 \end{minipage}\hfill
-\begin{minipage}[c]{0.48\linewidth}
+\begin{minipage}[c]{0.46\linewidth}
+The $10\ohm$, $40\ohm$ and $50\ohm$ resistors form a $\Delta$ between A, B and C. With the
+labels of the $\Delta$ (each resistor named after the opposite terminal):
+\[
+  R_C = 10\ohm, \quad R_A = 40\ohm, \quad R_B = 50\ohm,
+\]
+and $\SD = 100\ohm$.
+\end{minipage}
+
+\solstep{2}{$\boldsymbol{\Delta}$ to Y}
+\[
+  \Icol{R_1} = \frac{R_B R_C}{100} = \frac{50 \cdot 10}{100} = \Icol{5\ohm}, \quad
+  \Icol{R_2} = \frac{R_C R_A}{100} = \Icol{4\ohm}, \quad
+  \Icol{R_3} = \frac{R_A R_B}{100} = \Icol{20\ohm} .
+\]
+
+\solstep{3}{Series and parallel}
+\begin{minipage}[c]{0.5\linewidth}
 \centering
-\begin{tikzpicture}[scale=0.62]
+\begin{tikzpicture}[scale=0.7]
   \exBr{2}
 \end{tikzpicture}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.46\linewidth}
+The left branch is $7 + 5 = 12\ohm$, the right branch $20 + 4 = 24\ohm$. They are in parallel,
+and the $20\ohm$ of the Y is in series with them:
+\[
+  R = (12 \parallel 24) + 20 = 8 + 20 = 28\ohm .
+\]
 \end{minipage}
 
 \smallskip
-\textbf{Answer.} Transform the $\Delta$ A--B--C into a Y: $R_C = 10\ohm$, $R_B = 50\ohm$,
-$R_A = 40\ohm$, and $\SD = 100\ohm$. So
-\[
-  \Icol{R_1} = \frac{50 \cdot 10}{100} = \Icol{5\ohm}, \qquad
-  \Icol{R_2} = \frac{10 \cdot 40}{100} = \Icol{4\ohm}, \qquad
-  \Icol{R_3} = \frac{40 \cdot 50}{100} = \Icol{20\ohm} .
-\]
-In the new circuit, $7 + 5 = 12\ohm$ and $20 + 4 = 24\ohm$ are in parallel, $12 \parallel 24 =
-8\ohm$, and this is in series with $20\ohm$:
-\[
-  R = 8 + 20 = 28\ohm .
-\]
-\textbf{Check.} With node voltages, a $1\A$ test source between the terminals gives a terminal
-voltage of $28\V$. \ \yes
-\end{examplebox}
+Check: with node voltages, a $1\A$ test source between the terminals gives a terminal voltage
+of $28\V$. \ \yes
+
 
 
 \end{document}
