@@ -12,7 +12,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage[english]{babel}
 \usepackage{lmodern}
-\usepackage[margin=2.3cm,top=2.0cm,bottom=1.9cm,headheight=14pt,headsep=9pt]{geometry}
+\usepackage[left=2.2cm,right=4.4cm,top=2.2cm,bottom=2.2cm,headheight=14pt,headsep=9pt,marginparwidth=3.4cm,marginparsep=0.5cm]{geometry}
 \usepackage{amsmath,amssymb}
 \usepackage{array,booktabs,tabularx}
 \usepackage{enumitem}
@@ -68,7 +68,9 @@
 \setlist[itemize]{itemsep=2pt,topsep=3pt,parsep=0pt,leftmargin=1.5em}
 \setlist[enumerate]{itemsep=2pt,topsep=3pt,parsep=0pt,leftmargin=1.7em}
 \setlength{\parindent}{0pt}
-\setlength{\parskip}{0.7ex plus .1ex}
+\setlength{\parskip}{1.2ex plus .2ex}
+\linespread{1.25}
+\AtBeginDocument{\setlength{\abovedisplayskip}{12pt plus 3pt}\setlength{\belowdisplayskip}{12pt plus 3pt}}
 \raggedbottom
 \widowpenalty=10000
 \clubpenalty=10000
@@ -96,7 +98,7 @@
 %  Example solutions: a heading and numbered steps outside the example box
 \newif\ifsolfirst
 \newcommand{\solution}{\par\smallskip\noindent{\color{cpow}\bfseries Solution}\par\nobreak\smallskip\global\solfirsttrue}
-\newcommand{\solstep}[2]{\par\ifsolfirst\global\solfirstfalse\else\medskip\needspace{5\baselineskip}\fi
+\newcommand{\solstep}[2]{\par\ifsolfirst\global\solfirstfalse\else\bigskip\needspace{5\baselineskip}\fi
   \noindent{\color{cpow}\bfseries Step #1.}\ {\bfseries #2}\par\nobreak\smallskip}
 
 \newtcolorbox{cautionbox}[1][Careful]{enhanced,
@@ -185,8 +187,8 @@
 %  Example 14.1: R_1 across port 1, R_2 across port 2 (no coupling)
 \newcommand{\exTriv}{%
   \draw (0,1.8) -- (1.5,1.8); \draw (0,0) -- (1.5,0);
-  \draw (1.5,1.8) to[R] (1.5,0); \lR{1.5}{0.9}{$R_1$}
-  \draw (4.1,1.8) to[R] (4.1,0); \lL{4.1}{0.9}{$R_2$}
+  \draw (1.5,1.8) to[R] (1.5,0); \lR{1.5}{0.9}{$2\ohm$}
+  \draw (4.1,1.8) to[R] (4.1,0); \lL{4.1}{0.9}{$4\ohm$}
   \draw (4.1,1.8) -- (5.6,1.8); \draw (4.1,0) -- (5.6,0);
   \draw[dashed, metugray] (1.0,-0.45) rectangle (4.6,2.45);
   \pone{0}{1.8} \ptwo{5.6}{1.8}}
@@ -373,7 +375,7 @@ The port voltages in terms of the port currents:
 \end{tikzpicture}
 \end{minipage}\hfill
 \begin{minipage}[c]{0.46\linewidth}
-The two-port is a resistor $R_1$ across port 1 and a resistor $R_2$ across port 2. Find
+The two-port is a $2\ohm$ resistor across port 1 and a $4\ohm$ resistor across port 2. Find
 $\Rm$.
 \end{minipage}
 \end{examplebox}
@@ -383,12 +385,12 @@ $\Rm$.
 \solstep{1}{Each port alone}
 Each resistor carries only its own port current:
 \[
-  \vone = R_1\,\ione + 0 \cdot \itwo, \qquad \vtwo = 0 \cdot \ione + R_2\,\itwo .
+  \vone = 2\,\ione + 0 \cdot \itwo, \qquad \vtwo = 0 \cdot \ione + 4\,\itwo .
 \]
 
 \solstep{2}{The matrix}
 \[
-  \Rm = \begin{bmatrix} R_1 & 0\\ 0 & R_2 \end{bmatrix} .
+  \Rm = \begin{bmatrix} 2 & 0\\ 0 & 4 \end{bmatrix}\,\Omega .
 \]
 The off-diagonal entries are zero: the two ports are not coupled.
 
@@ -396,32 +398,32 @@ The off-diagonal entries are zero: the two ports are not coupled.
 \begin{examplebox}[Example 14.2 --- a dependent source inside]
 \begin{center}
 \begin{tikzpicture}[scale=0.85]
-  \exTee{0}{$R_1$}{$R_2$}
+  \exTee{0}{$2\ohm$}{$1\ohm$}
 \end{tikzpicture}
 \end{center}
-The two-port contains two resistors and a current-controlled voltage source $2\,\ione$.
+The two-port contains a $2\ohm$ and a $1\ohm$ resistor and a current-controlled voltage source $2\,\ione$.
 Find $\Rm$.
 \end{examplebox}
 
 \solution
 
-\solstep{1}{The current of $R_2$}
-By KCL at the middle node, $R_2$ carries $\ione + \itwo$ downwards.
+\solstep{1}{The current of $1\ohm$}
+By KCL at the middle node, the $1\ohm$ resistor carries $\ione + \itwo$ downwards.
 
 \solstep{2}{KVL from each port}
-From port 1 through $R_1$ and $R_2$:
+From port 1 through $2\ohm$ and $1\ohm$:
 \[
-  \vone = R_1\,\ione + R_2\,(\ione + \itwo) .
+  \vone = 2\,\ione + (\ione + \itwo) = 3\,\ione + \itwo .
 \]
-From port 2 through the dependent source and $R_2$:
+From port 2 through the dependent source and $1\ohm$:
 \[
-  \vtwo = -2\,\ione + R_2\,(\ione + \itwo) .
+  \vtwo = -2\,\ione + (\ione + \itwo) = -\ione + \itwo .
 \]
 
 \solstep{3}{The matrix}
 Collect the terms in $\ione$ and $\itwo$:
 \[
-  \Rm = \begin{bmatrix} R_1 + R_2 & R_2\\ R_2 - 2 & R_2 \end{bmatrix} .
+  \Rm = \begin{bmatrix} 3 & 1\\ -1 & 1 \end{bmatrix}\Omega .
 \]
 Without the dependent source $\Rm$ would be symmetric; here $r_{12} \neq r_{21}$.
 
@@ -477,37 +479,37 @@ Find $\Rm$ of Example 14.2 again, this time from the two open-circuit tests.
 \begin{minipage}[c]{0.56\linewidth}
 \centering
 \begin{tikzpicture}[scale=0.75]
-  \exTee{1}{$R_1$}{$R_2$}
+  \exTee{1}{$2\ohm$}{$1\ohm$}
 \end{tikzpicture}
 \end{minipage}\hfill
 \begin{minipage}[c]{0.4\linewidth}
-No current flows through the dependent source, so $\vtwo$ is the voltage of $R_2$ minus the dependent source:
+No current flows through the dependent source, so $\vtwo$ is the voltage of $1\ohm$ minus the dependent source:
 \begin{align*}
-  \vone &= (R_1 + R_2)\,\ione\\
-  \vtwo &= R_2\,\ione - 2\,\ione
+  \vone &= (2 + 1)\,\ione = 3\,\ione\\
+  \vtwo &= \ione - 2\,\ione = -\ione
 \end{align*}
 \end{minipage}
 
 \smallskip
-So $r_{11} = R_1 + R_2$ and $r_{21} = R_2 - 2$.
+So $r_{11} = 3\ohm$ and $r_{21} = -1\ohm$.
 
 \solstep{2}{Port 1 open: $\ione = 0$}
 \begin{minipage}[c]{0.56\linewidth}
 \centering
 \begin{tikzpicture}[scale=0.75]
-  \exTee{2}{$R_1$}{$R_2$}
+  \exTee{2}{$2\ohm$}{$1\ohm$}
 \end{tikzpicture}
 \end{minipage}\hfill
 \begin{minipage}[c]{0.4\linewidth}
-No current flows in $R_1$, and the dependent source is $2\,\ione = 0$:
+No current flows in $2\ohm$, and the dependent source is $2\,\ione = 0$:
 \begin{align*}
-  \vone &= R_2\,\itwo\\
-  \vtwo &= R_2\,\itwo
+  \vone &= \itwo\\
+  \vtwo &= \itwo
 \end{align*}
 \end{minipage}
 
 \smallskip
-So $r_{12} = R_2$ and $r_{22} = R_2$: the same $\Rm$ as before. \ \yes
+So $r_{12} = 1\ohm$ and $r_{22} = 1\ohm$: the same $\Rm$ as before. \ \yes
 
 %==============================================================
 \section{The conductance matrix}
@@ -586,7 +588,7 @@ find all of $\Gm$.
 \begin{minipage}[c]{0.56\linewidth}
 \centering
 \begin{tikzpicture}[scale=0.75]
-  \exTee{3}{$R_1$}{$R_2$}
+  \exTee{3}{$2\ohm$}{$1\ohm$}
 \end{tikzpicture}
 \end{minipage}\hfill
 \begin{minipage}[c]{0.4\linewidth}
@@ -595,39 +597,30 @@ Two meshes, with $\ione$ and $\itwo$ as the mesh currents.
 
 \smallskip
 \begin{align*}
-  \text{Mesh 1:}\quad & -\vone + R_1\,\ione + R_2\,(\ione + \itwo) = 0\\
-  \text{Mesh 2:}\quad & -2\,\ione + R_2\,(\ione + \itwo) = 0
+  \text{Mesh 1:}\quad & -\vone + 2\,\ione + (\ione + \itwo) = 0\\
+  \text{Mesh 2:}\quad & -2\,\ione + (\ione + \itwo) = 0
 \end{align*}
 
-\solstep{2}{In matrix form}
-\[
-  \begin{bmatrix} R_1 + R_2 & R_2\\ R_2 - 2 & R_2 \end{bmatrix}
-  \begin{bmatrix} \ione\\ \itwo \end{bmatrix}
-  = \begin{bmatrix} 1\\ 0 \end{bmatrix} \vone .
-\]
-The matrix is $\Rm$. Its determinant is
-\[
-  \Delta = (R_1 + R_2)\,R_2 - R_2(R_2 - 2) = R_2\,(R_1 + 2) .
-\]
+\solstep{2}{Solve}
+Mesh 2 gives $\itwo = \ione$. Mesh 1 then gives $\vone = 2\,\ione + 2\,\ione = 4\,\ione$.
 
 \solstep{3}{The first column}
 \[
-  \begin{bmatrix} g_{11}\\ g_{21} \end{bmatrix}
-  = \begin{bmatrix} \ione/\vone\\ \itwo/\vone \end{bmatrix}_{\vtwo = 0}
-  = \frac{1}{\Delta}
-    \begin{bmatrix} R_2 & -R_2\\ 2 - R_2 & R_1 + R_2 \end{bmatrix}
-    \begin{bmatrix} 1\\ 0 \end{bmatrix}
-  \ \Rightarrow\
-  g_{11} = \frac{R_2}{\Delta} = \frac{1}{R_1 + 2}, \quad g_{21} = \frac{2 - R_2}{\Delta} .
+  g_{11} = \frac{\ione}{\vone}\bigg|_{\vtwo = 0} = \frac14\,\mathrm{S}, \qquad
+  g_{21} = \frac{\itwo}{\vone}\bigg|_{\vtwo = 0} = \frac14\,\mathrm{S} .
 \]
 
 \solstep{4}{All of $\Gm$}
 The second test ($\vone = 0$) gives the second column in the same way. The result is the
 inverse of $\Rm$:
 \[
-  \Gm = \Rm^{-1} = \frac{1}{\Delta}
-  \begin{bmatrix} R_2 & -R_2\\ 2 - R_2 & R_1 + R_2 \end{bmatrix} .
+  \Gm = \Rm^{-1} = \begin{bmatrix} 3 & 1\\ -1 & 1 \end{bmatrix}^{-1}
+      = \frac14 \begin{bmatrix} 1 & -1\\ 1 & 3 \end{bmatrix}
+      = \begin{bmatrix} \frac14 & -\frac14\\[2pt] \frac14 & \frac34 \end{bmatrix} \mathrm{S} .
 \]
+Check: $\Gm\,\Rm = \frac14 \left[\begin{smallmatrix} 3 + 1 & 1 - 1\\ 3 - 3 & 1 + 3 \end{smallmatrix}\right] = \mathbf{1}$. \ \yes
+
+Note that $g_{11} = \frac14\,\mathrm{S} \neq 1/r_{11} = \frac13\,\mathrm{S}$.
 
 \begin{ideabox}[Remark]
 $\Rm$ or $\Gm$ need not exist. When both exist, $\Gm = \Rm^{-1}$. The ideal transformer
@@ -660,11 +653,10 @@ a resistance, $h_{22}$ a conductance, $h_{12}$ and $h_{21}$ have no units.
 \begin{examplebox}[Example 14.4 --- the hybrid matrix of a circuit]
 \begin{center}
 \begin{tikzpicture}[scale=0.85]
-  \exTee{0}{$2\ohm$}{$3\ohm$}
+  \exTee{0}{$2\ohm$}{$1\ohm$}
 \end{tikzpicture}
 \end{center}
-This is the two-port of Example 14.2 with $R_1 = 2\ohm$ and $R_2 = 3\ohm$. Find
-$\Hm$.
+This is the two-port of Example 14.2. Find $\Hm$.
 \end{examplebox}
 
 \solution
@@ -673,52 +665,52 @@ $\Hm$.
 \begin{minipage}[c]{0.56\linewidth}
 \centering
 \begin{tikzpicture}[scale=0.75]
-  \exTee{3}{$2\ohm$}{$3\ohm$}
+  \exTee{3}{$2\ohm$}{$1\ohm$}
 \end{tikzpicture}
 \end{minipage}\hfill
 \begin{minipage}[c]{0.4\linewidth}
-Mesh 2 contains the dependent source and $3\ohm$:
+Mesh 2 contains the dependent source and $1\ohm$:
 \[
-  -2\,\ione + 3\,(\ione + \itwo) = 0
+  -2\,\ione + (\ione + \itwo) = 0
 \]
 \[
-  \Rightarrow\ \itwo = -\tfrac13\,\ione .
+  \Rightarrow\ \itwo = \ione .
 \]
 \end{minipage}
 
 \smallskip
 Mesh 1 then gives
 \[
-  \vone = 2\,\ione + 3\,(\ione + \itwo) = 5\,\ione - \ione = 4\,\ione .
+  \vone = 2\,\ione + (\ione + \itwo) = 4\,\ione .
 \]
-So $h_{11} = 4\ohm$ and $h_{21} = -\frac13$.
+So $h_{11} = 4\ohm$ and $h_{21} = 1$.
 
 \solstep{2}{Port 1 open: $\ione = 0$}
 \begin{minipage}[c]{0.56\linewidth}
 \centering
 \begin{tikzpicture}[scale=0.75]
-  \exTee{2}{$2\ohm$}{$3\ohm$}
+  \exTee{2}{$2\ohm$}{$1\ohm$}
 \end{tikzpicture}
 \end{minipage}\hfill
 \begin{minipage}[c]{0.4\linewidth}
 The dependent source is $2\,\ione = 0$, a short circuit, and no current flows in $2\ohm$:
 \[
-  \vtwo = 3\,\itwo \ \Rightarrow\ \itwo = \tfrac13\,\vtwo .
+  \vtwo = 1 \cdot \itwo \ \Rightarrow\ \itwo = \vtwo .
 \]
 \end{minipage}
 
 \smallskip
-The voltage of port 1 is the voltage of $3\ohm$:
+The voltage of port 1 is the voltage of $1\ohm$:
 \[
-  \vone = 3\,\itwo = \vtwo .
+  \vone = \itwo = \vtwo .
 \]
-So $h_{12} = 1$ and $h_{22} = \frac13\,\mathrm{S}$.
+So $h_{12} = 1$ and $h_{22} = 1\,\mathrm{S}$.
 
 \solstep{3}{The matrix}
 \[
-  \Hm = \begin{bmatrix} 4 & 1\\[2pt] -\frac13 & \frac13 \end{bmatrix} .
+  \Hm = \begin{bmatrix} 4 & 1\\ 1 & 1 \end{bmatrix} .
 \]
-Check: Example 14.2 gives $\Rm = \left[\begin{smallmatrix} 5 & 3\\ 1 & 3 \end{smallmatrix}\right]$.
+Check: Example 14.2 gives $\Rm = \left[\begin{smallmatrix} 3 & 1\\ -1 & 1 \end{smallmatrix}\right]$.
 Solving its second row for $\itwo$ and substituting into the first row gives the same $\Hm$.
 \ \yes
 
@@ -990,7 +982,7 @@ absorbs nor delivers power: what enters one port leaves the other.
 \begin{center}
 \small
 \renewcommand{\arraystretch}{1.3}
-\begin{tabular}{@{}>{\raggedright}p{2.9cm} >{\raggedright}p{5.6cm} >{\raggedright\arraybackslash}p{6.6cm}@{}}
+\begin{tabular}{@{}>{\raggedright}p{2.6cm} >{\raggedright}p{4.5cm} >{\raggedright\arraybackslash}p{6.4cm}@{}}
 \toprule
 \textbf{Matrix} & \textbf{Equation} & \textbf{How to find it}\\
 \midrule
@@ -1046,7 +1038,7 @@ relates port 1 to port 2 instead of the voltages to the currents.
 
 \bigskip
 \begin{examplebox}[Example A.1 --- the two-port of Example 14.4]
-$\Rm = \begin{bmatrix} 5 & 3\\ 1 & 3 \end{bmatrix}$. It contains a dependent source. Is it
+$\Rm = \begin{bmatrix} 3 & 1\\ -1 & 1 \end{bmatrix}$. It contains a dependent source. Is it
 passive?
 \end{examplebox}
 
@@ -1054,11 +1046,11 @@ passive?
 
 \solstep{1}{The symmetric part}
 \[
-  \Rm_s = \begin{bmatrix} 5 & 2\\ 2 & 3 \end{bmatrix} .
+  \Rm_s = \begin{bmatrix} 3 & 0\\ 0 & 1 \end{bmatrix} .
 \]
 
 \solstep{2}{The test}
-$5 \geq 0$, $3 \geq 0$ and $5 \cdot 3 - 2^2 = 11 \geq 0$. The two-port is \textbf{passive}: a
+$3 \geq 0$, $1 \geq 0$ and $3 \cdot 1 - 0^2 = 3 \geq 0$. The two-port is \textbf{passive}: a
 dependent source inside does not make a two-port active by itself.
 
 \bigskip
@@ -1080,11 +1072,11 @@ in Example 14.8.
 \begin{minipage}[c]{0.56\linewidth}
 \centering
 \begin{tikzpicture}[scale=0.75]
-  \exTee[6]{0}{$1\ohm$}{$1\ohm$}
+  \exTee[6]{0}{$2\ohm$}{$1\ohm$}
 \end{tikzpicture}
 \end{minipage}\hfill
 \begin{minipage}[c]{0.4\linewidth}
-The circuit of Example 14.2 with $R_1 = R_2 = 1\ohm$ and the dependent source $6\,\ione$. Is it
+The circuit of Example 14.2 with the dependent source $6\,\ione$ instead of $2\,\ione$. Is it
 passive?
 \end{minipage}
 \end{examplebox}
@@ -1094,20 +1086,20 @@ passive?
 \solstep{1}{The matrix}
 As in Example 14.2, with $2$ replaced by $6$:
 \[
-  \Rm = \begin{bmatrix} R_1 + R_2 & R_2\\ R_2 - 6 & R_2 \end{bmatrix}
-      = \begin{bmatrix} 2 & 1\\ -5 & 1 \end{bmatrix},
+  \Rm = \begin{bmatrix} 3 & 1\\ 1 - 6 & 1 \end{bmatrix}
+      = \begin{bmatrix} 3 & 1\\ -5 & 1 \end{bmatrix},
   \qquad
-  \Rm_s = \begin{bmatrix} 2 & -2\\ -2 & 1 \end{bmatrix} .
+  \Rm_s = \begin{bmatrix} 3 & -2\\ -2 & 1 \end{bmatrix} .
 \]
 
 \solstep{2}{The test}
-$2 \cdot 1 - (-2)^2 = -2 < 0$: the two-port is \textbf{active}.
+$3 \cdot 1 - (-2)^2 = -1 < 0$: the two-port is \textbf{active}.
 
 \solstep{3}{A check}
 Take $\ione = 1\A$ and $\itwo = 2\A$:
 \[
-  P_N = 2 \cdot 1^2 + (1 - 5) \cdot 1 \cdot 2 + 1 \cdot 2^2 = -2\,\mathrm{W} .
+  P_N = 3 \cdot 1^2 + (1 - 5) \cdot 1 \cdot 2 + 1 \cdot 2^2 = -1\,\mathrm{W} .
 \]
-The two-port delivers $2\,\mathrm{W}$ to the outside. \ \yes
+The two-port delivers $1\,\mathrm{W}$ to the outside. \ \yes
 
 \end{document}

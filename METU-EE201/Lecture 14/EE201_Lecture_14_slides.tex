@@ -152,8 +152,8 @@
 %  Example 14.1: R_1 across port 1, R_2 across port 2 (no coupling)
 \newcommand{\exTriv}{%
   \draw (0,1.8) -- (1.5,1.8); \draw (0,0) -- (1.5,0);
-  \draw (1.5,1.8) to[R] (1.5,0); \lR{1.5}{0.9}{$R_1$}
-  \draw (4.1,1.8) to[R] (4.1,0); \lL{4.1}{0.9}{$R_2$}
+  \draw (1.5,1.8) to[R] (1.5,0); \lR{1.5}{0.9}{$2\ohm$}
+  \draw (4.1,1.8) to[R] (4.1,0); \lL{4.1}{0.9}{$4\ohm$}
   \draw (4.1,1.8) -- (5.6,1.8); \draw (4.1,0) -- (5.6,0);
   \draw[dashed, metugray] (1.0,-0.45) rectangle (4.6,2.45);
   \pone{0}{1.8} \ptwo{5.6}{1.8}}
@@ -353,7 +353,7 @@
     \item $N$: LTI resistive, no independent sources
     \item An input and an output: an amplifier, a transformer, a filter
     \item One-port: $\Vcol{v} = R\,\Icol{i}$ with scalars
-    \item<2-> Two-port: $\mathbf{v} = \mathbf{R}\,\mathbf{i}$ with vectors in $\mathbb{R}^2$ and a $2 \times 2$ matrix
+    \item Two-port: $\mathbf{v} = \mathbf{R}\,\mathbf{i}$ with vectors in $\mathbb{R}^2$ and a $2 \times 2$ matrix
   \end{itemize}
   \vfill
 \end{frame}
@@ -371,12 +371,11 @@
       \begin{itemize}\itemsep8pt
         \item Each port: the current enters at $+$ and leaves at $-$
         \item Four variables: $\vone$, $\ione$, $\vtwo$, $\itwo$
-        \item<2-> Two equations: two variables in terms of the other two
+        \item Two equations: two variables in terms of the other two
       \end{itemize}
     \end{column}
   \end{columns}
   \vfill
-  \onslide<3->{%
   \begin{center}
     \renewcommand{\arraystretch}{1.3}
     \begin{tabular}{@{}lll@{}}
@@ -389,7 +388,7 @@
       $\vtwo$, $-\itwo$ & $\vone$, $\ione$ & transmission $\Tm$\\
       \bottomrule
     \end{tabular}
-  \end{center}}
+  \end{center}
 \end{frame}
 
 %--------------------------------------------------------------
@@ -405,13 +404,12 @@
     \begin{column}{0.52\textwidth}
       $\vone = r_{11}\,\ione + r_{12}\,\itwo$\\[6pt]
       $\vtwo = r_{21}\,\ione + r_{22}\,\itwo$\\[14pt]
-      \onslide<2->{%
       \begin{tikzpicture}
         \node[draw=metured, thick, fill=metured!5, rounded corners=3pt, inner sep=6pt]
           {$\begin{bmatrix} \vone\\ \vtwo \end{bmatrix}
             = \underbrace{\begin{bmatrix} r_{11} & r_{12}\\ r_{21} & r_{22} \end{bmatrix}}_{\Rm}
               \begin{bmatrix} \ione\\ \itwo \end{bmatrix}$};
-      \end{tikzpicture}}
+      \end{tikzpicture}
     \end{column}
   \end{columns}
   \vfill
@@ -429,9 +427,9 @@
     \begin{column}{0.46\textwidth}
       $\Rm = \ ?$\\[14pt]
       \onslide<2->{%
-      $\vone = R_1\,\ione + 0\cdot\itwo$\\[4pt]
-      $\vtwo = 0\cdot\ione + R_2\,\itwo$\\[12pt]
-      $\Rm = \begin{bmatrix} R_1 & 0\\ 0 & R_2 \end{bmatrix}$\\[10pt]
+      $\vone = 2\,\ione + 0\cdot\itwo$\\[4pt]
+      $\vtwo = 0\cdot\ione + 4\,\itwo$\\[12pt]
+      $\Rm = \begin{bmatrix} 2 & 0\\ 0 & 4 \end{bmatrix}\Omega$\\[10pt]
       No coupling: \ $r_{12} = r_{21} = 0$}
     \end{column}
   \end{columns}
@@ -442,7 +440,7 @@
   \vfill
   \begin{center}
     \begin{tikzpicture}[scale=0.9]
-      \exTee{0}{$R_1$}{$R_2$}
+      \exTee{0}{$2\ohm$}{$1\ohm$}
     \end{tikzpicture}
   \end{center}
   \vfill
@@ -458,17 +456,17 @@
     \begin{column}{0.5\textwidth}
       \centering
       \begin{tikzpicture}[scale=0.72]
-        \exTee{0}{$R_1$}{$R_2$}
+        \exTee{0}{$2\ohm$}{$1\ohm$}
       \end{tikzpicture}
     \end{column}
     \begin{column}{0.48\textwidth}
-      $R_2$ carries $\ione + \itwo$\\[8pt]
-      $\vone = R_1\,\ione + R_2(\ione + \itwo)$\\[6pt]
-      $\vtwo = -2\,\ione + R_2(\ione + \itwo)$\\[14pt]
+      $1\ohm$ carries $\ione + \itwo$\\[8pt]
+      $\vone = 2\,\ione + (\ione + \itwo) = 3\,\ione + \itwo$\\[6pt]
+      $\vtwo = -2\,\ione + (\ione + \itwo) = -\ione + \itwo$\\[14pt]
       \onslide<2->{%
       \begin{tikzpicture}
         \node[draw=metured, thick, fill=metured!5, rounded corners=3pt, inner sep=6pt]
-          {$\Rm = \begin{bmatrix} R_1 + R_2 & R_2\\ R_2 - 2 & R_2 \end{bmatrix}$};
+          {$\Rm = \begin{bmatrix} 3 & 1\\ -1 & 1 \end{bmatrix}\Omega$};
       \end{tikzpicture}\\[8pt]
       {\small $r_{12} \neq r_{21}$: the dependent source}}
     \end{column}
@@ -492,7 +490,6 @@
     {\small the first column: \ $r_{11}$ input resistance, \ $r_{21}$ transfer resistance}
   \end{center}
   \vfill
-  \onslide<2->{%
   \begin{center}
     \textbf{Port 1 open:} \ $\ione = 0$\\[8pt]
     $\begin{bmatrix} \vone\\ \vtwo \end{bmatrix}
@@ -502,41 +499,34 @@
     \quad $\Rightarrow$ \quad
     $\displaystyle r_{12} = \frac{\vone}{\itwo}, \quad r_{22} = \frac{\vtwo}{\itwo}$\\[4pt]
     {\small the second column: \ $r_{12}$ transfer resistance, \ $r_{22}$ input resistance}
-  \end{center}}
+  \end{center}
   \vfill
 \end{frame}
 
 %--------------------------------------------------------------
-\begin{frame}{Example 14.2 revisited: port 2 open}
-  \begin{columns}[c,onlytextwidth]
-    \begin{column}{0.52\textwidth}
+\begin{frame}{Example 14.2 revisited: the two open-circuit tests}
+  \begin{columns}[t,onlytextwidth]
+    \begin{column}{0.49\textwidth}
       \centering
-      \begin{tikzpicture}[scale=0.72]
-        \exTee{1}{$R_1$}{$R_2$}
-      \end{tikzpicture}
+      \textbf{Port 2 open}\\[4pt]
+      \begin{tikzpicture}[scale=0.55]
+        \exTee{1}{$2\ohm$}{$1\ohm$}
+      \end{tikzpicture}\\[6pt]
+      \raggedright
+      No current through the dependent source\\[6pt]
+      $\vone = 3\,\ione$ \ $\Rightarrow$ \ $r_{11} = 3\ohm$\\[4pt]
+      $\vtwo = -2\,\ione + \ione$ \ $\Rightarrow$ \ $r_{21} = -1\ohm$
     \end{column}
-    \begin{column}{0.46\textwidth}
-      No current through the dependent source\\[8pt]
-      $\vone = (R_1 + R_2)\,\ione$ \ $\Rightarrow$ \ $r_{11} = R_1 + R_2$\\[6pt]
-      $\vtwo = -2\,\ione + R_2\,\ione$ \ $\Rightarrow$ \ $r_{21} = R_2 - 2$
-    \end{column}
-  \end{columns}
-\end{frame}
-
-%--------------------------------------------------------------
-\begin{frame}{Example 14.2 revisited: port 1 open}
-  \begin{columns}[c,onlytextwidth]
-    \begin{column}{0.52\textwidth}
+    \begin{column}{0.49\textwidth}
       \centering
-      \begin{tikzpicture}[scale=0.72]
-        \exTee{2}{$R_1$}{$R_2$}
-      \end{tikzpicture}
-    \end{column}
-    \begin{column}{0.46\textwidth}
-      No current in $R_1$; the dependent source is $0$\\[8pt]
-      $\vone = R_2\,\itwo$ \ $\Rightarrow$ \ $r_{12} = R_2$\\[6pt]
-      $\vtwo = R_2\,\itwo$ \ $\Rightarrow$ \ $r_{22} = R_2$\\[12pt]
-      \onslide<2->{The same $\Rm$ \ \yes}
+      \textbf{Port 1 open}\\[4pt]
+      \begin{tikzpicture}[scale=0.55]
+        \exTee{2}{$2\ohm$}{$1\ohm$}
+      \end{tikzpicture}\\[6pt]
+      \raggedright
+      No current in $2\ohm$; the dependent source is $0$\\[6pt]
+      $\vone = \itwo$ \ $\Rightarrow$ \ $r_{12} = 1\ohm$\\[4pt]
+      $\vtwo = \itwo$ \ $\Rightarrow$ \ $r_{22} = 1\ohm$ \quad The same $\Rm$ \ \yes
     \end{column}
   \end{columns}
 \end{frame}
@@ -554,7 +544,7 @@
           = \underbrace{\begin{bmatrix} g_{11} & g_{12}\\ g_{21} & g_{22} \end{bmatrix}}_{\Gm}
             \begin{bmatrix} \vone\\ \vtwo \end{bmatrix}$};
     \end{tikzpicture}\\[16pt]
-    \onslide<2->{When $\Rm^{-1}$ exists: \ $\Gm = \Rm^{-1}$}
+    When $\Rm^{-1}$ exists: \ $\Gm = \Rm^{-1}$
   \end{center}
   \vfill
 \end{frame}
@@ -573,7 +563,6 @@
     {\small the first column: \ $g_{11}$ input conductance, \ $g_{21}$ transfer conductance}
   \end{center}
   \vfill
-  \onslide<2->{%
   \begin{center}
     \textbf{Port 1 shorted:} \ $\vone = 0$\\[8pt]
     $\begin{bmatrix} \ione\\ \itwo \end{bmatrix}
@@ -583,7 +572,7 @@
     \quad $\Rightarrow$ \quad
     $\displaystyle g_{12} = \frac{\ione}{\vtwo}, \quad g_{22} = \frac{\itwo}{\vtwo}$\\[4pt]
     {\small the second column: \ $g_{12}$ transfer conductance, \ $g_{22}$ input conductance}
-  \end{center}}
+  \end{center}
   \vfill
 \end{frame}
 
@@ -593,18 +582,16 @@
     \begin{column}{0.5\textwidth}
       \centering
       \begin{tikzpicture}[scale=0.7]
-        \exTee{3}{$R_1$}{$R_2$}
+        \exTee{3}{$2\ohm$}{$1\ohm$}
       \end{tikzpicture}\\[6pt]
       {\small Port 2 shorted: \ $\vtwo = 0$}
     \end{column}
     \begin{column}{0.48\textwidth}
-      \textbf{Mesh 1:} \ $-\vone + R_1\,\ione + R_2(\ione + \itwo) = 0$\\[6pt]
-      \textbf{Mesh 2:} \ $-2\,\ione + R_2(\ione + \itwo) = 0$\\[12pt]
-      \onslide<2->{%
-      $\begin{bmatrix} R_1 + R_2 & R_2\\ R_2 - 2 & R_2 \end{bmatrix}
-       \begin{bmatrix} \ione\\ \itwo \end{bmatrix}
-       = \begin{bmatrix} 1\\ 0 \end{bmatrix} \vone$\\[8pt]
-      The matrix is $\Rm$}
+      \textbf{Mesh 1:} \ $-\vone + 2\,\ione + (\ione + \itwo) = 0$\\[6pt]
+      \textbf{Mesh 2:} \ $-2\,\ione + (\ione + \itwo) = 0$\\[12pt]
+      Mesh 2: \ $\itwo = \ione$\\[4pt]
+      Mesh 1: \ $\vone = 4\,\ione$\\[8pt]
+      $g_{11} = \tfrac14\,\mathrm{S}$, \quad $g_{21} = \tfrac14\,\mathrm{S}$
     \end{column}
   \end{columns}
 \end{frame}
@@ -613,20 +600,17 @@
 \begin{frame}{Example 14.3: the result}
   \vfill
   \begin{center}
-    $\Delta = \det \Rm = (R_1 + R_2)\,R_2 - R_2(R_2 - 2) = R_2\,(R_1 + 2)$\\[14pt]
-    $\displaystyle g_{11} = \frac{R_2}{\Delta} = \frac{1}{R_1 + 2}, \qquad g_{21} = \frac{2 - R_2}{\Delta}$\\[14pt]
-    \onslide<2->{%
+    The second test ($\vone = 0$) gives the second column\\[14pt]
     \begin{tikzpicture}
       \node[draw=metured, thick, fill=metured!5, rounded corners=3pt, inner sep=6pt]
-        {$\displaystyle \Gm = \Rm^{-1} = \frac{1}{\Delta}
-          \begin{bmatrix} R_2 & -R_2\\ 2 - R_2 & R_1 + R_2 \end{bmatrix}$};
-    \end{tikzpicture}}
+        {$\displaystyle \Gm = \Rm^{-1} = \begin{bmatrix} 3 & 1\\ -1 & 1 \end{bmatrix}^{-1}
+          = \begin{bmatrix} \tfrac14 & -\tfrac14\\[2pt] \tfrac14 & \tfrac34 \end{bmatrix} \mathrm{S}$};
+    \end{tikzpicture}
   \end{center}
   \vfill
-  \onslide<3->{%
   \begin{center}
     \small $\Rm$ or $\Gm$ need not exist
-  \end{center}}
+  \end{center}
   \vfill
 \end{frame}
 
@@ -644,18 +628,17 @@
             \begin{bmatrix} \ione\\ \vtwo \end{bmatrix}$};
     \end{tikzpicture}
     \qquad
-    \onslide<2->{%
     \begin{tikzpicture}
       \node[draw=metugray, thick, fill=metulight, rounded corners=3pt, inner sep=6pt]
         {$\begin{bmatrix} \ione\\ \vtwo \end{bmatrix}
           = \Hm' \begin{bmatrix} \vone\\ \itwo \end{bmatrix}$};
-    \end{tikzpicture}}
+    \end{tikzpicture}
   \end{center}
   \vfill
   \begin{itemize}\itemsep8pt
-    \item<2-> $\Hm' = \Hm^{-1}$ \ when the inverse exists
-    \item<3-> $h_{11}$, $h_{21}$: \ port 2 shorted, $\vtwo = 0$
-    \item<3-> $h_{12}$, $h_{22}$: \ port 1 open, $\ione = 0$
+    \item $\Hm' = \Hm^{-1}$ \ when the inverse exists
+    \item $h_{11}$, $h_{21}$: \ port 2 shorted, $\vtwo = 0$
+    \item $h_{12}$, $h_{22}$: \ port 1 open, $\ione = 0$
   \end{itemize}
   \vfill
 \end{frame}
@@ -665,12 +648,12 @@
   \vfill
   \begin{center}
     \begin{tikzpicture}[scale=0.9]
-      \exTee{0}{$2\ohm$}{$3\ohm$}
+      \exTee{0}{$2\ohm$}{$1\ohm$}
     \end{tikzpicture}
   \end{center}
   \vfill
   \begin{center}
-    The circuit of Example 14.2 with numbers: \ $\Hm = \ ?$
+    The circuit of Example 14.2: \ $\Hm = \ ?$
   \end{center}
   \vfill
 \end{frame}
@@ -682,26 +665,25 @@
       \centering
       \textbf{Port 2 shorted:} \ $\vtwo = 0$\\[6pt]
       \begin{tikzpicture}[scale=0.68]
-        \exTee{3}{$2\ohm$}{$3\ohm$}
+        \exTee{3}{$2\ohm$}{$1\ohm$}
       \end{tikzpicture}\\[4pt]
       \raggedright
-      Mesh 2: \ $-2\,\ione + 3(\ione + \itwo) = 0$\\[2pt]
-      \hspace*{1em}$\Rightarrow$ \ $\itwo = -\tfrac13\,\ione$\\[4pt]
-      Mesh 1: \ $\vone = 2\,\ione + 3(\ione + \itwo) = 4\,\ione$\\[6pt]
-      $h_{11} = 4\ohm$, \quad $h_{21} = -\tfrac13$
+      Mesh 2: \ $-2\,\ione + (\ione + \itwo) = 0$\\[2pt]
+      \hspace*{1em}$\Rightarrow$ \ $\itwo = \ione$\\[4pt]
+      Mesh 1: \ $\vone = 2\,\ione + (\ione + \itwo) = 4\,\ione$\\[6pt]
+      $h_{11} = 4\ohm$, \quad $h_{21} = 1$
     \end{column}
     \begin{column}{0.48\textwidth}
       \centering
-      \onslide<2->{%
       \textbf{Port 1 open:} \ $\ione = 0$\\[6pt]
       \begin{tikzpicture}[scale=0.68]
-        \exTee{2}{$2\ohm$}{$3\ohm$}
+        \exTee{2}{$2\ohm$}{$1\ohm$}
       \end{tikzpicture}\\[4pt]
       \raggedright
-      The dependent source is $0$: \ $\vtwo = 3\,\itwo$\\[2pt]
-      \hspace*{1em}$\Rightarrow$ \ $\itwo = \tfrac13\,\vtwo$\\[4pt]
-      $\vone = 3\,\itwo = \vtwo$\\[6pt]
-      $h_{12} = 1$, \quad $h_{22} = \tfrac13\,\mathrm{S}$}
+      The dependent source is $0$: \ $\vtwo = \itwo$\\[2pt]
+      \hspace*{1em}$\Rightarrow$ \ $\itwo = \vtwo$\\[4pt]
+      $\vone = \itwo = \vtwo$\\[6pt]
+      $h_{12} = 1$, \quad $h_{22} = 1\,\mathrm{S}$
     \end{column}
   \end{columns}
 \end{frame}
@@ -712,13 +694,13 @@
   \begin{center}
     \begin{tikzpicture}
       \node[draw=metured, thick, fill=metured!5, rounded corners=3pt, inner sep=6pt]
-        {$\Hm = \begin{bmatrix} 4 & 1\\[2pt] -\tfrac13 & \tfrac13 \end{bmatrix}$};
+        {$\Hm = \begin{bmatrix} 4 & 1\\ 1 & 1 \end{bmatrix}$};
     \end{tikzpicture}
   \end{center}
   \vfill
   \begin{itemize}\itemsep8pt
     \item Units: $h_{11}$ in $\Omega$, $h_{22}$ in S, $h_{12}$ and $h_{21}$ without units
-    \item Check with $\Rm = \begin{bmatrix} 5 & 3\\ 1 & 3 \end{bmatrix}$ from Example 14.2 \ \yes
+    \item Check with $\Rm = \begin{bmatrix} 3 & 1\\ -1 & 1 \end{bmatrix}$ from Example 14.2 \ \yes
   \end{itemize}
   \vfill
 \end{frame}
@@ -742,7 +724,7 @@
         \node[draw=metured, thick, fill=metured!5, rounded corners=3pt, inner sep=6pt]
           {$\Hm = \begin{bmatrix} 0 & n\\ -n & 0 \end{bmatrix}$};
       \end{tikzpicture}\\[10pt]}
-      \onslide<3->{%
+      \onslide<2->{%
       Ports open: $\ione = \itwo = 0$, but $\vone$, $\vtwo$ are free\\[4pt]
       No $\Rm$, no $\Gm$}
     \end{column}
@@ -813,11 +795,10 @@
   \end{tabular}
   \end{center}
   \vfill
-  \onslide<2->{%
   \begin{center}
     Zero the other input: \ $\Icol{i} = 0$ \ $\Rightarrow$ \ \alert{open}, \quad
     $\Vcol{v} = 0$ \ $\Rightarrow$ \ \textbf{short}
-  \end{center}}
+  \end{center}
   \vfill
 \end{frame}
 
@@ -834,18 +815,17 @@
     \end{column}
     \begin{column}{0.49\textwidth}
       \centering
-      \onslide<2->{%
       \begin{tikzpicture}[scale=0.62]
         \bench{1}
       \end{tikzpicture}\\[4pt]
       \textbf{Short-circuit test}\\[2pt]
-      $g_{11} = \dfrac{\ione}{\vone}$, \quad $g_{21} = \dfrac{\itwo}{\vone}$}
+      $g_{11} = \dfrac{\ione}{\vone}$, \quad $g_{21} = \dfrac{\itwo}{\vone}$
     \end{column}
   \end{columns}
   \vfill
   \begin{itemize}\itemsep6pt
     \item Ideal voltmeter: \ an \alert{open}; \ ideal ammeter: \ a \textbf{short}
-    \item<3-> One meter reading divided by the source value
+    \item One meter reading divided by the source value
   \end{itemize}
   \vfill
 \end{frame}
@@ -869,7 +849,7 @@
     \begin{column}{0.48\textwidth}
       \onslide<2->{%
       $\begin{bmatrix} 5 & 3\\ 5 & -1 \end{bmatrix} = \Rm \begin{bmatrix} 1 & 1\\ 1 & -1 \end{bmatrix}$\\[10pt]}
-      \onslide<3->{%
+      \onslide<2->{%
       $\Rm = \mathbf{V}\,\mathbf{I}^{-1} = \begin{bmatrix} 4 & 1\\ 2 & 3 \end{bmatrix}$\\[10pt]
       {\small Any two independent experiments}}
     \end{column}
@@ -890,20 +870,18 @@
     \end{column}
     \begin{column}{0.52\textwidth}
       $P_N$: the sum of the powers of all elements inside $N$\\[12pt]
-      \onslide<2->{%
       \begin{tikzpicture}
         \node[draw=metured, thick, fill=metured!5, rounded corners=3pt, inner sep=6pt]
           {$P_N = \vone\,\ione + \vtwo\,\itwo$};
       \end{tikzpicture}\\[8pt]
-      {\small Proof: Tellegen's theorem (previously)}}
+      {\small Proof: Tellegen's theorem (previously)}
     \end{column}
   \end{columns}
   \vfill
-  \onslide<3->{%
   \begin{itemize}\itemsep8pt
     \item \textbf{Passive:} $P_N \geq 0$ for all possible port variables
     \item \textbf{Active:} not passive
-  \end{itemize}}
+  \end{itemize}
   \vfill
 \end{frame}
 

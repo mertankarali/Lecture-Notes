@@ -12,7 +12,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage[english]{babel}
 \usepackage{lmodern}
-\usepackage[margin=2.3cm,top=2.0cm,bottom=1.9cm,headheight=14pt,headsep=9pt]{geometry}
+\usepackage[left=2.2cm,right=4.4cm,top=2.2cm,bottom=2.2cm,headheight=14pt,headsep=9pt,marginparwidth=3.4cm,marginparsep=0.5cm]{geometry}
 \usepackage{amsmath,amssymb}
 \usepackage{array,booktabs,tabularx}
 \usepackage{enumitem}
@@ -68,7 +68,9 @@
 \setlist[itemize]{itemsep=2pt,topsep=3pt,parsep=0pt,leftmargin=1.5em}
 \setlist[enumerate]{itemsep=2pt,topsep=3pt,parsep=0pt,leftmargin=1.7em}
 \setlength{\parindent}{0pt}
-\setlength{\parskip}{0.7ex plus .1ex}
+\setlength{\parskip}{1.2ex plus .2ex}
+\linespread{1.25}
+\AtBeginDocument{\setlength{\abovedisplayskip}{12pt plus 3pt}\setlength{\belowdisplayskip}{12pt plus 3pt}}
 \raggedbottom
 \widowpenalty=10000
 \clubpenalty=10000
@@ -96,7 +98,7 @@
 %  Example solutions: a heading and numbered steps outside the example box
 \newif\ifsolfirst
 \newcommand{\solution}{\par\smallskip\noindent{\color{cpow}\bfseries Solution}\par\nobreak\smallskip\global\solfirsttrue}
-\newcommand{\solstep}[2]{\par\ifsolfirst\global\solfirstfalse\else\medskip\needspace{5\baselineskip}\fi
+\newcommand{\solstep}[2]{\par\ifsolfirst\global\solfirstfalse\else\bigskip\needspace{5\baselineskip}\fi
   \noindent{\color{cpow}\bfseries Step #1.}\ {\bfseries #2}\par\nobreak\smallskip}
 
 \newtcolorbox{cautionbox}[1][Careful]{enhanced,
@@ -767,7 +769,7 @@ Find $\Vcol{v}$.
 Remove the nonlinear resistor; its terminals become the port a--b. Killing the $7.2\V$ source
 (a short):
 \[
-  \Rth = 8 \parallel (4 + 6 \parallel 12) = 8 \parallel 8 = 4\ohm .
+  \begin{aligned}\Rth &= 8 \parallel (4 + 6 \parallel 12)\\ &= 8 \parallel 8 = 4\ohm .\end{aligned}
 \]
 \end{minipage}
 
@@ -859,17 +861,17 @@ characteristic.
 \subsection{Simple series and parallel}
 
 \newcommand{\casecell}[4]{%
-  \begin{minipage}[c]{0.49\linewidth}
-  \begin{minipage}[c]{0.34\linewidth}
+  \begin{minipage}[c]{\linewidth}
+  \begin{minipage}[c]{0.24\linewidth}
   \centering
   \begin{tikzpicture}[scale=0.62] #1 \end{tikzpicture}
   \end{minipage}\hfill
-  \begin{minipage}[c]{0.31\linewidth}
+  \begin{minipage}[c]{0.26\linewidth}
   \centering
   \begin{tikzpicture}[scale=0.66] \pframe{0}{} #2 \end{tikzpicture}
   \end{minipage}\hfill
-  \begin{minipage}[c]{0.32\linewidth}
-  \small\raggedright\textbf{#3}\\ #4
+  \begin{minipage}[c]{0.46\linewidth}
+  \raggedright\textbf{#3}\\[2pt] #4
   \end{minipage}
   \end{minipage}}
 
@@ -877,7 +879,9 @@ Start with one diode and one resistor $R$. In series, the diode curve is added h
 the line of $R$; in parallel, vertically.
 
 \medskip\noindent
-\casecell{\caseckta}{\caseresa}{I: $R$ and a diode in series}{$\Icol{i} > 0$: $\Vcol{v} = R\,\Icol{i}$; $\Icol{i} = 0$: $\Vcol{v} \leq 0$}\hfill
+\casecell{\caseckta}{\caseresa}{I: $R$ and a diode in series}{$\Icol{i} > 0$: $\Vcol{v} = R\,\Icol{i}$; $\Icol{i} = 0$: $\Vcol{v} \leq 0$}
+
+\medskip\noindent
 \casecell{\casecktb}{\caseresb}{II: $R$ and a diode in parallel}{$\Vcol{v} < 0$: $\Icol{i} = \Vcol{v}/R$; $\Vcol{v} = 0$: $\Icol{i} \geq 0$}
 
 \subsection{Assume the state of the diode}
@@ -964,19 +968,23 @@ The same reasoning gives the characteristics of the connections below. In each o
 piece with the diode ON, the piece with it OFF, and the breakpoint.
 
 \medskip\noindent
-\casecell{\casecktc}{\caseresc}{III: reversed diode $\parallel R_1$, then $R_2$}{slope $\frac{1}{R_1 + R_2}$ for $\Icol{i} > 0$, $\frac{1}{R_2}$ for $\Icol{i} < 0$}\hfill
+\casecell{\casecktc}{\caseresc}{III: reversed diode $\parallel R_1$, then $R_2$}{slope $\frac{1}{R_1 + R_2}$ for $\Icol{i} > 0$, $\frac{1}{R_2}$ for $\Icol{i} < 0$}
+
+\medskip\noindent
 \casecell{\casecktd}{\caseresd}{IV: diode and $R_1$, in parallel with $R_2$}{slope $\frac{1}{R_1} + \frac{1}{R_2}$ for $\Vcol{v} > 0$, $\frac{1}{R_2}$ for $\Vcol{v} < 0$}
 
 \medskip\noindent
-\casecell{\caseckte}{\caserese}{V: a diode and a source $E$ in series}{the diode curve shifted right by $E$}\hfill
+\casecell{\caseckte}{\caserese}{V: a diode and a source $E$ in series}{the diode curve shifted right by $E$}
+
+\medskip\noindent
 \casecell{\casecktf}{\caseresf}{VI: a diode and a source $I$ in parallel}{the diode curve shifted up by $I$}
 
 \medskip\noindent
-\casecell{\casecktg}{\caseresg}{VII: Case VI in series with $E$ ($+$ at the bottom)}{Case VI shifted left by $E$}\hfill
-\begin{minipage}[c]{0.49\linewidth}
-\small A voltage source in series shifts a curve horizontally; a current source in parallel
-shifts it vertically.
-\end{minipage}
+\casecell{\casecktg}{\caseresg}{VII: Case VI in series with $E$ ($+$ at the bottom)}{Case VI shifted left by $E$}
+
+\medskip
+A voltage source in series shifts a curve horizontally; a current source in parallel shifts it
+vertically.
 
 \subsection{The ideal Zener diode}
 
@@ -1300,7 +1308,7 @@ coefficients $k_1$, $k_2$ now depend on time.
 \begin{center}
 \small
 \renewcommand{\arraystretch}{1.3}
-\begin{tabular}{@{}>{\raggedright}p{4.4cm} >{\raggedright\arraybackslash}p{11.3cm}@{}}
+\begin{tabular}{@{}>{\raggedright}p{4.0cm} >{\raggedright\arraybackslash}p{9.9cm}@{}}
 \toprule
 \textbf{In the circuit} & \textbf{What to do}\\
 \midrule

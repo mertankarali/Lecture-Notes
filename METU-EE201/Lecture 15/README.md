@@ -4,7 +4,7 @@ Lecture notes and slides for the fifteenth lecture of EE201 (Section 2, Fall 202
 
 | File | What it is |
 |---|---|
-| `EE201_Lecture_15.tex` | Handout / lecture notes (article, 11 pages). Self-contained: one nonlinear resistor and the load line, a nonlinear resistor in a larger linear circuit, the ideal diode and its series/parallel connections, piecewise-linear circuits (analysis and synthesis), linear time-varying circuits, a summary. Eight worked examples, each with the problem in a box and a step-by-step solution below it. |
+| `EE201_Lecture_15.tex` | Handout / lecture notes (article, 13 pages). Self-contained: one nonlinear resistor and the load line, a nonlinear resistor in a larger linear circuit, the ideal diode and its series/parallel connections, piecewise-linear circuits (analysis and synthesis), linear time-varying circuits, a summary. Eight worked examples, each with the problem in a box and a step-by-step solution below it. |
 | `EE201_Lecture_15_slides.tex` | Beamer deck (52 slides, 87 PDF pages) for the lecture itself — visual, low text. |
 | `build.sh` | Compiles both, removes auxiliary files, opens the PDFs. |
 
