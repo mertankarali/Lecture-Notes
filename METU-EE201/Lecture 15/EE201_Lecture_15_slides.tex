@@ -184,16 +184,17 @@
 
 %  Example 15.1: v from 0 to 10 V (x = v/2), i from 0 to 0.12 A (y = 20 i)
 \newcommand{\exOnePlot}{%
-  \ivq{5.6}{2.6}
-  \draw[crv, domain=0:1.0, samples=60, smooth] plot (\x,{2.4*\x*\x});
+  \ivq{5.6}{2.8}
+  \draw[crv, domain=0:2.0, samples=60, smooth] plot (\x,{0.625*\x*\x});
   \draw[crv] (-0.2,0) -- (0,0);
-  \node[font=\scriptsize, text=metured] at (1.45,2.35) {$i = \tfrac{3}{100}\,v^2$};
-  \draw[lline] (0,2.0) -- (5.0,0);
-  \node[font=\scriptsize, left] at (0,2.0) {$0.1\A$};
-  \node[font=\scriptsize, below] at (5.0,0) {$10\V$};
-  \node[opt] at (0.833,1.667) {};
-  \draw[dotted, gray] (0.833,0) -- (0.833,1.667);
-  \node[font=\scriptsize, below] at (0.833,0) {$\tfrac53\V$};}
+  \node[font=\scriptsize, text=metured, anchor=west] at (2.05,2.5) {$i = v^2$};
+  \draw[lline] (0,2.4) -- (4.8,0);
+  \node[font=\scriptsize, left] at (0,2.4) {$6\A$};
+  \node[font=\scriptsize, below] at (4.8,0) {$6\V$};
+  \node[opt] at (1.6,1.6) {};
+  \draw[dotted, gray] (1.6,0) -- (1.6,1.6) -- (0,1.6);
+  \node[font=\scriptsize, below] at (1.6,0) {$2\V$};
+  \node[font=\scriptsize, left] at (0,1.6) {$4\A$};}
 
 %  Many or no operating points
 \newcommand{\manypic}{%
@@ -210,7 +211,7 @@
 %  Example 15.2: 7.2 V, 6 Ohm, 12 Ohm (voltage v), 4 Ohm, 8 Ohm, nonlinear resistor at a.
 %  #1 = 0: the circuit;  1: nonlinear resistor removed (port a-b);  2: replaced by 2 V
 \newcommand{\exTwo}[1]{%
-  \draw (0,0) to[american voltage source, invert, l=$\Vcol{7.2\V}$] (0,2.2);
+  \draw (0,0) to[american voltage source, invert, l=$\Vcol{12\V}$] (0,2.2);
   \draw (0,2.2) to[R, l=$6\ohm$] (2.2,2.2) to[R, l=$4\ohm$] (4.4,2.2);
   \draw (0,2.2) -- (0,3.2) to[R, l=$8\ohm$] (4.4,3.2) -- (4.4,2.2);
   \draw (2.2,2.2) to[R] (2.2,0); \lL{2.2}{1.1}{$12\ohm$}
@@ -236,7 +237,7 @@
   \fi}
 %  Example 15.2: the Thevenin equivalent with the nonlinear resistor
 \newcommand{\exTwoTh}{%
-  \draw (0,0) to[american voltage source, invert, l=$\Vcol{6\V}$] (0,2);
+  \draw (0,0) to[american voltage source, invert, l=$\Vcol{10\V}$] (0,2);
   \draw (0,2) to[R, l=$4\ohm$] (2.4,2);
   \draw (2.4,2) to[generic] (2.4,0) -- (0,0);
   \draw[iar] (2.75,1.55) -- (2.75,0.95); \node[font=\small, text=ccur, anchor=west] at (2.8,1.25) {$i_R$};
@@ -245,15 +246,15 @@
 %  Example 15.2 plot: v from 0 to 6 V (x = 0.8 v), i from 0 to 1.5 A (y = 1.5 i)
 \newcommand{\exTwoPlot}{%
   \ivq{5.4}{2.7}
-  \draw[crv, domain=0:1.95, samples=60, smooth] plot (\x,{0.586*\x*\x});
-  \node[font=\scriptsize, text=metured] at (2.55,2.5) {$i_R = \tfrac14\,v_R^2$};
-  \draw[lline] (0,2.25) -- (4.8,0);
-  \node[font=\scriptsize, left] at (0,2.25) {$1.5\A$};
-  \node[font=\scriptsize, below] at (4.8,0) {$6\V$};
-  \node[opt] at (1.6,1.5) {};
-  \draw[dotted, gray] (1.6,0) -- (1.6,1.5) -- (0,1.5);
-  \node[font=\scriptsize, below] at (1.6,0) {$2\V$};
-  \node[font=\scriptsize, left] at (0,1.5) {$1\A$};}
+  \draw[crv, domain=0:1.06, samples=60, smooth] plot (\x,{2.222*\x*\x});
+  \node[font=\scriptsize, text=metured, anchor=west] at (1.15,2.55) {$i_R = \tfrac12\,v_R^2$};
+  \draw[lline] (0,2.25) -- (4.5,0);
+  \node[font=\scriptsize, left] at (0,2.25) {$2.5\A$};
+  \node[font=\scriptsize, below] at (4.5,0) {$10\V$};
+  \node[opt] at (0.9,1.8) {};
+  \draw[dotted, gray] (0.9,0) -- (0.9,1.8);
+  \node[font=\scriptsize, below] at (0.9,0) {$2\V$};
+  \node[font=\scriptsize, anchor=west] at (1.0,1.75) {$(2\V, 2\A)$};}
 
 %-------------------- the ideal diode and piecewise-linear pieces ---------------
 %  A vertical two-terminal branch from (x,#2) down to (x,0) drawn by #3, with i, + v -
@@ -344,7 +345,7 @@
   \fill (1.8,4.0) circle (1.6pt); \node[font=\small, text=cvolt, anchor=south] at (1.95,4.05) {$v_1$};
   \draw (2.4,4.0) to[D*, l_=$D_1$] (2.4,2.4);
   \draw (2.4,2.4) to[american voltage source, l_=$\Vcol{2\V}$] (2.4,0.8) -- (2.4,0.4);
-  \draw (3.9,4.0) to[R, l=$2\ohm$] (3.9,0.4);
+  \draw (3.9,4.0) to[R, l=$1\ohm$] (3.9,0.4);
   \draw (5.4,2.4) to[D*, l_=$D_2$] (5.4,4.0);
   \draw (5.4,0.8) to[american voltage source, l_=$\Vcol{1\V}$] (5.4,2.4);
   \draw (5.4,0.8) -- (5.4,0.4) -- (-0.7,0.4);
@@ -352,37 +353,37 @@
   \draw[iar] (-0.6,4.45) -- (0.0,4.45); \node[font=\small, text=ccur] at (-0.3,4.75) {$i$};
   \node[pol] at (-1.0,3.6) {$+$}; \node[pol] at (-1.0,0.8) {$-$};
   \node[font=\small, text=cvolt] at (-1.05,2.2) {$v$};}
-%  Example 15.4 result (x = v/2, y = i/1.5)
+%  Example 15.4 result (x = v/2, y = i/1.5): breakpoints (-2 V, -1 A) and (4 V, 2 A)
 \newcommand{\exHPlot}{%
   \draw[vax] (-2.0,0) -- (3.0,0) node[right=1pt, font=\scriptsize, text=cvolt] {$v$};
   \draw[vax] (0,-1.9) -- (0,2.3) node[above=1pt, font=\scriptsize, text=ccur] {$i$};
-  \draw[crv] (-1.75,-1.667) -- (-0.75,-0.333) -- (1.5,0.667) -- (2.5,2.0);
-  \fill (-0.75,-0.333) circle (1.8pt); \fill (1.5,0.667) circle (1.8pt);
-  \draw[dotted, gray] (1.5,0) -- (1.5,0.667) -- (0,0.667);
-  \draw[dotted, gray] (-0.75,0) -- (-0.75,-0.333) -- (0,-0.333);
-  \node[font=\scriptsize, anchor=north] at (1.5,-0.02) {$3$};
-  \node[font=\scriptsize, anchor=south] at (-0.75,0.02) {$-1.5$};
-  \node[font=\scriptsize, anchor=east] at (0,0.667) {$1$};
-  \node[font=\scriptsize, anchor=west] at (0.05,-0.4) {$-0.5$};
-  \node[font=\scriptsize, text=metured, anchor=west] at (2.1,1.25) {$1\Sie$};
-  \node[font=\scriptsize, text=metured, anchor=south west] at (0.15,0.18) {$\tfrac13\Sie$};
+  \draw[crv] (-1.75,-1.667) -- (-1.0,-0.667) -- (2.0,1.333) -- (2.5,2.0);
+  \fill (-1.0,-0.667) circle (1.8pt); \fill (2.0,1.333) circle (1.8pt);
+  \draw[dotted, gray] (2.0,0) -- (2.0,1.333) -- (0,1.333);
+  \draw[dotted, gray] (-1.0,0) -- (-1.0,-0.667) -- (0,-0.667);
+  \node[font=\scriptsize, anchor=north] at (2.0,-0.02) {$4$};
+  \node[font=\scriptsize, anchor=south] at (-1.0,0.02) {$-2$};
+  \node[font=\scriptsize, anchor=east] at (0,1.333) {$2$};
+  \node[font=\scriptsize, anchor=west] at (0.05,-0.72) {$-1$};
+  \node[font=\scriptsize, text=metured, anchor=west] at (2.35,1.55) {$1\Sie$};
+  \node[font=\scriptsize, text=metured, anchor=south east] at (0.9,0.65) {$\tfrac12\Sie$};
   \node[font=\scriptsize, text=metured, anchor=north west] at (-1.15,-1.0) {$1\Sie$};}
 
-%  Synthesis, simple target: i = v/4 for v <= 2 V, slope 3/4 S above (x = v/3, y = i/2.5)
+%  Synthesis, simple target: i = v/2 for v <= 2 V, slope 1 S above (x = v/3, y = i/3)
 \newcommand{\synPlot}{%
   \draw[vax] (-1.6,0) -- (3.0,0) node[right=1pt, font=\scriptsize, text=cvolt] {$v$};
   \draw[vax] (0,-0.7) -- (0,2.3) node[above=1pt, font=\scriptsize, text=ccur] {$i$};
-  \draw[crv] (-1.333,-0.4) -- (0.667,0.2) -- (2.667,2.0);
-  \fill (0.667,0.2) circle (1.8pt);
-  \draw[dotted, gray] (0.667,0) -- (0.667,0.2);
+  \draw[crv] (-1.333,-0.667) -- (0.667,0.333) -- (2.333,2.0);
+  \fill (0.667,0.333) circle (1.8pt);
+  \draw[dotted, gray] (0.667,0) -- (0.667,0.333);
   \node[font=\scriptsize, anchor=north] at (0.667,-0.05) {$2\V$};
-  \node[font=\scriptsize, text=metured, anchor=north west] at (-1.0,-0.35) {$\tfrac14\Sie$};
-  \node[font=\scriptsize, text=metured, anchor=west] at (2.0,1.15) {$\tfrac34\Sie$};}
-%  Synthesis, simple circuit: 4 Ohm in parallel with [2 Ohm, diode, 2 V]
+  \node[font=\scriptsize, text=metured, anchor=north west] at (-1.0,-0.55) {$\tfrac12\Sie$};
+  \node[font=\scriptsize, text=metured, anchor=west] at (1.75,1.2) {$1\Sie$};}
+%  Synthesis, simple circuit: 2 Ohm in parallel with [2 Ohm, diode, 2 V]
 \newcommand{\synCkt}{%
   \draw (0,3.6) node[ocirc] {} -- (3.0,3.6);
   \draw (0,-0.4) node[ocirc] {} -- (3.0,-0.4);
-  \draw (1.4,3.6) to[R] (1.4,-0.4); \node[font=\small, anchor=west] at (1.55,1.6) {$4\ohm$};
+  \draw (1.4,3.6) to[R] (1.4,-0.4); \node[font=\small, anchor=west] at (1.55,1.6) {$2\ohm$};
   \draw (3.0,3.6) to[R] (3.0,2.5); \node[font=\small, anchor=west] at (3.15,3.05) {$2\ohm$};
   \draw (3.0,2.5) to[D*] (3.0,1.3);
   \draw (3.0,1.3) to[american voltage source, l=$\Vcol{2\V}$] (3.0,-0.4);
@@ -736,11 +737,11 @@
     \begin{column}{0.44\textwidth}
       \centering
       \begin{tikzpicture}[scale=0.95]
-        \nlone{$\Vcol{10\V}$}{$100\ohm$}
+        \nlone{$\Vcol{6\V}$}{$1\ohm$}
       \end{tikzpicture}
     \end{column}
     \begin{column}{0.54\textwidth}
-      $\Icol{i} = \begin{cases} \frac{3}{100}\,\Vcol{v}^2, & \Vcol{v} \geq 0\\[2pt] 0, & \Vcol{v} < 0 \end{cases}$\\[16pt]
+      $\Icol{i} = \begin{cases} \Vcol{v}^2, & \Vcol{v} \geq 0\\[2pt] 0, & \Vcol{v} < 0 \end{cases}$ \ {\small (A, V)}\\[16pt]
       $(\Vcol{v_o}, \Icol{i_o}) = \ ?$
     \end{column}
   \end{columns}
@@ -751,15 +752,15 @@
 \begin{frame}{Example 15.1: two cases}
   \begin{columns}[c,onlytextwidth]
     \begin{column}{0.5\textwidth}
-      \textbf{KVL:} \ $100\,\Icol{i} + \Vcol{v} - 10 = 0$\\[10pt]
-      \textbf{$\Vcol{v} < 0$:} \ $\Icol{i} = 0$ \ $\Rightarrow$ \ $\Vcol{v} = 10$\\[2pt]
+      \textbf{KVL:} \ $\Icol{i} + \Vcol{v} - 6 = 0$\\[10pt]
+      \textbf{$\Vcol{v} < 0$:} \ $\Icol{i} = 0$ \ $\Rightarrow$ \ $\Vcol{v} = 6$\\[2pt]
       \hspace*{1em}contradiction: no solution\\[10pt]
       \onslide<2->{%
-      \textbf{$\Vcol{v} \geq 0$:} \ $3\,\Vcol{v}^2 + \Vcol{v} - 10 = 0$\\[2pt]
-      \hspace*{1em}$(3\Vcol{v} - 5)(\Vcol{v} + 2) = 0$ \ $\Rightarrow$ \ $\Vcol{v} = \tfrac53\V$\\[12pt]
+      \textbf{$\Vcol{v} \geq 0$:} \ $\Vcol{v}^2 + \Vcol{v} - 6 = 0$\\[2pt]
+      \hspace*{1em}$(\Vcol{v} - 2)(\Vcol{v} + 3) = 0$ \ $\Rightarrow$ \ $\Vcol{v} = 2\V$\\[12pt]
       \begin{tikzpicture}
         \node[draw=metured, thick, fill=metured!5, rounded corners=3pt, inner sep=5pt]
-          {$(\Vcol{v_o}, \Icol{i_o}) = \big(\tfrac53\V, \ \tfrac{1}{12}\A\big)$};
+          {$(\Vcol{v_o}, \Icol{i_o}) = (2\V, \ 4\A)$};
       \end{tikzpicture}}
     \end{column}
     \begin{column}{0.48\textwidth}
@@ -850,7 +851,7 @@
       \end{tikzpicture}
     \end{column}
     \begin{column}{0.42\textwidth}
-      $\Icol{i_R} = \begin{cases} \frac14\,\Vcol{v_R}^2, & \Vcol{v_R} \geq 0\\[2pt] 0, & \Vcol{v_R} < 0 \end{cases}$\\[16pt]
+      $\Icol{i_R} = \begin{cases} \frac12\,\Vcol{v_R}^2, & \Vcol{v_R} \geq 0\\[2pt] 0, & \Vcol{v_R} < 0 \end{cases}$\\[16pt]
       $\Vcol{v} = \ ?$
     \end{column}
   \end{columns}
@@ -871,7 +872,7 @@
       $\Rth = 8 \parallel (4 + 6 \parallel 12) = 8 \parallel 8 = 4\ohm$\\[12pt]
       \onslide<2->{%
       \textbf{Open circuit:} two node equations\\[4pt]
-      $\vth = \voc = 6\V$\\[12pt]
+      $\e{1} = 9\V$, \ $\vth = \voc = \e{a} = 10\V$\\[12pt]
       \begin{tikzpicture}[scale=0.75]
         \exTwoTh
       \end{tikzpicture}}
@@ -883,12 +884,12 @@
 \begin{frame}{Example 15.2: step 2, the operating point}
   \begin{columns}[c,onlytextwidth]
     \begin{column}{0.48\textwidth}
-      \textbf{KVL:} \ $4\,\Icol{i_R} + \Vcol{v_R} - 6 = 0$\\[8pt]
-      Plug $\Icol{i_R} = \tfrac14\,\Vcol{v_R}^2$:\\[4pt]
-      $\Vcol{v_R}^2 + \Vcol{v_R} - 6 = 0$\\[4pt]
-      $(\Vcol{v_R} + 3)(\Vcol{v_R} - 2) = 0$\\[10pt]
+      \textbf{KVL:} \ $4\,\Icol{i_R} + \Vcol{v_R} - 10 = 0$\\[8pt]
+      Plug $\Icol{i_R} = \tfrac12\,\Vcol{v_R}^2$:\\[4pt]
+      $2\,\Vcol{v_R}^2 + \Vcol{v_R} - 10 = 0$\\[4pt]
+      $(2\,\Vcol{v_R} + 5)(\Vcol{v_R} - 2) = 0$\\[10pt]
       \onslide<2->{%
-      $\Vcol{v_R} \geq 0$: \ $\Vcol{v_R} = 2\V$, \ $\Icol{i_R} = 1\A$}
+      $\Vcol{v_R} \geq 0$: \ $\Vcol{v_R} = 2\V$, \ $\Icol{i_R} = 2\A$}
     \end{column}
     \begin{column}{0.5\textwidth}
       \centering
@@ -912,11 +913,12 @@
     \begin{column}{0.42\textwidth}
       Replace it by a $2\V$ source\\[8pt]
       \textbf{Node $\boldsymbol{e}$:}\\[4pt]
-      $\dfrac{\e{} - 7.2}{6} + \dfrac{\e{}}{12} + \dfrac{\e{} - 2}{4} = 0$\\[10pt]
+      $\dfrac{\e{} - 12}{6} + \dfrac{\e{}}{12} + \dfrac{\e{} - 2}{4} = 0$\\[4pt]
+      $\times 12$: \ $6\,\e{} - 30 = 0$\\[10pt]
       \onslide<2->{%
       \begin{tikzpicture}
         \node[draw=metured, thick, fill=metured!5, rounded corners=3pt, inner sep=5pt]
-          {$\Vcol{v} = \e{} = 3.4\V$};
+          {$\Vcol{v} = \e{} = 5\V$};
       \end{tikzpicture}}
     \end{column}
   \end{columns}
@@ -1313,12 +1315,12 @@
       \end{tikzpicture}
     \end{column}
     \begin{column}{0.48\textwidth}
-      $1\ohm$ and $2\ohm$ in series:\\[4pt]
-      $\Vcol{v_1} = 2\,\Icol{i}$, \quad $\Vcol{v} = 3\,\Icol{i}$\\[12pt]
+      $1\ohm$ and $1\ohm$ in series:\\[4pt]
+      $\Vcol{v_1} = \Icol{i}$, \quad $\Vcol{v} = 2\,\Icol{i}$\\[12pt]
       \onslide<2->{%
       $D_1$ OFF: \ $\Vcol{v_{D_1}} = \Vcol{v_1} - 2 < 0$\\[4pt]
       $D_2$ OFF: \ $\Vcol{v_{D_2}} = -1 - \Vcol{v_1} < 0$\\[8pt]
-      $-1 < \Vcol{v_1} < 2$ \ $\Leftrightarrow$ \ \alert{$-1.5 < \Vcol{v} < 3$}}
+      $-1 < \Vcol{v_1} < 2$ \ $\Leftrightarrow$ \ \alert{$-2 < \Vcol{v} < 4$}}
     \end{column}
   \end{columns}
 \end{frame}
@@ -1336,8 +1338,8 @@
       $D_1$ a short: \ $\Vcol{v_1} = 2$\\[4pt]
       $\Vcol{v} = \Icol{i} + 2$\\[12pt]
       \onslide<2->{%
-      $2\ohm$: $1\A$; \ $D_1$: $\Icol{i_{D_1}} = \Icol{i} - 1$\\[4pt]
-      $\Icol{i_{D_1}} \geq 0$ \ $\Leftrightarrow$ \ \alert{$\Vcol{v} \geq 3$}\\[8pt]
+      middle $1\ohm$: $2\A$; \ $D_1$: $\Icol{i_{D_1}} = \Icol{i} - 2$\\[4pt]
+      $\Icol{i_{D_1}} \geq 0$ \ $\Leftrightarrow$ \ \alert{$\Vcol{v} \geq 4$}\\[8pt]
       $D_2$: \ $\Vcol{v_{D_2}} = -1 - 2 < 0$ \ \yes}
     \end{column}
   \end{columns}
@@ -1356,8 +1358,8 @@
       $D_2$ a short: \ $\Vcol{v_1} = -1$\\[4pt]
       $\Vcol{v} = \Icol{i} - 1$\\[12pt]
       \onslide<2->{%
-      $2\ohm$: $-0.5\A$; \ $D_2$: $\Icol{i_{D_2}} = -0.5 - \Icol{i}$\\[4pt]
-      $\Icol{i_{D_2}} \geq 0$ \ $\Leftrightarrow$ \ \alert{$\Vcol{v} \leq -1.5$}\\[8pt]
+      middle $1\ohm$: $-1\A$; \ $D_2$: $\Icol{i_{D_2}} = -1 - \Icol{i}$\\[4pt]
+      $\Icol{i_{D_2}} \geq 0$ \ $\Leftrightarrow$ \ \alert{$\Vcol{v} \leq -2$}\\[8pt]
       $D_1$: \ $\Vcol{v_{D_1}} = -1 - 2 < 0$ \ \yes}
     \end{column}
   \end{columns}
@@ -1370,7 +1372,7 @@
       Both ON: \ $\Vcol{v_1} = 2$ and $-1$ \ (impossible)\\[12pt]
       \begin{tikzpicture}
         \node[draw=metured, thick, fill=metured!5, rounded corners=3pt, inner sep=6pt]
-          {$\Icol{i} = \begin{cases} \Vcol{v} - 2, & \Vcol{v} \geq 3\\[4pt] \Vcol{v}/3, & -1.5 \leq \Vcol{v} \leq 3\\[4pt] \Vcol{v} + 1, & \Vcol{v} \leq -1.5 \end{cases}$};
+          {$\Icol{i} = \begin{cases} \Vcol{v} - 2, & \Vcol{v} \geq 4\\[4pt] \Vcol{v}/2, & -2 \leq \Vcol{v} \leq 4\\[4pt] \Vcol{v} + 1, & \Vcol{v} \leq -2 \end{cases}$};
       \end{tikzpicture}\\[10pt]
       Two diodes: two breakpoints
     \end{column}
@@ -1390,15 +1392,15 @@
     \begin{tikzpicture}[scale=0.7]
       \begin{scope}\pframe{0}{$D_1$, $2\V$} \draw[crv] (-1.2,0) -- (0.8,0) -- (0.8,1.05); \end{scope}
       \node[font=\large] at (1.9,0) {\shortstack{$+$\\[1pt]{\tiny add $i$}}};
-      \begin{scope}[xshift=3.8cm]\pframe{0}{$2\ohm$} \draw[crv] (-1.1,-0.55) -- (1.1,0.55); \end{scope}
+      \begin{scope}[xshift=3.8cm]\pframe{0}{$1\ohm$} \draw[crv] (-0.9,-0.9) -- (0.9,0.9); \end{scope}
       \node[font=\large] at (5.7,0) {\shortstack{$+$\\[1pt]{\tiny add $i$}}};
       \begin{scope}[xshift=7.6cm]\pframe{0}{$D_2$, $1\V$} \draw[crv] (-0.4,-1.0) -- (-0.4,0) -- (1.2,0); \end{scope}
       \node[font=\large] at (9.5,0) {$=$};
-      \begin{scope}[xshift=11.4cm]\pframe{0}{parallel part} \draw[crv] (-0.4,-1.0) -- (-0.4,-0.2) -- (0.8,0.4) -- (0.8,1.05); \end{scope}
+      \begin{scope}[xshift=11.4cm]\pframe{0}{parallel part} \draw[crv] (-0.4,-1.0) -- (-0.4,-0.4) -- (0.8,0.8) -- (0.8,1.05); \end{scope}
     \end{tikzpicture}\\[16pt]
     \onslide<2->{%
     \begin{tikzpicture}[scale=0.7]
-      \threeplots{\draw[crv] (-0.4,-1.0) -- (-0.4,-0.2) -- (0.8,0.4) -- (0.8,1.05);}{\pR{1.0}}{\draw[crv] (-1.2,-0.85) -- (-0.75,-0.25) -- (0.75,0.25) -- (1.2,0.85);}{\shortstack{$+$\\[1pt]{\tiny add $v$}}}{parallel part}{$1\ohm$}{the one-port}
+      \threeplots{\draw[crv] (-0.4,-1.0) -- (-0.4,-0.4) -- (0.8,0.8) -- (0.8,1.05);}{\pR{1.0}}{\draw[crv] (-1.2,-0.8) -- (-0.8,-0.4) -- (0.8,0.4) -- (1.2,0.8);}{\shortstack{$+$\\[1pt]{\tiny add $v$}}}{parallel part}{$1\ohm$}{the one-port}
     \end{tikzpicture}}
   \end{center}
   \vfill
@@ -1432,13 +1434,13 @@
   \vfill
   \begin{center}
     \begin{tikzpicture}[scale=0.85]
-      \threeplots{\draw[crv] (-1.2,-0.3) -- (1.2,0.3);}{\draw[crv] (-1.2,0) -- (0.4,0) -- (1.2,0.4); \node[font=\tiny, below] at (0.4,0) {$2\V$};}{\draw[crv] (-1.2,-0.3) -- (0.4,0.1) -- (1.2,0.7);}{\shortstack{$+$\\[1pt]{\tiny add $i$}}}{$4\ohm$}{slope $\tfrac12$ after $2\V$}{target}
+      \threeplots{\draw[crv] (-1.2,-0.6) -- (1.2,0.6);}{\draw[crv] (-1.2,0) -- (0.4,0) -- (1.2,0.4); \node[font=\tiny, below] at (0.4,0) {$2\V$};}{\draw[crv] (-1.2,-0.6) -- (0.4,0.2) -- (1.2,1.0);}{\shortstack{$+$\\[1pt]{\tiny add $i$}}}{$2\ohm$}{slope $\tfrac12$ after $2\V$}{target}
     \end{tikzpicture}
   \end{center}
   \vfill
   \begin{itemize}\itemsep8pt
-    \item Slope $\tfrac14\Sie$ everywhere: \ a $4\ohm$ resistor
-    \item Extra slope $\tfrac34 - \tfrac14 = \tfrac12\Sie$ after $2\V$: \ Case I with $2\ohm$, shifted by $2\V$
+    \item Slope $\tfrac12\Sie$ everywhere: \ a $2\ohm$ resistor
+    \item Extra slope $1 - \tfrac12 = \tfrac12\Sie$ after $2\V$: \ Case I with $2\ohm$, shifted by $2\V$
     \item Currents add: \ the two in parallel
   \end{itemize}
   \vfill
@@ -1455,8 +1457,8 @@
     \end{column}
     \begin{column}{0.58\textwidth}
       Check at $\Vcol{v} = 4\V$:\\[4pt]
-      $4\ohm$: $1\A$; \ branch: $\dfrac{4 - 2}{2} = 1\A$\\[4pt]
-      $\Icol{i} = 2\A$ \ \yes\\[14pt]
+      $2\ohm$: $2\A$; \ branch: $\dfrac{4 - 2}{2} = 1\A$\\[4pt]
+      $\Icol{i} = 3\A$ \ \yes\\[14pt]
       The order inside the branch does not matter:\\[2pt]
       the circuit is \alert{not unique}
     \end{column}
