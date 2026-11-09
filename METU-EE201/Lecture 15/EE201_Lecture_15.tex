@@ -590,6 +590,63 @@
 \newcommand{\cR}{\draw[crv] (-1.1,-0.85) -- (1.1,0.85);}
 \newcommand{\cI}{\draw[crv] (-1.2,0.55) -- (1.2,0.55); \node[font=\tiny, anchor=south east] at (0,0.55) {$I$};}
 \newcommand{\cE}{\draw[crv] (0.6,-1.0) -- (0.6,1.0); \node[font=\tiny, anchor=north west] at (0.6,0) {$E$};}
+%  Small sub-circuits above the plots of a graphical composition.
+%  \minic{x}{H}{content}: terminals at the left, bottom at y = 1.7 above the plot frame centred at x
+\newcommand{\minic}[3]{%
+  \begin{scope}[shift={(#1-0.55,1.75)}, scale=\miniscale, transform shape]
+    \draw (0,#2) node[ocirc] {}; \draw (0,0) node[ocirc] {};
+    #3
+  \end{scope}}
+\newcommand{\mlab}[1]{{\Large #1}}
+\newcommand{\miniscale}{0.62}
+%  elements in a vertical column at x = #1, from y = #2 (top) to y = #3 (bottom)
+\newcommand{\mD}[3]{\draw (#1,#2) to[D*] (#1,#3);}
+\newcommand{\mDr}[3]{\draw (#1,#3) to[D*] (#1,#2);}
+\newcommand{\mR}[4]{\draw (#1,#2) to[R, l=\mlab{#4}] (#1,#3);}
+\newcommand{\mE}[4]{\draw (#1,#2) to[american voltage source, l=\mlab{\Vcol{#4}}] (#1,#3);}   % + at the top
+\newcommand{\mEr}[4]{\draw (#1,#3) to[american voltage source, l_=\mlab{\Vcol{#4}}] (#1,#2);} % + at the bottom
+\newcommand{\mI}[4]{\draw (#1,#2) to[american current source, l=\mlab{\Icol{#4}}] (#1,#3);}  % arrow down
+\newcommand{\mW}[2]{\draw (0,#1) -- (#2,#1); \draw (0,0) -- (#2,0);}                             % wires to column #2, top at #1
+%  ready-made sub-circuits (#1 = x position of the plot)
+\newcommand{\miniD}[1]{\minic{#1}{2.2}{\mW{2.2}{0.8} \mD{0.8}{2.2}{0}}}
+\newcommand{\miniDr}[1]{\minic{#1}{2.2}{\mW{2.2}{0.8} \mDr{0.8}{2.2}{0}}}
+\newcommand{\miniR}[2]{\minic{#1}{2.2}{\mW{2.2}{0.8} \mR{0.8}{2.2}{0}{#2}}}
+\newcommand{\miniE}[2]{\minic{#1}{2.2}{\mW{2.2}{0.8} \mE{0.8}{2.2}{0}{#2}}}
+\newcommand{\miniI}[2]{\minic{#1}{2.2}{\mW{2.2}{0.8} \mI{0.8}{2.2}{0}{#2}}}
+%  diode over R (Case I), diode || R (Case II)
+\newcommand{\miniDsR}[2]{\minic{#1}{3.6}{\mW{3.6}{0.8} \mR{0.8}{3.6}{1.8}{#2} \mD{0.8}{1.8}{0}}}
+\newcommand{\miniDpR}[2]{\minic{#1}{2.2}{\mW{2.2}{2.0} \mD{0.8}{2.2}{0} \mR{2.0}{2.2}{0}{#2}}}
+%  Case III: (reversed diode || R1) in series with R2
+\newcommand{\miniIII}[1]{\minic{#1}{3.6}{\draw (0,3.6) -- (2.0,3.6); \draw (0,0) -- (1.4,0);
+    \mDr{0.8}{3.6}{1.8} \mR{2.0}{3.6}{1.8}{$R_1$} \draw (0.8,1.8) -- (2.0,1.8); \mR{1.4}{1.8}{0}{$R_2$}}}
+\newcommand{\miniRrDr}[2]{\minic{#1}{2.2}{\mW{2.2}{2.0} \mDr{0.8}{2.2}{0} \mR{2.0}{2.2}{0}{#2}}}
+%  Case IV: (diode + R1) || R2
+\newcommand{\miniIV}[1]{\minic{#1}{3.6}{\mW{3.6}{2.0} \mD{0.8}{3.6}{1.8} \mR{0.8}{1.8}{0}{$R_1$} \mR{2.0}{3.6}{0}{$R_2$}}}
+%  diode + E (+ at the top), diode || I, (diode || I) + E
+\newcommand{\miniDsE}[2]{\minic{#1}{3.6}{\mW{3.6}{0.8} \mD{0.8}{3.6}{1.8} \mE{0.8}{1.8}{0}{#2}}}
+\newcommand{\miniDpI}[2]{\minic{#1}{2.2}{\mW{2.2}{2.0} \mD{0.8}{2.2}{0} \mI{2.0}{2.2}{0}{#2}}}
+\newcommand{\miniVII}[1]{\minic{#1}{3.6}{\draw (0,3.6) -- (2.0,3.6); \draw (0,0) -- (1.4,0);
+    \mD{0.8}{3.6}{1.8} \mI{2.0}{3.6}{1.8}{$I$} \draw (0.8,1.8) -- (2.0,1.8); \mE{1.4}{1.8}{0}{$E$}}}
+%  Example 15.3: diode, 2 Ohm, 4 V in series
+\newcommand{\miniDRE}[1]{\minic{#1}{5.0}{\mW{5.0}{0.8} \mD{0.8}{5.0}{3.4} \mR{0.8}{3.4}{1.7}{$2\ohm$} \mE{0.8}{1.7}{0}{$4\V$}}}
+%  Example 15.4 pieces
+\newcommand{\miniDtwo}[1]{\minic{#1}{3.6}{\mW{3.6}{0.8} \mD{0.8}{3.6}{1.8} \mE{0.8}{1.8}{0}{$2\V$}}}
+\newcommand{\miniDrone}[1]{\minic{#1}{3.6}{\mW{3.6}{0.8} \mDr{0.8}{3.6}{1.8} \mEr{0.8}{1.8}{0}{$1\V$}}}
+\newcommand{\miniPar}[2][0]{\minic{#2}{3.6}{\mW{3.6}{3.8} \mD{0.8}{3.6}{1.8} \mE{0.8}{1.8}{0}{$2\V$}
+    \mR{2.3}{3.6}{0}{$1\ohm$} \mDr{3.8}{3.6}{1.8} \mEr{3.8}{1.8}{0}{$1\V$}}}
+\newcommand{\miniOnePort}[1]{\minic{#1}{5.4}{\draw (0,5.4) -- (0.8,5.4); \mR{0.8}{5.4}{3.6}{$1\ohm$}
+    \draw (0.8,3.6) -- (3.8,3.6); \draw (0,0) -- (3.8,0); \mD{0.8}{3.6}{1.8} \mE{0.8}{1.8}{0}{$2\V$}
+    \mR{2.3}{3.6}{0}{$1\ohm$} \mDr{3.8}{3.6}{1.8} \mEr{3.8}{1.8}{0}{$1\V$}}}
+%  Example 15.5: branch (2 Ohm, diode, 2 V) and the circuit
+\newcommand{\miniBranch}[1]{\minic{#1}{5.0}{\mW{5.0}{0.8} \mR{0.8}{5.0}{3.4}{$2\ohm$} \mD{0.8}{3.4}{1.7} \mE{0.8}{1.7}{0}{$2\V$}}}
+\newcommand{\miniSyn}[1]{\minic{#1}{5.0}{\mW{5.0}{2.0} \mR{0.8}{5.0}{0}{$2\ohm$} \mR{2.0}{5.0}{3.4}{$2\ohm$} \mD{2.0}{3.4}{1.7} \mE{2.0}{1.7}{0}{$2\V$}}}
+%  Example 15.6: A = diode || 1 Ohm, B = reversed diode || 2 Ohm || 1 A, target = A + B
+\newcommand{\miniA}[1]{\miniDpR{#1}{$1\ohm$}}
+\newcommand{\miniB}[1]{\minic{#1}{2.2}{\mW{2.2}{3.8} \mDr{0.8}{2.2}{0} \mR{2.3}{2.2}{0}{$2\ohm$} \mI{3.8}{2.2}{0}{$1\A$}}}
+\newcommand{\miniAB}[1]{\minic{#1}{4.4}{\draw (0,4.4) -- (2.3,4.4); \mD{0.8}{4.4}{2.2} \mR{2.3}{4.4}{2.2}{$1\ohm$}
+    \draw (0.8,2.2) -- (3.8,2.2); \draw (0,0) -- (3.8,0); \mDr{0.8}{2.2}{0} \mR{2.3}{2.2}{0}{$2\ohm$} \mI{3.8}{2.2}{0}{$1\A$}}}
+%  sub-circuits above the three plots of \threeplots
+\newcommand{\minirow}[3]{#1{0} #2{4.1} #3{8.2}}
 \begin{document}
 
 %-------------------- title block -----------------------------
@@ -1014,8 +1071,9 @@ $(4\V, 0)$ is where $\Icol{i_D} = 0$ and $\Vcol{v_D} = 0$ at the same time.
 
 \solstep{4}{Graphically}
 \begin{center}
-\begin{tikzpicture}[scale=0.62]
+\begin{tikzpicture}[scale=0.85]
   \threeplots{\draw[crv] (-1.2,0) -- (0,0) -- (1.1,0.55);}{\draw[crv] (0.6,-1.0) -- (0.6,1.0); \node[font=\tiny, below right] at (0.6,0) {$4\V$};}{\draw[crv] (-1.2,0) -- (0.6,0) -- (1.2,0.3);}{\shortstack{$+$\\[1pt]{\tiny add $v$}}}{Case I, $R = 2\ohm$}{$4\V$ source}{series}
+  \miniDsR{0}{$2\ohm$} \miniE{4.1}{$4\V$} \miniDRE{8.2}
 \end{tikzpicture}
 \end{center}
 The diode and $2\ohm$ are Case I. The source is a vertical line at $\Vcol{v} = 4\V$; adding it
@@ -1146,7 +1204,7 @@ This would need $\Vcol{v_1} = 2$ and $\Vcol{v_1} = -1$ at the same time: impossi
 
 \solstep{6}{Graphically}
 \begin{center}
-\begin{tikzpicture}[scale=0.6]
+\begin{tikzpicture}[scale=0.76]
   \begin{scope}\pframe{0}{$D_1$, $2\V$} \draw[crv] (-1.2,0) -- (0.8,0) -- (0.8,1.05); \end{scope}
   \node at (1.9,0) {\shortstack{$+$\\[1pt]{\tiny add $i$}}};
   \begin{scope}[xshift=3.8cm]\pframe{0}{$1\ohm$} \draw[crv] (-0.9,-0.9) -- (0.9,0.9); \end{scope}
@@ -1154,9 +1212,11 @@ This would need $\Vcol{v_1} = 2$ and $\Vcol{v_1} = -1$ at the same time: impossi
   \begin{scope}[xshift=7.6cm]\pframe{0}{$D_2$, $1\V$} \draw[crv] (-0.4,-1.0) -- (-0.4,0) -- (1.2,0); \end{scope}
   \node at (9.5,0) {$=$};
   \begin{scope}[xshift=11.4cm]\pframe{0}{parallel part} \draw[crv] (-0.4,-1.0) -- (-0.4,-0.4) -- (0.8,0.8) -- (0.8,1.05); \end{scope}
+  \miniDtwo{0} \miniR{3.8}{$1\ohm$} \miniDrone{7.6} \miniPar{11.4}
 \end{tikzpicture}\\[10pt]
-\begin{tikzpicture}[scale=0.6]
+\begin{tikzpicture}[scale=0.85]
   \threeplots{\draw[crv] (-0.4,-1.0) -- (-0.4,-0.4) -- (0.8,0.8) -- (0.8,1.05);}{\pR{1.0}}{\draw[crv] (-1.2,-0.8) -- (-0.8,-0.4) -- (0.8,0.4) -- (1.2,0.8);}{\shortstack{$+$\\[1pt]{\tiny add $v$}}}{parallel part}{$1\ohm$}{the one-port}
+  \miniPar{0} \miniR{4.1}{$1\ohm$} \miniOnePort{8.2}
 \end{tikzpicture}
 \end{center}
 The first branch is Case V: vertical at $\Vcol{v_1} = 2\V$. The third is Case V turned around:
@@ -1193,8 +1253,9 @@ through the origin with slope $\frac12\Sie$: a $2\ohm$ resistor.
 
 \solstep{2}{Split it in parallel (add currents)}
 \begin{center}
-\begin{tikzpicture}[scale=0.62]
+\begin{tikzpicture}[scale=0.85]
   \threeplots{\draw[crv] (-1.2,-0.6) -- (1.2,0.6);}{\draw[crv] (-1.2,0) -- (0.4,0) -- (1.2,0.4); \node[font=\tiny, below] at (0.4,0) {$2\V$};}{\draw[crv] (-1.2,-0.6) -- (0.4,0.2) -- (1.2,1.0);}{\shortstack{$+$\\[1pt]{\tiny add $i$}}}{$2\ohm$}{slope $\frac12$ after $2\V$}{target}
+  \miniR{0}{$2\ohm$} \miniBranch{4.1} \miniSyn{8.2}
 \end{tikzpicture}
 \end{center}
 Keep the $2\ohm$ resistor for all $\Vcol{v}$. Above $2\V$ the slope must grow by
@@ -1238,12 +1299,13 @@ characteristic.
 
 \solstep{1}{Split it in series (add voltages)}
 \begin{center}
-\begin{tikzpicture}[scale=0.62]
+\begin{tikzpicture}[scale=0.85]
   \begin{scope}\pframe{0}{target} \draw[crv] (-1.2,-0.8) -- (0,0) -- (0,0.5) -- (1.2,1.0); \end{scope}
   \node at (2.05,0) {$=$};
   \begin{scope}[xshift=4.1cm]\pframe{0}{A: diode $\parallel 1\ohm$} \draw[crv] (-1.2,-0.8) -- (0,0) -- (0,1.0); \end{scope}
   \node at (6.15,0) {\shortstack{$+$\\[1pt]{\tiny add $v$}}};
   \begin{scope}[xshift=8.2cm]\pframe{0}{B} \draw[crv] (0,-1.0) -- (0,0.5) -- (1.2,1.0); \end{scope}
+  \miniAB{0} \miniA{4.1} \miniB{8.2}
 \end{tikzpicture}
 \end{center}
 Piece A is Case II with $R = 1\ohm$: it gives the slope $1\Sie$ for $\Vcol{v} < 0$ and is a
@@ -1252,12 +1314,13 @@ $\frac12\Sie$ above $1\A$.
 
 \solstep{2}{Split B in parallel (add currents)}
 \begin{center}
-\begin{tikzpicture}[scale=0.62]
+\begin{tikzpicture}[scale=0.85]
   \begin{scope}\pframe{0}{B} \draw[crv] (0,-1.0) -- (0,0.5) -- (1.2,1.0); \end{scope}
   \node at (2.05,0) {$=$};
   \begin{scope}[xshift=4.1cm]\pframe{0}{reversed diode $\parallel 2\ohm$} \draw[crv] (0,-1.0) -- (0,0) -- (1.2,0.5); \end{scope}
   \node at (6.15,0) {\shortstack{$+$\\[1pt]{\tiny add $i$}}};
   \begin{scope}[xshift=8.2cm]\pframe{0}{source $1\A$} \draw[crv] (-1.2,0.5) -- (1.2,0.5); \end{scope}
+  \miniB{0} \miniRrDr{4.1}{$2\ohm$} \miniI{8.2}{$1\A$}
 \end{tikzpicture}
 \end{center}
 A reversed diode in parallel with $2\ohm$ is Case II reflected through the origin. A $1\A$
