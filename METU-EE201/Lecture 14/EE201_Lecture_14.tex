@@ -624,7 +624,7 @@ Note that $g_{11} = \frac14\,\mathrm{S} \neq 1/r_{11} = \frac13\,\mathrm{S}$.
 
 \begin{ideabox}[Remark]
 $\Rm$ or $\Gm$ need not exist. When both exist, $\Gm = \Rm^{-1}$. The ideal transformer
-(Example 14.5) has neither.
+(Example 14.5) has neither. Section~\ref{sec:exist} explains when a matrix exists.
 \end{ideabox}
 
 %==============================================================
@@ -648,6 +648,23 @@ The entries of $\Hm$ follow from two tests: port 2 shorted ($\vtwo = 0$) gives
 $h_{11} = \vone/\ione$ and $h_{21} = \itwo/\ione$; port 1 open ($\ione = 0$) gives
 $h_{12} = \vone/\vtwo$ and $h_{22} = \itwo/\vtwo$. The entries have different units: $h_{11}$ is
 a resistance, $h_{22}$ a conductance, $h_{12}$ and $h_{21}$ have no units.
+
+The second hybrid matrix $\Hm'$ has the roles of the two ports swapped:
+\[
+  \begin{aligned}
+    \ione &= h'_{11}\,\vone + h'_{12}\,\itwo\\
+    \vtwo &= h'_{21}\,\vone + h'_{22}\,\itwo
+  \end{aligned}
+  \qquad\qquad
+  \begin{bmatrix} \ione\\ \vtwo \end{bmatrix}
+  = \begin{bmatrix} h'_{11} & h'_{12}\\ h'_{21} & h'_{22} \end{bmatrix}
+    \begin{bmatrix} \vone\\ \itwo \end{bmatrix} .
+\]
+Its inputs are $\vone$ and $\itwo$, so its tests are the other way round: port 2 open
+($\itwo = 0$) gives $h'_{11} = \ione/\vone$ and $h'_{21} = \vtwo/\vone$; port 1 shorted
+($\vone = 0$) gives $h'_{12} = \ione/\itwo$ and $h'_{22} = \vtwo/\itwo$. Now $h'_{11}$ is a
+conductance, $h'_{22}$ a resistance, and $h'_{12}$, $h'_{21}$ have no units. When both exist,
+$\Hm' = \Hm^{-1}$.
 
 \bigskip
 \begin{examplebox}[Example 14.4 --- the hybrid matrix of a circuit]
@@ -714,6 +731,17 @@ Check: Example 14.2 gives $\Rm = \left[\begin{smallmatrix} 3 & 1\\ -1 & 1 \end{s
 Solving its second row for $\itwo$ and substituting into the first row gives the same $\Hm$.
 \ \yes
 
+\solstep{4}{The other hybrid matrix}
+$\det \Hm = 4 - 1 = 3$, so
+\[
+  \Hm' = \Hm^{-1} = \frac13 \begin{bmatrix} 1 & -1\\ -1 & 4 \end{bmatrix}
+       = \begin{bmatrix} \frac13 & -\frac13\\[2pt] -\frac13 & \frac43 \end{bmatrix} .
+\]
+Check with the tests of $\Hm'$. Port 2 open: $\vone = 3\,\ione$ and $\vtwo = -\ione$, so
+$h'_{11} = \frac13\,\mathrm{S}$ and $h'_{21} = -\frac13$. Port 1 shorted: $3\,\ione + \itwo = 0$
+and $\vtwo = -\ione + \itwo = \frac43\,\itwo$, so $h'_{12} = -\frac13$ and
+$h'_{22} = \frac43\ohm$. \ \yes
+
 \bigskip
 \begin{examplebox}[Example 14.5 --- the hybrid matrix of the ideal transformer]
 \begin{minipage}[c]{0.5\linewidth}
@@ -746,6 +774,10 @@ With the turns ratio $n = N_1/N_2$:
     \begin{bmatrix} \ione\\ \vtwo \end{bmatrix}
   \qquad\Rightarrow\qquad
   \Hm = \begin{bmatrix} 0 & n\\ -n & 0 \end{bmatrix} .
+\]
+Its inverse is the other hybrid matrix:
+\[
+  \Hm' = \Hm^{-1} = \begin{bmatrix} 0 & -1/n\\ 1/n & 0 \end{bmatrix} .
 \]
 
 \solstep{3}{No resistance matrix}
@@ -829,6 +861,130 @@ $\Hm$ mixes a current and a voltage as inputs, so its tests are mixed too, and i
 mixed units. $\Tm$ is the odd one: both tests are done at port 2, and port 1 is only measured.
 The port that is not zeroed is driven by a source of its own input type: a current source if
 its input is a current, a voltage source if it is a voltage.
+
+%==============================================================
+\section{When does a matrix exist?}\label{sec:exist}
+
+Each matrix makes a promise: \emph{choose its two inputs freely, and the two outputs are then
+fixed}. Some two-ports break this promise for some matrices. Then that matrix does not exist.
+
+\subsection{The test: both inputs zero}
+
+Set both inputs to zero at the same time.
+\begin{itemize}[itemsep=3pt]
+  \item If the circuit then forces all four port variables to zero, the matrix \textbf{exists}.
+  \item If some port variable can still be nonzero, the matrix \textbf{does not exist}.
+\end{itemize}
+Why: a nonzero solution with zero inputs can be added to any other solution. The inputs stay
+the same, but the outputs change. So the inputs do not fix the outputs.
+
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.35}
+\begin{tabular}{@{}l l l@{}}
+\toprule
+\textbf{Matrix} & \textbf{Inputs set to zero} & \textbf{In the circuit}\\
+\midrule
+$\Rm$ & $\ione = \itwo = 0$ & both ports \textbf{open}\\
+$\Gm$ & $\vone = \vtwo = 0$ & both ports \textbf{shorted}\\
+$\Hm$ & $\ione = 0$, $\vtwo = 0$ & port 1 open, port 2 shorted\\
+$\Hm'$ & $\vone = 0$, $\itwo = 0$ & port 1 shorted, port 2 open\\
+$\Tm$ & $\vtwo = 0$, $\itwo = 0$ & port 2 \textbf{open and shorted}: no voltage, no current\\
+\bottomrule
+\end{tabular}
+\end{center}
+For $\Tm$ both conditions are at port 2. Port 1 is left alone. If port 1 can still carry a
+current or a voltage, port 2 cannot tell what happens at port 1, and $\Tm$ does not exist.
+
+\subsection{Three simple cases}
+
+\begin{minipage}[t]{0.47\linewidth}
+\centering
+\begin{tikzpicture}[scale=0.72]
+  \draw (0,1.8) -- (4.4,1.8); \draw (0,0) -- (4.4,0);
+  \draw (2.2,1.8) to[R, l=$R$] (2.2,0);
+  \fill (2.2,1.8) circle (1.6pt); \fill (2.2,0) circle (1.6pt);
+  \pone{0}{1.8} \ptwo{4.4}{1.8}
+\end{tikzpicture}\\[2pt]
+{\small (a) one resistor across both ports}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.47\linewidth}
+\centering
+\begin{tikzpicture}[scale=0.72]
+  \draw (0,1.8) to[R, l=$R$] (4.4,1.8); \draw (0,0) -- (4.4,0);
+  \pone{0}{1.8} \ptwo{4.4}{1.8}
+\end{tikzpicture}\\[2pt]
+{\small (b) one resistor between the ports}
+\end{minipage}
+
+\medskip
+\textbf{(a) No $\Gm$.} Short both ports. The two shorts and the wires form a loop around the
+resistor. A current can enter port 1 and leave port 2 through the wires: $\ione = -\itwo$ can be
+anything. So $\Gm$ does not exist. $\Rm$ does exist:
+\[
+  \vone = \vtwo = R\,(\ione + \itwo)
+  \qquad\Rightarrow\qquad
+  \Rm = \begin{bmatrix} R & R\\ R & R \end{bmatrix}, \qquad \det \Rm = 0 .
+\]
+$\Rm$ is not invertible, as it must be: if $\Gm$ existed, it would be $\Rm^{-1}$.
+
+\textbf{(b) No $\Rm$.} Open both ports. Nothing connects the top terminals to the bottom
+ones, so $\vone = \vtwo$ can be any value. So $\Rm$ does not exist. $\Gm$ does exist:
+\[
+  \ione = -\itwo = \frac{\vone - \vtwo}{R}
+  \qquad\Rightarrow\qquad
+  \Gm = \frac1R\begin{bmatrix} 1 & -1\\ -1 & 1 \end{bmatrix}, \qquad \det \Gm = 0 .
+\]
+
+\textbf{(c) No $\Tm$: two separate resistors (Example 14.1).} Make port 2 dead: $\vtwo = 0$ and
+$\itwo = 0$. The $2\ohm$ resistor at port 1 does not notice: any $\ione$ with $\vone = 2\,\ione$ is
+still possible. So $\Tm$ does not exist. In words: port 2 knows nothing about port 1, so port 1
+cannot be written in terms of port 2.
+
+The ideal transformer (Example 14.5) has neither $\Rm$ nor $\Gm$, but $\Hm$, $\Hm'$ and $\Tm$
+exist. Cases (a) and (b) both have $\Tm$: $\left[\begin{smallmatrix} 1 & 0\\ 1/R & 1 \end{smallmatrix}\right]$
+and $\left[\begin{smallmatrix} 1 & R\\ 0 & 1 \end{smallmatrix}\right]$.
+
+\subsection{From one matrix to another}
+
+When one matrix is known, the others follow by solving its two equations for the other
+variables. Each step divides by one number, and that number must not be zero. For example,
+$\Tm$ from $\Rm$: the second row $\vtwo = r_{21}\,\ione + r_{22}\,\itwo$ gives
+\[
+  \ione = \frac{1}{r_{21}}\,\vtwo + \frac{r_{22}}{r_{21}}\,(-\itwo)
+  \qquad\text{(needs } r_{21} \neq 0\text{)},
+\]
+and the first row then gives $\vone$. The result is
+\[
+  \Tm = \frac{1}{r_{21}} \begin{bmatrix} r_{11} & \det \Rm\\ 1 & r_{22} \end{bmatrix} .
+\]
+The other cases work the same way:
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{@{}>{\raggedright}p{2.9cm} >{\raggedright}p{2.2cm} >{\raggedright\arraybackslash}p{7.2cm}@{}}
+\toprule
+\textbf{Wanted} & \textbf{Needs} & \textbf{If it fails}\\
+\midrule
+$\Gm = \Rm^{-1}$ & $\det \Rm \neq 0$ & with both ports shorted a current can still flow (case a)\\
+$\Hm$ from $\Rm$ & $r_{22} \neq 0$ & with port 1 open, port 2 is a short: $\vtwo$ cannot be chosen\\
+$\Hm'$ from $\Rm$ & $r_{11} \neq 0$ & with port 2 open, port 1 is a short: $\vone$ cannot be chosen\\
+$\Hm' = \Hm^{-1}$ & $\det \Hm \neq 0$ & $\vone$ and $\itwo$ cannot both be chosen freely\\
+$\Tm$ from $\Rm$ & $r_{21} \neq 0$ & port 1 has no effect on port 2 (case c)\\
+$\Tm$ from $\Gm$ & $g_{21} \neq 0$ & port 1 has no effect on port 2\\
+\bottomrule
+\end{tabular}
+\end{center}
+The formulas:
+\[
+  \Hm = \frac{1}{r_{22}} \begin{bmatrix} \det \Rm & r_{12}\\ -r_{21} & 1 \end{bmatrix}, \qquad
+  \Hm' = \frac{1}{r_{11}} \begin{bmatrix} 1 & -r_{12}\\ r_{21} & \det \Rm \end{bmatrix}, \qquad
+  \Tm = -\frac{1}{g_{21}} \begin{bmatrix} g_{22} & 1\\ \det \Gm & g_{11} \end{bmatrix} .
+\]
+Check with Example 14.2: $\Rm = \left[\begin{smallmatrix} 3 & 1\\ -1 & 1 \end{smallmatrix}\right]$,
+$\det \Rm = 4$, $r_{22} = 1$, so $\Hm = \left[\begin{smallmatrix} 4 & 1\\ 1 & 1 \end{smallmatrix}\right]$,
+as found before. And $r_{21} = -1 \neq 0$, so $\Tm$ exists:
+$\Tm = -\left[\begin{smallmatrix} 3 & 4\\ 1 & 1 \end{smallmatrix}\right]$.
 
 %==============================================================
 \section{Measuring a two-port}
@@ -990,6 +1146,7 @@ resistance $\Rm$ & $[\,\vone \ \vtwo\,]^T = \Rm\,[\,\ione \ \itwo\,]^T$ & KVL, o
 conductance $\Gm$ & $[\,\ione \ \itwo\,]^T = \Gm\,[\,\vone \ \vtwo\,]^T$ & short-circuit tests; $\Gm = \Rm^{-1}$ when both exist\\
 hybrid $\Hm$, $\Hm'$ & $[\,\vone \ \itwo\,]^T = \Hm\,[\,\ione \ \vtwo\,]^T$ & port 2 shorted, then port 1 open; $\Hm' = \Hm^{-1}$\\
 transmission $\Tm$ & $[\,\vone \ \ione\,]^T = \Tm\,[\,\vtwo \ {-\itwo}\,]^T$ & port 1 in terms of port 2\\
+existence & set both inputs to zero & exists if all port variables are then forced to zero\\
 power & $P_N = \vone\,\ione + \vtwo\,\itwo$ & passive if $P_N \geq 0$ for all port variables\\
 \bottomrule
 \end{tabular}

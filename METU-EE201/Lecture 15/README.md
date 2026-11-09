@@ -5,7 +5,7 @@ Lecture notes and slides for the fifteenth lecture of EE201 (Section 2, Fall 202
 | File | What it is |
 |---|---|
 | `EE201_Lecture_15.tex` | Handout / lecture notes (article, 13 pages). Self-contained: one nonlinear resistor and the load line, a nonlinear resistor in a larger linear circuit, the ideal diode and its series/parallel connections, piecewise-linear circuits (analysis and synthesis), linear time-varying circuits, a summary. Eight worked examples, each with the problem in a box and a step-by-step solution below it. |
-| `EE201_Lecture_15_slides.tex` | Beamer deck (52 slides, 87 PDF pages) for the lecture itself — visual, low text. |
+| `EE201_Lecture_15_slides.tex` | Beamer deck (53 slides, 80 PDF pages) for the lecture itself — visual, low text. |
 | `build.sh` | Compiles both, removes auxiliary files, opens the PDFs. |
 
 ## Compiling
@@ -47,7 +47,12 @@ and the substitution theorem is stated where it is used.
    parallel (add vertically). First only the simple series and parallel connections (Cases I
    and II), then the assumed-state method on a simple example. Example 15.3: a diode, 2 Ω and
    4 V in series: i = (v−4)/2 for v ≥ 4 V, 0 for v < 4 V, also graphically. Then the other
-   connections one by one (Cases III–VII) and the ideal Zener diode
+   connections one by one (Cases III–VII; III and IV with R₁ = R₂ = R) and the ideal Zener diode. Voltage- or
+   current-controlled (a short reminder): i = g(v) passes the vertical line test, v = r(i) the horizontal one; a
+   resistor is both, a current source voltage-controlled, a voltage source current-controlled,
+   the ideal diode neither; Case I is voltage-controlled, Case II current-controlled. Why it
+   matters: node vs. mesh analysis, series/parallel addition, the assumed-state method, the
+   number of operating points
 4. **Piecewise-linear circuits** — 2ⁿ state combinations for n diodes. Example 15.4 (two
    diodes): 1 Ω in series with [D₁ + 2 V] ∥ 2 Ω ∥ [reversed D₂ + 1 V]: i = v − 2 for v ≥ 3 V,
    v/3 for −1.5 ≤ v ≤ 3 V, v + 1 for v ≤ −1.5 V; both ON is impossible; also graphically.
@@ -65,4 +70,4 @@ Then a summary table (situation → what to do).
 Right after the review comes the roadmap: a road with five stations (load line, substitution,
 ideal diode, piecewise-linear circuits, time-varying). A roadmap slide opens each part.
 Circuits and questions come first and the answers on later pages; no "Question" labels.
-Each step is an ordinary extra PDF page; that is why the deck has 52 slides but 87 pages.
+Each step is an ordinary extra PDF page; that is why the deck has 53 slides but 80 pages.

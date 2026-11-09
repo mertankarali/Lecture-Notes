@@ -4,7 +4,7 @@ Lecture notes and slides for the fourteenth lecture of EE201 (Section 2, Fall 20
 
 | File | What it is |
 |---|---|
-| `EE201_Lecture_14.tex` | Handout / lecture notes (article, 14 pages). Self-contained: port variables, the resistance, conductance, hybrid and transmission matrices, measuring a two-port, the power of a two-port, a summary. Eight worked examples (and three in the appendix), each with the problem in a box and a step-by-step solution below it. |
+| `EE201_Lecture_14.tex` | Handout / lecture notes (article, 16 pages). Self-contained: port variables, the resistance, conductance, hybrid and transmission matrices, when a matrix exists, measuring a two-port, the power of a two-port, a summary. Eight worked examples (and three in the appendix), each with the problem in a box and a step-by-step solution below it. |
 | `EE201_Lecture_14_slides.tex` | Beamer deck (33 slides, 39 PDF pages) for the lecture itself — visual, low text. |
 | `build.sh` | Compiles both, removes auxiliary files, opens the PDFs. |
 
@@ -40,10 +40,16 @@ interconnections of two-ports are not covered.
 3. **Conductance matrix** — i = G v from short-circuit tests; G = R⁻¹ when both exist.
    Example 14.3: G of Example 14.2, G = [1/4, −1/4; 1/4, 3/4] S
 4. **Hybrid matrices** — [v₁ i₂]ᵀ = H [i₁ v₂]ᵀ, H′ = H⁻¹. Example 14.4: the same circuit
-   gives H = [4, 1; 1, 1]. Example 14.5: the ideal transformer,
+   gives H = [4, 1; 1, 1] and H′ = H⁻¹ = [1/3, −1/3; −1/3, 4/3], checked by its own tests (port 2 open, port 1 shorted). Example 14.5: the ideal transformer,
    H = [0, n; −n, 0], with no R and no G
 5. **Transmission matrix** — [v₁ i₁]ᵀ = T [v₂ −i₂]ᵀ. Example 14.6: the ideal transformer,
    T = diag(N₁/N₂, N₂/N₁)
+
+When does a matrix exist? Set both of its inputs to zero; it exists if all port variables are
+then forced to zero (R: both ports open; G: both shorted; T: port 2 with no voltage and no
+current). Three cases: one resistor across both ports (no G, det R = 0), one resistor between
+the ports (no R, det G = 0), two separate resistors (no T). From one matrix to another: G needs
+det R ≠ 0, H needs r₂₂ ≠ 0, H′ needs r₁₁ ≠ 0 (or det H ≠ 0), T needs r₂₁ ≠ 0 (or g₂₁ ≠ 0).
 6. **Power of a two-port** — P_N = v₁ i₁ + v₂ i₂ (from Tellegen's theorem); passive if
    P_N ≥ 0 for all port variables, active otherwise. Example 14.8: the ideal transformer has
    P_N = 0, so it is passive

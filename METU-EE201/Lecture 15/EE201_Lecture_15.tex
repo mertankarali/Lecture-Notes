@@ -562,16 +562,33 @@
 \newcommand{\casecktg}{%
         \draw (0,3.8) -- (0,3.5) -- (0.5,3.5) to[D*] (0.5,1.9);
         \draw (0.5,3.5) -- (1.5,3.5) to[american current source, l=$\Icol{I}$] (1.5,1.9) -- (0.5,1.9);
-        \draw (1.0,1.9) -- (1.0,1.6); \draw (1.0,0.4) to[american voltage source, l_=$\Vcol{E}$] (1.0,1.6);
+        \draw (1.0,1.9) -- (1.0,1.6); \draw (1.0,1.6) to[american voltage source, l=$\Vcol{E}$] (1.0,0.4);   % + at the top
         \draw (1.0,0.4) -- (1.0,0.3) -- (0,0.3) -- (0,0);
         \termtb{3.8}}
 \newcommand{\caseresa}{\draw[crv] (-1.2,0) -- (0,0) -- (1.1,0.88);}
 \newcommand{\caseresb}{\draw[crv] (-1.1,-0.88) -- (0,0) -- (0,1.0);}
-\newcommand{\caseresc}{\draw[crv] (-1.0,-0.8) -- (0,0) -- (1.2,0.45);}
-\newcommand{\caseresd}{\draw[crv] (-1.2,-0.6) -- (0,0) -- (0.75,1.06);}
+\newcommand{\caseresc}{\draw[crv] (-1.0,-0.8) -- (0,0) -- (1.2,0.48);}
+\newcommand{\caseresd}{\draw[crv] (-1.2,-0.6) -- (0,0) -- (1.0,1.0);}
 \newcommand{\caserese}{\draw[crv] (-1.2,0) -- (0.6,0) -- (0.6,1.0); \node[font=\tiny, below] at (0.6,0) {$E$};}
 \newcommand{\caseresf}{\draw[crv] (-1.2,0.5) -- (0,0.5) -- (0,1.05); \node[font=\tiny, anchor=north west] at (0,0.5) {$I$};}
-\newcommand{\caseresg}{\draw[crv] (-1.2,0.5) -- (-0.6,0.5) -- (-0.6,1.05); \node[font=\tiny, below] at (-0.6,0) {$-E$};}
+\newcommand{\caseresg}{\draw[crv] (-1.2,0.5) -- (0.6,0.5) -- (0.6,1.05); \node[font=\tiny, below] at (0.6,0) {$E$};}
+%  Voltage- or current-controlled: test lines (dashed grey) and hit points
+\tikzset{tln/.style={black!55, dashed, thin}, hit/.style={circle, fill=black, inner sep=0pt, minimum size=3.6pt}}
+%  An N-shaped curve i = v^3 - 0.75 v (voltage-controlled, not current-controlled)
+\newcommand{\Ncurve}{\draw[crv, domain=-1.15:1.15, samples=60, smooth] plot (\x,{\x*\x*\x - 0.75*\x});}
+%  #1 = 1: vertical test line (one hit); 2: horizontal test line (three hits)
+\newcommand{\Ntest}[1]{%
+  \pframe{0}{}
+  \ifnum#1=1
+    \draw[tln] (0.6,-1.05) -- (0.6,1.05); \Ncurve \node[hit] at (0.6,-0.234) {};
+  \else
+    \draw[tln] (-1.25,0.12) -- (1.25,0.12); \Ncurve
+    \foreach \x in {0.937,-0.771,-0.166} \node[hit] at (\x,0.12) {};
+  \fi}
+%  Small curves for the classification
+\newcommand{\cR}{\draw[crv] (-1.1,-0.85) -- (1.1,0.85);}
+\newcommand{\cI}{\draw[crv] (-1.2,0.55) -- (1.2,0.55); \node[font=\tiny, anchor=south east] at (0,0.55) {$I$};}
+\newcommand{\cE}{\draw[crv] (0.6,-1.0) -- (0.6,1.0); \node[font=\tiny, anchor=north west] at (0.6,0) {$E$};}
 \begin{document}
 
 %-------------------- title block -----------------------------
@@ -622,7 +639,7 @@ time-varying} circuits.
 \end{minipage}\hfill
 \begin{minipage}[c]{0.54\linewidth}
 A source $E$ and a resistor $R$ drive a nonlinear resistor with the characteristic
-$\Icol{i} = g(\Vcol{v})$ (a voltage-controlled resistor). KVL gives
+$\Icol{i} = g(\Vcol{v})$ (a voltage-controlled resistor, see Section~\ref{sec:control}). KVL gives
 \[
   E = R\,\Icol{i} + \Vcol{v} .
 \]
@@ -884,6 +901,47 @@ the line of $R$; in parallel, vertically.
 \medskip\noindent
 \casecell{\casecktb}{\caseresb}{II: $R$ and a diode in parallel}{$\Vcol{v} < 0$: $\Icol{i} = \Vcol{v}/R$; $\Vcol{v} = 0$: $\Icol{i} \geq 0$}
 
+\subsection{Reminder: voltage-controlled or current-controlled}\label{sec:control}
+
+Recall: a characteristic is a curve in the $\Vcol{v}$--$\Icol{i}$ plane.
+\begin{itemize}[itemsep=3pt]
+  \item \textbf{Voltage-controlled:} $\Icol{i} = g(\Vcol{v})$. Each \emph{vertical} line meets the
+        curve at most once.
+  \item \textbf{Current-controlled:} $\Vcol{v} = r(\Icol{i})$. Each \emph{horizontal} line meets
+        the curve at most once.
+\end{itemize}
+A curve can pass both tests, one of them, or neither:
+\begin{center}
+\small
+\newcommand{\ccell}[3]{\begin{tikzpicture}[scale=0.62] \pframe{0}{} #1 \end{tikzpicture}\\[1pt] #2\\ \textbf{#3}}
+\begin{tabular}{@{}>{\centering}p{3.6cm} >{\centering}p{3.6cm} >{\centering\arraybackslash}p{3.6cm}@{}}
+\shortstack{\ccell{\cR}{resistor}{both}} &
+\shortstack{\ccell{\cI}{current source}{voltage-controlled}} &
+\shortstack{\ccell{\cE}{voltage source}{current-controlled}}\\[12pt]
+\shortstack{\ccell{\pD}{ideal diode}{neither}} &
+\shortstack{\ccell{\caseresa}{Case I: $R$ in series}{voltage-controlled}} &
+\shortstack{\ccell{\caseresb}{Case II: $R$ in parallel}{current-controlled}}
+\end{tabular}
+\end{center}
+The ideal diode alone is neither. A resistor in series removes its vertical piece (Case I); a
+resistor in parallel removes its horizontal piece (Case II).
+
+\needspace{6\baselineskip}\noindent\textbf{Why it matters.}
+\begin{itemize}[itemsep=3pt]
+  \item \textbf{Which analysis.} If $\Icol{i} = g(\Vcol{v})$, the current goes straight into KCL:
+        node analysis fits. If $\Vcol{v} = r(\Icol{i})$, the voltage goes straight into KVL: mesh
+        analysis fits. Example~15.1 uses $\Icol{i} = g(\Vcol{v})$ for this reason.
+  \item \textbf{Series and parallel.} In series, current-controlled elements give
+        $\Vcol{v} = r_1(\Icol{i}) + r_2(\Icol{i})$. In parallel, voltage-controlled elements give
+        $\Icol{i} = g_1(\Vcol{v}) + g_2(\Vcol{v})$. A curve that is neither is added point by point,
+        as in Cases I and II.
+  \item \textbf{The ideal diode.} It is neither, so no single formula describes it. This is why
+        we assume its state (ON or OFF) and check the result.
+  \item \textbf{The operating point.} A curve that never goes down (a resistor, a diode, Cases I
+        and II) meets a load line at most once. Several operating points need a curve that goes
+        down somewhere, as in the figure with many operating points.
+\end{itemize}
+
 \subsection{Assume the state of the diode}
 
 A diode is either ON (a short) or OFF (an open). With a state assumed, the circuit is linear.
@@ -965,13 +1023,14 @@ horizontally shifts the curve right by $4\V$: the same result. \ \yes
 \subsection{More connections}
 
 The same reasoning gives the characteristics of the connections below. In each one, find the
-piece with the diode ON, the piece with it OFF, and the breakpoint.
+piece with the diode ON, the piece with it OFF, and the breakpoint. For simplicity, Cases III
+and IV use two equal resistors: $R_1 = R_2 = R$.
 
 \medskip\noindent
-\casecell{\casecktc}{\caseresc}{III: reversed diode $\parallel R_1$, then $R_2$}{slope $\frac{1}{R_1 + R_2}$ for $\Icol{i} > 0$, $\frac{1}{R_2}$ for $\Icol{i} < 0$}
+\casecell{\casecktc}{\caseresc}{III: reversed diode $\parallel R_1$, then $R_2$}{slope $\frac{1}{2R}$ for $\Icol{i} > 0$, $\frac{1}{R}$ for $\Icol{i} < 0$}
 
 \medskip\noindent
-\casecell{\casecktd}{\caseresd}{IV: diode and $R_1$, in parallel with $R_2$}{slope $\frac{1}{R_1} + \frac{1}{R_2}$ for $\Vcol{v} > 0$, $\frac{1}{R_2}$ for $\Vcol{v} < 0$}
+\casecell{\casecktd}{\caseresd}{IV: diode and $R_1$, in parallel with $R_2$}{slope $\frac{2}{R}$ for $\Vcol{v} > 0$, $\frac{1}{R}$ for $\Vcol{v} < 0$}
 
 \medskip\noindent
 \casecell{\caseckte}{\caserese}{V: a diode and a source $E$ in series}{the diode curve shifted right by $E$}
@@ -980,7 +1039,7 @@ piece with the diode ON, the piece with it OFF, and the breakpoint.
 \casecell{\casecktf}{\caseresf}{VI: a diode and a source $I$ in parallel}{the diode curve shifted up by $I$}
 
 \medskip\noindent
-\casecell{\casecktg}{\caseresg}{VII: Case VI in series with $E$ ($+$ at the bottom)}{Case VI shifted left by $E$}
+\casecell{\casecktg}{\caseresg}{VII: Case VI in series with $E$ ($+$ at the top)}{Case VI shifted right by $E$}
 
 \medskip
 A voltage source in series shifts a curve horizontally; a current source in parallel shifts it
@@ -1316,6 +1375,7 @@ one nonlinear resistor & solve $E = R\,g(\Vcol{v}) + \Vcol{v}$, or intersect the
 a linear rest & Th\'evenin equivalent, operating point, then the substitution theorem\\
 ideal diodes & assume ON ($\Vcol{v_D} = 0$, $\Icol{i_D} \geq 0$) or OFF ($\Icol{i_D} = 0$, $\Vcol{v_D} < 0$), solve, check\\
 series, parallel connections & add the curves horizontally (voltages) or vertically (currents)\\
+voltage- or current-controlled & vertical line test: $\Icol{i} = g(\Vcol{v})$, into KCL; horizontal line test: $\Vcol{v} = r(\Icol{i})$, into KVL\\
 a given characteristic & split it into known pieces; each breakpoint needs a diode; not unique\\
 linear time-varying resistors & $\Vcol{v} = \mathbf{k}(t)\,\mathbf{u}$: superposition still holds\\
 \bottomrule

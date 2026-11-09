@@ -527,16 +527,16 @@
 \newcommand{\casecktg}{%
         \draw (0,3.8) -- (0,3.5) -- (0.5,3.5) to[D*] (0.5,1.9);
         \draw (0.5,3.5) -- (1.5,3.5) to[american current source, l=$\Icol{I}$] (1.5,1.9) -- (0.5,1.9);
-        \draw (1.0,1.9) -- (1.0,1.6); \draw (1.0,0.4) to[american voltage source, l_=$\Vcol{E}$] (1.0,1.6);
+        \draw (1.0,1.9) -- (1.0,1.6); \draw (1.0,1.6) to[american voltage source, l=$\Vcol{E}$] (1.0,0.4);   % + at the top
         \draw (1.0,0.4) -- (1.0,0.3) -- (0,0.3) -- (0,0);
         \termtb{3.8}}
 \newcommand{\caseresa}{\draw[crv] (-1.2,0) -- (0,0) -- (1.1,0.88);}
 \newcommand{\caseresb}{\draw[crv] (-1.1,-0.88) -- (0,0) -- (0,1.0);}
-\newcommand{\caseresc}{\draw[crv] (-1.0,-0.8) -- (0,0) -- (1.2,0.45);}
-\newcommand{\caseresd}{\draw[crv] (-1.2,-0.6) -- (0,0) -- (0.75,1.06);}
+\newcommand{\caseresc}{\draw[crv] (-1.0,-0.8) -- (0,0) -- (1.2,0.48);}
+\newcommand{\caseresd}{\draw[crv] (-1.2,-0.6) -- (0,0) -- (1.0,1.0);}
 \newcommand{\caserese}{\draw[crv] (-1.2,0) -- (0.6,0) -- (0.6,1.0); \node[font=\tiny, below] at (0.6,0) {$E$};}
 \newcommand{\caseresf}{\draw[crv] (-1.2,0.5) -- (0,0.5) -- (0,1.05); \node[font=\tiny, anchor=north west] at (0,0.5) {$I$};}
-\newcommand{\caseresg}{\draw[crv] (-1.2,0.5) -- (-0.6,0.5) -- (-0.6,1.05); \node[font=\tiny, below] at (-0.6,0) {$-E$};}
+\newcommand{\caseresg}{\draw[crv] (-1.2,0.5) -- (0.6,0.5) -- (0.6,1.05); \node[font=\tiny, below] at (0.6,0) {$E$};}
 \title{Lecture 15: Nonlinear Resistive Circuits}
 \subtitle{EE201 -- Circuit Theory I}
 \author{M. Mert Ankaral{\i}}
@@ -614,6 +614,25 @@
     \mbox{}
     \vfill
   \end{frame}}
+%  Voltage- or current-controlled: test lines (dashed grey) and hit points
+\tikzset{tln/.style={black!55, dashed, thin}, hit/.style={circle, fill=black, inner sep=0pt, minimum size=3.6pt}}
+%  An N-shaped curve i = v^3 - 0.75 v (voltage-controlled, not current-controlled)
+\newcommand{\Ncurve}{\draw[crv, domain=-1.15:1.15, samples=60, smooth] plot (\x,{\x*\x*\x - 0.75*\x});}
+%  #1 = 1: vertical test line (one hit); 2: horizontal test line (three hits)
+\newcommand{\Ntest}[1]{%
+  \pframe{0}{}
+  \ifnum#1=1
+    \draw[tln] (0.6,-1.05) -- (0.6,1.05); \Ncurve \node[hit] at (0.6,-0.234) {};
+  \else
+    \draw[tln] (-1.25,0.12) -- (1.25,0.12); \Ncurve
+    \foreach \x in {0.937,-0.771,-0.166} \node[hit] at (\x,0.12) {};
+  \fi}
+%  Small curves for the classification
+\newcommand{\cR}{\draw[crv] (-1.1,-0.85) -- (1.1,0.85);}
+\newcommand{\cI}{\draw[crv] (-1.2,0.55) -- (1.2,0.55); \node[font=\tiny, anchor=south east] at (0,0.55) {$I$};}
+\newcommand{\cE}{\draw[crv] (0.6,-1.0) -- (0.6,1.0); \node[font=\tiny, anchor=north west] at (0.6,0) {$E$};}
+
+\newcommand{\scell}[3]{\begin{tikzpicture}[scale=0.44] \pframe{0}{} #1 \end{tikzpicture}\\[1pt] {\small #2}\\[1pt] \onslide<2->{\small\textbf{#3}}}
 \begin{document}
 
 %--------------------------------------------------------------
@@ -665,7 +684,7 @@
       \begin{itemize}\itemsep8pt
         \item Diodes, lamps, transistors: nonlinear
         \item Node and mesh analysis: linear equations
-        \item<2-> Now: one nonlinear equation, or a few linear pieces
+        \item Now: one nonlinear equation, or a few linear pieces
       \end{itemize}
     \end{column}
   \end{columns}
@@ -684,12 +703,10 @@
     \end{column}
     \begin{column}{0.54\textwidth}
       \textbf{KVL:} \ $E = R\,\Icol{i} + \Vcol{v}$\\[12pt]
-      \onslide<2->{%
       \textbf{Algebraic solution}\\[4pt]
       Solve $E = R\,g(\Vcol{v}) + \Vcol{v}$ for $\Vcol{v_o}$\\[4pt]
-      Then $\Icol{i_o} = g(\Vcol{v_o})$\\[12pt]}
-      \onslide<3->{%
-      Often $g$ is only a measured curve}
+      Then $\Icol{i_o} = g(\Vcol{v_o})$\\[12pt]
+      Often $g$ is only a measured curve
     \end{column}
   \end{columns}
 \end{frame}
@@ -1022,6 +1039,30 @@
 \end{frame}
 
 %--------------------------------------------------------------
+\begin{frame}{Reminder: voltage- or current-controlled}
+  
+  \begin{center}
+    \small
+    \begin{tabular}{@{}l l l l@{}}
+      \textbf{voltage-controlled} & $\Icol{i} = g(\Vcol{v})$ & vertical lines: once & $\to$ KCL, node analysis\\[2pt]
+      \textbf{current-controlled} & $\Vcol{v} = r(\Icol{i})$ & horizontal lines: once & $\to$ KVL, mesh analysis\\[2pt]
+      \textbf{neither} & & & $\to$ assume ON or OFF
+    \end{tabular}
+  \end{center}
+  \vspace{-4pt}
+  \begin{center}
+  \begin{tabular}{@{}>{\centering}p{3.3cm} >{\centering}p{3.3cm} >{\centering\arraybackslash}p{3.3cm}@{}}
+    \shortstack{\scell{\cR}{resistor}{both}} &
+    \shortstack{\scell{\cI}{current source}{voltage-controlled}} &
+    \shortstack{\scell{\cE}{voltage source}{current-controlled}}\\[0pt]
+    \shortstack{\scell{\pD}{ideal diode}{neither}} &
+    \shortstack{\scell{\caseresa}{Case I: $R$ in series}{voltage-controlled}} &
+    \shortstack{\scell{\caseresb}{Case II: $R$ in parallel}{current-controlled}}
+  \end{tabular}
+  \end{center}
+\end{frame}
+
+%--------------------------------------------------------------
 \begin{frame}{Example 15.3: a diode, a resistor and a source}
   \vfill
   \begin{columns}[c,onlytextwidth]
@@ -1033,10 +1074,9 @@
     \end{column}
     \begin{column}{0.58\textwidth}
       $\Icol{i}$ as a function of $\Vcol{v}$ \ $= \ ?$\\[14pt]
-      \onslide<2->{%
       \textbf{Method:} assume a state for the diode\\[4pt]
       Solve the linear circuit\\[4pt]
-      Keep the result where the assumption holds}
+      Keep the result where the assumption holds
     \end{column}
   \end{columns}
   \vfill
@@ -1125,9 +1165,10 @@
     \begin{column}{0.78\textwidth}
       \centering
       \begin{tikzpicture}[scale=0.85]
-        \threeplots{\draw[crv] (0,-1.0) -- (0,0) -- (1.2,0.85);}{\pR{1.0}}{\onslide<2->{\draw[crv] (-1.0,-0.8) -- (0,0) -- (1.2,0.45);}}{\shortstack{$+$\\[1pt]{\tiny add $v$}}}{reversed diode $\parallel R_1$}{$R_2$}{series}
+        \threeplots{\draw[crv] (0,-1.0) -- (0,0) -- (1.2,0.96);}{\pR{1.0}}{\onslide<2->{\draw[crv] (-1.0,-0.8) -- (0,0) -- (1.2,0.48);}}{\shortstack{$+$\\[1pt]{\tiny add $v$}}}{reversed diode $\parallel R_1$}{$R_2$}{series}
       \end{tikzpicture}\\[10pt]
-      \onslide<2->{$\Icol{i} > 0$: diode OFF, \ slope $\dfrac{1}{R_1 + R_2}$; \quad $\Icol{i} < 0$: diode ON, \ slope $\dfrac{1}{R_2}$}
+      {\small For simplicity, $R_1 = R_2 = R$.}\\[6pt]
+      \onslide<2->{$\Icol{i} > 0$: diode OFF, \ slope $\dfrac{1}{2R}$; \quad $\Icol{i} < 0$: diode ON, \ slope $\dfrac{1}{R}$}
     \end{column}
   \end{columns}
 \end{frame}
@@ -1144,9 +1185,10 @@
     \begin{column}{0.78\textwidth}
       \centering
       \begin{tikzpicture}[scale=0.85]
-        \threeplots{\draw[crv] (-1.2,0) -- (0,0) -- (1.1,0.9);}{\draw[crv] (-1.2,-0.6) -- (1.2,0.6);}{\onslide<2->{\draw[crv] (-1.2,-0.6) -- (0,0) -- (0.75,1.06);}}{\shortstack{$+$\\[1pt]{\tiny add $i$}}}{diode, $R_1$ in series}{$R_2$}{parallel}
+        \threeplots{\draw[crv] (-1.2,0) -- (0,0) -- (1.2,0.6);}{\draw[crv] (-1.2,-0.6) -- (1.2,0.6);}{\onslide<2->{\draw[crv] (-1.2,-0.6) -- (0,0) -- (1.0,1.0);}}{\shortstack{$+$\\[1pt]{\tiny add $i$}}}{diode, $R_1$ in series}{$R_2$}{parallel}
       \end{tikzpicture}\\[10pt]
-      \onslide<2->{$\Vcol{v} > 0$: slope $\dfrac{1}{R_1} + \dfrac{1}{R_2}$; \quad $\Vcol{v} < 0$: slope $\dfrac{1}{R_2}$}
+      {\small For simplicity, $R_1 = R_2 = R$.}\\[6pt]
+      \onslide<2->{$\Vcol{v} > 0$: slope $\dfrac{2}{R}$; \quad $\Vcol{v} < 0$: slope $\dfrac{1}{R}$}
     \end{column}
   \end{columns}
 \end{frame}
@@ -1201,9 +1243,9 @@
     \begin{column}{0.78\textwidth}
       \centering
       \begin{tikzpicture}[scale=0.85]
-        \threeplots{\draw[crv] (-1.2,0.5) -- (0,0.5) -- (0,1.05);}{\draw[crv] (-0.6,-1.0) -- (-0.6,1.0); \node[font=\tiny, below left] at (-0.6,0) {$-E$};}{\onslide<2->{\draw[crv] (-1.2,0.5) -- (-0.6,0.5) -- (-0.6,1.05); \node[font=\tiny, below] at (-0.6,0) {$-E$};}}{\shortstack{$+$\\[1pt]{\tiny add $v$}}}{Case VI}{source}{series}
+        \threeplots{\draw[crv] (-1.2,0.5) -- (0,0.5) -- (0,1.05);}{\draw[crv] (0.6,-1.0) -- (0.6,1.0); \node[font=\tiny, below right] at (0.6,0) {$E$};}{\onslide<2->{\draw[crv] (-1.2,0.5) -- (0.6,0.5) -- (0.6,1.05); \node[font=\tiny, below] at (0.6,0) {$E$};}}{\shortstack{$+$\\[1pt]{\tiny add $v$}}}{Case VI}{source}{series}
       \end{tikzpicture}\\[10pt]
-      \onslide<2->{The source has $+$ at the bottom: \ shifted left by $E$}
+      \onslide<2->{The source has $+$ at the top: \ shifted right by $E$}
     \end{column}
   \end{columns}
 \end{frame}
@@ -1253,10 +1295,9 @@
     \end{column}
     \begin{column}{0.48\textwidth}
       $\Icol{i}$ as a function of $\Vcol{v}$ \ $= \ ?$\\[14pt]
-      \onslide<2->{%
       Two diodes: four combinations\\[4pt]
       One linear circuit for each\\[4pt]
-      Keep each result where it is valid}
+      Keep each result where it is valid
     \end{column}
   \end{columns}
   \vfill
@@ -1396,9 +1437,9 @@
   \end{center}
   \vfill
   \begin{itemize}\itemsep8pt
-    \item<2-> Slope $\tfrac14\Sie$ everywhere: \ a $4\ohm$ resistor
-    \item<2-> Extra slope $\tfrac34 - \tfrac14 = \tfrac12\Sie$ after $2\V$: \ Case I with $2\ohm$, shifted by $2\V$
-    \item<2-> Currents add: \ the two in parallel
+    \item Slope $\tfrac14\Sie$ everywhere: \ a $4\ohm$ resistor
+    \item Extra slope $\tfrac34 - \tfrac14 = \tfrac12\Sie$ after $2\V$: \ Case I with $2\ohm$, shifted by $2\V$
+    \item Currents add: \ the two in parallel
   \end{itemize}
   \vfill
 \end{frame}
@@ -1416,9 +1457,8 @@
       Check at $\Vcol{v} = 4\V$:\\[4pt]
       $4\ohm$: $1\A$; \ branch: $\dfrac{4 - 2}{2} = 1\A$\\[4pt]
       $\Icol{i} = 2\A$ \ \yes\\[14pt]
-      \onslide<2->{%
       The order inside the branch does not matter:\\[2pt]
-      the circuit is \alert{not unique}}
+      the circuit is \alert{not unique}
     \end{column}
   \end{columns}
 \end{frame}
@@ -1478,9 +1518,8 @@
       Bottom: B, \ reversed diode $\parallel 2\ohm \parallel 1\A$\\[6pt]
       A and B in series\\[6pt]
       Check at $\Vcol{v} = 2\V$: \ $\Icol{i} = 1 + \tfrac22 = 2\A$ \ \yes\\[12pt]
-      \onslide<2->{%
       Another circuit may have the same characteristic:\\[2pt]
-      the circuit is \alert{not unique}}
+      the circuit is \alert{not unique}
     \end{column}
   \end{columns}
 \end{frame}
@@ -1543,7 +1582,7 @@
       \textbf{KCL:} \ $\dfrac{\Vcol{v} - \Vcol{v_s}}{R_1} - \Icol{i_s} + \dfrac{\Vcol{v}}{R_2} = 0$\\[12pt]
       \onslide<2->{%
       $\Vcol{v} = \underbrace{\dfrac{R_2}{R_1 + R_2}}_{k_1(t)}\Vcol{v_s} + \underbrace{\dfrac{R_1R_2}{R_1 + R_2}}_{k_2(t)}\Icol{i_s}$\\[12pt]}
-      \onslide<3->{%
+      \onslide<2->{%
       $\Vcol{v} = \mathbf{k}(t)\,\mathbf{u}$: \ superposition still holds}
     \end{column}
   \end{columns}
