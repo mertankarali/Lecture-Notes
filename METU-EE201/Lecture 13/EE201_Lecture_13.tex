@@ -928,6 +928,18 @@ KCL at the middle node: $\Icol{i_x} = \Icol{i_2} - 4$. KVL around the outer loop
   \Icol{i} = \Icol{i_1} + \Icol{i_2} = 1 + 2 = 3\A .
 \]
 
+\solstep{5}{The power of the $10\ohm$ resistor: do not add powers}
+The correct power uses the total current:
+\[
+  P = 10\,\Icol{i}^2 = 10 \cdot 3^2 = 90\W .
+\]
+Adding the powers of the two partial circuits gives the wrong answer:
+\[
+  10\,\Icol{i_1}^2 + 10\,\Icol{i_2}^2 = 10 + 40 = 50\W \neq 90\W .
+\]
+Power is quadratic, not linear: $(\Icol{i_1} + \Icol{i_2})^2 \neq \Icol{i_1}^2 + \Icol{i_2}^2$.
+Superposition gives currents and voltages; find the power from them at the end.
+
 
 \bigskip
 \begin{examplebox}[Example 13.4 --- three experiments]
@@ -1544,7 +1556,7 @@ Then $\Vcol{v_L} = \frac12\,\vth = 6\V$ and $\Icol{i} = 1\A$.
 \midrule
 resistors, dependent sources & a $1\A$ test source: $\Rin = \Vcol{v}/1\A$\\
 a linear circuit & $y = \mathbf{k}\,\mathbf{u}$; \ $y(\alpha\mathbf{u} + \beta\mathbf{w}) = \alpha\,y(\mathbf{u}) + \beta\,y(\mathbf{w})$\\
-several independent sources & superposition; killed $\Vcol{v_s}$: short, killed $\Icol{i_s}$: open; dependent sources stay\\
+several independent sources & superposition; killed $\Vcol{v_s}$: short, killed $\Icol{i_s}$: open; dependent sources stay; never add powers\\
 independent sources inside & $\vth = \voc$, \ $\iN = \isc$, \ $\Rth = \RN = \voc/\isc$ or $\Rin$ with the sources killed\\
 a load $R_L$ to choose & maximum power for $R_L = \Rth$: \ $P_{L,\max} = \vth^2/(4\Rth)$\\
 \bottomrule

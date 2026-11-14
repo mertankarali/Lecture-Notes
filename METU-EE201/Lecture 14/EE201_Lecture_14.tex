@@ -275,6 +275,62 @@
     \vmeter{6.6}{2.0}{0.2}{A}{$\Icol{i_2}$}
     \node[font=\small, text=cvolt, anchor=south] at (6.0,2.05) {$v_2 = 0$};
   \fi}
+%  Reciprocity: a two-port N (LTI resistors) with something at each port.
+%  \rcp{left code}{left label}{right code}{right label}; code 0: voltage source (+ at the top),
+%  1: current source (into the + terminal), 2: short (current shown), 3: open (voltage shown)
+\newcommand{\rcp}[4]{%
+  \draw[elem] (1.6,-0.2) rectangle (3.8,2.2);
+  \node[align=center, font=\small] at (2.7,1.0) {LTI\\ resistors};
+  \draw (1.1,1.8) -- (1.6,1.8); \draw (1.1,0) -- (1.6,0);
+  \draw (3.8,1.8) -- (4.3,1.8); \draw (3.8,0) -- (4.3,0);
+  \ifcase#1
+    \draw (0,1.8) to[american voltage source, l_=#2] (0,0); \draw (0,1.8) -- (1.1,1.8); \draw (0,0) -- (1.1,0);
+  \or
+    \draw (0,0) to[american current source, l=#2] (0,1.8); \draw (0,1.8) -- (1.1,1.8); \draw (0,0) -- (1.1,0);
+  \or
+    \draw (0,1.8) -- (0,0); \draw (0,1.8) -- (1.1,1.8); \draw (0,0) -- (1.1,0);
+    \draw[iar] (0.25,2.08) -- (0.85,2.08); \node[font=\small, anchor=south] at (0.55,2.12) {#2};
+  \or
+    \node[pol] at (1.05,1.45) {$+$}; \node[pol] at (1.05,0.35) {$-$};
+    \node[font=\small, anchor=east] at (1.0,0.9) {#2};
+  \fi
+  \ifcase#3
+    \draw (5.4,1.8) to[american voltage source, l=#4] (5.4,0); \draw (4.3,1.8) -- (5.4,1.8); \draw (4.3,0) -- (5.4,0);
+  \or
+    \draw (5.4,0) to[american current source, l_=#4] (5.4,1.8); \draw (4.3,1.8) -- (5.4,1.8); \draw (4.3,0) -- (5.4,0);
+  \or
+    \draw (5.4,1.8) -- (5.4,0); \draw (4.3,1.8) -- (5.4,1.8); \draw (4.3,0) -- (5.4,0);
+    \draw[iar] (5.15,2.08) -- (4.55,2.08); \node[font=\small, anchor=south] at (4.85,2.12) {#4};
+  \or
+    \node[pol] at (4.35,1.45) {$+$}; \node[pol] at (4.35,0.35) {$-$};
+    \node[font=\small, anchor=west] at (4.4,0.9) {#4};
+  \fi
+  \draw (1.1,1.8) node[ocirc] {}; \draw (1.1,0) node[ocirc] {};
+  \draw (4.3,1.8) node[ocirc] {}; \draw (4.3,0) node[ocirc] {};}
+%  Cascade: two boxes
+\newcommand{\cascade}{%
+  \draw[elem] (1.0,-0.2) rectangle (2.8,2.2); \node[font=\small] at (1.9,1.0) {$\Tm_a$};
+  \draw[elem] (4.2,-0.2) rectangle (6.0,2.2); \node[font=\small] at (5.1,1.0) {$\Tm_b$};
+  \draw (0,1.8) -- (1.0,1.8); \draw (0,0) -- (1.0,0);
+  \draw (2.8,1.8) -- (4.2,1.8); \draw (2.8,0) -- (4.2,0);
+  \draw (6.0,1.8) -- (7.0,1.8); \draw (6.0,0) -- (7.0,0);
+  \fill (3.5,1.8) circle (1.6pt); \fill (3.5,0) circle (1.6pt);
+  \pone{0}{1.8} \ptwo{7.0}{1.8}}
+%  The ladder of the reciprocity example: 1 Ohm series, 2 Ohm shunt, 2 Ohm series
+\newcommand{\ladder}[2]{%  #1: left code, #2: right code (as in \rcp, labels fixed)
+  \draw (1.1,1.8) to[R, l=$1\ohm$] (2.6,1.8) to[R, l=$2\ohm$] (4.3,1.8);
+  \draw (2.6,1.8) to[R, l=$2\ohm$] (2.6,0); \fill (2.6,1.8) circle (1.6pt); \fill (2.6,0) circle (1.6pt);
+  \draw (1.1,0) -- (4.3,0);
+  \ifcase#1 \draw (0,1.8) to[american voltage source, l_=$\Vcol{8\V}$] (0,0); \draw (0,1.8) -- (1.1,1.8); \draw (0,0) -- (1.1,0);
+  \or \draw (0,1.8) -- (0,0); \draw (0,1.8) -- (1.1,1.8); \draw (0,0) -- (1.1,0);
+      \draw[iar] (0.25,2.08) -- (0.85,2.08); \node[font=\small, text=ccur, anchor=south] at (0.55,2.12) {$\hat\imath_1$};
+  \fi
+  \ifcase#2 \draw (5.4,1.8) to[american voltage source, l=$\Vcol{8\V}$] (5.4,0); \draw (4.3,1.8) -- (5.4,1.8); \draw (4.3,0) -- (5.4,0);
+  \or \draw (5.4,1.8) -- (5.4,0); \draw (4.3,1.8) -- (5.4,1.8); \draw (4.3,0) -- (5.4,0);
+      \draw[iar] (5.15,2.08) -- (4.55,2.08); \node[font=\small, text=ccur, anchor=south] at (4.85,2.12) {$i_2$};
+  \fi
+  \draw (1.1,1.8) node[ocirc] {}; \draw (1.1,0) node[ocirc] {};
+  \draw (4.3,1.8) node[ocirc] {}; \draw (4.3,0) node[ocirc] {};}
 \begin{document}
 
 %-------------------- title block -----------------------------
@@ -833,6 +889,78 @@ From the two transformer equations:
   \Tm = \begin{bmatrix} N_1/N_2 & 0\\ 0 & N_2/N_1 \end{bmatrix} .
 \]
 
+\subsection{Cascade connection and a load}
+
+$\Tm$ is made for chains. Connect port 2 of a two-port $a$ to port 1 of a two-port $b$:
+\begin{center}
+\begin{tikzpicture}[scale=0.8]
+  \cascade
+\end{tikzpicture}
+\end{center}
+At the junction, $\vtwo^{a} = \vone^{b}$, and the current that leaves $a$ enters $b$:
+$-\itwo^{a} = \ione^{b}$. So the output vector of $a$ is the input vector of $b$:
+\[
+  \begin{bmatrix} \vone\\ \ione \end{bmatrix}
+  = \Tm_a \begin{bmatrix} \vtwo^{a}\\ -\itwo^{a} \end{bmatrix}
+  = \Tm_a \begin{bmatrix} \vone^{b}\\ \ione^{b} \end{bmatrix}
+  = \Tm_a\,\Tm_b \begin{bmatrix} \vtwo\\ -\itwo \end{bmatrix}
+  \qquad\Rightarrow\qquad
+  \boxed{\Tm = \Tm_a\,\Tm_b .}
+\]
+The order matters: matrix products do not commute.
+
+\textbf{A load at port 2.} With a resistor $R_L$ at port 2, $\vtwo = R_L\,(-\itwo)$. Then
+$\vone = (A R_L + B)(-\itwo)$ and $\ione = (C R_L + D)(-\itwo)$, and the resistance seen at
+port 1 is
+\[
+  \boxed{R_{\mathrm{in}} = \frac{\vone}{\ione} = \frac{A\,R_L + B}{C\,R_L + D} .}
+\]
+For the ideal transformer, $A = N_1/N_2$ and $D = N_2/N_1$, with $B = C = 0$. So
+$R_{\mathrm{in}} = (N_1/N_2)^2\,R_L$.
+
+\bigskip
+\begin{examplebox}[Example 14.7 --- a cascade with a load]
+\begin{minipage}[c]{0.5\linewidth}
+\centering
+\begin{tikzpicture}[scale=0.75]
+  \draw (0,1.8) to[R, l=$1\ohm$] (2.2,1.8) -- (3.4,1.8);
+  \draw (2.8,1.8) to[R, l=$2\ohm$] (2.8,0); \fill (2.8,1.8) circle (1.6pt); \fill (2.8,0) circle (1.6pt);
+  \draw (0,0) -- (3.4,0);
+  \draw (3.4,1.8) -- (4.4,1.8) to[R, l={$R_L = 2\ohm$}] (4.4,0) -- (3.4,0);
+  \draw[densely dashed, gray] (1.1,-0.5) -- (1.1,2.3); \draw[densely dashed, gray] (3.4,-0.5) -- (3.4,2.3);
+  \node[font=\small, text=gray] at (0.6,-0.6) {$a$}; \node[font=\small, text=gray] at (2.25,-0.6) {$b$};
+  \pone{0}{1.8}
+\end{tikzpicture}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.46\linewidth}
+Two-port $a$ is a $1\ohm$ resistor in series; two-port $b$ is a $2\ohm$ resistor in
+parallel. Find $\Tm$ of the cascade and $R_{\mathrm{in}}$ with $R_L = 2\ohm$.
+\end{minipage}
+\end{examplebox}
+
+\solution
+
+\solstep{1}{Each piece}
+Series $1\ohm$: $\vone = \vtwo + 1\cdot(-\itwo)$ and $\ione = -\itwo$. Parallel $2\ohm$:
+$\vone = \vtwo$ and $\ione = \tfrac12\vtwo + (-\itwo)$. So
+\[
+  \Tm_a = \begin{bmatrix} 1 & 1\\ 0 & 1 \end{bmatrix}, \qquad
+  \Tm_b = \begin{bmatrix} 1 & 0\\ \frac12 & 1 \end{bmatrix} .
+\]
+
+\solstep{2}{The cascade}
+\[
+  \Tm = \Tm_a\,\Tm_b
+      = \begin{bmatrix} 1 + \frac12 & 1\\ \frac12 & 1 \end{bmatrix}
+      = \begin{bmatrix} \frac32 & 1\\ \frac12 & 1 \end{bmatrix} .
+\]
+
+\solstep{3}{The load}
+\[
+  R_{\mathrm{in}} = \frac{\frac32 \cdot 2 + 1}{\frac12 \cdot 2 + 1} = \frac{4}{2} = 2\ohm .
+\]
+Check by series and parallel: $1 + 2 \parallel 2 = 1 + 1 = 2\ohm$. \ \yes
+
 \subsection*{Which test? Open or short}
 
 Every matrix has two \emph{inputs}: the variables in the vector on the right-hand side. To get
@@ -1049,7 +1177,7 @@ invertible. The open-circuit tests are the special case $\mathbf{I}$ diagonal, w
 has to be computed.
 
 \bigskip
-\begin{examplebox}[Example 14.7 --- $\Rm$ from two measurements]
+\begin{examplebox}[Example 14.8 --- $\Rm$ from two measurements]
 Two experiments on a linear two-port give
 \begin{center}
 \renewcommand{\arraystretch}{1.2}
@@ -1108,7 +1236,7 @@ $(\vone, \ione, \vtwo, \itwo)$. It is \textbf{active} if it is not passive.
 \end{definitionbox}
 
 \medskip
-\begin{examplebox}[Example 14.8 --- is the ideal transformer passive?]
+\begin{examplebox}[Example 14.9 --- is the ideal transformer passive?]
 \begin{minipage}[c]{0.5\linewidth}
 \centering
 \begin{tikzpicture}[scale=0.85]
@@ -1133,6 +1261,184 @@ $P_N = 0 \geq 0$ for all port variables, so the ideal transformer is passive. It
 absorbs nor delivers power: what enters one port leaves the other.
 
 %==============================================================
+\section{Reciprocity}\label{sec:recip}
+
+\subsection{Tellegen's theorem, general form}
+
+Previously: in any circuit, $\sum_k \Vcol{v_k}\Icol{i_k} = 0$. The proof used only KVL for the
+voltages and only KCL for the currents. So the two may come from \emph{two different
+circuits with the same graph}.
+
+\begin{ideabox}[Tellegen's theorem, general form]
+Let two circuits have the same graph, with branch voltages and currents $\Vcol{v_k}, \Icol{i_k}$
+and $\Vcol{\hat v_k}, \Icol{\hat\imath_k}$. Then
+\[
+  \sum_k \Vcol{v_k}\,\Icol{\hat\imath_k} = 0, \qquad \sum_k \Vcol{\hat v_k}\,\Icol{i_k} = 0 .
+\]
+\end{ideabox}
+These sums are not powers: they mix two circuits. In this section the two circuits are the
+same two-port with different sources or loads at its ports.
+
+\subsection{Reciprocal two-ports}
+
+\begin{definitionbox}{Reciprocal two-port}
+A two-port that contains only LTI resistors (and ideal transformers), with no independent and
+no dependent sources, is \textbf{reciprocal}. For any two ways of driving it,
+\[
+  \vone\,\Icol{\hat\imath_1} + \vtwo\,\Icol{\hat\imath_2}
+  = \Vcol{\hat v_1}\,\ione + \Vcol{\hat v_2}\,\itwo .
+\]
+\end{definitionbox}
+
+\textbf{Why.} Take the two ways of driving the two-port as two circuits with the same graph.
+The ports are branches too; their currents point into $N$, against the branch convention, so
+they enter Tellegen's sums with a minus sign:
+\[
+  \sum_{\text{inside}} \Vcol{v_k}\Icol{\hat\imath_k} = \vone\Icol{\hat\imath_1} + \vtwo\Icol{\hat\imath_2},
+  \qquad
+  \sum_{\text{inside}} \Vcol{\hat v_k}\Icol{i_k} = \Vcol{\hat v_1}\ione + \Vcol{\hat v_2}\itwo .
+\]
+For each resistor inside, $\Vcol{v_k}\Icol{\hat\imath_k} = R_k\Icol{i_k}\Icol{\hat\imath_k} =
+\Vcol{\hat v_k}\Icol{i_k}$: the two left sides are equal term by term. (An ideal transformer
+contributes zero to both sums.) So the right sides are equal. A dependent source breaks this
+step: its two terms are not equal.
+
+\subsection{The matrices of a reciprocal two-port}
+
+Put $\mathbf{v} = \Rm\,\mathbf{i}$ and $\Vcol{\hat{\mathbf{v}}} = \Rm\,\Icol{\hat{\mathbf{i}}}$
+into the identity: $\Icol{\hat{\mathbf{i}}}^T \Rm\,\mathbf{i} = \mathbf{i}^T \Rm\,\Icol{\hat{\mathbf{i}}}
+= \Icol{\hat{\mathbf{i}}}^T \Rm^T \mathbf{i}$ for all currents. So $\Rm = \Rm^T$. With the
+conversions of Section~\ref{sec:exist}:
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{@{}llll@{}}
+\toprule
+$\Rm$ & $\Gm$ & $\Hm$ & $\Tm$\\
+\midrule
+$r_{12} = r_{21}$ & $g_{12} = g_{21}$ & $h_{12} = -h_{21}$ & $\det\Tm = AD - BC = 1$\\
+\bottomrule
+\end{tabular}
+\end{center}
+For $\Hm$: $h_{12} = r_{12}/r_{22}$ and $h_{21} = -r_{21}/r_{22}$. For $\Tm$:
+$\det\Tm = (r_{11}r_{22} - \det\Rm)/r_{21}^2 = r_{12}/r_{21}$.
+
+\textbf{Checks.} Example 14.2 has a dependent source: $\Rm = \left[\begin{smallmatrix} 3 & 1\\ -1 & 1 \end{smallmatrix}\right]$,
+$r_{12} \neq r_{21}$, \emph{not} reciprocal. The ideal transformer:
+$\Hm = \left[\begin{smallmatrix} 0 & n\\ -n & 0 \end{smallmatrix}\right]$, $h_{12} = -h_{21}$,
+reciprocal. The cascade of Example 14.7: $\det\Tm = \frac32 - \frac12 = 1$. \ \yes
+
+\subsection{Three statements}
+
+Drive one port, look at the other; then swap. A reciprocal two-port gives the same number.
+Each statement follows from the identity above with the zero port variables put in.
+
+\medskip
+\noindent\textbf{Statement 1 (voltage source, short circuit).}
+\begin{center}
+\begin{tikzpicture}[scale=0.72]
+  \rcp{0}{$\Vcol{v_0}$}{2}{$\Icol{i_2}$}
+  \begin{scope}[xshift=7.6cm] \rcp{2}{$\Icol{\hat\imath_1}$}{0}{$\Vcol{v_0}$} \end{scope}
+\end{tikzpicture}
+\end{center}
+\[
+  \Icol{\hat\imath_1} = \itwo .
+\]
+Proof: left, $\vone = v_0$, $\vtwo = 0$; right, $\Vcol{\hat v_1} = 0$, $\Vcol{\hat v_2} = v_0$.
+The identity gives $v_0\,\Icol{\hat\imath_1} = v_0\,\itwo$.
+
+\medskip
+\noindent\textbf{Statement 2 (current source, open circuit).}
+\begin{center}
+\begin{tikzpicture}[scale=0.72]
+  \rcp{1}{$\Icol{i_0}$}{3}{$\Vcol{v_2}$}
+  \begin{scope}[xshift=7.6cm] \rcp{3}{$\Vcol{\hat v_1}$}{1}{$\Icol{i_0}$} \end{scope}
+\end{tikzpicture}
+\end{center}
+\[
+  \Vcol{\hat v_1} = \vtwo .
+\]
+Proof: left, $\ione = i_0$, $\itwo = 0$; right, $\Icol{\hat\imath_1} = 0$, $\Icol{\hat\imath_2} = i_0$.
+The identity gives $\vtwo\,i_0 = \Vcol{\hat v_1}\,i_0$.
+
+\medskip
+\needspace{12\baselineskip}
+\noindent\textbf{Statement 3 (mixed).}
+\begin{center}
+\begin{tikzpicture}[scale=0.72]
+  \rcp{1}{$\Icol{i_0}$}{2}{$\Icol{i_2}$}
+  \begin{scope}[xshift=7.6cm] \rcp{3}{$\Vcol{\hat v_1}$}{0}{$\Vcol{v_0}$} \end{scope}
+\end{tikzpicture}
+\end{center}
+If $v_0$ (in V) and $i_0$ (in A) are the same number, then
+\[
+  \Vcol{\hat v_1} = -\itwo .
+\]
+Proof: left, $\ione = i_0$, $\vtwo = 0$; right, $\Icol{\hat\imath_1} = 0$, $\Vcol{\hat v_2} = v_0$.
+The identity gives $0 = \Vcol{\hat v_1}\,i_0 + v_0\,\itwo$. (In matrix terms: $h_{12} = -h_{21}$.)
+
+\medskip
+All three hold for any reciprocal two-port, whatever is inside. The same is true with
+capacitors and inductors inside (later).
+
+\bigskip
+\begin{examplebox}[Example 14.10 --- statement 1 on a ladder]
+\begin{center}
+\begin{tikzpicture}[scale=0.7]
+  \ladder{0}{1}
+  \begin{scope}[xshift=7.6cm] \ladder{1}{0} \end{scope}
+\end{tikzpicture}
+\end{center}
+Find $\itwo$ (left) and $\Icol{\hat\imath_1}$ (right) by series and parallel. Compare with
+statement 1.
+\end{examplebox}
+
+\solution
+
+\solstep{1}{Source at port 1}
+The source sees $1 + 2 \parallel 2 = 2\ohm$, so it gives $4\A$. The two $2\ohm$ resistors
+split it equally: $2\A$ flows out of $N$ into the short at port 2. With the port reference
+(into $N$):
+\[
+  \itwo = -2\A .
+\]
+
+\solstep{2}{Source at port 2}
+The source sees $2 + 2 \parallel 1 = 2 + \tfrac23 = \tfrac83\ohm$, so it gives $3\A$. The
+current divider sends $3 \cdot \tfrac{2}{2 + 1} = 2\A$ through the $1\ohm$ branch, out of
+$N$ into the short at port 1:
+\[
+  \Icol{\hat\imath_1} = -2\A = \itwo . \ \yes
+\]
+The two circuits look different, and the two source currents differ ($4\A$ and $3\A$), but the
+short-circuit currents are equal.
+
+\solstep{3}{With the matrices}
+Open-circuit tests give $\Rm = \left[\begin{smallmatrix} 3 & 2\\ 2 & 4 \end{smallmatrix}\right]\Omega$,
+symmetric. Then $\Gm = \Rm^{-1} = \frac18 \left[\begin{smallmatrix} 4 & -2\\ -2 & 3 \end{smallmatrix}\right]$S,
+and $\itwo = g_{21} \cdot 8 = -2\A$, $\Icol{\hat\imath_1} = g_{12} \cdot 8 = -2\A$.
+
+\bigskip
+\begin{examplebox}[Example 14.11 --- a black box]
+A two-port contains only LTI resistors; its inside is not known. One experiment: a $6\V$
+source at port 1 and a short at port 2 give $\ione = 3\A$ and $\itwo = -1\A$. Now a $12\V$
+source is at port 2, and port 1 is shorted. Find the current $\Icol{\hat\imath_1}$ of the short.
+\end{examplebox}
+
+\solution
+
+\solstep{1}{Reciprocity}
+By statement 1, a $6\V$ source at port 2 would give $\Icol{\hat\imath_1} = \itwo = -1\A$.
+
+\solstep{2}{Linearity}
+The source is doubled, so the current doubles:
+\[
+  \Icol{\hat\imath_1} = 2 \cdot (-1) = -2\A .
+\]
+In matrix terms, the experiment gives $g_{21} = -\frac16\Sie$, and reciprocity gives
+$g_{12} = g_{21}$: $\Icol{\hat\imath_1} = g_{12} \cdot 12 = -2\A$. No circuit analysis was needed.
+
+%==============================================================
 \section*{Summary}
 
 \begin{center}
@@ -1146,8 +1452,10 @@ resistance $\Rm$ & $[\,\vone \ \vtwo\,]^T = \Rm\,[\,\ione \ \itwo\,]^T$ & KVL, o
 conductance $\Gm$ & $[\,\ione \ \itwo\,]^T = \Gm\,[\,\vone \ \vtwo\,]^T$ & short-circuit tests; $\Gm = \Rm^{-1}$ when both exist\\
 hybrid $\Hm$, $\Hm'$ & $[\,\vone \ \itwo\,]^T = \Hm\,[\,\ione \ \vtwo\,]^T$ & port 2 shorted, then port 1 open; $\Hm' = \Hm^{-1}$\\
 transmission $\Tm$ & $[\,\vone \ \ione\,]^T = \Tm\,[\,\vtwo \ {-\itwo}\,]^T$ & port 1 in terms of port 2\\
+cascade, load & $\Tm = \Tm_a\Tm_b$; \ $R_{\mathrm{in}} = \frac{A R_L + B}{C R_L + D}$ & port 2 of $a$ to port 1 of $b$\\
 existence & set both inputs to zero & exists if all port variables are then forced to zero\\
 power & $P_N = \vone\,\ione + \vtwo\,\itwo$ & passive if $P_N \geq 0$ for all port variables\\
+reciprocity & $r_{12} = r_{21}$, $g_{12} = g_{21}$, $h_{12} = -h_{21}$, $\det\Tm = 1$ & LTI resistors, no sources inside; swap source and meter, same reading\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -1222,7 +1530,7 @@ $\Hm$ is antisymmetric, $\Hm^T = -\Hm$, so $\frac12(\Hm + \Hm^T) = \mathbf{0}$.
 
 \solstep{2}{The test}
 $P_N = 0$ for all port variables: the transformer is \textbf{passive} and absorbs no power, as
-in Example 14.8.
+in Example 14.9.
 
 \bigskip
 \begin{examplebox}[Example A.3 --- a larger gain]

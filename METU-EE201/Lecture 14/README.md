@@ -4,8 +4,8 @@ Lecture notes and slides for the fourteenth lecture of EE201 (Section 2, Fall 20
 
 | File | What it is |
 |---|---|
-| `EE201_Lecture_14.tex` | Handout / lecture notes (article, 16 pages). Self-contained: port variables, the resistance, conductance, hybrid and transmission matrices, when a matrix exists, measuring a two-port, the power of a two-port, a summary. Eight worked examples (and three in the appendix), each with the problem in a box and a step-by-step solution below it. |
-| `EE201_Lecture_14_slides.tex` | Beamer deck (33 slides, 39 PDF pages) for the lecture itself — visual, low text. |
+| `EE201_Lecture_14.tex` | Handout / lecture notes (article, 21 pages). Self-contained: port variables, the resistance, conductance, hybrid and transmission matrices, cascade connection and a load, when a matrix exists, measuring a two-port, the power of a two-port, reciprocity, a summary. Eleven worked examples (and three in the appendix), each with the problem in a box and a step-by-step solution below it. |
+| `EE201_Lecture_14_slides.tex` | Beamer deck (42 slides, 57 PDF pages) for the lecture itself — visual, low text. |
 | `build.sh` | Compiles both, removes auxiliary files, opens the PDFs. |
 
 ## Compiling
@@ -43,7 +43,9 @@ interconnections of two-ports are not covered.
    gives H = [4, 1; 1, 1] and H′ = H⁻¹ = [1/3, −1/3; −1/3, 4/3], checked by its own tests (port 2 open, port 1 shorted). Example 14.5: the ideal transformer,
    H = [0, n; −n, 0], with no R and no G
 5. **Transmission matrix** — [v₁ i₁]ᵀ = T [v₂ −i₂]ᵀ. Example 14.6: the ideal transformer,
-   T = diag(N₁/N₂, N₂/N₁)
+   T = diag(N₁/N₂, N₂/N₁). Cascade: T = T_a T_b; a load R_L at port 2 gives
+   R_in = (A R_L + B)/(C R_L + D). Example 14.7: 1 Ω in series then 2 Ω in parallel,
+   T = [3/2, 1; 1/2, 1], R_in = 2 Ω with R_L = 2 Ω
 
 When does a matrix exist? Set both of its inputs to zero; it exists if all port variables are
 then forced to zero (R: both ports open; G: both shorted; T: port 2 with no voltage and no
@@ -51,12 +53,19 @@ current). Three cases: one resistor across both ports (no G, det R = 0), one res
 the ports (no R, det G = 0), two separate resistors (no T). From one matrix to another: G needs
 det R ≠ 0, H needs r₂₂ ≠ 0, H′ needs r₁₁ ≠ 0 (or det H ≠ 0), T needs r₂₁ ≠ 0 (or g₂₁ ≠ 0).
 6. **Power of a two-port** — P_N = v₁ i₁ + v₂ i₂ (from Tellegen's theorem); passive if
-   P_N ≥ 0 for all port variables, active otherwise. Example 14.8: the ideal transformer has
+   P_N ≥ 0 for all port variables, active otherwise. Example 14.9: the ideal transformer has
    P_N = 0, so it is passive
+7. **Reciprocity** — Tellegen's theorem in its general form (two circuits with the same graph);
+   a two-port of LTI resistors (and ideal transformers) without sources satisfies
+   v₁î₁ + v₂î₂ = v̂₁i₁ + v̂₂i₂, so r₁₂ = r₂₁, g₁₂ = g₂₁, h₁₂ = −h₂₁, det T = 1 (Example 14.2,
+   with a dependent source, is not reciprocal). Three statements (voltage source / short
+   circuit, current source / open circuit, mixed) with proofs. Example 14.10: a 1 Ω–2 Ω–2 Ω
+   ladder, 8 V on either side gives the same short-circuit current −2 A. Example 14.11: a black
+   box, 6 V → −1 A, so 12 V on the other side gives −2 A
 
 Measuring a two-port: an ideal voltmeter is an open and an ideal ammeter a short, so the tests
 are real experiments (a source at one port, meters at both). When a port cannot be opened or
-shorted, any two independent experiments give R = V I⁻¹. Example 14.7: two measurements with no
+shorted, any two independent experiments give R = V I⁻¹. Example 14.8: two measurements with no
 open port give R = [4, 1; 2, 3].
 
 Then a "Which test? Open or short" table (for each matrix: its inputs and which port is opened or shorted for each column) and a summary table (matrix → equation → how to find it).
@@ -73,4 +82,4 @@ with a 6 i₁ source is active (P_N = −1 W at i₁ = 1 A, i₂ = 2 A).
 Right after the review comes the roadmap: a road with five stations (resistance matrix,
 conductance matrix, hybrid matrices, transmission matrix, power). A roadmap slide opens each
 part. Circuits and questions come first and the answers on later pages; no "Question" labels.
-Each step is an ordinary extra PDF page; that is why the deck has 33 slides but 39 pages.
+Each step is an ordinary extra PDF page; that is why the deck has 42 slides but 57 pages.

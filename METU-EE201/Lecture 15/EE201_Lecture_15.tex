@@ -647,6 +647,230 @@
     \draw (0.8,2.2) -- (3.8,2.2); \draw (0,0) -- (3.8,0); \mDr{0.8}{2.2}{0} \mR{2.3}{2.2}{0}{$2\ohm$} \mI{3.8}{2.2}{0}{$1\A$}}}
 %  sub-circuits above the three plots of \threeplots
 \newcommand{\minirow}[3]{#1{0} #2{4.1} #3{8.2}}
+%  More sub-circuits: two resistors in series / parallel, R with a source
+\newcommand{\miniRsR}[3]{\minic{#1}{3.6}{\mW{3.6}{0.8} \mR{0.8}{3.6}{1.8}{#2} \mR{0.8}{1.8}{0}{#3}}}
+\newcommand{\miniRpR}[3]{\minic{#1}{2.2}{\mW{2.2}{2.3} \mR{0.8}{2.2}{0}{#2} \mR{2.3}{2.2}{0}{#3}}}
+\newcommand{\miniRsE}[3]{\minic{#1}{3.6}{\mW{3.6}{0.8} \mR{0.8}{3.6}{1.8}{#2} \mE{0.8}{1.8}{0}{#3}}}
+\newcommand{\miniRpI}[3]{\minic{#1}{2.2}{\mW{2.2}{2.3} \mR{0.8}{2.2}{0}{#2} \mI{2.3}{2.2}{0}{#3}}}
+%  Step-by-step graphical addition: guide lines (dashed), read points (dots), intervals (thick blue)
+\tikzset{gline/.style={black!45, densely dashed, thin}, ival/.style={ccur, line width=2.6pt, opacity=0.6}, gdot/.style={circle, fill=black, inner sep=0pt, minimum size=3.6pt}}
+\newcommand{\addSer}[1]{%
+  \path (-0.2,-1.98) rectangle (12.68,4.072);
+  \draw[vax] (0,0) -- (2.88,0) node[right=0pt, font=\tiny, text=cvolt] {$v$};
+  \draw[vax] (1.08,-1.08) -- (1.08,1.872) node[above=0pt, font=\tiny, text=ccur] {$i$};
+  \draw[gray!60] (1.8,-0.05) -- (1.8,0.05); \node[font=\tiny, text=gray, below] at (1.8,-0.03) {$2$};
+  \draw[gray!60] (2.52,-0.05) -- (2.52,0.05); \node[font=\tiny, text=gray, below] at (2.52,-0.03) {$4$};
+  \draw[gray!60] (1.03,0.72) -- (1.13,0.72); \node[font=\tiny, text=gray, left] at (1.06,0.72) {$1$};
+  \draw[gray!60] (1.03,1.44) -- (1.13,1.44); \node[font=\tiny, text=gray, left] at (1.06,1.44) {$2$};
+  \node[font=\scriptsize, text=metugray] at (1.44,-1.63) {diode};
+  \begin{scope}[yshift=0.372cm]\miniD{1.49}\end{scope}
+  \draw[crv] (0,0) -- (1.08,0) -- (1.08,1.8);
+  \ifnum#1>1 \draw[gline] (0,0.72) -- (2.88,0.72); \node[gdot] at (1.08,0.72) {}; \fi
+  \ifnum#1>2 \draw[gline] (0,1.44) -- (2.88,1.44); \node[gdot] at (1.08,1.44) {}; \fi
+  \ifnum#1>2 \draw[gline] (0,0) -- (2.88,0); \draw[ival] (0,0) -- (1.08,0); \fi
+  \ifnum#1>2 \draw[gline] (0,-0.72) -- (2.88,-0.72); \node[font=\tiny, text=metured, anchor=south west, inner sep=1pt] at (0,-0.72) {none}; \fi
+  \draw[vax] (4.6,0) -- (7.48,0) node[right=0pt, font=\tiny, text=cvolt] {$v$};
+  \draw[vax] (5.68,-1.08) -- (5.68,1.872) node[above=0pt, font=\tiny, text=ccur] {$i$};
+  \draw[gray!60] (6.4,-0.05) -- (6.4,0.05); \node[font=\tiny, text=gray, below] at (6.4,-0.03) {$2$};
+  \draw[gray!60] (7.12,-0.05) -- (7.12,0.05); \node[font=\tiny, text=gray, below] at (7.12,-0.03) {$4$};
+  \draw[gray!60] (5.63,0.72) -- (5.73,0.72); \node[font=\tiny, text=gray, left] at (5.66,0.72) {$1$};
+  \draw[gray!60] (5.63,1.44) -- (5.73,1.44); \node[font=\tiny, text=gray, left] at (5.66,1.44) {$2$};
+  \node[font=\scriptsize, text=metugray] at (6.04,-1.63) {$2\ohm$};
+  \begin{scope}[yshift=0.372cm]\miniR{6.09}{$2\ohm$}\end{scope}
+  \draw[crv] (4.6,-1.08) -- (7.48,1.8);
+  \ifnum#1>1 \draw[gline] (4.6,0.72) -- (7.48,0.72); \node[gdot] at (6.4,0.72) {}; \fi
+  \ifnum#1>2 \draw[gline] (4.6,1.44) -- (7.48,1.44); \node[gdot] at (7.12,1.44) {}; \fi
+  \ifnum#1>2 \draw[gline] (4.6,0) -- (7.48,0); \node[gdot] at (5.68,0) {}; \fi
+  \ifnum#1>2 \draw[gline] (4.6,-0.72) -- (7.48,-0.72); \node[gdot] at (4.96,-0.72) {}; \fi
+  \draw[vax] (9.2,0) -- (12.08,0) node[right=0pt, font=\tiny, text=cvolt] {$v$};
+  \draw[vax] (10.28,-1.08) -- (10.28,1.872) node[above=0pt, font=\tiny, text=ccur] {$i$};
+  \draw[gray!60] (11,-0.05) -- (11,0.05); \node[font=\tiny, text=gray, below] at (11,-0.03) {$2$};
+  \draw[gray!60] (11.72,-0.05) -- (11.72,0.05); \node[font=\tiny, text=gray, below] at (11.72,-0.03) {$4$};
+  \draw[gray!60] (10.23,0.72) -- (10.33,0.72); \node[font=\tiny, text=gray, left] at (10.26,0.72) {$1$};
+  \draw[gray!60] (10.23,1.44) -- (10.33,1.44); \node[font=\tiny, text=gray, left] at (10.26,1.44) {$2$};
+  \node[font=\scriptsize, text=metugray] at (10.64,-1.63) {series};
+  \begin{scope}[yshift=0.372cm]\miniDsR{10.69}{$2\ohm$}\end{scope}
+  \ifnum#1>3 \draw[crv] (9.2,0) -- (10.28,0) -- (12.08,1.8); \fi
+  \ifnum#1>1 \draw[gline] (9.2,0.72) -- (12.08,0.72); \node[gdot] at (11,0.72) {}; \fi
+  \ifnum#1>2 \draw[gline] (9.2,1.44) -- (12.08,1.44); \node[gdot] at (11.72,1.44) {}; \fi
+  \ifnum#1>2 \draw[gline] (9.2,0) -- (12.08,0); \draw[ival] (9.2,0) -- (10.28,0); \fi
+  \ifnum#1>2 \draw[gline] (9.2,-0.72) -- (12.08,-0.72); \node[font=\tiny, text=metured, anchor=south west, inner sep=1pt] at (9.2,-0.72) {none}; \fi
+  \node[font=\large] at (3.86,0.842) {\shortstack{$+$\\[1pt]{\tiny add $v$}}};
+  \node[font=\large] at (8.46,0.842) {$=$};
+}
+\newcommand{\addPar}[1]{%
+  \path (-0.2,-2.388) rectangle (12.53,3.088);
+  \draw[vax] (0,0) -- (2.73,0) node[right=0pt, font=\tiny, text=cvolt] {$v$};
+  \draw[vax] (1.89,-1.488) -- (1.89,1.488) node[above=0pt, font=\tiny, text=ccur] {$i$};
+  \draw[gray!60] (0.21,-0.05) -- (0.21,0.05); \node[font=\tiny, text=gray, below] at (0.21,-0.03) {$-4$};
+  \draw[gray!60] (1.05,-0.05) -- (1.05,0.05); \node[font=\tiny, text=gray, below] at (1.05,-0.03) {$-2$};
+  \draw[gray!60] (1.84,-1.24) -- (1.94,-1.24); \node[font=\tiny, text=gray, left] at (1.87,-1.24) {$-2$};
+  \draw[gray!60] (1.84,-0.62) -- (1.94,-0.62); \node[font=\tiny, text=gray, left] at (1.87,-0.62) {$-1$};
+  \draw[gray!60] (1.84,0.62) -- (1.94,0.62); \node[font=\tiny, text=gray, left] at (1.87,0.62) {$1$};
+  \node[font=\scriptsize, text=metugray] at (1.365,-2.038) {diode};
+  \begin{scope}[yshift=-0.012cm]\miniD{1.415}\end{scope}
+  \draw[crv] (0,0) -- (1.89,0) -- (1.89,1.426);
+  \ifnum#1>1 \draw[gline] (1.05,-1.488) -- (1.05,1.488); \node[gdot] at (1.05,0) {}; \fi
+  \ifnum#1>2 \draw[gline] (0.21,-1.488) -- (0.21,1.488); \node[gdot] at (0.21,0) {}; \fi
+  \ifnum#1>2 \draw[gline] (1.89,-1.488) -- (1.89,1.488); \draw[ival] (1.89,0) -- (1.89,1.426); \fi
+  \ifnum#1>2 \draw[gline] (2.31,-1.488) -- (2.31,1.488); \node[font=\tiny, text=metured, anchor=west, inner sep=1pt] at (2.31,1.395) {none}; \fi
+  \draw[vax] (4.6,0) -- (7.33,0) node[right=0pt, font=\tiny, text=cvolt] {$v$};
+  \draw[vax] (6.49,-1.488) -- (6.49,1.488) node[above=0pt, font=\tiny, text=ccur] {$i$};
+  \draw[gray!60] (4.81,-0.05) -- (4.81,0.05); \node[font=\tiny, text=gray, below] at (4.81,-0.03) {$-4$};
+  \draw[gray!60] (5.65,-0.05) -- (5.65,0.05); \node[font=\tiny, text=gray, below] at (5.65,-0.03) {$-2$};
+  \draw[gray!60] (6.44,-1.24) -- (6.54,-1.24); \node[font=\tiny, text=gray, left] at (6.47,-1.24) {$-2$};
+  \draw[gray!60] (6.44,-0.62) -- (6.54,-0.62); \node[font=\tiny, text=gray, left] at (6.47,-0.62) {$-1$};
+  \draw[gray!60] (6.44,0.62) -- (6.54,0.62); \node[font=\tiny, text=gray, left] at (6.47,0.62) {$1$};
+  \node[font=\scriptsize, text=metugray] at (5.965,-2.038) {$2\ohm$};
+  \begin{scope}[yshift=-0.012cm]\miniR{6.015}{$2\ohm$}\end{scope}
+  \draw[crv] (4.6,-1.395) -- (7.33,0.62);
+  \ifnum#1>1 \draw[gline] (5.65,-1.488) -- (5.65,1.488); \node[gdot] at (5.65,-0.62) {}; \fi
+  \ifnum#1>2 \draw[gline] (4.81,-1.488) -- (4.81,1.488); \node[gdot] at (4.81,-1.24) {}; \fi
+  \ifnum#1>2 \draw[gline] (6.49,-1.488) -- (6.49,1.488); \node[gdot] at (6.49,0) {}; \fi
+  \ifnum#1>2 \draw[gline] (6.91,-1.488) -- (6.91,1.488); \node[gdot] at (6.91,0.31) {}; \fi
+  \draw[vax] (9.2,0) -- (11.93,0) node[right=0pt, font=\tiny, text=cvolt] {$v$};
+  \draw[vax] (11.09,-1.488) -- (11.09,1.488) node[above=0pt, font=\tiny, text=ccur] {$i$};
+  \draw[gray!60] (9.41,-0.05) -- (9.41,0.05); \node[font=\tiny, text=gray, below] at (9.41,-0.03) {$-4$};
+  \draw[gray!60] (10.25,-0.05) -- (10.25,0.05); \node[font=\tiny, text=gray, below] at (10.25,-0.03) {$-2$};
+  \draw[gray!60] (11.04,-1.24) -- (11.14,-1.24); \node[font=\tiny, text=gray, left] at (11.07,-1.24) {$-2$};
+  \draw[gray!60] (11.04,-0.62) -- (11.14,-0.62); \node[font=\tiny, text=gray, left] at (11.07,-0.62) {$-1$};
+  \draw[gray!60] (11.04,0.62) -- (11.14,0.62); \node[font=\tiny, text=gray, left] at (11.07,0.62) {$1$};
+  \node[font=\scriptsize, text=metugray] at (10.565,-2.038) {parallel};
+  \begin{scope}[yshift=-0.012cm]\miniDpR{10.615}{$2\ohm$}\end{scope}
+  \ifnum#1>3 \draw[crv] (9.2,-1.395) -- (11.09,0) -- (11.09,1.426); \fi
+  \ifnum#1>1 \draw[gline] (10.25,-1.488) -- (10.25,1.488); \node[gdot] at (10.25,-0.62) {}; \fi
+  \ifnum#1>2 \draw[gline] (9.41,-1.488) -- (9.41,1.488); \node[gdot] at (9.41,-1.24) {}; \fi
+  \ifnum#1>2 \draw[gline] (11.09,-1.488) -- (11.09,1.488); \draw[ival] (11.09,0) -- (11.09,1.426); \fi
+  \ifnum#1>2 \draw[gline] (11.51,-1.488) -- (11.51,1.488); \node[font=\tiny, text=metured, anchor=west, inner sep=1pt] at (11.51,1.395) {none}; \fi
+  \node[font=\large] at (3.785,0.67) {\shortstack{$+$\\[1pt]{\tiny add $i$}}};
+  \node[font=\large] at (8.385,0.67) {$=$};
+}
+\newcommand{\addEx}[1]{%
+  \path (-0.2,-1.764) rectangle (12.925,4.872);
+  \draw[vax] (0,0) -- (3.125,0) node[right=0pt, font=\tiny, text=cvolt] {$v$};
+  \draw[vax] (0.75,-0.864) -- (0.75,1.872) node[above=0pt, font=\tiny, text=ccur] {$i$};
+  \draw[gray!60] (1.75,-0.05) -- (1.75,0.05); \node[font=\tiny, text=gray, below] at (1.75,-0.03) {$4$};
+  \draw[gray!60] (2.75,-0.05) -- (2.75,0.05); \node[font=\tiny, text=gray, below] at (2.75,-0.03) {$8$};
+  \draw[gray!60] (0.7,0.72) -- (0.8,0.72); \node[font=\tiny, text=gray, left] at (0.73,0.72) {$1$};
+  \draw[gray!60] (0.7,1.44) -- (0.8,1.44); \node[font=\tiny, text=gray, left] at (0.73,1.44) {$2$};
+  \node[font=\scriptsize, text=metugray] at (1.562,-1.414) {Case I, $2\ohm$};
+  \begin{scope}[yshift=0.372cm]\miniDsR{1.613}{$2\ohm$}\end{scope}
+  \draw[crv] (0,0) -- (0.75,0) -- (2,1.8);
+  \ifnum#1>1 \draw[gline] (0,0.72) -- (3.125,0.72); \node[gdot] at (1.25,0.72) {}; \fi
+  \ifnum#1>2 \draw[gline] (0,1.44) -- (3.125,1.44); \node[gdot] at (1.75,1.44) {}; \fi
+  \ifnum#1>2 \draw[gline] (0,0) -- (3.125,0); \draw[ival] (0,0) -- (0.75,0); \fi
+  \draw[vax] (4.6,0) -- (7.725,0) node[right=0pt, font=\tiny, text=cvolt] {$v$};
+  \draw[vax] (5.35,-0.864) -- (5.35,1.872) node[above=0pt, font=\tiny, text=ccur] {$i$};
+  \draw[gray!60] (6.35,-0.05) -- (6.35,0.05); \node[font=\tiny, text=gray, below] at (6.35,-0.03) {$4$};
+  \draw[gray!60] (7.35,-0.05) -- (7.35,0.05); \node[font=\tiny, text=gray, below] at (7.35,-0.03) {$8$};
+  \draw[gray!60] (5.3,0.72) -- (5.4,0.72); \node[font=\tiny, text=gray, left] at (5.33,0.72) {$1$};
+  \draw[gray!60] (5.3,1.44) -- (5.4,1.44); \node[font=\tiny, text=gray, left] at (5.33,1.44) {$2$};
+  \node[font=\scriptsize, text=metugray] at (6.162,-1.414) {$4\V$ source};
+  \begin{scope}[yshift=0.372cm]\miniE{6.212}{$4\V$}\end{scope}
+  \draw[crv] (6.35,-0.864) -- (6.35,1.872);
+  \ifnum#1>1 \draw[gline] (4.6,0.72) -- (7.725,0.72); \node[gdot] at (6.35,0.72) {}; \fi
+  \ifnum#1>2 \draw[gline] (4.6,1.44) -- (7.725,1.44); \node[gdot] at (6.35,1.44) {}; \fi
+  \ifnum#1>2 \draw[gline] (4.6,0) -- (7.725,0); \node[gdot] at (6.35,0) {}; \fi
+  \draw[vax] (9.2,0) -- (12.325,0) node[right=0pt, font=\tiny, text=cvolt] {$v$};
+  \draw[vax] (9.95,-0.864) -- (9.95,1.872) node[above=0pt, font=\tiny, text=ccur] {$i$};
+  \draw[gray!60] (10.95,-0.05) -- (10.95,0.05); \node[font=\tiny, text=gray, below] at (10.95,-0.03) {$4$};
+  \draw[gray!60] (11.95,-0.05) -- (11.95,0.05); \node[font=\tiny, text=gray, below] at (11.95,-0.03) {$8$};
+  \draw[gray!60] (9.9,0.72) -- (10,0.72); \node[font=\tiny, text=gray, left] at (9.93,0.72) {$1$};
+  \draw[gray!60] (9.9,1.44) -- (10,1.44); \node[font=\tiny, text=gray, left] at (9.93,1.44) {$2$};
+  \node[font=\scriptsize, text=metugray] at (10.762,-1.414) {series};
+  \begin{scope}[yshift=0.372cm]\miniDRE{10.812}\end{scope}
+  \ifnum#1>3 \draw[crv] (9.2,0) -- (10.95,0) -- (12.2,1.8); \fi
+  \ifnum#1>1 \draw[gline] (9.2,0.72) -- (12.325,0.72); \node[gdot] at (11.45,0.72) {}; \fi
+  \ifnum#1>2 \draw[gline] (9.2,1.44) -- (12.325,1.44); \node[gdot] at (11.95,1.44) {}; \fi
+  \ifnum#1>2 \draw[gline] (9.2,0) -- (12.325,0); \draw[ival] (9.2,0) -- (10.95,0); \fi
+  \node[font=\large] at (3.982,0.842) {\shortstack{$+$\\[1pt]{\tiny add $v$}}};
+  \node[font=\large] at (8.582,0.842) {$=$};
+}
+\newcommand{\addRR}[1]{%
+  \path (-0.2,-1.83) rectangle (12.2,3.812);
+  \draw[vax] (0,0) -- (2.4,0) node[right=0pt, font=\tiny, text=cvolt] {$v$};
+  \draw[vax] (0.9,-0.93) -- (0.9,1.612) node[above=0pt, font=\tiny, text=ccur] {$i$};
+  \draw[gray!60] (1.5,-0.05) -- (1.5,0.05); \node[font=\tiny, text=gray, below] at (1.5,-0.03) {$3$};
+  \draw[gray!60] (2.1,-0.05) -- (2.1,0.05); \node[font=\tiny, text=gray, below] at (2.1,-0.03) {$6$};
+  \draw[gray!60] (0.85,0.62) -- (0.95,0.62); \node[font=\tiny, text=gray, left] at (0.88,0.62) {$1$};
+  \draw[gray!60] (0.85,1.24) -- (0.95,1.24); \node[font=\tiny, text=gray, left] at (0.88,1.24) {$2$};
+  \node[font=\scriptsize, text=metugray] at (1.2,-1.48) {$1\ohm$};
+  \begin{scope}[yshift=0.112cm]\miniR{1.25}{$1\ohm$}\end{scope}
+  \draw[crv] (0.6,-0.93) -- (1.4,1.55);
+  \ifnum#1>1 \draw[gline] (0,0.62) -- (2.4,0.62); \node[gdot] at (1.1,0.62) {}; \fi
+  \ifnum#1>2 \draw[gline] (0,1.24) -- (2.4,1.24); \node[gdot] at (1.3,1.24) {}; \fi
+  \ifnum#1>2 \draw[gline] (0,-0.62) -- (2.4,-0.62); \node[gdot] at (0.7,-0.62) {}; \fi
+  \draw[vax] (4.6,0) -- (7,0) node[right=0pt, font=\tiny, text=cvolt] {$v$};
+  \draw[vax] (5.5,-0.93) -- (5.5,1.612) node[above=0pt, font=\tiny, text=ccur] {$i$};
+  \draw[gray!60] (6.1,-0.05) -- (6.1,0.05); \node[font=\tiny, text=gray, below] at (6.1,-0.03) {$3$};
+  \draw[gray!60] (6.7,-0.05) -- (6.7,0.05); \node[font=\tiny, text=gray, below] at (6.7,-0.03) {$6$};
+  \draw[gray!60] (5.45,0.62) -- (5.55,0.62); \node[font=\tiny, text=gray, left] at (5.48,0.62) {$1$};
+  \draw[gray!60] (5.45,1.24) -- (5.55,1.24); \node[font=\tiny, text=gray, left] at (5.48,1.24) {$2$};
+  \node[font=\scriptsize, text=metugray] at (5.8,-1.48) {$2\ohm$};
+  \begin{scope}[yshift=0.112cm]\miniR{5.85}{$2\ohm$}\end{scope}
+  \draw[crv] (4.9,-0.93) -- (6.5,1.55);
+  \ifnum#1>1 \draw[gline] (4.6,0.62) -- (7,0.62); \node[gdot] at (5.9,0.62) {}; \fi
+  \ifnum#1>2 \draw[gline] (4.6,1.24) -- (7,1.24); \node[gdot] at (6.3,1.24) {}; \fi
+  \ifnum#1>2 \draw[gline] (4.6,-0.62) -- (7,-0.62); \node[gdot] at (5.1,-0.62) {}; \fi
+  \draw[vax] (9.2,0) -- (11.6,0) node[right=0pt, font=\tiny, text=cvolt] {$v$};
+  \draw[vax] (10.1,-0.93) -- (10.1,1.612) node[above=0pt, font=\tiny, text=ccur] {$i$};
+  \draw[gray!60] (10.7,-0.05) -- (10.7,0.05); \node[font=\tiny, text=gray, below] at (10.7,-0.03) {$3$};
+  \draw[gray!60] (11.3,-0.05) -- (11.3,0.05); \node[font=\tiny, text=gray, below] at (11.3,-0.03) {$6$};
+  \draw[gray!60] (10.05,0.62) -- (10.15,0.62); \node[font=\tiny, text=gray, left] at (10.08,0.62) {$1$};
+  \draw[gray!60] (10.05,1.24) -- (10.15,1.24); \node[font=\tiny, text=gray, left] at (10.08,1.24) {$2$};
+  \node[font=\scriptsize, text=metugray] at (10.4,-1.48) {series: $3\ohm$};
+  \begin{scope}[yshift=0.112cm]\miniRsR{10.45}{$1\ohm$}{$2\ohm$}\end{scope}
+  \ifnum#1>3 \draw[crv] (9.2,-0.93) -- (11.6,1.55); \fi
+  \ifnum#1>1 \draw[gline] (9.2,0.62) -- (11.6,0.62); \node[gdot] at (10.7,0.62) {}; \fi
+  \ifnum#1>2 \draw[gline] (9.2,1.24) -- (11.6,1.24); \node[gdot] at (11.3,1.24) {}; \fi
+  \ifnum#1>2 \draw[gline] (9.2,-0.62) -- (11.6,-0.62); \node[gdot] at (9.5,-0.62) {}; \fi
+  \node[font=\large] at (3.62,0.725) {\shortstack{$+$\\[1pt]{\tiny add $v$}}};
+  \node[font=\large] at (8.22,0.725) {$=$};
+}
+\newcommand{\addRRp}[1]{%
+  \path (-0.2,-2.46) rectangle (12.296,3.16);
+  \draw[vax] (0,0) -- (2.496,0) node[right=0pt, font=\tiny, text=cvolt] {$v$};
+  \draw[vax] (1.248,-1.56) -- (1.248,1.56) node[above=0pt, font=\tiny, text=ccur] {$i$};
+  \draw[gray!60] (0.288,-0.05) -- (0.288,0.05); \node[font=\tiny, text=gray, below] at (0.288,-0.03) {$-2$};
+  \draw[gray!60] (2.208,-0.05) -- (2.208,0.05); \node[font=\tiny, text=gray, below] at (2.208,-0.03) {$2$};
+  \draw[gray!60] (1.198,-1.2) -- (1.298,-1.2); \node[font=\tiny, text=gray, left] at (1.228,-1.2) {$-3$};
+  \draw[gray!60] (1.198,1.2) -- (1.298,1.2); \node[font=\tiny, text=gray, left] at (1.228,1.2) {$3$};
+  \node[font=\scriptsize, text=metugray] at (1.248,-2.11) {$1\ohm$};
+  \begin{scope}[yshift=0.06cm]\miniR{1.298}{$1\ohm$}\end{scope}
+  \draw[crv] (0,-1.04) -- (2.496,1.04);
+  \ifnum#1>1 \draw[gline] (2.208,-1.56) -- (2.208,1.56); \node[gdot] at (2.208,0.8) {}; \fi
+  \ifnum#1>2 \draw[gline] (0.288,-1.56) -- (0.288,1.56); \node[gdot] at (0.288,-0.8) {}; \fi
+  \ifnum#1>2 \draw[gline] (1.728,-1.56) -- (1.728,1.56); \node[gdot] at (1.728,0.4) {}; \fi
+  \draw[vax] (4.6,0) -- (7.096,0) node[right=0pt, font=\tiny, text=cvolt] {$v$};
+  \draw[vax] (5.848,-1.56) -- (5.848,1.56) node[above=0pt, font=\tiny, text=ccur] {$i$};
+  \draw[gray!60] (4.888,-0.05) -- (4.888,0.05); \node[font=\tiny, text=gray, below] at (4.888,-0.03) {$-2$};
+  \draw[gray!60] (6.808,-0.05) -- (6.808,0.05); \node[font=\tiny, text=gray, below] at (6.808,-0.03) {$2$};
+  \draw[gray!60] (5.798,-1.2) -- (5.898,-1.2); \node[font=\tiny, text=gray, left] at (5.828,-1.2) {$-3$};
+  \draw[gray!60] (5.798,1.2) -- (5.898,1.2); \node[font=\tiny, text=gray, left] at (5.828,1.2) {$3$};
+  \node[font=\scriptsize, text=metugray] at (5.848,-2.11) {$2\ohm$};
+  \begin{scope}[yshift=0.06cm]\miniR{5.898}{$2\ohm$}\end{scope}
+  \draw[crv] (4.6,-0.52) -- (7.096,0.52);
+  \ifnum#1>1 \draw[gline] (6.808,-1.56) -- (6.808,1.56); \node[gdot] at (6.808,0.4) {}; \fi
+  \ifnum#1>2 \draw[gline] (4.888,-1.56) -- (4.888,1.56); \node[gdot] at (4.888,-0.4) {}; \fi
+  \ifnum#1>2 \draw[gline] (6.328,-1.56) -- (6.328,1.56); \node[gdot] at (6.328,0.2) {}; \fi
+  \draw[vax] (9.2,0) -- (11.696,0) node[right=0pt, font=\tiny, text=cvolt] {$v$};
+  \draw[vax] (10.448,-1.56) -- (10.448,1.56) node[above=0pt, font=\tiny, text=ccur] {$i$};
+  \draw[gray!60] (9.488,-0.05) -- (9.488,0.05); \node[font=\tiny, text=gray, below] at (9.488,-0.03) {$-2$};
+  \draw[gray!60] (11.408,-0.05) -- (11.408,0.05); \node[font=\tiny, text=gray, below] at (11.408,-0.03) {$2$};
+  \draw[gray!60] (10.398,-1.2) -- (10.498,-1.2); \node[font=\tiny, text=gray, left] at (10.428,-1.2) {$-3$};
+  \draw[gray!60] (10.398,1.2) -- (10.498,1.2); \node[font=\tiny, text=gray, left] at (10.428,1.2) {$3$};
+  \node[font=\scriptsize, text=metugray] at (10.448,-2.11) {parallel: $\frac23\ohm$};
+  \begin{scope}[yshift=0.06cm]\miniRpR{10.498}{$1\ohm$}{$2\ohm$}\end{scope}
+  \ifnum#1>3 \draw[crv] (9.2,-1.56) -- (11.696,1.56); \fi
+  \ifnum#1>1 \draw[gline] (11.408,-1.56) -- (11.408,1.56); \node[gdot] at (11.408,1.2) {}; \fi
+  \ifnum#1>2 \draw[gline] (9.488,-1.56) -- (9.488,1.56); \node[gdot] at (9.488,-1.2) {}; \fi
+  \ifnum#1>2 \draw[gline] (10.928,-1.56) -- (10.928,1.56); \node[gdot] at (10.928,0.6) {}; \fi
+  \node[font=\large] at (3.668,0.702) {\shortstack{$+$\\[1pt]{\tiny add $i$}}};
+  \node[font=\large] at (8.268,0.702) {$=$};
+}
+
+
+
 \begin{document}
 
 %-------------------- title block -----------------------------
@@ -898,6 +1122,164 @@ Multiply by $12$: $\ 2\,\e{} - 24 + \e{} + 3\,\e{} - 6 = 0$, so $6\,\e{} = 30$ a
 \]
 
 %==============================================================
+\section{Adding voltages, adding currents}\label{sec:add}
+
+\subsection{Why add characteristics?}
+
+An element is a curve in the $\Vcol{v}$--$\Icol{i}$ plane. A one-port made of several elements
+is again one curve: its characteristic at the terminals. Often we can find this curve from the
+curves of the parts, without writing any node or mesh equation.
+
+\begin{itemize}[itemsep=3pt]
+  \item \textbf{Only the terminals matter.} After combining, the inside is gone: the load line
+        and the operating point need only the combined curve.
+  \item \textbf{Curves need no formula.} A diode or a lamp is often given as a measured curve.
+        Adding curves works on the picture itself.
+  \item \textbf{Piece by piece.} Diodes, resistors and sources are simple curves. Adding them
+        builds every piecewise-linear characteristic, and splitting a curve back into pieces
+        gives a circuit for it.
+\end{itemize}
+Two rules do all the work. They are KCL and KVL, read on the curves.
+
+\subsection{Series: the same current, add the voltages}
+
+\begin{minipage}[c]{0.3\linewidth}
+\centering
+\begin{tikzpicture}[scale=0.8]
+  \begin{scope}[shift={(0,-1.6)}, scale=1.4, transform shape]
+    \draw (0,3.6) node[ocirc] {} -- (0.8,3.6); \draw (0,0) node[ocirc] {} -- (0.8,0);
+    \draw (0.8,3.6) to[generic, l=$a$] (0.8,1.8) to[generic, l=$b$] (0.8,0);
+  \end{scope}
+\end{tikzpicture}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.66\linewidth}
+Two elements $a$ and $b$ in series. KCL: they carry the \textbf{same current},
+$\Icol{i_a} = \Icol{i_b} = \Icol{i}$. KVL: the voltages \textbf{add},
+$\Vcol{v} = \Vcol{v_a} + \Vcol{v_b}$.
+
+So, for each value of $\Icol{i}$: read $\Vcol{v_a}$ and $\Vcol{v_b}$ at that same $\Icol{i}$ and add
+them. On the graph this is a \textbf{horizontal} addition, along lines $\Icol{i} = $ const.
+\end{minipage}
+
+\medskip
+\textbf{Example: $1\ohm$ and $2\ohm$ in series.}
+\begin{center}
+\begin{tikzpicture}[scale=0.8]
+  \addRR{4}
+\end{tikzpicture}\\[4pt]
+\small
+\begin{tabular}{@{}cccc@{}}
+\toprule
+$\Icol{i}$ (A) & $1\ohm$: $\Vcol{v}$ & $2\ohm$: $\Vcol{v}$ & series: $\Vcol{v}$ (sum)\\
+\midrule
+$2$ & $2$ & $4$ & $6$\\
+$1$ & $1$ & $2$ & $3$\\
+$-1$ & $-1$ & $-2$ & $-3$\\
+\bottomrule
+\end{tabular}
+\end{center}
+Every sum is $3\,\Icol{i}$: a $3\ohm$ resistor. In series the resistances add, and the combined
+line is \textbf{flatter} than each part.
+
+\needspace{18\baselineskip}
+\subsection{Parallel: the same voltage, add the currents}
+
+\begin{minipage}[c]{0.3\linewidth}
+\centering
+\begin{tikzpicture}[scale=0.8]
+  \begin{scope}[shift={(0,-0.6)}, scale=1.4, transform shape]
+    \draw (0,2.2) node[ocirc] {} -- (2.3,2.2); \draw (0,0) node[ocirc] {} -- (2.3,0);
+    \draw (0.8,2.2) to[generic, l=$a$] (0.8,0); \draw (2.3,2.2) to[generic, l=$b$] (2.3,0);
+  \end{scope}
+\end{tikzpicture}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.66\linewidth}
+Two elements $a$ and $b$ in parallel. KVL: they have the \textbf{same voltage},
+$\Vcol{v_a} = \Vcol{v_b} = \Vcol{v}$. KCL: the currents \textbf{add},
+$\Icol{i} = \Icol{i_a} + \Icol{i_b}$.
+
+So, for each value of $\Vcol{v}$: read $\Icol{i_a}$ and $\Icol{i_b}$ at that same $\Vcol{v}$ and add
+them. On the graph this is a \textbf{vertical} addition, along lines $\Vcol{v} = $ const.
+\end{minipage}
+
+\medskip
+\textbf{Example: $1\ohm$ and $2\ohm$ in parallel.}
+\begin{center}
+\begin{tikzpicture}[scale=0.8]
+  \addRRp{4}
+\end{tikzpicture}\\[4pt]
+\small
+\begin{tabular}{@{}cccc@{}}
+\toprule
+$\Vcol{v}$ (V) & $1\ohm$: $\Icol{i}$ & $2\ohm$: $\Icol{i}$ & parallel: $\Icol{i}$ (sum)\\
+\midrule
+$2$ & $2$ & $1$ & $3$\\
+$1$ & $1$ & $0.5$ & $1.5$\\
+$-2$ & $-2$ & $-1$ & $-3$\\
+\bottomrule
+\end{tabular}
+\end{center}
+Every sum is $1.5\,\Vcol{v}$: a conductance of $1 + \frac12 = \frac32\Sie$, that is $\frac23\ohm$. In
+parallel the conductances add, and the combined line is \textbf{steeper} than each part.
+
+\needspace{16\baselineskip}
+\subsection{Adding a source: a shift}
+
+A source is a straight line parallel to an axis, so adding it moves the other curve without
+changing its shape.
+
+\begin{center}
+\begin{tikzpicture}[scale=0.75]
+  \threeplots{\draw[crv] (-1.2,-0.6) -- (1.2,0.6);}{\draw[crv] (0.6,-1.0) -- (0.6,1.0); \node[font=\tiny, below right] at (0.6,0) {$E$};}{\draw[crv] (-0.6,-0.6) -- (1.2,0.3); \node[font=\tiny, below] at (0.6,0) {$E$};}{\shortstack{$+$\\[1pt]{\tiny add $v$}}}{$R$}{source $E$}{series}
+  \miniR{0}{$R$} \miniE{4.1}{$E$} \miniRsE{8.2}{$R$}{$E$}
+\end{tikzpicture}
+\end{center}
+\textbf{Voltage source in series:} every $\Vcol{v}$ grows by $E$, so the curve shifts
+\textbf{right} by $E$: $\Vcol{v} = R\,\Icol{i} + E$. This is the Th\'evenin form.
+
+\begin{center}
+\begin{tikzpicture}[scale=0.75]
+  \threeplots{\draw[crv] (-1.2,-0.6) -- (1.2,0.6);}{\draw[crv] (-1.2,0.5) -- (1.2,0.5); \node[font=\tiny, above left] at (0,0.5) {$I$};}{\draw[crv] (-1.2,-0.1) -- (1.2,1.1); \node[font=\tiny, left] at (0,0.5) {$I$};}{\shortstack{$+$\\[1pt]{\tiny add $i$}}}{$R$}{source $I$}{parallel}
+  \miniR{0}{$R$} \miniI{4.1}{$I$} \miniRpI{8.2}{$R$}{$I$}
+\end{tikzpicture}
+\end{center}
+\textbf{Current source in parallel:} every $\Icol{i}$ grows by $I$, so the curve shifts
+\textbf{up} by $I$: $\Icol{i} = \Vcol{v}/R + I$. This is the Norton form.
+
+\subsection{The method, and the two rules side by side}
+
+\begin{ideabox}[How to add two curves]
+\begin{enumerate}[itemsep=2pt]
+  \item \textbf{What is shared?} Series: the current $\Icol{i}$. Parallel: the voltage $\Vcol{v}$.
+  \item \textbf{Draw the shared variable as a line.} Series: horizontal lines $\Icol{i} = $ const.
+        Parallel: vertical lines $\Vcol{v} = $ const. Take one line through each breakpoint, one
+        above and one below.
+  \item \textbf{Read and add the other variable.} On each line, read every curve. Series: add
+        the voltages. Parallel: add the currents.
+  \item \textbf{Plot the sums} and join them with straight lines.
+\end{enumerate}
+\end{ideabox}
+
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.35}
+\begin{tabular}{@{}lll@{}}
+\toprule
+ & \textbf{Series} & \textbf{Parallel}\\
+\midrule
+shared (KCL or KVL) & the same $\Icol{i}$ & the same $\Vcol{v}$\\
+added & $\Vcol{v} = \Vcol{v_a} + \Vcol{v_b}$ & $\Icol{i} = \Icol{i_a} + \Icol{i_b}$\\
+guide lines & horizontal, $\Icol{i} = $ const & vertical, $\Vcol{v} = $ const\\
+two resistors & resistances add: flatter & conductances add: steeper\\
+a source & $E$ shifts the curve right & $I$ shifts the curve up\\
+\bottomrule
+\end{tabular}
+\end{center}
+The two columns are \textbf{duals}: swap $\Vcol{v} \leftrightarrow \Icol{i}$, series
+$\leftrightarrow$ parallel, $R \leftrightarrow G$, and one column becomes the other. In the next
+section the same rules are applied to the ideal diode, whose curve has flat and vertical pieces.
+
+%==============================================================
 \section{The ideal diode}
 
 \begin{definitionbox}{Ideal diode}
@@ -927,11 +1309,11 @@ The characteristic is made of two straight pieces.
 both $\Vcol{v}$ and $\Icol{i}$ change sign: the characteristic is reflected through the origin.
 A reversed diode conducts for $\Icol{i} \leq 0$ and blocks for $\Vcol{v} \geq 0$.
 
-\textbf{Series and parallel.} In series the elements carry the same current, so the voltages
-add: the curves are added \emph{horizontally}. In parallel the elements share the same voltage,
-so the currents add: the curves are added \emph{vertically}. Combining ideal diodes, LTI
-resistors and constant sources this way always gives a \textbf{piecewise-linear}
-characteristic.
+\textbf{Series and parallel.} Diodes are added to other curves exactly as in
+Section~\ref{sec:add}: series, the same $\Icol{i}$, add $\Vcol{v}$; parallel, the same $\Vcol{v}$,
+add $\Icol{i}$. Combining ideal diodes, LTI resistors and constant sources this way always gives
+a \textbf{piecewise-linear} characteristic.
+
 
 \subsection{Simple series and parallel}
 
@@ -958,6 +1340,62 @@ the line of $R$; in parallel, vertically.
 
 \medskip\noindent
 \casecell{\casecktb}{\caseresb}{II: $R$ and a diode in parallel}{$\Vcol{v} < 0$: $\Icol{i} = \Vcol{v}/R$; $\Vcol{v} = 0$: $\Icol{i} \geq 0$}
+
+\subsection{Adding a diode curve step by step}
+
+What is new with a diode: its curve has a flat piece and a vertical piece.
+\begin{itemize}[itemsep=2pt]
+  \item A flat or vertical piece meets a guide line in a whole \emph{interval}, not in one point;
+        the sum is an interval too.
+  \item If a guide line misses one of the curves, the sum has no point on that line.
+\end{itemize}
+
+Take $R = 2\ohm$ and follow the four steps.
+
+\needspace{22\baselineskip}
+\textbf{Case I (series): horizontal lines.} The diode and the resistor carry the same current.
+\begin{center}
+\begin{tikzpicture}[scale=0.8]
+  \addSer{4}
+\end{tikzpicture}\\[4pt]
+\small
+\begin{tabular}{@{}cccc@{}}
+\toprule
+$\Icol{i}$ (A) & diode $\Vcol{v}$ & $2\ohm$: $\Vcol{v}$ & series: $\Vcol{v}$ (sum)\\
+\midrule
+$2$ & $0$ & $4$ & $4$\\
+$1$ & $0$ & $2$ & $2$\\
+$0$ & any $\Vcol{v} \leq 0$ & $0$ & any $\Vcol{v} \leq 0$\\
+$-1$ & none & $-2$ & none\\
+\bottomrule
+\end{tabular}
+\end{center}
+At $\Icol{i} = 1\A$ the diode is a short ($\Vcol{v} = 0$) and the resistor has $2\V$: the sum is
+$2\V$. At $\Icol{i} = 0$ the diode allows any $\Vcol{v} \leq 0$: the sum is the whole half-line
+$\Vcol{v} \leq 0$. The line $\Icol{i} = -1\A$ misses the diode curve: no point. Joining the
+points gives Case I.
+
+\needspace{22\baselineskip}
+\textbf{Case II (parallel): vertical lines.} The diode and the resistor have the same voltage.
+\begin{center}
+\begin{tikzpicture}[scale=0.8]
+  \addPar{4}
+\end{tikzpicture}\\[4pt]
+\small
+\begin{tabular}{@{}cccc@{}}
+\toprule
+$\Vcol{v}$ (V) & diode $\Icol{i}$ & $2\ohm$: $\Icol{i}$ & parallel: $\Icol{i}$ (sum)\\
+\midrule
+$1$ & none & $0.5$ & none\\
+$0$ & any $\Icol{i} \geq 0$ & $0$ & any $\Icol{i} \geq 0$\\
+$-2$ & $0$ & $-1$ & $-1$\\
+$-4$ & $0$ & $-2$ & $-2$\\
+\bottomrule
+\end{tabular}
+\end{center}
+At $\Vcol{v} = -2\V$ the diode is an open ($\Icol{i} = 0$) and the resistor carries $-1\A$: the
+sum is $-1\A$. At $\Vcol{v} = 0$ the diode allows any $\Icol{i} \geq 0$: the sum is the whole
+half-line. The line $\Vcol{v} = 1\V$ misses the diode curve: no point.
 
 \subsection{Reminder: voltage-controlled or current-controlled}\label{sec:control}
 
@@ -1070,14 +1508,25 @@ $(4\V, 0)$ is where $\Icol{i_D} = 0$ and $\Vcol{v_D} = 0$ at the same time.
 \end{minipage}
 
 \solstep{4}{Graphically}
+The diode and $2\ohm$ are Case I. The source is in series: the same current, so use horizontal
+lines and add the voltages.
 \begin{center}
-\begin{tikzpicture}[scale=0.85]
-  \threeplots{\draw[crv] (-1.2,0) -- (0,0) -- (1.1,0.55);}{\draw[crv] (0.6,-1.0) -- (0.6,1.0); \node[font=\tiny, below right] at (0.6,0) {$4\V$};}{\draw[crv] (-1.2,0) -- (0.6,0) -- (1.2,0.3);}{\shortstack{$+$\\[1pt]{\tiny add $v$}}}{Case I, $R = 2\ohm$}{$4\V$ source}{series}
-  \miniDsR{0}{$2\ohm$} \miniE{4.1}{$4\V$} \miniDRE{8.2}
-\end{tikzpicture}
+\begin{tikzpicture}[scale=0.8]
+  \addEx{4}
+\end{tikzpicture}\\[4pt]
+\small
+\begin{tabular}{@{}cccc@{}}
+\toprule
+$\Icol{i}$ (A) & Case I: $\Vcol{v}$ & source: $\Vcol{v}$ & series: $\Vcol{v}$ (sum)\\
+\midrule
+$2$ & $4$ & $4$ & $8$\\
+$1$ & $2$ & $4$ & $6$\\
+$0$ & any $\Vcol{v} \leq 0$ & $4$ & any $\Vcol{v} \leq 4$\\
+\bottomrule
+\end{tabular}
 \end{center}
-The diode and $2\ohm$ are Case I. The source is a vertical line at $\Vcol{v} = 4\V$; adding it
-horizontally shifts the curve right by $4\V$: the same result. \ \yes
+Every sum is $4\V$ larger: the source shifts the curve right by $4\V$. The breakpoint is at
+$(4\V, 0)$ and the slope is $\frac12\Sie$: the same result. \ \yes
 
 \subsection{More connections}
 
@@ -1103,6 +1552,21 @@ and IV use two equal resistors: $R_1 = R_2 = R$.
 \medskip
 A voltage source in series shifts a curve horizontally; a current source in parallel shifts it
 vertically.
+
+\begin{ideabox}[Common mistakes]
+\begin{itemize}[itemsep=2pt]
+  \item \textbf{The wrong direction.} Series: add $\Vcol{v}$ at the same $\Icol{i}$ (horizontal
+        lines). Parallel: add $\Icol{i}$ at the same $\Vcol{v}$ (vertical lines).
+  \item \textbf{One point instead of an interval.} On a flat or vertical piece, a line meets the
+        curve in a whole interval; the sum keeps it.
+  \item \textbf{A missed curve.} If a line misses one curve, the sum has no point there (a
+        diode in series allows no $\Icol{i} < 0$).
+  \item \textbf{Turning around.} A reversed element is reflected through the origin: both
+        $\Vcol{v}$ and $\Icol{i}$ change sign, not only one.
+  \item \textbf{Source signs.} A voltage source with $+$ at the top shifts right; a current
+        source pointing down (into the $+$ terminal) shifts up. Check each sign.
+\end{itemize}
+\end{ideabox}
 
 \subsection{The ideal Zener diode}
 

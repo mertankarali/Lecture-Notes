@@ -1061,6 +1061,29 @@
   \end{columns}
 \end{frame}
 
+%--------------------------------------------------------------
+\begin{frame}{Example 13.3: the power of $10\ohm$}
+  \begin{columns}[c,onlytextwidth]
+    \begin{column}{0.52\textwidth}
+      \centering
+      \begin{tikzpicture}[scale=0.72]
+        \exS{0}
+      \end{tikzpicture}
+    \end{column}
+    \begin{column}{0.46\textwidth}
+      $\Icol{i_1} = 1\A$, \ $\Icol{i_2} = 2\A$, \ $\Icol{i} = 3\A$\\[10pt]
+      $P_{10\ohm} = \ ?$\\[12pt]
+      \onslide<2->{%
+      \textbf{Right:} \ $10\,\Icol{i}^2 = 10 \cdot 3^2 = 90\W$\\[8pt]
+      \textbf{Wrong:} \ $10\,\Icol{i_1}^2 + 10\,\Icol{i_2}^2 = 50\W$\\[12pt]
+      \begin{tikzpicture}
+        \node[draw=metured, thick, fill=metured!5, rounded corners=3pt, inner sep=6pt, align=center]
+          {Power is not linear:\\ never add powers};
+      \end{tikzpicture}}
+    \end{column}
+  \end{columns}
+\end{frame}
+
 %==============================================================
 \roadmapframe{7}
 

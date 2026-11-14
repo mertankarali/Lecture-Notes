@@ -5,7 +5,7 @@ Lecture notes and slides for the thirteenth lecture of EE201 (Section 2, Fall 20
 | File | What it is |
 |---|---|
 | `EE201_Lecture_13.tex` | Handout / lecture notes (article, 14 pages). Self-contained: input resistance with a test source, linearity and superposition, Thévenin and Norton equivalents, maximum power transfer, a summary; Appendix A (take-home, new page): the Δ–Y and Y–Δ transforms. Ten worked examples; each gives the problem in a box and a step-by-step solution below it. |
-| `EE201_Lecture_13_slides.tex` | Beamer deck (58 slides and a 9-slide take-home part, 154 PDF pages) for the lecture itself — visual, low text. |
+| `EE201_Lecture_13_slides.tex` | Beamer deck (59 slides and a 9-slide take-home part, 156 PDF pages) for the lecture itself — visual, low text. |
 | `build.sh` | Compiles both, removes auxiliary files, opens the PDFs. |
 
 ## Compiling
@@ -37,7 +37,7 @@ transform is a take-home part.
    k₂ = −R₂/(R₁ + R₂) for y = i; the implication y(αu + βw) = α y(u) + β y(w)
 4. **Superposition** — one independent source at a time; a killed voltage source is a short,
    a killed current source an open; dependent sources are not killed. Example 13.3: 20 V,
-   4 A and a CCVS 5 i_x: i = 1 A + 2 A = 3 A. Example 13.4: three experiments,
+   4 A and a CCVS 5 i_x: i = 1 A + 2 A = 3 A; powers do not add (10·3² = 90 W, not 10 + 40 = 50 W). Example 13.4: three experiments,
    v₃ = (2/3) v₁ + (2/3) v₂ without any element value
 5. **Thévenin and Norton** — conditions (A1) controls of the dependent sources inside N,
    (A2) the port both voltage- and current-controlled; v = R_th i + v_th and

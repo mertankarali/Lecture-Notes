@@ -240,6 +240,62 @@
     \vmeter{6.6}{2.0}{0.2}{A}{$\Icol{i_2}$}
     \node[font=\small, text=cvolt, anchor=south] at (6.0,2.05) {$v_2 = 0$};
   \fi}
+%  Reciprocity: a two-port N (LTI resistors) with something at each port.
+%  \rcp{left code}{left label}{right code}{right label}; code 0: voltage source (+ at the top),
+%  1: current source (into the + terminal), 2: short (current shown), 3: open (voltage shown)
+\newcommand{\rcp}[4]{%
+  \draw[elem] (1.6,-0.2) rectangle (3.8,2.2);
+  \node[align=center, font=\small] at (2.7,1.0) {LTI\\ resistors};
+  \draw (1.1,1.8) -- (1.6,1.8); \draw (1.1,0) -- (1.6,0);
+  \draw (3.8,1.8) -- (4.3,1.8); \draw (3.8,0) -- (4.3,0);
+  \ifcase#1
+    \draw (0,1.8) to[american voltage source, l_=#2] (0,0); \draw (0,1.8) -- (1.1,1.8); \draw (0,0) -- (1.1,0);
+  \or
+    \draw (0,0) to[american current source, l=#2] (0,1.8); \draw (0,1.8) -- (1.1,1.8); \draw (0,0) -- (1.1,0);
+  \or
+    \draw (0,1.8) -- (0,0); \draw (0,1.8) -- (1.1,1.8); \draw (0,0) -- (1.1,0);
+    \draw[iar] (0.25,2.08) -- (0.85,2.08); \node[font=\small, anchor=south] at (0.55,2.12) {#2};
+  \or
+    \node[pol] at (1.05,1.45) {$+$}; \node[pol] at (1.05,0.35) {$-$};
+    \node[font=\small, anchor=east] at (1.0,0.9) {#2};
+  \fi
+  \ifcase#3
+    \draw (5.4,1.8) to[american voltage source, l=#4] (5.4,0); \draw (4.3,1.8) -- (5.4,1.8); \draw (4.3,0) -- (5.4,0);
+  \or
+    \draw (5.4,0) to[american current source, l_=#4] (5.4,1.8); \draw (4.3,1.8) -- (5.4,1.8); \draw (4.3,0) -- (5.4,0);
+  \or
+    \draw (5.4,1.8) -- (5.4,0); \draw (4.3,1.8) -- (5.4,1.8); \draw (4.3,0) -- (5.4,0);
+    \draw[iar] (5.15,2.08) -- (4.55,2.08); \node[font=\small, anchor=south] at (4.85,2.12) {#4};
+  \or
+    \node[pol] at (4.35,1.45) {$+$}; \node[pol] at (4.35,0.35) {$-$};
+    \node[font=\small, anchor=west] at (4.4,0.9) {#4};
+  \fi
+  \draw (1.1,1.8) node[ocirc] {}; \draw (1.1,0) node[ocirc] {};
+  \draw (4.3,1.8) node[ocirc] {}; \draw (4.3,0) node[ocirc] {};}
+%  Cascade: two boxes
+\newcommand{\cascade}{%
+  \draw[elem] (1.0,-0.2) rectangle (2.8,2.2); \node[font=\small] at (1.9,1.0) {$\Tm_a$};
+  \draw[elem] (4.2,-0.2) rectangle (6.0,2.2); \node[font=\small] at (5.1,1.0) {$\Tm_b$};
+  \draw (0,1.8) -- (1.0,1.8); \draw (0,0) -- (1.0,0);
+  \draw (2.8,1.8) -- (4.2,1.8); \draw (2.8,0) -- (4.2,0);
+  \draw (6.0,1.8) -- (7.0,1.8); \draw (6.0,0) -- (7.0,0);
+  \fill (3.5,1.8) circle (1.6pt); \fill (3.5,0) circle (1.6pt);
+  \pone{0}{1.8} \ptwo{7.0}{1.8}}
+%  The ladder of the reciprocity example: 1 Ohm series, 2 Ohm shunt, 2 Ohm series
+\newcommand{\ladder}[2]{%  #1: left code, #2: right code (as in \rcp, labels fixed)
+  \draw (1.1,1.8) to[R, l=$1\ohm$] (2.6,1.8) to[R, l=$2\ohm$] (4.3,1.8);
+  \draw (2.6,1.8) to[R, l=$2\ohm$] (2.6,0); \fill (2.6,1.8) circle (1.6pt); \fill (2.6,0) circle (1.6pt);
+  \draw (1.1,0) -- (4.3,0);
+  \ifcase#1 \draw (0,1.8) to[american voltage source, l_=$\Vcol{8\V}$] (0,0); \draw (0,1.8) -- (1.1,1.8); \draw (0,0) -- (1.1,0);
+  \or \draw (0,1.8) -- (0,0); \draw (0,1.8) -- (1.1,1.8); \draw (0,0) -- (1.1,0);
+      \draw[iar] (0.25,2.08) -- (0.85,2.08); \node[font=\small, text=ccur, anchor=south] at (0.55,2.12) {$\hat\imath_1$};
+  \fi
+  \ifcase#2 \draw (5.4,1.8) to[american voltage source, l=$\Vcol{8\V}$] (5.4,0); \draw (4.3,1.8) -- (5.4,1.8); \draw (4.3,0) -- (5.4,0);
+  \or \draw (5.4,1.8) -- (5.4,0); \draw (4.3,1.8) -- (5.4,1.8); \draw (4.3,0) -- (5.4,0);
+      \draw[iar] (5.15,2.08) -- (4.55,2.08); \node[font=\small, text=ccur, anchor=south] at (4.85,2.12) {$i_2$};
+  \fi
+  \draw (1.1,1.8) node[ocirc] {}; \draw (1.1,0) node[ocirc] {};
+  \draw (4.3,1.8) node[ocirc] {}; \draw (4.3,0) node[ocirc] {};}
 \title{Lecture 14: Two-Port Circuits}
 \subtitle{EE201 -- Circuit Theory I}
 \author{M. Mert Ankaral{\i}}
@@ -247,14 +303,14 @@
            Middle East Technical University}
 \date{}
 
-%  Roadmap icons (1-5): a two-port box with the letter of its matrix
+%  Roadmap icons (1-6): a two-port box with the letter of its matrix
 \newcommand{\rmicon}[1]{%
   \draw[thick] (-0.8,-0.7) rectangle (0.8,0.7);
   \draw (-1.6,0.5) node[ocirc] {} -- (-0.8,0.5); \draw (-1.6,-0.5) node[ocirc] {} -- (-0.8,-0.5);
   \draw (0.8,0.5) -- (1.6,0.5) node[ocirc] {}; \draw (0.8,-0.5) -- (1.6,-0.5) node[ocirc] {};
-  \node[font=\LARGE\bfseries] at (0,0) {\ifcase#1\or$\mathbf{R}$\or$\mathbf{G}$\or$\mathbf{H}$\or$\mathbf{T}$\or$P$\fi};}
-%  Stops 1-7: station of stop k = \rmst{k}
-\newcommand{\rmst}[1]{\ifcase#1\or1\or1\or2\or3\or3\or4\or5\fi}
+  \node[font=\LARGE\bfseries] at (0,0) {\ifcase#1\or$\mathbf{R}$\or$\mathbf{G}$\or$\mathbf{H}$\or$\mathbf{T}$\or$P$\or$\rightleftarrows$\fi};}
+%  Stops 1-8: station of stop k = \rmst{k}
+\newcommand{\rmst}[1]{\ifcase#1\or1\or1\or2\or3\or3\or4\or5\or6\fi}
 \newcommand{\rmstation}[4]{%
   \ifnum#1<\rmS\relax
     \node[circle, fill=cpow, text=white, inner sep=0pt, minimum size=5.4mm, font=\scriptsize\bfseries] at (#2,0) {\checkmark};
@@ -272,11 +328,11 @@
 %  #1 first stop, #2 last stop covered by this item, #3 x, #4 y, #5 text
 \newcommand{\rmsub}[5]{%
   \ifnum#2<\rmcur\relax
-    \node[text width=2.5cm, align=center, font=\footnotesize, text=black!40] at (#3,#4) {#5\ \textcolor{cpow}{\checkmark}};
+    \node[text width=2.1cm, align=center, font=\footnotesize, text=black!40] at (#3,#4) {#5\ \textcolor{cpow}{\checkmark}};
   \else\ifnum#1>\rmcur\relax
-    \node[text width=2.5cm, align=center, font=\footnotesize] at (#3,#4) {#5};
+    \node[text width=2.1cm, align=center, font=\footnotesize] at (#3,#4) {#5};
   \else
-    \node[text width=2.5cm, align=center, font=\footnotesize\bfseries, text=metured,
+    \node[text width=2.1cm, align=center, font=\footnotesize\bfseries, text=metured,
           draw=metured, rounded corners=2pt, inner sep=2pt] at (#3,#4) {#5};
   \fi\fi}
 \newcommand{\roadmapframe}[1]{%
@@ -286,21 +342,24 @@
     \centering
     \begin{tikzpicture}
       \draw[metugray!45, line width=3pt, -{Stealth[length=2.6mm, width=3.2mm]}] (0,0) -- (13.5,0);
-      \rmstation{1}{1.35}{Resistance\\ matrix}{1}
-      \rmstation{2}{4.05}{Conductance\\ matrix}{2}
-      \rmstation{3}{6.75}{Hybrid\\ matrices}{3}
-      \rmstation{4}{9.45}{Transmission\\ matrix}{4}
-      \rmstation{5}{12.15}{Power}{5}
-      \rmsub{1}{1}{1.35}{-0.8}{$\mathbf{v} = \mathbf{R}\,\mathbf{i}$}
-      \rmsub{2}{2}{1.35}{-1.4}{open-circuit tests}
-      \rmsub{3}{3}{4.05}{-0.8}{$\mathbf{i} = \mathbf{G}\,\mathbf{v}$}
-      \rmsub{3}{3}{4.05}{-1.4}{short-circuit tests}
-      \rmsub{4}{4}{6.75}{-0.8}{$\mathbf{H}$ and $\mathbf{H}'$}
-      \rmsub{4}{4}{6.75}{-1.4}{ideal transformer}
-      \rmsub{6}{6}{9.45}{-0.8}{$\vtwo$ and $-\itwo$}
-      \rmsub{6}{6}{9.45}{-1.4}{ideal transformer}
-      \rmsub{7}{7}{12.15}{-0.8}{$\vone\ione + \vtwo\itwo$}
-      \rmsub{7}{7}{12.15}{-1.4}{passive, active}
+      \rmstation{1}{1.1}{Resistance\\ matrix}{1}
+      \rmstation{2}{3.35}{Conductance\\ matrix}{2}
+      \rmstation{3}{5.6}{Hybrid\\ matrices}{3}
+      \rmstation{4}{7.85}{Transmission\\ matrix}{4}
+      \rmstation{5}{10.1}{Power}{5}
+      \rmstation{6}{12.35}{Reciprocity}{6}
+      \rmsub{1}{1}{1.1}{-0.8}{$\mathbf{v} = \mathbf{R}\,\mathbf{i}$}
+      \rmsub{2}{2}{1.1}{-1.5}{open-circuit tests}
+      \rmsub{3}{3}{3.35}{-0.8}{$\mathbf{i} = \mathbf{G}\,\mathbf{v}$}
+      \rmsub{3}{3}{3.35}{-1.5}{short-circuit tests}
+      \rmsub{4}{4}{5.6}{-0.8}{$\mathbf{H}$ and $\mathbf{H}'$}
+      \rmsub{4}{4}{5.6}{-1.5}{ideal transformer}
+      \rmsub{6}{6}{7.85}{-0.8}{$\vtwo$ and $-\itwo$}
+      \rmsub{6}{6}{7.85}{-1.5}{cascade, load}
+      \rmsub{7}{7}{10.1}{-0.8}{$\vone\ione + \vtwo\itwo$}
+      \rmsub{7}{7}{10.1}{-1.5}{passive, active}
+      \rmsub{8}{8}{12.35}{-0.8}{Tellegen}
+      \rmsub{8}{8}{12.35}{-1.5}{swap source, meter}
     \end{tikzpicture}
     \vfill
     \mbox{}
@@ -777,6 +836,59 @@
 \end{frame}
 
 %--------------------------------------------------------------
+\begin{frame}{Cascade and a load}
+  \begin{center}
+    \begin{tikzpicture}[scale=0.85]
+      \cascade
+    \end{tikzpicture}
+  \end{center}
+  \begin{columns}[t,onlytextwidth]
+    \begin{column}{0.5\textwidth}
+      \centering
+      Junction: $\vtwo^{a} = \vone^{b}$, \ $-\itwo^{a} = \ione^{b}$\\[8pt]
+      \begin{tikzpicture}
+        \node[draw=metured, thick, fill=metured!5, rounded corners=3pt, inner sep=6pt] {$\Tm = \Tm_a\,\Tm_b$};
+      \end{tikzpicture}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \centering
+      Load $R_L$ at port 2: $\vtwo = R_L(-\itwo)$\\[8pt]
+      \begin{tikzpicture}
+        \node[draw=metured, thick, fill=metured!5, rounded corners=3pt, inner sep=6pt] {$R_{\mathrm{in}} = \dfrac{A R_L + B}{C R_L + D}$};
+      \end{tikzpicture}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{Example 14.7: a cascade with a load}
+  \begin{columns}[c,onlytextwidth]
+    \begin{column}{0.46\textwidth}
+      \centering
+      \begin{tikzpicture}[scale=0.85]
+        \draw (0,1.8) to[R, l=$1\ohm$] (2.2,1.8) -- (3.4,1.8);
+        \draw (2.8,1.8) to[R, l=$2\ohm$] (2.8,0); \fill (2.8,1.8) circle (1.6pt); \fill (2.8,0) circle (1.6pt);
+        \draw (0,0) -- (3.4,0);
+        \draw (3.4,1.8) -- (4.4,1.8) to[R, l={$2\ohm$}] (4.4,0) -- (3.4,0);
+        \draw[densely dashed, gray] (1.1,-0.5) -- (1.1,2.3); \draw[densely dashed, gray] (3.4,-0.5) -- (3.4,2.3);
+        \node[font=\small, text=gray] at (0.6,-0.6) {$a$}; \node[font=\small, text=gray] at (2.25,-0.6) {$b$};
+        \node[font=\small, text=gray] at (4.0,-0.6) {$R_L$};
+        \pone{0}{1.8}
+      \end{tikzpicture}\\[8pt]
+      $\Tm = \ ?$ \quad $R_{\mathrm{in}} = \ ?$
+    \end{column}
+    \begin{column}{0.52\textwidth}
+      \onslide<2->{%
+      $\Tm_a = \begin{bmatrix} 1 & 1\\ 0 & 1 \end{bmatrix}$, \quad
+      $\Tm_b = \begin{bmatrix} 1 & 0\\ \frac12 & 1 \end{bmatrix}$\\[10pt]
+      $\Tm = \Tm_a\Tm_b = \begin{bmatrix} \frac32 & 1\\ \frac12 & 1 \end{bmatrix}$\\[10pt]
+      $R_{\mathrm{in}} = \dfrac{\frac32 \cdot 2 + 1}{\frac12 \cdot 2 + 1} = 2\ohm$\\[8pt]
+      Check: $1 + 2 \parallel 2 = 2\ohm$ \ \yes}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+%--------------------------------------------------------------
 \begin{frame}{Which test? Open or short}
   \vfill
   \begin{center}
@@ -831,7 +943,7 @@
 \end{frame}
 
 %--------------------------------------------------------------
-\begin{frame}{Example 14.7: $\Rm$ from two measurements}
+\begin{frame}{Example 14.8: $\Rm$ from two measurements}
   \begin{columns}[c,onlytextwidth]
     \begin{column}{0.5\textwidth}
       \centering
@@ -886,7 +998,7 @@
 \end{frame}
 
 %--------------------------------------------------------------
-\begin{frame}{Example 14.8: is the ideal transformer passive?}
+\begin{frame}{Example 14.9: is the ideal transformer passive?}
   \begin{columns}[c,onlytextwidth]
     \begin{column}{0.48\textwidth}
       \centering
@@ -908,6 +1020,181 @@
   \end{columns}
 \end{frame}
 
+%==============================================================
+\roadmapframe{8}
+
+%--------------------------------------------------------------
+\begin{frame}{Tellegen's theorem, general form}
+  \vfill
+  \begin{itemize}\itemsep8pt
+    \item Previously: $\sum_k \Vcol{v_k}\Icol{i_k} = 0$ in any circuit
+    \item The proof used KVL for $\mathbf{v}$ and KCL for $\mathbf{i}$, nothing else
+  \end{itemize}
+  \vfill
+  \begin{center}
+    Two circuits, \textbf{same graph}: \ $(\Vcol{v_k}, \Icol{i_k})$ and $(\Vcol{\hat v_k}, \Icol{\hat\imath_k})$\\[10pt]
+    \begin{tikzpicture}
+      \node[draw=ccur, thick, fill=ccur!6, rounded corners=3pt, inner sep=7pt]
+        {$\displaystyle\sum_k \Vcol{v_k}\,\Icol{\hat\imath_k} = 0, \qquad \sum_k \Vcol{\hat v_k}\,\Icol{i_k} = 0$};
+    \end{tikzpicture}\\[10pt]
+    {\small Here: the same two-port, driven in two different ways}
+  \end{center}
+  \vfill
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{Reciprocal two-port}
+  \begin{columns}[c,onlytextwidth]
+    \begin{column}{0.46\textwidth}
+      \centering
+      \begin{tikzpicture}[scale=0.8]
+        \tpbox{LTI\\ resistors}
+      \end{tikzpicture}\\[6pt]
+      {\small no independent, no dependent sources}
+    \end{column}
+    \begin{column}{0.52\textwidth}
+      \begin{tikzpicture}
+        \node[draw=metured, thick, fill=metured!5, rounded corners=3pt, inner sep=6pt]
+          {$\vone\Icol{\hat\imath_1} + \vtwo\Icol{\hat\imath_2} = \Vcol{\hat v_1}\ione + \Vcol{\hat v_2}\itwo$};
+      \end{tikzpicture}\\[12pt]
+      \onslide<2->{%
+      \textbf{Why:} Tellegen for both sums\\[4pt]
+      Inside: $\Vcol{v_k}\Icol{\hat\imath_k} = R_k\Icol{i_k}\Icol{\hat\imath_k} = \Vcol{\hat v_k}\Icol{i_k}$\\[4pt]
+      {\small A dependent source breaks this step}}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{The matrices of a reciprocal two-port}
+  \vfill
+  \begin{center}
+    $\mathbf{v} = \Rm\,\mathbf{i}$ in the identity: \ $\Rm = \Rm^T$\\[12pt]
+    \renewcommand{\arraystretch}{1.5}
+    \begin{tabular}{@{}cccc@{}}
+      \toprule
+      $\Rm$ & $\Gm$ & $\Hm$ & $\Tm$\\
+      \midrule
+      $r_{12} = r_{21}$ & $g_{12} = g_{21}$ & $h_{12} = -h_{21}$ & $AD - BC = 1$\\
+      \bottomrule
+    \end{tabular}
+  \end{center}
+  \vfill
+  \begin{itemize}\itemsep6pt
+    \item Example 14.2: $\Rm = \left[\begin{smallmatrix} 3 & 1\\ -1 & 1 \end{smallmatrix}\right]$: \ \alert{not reciprocal} (dependent source)
+    \item Ideal transformer: $\Hm = \left[\begin{smallmatrix} 0 & n\\ -n & 0 \end{smallmatrix}\right]$: reciprocal
+    \item Example 14.7: $\det\Tm = \frac32 - \frac12 = 1$: reciprocal
+  \end{itemize}
+  \vfill
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{Statement 1: voltage source, short circuit}
+  \vfill
+  \begin{center}
+    \begin{tikzpicture}[scale=0.85]
+      \rcp{0}{$\Vcol{v_0}$}{2}{$\Icol{i_2}$}
+      \begin{scope}[xshift=7.4cm] \rcp{2}{$\Icol{\hat\imath_1}$}{0}{$\Vcol{v_0}$} \end{scope}
+    \end{tikzpicture}\\[16pt]
+    \onslide<2->{%
+    \begin{tikzpicture}
+      \node[draw=metured, thick, fill=metured!5, rounded corners=3pt, inner sep=6pt] {$\Icol{\hat\imath_1} = \itwo$};
+    \end{tikzpicture}\\[8pt]
+    {\small Identity with $\vtwo = 0$, $\Vcol{\hat v_1} = 0$: \ $v_0\,\Icol{\hat\imath_1} = v_0\,\itwo$}}
+  \end{center}
+  \vfill
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{Statement 2: current source, open circuit}
+  \vfill
+  \begin{center}
+    \begin{tikzpicture}[scale=0.85]
+      \rcp{1}{$\Icol{i_0}$}{3}{$\Vcol{v_2}$}
+      \begin{scope}[xshift=7.4cm] \rcp{3}{$\Vcol{\hat v_1}$}{1}{$\Icol{i_0}$} \end{scope}
+    \end{tikzpicture}\\[16pt]
+    \onslide<2->{%
+    \begin{tikzpicture}
+      \node[draw=metured, thick, fill=metured!5, rounded corners=3pt, inner sep=6pt] {$\Vcol{\hat v_1} = \vtwo$};
+    \end{tikzpicture}\\[8pt]
+    {\small Identity with $\itwo = 0$, $\Icol{\hat\imath_1} = 0$: \ $\vtwo\,i_0 = \Vcol{\hat v_1}\,i_0$}}
+  \end{center}
+  \vfill
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{Statement 3: mixed}
+  \vfill
+  \begin{center}
+    \begin{tikzpicture}[scale=0.85]
+      \rcp{1}{$\Icol{i_0}$}{2}{$\Icol{i_2}$}
+      \begin{scope}[xshift=7.4cm] \rcp{3}{$\Vcol{\hat v_1}$}{0}{$\Vcol{v_0}$} \end{scope}
+    \end{tikzpicture}\\[8pt]
+    {\small $v_0$ (V) and $i_0$ (A): the same number}\\[10pt]
+    \onslide<2->{%
+    \begin{tikzpicture}
+      \node[draw=metured, thick, fill=metured!5, rounded corners=3pt, inner sep=6pt] {$\Vcol{\hat v_1} = -\itwo$};
+    \end{tikzpicture}\\[8pt]
+    {\small Identity: $0 = \Vcol{\hat v_1}\,i_0 + v_0\,\itwo$; \ in matrices: $h_{12} = -h_{21}$}}
+  \end{center}
+  \vfill
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{Example 14.10: statement 1 on a ladder}
+  \begin{center}
+    \begin{tikzpicture}[scale=0.85]
+      \ladder{0}{1}
+      \begin{scope}[xshift=7.4cm] \ladder{1}{0} \end{scope}
+    \end{tikzpicture}
+  \end{center}
+  \begin{columns}[t,onlytextwidth]
+    \begin{column}{0.48\textwidth}
+      \centering
+      $\itwo = \ ?$\\[8pt]
+      \onslide<2->{%
+      $1 + 2 \parallel 2 = 2\ohm$: \ $4\A$\\[4pt]
+      split equally: \ $\itwo = -2\A$}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \centering
+      $\Icol{\hat\imath_1} = \ ?$\\[8pt]
+      \onslide<2->{%
+      $2 + 2 \parallel 1 = \tfrac83\ohm$: \ $3\A$\\[4pt]
+      divider: $3 \cdot \tfrac23 = 2\A$, \ $\Icol{\hat\imath_1} = -2\A$ \ \yes}
+    \end{column}
+  \end{columns}
+  \vfill
+  \onslide<2->{\centering\small Different source currents, the same short-circuit current\par}
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{Example 14.11: a black box}
+  \begin{columns}[c,onlytextwidth]
+    \begin{column}{0.5\textwidth}
+      \centering
+      \begin{tikzpicture}[scale=0.72]
+        \rcp{0}{$\Vcol{6\V}$}{2}{$\Icol{i_2}$}
+      \end{tikzpicture}\\[4pt]
+      {\small $\ione = 3\A$, \ $\itwo = -1\A$}\\[10pt]
+      \begin{tikzpicture}[scale=0.72]
+        \rcp{2}{$\Icol{\hat\imath_1}$}{0}{$\Vcol{12\V}$}
+      \end{tikzpicture}\\[4pt]
+      {\small $\Icol{\hat\imath_1} = \ ?$}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      Inside: only LTI resistors, not known\\[12pt]
+      \onslide<2->{%
+      Statement 1: $6\V$ at port 2 $\to$ $\Icol{\hat\imath_1} = -1\A$\\[8pt]
+      Linearity: $12\V$ $\to$ twice\\[10pt]
+      \begin{tikzpicture}
+        \node[draw=metured, thick, fill=metured!5, rounded corners=3pt, inner sep=6pt] {$\Icol{\hat\imath_1} = -2\A$};
+      \end{tikzpicture}\\[8pt]
+      {\small No circuit analysis needed}}
+    \end{column}
+  \end{columns}
+\end{frame}
+
 %--------------------------------------------------------------
 \begin{frame}{Summary}
   \vfill
@@ -921,12 +1208,14 @@
     conductance $\Gm$ & $[\ione \ \itwo]^T = \Gm\,[\vone \ \vtwo]^T$ & ports shorted; $\Gm = \Rm^{-1}$\\
     hybrid $\Hm$ & $[\vone \ \itwo]^T = \Hm\,[\ione \ \vtwo]^T$ & port 2 shorted, port 1 open\\
     transmission $\Tm$ & $[\vone \ \ione]^T = \Tm\,[\vtwo \ {-\itwo}]^T$ & port 1 from port 2\\
+    cascade & $\Tm = \Tm_a\Tm_b$ & $R_{\mathrm{in}} = \frac{A R_L + B}{C R_L + D}$\\
     \bottomrule
   \end{tabular}
   \end{center}
   \vfill
   \begin{center}
-    $P_N = \vone\,\ione + \vtwo\,\itwo$; \ passive if $P_N \geq 0$ always
+    $P_N = \vone\,\ione + \vtwo\,\itwo$; \ passive if $P_N \geq 0$ always\\[6pt]
+    Reciprocal (LTI resistors, no sources): $r_{12} = r_{21}$, \ $h_{12} = -h_{21}$, \ $\det\Tm = 1$
   \end{center}
   \vfill
 \end{frame}
