@@ -702,6 +702,56 @@
 \newcommand{\miniRpR}[3]{\minic{#1}{2.2}{\mW{2.2}{2.3} \mR{0.8}{2.2}{0}{#2} \mR{2.3}{2.2}{0}{#3}}}
 \newcommand{\miniRsE}[3]{\minic{#1}{3.6}{\mW{3.6}{0.8} \mR{0.8}{3.6}{1.8}{#2} \mE{0.8}{1.8}{0}{#3}}}
 \newcommand{\miniRpI}[3]{\minic{#1}{2.2}{\mW{2.2}{2.3} \mR{0.8}{2.2}{0}{#2} \mI{2.3}{2.2}{0}{#3}}}
+%  Zener diode built graphically: reversed diode + battery V_Z (+ at the bottom), then || diode
+\newcommand{\miniEr}[2]{\minic{#1}{2.2}{\mW{2.2}{0.8} \mEr{0.8}{2.2}{0}{#2}}}
+\newcommand{\miniDrZ}[1]{\minic{#1}{3.6}{\mW{3.6}{0.8} \mDr{0.8}{3.6}{1.8} \mEr{0.8}{1.8}{0}{$V_Z$}}}
+\newcommand{\miniZeq}[1]{\minic{#1}{3.6}{\mW{3.6}{2.0} \mD{0.8}{3.6}{0} \mDr{2.0}{3.6}{1.8} \mEr{2.0}{1.8}{0}{$V_Z$}}}
+\newcommand{\zcDr}{\draw[crv] (1.2,0) -- (0,0) -- (0,-1.0);}
+\newcommand{\zcD}{\draw[crv] (-1.2,0) -- (0,0) -- (0,1.0);}
+\newcommand{\zcE}{\draw[crv] (-0.7,-1.0) -- (-0.7,1.0); \node[font=\tiny, anchor=north west] at (-0.7,0) {$-V_Z$};}
+\newcommand{\zcBr}{\draw[crv] (1.2,0) -- (-0.7,0) -- (-0.7,-1.0); \node[font=\tiny, anchor=south] at (-0.7,0) {$-V_Z$};}
+\newcommand{\zcZ}{\draw[crv] (-0.7,-1.0) -- (-0.7,0) -- (0,0) -- (0,1.0); \node[font=\tiny, anchor=south] at (-0.7,0) {$-V_Z$};}
+\newcommand{\zenerSer}{%
+  \threeplots{\zcDr}{\zcE}{\zcBr}{\shortstack{$+$\\[1pt]{\tiny add $v$}}}{reversed diode}{battery $V_Z$}{series}
+  \miniDr{0} \miniEr{4.1}{$V_Z$} \miniDrZ{8.2}}
+\newcommand{\zenerPar}{%
+  \threeplots{\zcD}{\zcBr}{\zcZ}{\shortstack{$+$\\[1pt]{\tiny add $i$}}}{diode}{series branch}{parallel: Zener}
+  \miniD{0} \miniDrZ{4.1} \miniZeq{8.2}}
+%  Dead-band examples (graphical synthesis)
+\newcommand{\mIr}[4]{\draw (#1,#3) to[american current source, l_=\mlab{\Icol{#4}}] (#1,#2);} % arrow up
+\newcommand{\miniBrA}[1]{\minic{#1}{5.0}{\mW{5.0}{0.8} \mD{0.8}{5.0}{3.4} \mR{0.8}{3.4}{1.7}{$1\ohm$} \mE{0.8}{1.7}{0}{$1\V$}}}
+\newcommand{\miniBrAr}[1]{\minic{#1}{5.0}{\mW{5.0}{0.8} \mDr{0.8}{5.0}{3.4} \mR{0.8}{3.4}{1.7}{$1\ohm$} \mEr{0.8}{1.7}{0}{$1\V$}}}
+\newcommand{\miniDbA}[1]{\minic{#1}{5.0}{\mW{5.0}{2.6} \mD{0.8}{5.0}{3.4} \mR{0.8}{3.4}{1.7}{$1\ohm$} \mE{0.8}{1.7}{0}{$1\V$}
+    \mDr{2.6}{5.0}{3.4} \mR{2.6}{3.4}{1.7}{$1\ohm$} \mEr{2.6}{1.7}{0}{$1\V$}}}
+\newcommand{\miniPone}[1]{\minic{#1}{2.2}{\mW{2.2}{3.8} \mDr{0.8}{2.2}{0} \mR{2.3}{2.2}{0}{$1\ohm$} \mI{3.8}{2.2}{0}{$1\A$}}}
+\newcommand{\miniPtwo}[1]{\minic{#1}{2.2}{\mW{2.2}{3.8} \mD{0.8}{2.2}{0} \mR{2.3}{2.2}{0}{$1\ohm$} \mIr{3.8}{2.2}{0}{$1\A$}}}
+\newcommand{\miniDbB}[1]{\minic{#1}{4.4}{\draw (0,4.4) -- (3.8,4.4); \draw (0,0) -- (3.8,0);
+    \mDr{0.8}{4.4}{2.2} \mR{2.3}{4.4}{2.2}{$1\ohm$} \mI{3.8}{4.4}{2.2}{$1\A$} \draw (0.8,2.2) -- (3.8,2.2);
+    \mD{0.8}{2.2}{0} \mR{2.3}{2.2}{0}{$1\ohm$} \mIr{3.8}{2.2}{0}{$1\A$}}}
+%  Target plots with ticks at +-1 (1 unit = 0.6)
+\newcommand{\dbAxes}{%
+  \draw[vax] (-1.8,0) -- (1.9,0) node[right=1pt, font=\scriptsize, text=cvolt] {$v$};
+  \draw[vax] (0,-1.6) -- (0,1.7) node[above=1pt, font=\scriptsize, text=ccur] {$i$};
+  \foreach \t in {-0.6,0.6} {\draw (\t,0.05) -- (\t,-0.05); \draw (0.05,\t) -- (-0.05,\t);}}
+\newcommand{\dbAPlot}{\dbAxes
+  \draw[crv] (-1.6,-1.0) -- (-0.6,0) -- (0.6,0) -- (1.6,1.0);
+  \node[font=\tiny, below] at (0.6,0) {$1$}; \node[font=\tiny, above] at (-0.6,0) {$-1$};
+  \node[font=\tiny, anchor=north west] at (1.0,0.4) {$45^\circ$};}
+\newcommand{\dbBPlot}{\dbAxes
+  \draw[crv] (-1.0,-1.6) -- (0,-0.6) -- (0,0.6) -- (1.0,1.6);
+  \node[font=\tiny, left] at (0,0.6) {$1$}; \node[font=\tiny, right] at (0,-0.6) {$-1$};
+  \node[font=\tiny, anchor=north west] at (0.4,1.0) {$45^\circ$};}
+%  Curves in \pframe units (1 V = 1 A = 0.4)
+\newcommand{\cDbCaseI}{\draw[crv] (-1.2,0) -- (0,0) -- (1.0,1.0);}
+\newcommand{\cDbE}{\draw[crv] (0.4,-1.0) -- (0.4,1.0); \node[font=\tiny, anchor=north west] at (0.4,0) {$1$};}
+\newcommand{\cDbBr}{\draw[crv] (-1.2,0) -- (0.4,0) -- (1.2,0.8); \node[font=\tiny, below] at (0.4,0) {$1$};}
+\newcommand{\cDbBrr}{\draw[crv] (-1.2,-0.8) -- (-0.4,0) -- (1.2,0); \node[font=\tiny, above] at (-0.4,0) {$-1$};}
+\newcommand{\cDbA}{\draw[crv] (-1.2,-0.8) -- (-0.4,0) -- (0.4,0) -- (1.2,0.8); \node[font=\tiny, below] at (0.4,0) {$1$}; \node[font=\tiny, above] at (-0.4,0) {$-1$};}
+\newcommand{\cDbRDr}{\draw[crv] (0,-1.0) -- (0,0) -- (1.0,1.0);}
+\newcommand{\cDbI}{\draw[crv] (-1.2,0.4) -- (1.2,0.4); \node[font=\tiny, anchor=south east] at (0,0.4) {$1$};}
+\newcommand{\cDbPone}{\draw[crv] (0,-1.0) -- (0,0.4) -- (0.7,1.1); \node[font=\tiny, left] at (0,0.4) {$1$};}
+\newcommand{\cDbPtwo}{\draw[crv] (0,1.0) -- (0,-0.4) -- (-0.7,-1.1); \node[font=\tiny, right] at (0,-0.4) {$-1$};}
+\newcommand{\cDbB}{\draw[crv] (-0.7,-1.1) -- (0,-0.4) -- (0,0.4) -- (0.7,1.1); \node[font=\tiny, left] at (0,0.4) {$1$}; \node[font=\tiny, right] at (0,-0.4) {$-1$};}
 %  Step-by-step graphical addition: guide lines (dashed), read points (dots), intervals (thick blue)
 \tikzset{gline/.style={black!45, densely dashed, thin}, ival/.style={ccur, line width=2.6pt, opacity=0.6}, gdot/.style={circle, fill=black, inner sep=0pt, minimum size=3.6pt}}
 \newcommand{\addSer}[1]{%
@@ -1129,39 +1179,23 @@
 \end{frame}
 
 %--------------------------------------------------------------
-\begin{frame}{Example 15.2: find $\Vcol{v}$}
-  \vfill
+\begin{frame}{Example 15.2: find $\Vcol{v}$ \ (step 1: Th\'evenin)}
   \begin{columns}[c,onlytextwidth]
-    \begin{column}{0.56\textwidth}
+    \begin{column}{0.54\textwidth}
       \centering
-      \begin{tikzpicture}[scale=0.85]
+      \begin{tikzpicture}[scale=0.8]
         \exTwo{0}
-      \end{tikzpicture}
+      \end{tikzpicture}\\[6pt]
+      $\Icol{i_R} = \begin{cases} \frac12\,\Vcol{v_R}^2, & \Vcol{v_R} \geq 0\\[2pt] 0, & \Vcol{v_R} < 0 \end{cases}$ \qquad $\Vcol{v} = \ ?$
     \end{column}
-    \begin{column}{0.42\textwidth}
-      $\Icol{i_R} = \begin{cases} \frac12\,\Vcol{v_R}^2, & \Vcol{v_R} \geq 0\\[2pt] 0, & \Vcol{v_R} < 0 \end{cases}$\\[16pt]
-      $\Vcol{v} = \ ?$
-    \end{column}
-  \end{columns}
-  \vfill
-\end{frame}
-
-%--------------------------------------------------------------
-\begin{frame}{Example 15.2: step 1, Th\'evenin}
-  \begin{columns}[c,onlytextwidth]
-    \begin{column}{0.56\textwidth}
-      \centering
-      \begin{tikzpicture}[scale=0.85]
-        \exTwo{1}
-      \end{tikzpicture}
-    \end{column}
-    \begin{column}{0.42\textwidth}
-      \textbf{Kill the source:}\\[4pt]
-      $\Rth = 8 \parallel (4 + 6 \parallel 12) = 8 \parallel 8 = 4\ohm$\\[12pt]
+    \begin{column}{0.44\textwidth}
       \onslide<2->{%
-      \textbf{Open circuit:} two node equations\\[4pt]
-      $\e{1} = 9\V$, \ $\vth = \voc = \e{a} = 10\V$\\[12pt]
-      \begin{tikzpicture}[scale=0.75]
+      \textbf{Step 1: Th\'evenin} seen by the resistor\\[6pt]
+      Kill the source:\\[2pt]
+      $\Rth = 8 \parallel (4 + 6 \parallel 12) = 4\ohm$\\[8pt]
+      Open circuit (two node equations):\\[2pt]
+      $\e{1} = 9\V$, \ $\vth = \e{a} = 10\V$\\[8pt]
+      \begin{tikzpicture}[scale=0.7]
         \exTwoTh
       \end{tikzpicture}}
     \end{column}
@@ -1169,41 +1203,27 @@
 \end{frame}
 
 %--------------------------------------------------------------
-\begin{frame}{Example 15.2: step 2, the operating point}
-  \begin{columns}[c,onlytextwidth]
+\begin{frame}{Example 15.2: step 2 (operating point) and step 3 (substitution)}
+  \begin{columns}[t,onlytextwidth]
     \begin{column}{0.48\textwidth}
-      \textbf{KVL:} \ $4\,\Icol{i_R} + \Vcol{v_R} - 10 = 0$\\[8pt]
-      Plug $\Icol{i_R} = \tfrac12\,\Vcol{v_R}^2$:\\[4pt]
-      $2\,\Vcol{v_R}^2 + \Vcol{v_R} - 10 = 0$\\[4pt]
-      $(2\,\Vcol{v_R} + 5)(\Vcol{v_R} - 2) = 0$\\[10pt]
+      \textbf{Step 2.} KVL: \ $4\,\Icol{i_R} + \Vcol{v_R} - 10 = 0$\\[4pt]
+      $2\,\Vcol{v_R}^2 + \Vcol{v_R} - 10 = 0$\\[2pt]
+      $(2\,\Vcol{v_R} + 5)(\Vcol{v_R} - 2) = 0$\\[6pt]
       \onslide<2->{%
-      $\Vcol{v_R} \geq 0$: \ $\Vcol{v_R} = 2\V$, \ $\Icol{i_R} = 2\A$}
-    \end{column}
-    \begin{column}{0.5\textwidth}
+      $\Vcol{v_R} \geq 0$: \ $\Vcol{v_R} = 2\V$, \ $\Icol{i_R} = 2\A$\\[4pt]
       \centering
-      \onslide<2->{%
-      \begin{tikzpicture}[scale=0.8]
+      \begin{tikzpicture}[scale=0.62]
         \exTwoPlot
       \end{tikzpicture}}
     \end{column}
-  \end{columns}
-\end{frame}
-
-%--------------------------------------------------------------
-\begin{frame}{Example 15.2: step 3, substitution}
-  \begin{columns}[c,onlytextwidth]
-    \begin{column}{0.56\textwidth}
-      \centering
-      \begin{tikzpicture}[scale=0.85]
-        \exTwo{2}
-      \end{tikzpicture}
-    \end{column}
-    \begin{column}{0.42\textwidth}
-      Replace it by a $2\V$ source\\[8pt]
-      \textbf{Node $\boldsymbol{e}$:}\\[4pt]
-      $\dfrac{\e{} - 12}{6} + \dfrac{\e{}}{12} + \dfrac{\e{} - 2}{4} = 0$\\[4pt]
-      $\times 12$: \ $6\,\e{} - 30 = 0$\\[10pt]
+    \begin{column}{0.5\textwidth}
       \onslide<2->{%
+      \textbf{Step 3.} Replace it by a $2\V$ source\\[4pt]
+      \centering
+      \begin{tikzpicture}[scale=0.6]
+        \exTwo{2}
+      \end{tikzpicture}\\[4pt]
+      $\dfrac{\e{} - 12}{6} + \dfrac{\e{}}{12} + \dfrac{\e{} - 2}{4} = 0$\\[6pt]
       \begin{tikzpicture}
         \node[draw=metured, thick, fill=metured!5, rounded corners=3pt, inner sep=5pt]
           {$\Vcol{v} = \e{} = 5\V$};
@@ -1258,19 +1278,19 @@
 \begin{frame}{Series: $1\ohm$ and $2\ohm$}
   \begin{center}
     \begin{tikzpicture}[scale=0.66]
-      \only<1>{\addRR{1}}\only<2>{\addRR{2}}\only<3>{\addRR{3}}\only<4>{\addRR{4}}
+      \only<1>{\addRR{1}}\only<2>{\addRR{4}}
     \end{tikzpicture}\\[2pt]
     \footnotesize
 \begin{tabular}{@{}cccc@{}}
 \toprule
 $\Icol{i}$ (A) & $1\ohm$: $\Vcol{v}$ & $2\ohm$: $\Vcol{v}$ & series: $\Vcol{v}$ (sum)\\
 \midrule
-\onslide<3->{$2$ & $2$ & $4$ & $6$}\\
+\onslide<2->{$2$ & $2$ & $4$ & $6$}\\
 \onslide<2->{$1$ & $1$ & $2$ & $3$}\\
-\onslide<3->{$-1$ & $-1$ & $-2$ & $-3$}\\
+\onslide<2->{$-1$ & $-1$ & $-2$ & $-3$}\\
 \bottomrule
 \end{tabular}\\[4pt]
-\onslide<4->{\small Resistances add: $3\ohm$, flatter}
+\onslide<2->{\small Resistances add: $3\ohm$, flatter}
 
   \end{center}
 \end{frame}
@@ -1302,7 +1322,7 @@ $\Icol{i}$ (A) & $1\ohm$: $\Vcol{v}$ & $2\ohm$: $\Vcol{v}$ & series: $\Vcol{v}$ 
 \begin{frame}{Parallel: $1\ohm$ and $2\ohm$}
   \begin{center}
     \begin{tikzpicture}[scale=0.66]
-      \only<1>{\addRRp{1}}\only<2>{\addRRp{2}}\only<3>{\addRRp{3}}\only<4>{\addRRp{4}}
+      \only<1>{\addRRp{1}}\only<2>{\addRRp{4}}
     \end{tikzpicture}\\[2pt]
     \footnotesize
 \begin{tabular}{@{}cccc@{}}
@@ -1310,11 +1330,11 @@ $\Icol{i}$ (A) & $1\ohm$: $\Vcol{v}$ & $2\ohm$: $\Vcol{v}$ & series: $\Vcol{v}$ 
 $\Vcol{v}$ (V) & $1\ohm$: $\Icol{i}$ & $2\ohm$: $\Icol{i}$ & parallel: $\Icol{i}$ (sum)\\
 \midrule
 \onslide<2->{$2$ & $2$ & $1$ & $3$}\\
-\onslide<3->{$1$ & $1$ & $0.5$ & $1.5$}\\
-\onslide<3->{$-2$ & $-2$ & $-1$ & $-3$}\\
+\onslide<2->{$1$ & $1$ & $0.5$ & $1.5$}\\
+\onslide<2->{$-2$ & $-2$ & $-1$ & $-3$}\\
 \bottomrule
 \end{tabular}\\[4pt]
-\onslide<4->{\small Conductances add: $\tfrac32\Sie$, steeper}
+\onslide<2->{\small Conductances add: $\tfrac32\Sie$, steeper}
 
   \end{center}
 \end{frame}
@@ -1328,9 +1348,9 @@ $\Vcol{v}$ (V) & $1\ohm$: $\Icol{i}$ & $2\ohm$: $\Icol{i}$ & parallel: $\Icol{i}
       \onslide<2->{\node[font=\small, anchor=west, align=left] at (10.0,0.2) {right by $E$:\\ $\Vcol{v} = R\Icol{i} + E$\\ (Th\'evenin)};}
     \end{tikzpicture}\\[4pt]
     \begin{tikzpicture}[scale=0.6]
-      \threeplots{\draw[crv] (-1.2,-0.6) -- (1.2,0.6);}{\draw[crv] (-1.2,0.5) -- (1.2,0.5); \node[font=\tiny, above left] at (0,0.5) {$I$};}{\onslide<3->{\draw[crv] (-1.2,-0.1) -- (1.2,1.1); \node[font=\tiny, left] at (0,0.5) {$I$};}}{\shortstack{$+$\\[1pt]{\tiny add $i$}}}{$R$}{source $I$}{parallel}
-      \miniR{0}{$R$} \miniI{4.1}{$I$} \onslide<3->{\miniRpI{8.2}{$R$}{$I$}}
-      \onslide<3->{\node[font=\small, anchor=west, align=left] at (10.0,0.2) {up by $I$:\\ $\Icol{i} = \Vcol{v}/R + I$\\ (Norton)};}
+      \threeplots{\draw[crv] (-1.2,-0.6) -- (1.2,0.6);}{\draw[crv] (-1.2,0.5) -- (1.2,0.5); \node[font=\tiny, above left] at (0,0.5) {$I$};}{\onslide<2->{\draw[crv] (-1.2,-0.1) -- (1.2,1.1); \node[font=\tiny, left] at (0,0.5) {$I$};}}{\shortstack{$+$\\[1pt]{\tiny add $i$}}}{$R$}{source $I$}{parallel}
+      \miniR{0}{$R$} \miniI{4.1}{$I$} \onslide<2->{\miniRpI{8.2}{$R$}{$I$}}
+      \onslide<2->{\node[font=\small, anchor=west, align=left] at (10.0,0.2) {up by $I$:\\ $\Icol{i} = \Vcol{v}/R + I$\\ (Norton)};}
     \end{tikzpicture}
   \end{center}
 \end{frame}
@@ -1474,17 +1494,17 @@ $\Vcol{v}$ (V) & $1\ohm$: $\Icol{i}$ & $2\ohm$: $\Icol{i}$ & parallel: $\Icol{i}
 \begin{frame}{Case I step by step ($R = 2\ohm$)}
   \begin{center}
     \begin{tikzpicture}[scale=0.66]
-      \only<1>{\addSer{1}}\only<2>{\addSer{2}}\only<3>{\addSer{3}}\only<4>{\addSer{4}}
+      \only<1>{\addSer{1}}\only<2>{\addSer{4}}
     \end{tikzpicture}\\[2pt]
     \footnotesize
 \begin{tabular}{@{}cccc@{}}
 \toprule
 $\Icol{i}$ (A) & diode $\Vcol{v}$ & $2\ohm$: $\Vcol{v}$ & series: $\Vcol{v}$ (sum)\\
 \midrule
-\onslide<3->{$2$ & $0$ & $4$ & $4$}\\
+\onslide<2->{$2$ & $0$ & $4$ & $4$}\\
 \onslide<2->{$1$ & $0$ & $2$ & $2$}\\
-\onslide<3->{$0$ & any $\Vcol{v} \leq 0$ & $0$ & any $\Vcol{v} \leq 0$}\\
-\onslide<3->{$-1$ & none & $-2$ & none}\\
+\onslide<2->{$0$ & any $\Vcol{v} \leq 0$ & $0$ & any $\Vcol{v} \leq 0$}\\
+\onslide<2->{$-1$ & none & $-2$ & none}\\
 \bottomrule
 \end{tabular}
   \end{center}
@@ -1494,17 +1514,17 @@ $\Icol{i}$ (A) & diode $\Vcol{v}$ & $2\ohm$: $\Vcol{v}$ & series: $\Vcol{v}$ (su
 \begin{frame}{Case II step by step ($R = 2\ohm$)}
   \begin{center}
     \begin{tikzpicture}[scale=0.66]
-      \only<1>{\addPar{1}}\only<2>{\addPar{2}}\only<3>{\addPar{3}}\only<4>{\addPar{4}}
+      \only<1>{\addPar{1}}\only<2>{\addPar{4}}
     \end{tikzpicture}\\[2pt]
     \footnotesize
 \begin{tabular}{@{}cccc@{}}
 \toprule
 $\Vcol{v}$ (V) & diode $\Icol{i}$ & $2\ohm$: $\Icol{i}$ & parallel: $\Icol{i}$ (sum)\\
 \midrule
-\onslide<3->{$1$ & none & $0.5$ & none}\\
-\onslide<3->{$0$ & any $\Icol{i} \geq 0$ & $0$ & any $\Icol{i} \geq 0$}\\
+\onslide<2->{$1$ & none & $0.5$ & none}\\
+\onslide<2->{$0$ & any $\Icol{i} \geq 0$ & $0$ & any $\Icol{i} \geq 0$}\\
 \onslide<2->{$-2$ & $0$ & $-1$ & $-1$}\\
-\onslide<3->{$-4$ & $0$ & $-2$ & $-2$}\\
+\onslide<2->{$-4$ & $0$ & $-2$ & $-2$}\\
 \bottomrule
 \end{tabular}
   \end{center}
@@ -1555,38 +1575,29 @@ $\Vcol{v}$ (V) & diode $\Icol{i}$ & $2\ohm$: $\Icol{i}$ & parallel: $\Icol{i}$ (
 \end{frame}
 
 %--------------------------------------------------------------
-\begin{frame}{Example 15.3: assume the diode ON}
-  \begin{columns}[c,onlytextwidth]
-    \begin{column}{0.4\textwidth}
+\begin{frame}{Example 15.3: assume ON, then OFF}
+  \begin{columns}[t,onlytextwidth]
+    \begin{column}{0.49\textwidth}
       \centering
-      \begin{tikzpicture}[scale=0.8]
+      \begin{tikzpicture}[scale=0.62]
         \exS{1}
-      \end{tikzpicture}
-    \end{column}
-    \begin{column}{0.58\textwidth}
-      ON: a short; \ condition $\Icol{i} \geq 0$\\[10pt]
-      KVL: \ $\Vcol{v} = 2\,\Icol{i} + 4$\\[10pt]
+      \end{tikzpicture}\\[4pt]
+      \raggedright
+      \textbf{ON:} a short; \ condition $\Icol{i} \geq 0$\\[4pt]
+      KVL: \ $\Vcol{v} = 2\,\Icol{i} + 4$\\[6pt]
       \onslide<2->{%
       $\Icol{i} = \dfrac{\Vcol{v} - 4}{2} \geq 0$ \ $\Leftrightarrow$ \ \alert{$\Vcol{v} \geq 4\V$}}
     \end{column}
-  \end{columns}
-\end{frame}
-
-%--------------------------------------------------------------
-\begin{frame}{Example 15.3: assume the diode OFF}
-  \begin{columns}[c,onlytextwidth]
-    \begin{column}{0.4\textwidth}
+    \begin{column}{0.49\textwidth}
       \centering
-      \begin{tikzpicture}[scale=0.8]
+      \begin{tikzpicture}[scale=0.62]
         \exS{2}
-      \end{tikzpicture}
-    \end{column}
-    \begin{column}{0.58\textwidth}
-      OFF: an open; \ condition $\Vcol{v_D} < 0$\\[10pt]
-      $\Icol{i} = 0$: \ no voltage on $2\ohm$\\[10pt]
+      \end{tikzpicture}\\[4pt]
+      \raggedright
+      \textbf{OFF:} an open; \ condition $\Vcol{v_D} < 0$\\[4pt]
+      $\Icol{i} = 0$: \ no voltage on $2\ohm$\\[6pt]
       \onslide<2->{%
-      KVL: \ $\Vcol{v_D} = \Vcol{v} - 4$\\[8pt]
-      $\Vcol{v_D} < 0$ \ $\Leftrightarrow$ \ \alert{$\Vcol{v} < 4\V$}}
+      $\Vcol{v_D} = \Vcol{v} - 4 < 0$ \ $\Leftrightarrow$ \ \alert{$\Vcol{v} < 4\V$}}
     \end{column}
   \end{columns}
 \end{frame}
@@ -1614,16 +1625,16 @@ $\Vcol{v}$ (V) & diode $\Icol{i}$ & $2\ohm$: $\Icol{i}$ & parallel: $\Icol{i}$ (
 \begin{frame}{Example 15.3: graphically}
   \begin{center}
     \begin{tikzpicture}[scale=0.66]
-      \only<1>{\addEx{1}}\only<2>{\addEx{2}}\only<3>{\addEx{3}}\only<4>{\addEx{4}}
+      \only<1>{\addEx{1}}\only<2>{\addEx{4}}
     \end{tikzpicture}\\[2pt]
     \footnotesize
 \begin{tabular}{@{}cccc@{}}
 \toprule
 $\Icol{i}$ (A) & Case I: $\Vcol{v}$ & source: $\Vcol{v}$ & series: $\Vcol{v}$ (sum)\\
 \midrule
-\onslide<3->{$2$ & $4$ & $4$ & $8$}\\
+\onslide<2->{$2$ & $4$ & $4$ & $8$}\\
 \onslide<2->{$1$ & $2$ & $4$ & $6$}\\
-\onslide<3->{$0$ & any $\Vcol{v} \leq 0$ & $4$ & any $\Vcol{v} \leq 4$}\\
+\onslide<2->{$0$ & any $\Vcol{v} \leq 0$ & $4$ & any $\Vcol{v} \leq 4$}\\
 \bottomrule
 \end{tabular}
   \end{center}
@@ -1774,6 +1785,19 @@ $\Icol{i}$ (A) & Case I: $\Vcol{v}$ & source: $\Vcol{v}$ & series: $\Vcol{v}$ (s
   \end{columns}
 \end{frame}
 
+%--------------------------------------------------------------
+\begin{frame}{The Zener curve, graphically}
+  \begin{center}
+    \begin{tikzpicture}[scale=0.56]
+      \zenerSer
+    \end{tikzpicture}\\[6pt]
+    \onslide<2->{%
+    \begin{tikzpicture}[scale=0.56]
+      \zenerPar
+    \end{tikzpicture}}
+  \end{center}
+\end{frame}
+
 %==============================================================
 \roadmapframe{7}
 
@@ -1798,61 +1822,38 @@ $\Icol{i}$ (A) & Case I: $\Vcol{v}$ & source: $\Vcol{v}$ & series: $\Vcol{v}$ (s
 \end{frame}
 
 %--------------------------------------------------------------
-\begin{frame}{Example 15.4: both diodes OFF}
-  \begin{columns}[c,onlytextwidth]
-    \begin{column}{0.5\textwidth}
-      \centering
-      \begin{tikzpicture}[scale=0.8]
-        \exH
-      \end{tikzpicture}
-    \end{column}
-    \begin{column}{0.48\textwidth}
-      $1\ohm$ and $1\ohm$ in series:\\[4pt]
-      $\Vcol{v_1} = \Icol{i}$, \quad $\Vcol{v} = 2\,\Icol{i}$\\[12pt]
+\begin{frame}{Example 15.4: three combinations}
+  \begin{center}
+    \begin{tikzpicture}[scale=0.6]
+      \exH
+    \end{tikzpicture}
+  \end{center}
+  \vspace{-4pt}
+  \small
+  \begin{columns}[t,onlytextwidth]
+    \begin{column}{0.32\textwidth}
+      \textbf{Both OFF}\\[3pt]
+      $\Vcol{v_1} = \Icol{i}$, \ $\Vcol{v} = 2\,\Icol{i}$\\[5pt]
       \onslide<2->{%
-      $D_1$ OFF: \ $\Vcol{v_{D_1}} = \Vcol{v_1} - 2 < 0$\\[4pt]
-      $D_2$ OFF: \ $\Vcol{v_{D_2}} = -1 - \Vcol{v_1} < 0$\\[8pt]
-      $-1 < \Vcol{v_1} < 2$ \ $\Leftrightarrow$ \ \alert{$-2 < \Vcol{v} < 4$}}
+      $\Vcol{v_{D_1}} = \Vcol{v_1} - 2 < 0$\\[2pt]
+      $\Vcol{v_{D_2}} = -1 - \Vcol{v_1} < 0$\\[4pt]
+      \alert{$-2 < \Vcol{v} < 4$}}
     \end{column}
-  \end{columns}
-\end{frame}
-
-%--------------------------------------------------------------
-\begin{frame}{Example 15.4: $D_1$ ON, $D_2$ OFF}
-  \begin{columns}[c,onlytextwidth]
-    \begin{column}{0.5\textwidth}
-      \centering
-      \begin{tikzpicture}[scale=0.8]
-        \exH
-      \end{tikzpicture}
-    \end{column}
-    \begin{column}{0.48\textwidth}
-      $D_1$ a short: \ $\Vcol{v_1} = 2$\\[4pt]
-      $\Vcol{v} = \Icol{i} + 2$\\[12pt]
+    \begin{column}{0.33\textwidth}
+      \textbf{$D_1$ ON, $D_2$ OFF}\\[3pt]
+      $\Vcol{v_1} = 2$, \ $\Vcol{v} = \Icol{i} + 2$\\[5pt]
       \onslide<2->{%
-      middle $1\ohm$: $2\A$; \ $D_1$: $\Icol{i_{D_1}} = \Icol{i} - 2$\\[4pt]
-      $\Icol{i_{D_1}} \geq 0$ \ $\Leftrightarrow$ \ \alert{$\Vcol{v} \geq 4$}\\[8pt]
-      $D_2$: \ $\Vcol{v_{D_2}} = -1 - 2 < 0$ \ \yes}
+      $\Icol{i_{D_1}} = \Icol{i} - 2 \geq 0$\\[2pt]
+      $\Vcol{v_{D_2}} = -3 < 0$ \ \yes\\[4pt]
+      \alert{$\Vcol{v} \geq 4$}}
     \end{column}
-  \end{columns}
-\end{frame}
-
-%--------------------------------------------------------------
-\begin{frame}{Example 15.4: $D_2$ ON, $D_1$ OFF}
-  \begin{columns}[c,onlytextwidth]
-    \begin{column}{0.5\textwidth}
-      \centering
-      \begin{tikzpicture}[scale=0.8]
-        \exH
-      \end{tikzpicture}
-    \end{column}
-    \begin{column}{0.48\textwidth}
-      $D_2$ a short: \ $\Vcol{v_1} = -1$\\[4pt]
-      $\Vcol{v} = \Icol{i} - 1$\\[12pt]
+    \begin{column}{0.33\textwidth}
+      \textbf{$D_2$ ON, $D_1$ OFF}\\[3pt]
+      $\Vcol{v_1} = -1$, \ $\Vcol{v} = \Icol{i} - 1$\\[5pt]
       \onslide<2->{%
-      middle $1\ohm$: $-1\A$; \ $D_2$: $\Icol{i_{D_2}} = -1 - \Icol{i}$\\[4pt]
-      $\Icol{i_{D_2}} \geq 0$ \ $\Leftrightarrow$ \ \alert{$\Vcol{v} \leq -2$}\\[8pt]
-      $D_1$: \ $\Vcol{v_{D_1}} = -1 - 2 < 0$ \ \yes}
+      $\Icol{i_{D_2}} = -1 - \Icol{i} \geq 0$\\[2pt]
+      $\Vcol{v_{D_1}} = -3 < 0$ \ \yes\\[4pt]
+      \alert{$\Vcol{v} \leq -2$}}
     \end{column}
   \end{columns}
 \end{frame}
@@ -1925,41 +1926,26 @@ $\Icol{i}$ (A) & Case I: $\Vcol{v}$ & source: $\Vcol{v}$ & series: $\Vcol{v}$ (s
 \end{frame}
 
 %--------------------------------------------------------------
-\begin{frame}{Example 15.5: split the characteristic}
-  \vfill
+\begin{frame}{Example 15.5: split the characteristic, build the circuit}
   \begin{center}
-    \begin{tikzpicture}[scale=0.72]
+    \begin{tikzpicture}[scale=0.62]
       \threeplots{\draw[crv] (-1.2,-0.6) -- (1.2,0.6);}{\draw[crv] (-1.2,0) -- (0.4,0) -- (1.2,0.4); \node[font=\tiny, below] at (0.4,0) {$2\V$};}{\draw[crv] (-1.2,-0.6) -- (0.4,0.2) -- (1.2,1.0);}{\shortstack{$+$\\[1pt]{\tiny add $i$}}}{$2\ohm$}{slope $\tfrac12$ after $2\V$}{target}
       \miniR{0}{$2\ohm$} \miniBranch{4.1} \miniSyn{8.2}
     \end{tikzpicture}
   \end{center}
-  \vfill
   \begin{itemize}\itemsep3pt
     \item Slope $\tfrac12\Sie$ everywhere: \ a $2\ohm$ resistor
     \item Extra slope $1 - \tfrac12 = \tfrac12\Sie$ after $2\V$: \ Case I with $2\ohm$, shifted by $2\V$
     \item Currents add: \ the two in parallel
   \end{itemize}
-  \vfill
+  \onslide<2->{%
+  \begin{center}
+    Check at $\Vcol{v} = 4\V$: \ $2\A + \dfrac{4 - 2}{2} = 3\A$ \ \yes \qquad The circuit is \alert{not unique}
+  \end{center}}
 \end{frame}
 
 %--------------------------------------------------------------
-\begin{frame}{Example 15.5: the circuit}
-  \begin{columns}[c,onlytextwidth]
-    \begin{column}{0.4\textwidth}
-      \centering
-      \begin{tikzpicture}[scale=0.75]
-        \synCkt
-      \end{tikzpicture}
-    \end{column}
-    \begin{column}{0.58\textwidth}
-      Check at $\Vcol{v} = 4\V$:\\[4pt]
-      $2\ohm$: $2\A$; \ branch: $\dfrac{4 - 2}{2} = 1\A$\\[4pt]
-      $\Icol{i} = 3\A$ \ \yes\\[14pt]
-      The order inside the branch does not matter:\\[2pt]
-      the circuit is \alert{not unique}
-    \end{column}
-  \end{columns}
-\end{frame}
+
 
 %--------------------------------------------------------------
 \begin{frame}{Example 15.6: a circuit from a characteristic}
@@ -2002,28 +1988,16 @@ $\Icol{i}$ (A) & Case I: $\Vcol{v}$ & source: $\Vcol{v}$ & series: $\Vcol{v}$ (s
       \miniB{0} \miniRrDr{4.1}{$2\ohm$} \miniI{8.2}{$1\A$}
     \end{tikzpicture}}
   \end{center}
+  \onslide<2->{%
+  \begin{center}
+    \small A (diode $\parallel 1\ohm$) in series with B (reversed diode $\parallel 2\ohm \parallel 1\A$)\\[4pt]
+    Check at $\Vcol{v} = 2\V$: \ $\Icol{i} = 1 + \tfrac22 = 2\A$ \ \yes \qquad The circuit is \alert{not unique}
+  \end{center}}
   \vfill
 \end{frame}
 
 %--------------------------------------------------------------
-\begin{frame}{Example 15.6: the circuit}
-  \begin{columns}[c,onlytextwidth]
-    \begin{column}{0.4\textwidth}
-      \centering
-      \begin{tikzpicture}[scale=0.78]
-        \exFourCkt
-      \end{tikzpicture}
-    \end{column}
-    \begin{column}{0.58\textwidth}
-      Top: A, \ the diode $\parallel 1\ohm$\\[6pt]
-      Bottom: B, \ reversed diode $\parallel 2\ohm \parallel 1\A$\\[6pt]
-      A and B in series\\[6pt]
-      Check at $\Vcol{v} = 2\V$: \ $\Icol{i} = 1 + \tfrac22 = 2\A$ \ \yes\\[12pt]
-      Another circuit may have the same characteristic:\\[2pt]
-      the circuit is \alert{not unique}
-    \end{column}
-  \end{columns}
-\end{frame}
+
 
 %--------------------------------------------------------------
 \begin{frame}{Example 15.7: a numerical characteristic}
@@ -2070,7 +2044,7 @@ $\Icol{i}$ (A) & Case I: $\Vcol{v}$ & source: $\Vcol{v}$ & series: $\Vcol{v}$ (s
 \roadmapframe{9}
 
 %--------------------------------------------------------------
-\begin{frame}{Example 15.8: a linear time-varying circuit}
+\begin{frame}{Example 15.10: a linear time-varying circuit}
   \begin{columns}[c,onlytextwidth]
     \begin{column}{0.5\textwidth}
       \centering

@@ -4,8 +4,8 @@ Lecture notes and slides for the fifteenth lecture of EE201 (Section 2, Fall 202
 
 | File | What it is |
 |---|---|
-| `EE201_Lecture_15.tex` | Handout / lecture notes (article, 20 pages). Self-contained: one nonlinear resistor and the load line, a nonlinear resistor in a larger linear circuit, the ideal diode and its series/parallel connections, piecewise-linear circuits (analysis and synthesis), linear time-varying circuits, a summary. Eight worked examples, each with the problem in a box and a step-by-step solution below it. |
-| `EE201_Lecture_15_slides.tex` | Beamer deck (65 slides, 109 PDF pages) for the lecture itself — visual, low text. |
+| `EE201_Lecture_15.tex` | Handout / lecture notes (article, 23 pages). Self-contained: one nonlinear resistor and the load line, a nonlinear resistor in a larger linear circuit, the ideal diode and its series/parallel connections, piecewise-linear circuits (analysis and synthesis), linear time-varying circuits, a summary. Ten worked examples, each with the problem in a box and a step-by-step solution below it. |
+| `EE201_Lecture_15_slides.tex` | Beamer deck (58 slides, 90 PDF pages) for the lecture itself — visual, low text. |
 | `build.sh` | Compiles both, removes auxiliary files, opens the PDFs. |
 
 ## Compiling
@@ -65,7 +65,7 @@ and the substitution theorem is stated where it is used.
    parallel with a 2 Ω–diode–2 V branch), Example 15.6 (two breakpoints, in series: diode ∥ 1 Ω,
    then reversed diode ∥ 2 Ω ∥ 1 A) and Example 15.7 (slope 1 S between ±2 V and 2 S outside:
    a 1 Ω resistor and two 1 Ω–diode–2 V branches)
-6. **Linear time-varying circuits** — v = R(t) i. Example 15.8: v = k₁(t) v_s + k₂(t) i_s;
+6. **Linear time-varying circuits** — v = R(t) i. Example 15.10: v = k₁(t) v_s + k₂(t) i_s;
    superposition still holds
 
 Then a summary table (situation → what to do).
@@ -75,7 +75,7 @@ Then a summary table (situation → what to do).
 Right after the review comes the roadmap: a road with five stations (load line, substitution,
 ideal diode, piecewise-linear circuits, time-varying). A roadmap slide opens each part.
 Circuits and questions come first and the answers on later pages; no "Question" labels.
-Each step is an ordinary extra PDF page; that is why the deck has 65 slides but 109 pages.
+Each step is an ordinary extra PDF page; that is why the deck has 58 slides but 90 pages.
 In every graphical composition (add v in series, add i in parallel) each curve has its small
 sub-circuit drawn above it, in the notes and the slides. Adding curves is taught as a four-step
 method (what is shared; draw it as horizontal or vertical guide lines; read and add the other
