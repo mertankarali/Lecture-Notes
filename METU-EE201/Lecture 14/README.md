@@ -4,8 +4,8 @@ Lecture notes and slides for the fourteenth lecture of EE201 (Section 2, Fall 20
 
 | File | What it is |
 |---|---|
-| `EE201_Lecture_14.tex` | Handout / lecture notes (article, 21 pages). Self-contained: port variables, the resistance, conductance, hybrid and transmission matrices, cascade connection and a load, when a matrix exists, measuring a two-port, the power of a two-port, reciprocity, a summary. Eleven worked examples (and three in the appendix), each with the problem in a box and a step-by-step solution below it. |
-| `EE201_Lecture_14_slides.tex` | Beamer deck (42 slides, 57 PDF pages) for the lecture itself — visual, low text. |
+| `EE201_Lecture_14.tex` | Handout / lecture notes (article, 25 pages). Self-contained: port variables, the resistance, conductance, hybrid and transmission matrices, cascade connection and a load, when a matrix exists, measuring a two-port, the power of a two-port, reciprocity, a summary. Eleven worked examples (and three in the appendix), each with the problem in a box and a step-by-step solution below it. |
+| `EE201_Lecture_14_slides.tex` | Beamer deck (51 slides, 70 PDF pages) for the lecture itself — visual, low text. |
 | `build.sh` | Compiles both, removes auxiliary files, opens the PDFs. |
 
 ## Compiling
@@ -82,4 +82,4 @@ with a 6 i₁ source is active (P_N = −1 W at i₁ = 1 A, i₂ = 2 A).
 Right after the review comes the roadmap: a road with five stations (resistance matrix,
 conductance matrix, hybrid matrices, transmission matrix, power). A roadmap slide opens each
 part. Circuits and questions come first and the answers on later pages; no "Question" labels.
-Each step is an ordinary extra PDF page; that is why the deck has 42 slides but 57 pages.
+Each step is an ordinary extra PDF page; that is why the deck has 51 slides but 70 pages.

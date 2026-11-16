@@ -277,7 +277,8 @@
   \fi}
 %  Reciprocity: a two-port N (LTI resistors) with something at each port.
 %  \rcp{left code}{left label}{right code}{right label}; code 0: voltage source (+ at the top),
-%  1: current source (into the + terminal), 2: short (current shown), 3: open (voltage shown)
+%  1: current source (into the + terminal), 2: short (current shown), 3: open (voltage shown),
+%  4: ammeter (reading shown)
 \newcommand{\rcp}[4]{%
   \draw[elem] (1.6,-0.2) rectangle (3.8,2.2);
   \node[align=center, font=\small] at (2.7,1.0) {LTI\\ resistors};
@@ -293,6 +294,11 @@
   \or
     \node[pol] at (1.05,1.45) {$+$}; \node[pol] at (1.05,0.35) {$-$};
     \node[font=\small, anchor=east] at (1.0,0.9) {#2};
+  \or
+    \draw (0,1.8) -- (0,1.22); \draw (0,0.58) -- (0,0);
+    \node[circle, draw, thick, minimum size=0.64cm, inner sep=0pt, font=\small\bfseries] at (0,0.9) {A};
+    \node[font=\small, anchor=east] at (-0.38,0.9) {#2};
+    \draw (0,1.8) -- (1.1,1.8); \draw (0,0) -- (1.1,0);
   \fi
   \ifcase#3
     \draw (5.4,1.8) to[american voltage source, l=#4] (5.4,0); \draw (4.3,1.8) -- (5.4,1.8); \draw (4.3,0) -- (5.4,0);
@@ -304,6 +310,11 @@
   \or
     \node[pol] at (4.35,1.45) {$+$}; \node[pol] at (4.35,0.35) {$-$};
     \node[font=\small, anchor=west] at (4.4,0.9) {#4};
+  \or
+    \draw (5.4,1.8) -- (5.4,1.22); \draw (5.4,0.58) -- (5.4,0);
+    \node[circle, draw, thick, minimum size=0.64cm, inner sep=0pt, font=\small\bfseries] at (5.4,0.9) {A};
+    \node[font=\small, anchor=west] at (5.78,0.9) {#4};
+    \draw (4.3,1.8) -- (5.4,1.8); \draw (4.3,0) -- (5.4,0);
   \fi
   \draw (1.1,1.8) node[ocirc] {}; \draw (1.1,0) node[ocirc] {};
   \draw (4.3,1.8) node[ocirc] {}; \draw (4.3,0) node[ocirc] {};}
@@ -331,6 +342,130 @@
   \fi
   \draw (1.1,1.8) node[ocirc] {}; \draw (1.1,0) node[ocirc] {};
   \draw (4.3,1.8) node[ocirc] {}; \draw (4.3,0) node[ocirc] {};}
+
+%  Tellegen, general form: two circuits on one graph (nodes 1, 2 and the bottom node 0).
+%  Branches: 1 = source (node 1 to 0), 2 = node 1 to 2, 3 and 4 = node 2 to 0.
+\tikzset{btag/.style={circle, draw=metugray, text=metugray, inner sep=0.6pt, minimum size=3.6mm, font=\scriptsize\bfseries}}
+\newcommand{\tgCirc}[1]{%
+  \ifcase#1
+    \draw (0,2) to[american voltage source, l_=$\Vcol{6\V}$] (0,0);
+    \draw (0,2) to[R, l=$1\ohm$] (2,2) -- (3.4,2);
+    \draw (2,2) to[R, l_=$4\ohm$] (2,0); \draw (3.4,2) to[R, l=$4\ohm$] (3.4,0);
+  \or
+    \draw (0,0) to[american current source, l=$\Icol{3\A}$] (0,2);
+    \draw (0,2) to[R, l=$1\ohm$] (2,2) -- (3.4,2);
+    \draw (2,2) to[R, l_=$1\ohm$] (2,0); \draw (3.4,2) to[R, l=$2\ohm$] (3.4,0);
+  \fi
+  \draw (0,0) -- (3.4,0);
+  \fill (2,2) circle (1.6pt); \fill (2,0) circle (1.6pt);
+  \node[btag] at (0,-0.45) {1}; \node[btag] at (0.75,1.5) {2};
+  \node[btag] at (2,-0.45) {3};  \node[btag] at (3.4,-0.45) {4};}
+\newcommand{\tgGraph}{%
+  \coordinate (n1) at (0,2); \coordinate (n2) at (2.2,2); \coordinate (n0) at (1.1,0);
+  \draw[-{Stealth[length=2mm]}, thick] (n1) -- node[btag, left=3pt] {1} (n0);
+  \draw[-{Stealth[length=2mm]}, thick] (n1) -- node[btag, above=3pt] {2} (n2);
+  \draw[-{Stealth[length=2mm]}, thick] (n2) to[bend right=25] node[btag, left=2pt] {3} (n0);
+  \draw[-{Stealth[length=2mm]}, thick] (n2) to[bend left=25] node[btag, right=2pt] {4} (n0);
+  \foreach \n/\t/\a in {n1/1/above left, n2/2/above right, n0/0/below} {\fill (\n) circle (2.2pt); \node[\a, font=\small] at (\n) {\t};}}
+%  Why reciprocity holds: a port seen as a branch (left), one resistor in both circuits (right)
+\newcommand{\whyRecip}{%
+  \draw[elem] (1.6,-0.2) rectangle (2.6,2.2); \node[font=\small] at (2.1,1.0) {$N$};
+  \draw (1.1,1.8) -- (1.6,1.8); \draw (1.1,0) -- (1.6,0);
+  \draw[dashed, thick, metugray] (1.1,1.8) -- (0.2,1.8) -- (0.2,0) -- (1.1,0);
+  \draw[iar] (0.2,1.35) -- (0.2,0.45); \node[font=\small, text=ccur, anchor=east] at (0.12,0.9) {$-i_1$};
+  \draw[iar] (1.15,2.1) -- (1.55,2.1); \node[font=\small, text=ccur, anchor=south] at (1.35,2.15) {$i_1$};
+  \node[pol] at (0.85,1.45) {$+$}; \node[pol] at (0.85,0.35) {$-$}; \node[font=\small, text=cvolt] at (0.85,0.9) {$v_1$};
+  \draw (1.1,1.8) node[ocirc] {}; \draw (1.1,0) node[ocirc] {};
+  \node[font=\footnotesize, text=metugray, align=center] at (0.6,-0.65) {port branch};
+  \begin{scope}[xshift=4.6cm]
+    \draw (0,2) to[R, l_=$R_k$] (0,0);
+    \draw[iar] (0.35,1.7) -- (0.35,1.25); \node[font=\small, text=ccur, anchor=west] at (0.4,1.5) {$i_k$};
+    \node[font=\small, text=cvolt, anchor=west] at (0.4,0.6) {$v_k = R_k i_k$};
+    \node[font=\footnotesize, text=metugray] at (0,-0.65) {circuit 1};
+  \end{scope}
+  \begin{scope}[xshift=8.0cm]
+    \draw (0,2) to[R, l_=$R_k$] (0,0);
+    \draw[iar] (0.35,1.7) -- (0.35,1.25); \node[font=\small, text=ccur, anchor=west] at (0.4,1.5) {$\hat\imath_k$};
+    \node[font=\small, text=cvolt, anchor=west] at (0.4,0.6) {$\hat v_k = R_k \hat\imath_k$};
+    \node[font=\footnotesize, text=metugray] at (0,-0.65) {circuit 2};
+  \end{scope}}
+%  The resistance matrix of a reciprocal two-port: a mirror across the diagonal
+\newcommand{\symR}{%
+  \draw[thick] (0.15,0) -- (0,0) -- (0,2.2) -- (0.15,2.2); \draw[thick] (2.85,0) -- (3.0,0) -- (3.0,2.2) -- (2.85,2.2);
+  \draw[dashed, thick, metugray] (0.15,2.1) -- (2.85,0.1);
+  \node[fill=white, inner sep=1pt] at (0.75,1.65) {$r_{11}$}; \node[fill=white, inner sep=1pt] at (2.25,0.55) {$r_{22}$};
+  \node[draw=ccharge, thick, fill=ccharge!8, rounded corners=2pt, inner sep=2pt] at (2.25,1.65) {$r_{12}$};
+  \node[draw=ccharge, thick, fill=ccharge!8, rounded corners=2pt, inner sep=2pt] at (0.75,0.55) {$r_{21}$};
+  \node[font=\footnotesize, text=metugray, anchor=north] at (2.85,0.05) {mirror};
+  \node[anchor=west, font=\small] at (3.6,1.65) {$r_{12} = \dfrac{\Vcol{v_1}}{\Icol{i_2}}\Big|_{\Icol{i_1} = 0}$: \ in at port 2, read at port 1};
+  \node[anchor=west, font=\small] at (3.6,0.55) {$r_{21} = \dfrac{\Vcol{v_2}}{\Icol{i_1}}\Big|_{\Icol{i_2} = 0}$: \ in at port 1, read at port 2};}
+%  Why reciprocity holds: the whole circuit = two port branches (outside) + resistors (inside N)
+\newcommand{\splitRecip}{%
+  \fill[cpow!7, rounded corners=3pt] (1.75,-0.45) rectangle (4.85,2.35);
+  \draw[cpow, dashed, thick, rounded corners=3pt] (1.75,-0.45) rectangle (4.85,2.35);
+  \node[text=cpow, font=\small\bfseries, anchor=south] at (3.3,2.38) {inside $N$: resistors};
+  \draw (1.5,1.8) -- (1.9,1.8) to[R] (3.3,1.8) to[R] (4.7,1.8) -- (5.1,1.8);
+  \draw (3.3,1.8) to[R] (3.3,0); \fill (3.3,1.8) circle (1.6pt); \fill (3.3,0) circle (1.6pt);
+  \draw (1.5,0) -- (5.1,0);
+  \draw[ccharge, very thick] (1.5,1.8) -- (0,1.8) to[generic, color=ccharge] (0,0) -- (1.5,0);
+  \draw[ccharge, very thick] (5.1,1.8) -- (6.6,1.8) to[generic, color=ccharge] (6.6,0) -- (5.1,0);
+  \node[text=ccharge, font=\small\bfseries, align=center] at (-1.0,2.55) {port 1\\[-2pt] branch};
+  \node[text=ccharge, font=\small\bfseries, align=center] at (7.6,2.55) {port 2\\[-2pt] branch};
+  \draw[iar] (0.65,2.1) -- (1.15,2.1); \node[text=ccur, font=\small, anchor=south] at (0.9,2.12) {$i_1$};
+  \draw[iar] (5.95,2.1) -- (5.45,2.1); \node[text=ccur, font=\small, anchor=south] at (5.7,2.12) {$i_2$};
+  \node[pol] at (1.1,1.45) {$+$}; \node[pol] at (1.1,0.35) {$-$}; \node[text=cvolt, font=\small] at (1.1,0.9) {$v_1$};
+  \node[pol] at (5.5,1.45) {$+$}; \node[pol] at (5.5,0.35) {$-$}; \node[text=cvolt, font=\small] at (5.5,0.9) {$v_2$};
+  \draw[iar] (-0.45,1.3) -- (-0.45,0.5); \node[text=ccur, font=\small, anchor=east] at (-0.5,0.9) {$-i_1$};
+  \draw[iar] (7.05,1.3) -- (7.05,0.5); \node[text=ccur, font=\small, anchor=west] at (7.1,0.9) {$-i_2$};
+  \foreach \p in {(1.5,1.8),(1.5,0),(5.1,1.8),(5.1,0)} \draw \p node[ocirc] {};}
+%  A one-way two-port: 2 Ohm across port 1, VCCS 0.5 v_1 across port 2 (pointing down).
+%  \depRecip{left code}{left label}{right code}{right label}; codes: 0 voltage source, 4 ammeter
+\newcommand{\depRecip}[4]{%
+  \draw[elem] (1.5,-0.25) rectangle (6.4,2.25);
+  \draw (1.1,1.8) -- (2.2,1.8) to[R, l_=$2\ohm$] (2.2,0);
+  \node[pol] at (3.15,1.45) {$+$}; \node[pol] at (3.15,0.35) {$-$}; \node[text=cvolt, font=\small] at (3.15,0.9) {$v_1$};
+  \draw (4.2,1.8) to[american controlled current source, l=$0.5\,\Vcol{v_1}$] (4.2,0);
+  \draw (4.2,1.8) -- (6.8,1.8); \draw (1.1,0) -- (6.8,0);
+  \ifcase#1
+    \draw (0,1.8) to[american voltage source, l_=#2] (0,0); \draw (0,1.8) -- (1.1,1.8); \draw (0,0) -- (1.1,0);
+  \or\or\or\or
+    \draw (0,1.8) -- (0,1.22); \draw (0,0.58) -- (0,0);
+    \node[circle, draw, thick, minimum size=0.64cm, inner sep=0pt, font=\small\bfseries] at (0,0.9) {A};
+    \node[font=\small, anchor=east] at (-0.38,0.9) {#2};
+    \draw (0,1.8) -- (1.1,1.8); \draw (0,0) -- (1.1,0);
+  \fi
+  \ifcase#3
+    \draw (7.9,1.8) to[american voltage source, l=#4] (7.9,0); \draw (6.8,1.8) -- (7.9,1.8); \draw (6.8,0) -- (7.9,0);
+  \or\or\or\or
+    \draw (7.9,1.8) -- (7.9,1.22); \draw (7.9,0.58) -- (7.9,0);
+    \node[circle, draw, thick, minimum size=0.64cm, inner sep=0pt, font=\small\bfseries] at (7.9,0.9) {A};
+    \node[font=\small, anchor=west] at (8.28,0.9) {#4};
+    \draw (6.8,1.8) -- (7.9,1.8); \draw (6.8,0) -- (7.9,0);
+  \fi
+  \foreach \p in {(1.1,1.8),(1.1,0),(6.8,1.8),(6.8,0)} \draw \p node[ocirc] {};}
+%  Extra port labels for \rcp: current arrows (into N) and port voltages
+\newcommand{\lcur}[1]{\draw[iar] (0.25,2.08) -- (0.85,2.08); \node[font=\small, anchor=south] at (0.55,2.12) {#1};}
+\newcommand{\rcur}[1]{\draw[iar] (5.15,2.08) -- (4.55,2.08); \node[font=\small, anchor=south] at (4.85,2.12) {#1};}
+\newcommand{\lvolt}[1]{\node[pol] at (1.05,1.45) {$+$}; \node[pol] at (1.05,0.35) {$-$}; \node[font=\small, anchor=east] at (1.0,0.9) {#1};}
+\newcommand{\rvolt}[1]{\node[pol] at (4.35,1.45) {$+$}; \node[pol] at (4.35,0.35) {$-$}; \node[font=\small, anchor=west] at (4.4,0.9) {#1};}
+%  The four matrix tests: \mtest{R|G|H|T}{1|2}
+\newcommand{\mtest}[2]{%
+  \ifnum#2=1
+    \if#1R \rcp{1}{$\Icol{1\A}$}{3}{$\Vcol{r_{21}}$}\fi
+    \if#1G \rcp{0}{$\Vcol{1\V}$}{2}{$\Icol{g_{21}}$}\lcur{$\Icol{g_{11}}$}\fi
+    \if#1H \rcp{1}{$\Icol{1\A}$}{2}{$\Icol{h_{21}}$}\fi
+    \if#1T \rcp{0}{$\Vcol{A}$}{3}{$\Vcol{1\V}$}\lcur{$\Icol{C}$}\fi
+  \else
+    \if#1R \rcp{3}{$\Vcol{r_{12}}$}{1}{$\Icol{1\A}$}\fi
+    \if#1G \rcp{2}{$\Icol{g_{12}}$}{0}{$\Vcol{1\V}$}\rcur{$\Icol{g_{22}}$}\fi
+    \if#1H \rcp{3}{$\Vcol{h_{12}}$}{0}{$\Vcol{1\V}$}\rcur{$\Icol{h_{22}}$}\fi
+    \if#1T \rcp{0}{$\Vcol{B}$}{2}{$\Icol{-1\A}$}\lcur{$\Icol{D}$}\fi
+  \fi}
+\newcommand{\mpair}[1]{%
+  \mtest{#1}{1}
+  \begin{scope}[xshift=7.8cm] \mtest{#1}{2} \end{scope}
+  \node[font=\small, text=metugray] at (2.7,-0.75) {circuit 1};
+  \node[font=\small, text=metugray] at (10.5,-0.75) {circuit 2};}
 \begin{document}
 
 %-------------------- title block -----------------------------
@@ -1263,6 +1398,44 @@ absorbs nor delivers power: what enters one port leaves the other.
 %==============================================================
 \section{Reciprocity}\label{sec:recip}
 
+\subsection{The idea: swap the source and the meter}
+
+Put a voltage source at port 1 and an ammeter at port 2. Read the current. Then swap the
+source and the ammeter.
+\begin{center}
+\begin{tikzpicture}[scale=0.72]
+  \rcp{0}{$\Vcol{v_0}$}{4}{$\Icol{i_2}$}
+  \begin{scope}[xshift=8.2cm] \rcp{4}{$\Icol{\hat\imath_1}$}{0}{$\Vcol{v_0}$} \end{scope}
+  \node[font=\small, text=metugray] at (2.7,-0.75) {source at port 1};
+  \node[font=\small, text=metugray] at (10.9,-0.75) {source at port 2};
+\end{tikzpicture}
+\end{center}
+If the two-port contains only resistors, the two readings are equal: $\Icol{\hat\imath_1} = \itwo$.
+This is \textbf{reciprocity}. The transfer from port 1 to port 2 equals the transfer from
+port 2 to port 1.
+
+This is not obvious. The two circuits are different, and the currents of the source are
+different (Example 14.10 shows this on a ladder).
+
+A dependent source can break it. Below, a $2\ohm$ resistor is across port 1, and a
+dependent current source $0.5\,\vone$ is across port 2.
+\begin{center}
+\begin{tikzpicture}[scale=0.72]
+  \depRecip{0}{$\Vcol{4\V}$}{4}{$\Icol{i_2}$}
+  \node[font=\small, anchor=west] at (9.9,0.9) {$\vone = 4\V$: \ $\itwo = 0.5 \cdot 4 = 2\A$};
+  \begin{scope}[yshift=-3.0cm]
+    \depRecip{4}{$\Icol{\hat\imath_1}$}{0}{$\Vcol{4\V}$}
+    \node[font=\small, anchor=west] at (9.9,0.9) {$\vone = 0$: \ $\Icol{\hat\imath_1} = 0$};
+  \end{scope}
+\end{tikzpicture}
+\end{center}
+Top: the source at port 1 sets $\vone = 4\V$, and the dependent source sends $2\A$ through
+the ammeter. Bottom: the ammeter shorts port 1, so $\vone = 0$ and the dependent source is
+off; no current flows at port 1. The readings are $2\A$ and $0$. The dependent source acts
+one way only, from port 1 to port 2, like an amplifier.
+
+The proof needs Tellegen's theorem in a more general form.
+
 \subsection{Tellegen's theorem, general form}
 
 Previously: in any circuit, $\sum_k \Vcol{v_k}\Icol{i_k} = 0$. The proof used only KVL for the
@@ -1276,8 +1449,38 @@ and $\Vcol{\hat v_k}, \Icol{\hat\imath_k}$. Then
   \sum_k \Vcol{v_k}\,\Icol{\hat\imath_k} = 0, \qquad \sum_k \Vcol{\hat v_k}\,\Icol{i_k} = 0 .
 \]
 \end{ideabox}
-These sums are not powers: they mix two circuits. In this section the two circuits are the
-same two-port with different sources or loads at its ports.
+
+\textbf{A check.} The two circuits below share the graph in the middle. Each branch current
+points from $+$ to $-$ of its branch voltage, along the arrow of the graph.
+\begin{center}
+\begin{tikzpicture}[scale=0.72]
+  \tgCirc{0}
+  \begin{scope}[xshift=5.6cm, yshift=0.0cm] \tgGraph \end{scope}
+  \begin{scope}[xshift=10.6cm] \tgCirc{1} \end{scope}
+  \node[font=\small, text=metugray] at (1.7,-1.15) {circuit 1};
+  \node[font=\small, text=metugray] at (6.7,-1.15) {common graph};
+  \node[font=\small, text=metugray] at (12.3,-1.15) {circuit 2};
+\end{tikzpicture}
+\end{center}
+Circuit 1: the source sees $1 + 4 \parallel 4 = 3\ohm$ and gives $2\A$. Circuit 2: the $3\A$ splits
+between $1\ohm$ and $2\ohm$ as $2\A$ and $1\A$.
+\begin{center}
+\renewcommand{\arraystretch}{1.25}
+\begin{tabular}{@{}c|rr|rr|rr@{}}
+\toprule
+branch $k$ & $\Vcol{v_k}$ & $\Icol{i_k}$ & $\Vcol{\hat v_k}$ & $\Icol{\hat\imath_k}$ & $\Vcol{v_k}\Icol{\hat\imath_k}$ & $\Vcol{\hat v_k}\Icol{i_k}$\\
+\midrule
+1 & 6 & $-2$ & 5 & $-3$ & $-18$ & $-10$\\
+2 & 2 & 2 & 3 & 3 & 6 & 6\\
+3 & 4 & 1 & 2 & 2 & 8 & 2\\
+4 & 4 & 1 & 2 & 1 & 4 & 2\\
+\midrule
+sum & & & & & $\mathbf{0}$ & $\mathbf{0}$\\
+\bottomrule
+\end{tabular}
+\end{center}
+Both cross sums are zero. They are not powers: each product mixes two circuits. In this
+section the two circuits are the same two-port with different sources or loads at its ports.
 
 \subsection{Reciprocal two-ports}
 
@@ -1290,25 +1493,122 @@ no dependent sources, is \textbf{reciprocal}. For any two ways of driving it,
 \]
 \end{definitionbox}
 
-\textbf{Why.} Take the two ways of driving the two-port as two circuits with the same graph.
-The ports are branches too; their currents point into $N$, against the branch convention, so
-they enter Tellegen's sums with a minus sign:
+\textbf{Why.} Take the two ways of driving the two-port as circuit 1, $(\Vcol{v_k}, \Icol{i_k})$, and
+circuit 2, $(\Vcol{\hat v_k}, \Icol{\hat\imath_k})$. They have the same graph: two port branches
+outside $N$ and the resistors inside.
+\begin{center}
+\begin{tikzpicture}[scale=0.78]
+  \splitRecip
+\end{tikzpicture}
+\end{center}
+\textbf{Step 1: split Tellegen's sums.} The port current $\ione$ points into $N$, so in the outside
+branch the current flows from $-$ to $+$: the branch current is $-\ione$. The two cross sums are
 \[
-  \sum_{\text{inside}} \Vcol{v_k}\Icol{\hat\imath_k} = \vone\Icol{\hat\imath_1} + \vtwo\Icol{\hat\imath_2},
+  \underbrace{-\vone\Icol{\hat\imath_1} - \vtwo\Icol{\hat\imath_2}}_{\textcolor{ccharge}{\text{ports}}}
+  + \underbrace{\sum_{\text{inside}} \Vcol{v_k}\Icol{\hat\imath_k}}_{\textcolor{cpow}{\text{resistors}}} = 0,
   \qquad
-  \sum_{\text{inside}} \Vcol{\hat v_k}\Icol{i_k} = \Vcol{\hat v_1}\ione + \Vcol{\hat v_2}\itwo .
+  \underbrace{-\Vcol{\hat v_1}\ione - \Vcol{\hat v_2}\itwo}_{\textcolor{ccharge}{\text{ports}}}
+  + \underbrace{\sum_{\text{inside}} \Vcol{\hat v_k}\Icol{i_k}}_{\textcolor{cpow}{\text{resistors}}} = 0 .
 \]
-For each resistor inside, $\Vcol{v_k}\Icol{\hat\imath_k} = R_k\Icol{i_k}\Icol{\hat\imath_k} =
-\Vcol{\hat v_k}\Icol{i_k}$: the two left sides are equal term by term. (An ideal transformer
-contributes zero to both sums.) So the right sides are equal. A dependent source breaks this
-step: its two terms are not equal.
 
-\subsection{The matrices of a reciprocal two-port}
+\textbf{Step 2: the resistor parts are equal.} For each resistor,
+\[
+  \Vcol{v_k}\Icol{\hat\imath_k} = R_k\,\Icol{i_k}\Icol{\hat\imath_k} = \Vcol{\hat v_k}\Icol{i_k} .
+\]
+So the two resistor sums are equal, term by term.
 
-Put $\mathbf{v} = \Rm\,\mathbf{i}$ and $\Vcol{\hat{\mathbf{v}}} = \Rm\,\Icol{\hat{\mathbf{i}}}$
-into the identity: $\Icol{\hat{\mathbf{i}}}^T \Rm\,\mathbf{i} = \mathbf{i}^T \Rm\,\Icol{\hat{\mathbf{i}}}
-= \Icol{\hat{\mathbf{i}}}^T \Rm^T \mathbf{i}$ for all currents. So $\Rm = \Rm^T$. With the
-conversions of Section~\ref{sec:exist}:
+\textbf{Step 3: conclude.} Both sums are zero and their resistor parts are equal. So their port
+parts are equal: this is the identity in the box. An ideal transformer adds zero to both
+sums. A dependent source breaks step 2: for $v_k = 2 i_j$, the terms $2\Icol{i_j}\Icol{\hat\imath_k}$ and
+$2\Icol{\hat\imath_j}\Icol{i_k}$ are not equal.
+
+\subsection{Three statements and the matrices}
+
+One idea gives a condition on each matrix. In circuit 1, set the two inputs of the matrix to
+$(1, 0)$; in circuit 2, set them to $(0, 1)$. Then the outputs are the columns of the matrix.
+Put all port variables into the identity. Each result is also a statement about two
+measurements: drive one port, look at the other, then swap.
+
+\needspace{9\baselineskip}
+\noindent\textbf{Resistance matrix --- Statement 1 (current source, open circuit).} Recall:
+\[
+  \begin{bmatrix} \vone\\ \vtwo \end{bmatrix} = \begin{bmatrix} r_{11} & r_{12}\\ r_{21} & r_{22} \end{bmatrix} \begin{bmatrix} \ione\\ \itwo \end{bmatrix} .
+\]
+The inputs are the port currents. The other port is open.
+\begin{center}
+\begin{tikzpicture}[scale=0.7]
+  \mpair{R}
+\end{tikzpicture}
+\end{center}
+Circuit 1: $\ione = 1$, $\itwo = 0$, so $\vone = r_{11}$ and $\vtwo = r_{21}$. Circuit 2: $\Icol{\hat\imath_1} = 0$, $\Icol{\hat\imath_2} = 1$, so $\Vcol{\hat v_1} = r_{12}$ and $\Vcol{\hat v_2} = r_{22}$. The identity:
+\begin{align*}
+  \vone\,\Icol{\hat\imath_1} + \vtwo\,\Icol{\hat\imath_2} &= \Vcol{\hat v_1}\,\ione + \Vcol{\hat v_2}\,\itwo\\
+  r_{11} \cdot 0 + r_{21} \cdot 1 &= r_{12} \cdot 1 + r_{22} \cdot 0 \quad\Rightarrow\quad r_{12} = r_{21} .
+\end{align*}
+\emph{In words:} A current source at one port, the other port open. Swap them: the open-circuit voltage is the same.
+
+So $\Rm = \Rm^T$: the matrix is a mirror image of itself across its diagonal.
+\begin{center}
+\begin{tikzpicture}[scale=0.85]
+  \symR
+\end{tikzpicture}
+\end{center}
+The off-diagonal entries are the two transfers. Reciprocity says they are equal.
+
+\needspace{9\baselineskip}
+\noindent\textbf{Conductance matrix --- Statement 2 (voltage source, short circuit).} Recall:
+\[
+  \begin{bmatrix} \ione\\ \itwo \end{bmatrix} = \begin{bmatrix} g_{11} & g_{12}\\ g_{21} & g_{22} \end{bmatrix} \begin{bmatrix} \vone\\ \vtwo \end{bmatrix} .
+\]
+The inputs are the port voltages. The other port is shorted.
+\begin{center}
+\begin{tikzpicture}[scale=0.7]
+  \mpair{G}
+\end{tikzpicture}
+\end{center}
+Circuit 1: $\vone = 1$, $\vtwo = 0$, so $\ione = g_{11}$ and $\itwo = g_{21}$. Circuit 2: $\Vcol{\hat v_1} = 0$, $\Vcol{\hat v_2} = 1$, so $\Icol{\hat\imath_1} = g_{12}$ and $\Icol{\hat\imath_2} = g_{22}$. The identity:
+\begin{align*}
+  \vone\,\Icol{\hat\imath_1} + \vtwo\,\Icol{\hat\imath_2} &= \Vcol{\hat v_1}\,\ione + \Vcol{\hat v_2}\,\itwo\\
+  1 \cdot g_{12} + 0 \cdot g_{22} &= 0 \cdot g_{11} + 1 \cdot g_{21} \quad\Rightarrow\quad g_{12} = g_{21} .
+\end{align*}
+\emph{In words:} A voltage source at one port, the other port shorted. Swap them: the short-circuit current is the same. This is the swap at the start of this section.
+
+\needspace{9\baselineskip}
+\noindent\textbf{Hybrid matrix --- Statement 3 (mixed).} Recall:
+\[
+  \begin{bmatrix} \vone\\ \itwo \end{bmatrix} = \begin{bmatrix} h_{11} & h_{12}\\ h_{21} & h_{22} \end{bmatrix} \begin{bmatrix} \ione\\ \vtwo \end{bmatrix} .
+\]
+The inputs are $\ione$ and $\vtwo$. Port 2 is shorted in circuit 1; port 1 is open in circuit 2.
+\begin{center}
+\begin{tikzpicture}[scale=0.7]
+  \mpair{H}
+\end{tikzpicture}
+\end{center}
+Circuit 1: $\ione = 1$, $\vtwo = 0$, so $\vone = h_{11}$ and $\itwo = h_{21}$. Circuit 2: $\Icol{\hat\imath_1} = 0$, $\Vcol{\hat v_2} = 1$, so $\Vcol{\hat v_1} = h_{12}$ and $\Icol{\hat\imath_2} = h_{22}$. The identity:
+\begin{align*}
+  \vone\,\Icol{\hat\imath_1} + \vtwo\,\Icol{\hat\imath_2} &= \Vcol{\hat v_1}\,\ione + \Vcol{\hat v_2}\,\itwo\\
+  h_{11} \cdot 0 + 0 \cdot h_{22} &= h_{12} \cdot 1 + 1 \cdot h_{21} \quad\Rightarrow\quad h_{12} = -h_{21} .
+\end{align*}
+\emph{In words:} $1\A$ at port 1 with port 2 shorted gives a short-circuit current $h_{21}$. $1\V$ at port 2 with port 1 open gives an open-circuit voltage $h_{12}$. The two have the same size and opposite signs.
+
+\needspace{9\baselineskip}
+\noindent\textbf{Transmission matrix.} Recall:
+\[
+  \begin{bmatrix} \vone\\ \ione \end{bmatrix} = \begin{bmatrix} A & B\\ C & D \end{bmatrix} \begin{bmatrix} \vtwo\\ -\itwo \end{bmatrix} .
+\]
+The inputs are $\vtwo$ and $-\itwo$; the outputs are $\vone$ and $\ione$. Circuit 1 sets $(\vtwo, -\itwo) = (1, 0)$, so $(\vone, \ione)$ is the first column, $(A, C)$. Circuit 2 sets $(\Vcol{\hat v_2}, -\Icol{\hat\imath_2}) = (0, 1)$, so $(\Vcol{\hat v_1}, \Icol{\hat\imath_1})$ is the second column, $(B, D)$; note $\Icol{\hat\imath_2} = -1$. In both circuits the source at port 1 is set to give these inputs.
+\begin{center}
+\begin{tikzpicture}[scale=0.7]
+  \mpair{T}
+\end{tikzpicture}
+\end{center}
+The identity:
+\begin{align*}
+  \vone\,\Icol{\hat\imath_1} + \vtwo\,\Icol{\hat\imath_2} &= \Vcol{\hat v_1}\,\ione + \Vcol{\hat v_2}\,\itwo\\
+  A \cdot D + 1 \cdot (-1) &= B \cdot C + 0 \cdot 0 \quad\Rightarrow\quad AD - BC = 1 .
+\end{align*}
+
+\textbf{Summary.}
 \begin{center}
 \small
 \renewcommand{\arraystretch}{1.4}
@@ -1320,77 +1620,24 @@ $r_{12} = r_{21}$ & $g_{12} = g_{21}$ & $h_{12} = -h_{21}$ & $\det\Tm = AD - BC 
 \bottomrule
 \end{tabular}
 \end{center}
-For $\Hm$: $h_{12} = r_{12}/r_{22}$ and $h_{21} = -r_{21}/r_{22}$. For $\Tm$:
-$\det\Tm = (r_{11}r_{22} - \det\Rm)/r_{21}^2 = r_{12}/r_{21}$.
+All three statements hold for any reciprocal two-port, whatever is inside. The same is true
+with capacitors and inductors inside (later).
 
 \textbf{Checks.} Example 14.2 has a dependent source: $\Rm = \left[\begin{smallmatrix} 3 & 1\\ -1 & 1 \end{smallmatrix}\right]$,
 $r_{12} \neq r_{21}$, \emph{not} reciprocal. The ideal transformer:
 $\Hm = \left[\begin{smallmatrix} 0 & n\\ -n & 0 \end{smallmatrix}\right]$, $h_{12} = -h_{21}$,
 reciprocal. The cascade of Example 14.7: $\det\Tm = \frac32 - \frac12 = 1$. \ \yes
 
-\subsection{Three statements}
-
-Drive one port, look at the other; then swap. A reciprocal two-port gives the same number.
-Each statement follows from the identity above with the zero port variables put in.
-
-\medskip
-\noindent\textbf{Statement 1 (voltage source, short circuit).}
-\begin{center}
-\begin{tikzpicture}[scale=0.72]
-  \rcp{0}{$\Vcol{v_0}$}{2}{$\Icol{i_2}$}
-  \begin{scope}[xshift=7.6cm] \rcp{2}{$\Icol{\hat\imath_1}$}{0}{$\Vcol{v_0}$} \end{scope}
-\end{tikzpicture}
-\end{center}
-\[
-  \Icol{\hat\imath_1} = \itwo .
-\]
-Proof: left, $\vone = v_0$, $\vtwo = 0$; right, $\Vcol{\hat v_1} = 0$, $\Vcol{\hat v_2} = v_0$.
-The identity gives $v_0\,\Icol{\hat\imath_1} = v_0\,\itwo$.
-
-\medskip
-\noindent\textbf{Statement 2 (current source, open circuit).}
-\begin{center}
-\begin{tikzpicture}[scale=0.72]
-  \rcp{1}{$\Icol{i_0}$}{3}{$\Vcol{v_2}$}
-  \begin{scope}[xshift=7.6cm] \rcp{3}{$\Vcol{\hat v_1}$}{1}{$\Icol{i_0}$} \end{scope}
-\end{tikzpicture}
-\end{center}
-\[
-  \Vcol{\hat v_1} = \vtwo .
-\]
-Proof: left, $\ione = i_0$, $\itwo = 0$; right, $\Icol{\hat\imath_1} = 0$, $\Icol{\hat\imath_2} = i_0$.
-The identity gives $\vtwo\,i_0 = \Vcol{\hat v_1}\,i_0$.
-
-\medskip
-\needspace{12\baselineskip}
-\noindent\textbf{Statement 3 (mixed).}
-\begin{center}
-\begin{tikzpicture}[scale=0.72]
-  \rcp{1}{$\Icol{i_0}$}{2}{$\Icol{i_2}$}
-  \begin{scope}[xshift=7.6cm] \rcp{3}{$\Vcol{\hat v_1}$}{0}{$\Vcol{v_0}$} \end{scope}
-\end{tikzpicture}
-\end{center}
-If $v_0$ (in V) and $i_0$ (in A) are the same number, then
-\[
-  \Vcol{\hat v_1} = -\itwo .
-\]
-Proof: left, $\ione = i_0$, $\vtwo = 0$; right, $\Icol{\hat\imath_1} = 0$, $\Vcol{\hat v_2} = v_0$.
-The identity gives $0 = \Vcol{\hat v_1}\,i_0 + v_0\,\itwo$. (In matrix terms: $h_{12} = -h_{21}$.)
-
-\medskip
-All three hold for any reciprocal two-port, whatever is inside. The same is true with
-capacitors and inductors inside (later).
-
 \bigskip
-\begin{examplebox}[Example 14.10 --- statement 1 on a ladder]
+\begin{examplebox}[Example 14.10 --- statement 2 on a ladder]
 \begin{center}
 \begin{tikzpicture}[scale=0.7]
   \ladder{0}{1}
   \begin{scope}[xshift=7.6cm] \ladder{1}{0} \end{scope}
 \end{tikzpicture}
 \end{center}
-Find $\itwo$ (left) and $\Icol{\hat\imath_1}$ (right) by series and parallel. Compare with
-statement 1.
+Find $\itwo$ (left) and $\Icol{\hat\imath_1}$ (right). Compare with
+statement 2.
 \end{examplebox}
 
 \solution
@@ -1423,12 +1670,23 @@ and $\itwo = g_{21} \cdot 8 = -2\A$, $\Icol{\hat\imath_1} = g_{12} \cdot 8 = -2\
 A two-port contains only LTI resistors; its inside is not known. One experiment: a $6\V$
 source at port 1 and a short at port 2 give $\ione = 3\A$ and $\itwo = -1\A$. Now a $12\V$
 source is at port 2, and port 1 is shorted. Find the current $\Icol{\hat\imath_1}$ of the short.
+\begin{center}
+\begin{tikzpicture}[scale=0.7]
+  \rcp{0}{$\Vcol{6\V}$}{2}{$\Icol{i_2}$}
+  \draw[iar] (0.25,2.08) -- (0.85,2.08); \node[font=\small, text=ccur, anchor=south] at (0.55,2.12) {$i_1$};
+  \node[font=\small] at (2.7,-0.85) {experiment: \ $\ione = 3\A$, \ $\itwo = -1\A$};
+  \begin{scope}[xshift=8.2cm]
+    \rcp{2}{$\Icol{\hat\imath_1}$}{0}{$\Vcol{12\V}$}
+    \node[font=\small] at (2.7,-0.85) {question: \ $\Icol{\hat\imath_1} = \ ?$};
+  \end{scope}
+\end{tikzpicture}
+\end{center}
 \end{examplebox}
 
 \solution
 
 \solstep{1}{Reciprocity}
-By statement 1, a $6\V$ source at port 2 would give $\Icol{\hat\imath_1} = \itwo = -1\A$.
+By statement 2, a $6\V$ source at port 2 would give $\Icol{\hat\imath_1} = \itwo = -1\A$.
 
 \solstep{2}{Linearity}
 The source is doubled, so the current doubles:
@@ -1439,6 +1697,7 @@ In matrix terms, the experiment gives $g_{21} = -\frac16\Sie$, and reciprocity g
 $g_{12} = g_{21}$: $\Icol{\hat\imath_1} = g_{12} \cdot 12 = -2\A$. No circuit analysis was needed.
 
 %==============================================================
+\clearpage
 \section*{Summary}
 
 \begin{center}
