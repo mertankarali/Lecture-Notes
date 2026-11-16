@@ -126,7 +126,7 @@ this lecture, we will learn one of these analogies.
 
 In electrical circuits, the core variables are Voltage, $V$, and current, $I$, whereas
 in translational mechanical systems, core variables are translational velocity, $\nu$, and force, $f$.
-Similarly, in rotational mechanical systems, the core variables are angular velocity, $\omega$n, and torque $\tau$.
+Similarly, in rotational mechanical systems, the core variables are angular velocity, $\omega$, and torque $\tau$.
 
 \textbf{Voltage, $V$ $\Longleftrightarrow$ Velocity, $\nu$
   $\Longleftrightarrow$ Angular Velocity, $\omega$}
@@ -148,7 +148,7 @@ constructed using Torque and Angular Momentum. For this reason, we say that Curr
 
 If we follow the analogs between the variables, we can see that ideal
 capacitor for which one end is connected to the ground, 1-DOF translating body with a mass
-of $m$, and 1-DOF rotating body with an inertia of  $J$ analogs of each other. 
+of $m$, and 1-DOF rotating body with an inertia of  $J$ are analogs of each other. 
 These are all ideal energy storage elements in their modeling
 domains and they are illustrated in the figure below. 
 
@@ -192,11 +192,11 @@ domains and they are illustrated in the figure below.
 The ODEs that govern the dynamics of these elements are provided below
 %
 \begin{align*}
-\mathrm{Induction:}& \quad L \dot{I}(t) = V(t) \\
-\mathrm{Translational Spring:}& \quad  f(t) = k x(t) \ \rightarrow \
+\mathrm{Inductor:}& \quad L \dot{I}(t) = V(t) \\
+\mathrm{Translational} \ \mathrm{Spring:}& \quad  f(t) = k x(t) \ \rightarrow \
                                 \frac{1}{k} \dot{f}(t) = \nu(t)
 \\
-\mathrm{Torsional Spring:}& \quad  \tau (t) = \kappa \theta(t) \
+\mathrm{Torsional} \ \mathrm{Spring:}& \quad  \tau (t) = \kappa \theta(t) \
                             \rightarrow \ \frac{1}{\kappa} \dot{\tau}(t) = \omega(t)
 \end{align*}
 %
@@ -212,8 +212,8 @@ analogy as
 Torsional Damper $\beta$}
 
 If we follow the analogs between the variables we can see that Ideal
-resistor ($R$), linear translational damper ($k$), and linear
-torsional damper ($\kappa$) are analogs of each other. 
+resistor ($R$), linear translational damper ($b$), and linear
+torsional damper ($\beta$) are analogs of each other. 
 These elements are ideal fully passive dissipative elements.
 Thus, these are memoryless (static) components as opposed to the
 previous elements. These elements are illustrated in the figure below. 
@@ -276,7 +276,7 @@ The algebraic equations that govern the statics of these elements are provided b
                                     \frac{\omega_2}{r_1} \\ \\ \tau_1 r_2 = \tau_2 r_1 \end{array} 
 \end{align*}
 %
-Based on these equations, it is to see that following (system) parameter
+Based on these equations, it is easy to see the following (system) parameter
 analogy as
 %
 \begin{align*}
@@ -459,7 +459,7 @@ integrate the ODE twice
 	\frac{k_1}{m} \frac{l_2}{l_1} u \right\rbrace dt \right] dt
 \end{align*}
 
-Then let the stat variable definitions be
+Then let the state variable definitions be
 %
 \begin{align*}
   x_1 &= y = \int \left[ - \frac{b}{m} y + \int \left\lbrace - \frac{k_1 + k_2}{m} y  +
@@ -513,7 +513,7 @@ environment.
 
 \begin{enumerate}
 
-\item Given that there is an external torque, $\tau_i$, acting on the first gear is the input of the system, and the rotational speed of the
+\item Given that the external torque, $\tau_i$, acting on the first gear is the input of the system, and the rotational speed of the
 second gear, $\omega_2$, is the output of the system, find the ODE of the gear-box dynamics. 
 
 First let's draw the free-body diagrams of both gears separately and then write the equations of motion for each body. 
@@ -562,13 +562,13 @@ First let's draw the free-body diagrams of both gears separately and then write 
     
   \end{minipage}
 
-It can be seen that the resultant ODE is a first order ODE. Ee can also consider the whole system as a
+It can be seen that the resultant ODE is a first order ODE. We can also consider the whole system as a
 single rotating body with an effective total inertia of $J_T = \left[ J_2 + J_1  \left(\frac{N_2}{N_1}\right)^2  \right]$
 and effective total viscous friction of $\beta_T  = \left[ \beta_2 + \beta_1 \left(\frac{N_2}{N_1}\right)^2 \right]$.  
 
 \vspace{12pt}
   
- \textbf{Take Home Problem:} Now let's assume that output is $y(t) = \omega_1(t)$, and govern the ODE and re-compute
+ \textbf{Take Home Problem:} Now let's assume that output is $y(t) = \omega_1(t)$, and derive the ODE and re-compute
  the new effective inertia and viscous friction.  
 
 \item Compute the transfer function
@@ -635,7 +635,7 @@ J_R \cdot \dot{\omega}_R &= \tau - D_R \omega_R  - \kappa (
 If we replace the variables with state variables, we obtain. 
 %
 \begin{align*}
-J_R \cdot \dot{x}_2 &= u - D_R x_2  - K x_3
+J_R \cdot \dot{x}_2 &= u - D_R x_2  - \kappa x_3
 \\
 \dot{x}_2 &= \frac{1}{J_R} u - \frac{D_R}{J_R} x_2 - \frac{\kappa}{J_R} x_3
 \end{align*}    
@@ -647,10 +647,10 @@ the same change of variables operation
 \begin{align*}
 J_L \cdot \dot{\omega}_L &= \kappa ( \theta_R - \theta_L) - D_L \omega_L
 \\
-\dot{x}_1 &= \frac{K}{J_L} x_3 - \frac{D_L}{J_L} x_1
+\dot{x}_1 &= \frac{\kappa}{J_L} x_3 - \frac{D_L}{J_L} x_1
 \end{align*}    
 %
-We need one more state-equation which can be drived as
+We need one more state-equation which can be derived as
 %
 \begin{align*}
    \dot{x}_3 = \frac{d}{dt} \left( \theta_R - \theta_L \right) =
@@ -708,7 +708,7 @@ You will analyze the following belt-pulley system consisting of three pulleys an
 has a radius of $r_1$ and an inertia of $J_1$. Third pulley has a radius of $r_3$ and an inertia of $J_3$. 
 Second pulley (in the middle) is connected to the first pulley through
 its outer disk, which has the same radius with the third pulley, i.e.,
-$r_{2,o} = r_3$. Second pulley is also connected to the first pulley
+$r_{2,o} = r_3$. Second pulley is also connected to the third pulley
 via its inner disk, which has the same radius with the first pulley, i.e.,
 $r_{2,i} = r_1$. Second pulley has an inertia of $J_2$ (outer and
 inner disks move together). A linear rotational viscous damping
@@ -735,7 +735,7 @@ Let's solve this problem using the concept of reflected inertia, damping, and to
 	
 \vspace{6pt} 
 	
-If we reflect the variables and parameters of first pullet to the second pulley we obtain
+If we reflect the variables and parameters of first pulley to the second pulley we obtain
 	
 \vspace{12pt}
 	
@@ -747,7 +747,7 @@ If we reflect the variables and parameters of first pullet to the second pulley 
     
 \vspace{12pt}
 
-Now if we reflect the variables and parameters of the modified second pulley to the the third pulley we obtain
+Now if we reflect the variables and parameters of the modified second pulley to the third pulley we obtain
     
     \vspace{12pt}
 	
@@ -757,13 +757,13 @@ Now if we reflect the variables and parameters of the modified second pulley to 
     \end{center}
 \end{minipage}
     
-Hence, ode and transfer function of the system can be computed as
+Hence, the ODE and transfer function of the system can be computed as
 %
 \begin{align*}    
 \bar{J}_3 \dot{\omega_3} + \bar{\beta}_3 {\omega}_3 =
   \left( \frac{r_3}{r_1} \right)^2 \tau_{ex}
 \quad &\rightarrow \quad 
-\dot{y} + \frac{\bar{\beta}_3}{\bar{J}_3} = \frac{\left(
+\dot{y} + \frac{\bar{\beta}_3}{\bar{J}_3} y = \frac{\left(
   \frac{r_3}{r_1} \right)^2}{\bar{J}_3} u
 \\
 \frac{Y(s)}{U(s)} &= \frac{\left(
@@ -781,7 +781,7 @@ In some belt-pulley applications, ignoring the
     In order to overcome this problem, a very common method is modeling the belt with a linear (translational) spring-damper as shown in 
     the belt-pulley mechanism below. In this mechanism, first pulley
     has a radius of $r_1$ and inertia of $J_1$, where as the second pulley 
-    has a radius of $r_2$ and inertia of $J_2$. The spring-mass dampers (above and below) that model the elasticity of the belt 
+    has a radius of $r_2$ and inertia of $J_2$. The spring-dampers (above and below) that model the elasticity of the belt 
     have spring stiffnesses of $k$ and damping constants of $b$. 
 \end{exmp}
     
@@ -806,7 +806,7 @@ is the output, $y(t) = \theta_2(t)$,
 	\begin{align*}
 		r_1 &= 0.05 \, m \  , \  r_2 = 0.1 \, m   \ , \  J_1 = 0.01 \, kg  \cdot m^2  
 		 \ , \  J_2 = 0.1 \, kg  \cdot m^2  \\
-		  k &= 100 \, N/m  \ , \ b = 10 \, N/(m \cdot s) \ .
+		  k &= 100 \, N/m  \ , \ b = 10 \, N \cdot s/m \ .
 	\end{align*}
 	Simplify both the state-space and transfer function representations using these numerical values. 
 	Finally convert the state-space form to the transfer function form and verify that converted transfer function
@@ -894,7 +894,7 @@ y &= \left[ \begin{array}{cccc} 0 & 0 & 1 & 0 \end{array} \right] \mathbf{x}
 \end{align*}
 
 	\item Let's take the Laplace transform of the derived
-          diffferential equations
+          differential equations
 
 \begin{align*}
 \left[  J_1 s^2 + 2 b r_1^2 s + 2 k r_1^2 \right] \Theta_1(s) &= U(s)
@@ -956,13 +956,13 @@ Finally the transfer function can be computed as
 \item The state-space representation with the given coefficients take the form
 %
  \begin{align*}
-\dot{\mathbf{x}} &= \left[ \begin{array}{cccc} 0 & 100 & 0 & 0 \\
+\dot{\mathbf{x}} &= \left[ \begin{array}{cccc} 0 & 1 & 0 & 0 \\
 -50 & -5 & 100 & 10
 \\
 0 & 0 & 0 & 1 \\
 10 & 1 & -20 & -2
 \end{array} \right] \mathbf{x} +
-                   \left[ \begin{array}{c} 0 \\ 1 \\ 0 \\
+                   \left[ \begin{array}{c} 0 \\ 100 \\ 0 \\
                             0 \end{array} \right] u
 \\
 y &= \left[ \begin{array}{cccc} 0 & 0 & 1 & 0 \end{array} \right] \mathbf{x} 
@@ -976,7 +976,7 @@ Transfer function with the given coefficients take the form
  %
  
 A sample MATLAB code piece which converts the state-space form to the transfer function form
-(in terms of numerator and denumerator coefficients) is provided below. It is clear that, the computed
+(in terms of numerator and denominator coefficients) is provided below. It is clear that, the computed
 coefficients match the previous ones. 
  
      \vspace{12pt}
@@ -994,7 +994,7 @@ coefficients match the previous ones.
 \newpage
 
 \begin{exmp}
-Mehcanical system with ideal lever
+Mechanical system with ideal lever
 \end{exmp}
  
  \vspace{-30pt}
@@ -1007,10 +1007,10 @@ Mehcanical system with ideal lever
 
 \vspace{6pt}
 
-Input--output of the system is the are $u(t) = v_i(t)$, and
+The input and output of the system are $u(t) = v_i(t)$ and
 $y(t) = v_m(t)$ respectively. If we draw the free body diagram of
-the mass and draw the kinematic realtions of the lever we 
-obtain the following illsutration
+the mass and draw the kinematic relations of the lever we 
+obtain the following illustration
 
 \vspace{6pt}
   
@@ -1051,7 +1051,7 @@ Transfer function simply takes the form
 %%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{exmp}
-Mehcanical system with an non-ideal lever that has an inertia of $J = m l^2$
+Mechanical system with a non-ideal lever that has an inertia of $J = m l^2$
 \end{exmp}
 
 \vspace{6pt}
@@ -1064,7 +1064,7 @@ Mehcanical system with an non-ideal lever that has an inertia of $J = m l^2$
 
 \vspace{6pt}
 
-Input--output of the system is the are $u(t) = v_i(t)$, and
+The input and output of the system are $u(t) = v_i(t)$ and
 $y(t) = v_m(t)$ respectively. If we draw the free body diagrams of
 the lever and the mass, and derive the force relations we obtain
 
@@ -1079,7 +1079,7 @@ the lever and the mass, and derive the force relations we obtain
 \vspace{12pt}
 
 If we write equations of motion for the lever and the mass, 
-we obtain following differnetial equations
+we obtain following differential equations
 %
 \begin{align*}
   J \dot{\omega} &= F_i \times 2l - F_r \times l  = (- 5 l^2 b) \omega + (2 l b) v_i + (l b) v_m 
@@ -1108,12 +1108,11 @@ Y(s) \left[ s + 2 \right] &= l \, \Omega(s)
 Y(s) \left[ s + 2 \right]\left[ s + 5 \right] \frac{1}{l} &=
                                                             \frac{1}{l}
                                                             Y(s) +
-                                                            \frac{2}{l}
-                                                           2 U(s)
+                                                            \frac{2}{l} U(s)
 \\
 Y(s) ( s + 2 ) ( s + 5 ) &= Y(s) + 2 U(s)
 \\
-\frac{Y(s)}{U(s)} &= \frac{2}{s^2 + 7 s + 11}
+\frac{Y(s)}{U(s)} &= \frac{2}{s^2 + 7 s + 9}
 \end{align*}
 
 \vspace{12pt}
@@ -1122,7 +1121,7 @@ Now let's find a state-space representation for the given system. The
 ODE representation of the transfer function has the following form
 %
 \begin{align*}
-  \ddot{y} + 7 \dot{y} + 11 y = 2 u
+  \ddot{y} + 7 \dot{y} + 9 y = 2 u
 \end{align*}
 %
 The system is a $2^{nd}$ order dynamical system. Let $\mathbf{x} = [y
@@ -1130,15 +1129,15 @@ The system is a $2^{nd}$ order dynamical system. Let $\mathbf{x} = [y
 %
 \begin{align*}
   \dot{x_1} &= \dot{y} = x_2 \\
-  \dot{x_2} &= \ddot{y} = -7 \dot{y} - 11 y + 2 u  
-              = -7 x_2 - 11 x_1 +2 u  \\
+  \dot{x_2} &= \ddot{y} = -7 \dot{y} - 9 y + 2 u  
+              = -7 x_2 - 9 x_1 +2 u  \\
   y &= x_1
 \end{align*}
 %
-The state-representation with the chosedn state definition takes the form
+The state-representation with the chosen state definition takes the form
  \begin{align*}
 \dot{\mathbf{x}} &= \left[ \begin{array}{cc} 0 & 1\\
--11 & -7 
+-9 & -7 
 \end{array} \right] \mathbf{x} +
 \left[ \begin{array}{c} 0 \\ 1 \end{array} \right] u
 \\

@@ -128,11 +128,11 @@ mechanical systems
   \frac{\beta}{J} s + \frac{\kappa}{J} }
 \end{align*}
 
-Most of the (passive) second order systems, can be put into the following the
+Most of the (passive) second order systems, can be put into the following
 standard form
 %
 \begin{align*}
-G(s) =  K_{DC} \frac{\omega_n^2}{s^2 + 2 \zeta \omega_n s + \omega_n} 
+G(s) =  K_{DC} \frac{\omega_n^2}{s^2 + 2 \zeta \omega_n s + \omega_n^2} 
 \end{align*}
 %
 where
@@ -162,7 +162,7 @@ A:& \quad  \omega_n = \sqrt{\frac{1}{LC}} \ , \ \zeta = \frac{R}{2}
 B:& \quad  \omega_n = \sqrt{\frac{k}{M}} \ , \ \zeta = \frac{b}{2}
   \sqrt{ \frac{1}{M k} } \ , \ K_{DC} = \frac{1}{k}
 \\
-C:& \quad  \omega_n = \sqrt{\frac{\kappa}{J}} \ , \ \zeta = \frac{b}{2}
+C:& \quad  \omega_n = \sqrt{\frac{\kappa}{J}} \ , \ \zeta = \frac{\beta}{2}
   \sqrt{ \frac{1}{J \kappa} } \ , \ K_{DC} = \frac{1}{\kappa}
 \end{align*}
 
@@ -171,7 +171,7 @@ C:& \quad  \omega_n = \sqrt{\frac{\kappa}{J}} \ , \ \zeta = \frac{b}{2}
 Roots of $N(s)$ are called ``zeros'' of $G(s)$, and roots of $D(s)$
 are called the ``poles'' of $G(s)$. 
 
-Behavior of the output $y(t)$ are majorly determined by the pole
+Behavior of the output $y(t)$ is majorly determined by the pole
 locations. 
 
 \subsection{Step Response Types for the Second Order System in Standard
@@ -213,14 +213,14 @@ the Figure below
 $G(s)$ takes the form
 %
 \begin{align*}
-	G(s) = \frac{\omega_n^2}{s^2 + 2 \omega_n s + \omega_n} = \frac{\omega_n^2}{(s + \omega_n )^2}  
+	G(s) = \frac{\omega_n^2}{s^2 + 2 \omega_n s + \omega_n^2} = \frac{\omega_n^2}{(s + \omega_n )^2}  
 \end{align*}
 %
 We can compute the step-response as
 %
 \begin{align*}
  Y(s) &= G(s) U(s) = \frac{1}{s} \frac{\omega_n^2}{(s + \omega_n )^2}  
- = \frac{1}{s} -  \frac{1}{s + \omega_n} + \frac{\omega_n}{(s + \omega_n)^2} 
+ = \frac{1}{s} -  \frac{1}{s + \omega_n} - \frac{\omega_n}{(s + \omega_n)^2} 
 \\
 y(t) &= 1 - e^{-\omega_n t} - \omega_n t e^{-\omega_n t}
 \end{align*}
@@ -243,10 +243,10 @@ the Figure below
 		p_2 &= - \zeta \omega_n - \omega_n \sqrt{\zeta^2 - 1} < - \omega_n 
 	\end{align*}
 %
-$G(s)$ can be written in terms of $s_1$ and $s_2$ 
+$G(s)$ can be written in terms of $p_1$ and $p_2$ 
 %
 \begin{align*}
-	G(s) = \frac{p_1 p_2}{(s+p_1) (s+p_2)}
+	G(s) = \frac{p_1 p_2}{(s-p_1) (s-p_2)}
 \end{align*}
 %
 where it is easy to see that $p_1 p_2 = \omega_n^2$. Finally, we can compute the step-response as
@@ -266,7 +266,7 @@ the Figure below
     \end{center}
   \end{minipage}
 
-\textbf{Case 3:} When $0 <  \zeta < 1$, the system becomes under damped and there exist 
+\textbf{Case 4:} When $0 <  \zeta < 1$, the system becomes under damped and there exist 
   two complex conjugate roots.
   %
  \begin{align*}
@@ -276,13 +276,13 @@ the Figure below
  \end{align*}
  %
  Let $\sigma = \zeta \omega_n$ and $\omega_d = \omega_n \sqrt{1 - \zeta^2}$ (which is called damped
- natural frequency), then we know that general solution of the ODE solution takes the form
+ natural frequency), then we know that general solution of the ODE takes the form
  %
  \begin{align*}
  	y(t) = y_p(t) + C_1 e^{-\sigma t} \cos(\omega_d t) + C_2 e^{-\sigma t} \sin(\omega_d t) 
  \end{align*}
  % 
-Steady-state conditions leads that $y_p(t) = 1$. Then we can compute remaining coefficients
+Steady-state conditions lead that $y_p(t) = 1$. Then we can compute remaining coefficients
 from zero initial conditions constraints
  %
  \begin{align*}
@@ -327,7 +327,7 @@ If we combine $\cos$ and $\sin$  terms into a single $\sin$ with phase shift we 
    \tan( \phi) &= \frac{\sqrt{1 - \zeta^2} }{\zeta} 
 \end{align*}
    %
- Pole locations and step response when $\zeta > 1$ (under damped), is illustrated in
+ Pole locations and step response when $0 < \zeta < 1$ (under damped), is illustrated in
 the Figure below
 
     \begin{minipage}[h]{1\linewidth}
@@ -348,7 +348,7 @@ illustrated in the Figure below.
     \end{center}
   \end{minipage}
   
-\textbf{Rise Time ($tr$):}  The first time instant the response intersects the $y =1$ line.
+\textbf{Rise Time ($t_r$):}  The first time instant the response intersects the $y =1$ line.
 %
  \begin{align*}
  y(t_r) &= 1
@@ -382,7 +382,7 @@ e^{-\zeta \omega_n t} \left[ - \omega_d \sqrt{1 - \zeta^2} \sin(\omega_d t) + \z
  \left[  \zeta^2 \sin(\omega_d t) + (1 - \zeta^2) \sin(\omega_d t)  \right] 
 \right]_{t_p} = 0
 \\
-&\sin(\omega_d t_{t_p})  = 0
+&\sin(\omega_d t_{p})  = 0
 \\
 &t_p = \frac{\pi}{\omega_d}
 \end{align*}
@@ -404,8 +404,8 @@ Maximum Percentage Overshoot ($MP_p$) is simply calculated as $MP_p =
 M_p \, 100$.
 
 \textbf{Settling Time ($t_s$):}  The earliest time instant such that
-$|y(t) - 1| \leq 0.02 s$ or ($|y(t) - 1| \leq 0.05 s$) for all $t \geq
-t_s$.Actual, settling time is very difficult to compute analytically (not
+$|y(t) - 1| \leq 0.02$ or ($|y(t) - 1| \leq 0.05$) for all $t \geq
+t_s$. Actually, settling time is very difficult to compute analytically (not
 so hard with numerical simulations). Thus we use following
 approximations.
 %
@@ -452,7 +452,7 @@ constant. Specifically
   constant.
 \end{enumerate}
 
-For each four cases, explain what happens rise time, peak time,
+For each four cases, explain what happens to rise time, peak time,
 maximum overshoot, and settling time.
 
     \begin{minipage}[h]{1\linewidth}
@@ -472,7 +472,7 @@ maximum overshoot, and settling time.
 Design $K_P$ and $K_D$ gains such that, maximum percent overshoot is less than $\%4.32$,
 and settling time ($\%2$) is less than $1$ s.
 
-\textbf{Solution:} Lets compute the closed-loop transfer function. In order to do that, first derive the transfer
+\textbf{Solution:} Let's compute the closed-loop transfer function. In order to do that, first derive the transfer
 function from $E(s)$ to $Y(s)$ which is called feed-forward transfer function.
 %
 \begin{align*}
@@ -488,7 +488,7 @@ we can derive the $G(s)$ as
 We can see that with $K_P$ and $K_D$ gains we have total control on the characteristic equation. 
 Now let's analyze the performance requirements.
 
-First requirement state that Maximum percent overshoot is less than $\%4.32$, which means that $M_P < 0.0432$.
+First requirement states that Maximum percent overshoot is less than $\%4.32$, which means that $M_P < 0.0432$.
 Let's find a condition on $\zeta$ or $\phi$,
 \begin{align*}
   M_P = e^{-\pi  \frac{\zeta}{\ \sqrt{1 - \zeta^2}}} = e^{-\pi / \tan \phi} &< 0.0432 \\
@@ -504,7 +504,7 @@ The region on $s$-plane that satisfy the $M_P$ requirement is illustrated below.
     \end{center}
   \end{minipage}
   
-Second requirement state that settling time ($\%2$) is less than $1$ s, which implies
+Second requirement states that settling time ($\%2$) is less than $1$ s, which implies
 %
 \begin{align*}
   t_{s,2} = \frac{4}{\zeta \omega_n} = \frac{4}{\sigma} &< 1\\
@@ -551,7 +551,7 @@ The region on $s$-plane that satisfy the settling time requirement is illustrate
   \subsubsection*{Transient Specifications for Over-damped Case}
 
 \begin{itemize}  
-  \item Obviously, there is no over-shoot in over-damp case, thus $M_P = 0$.   
+  \item Obviously, there is no over-shoot in over-damped case, thus $M_P = 0$.   
   \item For settling time we can use the same approximate formula by considering the dominant/slowest
   pole, i.e.
   %
@@ -562,7 +562,7 @@ The region on $s$-plane that satisfy the settling time requirement is illustrate
   \end{align*}
   %
   \item Since $y(t)$ only crosses the $y = 1$ as $t \to \infty$, $t_r$ definition is not applicable for 
-  over-damped case. Instead, a different rise time definition can be used (which is applicable for both
+  over-damped case. Instead, a different rise time definition can be used (which is applicable to
   over-damped, under-damped, critically-damped systems, as well as first order systems). $\bar{t}_r$
   is the time for $y(t)$ to go from $0.1$ to $0.9$. It is pretty hard to compute this time analytically, thus in
   general numerical and/or graphical methods are used. 
@@ -584,7 +584,7 @@ In general, the poles closer to the $j \omega$ axis determine the behavior of th
 between the poles that are close to the $j \omega$ axis and other poles is high, then they dominate the
 behavior and we call them dominant poles. For example, figure given below illustrates a third order system,
 where we have two complex conjugate roots and one real root. In this case, the magnitude of the real pole 
-is more than three times of the magnitude of the real part of the complex conjugate poles, thus the systems acts like
+is more than three times of the magnitude of the real part of the complex conjugate poles, thus the system acts like
 a second order system. 
 
          \begin{minipage}[h]{1\linewidth}

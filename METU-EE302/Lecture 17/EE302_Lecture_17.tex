@@ -92,7 +92,7 @@ We already know that a binary stability metric is not enough to
 characterize the system performance and that we need metrics
 to evaluate how stable the system is and its robustness to
 perturbations. Using root-locus techniques we talked about
-some ``good'' pole regions which provides some specifications
+some ``good'' pole regions which provide some specifications
 about stability and closed-loop performance. 
 
 Another common and powerful method is to use stability margins,
@@ -110,7 +110,7 @@ In this part of the course, we assume that
     \textit{minimum-phase} system, i.e.
     \begin{itemize}
       \item No poles/zeros in the Open Right Half Plane
-      \item $\lim_{\omega \to \infty} [ \frac{G_{OL}(s)}{s} ]_{s = \j \omega} = 0 $
+      \item $\lim_{\omega \to \infty} [ \frac{G_{OL}(s)}{s} ]_{s = j \omega} = 0 $
     \end{itemize}    
   \item The feed-back system is Type $0-2$ %(i.e. no integrator of order larger than 3 in the open-loop transfer function). 
     \item Phase plot of Bode diagrams of $G_{OL}(j \omega)$ crosses the $-180^0$ line 
@@ -126,7 +126,7 @@ increased before the closed loop system goes unstable.
 
 In terms of Nyquist \& polar plot, we simply choose point,
 $\sigma_{pc}$ where the polar plot crosses the negative-real axis
-and gain margin is simply equal to  $g_m = \frac{1}{\sigma_{p}}$. 
+and gain margin is simply equal to  $g_m = \frac{1}{| \sigma_{pc} |}$. 
 
 Alternatively, the gain margin can be computed based on 
 the frequency where the phase of the loop transfer function
@@ -135,7 +135,7 @@ called the phase crossover frequency. Then the gain margin for the
 system is given by
 %
 \begin{align*}
-  \angle [ G_{OL}(j \omega_{p}) ] = \pm -180^0
+  \angle [ G_{OL}(j \omega_{p}) ] = -180^0
   \quad \Rightarrow \quad 
   g_m = \frac{1}{| G_{OL}(j \omega_{p})| } \quad \mathrm{or} \quad G_m
   = -20 \,
@@ -145,7 +145,7 @@ system is given by
 where $G_m$ is the gain margin in dB scale. If the phase response never crosses the $-180^o$,  
 i.e. $Re \lbrace G(j \omega) \rbrace \geq 0 \ \forall \ \omega \in [0,\infty]$
 , gain margin is simply $\infty$.
-Higher the gain margin is more robust and stable closed-loop
+The higher the gain margin, the more robust the closed-loop
 system is. 
 
 \subsection*{Phase Margin}
@@ -168,12 +168,12 @@ is given by
   \phi_m = \pi + \angle G_{OL} (j \omega_{gc})
 \end{align*}
 % 
-Higher the phase margin is more robust and stable closed-loop
-system is. Moreover, negative phase simply shows that the closed-loop 
+The higher the phase margin, the more robust the closed-loop
+system is. Moreover, a negative phase margin simply shows that the closed-loop 
 system is indeed unstable. 
 
 Note that if the $G(j \omega)$ is strictly inside the unit-circle,
-then we can not compute the phase-crosover frequency which 
+then we can not compute the gain-crossover frequency which 
 simply implies that $\phi_m = \infty$. 
 
 \vspace{12pt}
@@ -199,7 +199,7 @@ We already derived the Nyquist plot for this system
 \end{minipage}
 \end{center}
 
-We can see that the Real part of the polar polat is always 
+We can see that the Real part of the polar plot is always 
 positive, thus $g_m = \infty$. Where as the polar plot crosses
 the unit circle only when $\omega = 0$, thus $\phi_m = 180^0$.
 
@@ -216,7 +216,7 @@ for the following closed-loop system for $K = 2$ and $K = 4$.
 \end{minipage}
 \end{center}
 
-Nyquist plots for both gain cases is illustrated in the Figure below.
+Nyquist plots for both gain cases are illustrated in the Figure below.
 We can see from the illustration that 
 %
 \begin{align*}
@@ -259,17 +259,17 @@ Now let's compute the phase margin for $K = 4$
 \end{align*}
 %
 Now let's compute the closed-loop transfer function
-and compre the damping coefficients for both gain cases
+and compare the damping coefficients for both gain cases
 %
 \begin{align*}
   T_2 &= \frac{2}{s^2 + 2 s + 3} \ \rightarrow \ \zeta_2 = \frac{1}{\sqrt{3}}
         \\
-  T_4 &= \frac{4}{s^2 + 2 s + 5} \ \rightarrow \ \zeta_2 = \frac{1}{\sqrt{5}}
+  T_4 &= \frac{4}{s^2 + 2 s + 5} \ \rightarrow \ \zeta_4 = \frac{1}{\sqrt{5}}
 \end{align*}
 %
 We can see that as we decrease the phase margin from $90^o$ to $60^o$,
-we also decrease the damping ration which results in increased maximum-overshoot.
-In general good phase margin provides good transent performance in time domain. 
+we also decrease the damping ratio which results in increased maximum-overshoot.
+In general good phase margin provides good transient performance in time domain. 
 
 \vspace{6pt}
 

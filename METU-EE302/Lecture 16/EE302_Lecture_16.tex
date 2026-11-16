@@ -90,8 +90,8 @@
 
 Even though we illustrated how to apply Nyquist stability criterion
 for feedforward systems in the previous lecture (for teaching the
-details of Nyquost plot and some basics), in control theory and
-applications Nyqist plot and Nyquist stability test are majorly used for
+details of Nyquist plot and some basics), in control theory and
+applications Nyquist plot and Nyquist stability test are majorly used for
 analyzing feedback topologies. 
 
 \subsection{Nyquist Stability for Feedback Systems}
@@ -136,9 +136,9 @@ Moreover
  %
 \begin{itemize}
   \item \textbf{Poles} of $F(s)$ are the roots of $D(s)$, hence they
-    constitutes the \textbf{open-loop poles}.
+    constitute the \textbf{open-loop poles}.
   \item \textbf{Zeros} of $F(s)$ are the poles of $T(s)$, hence 
-    they constitutes the \textbf{closed-loop poles}.
+    they constitute the \textbf{closed-loop poles}.
 \end{itemize}
 %
 Note that open-loop zeros and poles are ``known'', and goal is 
@@ -169,13 +169,13 @@ which is critical for stability analysis
 
 \vspace{6 pt}
 
-N $\ = \ $ $\#$ of CW enrichments of origin by  $\Gamma_{F(s)}$ $ \ =\ $ $\#$ of
-CW enrichments of $(-1 + 0 j)$ by  $\Gamma_{G_{OL}(s)}$. 
+N $\ = \ $ $\#$ of CW encirclements of origin by  $\Gamma_{F(s)}$ $ \ =\ $ $\#$ of
+CW encirclements of $(-1 + 0 j)$ by  $\Gamma_{G_{OL}(s)}$. 
 
 \vspace{6 pt}
 
-For example In this illustration above $N =0$. If we apply
-Cauchy's Principle argument for $F(s)$, we can derive that
+For example, in this illustration above $N =0$. If we apply
+Cauchy's Argument Principle for $F(s)$, we can derive that
 %
 \begin{itemize}
   \item $N = Z_F - P_F$ 
@@ -185,12 +185,12 @@ Cauchy's Principle argument for $F(s)$, we can derive that
     parts which is a ``known'' quantity. 
 %
   \item $Z_F$ : $\#$ zeros of $F(s)$ with positive real parts, which is
-    indeed equal to to the $\#$ unstable poles of $T(s)$ which is the
+    indeed equal to the $\#$ unstable poles of $T(s)$ which is the
    desired output.
 \end{itemize}
 
 In conclusion, in order to analyze the closed-loop stability of a 
-unity-feedback feed-back systems we apply the following 
+feedback systems we apply the following 
 procedure 
 
 \begin{itemize}
@@ -281,12 +281,12 @@ where
 \begin{itemize}
   \item Roots of $N(s)$ are open-loop zeros
   \item Roots of $D(s)$ are open-loop poles
-  \item Varible gain parameter $K$
+  \item Variable gain parameter $K$
 \end{itemize}
 %
-In order to analyze the stability of Nyquist plot,
+In order to analyze the closed-loop stability using the Nyquist plot,
 in the previous section we showed that 
-we can draw the Nyqist plot $G_{OL}(s)$
+we can draw the Nyquist plot $G_{OL}(s)$
 and analyze the $\#$ encirclements of $(-1 + 0 j)$.
 
 Now, in this case we will derive the Nyquist plot of 
@@ -299,8 +299,8 @@ conclude that
 
 \vspace{6 pt}
 
-$N \ = \ \#$ of CW enrichments of $(-1 + 0 j)$ by  $\Gamma_{G_{OL}(s)} \
-= \ \#$ of CW enrichments of $\left( -\frac{1}{K} + 0 j \right)$ by  $\frac{N(s)}{D(s)}$.
+$N \ = \ \#$ of CW encirclements of $(-1 + 0 j)$ by  $\Gamma_{G_{OL}(s)} \
+= \ \#$ of CW encirclements of $\left( -\frac{1}{K} + 0 j \right)$ by  $\Gamma_{\frac{N(s)}{D(s)}}$.
 
 \vspace{6 pt}
 
@@ -315,7 +315,7 @@ procedure
  \item Compute $N = \ \#$ CW encirclements of $\left( -\frac{1}{K}  + 0 j \right)$ by
    $\Gamma_{ \frac{N(s)}{D(s)} }$ 
  \item Compute $P_{OL} = \ \#$ open-loop poles with
-   positive real parts, i.e. $\#$ roots of $D(s)$.
+   positive real parts, i.e. $\#$ roots of $D(s)$ with positive real parts.
  \item Finally compute $P_{CL} = N +  P_{OL} = \ \#$
    unstable closed-loop poles  
 \end{itemize}
@@ -393,7 +393,7 @@ makes the closed-loop system unstable find the number of unstable poles.
 
 \textbf{Solution:} For this given system $\frac{N(s)}{D(s)} =
 \frac{1}{(s+1)^3}$. In the previous lecture we already derived the
-Nyquist plot for $\frac{1}{(s+1)^2}$ which is illustrated below
+Nyquist plot for $\frac{1}{(s+1)^3}$ which is illustrated below
 
 \vspace{6 pt}
 
@@ -405,18 +405,18 @@ Nyquist plot for $\frac{1}{(s+1)^2}$ which is illustrated below
 
 \vspace{6 pt}
 
-As we can see from the Nyquist plot pf $\frac{1}{(s+1)^3}$, 
+As we can see from the Nyquist plot of $\frac{1}{(s+1)^3}$, 
 it divides the region into four different parts. If we analyze 
 these regions separately, we can then find a complete range of
 K values that makes the closed loop-system stable, as well as find the
 number of unstable poles for the unstable cases. 
 %
 \begin{enumerate}
-  \item $\frac{-1}{K} \in \left( -\infty , \frac{-1}{4} \right) \
-    \rightarrow K \in [0 , 4) \ \Rightarrow ( N = 0 , P_{CL} = 0)$, closed-loop system is stable
+  \item $\frac{-1}{K} \in \left( -\infty , \frac{-1}{8} \right) \
+    \rightarrow K \in [0 , 8) \ \Rightarrow ( N = 0 , P_{CL} = 0)$, closed-loop system is stable
 %
-  \item $ \frac{-1}{K} \in \left( \frac{-1}{4} , 0 \right) \
-    \rightarrow \ K \in (4, \infty ) \
+  \item $ \frac{-1}{K} \in \left( \frac{-1}{8} , 0 \right) \
+    \rightarrow \ K \in (8, \infty ) \
     \Rightarrow (N = 2 , P_{CL} = 2)$. Unstable CL system
     with 2 unstable poles
 %
@@ -431,7 +431,7 @@ number of unstable poles for the unstable cases.
 As a result 
 
 \begin{align*}
-  K \in (-1 , 4 ) \Leftrightarrow \mathrm{BIBO-Stable}
+  K \in (-1 , 8 ) \Leftrightarrow \mathrm{BIBO-Stable}
 \end{align*}
 
 \newpage
@@ -477,7 +477,7 @@ K values that makes the closed loop-system stable
     Unstable CL-system with 1 unstable pole. 
   \item $\frac{-1}{K} \in \left( \frac{-1}{2} , 0 \right) \rightarrow K \in (2 , \infty)  
     \Rightarrow \ N = -1 \rightarrow P = 1 - 1 = 0$. Stable CL-system
-  \item $\frac{-1}{K} \in (0 , \infty) \rightarrow K in (-\infty , 0) \Rightarrow N = 0
+  \item $\frac{-1}{K} \in (0 , \infty) \rightarrow K \in (-\infty , 0) \Rightarrow N = 0
    \rightarrow P = 1$. Unstable CL-system with 1 unstable pole.
 \end{enumerate}
 %
@@ -495,7 +495,7 @@ If you remember, when we introduced Nyquist contour and Nyquist stability
 test we assumed that there is no pole/zero on the imaginary axis. 
 However, it is especially very common to have poles at the origin
 since it corresponds to simple integrator. In this course, we will
-explicitly cover the case when there exist a pole or zero at the
+explicitly cover the case when there exists a pole or zero at the
 origin. 
 
 Let's assume that $G_{OL}(s)$ has a pole (or zero, or multiple poles)
@@ -553,16 +553,16 @@ and we need to draw the Nyquist plot based on these 4 paths.
       \\
         \lim_{\omega \to 0} Re \lbrace G(j \omega) \rbrace = - 1
        \quad & \& \quad
-       \lim_{\omega \to 0} Re \lbrace G(j \omega) \rbrace = - \infty
+       \lim_{\omega \to 0} Im \lbrace G(j \omega) \rbrace = - \infty
         \\
        \lim_{\omega \to \infty} | G(j \omega) | = 0
         \quad & \& \quad
       \lim_{\omega \to \infty} \angle [ G(j \omega) ] = -\pi
       \end{align*}
  %
-  \item Note that since we are now only intersted in the circulation around
-    $-1/K$. The origin in the Nyquist plot corresponds to $| K | \to
-    \infty$, so that it is really not critical to correctly draw this
+  \item Note that since we are now only interested in the circulation around
+    $-1/K$, and the origin in the Nyquist plot corresponds to $| K | \to
+    \infty$, it is really not critical to correctly draw this
     detail for feedback systems. 
      However, let's draw this detail for this example for practice. 
      $s = R e^{j \theta}$ and $\theta : \pi/2 \to -\pi/2$.  Then 
@@ -577,12 +577,12 @@ and we need to draw the Nyquist plot based on these 4 paths.
       \theta
    \end{align*}
    % 
-   Note that when $\theta : \pi/2 \to -\pi/$, the infinite-small 
+   Note that when $\theta : \pi/2 \to -\pi/2$, the infinite-small 
    contour around origin rotates in CCW direction. 
    %
    \item This part is simply the conjugate of polar plot with reverse
      direction. 
-  \item Now this part is new, since we are dealing with this path
+  \item Now this part is new; we need this path
     since there is a pole at the origin. 
      $s = \epsilon e^{j \phi}$, where $\epsilon \to 0$ and $\phi :
      -\pi/2 \to \pi/2$ (CCW direction).  Then  we can derive that  
@@ -591,7 +591,7 @@ and we need to draw the Nyquist plot based on these 4 paths.
         \phi}} = R e^{j (-\phi)}
        \\
     &\Rightarrow | G \left(\epsilon e^{j \phi} \right) | \approx
-     R \ll 1
+     R \gg 1
    \quad , \quad \angle [ G \left( \epsilon e^{j \phi} \right) ] \approx -\phi
    \end{align*}
 \end{enumerate}
@@ -611,7 +611,7 @@ $\frac{N(s)}{D(s)} = \frac{1}{s (s+1)}$
 
 Note that the open-loop transfer function has no unstable poles,
 i.e. $P_{OL} = 0$. 
-We can see from the Nyquist plot divides the real axis in
+We can see that the Nyquist plot divides the real axis in
 two different parts. If we analyze  these regions separately, we can 
 then find a range of K values that makes the closed loop-system stable
 %
@@ -641,11 +641,11 @@ following closed-loop system stable.
 \vspace{6 pt}
 
 \textbf{Solution:} For this given system, $\frac{N(s)}{D(s)} =
-\frac{(s+1)^2}{s^3}$. Note, there exist three repeated pole at the origin, thus 
+\frac{(s+1)^2}{s^3}$. Note, there exist three repeated poles at the origin, thus 
 we need to utilize the modified Nyquist Contour. 
 
 In the modified Nyquist contour there exist 4 major paths, 
-and this we need to draw Nyquist plot based on these 4 paths. 
+and we need to draw Nyquist plot based on these 4 paths. 
 
 \begin{enumerate}
   \item This is the polar plot, where we need to plot $G(j \omega)$, where $\omega : 0 \to
@@ -679,7 +679,7 @@ and this we need to draw Nyquist plot based on these 4 paths.
       \lim_{\omega \to \infty} \angle [ G(j \omega) ] = -\pi/2
       \end{align*}
  %
-  \item Note that since we are intersted in the circulation around
+  \item Note that since we are interested in the circulation around
     $-1/K$ and origin in the Nyquist plot corresponds to $| K | \to
     \infty$, it is really not critical to correctly draw this detail. 
     Thus we will omit it for this problem.
@@ -720,16 +720,16 @@ three different parts. If we analyze  these regions separately, we can
 then find a range of K values that makes the closed loop-system stable
 %
 \begin{enumerate}
-  \item $\frac{-1}{K} \in (-\infty , - 2) \rightarrow K \in (0 , 2) \Rightarrow N = 2 \rightarrow P_{CL} = 2 $. Unstable system with
+  \item $\frac{-1}{K} \in (-\infty , - 2) \rightarrow K \in (0 , 1/2) \Rightarrow N = 2 \rightarrow P_{CL} = 2 $. Unstable system with
     2 unstable poles. 
-  \item $\frac{-1}{K} \in (-2 , 0) \rightarrow K \in (2 , \infty)
+  \item $\frac{-1}{K} \in (-2 , 0) \rightarrow K \in (1/2 , \infty)
     \Rightarrow N = 0 \rightarrow P_{CL} = 0 $. System is stable
     \item $\frac{-1}{K} \in (0,\infty) \rightarrow K \in (-\infty , 0)
     \Rightarrow N = 1 \rightarrow P_{CL} = 1 $. Unstable system with
     1 unstable pole. 
 \end{enumerate}
 %
-As a result, $K \in (2 , \infty) \Leftrightarrow $ BIBO-Stable
+As a result, $K \in (1/2 , \infty) \Leftrightarrow $ BIBO-Stable
 
 
 % **** This ENDS THE EXAMPLES. DON'T DELETE THE FOLLOWING LINE:

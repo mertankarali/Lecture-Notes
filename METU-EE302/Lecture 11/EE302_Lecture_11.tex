@@ -118,8 +118,8 @@ bounded.
     \end{center}
   \end{minipage}
  
-If we use the impulse response representation for an LTI SISO system, i.e.. $y(t) =
-\int_{0}^{t} g(t) u(t - \tau) d \tau$ (we assume that system is causal),
+If we use the impulse response representation for an LTI SISO system, i.e. $y(t) =
+\int_{0}^{t} g(\tau) u(t - \tau) d \tau$ (we assume that system is causal),
 the system is BIBO stable if and only if its impulse response is 
 absolutely integrable.
 %
@@ -128,7 +128,7 @@ absolutely integrable.
   g(t) | dt < B < \infty
 \end{align*}
  %
-However, we genrally use transfer function representation in this
+However, we generally use transfer function representation in this
 course. Let 
 %
 \begin{align*}
@@ -171,7 +171,7 @@ bounded input, such that output is unbounded.
 \begin{align*}
   Y(s) &= G(s) U(s) = \frac{s}{(s^2+1)^2}
   \\
-  y(t) &= t \sin t \ , t \geq > 0
+  y(t) &= t \sin t \ , t \geq 0
 \end{align*}
 %
 Now we obtain an un-bounded output due to the resonance effect. 
@@ -198,7 +198,7 @@ can be derived as
   \mathrm{Stable} &\Leftrightarrow a_1 > 0
 \end{align*}
 
-Now lets analyze second order systems. Transfer function
+Now let's analyze second order systems. Transfer function
 of a second order system has the following form
 %
 \begin{align*}
@@ -206,7 +206,7 @@ of a second order system has the following form
  a_0 &> 0 , \ \mathrm{w.l.g}
 \end{align*}
 %
-If we carefully analyze $\mathrm{Sign} [ D(0 ]$, 
+If we carefully analyze $\mathrm{Sign} [ D(0) ]$, 
 we can see that
 %
 \begin{itemize}
@@ -254,7 +254,7 @@ It is also easy to see that $\zeta > 0 \Leftrightarrow a_1 > 0$.
 As a result, we can derive a necessary and sufficient condition on
 BIBO stability. 
 
-A second order system with $D(s) = a_o s^2 + a_1 s + a_2$ (with $a_0 >
+A second order system with $D(s) = a_0 s^2 + a_1 s + a_2$ (with $a_0 >
 0$), is BIBO stable if and only if $a_i > 0, \ \forall i \in \lbrace 1
 , 2 \rbrace$.
 
@@ -266,10 +266,10 @@ for the stability of an LTI system. The Routh test is a very
 computationally efficient algorithm for the test of absolute
 LTI system stability. 
 
-In this test, one first constructs the routh table for a given
+In this test, one first constructs the Routh table for a given characteristic polynomial
 %
 \begin{align*}
-D(s) = a_o s^n + a_1 s^{n-1} + a_2 s^{n-3} + \cdots + a_{n-2} s^{2}
+D(s) = a_0 s^n + a_1 s^{n-1} + a_2 s^{n-2} + \cdots + a_{n-2} s^{2}
 + a_{n-1} s^{1} + a_n 
 \end{align*}  
 %
@@ -301,7 +301,7 @@ $s^{0}$ & $g_0$ & $0$ & $0$ & $\cdots$  &
 \end{center}
 \end{table}
 
-where the coefficents $b_i$ are computed with
+where the coefficients $b_i$ are computed with
 %
 \begin{align*}
  b_1 = - \mathrm{det}\left( \left[ \begin{array}{cc} a_0 & a_2 \\ a_1
@@ -331,7 +331,7 @@ b_3 = - \mathrm{det}\left( \left[ \begin{array}{cc} a_0 & a_6 \\ a_1
 \vdots
 \end{align*}  
 %
-coefficents $c_i$ are computed with
+coefficients $c_i$ are computed with
 %
 %
 \begin{align*}
@@ -362,7 +362,7 @@ coefficents $c_i$ are computed with
 &\vdots
 \end{align*}  
 
-Coefficents $d_i$ are computed with
+Coefficients $d_i$ are computed with
 %
 \begin{align*}
 & d_1 = - \mathrm{det}\left( \left[ \begin{array}{cc} b_1 & b_2 \\ 
@@ -400,7 +400,7 @@ coefficients have to be strictly positive. This is a necessary, but
 not sufficient condition. 
 
 \textbf{Result 2:} The system is BIBO stable, if and only if all the 
-coefficients in the first row strictly positive. Routh test provides
+coefficients in the first column are strictly positive. Routh test provides
 a necessary and sufficient condition.  
 
 \textbf{Result 3:} The $\#$ of roots of D(s) with positive real parts 
@@ -434,7 +434,7 @@ $g_0$
 \end{table}
 
 \textbf{Ex:} Let $D(s) = s^4 + 2 s^3 + 3 s^2 + 4 s + 5$, is this
-system is stable. If not what is the number of poles with positive 
+system stable? If not, what is the number of poles with positive 
 real parts. 
 
 \textbf{Solution:} Let's build the Routh table
@@ -478,7 +478,7 @@ the set of $K_P$ and $K_D$ gains such that closed-loop system is stable
 
 \textbf{Solution:} Denominator of the closed-loop transfer function 
 of the system has the following form
-$D(s) = s^2 + K_D s + K_P$. Now, lets construct the Routh table for the $D(s)$
+$D(s) = s^2 + K_D s + K_P$. Now, let's construct the Routh table for the $D(s)$
 %
 \begin{table}[h]
 \begin{center}
@@ -517,7 +517,7 @@ of the system has the following form
 D(s) = s^3 + 3 s^2 + 2 s + K_I 
 \end{align*}
 %
-Now, lets construct the Routh table for the $D(s)$
+Now, let's construct the Routh table for the $D(s)$
 
  \begin{minipage}[h]{1\linewidth}
 \begin{center}
@@ -564,15 +564,15 @@ $s^0$  & ? &
   \end{minipage}
 
 We can see that one of the coefficients in the Routh array is zero,
-and we can not complete the Rout table. If a coefficient in the Routh
+and we can not complete the Routh table. If a coefficient in the Routh
 array is zero, we know from the Routh Hurwitz test that the system is
 BIBO unstable. However, what can we do, if we want to compute the 
 $\#$ poles with positive real parts. 
 
 \vspace{12pt}
 
-\textbf{Solution Type 1:} Lets find a new $\bar{D}(s) = (s + \alpha)
-D(s), \ \alpha > 0$. We know that $D(s)$ and $\bar{D}(s)$ has the same 
+\textbf{Solution Type 1:} Let's find a new $\bar{D}(s) = (s + \alpha)
+D(s), \ \alpha > 0$. We know that $D(s)$ and $\bar{D}(s)$ have the same 
 $\#$ poles with positive real parts. Then we can construct a Routh
 table for $\bar{D}(s)$ to seek an answer. 
 
@@ -632,7 +632,7 @@ we can conclude that $D(s)$ has 2 poles with positive real parts.
 %
 \begin{align*}
   D(s)|_{s =1/q} = q^{-3} - 3 q^{-1} + 2 = q^{-3} 
-  \left( 2 q^{2} - 3 q^2 + 1 \right)
+  \left( 2 q^{3} - 3 q^2 + 1 \right)
 \end{align*}
 %
 Now let's define $\bar{D}(q) = q^3 D(s)|_{s =1/q} =  2 q^3 - 3 q^2 +
@@ -661,11 +661,11 @@ $\bar{D}(q)$
 \begin{center}
 \begin{tabular}{|c || c || c  |}
 \hline
-$s^3$ & 2 & 0 
+$q^3$ & 2 & 0 
 \\ \hline
-$s^2$ & -3 & 1
+$q^2$ & -3 & 1
 \\ \hline
-$s^1$  & 2/3 & 0 
+$q^1$  & 2/3 & 0 
 \\ \hline
 $s^0$  & 1 & 
 \\ \hline
@@ -700,8 +700,8 @@ $s^0$ & ? & ? &
 
 We can see that one row in Routh table is completely zero. 
 Thus we know that system is indeed BIBO unstable. However,
-what we can do in order to find number of unstable poles. 
-This happens when there exists roots of equal magnitude
+what can we do in order to find the number of unstable poles? 
+This happens when there exist roots of equal magnitude
 located radially opposite in $s-$plane, i.e. symmetric
 w.r.t. origin. These cases are illustrated in the figure below.
 
@@ -772,7 +772,7 @@ $\#$ sign changes in the Routh array of $D(s)$ with Auxiliary polynomial
 is equal to 1, so we can conclude that $D(s)$ has 1 pole with
 positive real part. If we compute the poles numerically we find that
 $p_{1} = -1$, $p_2 = -2$ and $p_{3} = 1$ which verifies our finding. Indeed,
-we can see that problematic roots is one of the roots of $A(s)$.
+we can see that the problematic root is one of the roots of $A(s)$.
 
 This case occurs when there are roots of equal magnitude lying
 radially opposite in the s-plane. 
@@ -781,9 +781,9 @@ radially opposite in the s-plane.
 
 \subsubsection{Routh Hurwitz Stability Test: Relative Stability}
 
-Let's assume that we not only interested in the absolute stability of
-a system, but also we would like to test weather all poles are located 
-in a region where the real part of the whole poles has an upper bound
+Let's assume that we are not only interested in the absolute stability of
+a system, but also we would like to test whether all poles are located 
+in a region where the real parts of all poles have an upper bound
 of $-4$. Similarly we can think that, we define a performance region
 based on a settling time requirement. 
 
@@ -794,7 +794,7 @@ based on a settling time requirement.
   \end{minipage}
 
 We can still use Routh Hurwitz test to compute the 
-$\#$ poles for which real parts is lower than $-4$.
+$\#$ poles for which real parts are lower than $-4$.
 However, we need to perform a change of variables.
 
 Replace $s$ with $z - 4$
@@ -812,7 +812,7 @@ variables, we defined
 \mathrm{Re} \lbrace s_i \rbrace > -4
 \end{align*}
 %
-where $z_i$ and $s_i$ are poles in assocated planes. 
+where $z_i$ and $s_i$ are poles in associated planes. 
 
 \vspace{12pt}
 

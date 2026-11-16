@@ -103,12 +103,11 @@
 
 % Lecture Details
 \lecture{9}{Asst. Prof. M. Mert Ankarali}
-....
 
-\section{Steady-Sate Response Analysis}
+\section{Steady-State Response Analysis}
 
 Fundamental concept that we need to perform
-stead-state response analysis of a control
+steady-state response analysis of a control
 system is the final value theorem. Given a continuous time signal 
 $x(t)$ and its Laplace transform $X(s)$, if $x(t)$ is convergent signal,
 final value theorem states that
@@ -141,7 +140,7 @@ of the closed-loop system, that we can compute using final
 value theorem as
 %
 \begin{align*}
-	e_{ss} = \lim_{t\to \infty} e(t) &= \lim_{s \to 0} \left[ s e(s) \right]
+	e_{ss} = \lim_{t\to \infty} e(t) &= \lim_{s \to 0} \left[ s E(s) \right]
 \end{align*}
 %
 Let's compute $E(s)/R(s)$, i.e. transfer function from the reference input to the 
@@ -156,7 +155,7 @@ E(s) &= R(s) - E(s) G(s) H(s)  ,
 Note that $G(s) H(s)$ is the  transfer function from the error
 signal $E(s)$ to the signal which is fed to the negative terminal of 
 the main difference operator, i.e. $F(s)$. This transfer function is
-called the feed-forward or open-loop  pulse transfer function of the 
+called the feed-forward or open-loop transfer function of the 
 closed-loop control system. For this system, 
 %
 \begin{align*}
@@ -215,7 +214,7 @@ G_{OL}(s) = \frac{K}{s^N} \frac{b_0 s^m + \cdots + b_{m-1} s + 1}{a_0 s^n + \cdo
 \end{align*}
 %
 The closed-loop system is called as \textbf{Type N} system, where
-$N$ is the $\#$ if integrators in the open-loop transfer function (OLTF).
+$N$ is the $\#$ of integrators in the open-loop transfer function (OLTF).
 
 Based on these results, we can have the following conclusions
 regarding steady-state error for unit-step input
@@ -243,7 +242,7 @@ Now let's summarize the steady-state error conditions
 
 \subsection*{Unit-Ramp Input}
 %
-We know that $r(t) = t h(t)$ and $R(s) = \frac{1}{(s^2}$ then
+We know that $r(t) = t h(t)$ and $R(s) = \frac{1}{s^2}$ then
 we have
 
 \begin{align*}
@@ -253,9 +252,9 @@ e_{ss} &= \lim_{s \to 0} \left[ s R(s) \frac{1}{1
 &= \lim_{s \to 0} \left[ s \frac{1}{s^2} \frac{1}{1
          + G_{OL} (s) } \right]
 \\
- &= \frac{1}{lim_{s \to 0} s^{-1} G_{OL} (s) }
+ &= \frac{1}{\lim_{s \to 0} s \, G_{OL} (s) }
 \\
-e_{ss} &= \frac{1}{lim_{s \to 0} \frac{K}{s^{N-1}} \frac{b_0 s^m + \cdots + b_{m-1} s + 1}{a_0 s^n + \cdots + a_{n-1} s + 1} }
+e_{ss} &= \frac{1}{\lim_{s \to 0} \frac{K}{s^{N-1}} \frac{b_0 s^m + \cdots + b_{m-1} s + 1}{a_0 s^n + \cdots + a_{n-1} s + 1} }
 \end{align*}
 %
 Based on this result we can have the following steady-state
@@ -281,13 +280,13 @@ e_{ss} &= \lim_{s \to 0} \left[ s R(s) \frac{1}{1
 &= \lim_{s \to 0} \left[ s \frac{1}{s^3} \frac{1}{1
          + G_{OL} (s) } \right]
 \\
- &= \frac{1}{lim_{s \to 0} s^{-2} G_{OL} (s) }
+ &= \frac{1}{\lim_{s \to 0} s^2 G_{OL} (s) }
 \\
-e_{ss} &= \frac{1}{lim_{s \to 0} \frac{K}{s^{N-2}} \frac{b_0 s^m + \cdots + b_{m-1} s + 1}{a_0 s^n + \cdots + a_{n-1} s + 1} }
+e_{ss} &= \frac{1}{\lim_{s \to 0} \frac{K}{s^{N-2}} \frac{b_0 s^m + \cdots + b_{m-1} s + 1}{a_0 s^n + \cdots + a_{n-1} s + 1} }
 \end{align*}
 %
 Based on this result we can have the following steady-state
-error conditions for the unit-ramp input based on the type 
+error conditions for the unit-acceleration input based on the type 
 condition of the system
 %
 \begin{itemize}
@@ -299,7 +298,7 @@ condition of the system
 where $K_a$ is called the acceleration (parabolic) error constant.
 
 \paragraph{Example 1:} Compute the $G_{OL}(s)$ for the following closed-loop
-system and define its \textbf{Type}. After that, compute the steady-state errors to unit-step, unit-ramp, a
+system and define its \textbf{Type}. After that, compute the steady-state errors to unit-step, unit-ramp,
 and unit-quadratic inputs.
 
 \begin{center}
@@ -326,7 +325,7 @@ Then the steady-state errors are computed as
 \end{itemize}
 
 \paragraph{Example 2:} Compute the $G_{OL}(s)$ for the following closed-loop
-system and define its \textbf{Type}. After that, compute the steady-state errors to unit-step, unit-ramp, a
+system and define its \textbf{Type}. After that, compute the steady-state errors to unit-step, unit-ramp,
 and unit-quadratic inputs.
 
 \begin{center}
@@ -354,7 +353,7 @@ Then the steady-state errors are computed as
 
 
 \paragraph{Example 3:} Compute the $G_{OL}(s)$ for the following closed-loop
-system and define its \textbf{Type}. After that, compute the steady-state errors to unit-step, unit-ramp, a
+system and define its \textbf{Type}. After that, compute the steady-state errors to unit-step, unit-ramp,
 and unit-quadratic inputs.
 
 \begin{center}
@@ -403,16 +402,16 @@ for the following system.
 %
 \paragraph{Good Solution:}
 %
-Let's compte $Y(s)$ and then $y(t)$,
+Let's compute $Y(s)$ and then $y(t)$,
 %
 \begin{align*}
   Y(s) &= \frac{\frac{K_p}{s^2}}{1 + \frac{K_p}{s^2}} R(s) =
          \frac{K_p}{s (s^2 + K_p)} 
 \\
- y(t) &= 1 - \cos (K t) \ t > 0
+ y(t) &= 1 - \cos (\sqrt{K_p} t) \ t > 0
 \end{align*}
 %
-Error function takes the form $e(t) = \cos (K t)$ which does not
+Error function takes the form $e(t) = \cos (\sqrt{K_p} t)$ which does not
 have a limit, i.e., there is no $e_{ss}$. If closed-loop transfer
 function has poles on imaginary axis then, we can not apply
 final value theorem. 
@@ -445,12 +444,12 @@ Error function takes the form $e(t) = e^t - t e^t$, thus
  e_{ss} = | \lim_{t \to \infty} e(t) | = \infty 
 \end{align*}
 %
-In conclusion, If closed-loop transfer function has poles on imaginary
+In conclusion, if closed-loop transfer function has poles on imaginary
 axis or open right half-plane then, we can not apply final value theorem. 
 
 \newpage
 
-\subsection{Stead-State Response to Disturbances}
+\subsection{Steady-State Response to Disturbances}
 
 When analyzing the steady-state response of a system in addition to
 the desired response to the reference input, it is also important
@@ -469,7 +468,7 @@ topology which is perturbed by a disturbance input, $d(t)$.
 
 In order to analyze the response to the disturbance $d(t)$, we assume 
 $r(t) = 0$ (which is just fine due to the linearity). Let's first find
-the pulse transfer function from $D(s)$ to $Y(s)$. 
+the transfer function from $D(s)$ to $Y(s)$. 
 %
 \begin{align*}
 T_D(s) &= \frac{Y(s)}{D(s)} =  \frac{G(s)}{1 + C(s) G(s) H(s)}
@@ -478,7 +477,7 @@ T_D(s) &= \frac{Y(s)}{D(s)} =  \frac{G(s)}{1 + C(s) G(s) H(s)}
 \end{align*}
 %
 Note that $Y(s)$ depends on both $G_{OL}(s)$ (OLTF) and $G(s)$ (Plant TF). 
-If one wants to generalize the stead-state disturbance rejection performance,
+If one wants to generalize the steady-state disturbance rejection performance,
 he/she needs to analyze the conditions for both $G_{OL}(s)$ and $G(s)$. Moreover,
 for a different topology and type of disturbance, we can have very different conditions. 
 For this reason, in order to analyze steady-state disturbance/noise rejection
@@ -499,7 +498,7 @@ input.
 \end{minipage}
 \end{center}
 
-\paragraph{Solution:} Lets compute $Y(s)/D(s)$
+\paragraph{Solution:} Let's compute $Y(s)/D(s)$
 %
 \begin{align*}
 Y(s) &= \left( D(s) - Y(s) K_P \right) \frac{1}{s(s + K_D)} 
@@ -520,7 +519,7 @@ y_{ss} &= \lim_{s \to 0} [ s Y(s) ] = \lim_{s \to 0} \left[ s D(s) \frac{1}{s^2 
 &= \frac{1}{K_P}
  \end{align*}
 %
-We can see that even if same system has 0 steady-state error when the reference
+We can see that even if the same system has 0 steady-state error when the reference
 signal is step-like input, the error under unit-step disturbance is not zero, i.e., $y_{ss} = 1 / K_P$.
 One can improve the disturbance rejection performance by increasing the $K_P$ gain. 
 

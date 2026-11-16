@@ -103,11 +103,11 @@ For a LTI continuous time state-space representation
   $x(t)$ from the origin (i.e. $x(0) = 0$) to the state $x_d$ within
   this time interval, i.e. $x(t_f) = x_d$.
  
-  \item A state $x_d$ is said ti be \textbf{controllable}
+  \item A state $x_d$ is said to be \textbf{controllable}
   if there exist a finite time interval $t \in [0 ,t_f]$ and
   an input signal defined on this interval, $u(t)$, that transfers the state vector 
   $x(t)$ from the initial state $x_d$ (i.e. $x(0) = x_d$) to the origin
-  this time interval, i.e. $x(t_f) = 0$.  
+  within this time interval, i.e. $x(t_f) = 0$.  
 \end{itemize}
 
 \begin{itemize}
@@ -128,14 +128,14 @@ equivalent.
 \end{itemize}
 
 One way of testing reachability/controllability is checking the rank
-(or the range space) the of reachability/controllability matrix
+(or the range space) of the reachability/controllability matrix
 %
 \begin{align*}
   Q = \left[ \begin{array}{cccc} B & A B & \cdots & A^{n-1} B \end{array} \right]
 \end{align*} 
 %
 
-A CT system is reachable/controllable if and only of
+A CT system is reachable/controllable if and only if
 %
 \begin{align*}
   \mathrm{rank} ( Q ) &= n
@@ -144,7 +144,7 @@ A CT system is reachable/controllable if and only of
 or equivalently 
 %
 \begin{align*}
- \mathrm{Ra} ( \mathbf{M} ) = \mathbb{R}^n
+ \mathrm{Ra} ( Q ) = \mathbb{R}^n
 \end{align*} 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -198,7 +198,7 @@ we can derive the following relations
   x_2(T) &= 0
 \end{align*}
 %
-Neither the input nor the first state has an affect on
+Neither the input nor the first state has an effect on
 the second state, so $x_2 = \alpha$ for $\alpha \neq 0$
 is not controllable (or reachable). However it is also easy to 
 see that we can always find $u(t)$ that will drive the $x_1$ to a
@@ -233,7 +233,7 @@ Given a continuous-time state-evolution equation
 %
 If direct measurements of all of the states of the
 system (e.g. $y(t) = x(t)$) are available, one of the most
-popular and powerful control method is the linear state feedback
+popular and powerful control methods is the linear state feedback
 control,
 %
 \begin{align*}
@@ -248,7 +248,7 @@ or when there is a reference input
 %
 which can be thought as a generalization of P controller
 to the vector form. Under this control law, state-equations
-for the closed-loop system takes the form
+for the closed-loop system take the form
 %
 \begin{align*}
   \dot{x}(t) &= A x(t) + B \left( r(t) - K x(t) \right)
@@ -259,10 +259,10 @@ for the closed-loop system takes the form
 The system matrix of this autonomous system is
 $\hat{A} = A - B K$. 
 %
-Important questions is how to choose $K$. Note that 
+The important question is how to choose $K$. Note that 
 %
 \begin{align*}
-  K &\in \mathbb{R}^n \quad \mathrm{Single-Input} 
+  K &\in \mathbb{R}^{1 \times n} \quad \mathrm{Single-Input} 
 \end{align*}
 %
 As in all of the control design techniques, the most critical criterion
@@ -272,7 +272,7 @@ different requirements on the poles/eigenvalues of the system.
 
 The fundamental principle of ``pole-placement'' design is that
 we first define a desired closed-loop eigenvalue set 
-$\mathcal{E}^* = \lbrace \lambda_1^* , \ \cdots, \  \lambda_1^* \rbrace$, and
+$\mathcal{E}^* = \lbrace \lambda_1^* , \ \cdots, \  \lambda_n^* \rbrace$, and
 then if possible we choose $K^*$ such that the closed-loop
 eigenvalues match the desired ones.
 
@@ -324,7 +324,7 @@ the characteristic equation of $\hat{A}$ can be computed as
 \begin{align*}
   \mathrm{det} \left( s I - ( A - B K ) \right) &= 
   \mathrm{det} \left(
-  \left[ \begin{array}{cc} s - 1 + k_1 & k_1 \\ k_2 & s - 2 + k_2 \end{array} \right]
+  \left[ \begin{array}{cc} s - 1 + k_1 & k_2 \\ k_1 & s - 2 + k_2 \end{array} \right]
   \right)
 \\
 &= s^2 + s (k_1 + k_2 - 3) + (2 -2 k_1 - k_2)
@@ -390,7 +390,7 @@ x \right)
   \right] r
 \end{align*}
 %
-Let $p^*(s) = s^2 + a_1^* s + \cdots + a_{n-1}^* s + a_n^*$, then
+Let $p^*(s) = s^n + a_1^* s^{n-1} + \cdots + a_{n-1}^* s + a_n^*$, then
 computation of $K$ is super straight-forward
 %
 \begin{align*}
@@ -447,7 +447,7 @@ $u(t)$ is given as
 \begin{align*}
   u(t) &= r(t) -\hat{K} \hat{x}(t)
 \\ 
-&= r(t) - \hat{K} T^{-1} \hat{x}(t)
+&= r(t) - \hat{K} T^{-1} x(t)
 \\
 K &= \hat{K} T^{-1}
 \end{align*}
@@ -495,11 +495,10 @@ T^{-1} &= \left[ \begin{array}{cc} -1 & 1 \\ -1 & 2 \end{array} \right]
 \end{align*}
 %
 Given that desired characteristic polynomial is $p^*(s) = s^2 + 2 s + 1$,
-$\hat{K}$ of controllable canonical from can be computed as
+$\hat{K}$ of controllable canonical form can be computed as
 %
 \begin{align*}
-  \hat{K} &= \left[ \begin{array}{cc} - a_2 & -
-                                                       a_1 \end{array}
+  \hat{K} &= \left[ \begin{array}{cc} a_2^* - a_2 & a_1^* - a_1 \end{array}
                                                        \right]
 \\
 &= \left[ \begin{array}{ccc} 1-2 & 2-(-3) \end{array}
@@ -519,7 +518,7 @@ Finally $K$ can be computed as
                                                        \right]
 \end{align*}
 %
-As expected this is the same result with the one found with Direct-Method.
+As expected this is the same result as the one found with Direct-Method.
 
 \newpage
 
@@ -544,7 +543,7 @@ It turns out that it is more natural to think in terms of
    i.e., if $\bar{\mathcal{O}} = \lbrace 0 \rbrace$, 
 %
  \item If the dimension of unobservable subspace is equal to 0,
-   $\mathrm{dim} = \left( \bar{\mathcal{O}} \right) = 0$,
+   $\mathrm{dim} \left( \bar{\mathcal{O}} \right) = 0$,
   %
  \item If any initial condition, $x(0)$ or $x[0]$, can be uniquely 
  determined from input-output measurement,
@@ -555,7 +554,7 @@ then the system is called Observable.
 \subsubsection{Test of Observability on CT Systems}
 
 One way of testing Observability of CT systems is checking the rank
-(or the range space, or null space) the of the Observability matrix
+(or the range space, or null space) of the Observability matrix
 %
 \begin{align*}
   \mathbf{O} =
@@ -574,7 +573,7 @@ C A^{n-1}
 \end{align*} 
 %
 
-A CT system is Observable if and only of
+A CT system is Observable if and only if
 %
 \begin{align*}
   \mathrm{rank} ( \mathbf{O} ) &= n
@@ -606,10 +605,10 @@ if it is both fully Controllable and Observable.
 \section{Luenberger Observer}
 
 In general the state, $x(t)$, of a system
-is not accessible and \textit{observers, estimators, filters})
+is not accessible and (\textit{observers, estimators, filters})
 have to be used to extract this information.
 The output, $y(t)$, represents the measurements
-which is a function of $x(t)$ and $u(t)$.
+which are functions of $x(t)$ and $u(t)$.
 %
 \begin{align*}
   \dot{x} &= A x + B u
@@ -617,7 +616,7 @@ which is a function of $x(t)$ and $u(t)$.
   y &= C x + D u
 \end{align*}
 %
-A Luenberger observers is built using a ``simulated'' model of the 
+A Luenberger observer is built using a ``simulated'' model of the 
 system and the errors caused by the mismatched initial conditions 
 $x_0 \neq \hat{x}_0$ (or other types of perturbations)
 are reduced by introducing output error feedback.
@@ -627,13 +626,13 @@ is $\hat{x}$, then the state space equation of this
 synthetic system takes the form
 %
 \begin{align*}
-  \dot{\hat{x}} &= A \hat{x} + H u
+  \dot{\hat{x}} &= A \hat{x} + B u
   \\
   \hat{y} &= C \hat{x} + D u
 \end{align*}
 %
 Note that since $u$ is the input that is supplied by the 
-controller, we assume that it is known apriori. If $x(0) = \hat{x}[=(0)$ and
+controller, we assume that it is known a priori. If $x(0) = \hat{x}(0)$ and
 when there is no model mismatch or uncertainty in the system
 then we expect that $x(t) = \hat{x}(t)$ and $y(t) = \hat{y}(t)$ 
 for all $t \in \mathbb{R}^+$. When $x(0) \neq \hat{x}(0)$, then we should observe a 
@@ -644,7 +643,7 @@ is feeding the error in the output prediction
 $y(t) - \hat{y}(t)$ to the simulated system via a linear feedback gain.
 %
 \begin{align*}
-  \dot{\hat{x}} &= A \hat{x} + H u + L \left( y - \hat{y} \right) 
+  \dot{\hat{x}} &= A \hat{x} + B u + L \left( y - \hat{y} \right) 
   \\
   \hat{y} &= C \hat{x} + D u
 \end{align*}
@@ -657,8 +656,8 @@ as
 \begin{align*}
   \dot{e} &= \dot{x} - \dot{\hat{x}}
         \\
-     &= \left( A x + H u \right)
-  - \left( A \hat{x} + H u + L \left( y - \hat{y} \right)
+     &= \left( A x + B u \right)
+  - \left( A \hat{x} + B u + L \left( y - \hat{y} \right)
        \right)
 \\
    \dot{e} &= \left( A - L C \right) e
@@ -688,11 +687,11 @@ compute the associated desired characteristic polynomial.
   p^*(s) &= \left( s - \lambda_1^* \right) \cdots \left( s - \lambda_n^*
          \right)                         
   \\
-  &= s^n + a_0^* z^{n-1} + \cdots + a_{n-2}^* z + a_{n-1}^*
+  &= s^n + a_1^* s^{n-1} + \cdots + a_{n-1}^* s + a_n^*
 \end{align*}
 %
 The necessary and sufficient condition on arbitrary observer pole-placement
-is that the system should be fully Observable. Then, we ca tune $L$ such
+is that the system should be fully Observable. Then, we can tune $L$ such
 that 
 %
 \begin{align*}
@@ -704,7 +703,7 @@ that
 If $n$ is small, the most efficient method could be the direct
 design. 
 
-\textbf{Example:} Consider the following DT system
+\textbf{Example:} Consider the following CT system
 %
 \begin{align*}
  \dot{x} &= \left[ \begin{array}{cc} 1 & 0 \\ 0 & 2 \end{array} \right] x
@@ -713,8 +712,8 @@ design.
  y &= \left[ \begin{array}{cc} 1 & -1 \end{array} \right] x
 \end{align*}
 % 
-Design an observer such that estimater poles are located at 
-$\lambda_{1,2} = -5$ (Dead-beat Observer)
+Design an observer such that estimator poles are located at 
+$\lambda_{1,2} = -5$
 
 \textbf{Solution:} Desired characteristic equation can be computed as
 %
@@ -723,7 +722,7 @@ $\lambda_{1,2} = -5$ (Dead-beat Observer)
 \end{align*}
 %
 Let $L = \left[ \begin{array}{c} l_2 \\ l_1 \end{array} \right]$, then
-the characteristic equation of $(G - L C)$ can be computed as
+the characteristic equation of $(A - L C)$ can be computed as
 %
 \begin{align*}
   \mathrm{det} \left( s I - ( A - L C ) \right) &= 
@@ -741,12 +740,12 @@ If we match the equations
 \\
   l_1 - 2 l_2 &= 23
 \\
- l_2 &= -49
+ l_2 &= -36
 \\
- l_1 &= -36
+ l_1 &= -49
 \end{align*}
 %
-Thus $L = \left[ \begin{array}{c} -49 \\ -36 \end{array} \right]$
+Thus $L = \left[ \begin{array}{c} -36 \\ -49 \end{array} \right]$
 
 
 

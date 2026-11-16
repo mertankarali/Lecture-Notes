@@ -124,7 +124,7 @@ Conversion between ODE and TF representations is trivial in both directions
 
 \section{State-Space to TF}
 
-Note that a SS representation of an $n^{th}$ order LTI system has the from below.
+Note that a SS representation of an $n^{th}$ order LTI system has the form below.
 %
 \begin{align*}
   \mathrm{Let} \ x(t) &\in \mathbb{R}^n \ , \ y(t) \in \mathbb{R} \ ,\  u(t) \in
@@ -145,7 +145,7 @@ s X(s) &= A X(s) + B U(s)
 \\
 s X(s) - A X(s) &=  B U(s)
 \\
-\left( s I - A) X(s) \right) &=  B U(s)
+\left( s I - A \right) X(s) &=  B U(s)
 \\
 X(s) &= \left( s I - A \right)^{-1} B U(s)
 \end{align*}
@@ -169,7 +169,7 @@ we will derive the realization for a general $3^{rd}$ order LTI system.
 
 \subsection{Canonical Realization I}
 
-In this method of realization, we will use the fact the system is
+In this method of realization, we will use the fact that the system is
 LTI. Let's consider the transfer function of the system and let's 
 perform some LTI operations.
 %
@@ -183,14 +183,14 @@ Y(s) &= \frac{ b_3 s^3 + b_2 s^2  + b_1 s + b_0 }{ s^3 + a_2 s^2 + a_1 s + a_0} 
 \\
 G_1(s) &= \frac{H(s)}{U(s)} = \frac{1}{ s^3 + a_2 s^2 + a_1 s + a_0 } 
 \\
-G_2(s) &= \frac{Y(z)}{H(z)} = b_3 s^3 + b_2 s^2  + b_1 s + b_0
+G_2(s) &= \frac{Y(s)}{H(s)} = b_3 s^3 + b_2 s^2  + b_1 s + b_0
 \end{align*}
 %
 As you can see we introduced an intermediate variable $h(t)$ or with a
 Laplace transform of $H(s)$. First transfer function has static input
-dynamics, operates on $x(t)$, and produces an output, i.e. $h(t)$. 
+dynamics, operates on $u(t)$, and produces an output, i.e. $h(t)$. 
 Second transfer function is a non-causal system and operates on $h(t)$ and produces output
-$x(t)$. If we write the ODEs of both systems we obtain
+$y(t)$. If we write the ODEs of both systems we obtain
 %
 \begin{align*}
 \dddot{h} &= -a_2 \ddot{h} - a_1 \dot{h} - a_0 h + u
@@ -211,7 +211,7 @@ individual state equations take the form
 \dot{x_3} &= -a_2 x_3 - a_1 x_2 - a_0 x_1 + u
 \end{align*}
 %
-and the output equation take the form
+and the output equation takes the form
 %
 \begin{align*}
 y &= b_3\left( -a_2 x_3 - a_1 x_2 - a_0 x_1 + u \right) + b_2 x_3 +
@@ -256,7 +256,7 @@ D = b_n
 
 \subsection{Canonical Realization II}
 
-In this method will obtain a different minimal state-space realization. 
+In this method we will obtain a different minimal state-space realization. 
 The process will be different and state-space structure will have a
 different topology. Let's start with the transfer function 
 and perform some grouping based on the $s$ elements.
@@ -295,7 +295,7 @@ X_3(s) &= \frac{1}{s} \left[ \left( -a_2 Y(s) + b_2 U(s) \right) + \frac{1}{s}  
 In this context output equation in $s$ and time domains simply takes the form
 %
 \begin{align*}
-	Y(s) = X_3(s) + b_3 U(S) \quad \rightarrow \quad y(t) = x_3(t) + b_3 u(t)
+	Y(s) = X_3(s) + b_3 U(s) \quad \rightarrow \quad y(t) = x_3(t) + b_3 u(t)
 \end{align*}
 % 
 Dependently the state equations (in $s$ and time domains) take the form
@@ -361,7 +361,7 @@ D = b_n
 First let's compute $V_1(s)/U(s)$ 
 %
 \begin{align*}
-\frac{U(S)}{ \frac{10^4}{s} + 10^4 } &= \frac{-V_1(S)}{ 2 \, 10^4} 
+\frac{U(s)}{ \frac{10^4}{s} + 10^4 } &= \frac{-V_1(s)}{ 2 \, 10^4} 
 \\
 \frac{V_1(s)}{U(s)} &= \frac{-2 s}{s + 1}
 \end{align*}
@@ -369,9 +369,9 @@ First let's compute $V_1(s)/U(s)$
 Now let's compute $Y(s)/V_1(s)$ 
 %
 \begin{align*}
-\frac{V_1(s)}{ 2.5 10^4} &= -Y(s) \left( s 10^{-6} + 10^{-4} \right)
+\frac{V_1(s)}{ 2.5 \cdot 10^4} &= -Y(s) \left( s 10^{-6} + 10^{-4} \right)
 \\
-\frac{V_1(s)}{ 2.5 10^4} &= -Y(s) \left( s + 100 \right) 10^{-6}
+\frac{V_1(s)}{ 2.5 \cdot 10^4} &= -Y(s) \left( s + 100 \right) 10^{-6}
 \\
 \frac{Y(s)}{V_1(s)} &= \frac{-40}{s + 100}
 \end{align*}
