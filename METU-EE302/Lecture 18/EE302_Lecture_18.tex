@@ -110,28 +110,28 @@ magnitude (dB) and phase functions
 
 \begin{align*}
   G(s) =& K \frac{ (s - z_1) \cdots (s - z_N) }{ (s - p_1) \cdots (s -
-  p_N) }
+  p_M) }
 \\
 ,
  \\
   M_{dB}\lbrace G(s) \rbrace =& 20 \mathrm{log}_{10} | G( j \omega ) | 
   \\
   =& 20 \mathrm{log}_{10} K + \left[ 20 \mathrm{log}_{10} | (j \omega
-    - z_1) |  + \cdots + 20 \mathrm{log}_{10} (j \omega - z_N) \right]
+    - z_1) |  + \cdots + 20 \mathrm{log}_{10} | (j \omega - z_N) | \right]
     \\
     & - \left[ 20 \mathrm{log}_{10} | (j \omega
-    - p_1) |  + \cdots + 20 \mathrm{log}_{10} (j \omega - p_M) \right]
+    - p_1) |  + \cdots + 20 \mathrm{log}_{10} | (j \omega - p_M) | \right]
       \\
-  =& K_{dB} + \left[ M_{dB} \lbrace s - z_1 \rbrace \cdots M_{dB}
+  =& K_{dB} + \left[ M_{dB} \lbrace s - z_1 \rbrace + \cdots + M_{dB}
      \lbrace s - z_N \rbrace \right]
-     - \left[ M_{dB} \lbrace s - p_1 \rbrace \cdots M_{dB}
+     - \left[ M_{dB} \lbrace s - p_1 \rbrace + \cdots + M_{dB}
      \lbrace s - p_M \rbrace \right]
 \\
 ,
 \\
   \phi \lbrace G(s) \rbrace &= \angle [ G( j \omega )  ]
 \\
-     &=  \left( \angle [ j \omega - z_1) ]  + \cdots + \angle [ j
+     &=  \left( \angle [ j \omega - z_1 ]  + \cdots + \angle [ j
        \omega - z_N ] \right) - \left( \angle [ j \omega - p_1 ]  +
        \cdots + \angle [ j \omega - p_M] \right)
 \\&=  \left( \phi \lbrace s - z_1 \rbrace + \cdots + \phi \lbrace s -
@@ -179,7 +179,7 @@ First let's analyze the phase and magnitude (dB) response of $G(s) = s + 1$
 \end{align*}
 %
 Now we will approximate the gain and phase curves using piece-wise continuous straight lines. 
-Firs approximate the magnitude response
+First approximate the magnitude response
 %
 \begin{align*}
   \mathrm{Low-Frequency} \ \Rightarrow \ M_{dB}(\omega)  &\approx 0 \
@@ -202,7 +202,7 @@ Note that, low-frequency and mid-frequency approximations intersect when $\omega
 whereas high-frequency and mid-frequency approximations intersect when $\omega = 10 \ rad/s$.
 The corner frequency of this ``system'' is $\omega_c = 1 \ rad/s$. Note that it is very easy to obtain 
 the bode approximations of $G(s) = \frac{1}{s+1}$, if we know the bode approximations of $G(s) = s+1$. We
-simple multiply both magnitude (dB) and phase responses of $s+1$ with $(-1)$. The figure below
+simply multiply both magnitude (dB) and phase responses of $s+1$ with $(-1)$. The figure below
 illustrates the original bode plots (solid curves) of $G_1(s) = (s+1)$ and $G_2(s) = \frac{1}{s+1}$ as well as
 their approximations (dashed lines). 
 
@@ -243,15 +243,15 @@ let's approximate the phase response
 \begin{align*}
   \mathrm{Low-Frequency}: \omega \leq \frac{0.1}{T} = 0.1 a \ \Rightarrow \ \phi  &\approx 0^o  \\
   \mathrm{High-Frequency}: \omega \geq \frac{10}{T} = 10 a  \ \Rightarrow \ \phi &\approx 90^o \\
-  \mathrm{Medium-Frequency} \ \Rightarrow \ \phi & \approx 45^0 + 45^0 \mathrm{log}_{10} ( \omega)
+  \mathrm{Medium-Frequency} \ \Rightarrow \ \phi & \approx 45^0 + 45^0 \mathrm{log}_{10} ( T \omega)
 \end{align*}
 %
 Note that low-frequency and mid-frequency approximations intersect
 when $\omega = 0.1 a \ rad/s$,
 whereas high-frequency and mid-frequency approximations intersect when
 $\omega = 10 a \ rad/s$.
-The corner freqency of this system is $\omega_c = a \ rad/s = 1/T \
-rad/s$. Note that in order to obtin the bode plot of $T s + 1$, we
+The corner frequency of this system is $\omega_c = a \ rad/s = 1/T \
+rad/s$. Note that in order to obtain the bode plot of $T s + 1$, we
 simply shift the bode plot of $s + 1$ (in $\omega$ axis). 
 
 \vspace{6pt}
@@ -286,7 +286,6 @@ A unity gain standard second order system can be written in the form
 		= \frac{1}{(\frac{s}{\omega_n} + 1)^2}
 \end{align*}
 %
-We can easily observe that 
 %
 Magnitude and phase functions can be obtained as
 \begin{align*}
@@ -314,7 +313,7 @@ their approximations (dashed lines).
 \textbf{Case 2: $\zeta > 1$} Over-damped case is simply the combination of two identical first order
 systems. 
 
-\textbf{Ex:}  Let's analyze the the bode plots for the following system
+\textbf{Ex:}  Let's analyze the bode plots for the following system
 %
 \begin{align*}
 	G(s) =  \frac{10}{(s+1)(s+10)}
@@ -331,7 +330,7 @@ We can easily observe that
 \end{align*}
 %
 The figure below
-illustrates the original bode plots (solid curves) of $G_1(s) = \frac{1}{s+1}$, $G_2(s) = \frac{10}{s+10}$ and $G_4(s) = \frac{10}{(s+1) (s+10)}$ as well as their approximations (dashed lines). 
+illustrates the original bode plots (solid curves) of $G_1(s) = \frac{1}{s+1}$, $G_2(s) = \frac{10}{s+10}$ and $G_3(s) = \frac{10}{(s+1) (s+10)}$ as well as their approximations (dashed lines). 
 
 \vspace{6 pt}
 
@@ -346,7 +345,7 @@ illustrates the original bode plots (solid curves) of $G_1(s) = \frac{1}{s+1}$, 
 \textbf{Case 3 : $\zeta < 1$} For under-damped systems, corner frequencies 
 of the piece-wise linear approximations are unchanged. Thus, we use same 
 approximation with the critically damped case. However, as damping ratio 
-increases we may observe larger differences between the actual bode plot
+decreases we may observe larger differences between the actual bode plot
 and the approximations. 
 
 \textbf{Ex:} The figure below
@@ -374,13 +373,13 @@ $\zeta = 2$. Indeed, best match between the actual and approximate bode plots in
 We already know that for a feedback system, phase and 
 gain margins can be computed based on the Frequency Response
 characteristics of the open-loop transfer function, $G_{OL}(j \omega)$ (under
-some assumption regarding the system properties).
+some assumptions regarding the system properties).
 
 Specifically, we can compute the phase crossover frequency, $\omega_{pc}$ and the gain margin, 
 $g_m$ (linear scale) and $G_m$ (dB scale), as
 %
 \begin{align*}
-  \angle [ G_{OL}(j \omega_{p}) ] &= \pm -180^0
+  \angle [ G_{OL}(j \omega_{pc}) ] &= -180^0
   \quad \Rightarrow \quad
   g_m = \frac{1}{| G_{OL}(j \omega_{pc})| } \quad \mathrm{or} \quad G_m
   = -20 \, \mathrm{log}_{10} | G_{OL}(j \omega_{pc} ) |
@@ -429,7 +428,7 @@ margins as
 \begin{align*}
   K &= 2 \Rightarrow \phi_m = 90^o \quad (\omega_{gc} = 1 \ rad/s)
   \\
-  K &= 4 \Rightarrow \phi_m = 60^o \quad (\omega_{gc} \approx 1.8 \ rad/s)
+  K &= 4 \Rightarrow \phi_m = 60^o \quad (\omega_{gc} = \sqrt{3} \approx 1.73 \ rad/s)
 \end{align*}
 %
 These results verify the actual phase margin values that we previously computed
@@ -482,7 +481,7 @@ actual and approximate bode plots of $G(s) = \frac{1}{(s+1)^3}$.
 
 We can see that phase margin is $180^o$ for the given system,
 since $\omega_{gc} = 0 \ \rightarrow \ \phi (\omega_{gc} ) = 0^o$. 
-On the other hang we can derive the following gain margin estimates
+On the other hand we can derive the following gain margin estimates
 from the actual and approximate bode plots
 %
 \begin{align*}
@@ -523,7 +522,7 @@ and estimate these margins we obtain
 	&\phi_m = 2^o
 \end{align*}
 %
-If we consider the bode plots that we draw based on asymptotic approximations and compute the phase and gain margins, we can assume that system is indeed stable. However, these margins are rather low. In this respect, we can conclude that if one analyzes the absolute stability of a system using approximately bode plots, in order to comment on stability, he/she should observe significant phase and gain margins.
+If we consider the bode plots that we draw based on asymptotic approximations and compute the phase and gain margins, we can assume that system is indeed stable. However, these margins are rather low. In this respect, we can conclude that if one analyzes the absolute stability of a system using approximate bode plots, in order to comment on stability, he/she should observe significant phase and gain margins.
 
 \textbf{Ex:} Compute  phase margin for the following closed-loop system 
 using the actual and approximate bode plots

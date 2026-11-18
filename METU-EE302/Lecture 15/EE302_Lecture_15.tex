@@ -115,7 +115,7 @@ in this example.
 \textbf{Theorem: Cauchy's Argument Principle}
 
 Given $F(s) = \frac{N(s)}{D(s)}$ and a CW contour $\Gamma_s$ in $s-$ plane
-which does not croses any zeros (roots of $N(s)$) or poles (roots of $D(s)$)
+which does not crosses any zeros (roots of $N(s)$) or poles (roots of $D(s)$)
 of $F(s)$, then the mapped contour $\Gamma_{F(s)}$ will encircle the
 origin
 %
@@ -124,9 +124,9 @@ origin
 \\
   N &: \# \ \mathrm{CW} \ \mathrm{encirclements} \ \mathrm{of} \ \mathrm{origin}
 \\
-  Z &: \# \ \mathrm{zeros} \ F(s)
+  Z &: \# \ \mathrm{zeros} \ \mathrm{of} \ F(s) \ \mathrm{inside} \ \Gamma_s
 \\
-  P &: \# \ \mathrm{poles} \ F(s)
+  P &: \# \ \mathrm{poles} \ \mathrm{of} \ F(s) \ \mathrm{inside} \ \Gamma_s
 \end{align*}
 
 \subsection{Nyquist Stability Criterion for Feedforward Systems}
@@ -171,8 +171,8 @@ of the origin ($N$). Based on Cauchy's Argument Principle we know that
 \vspace{6 pt}
 
 In this example illustration $N = 2$, which implies that total number
-of unstable poles of $G(s)$ is given by $P = Z + 2$, if $Z$,
-i.e. number of zeros with positive real parts, is known than
+of unstable poles of $G(s)$ is given by $P = Z - 2$, if $Z$,
+i.e. number of zeros with positive real parts, is known, then
 we can compute number of unstable poles $P$. Alternatively, 
 since in a feedforward system only denominator part determines
 the stability, instead of $G(s)$, one can draw the Nyquist plot of 
@@ -261,11 +261,11 @@ $P = Z - N = 1 - 1 = 0$, thus the system is obviously stable.
    \quad , \quad \angle [ G \left( R e^{j \theta} \right) ] \approx -\theta
    \end{align*}
    % 
-   Note that when $\theta : \pi/2 \to -\pi/$, the infinite-small 
+   Note that when $\theta : \pi/2 \to -\pi/2$, the infinite-small 
    contour around origin rotates in CCW direction. 
    %
    \item Last path (mapping of negative imaginary axis) is again
-   is the conjugate of the polar plot with reverse direction. 
+   the conjugate of the polar plot with reverse direction. 
 \end{enumerate}
 
 If we follow the procedure, we obtain the following Nyquist plot. 
@@ -299,7 +299,7 @@ $P = Z - N = 0 - 0 = 0$, thus the system is obviously stable.
     important. Now let's assume that $\omega \to R$ and $R \gg 1$
     % 
   \begin{align*}
-   G_1(j R) &\approx -\frac{1}{R^2} - \frac{1}{R^3} j
+   G_1(j R) &\approx -\frac{1}{R^2} - \frac{2}{R^3} j
     \quad , \quad 
     \angle [ G_1(j \omega) ] \approx -\pi
    \end{align*}
@@ -317,10 +317,10 @@ $P = Z - N = 0 - 0 = 0$, thus the system is obviously stable.
       \theta
    \end{align*}
    % 
-   Note that when $\theta : \pi/2 \to -\pi/$, the infinite-small 
+   Note that when $\theta : \pi/2 \to -\pi/2$, the infinite-small 
    contour around origin rotates in CCW direction. 
    %
-   \item Last path (mapping of negative imaginaty axis) is again
+   \item Last path (mapping of negative imaginary axis) is again
    the conjugate of polar plot with reverse direction. 
 \end{enumerate}
 
@@ -344,7 +344,7 @@ $P = Z - N = 0 - 0 = 0$, thus the system is obviously stable.
 \textbf{Ex:} Analyze the feedforward stability of $G(s) =
 \frac{1}{(s+1)^3}$ using Nyquist plot. 
 
-\textbf{Solution:} Firs let's analyze the Nyquist paths
+\textbf{Solution:} First let's analyze the Nyquist paths
 %
 \begin{enumerate}
   \item This is the polar plot that we have covered in the previous
@@ -371,7 +371,7 @@ $P = Z - N = 0 - 0 = 0$, thus the system is obviously stable.
       \theta
    \end{align*}
    % 
-   Note that when $\theta : \pi/2 \to -\pi/$, the infinite-small 
+   Note that when $\theta : \pi/2 \to -\pi/2$, the infinite-small 
    contour around origin rotates in CCW direction. 
    %
    \item Last path (mapping of negative imaginary axis) is again
@@ -390,7 +390,7 @@ If we follow the procedure, we obtain the following Nyquist plot.
 
 \vspace{6 pt}
 
-If carefully analyze the encirclements around the origin, 
+If we carefully analyze the encirclements around the origin, 
 we can see that \textbf{net} encirclement around the origin is 
 $N = 1 - 1$ (or $N = 2 - 2$). Based on this, we verify that   
 the total number of unstable poles is equal to
@@ -438,7 +438,7 @@ direction). Thus,
  \angle [ G(R e^{j \theta}) ] &= - 2 \theta \quad \theta : \pi/2 \to -\pi/2
 \end{align*}
 %
-Note that associated Nyquist plot around origin turns approximatelly
+Note that associated Nyquist plot around origin turns approximately
 $2 \pi$ radians in CCW direction. Last path is the mapping of negative imaginary axis which is simply
 conjugate of the polar plot with reverse direction. 
 
@@ -452,7 +452,7 @@ conjugate of the polar plot with reverse direction.
 
 \vspace{6 pt}
 
-If carefully analyze the encirclements around the origin, 
+If we carefully analyze the encirclements around the origin, 
 we can see that \textbf{net} CW encirclement around the origin is 
 $N = - 1$. Based on this, we verify that   
 the total number of unstable poles is equal to

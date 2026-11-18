@@ -1,0 +1,1566 @@
+%==============================================================
+%  EE201 -- Circuit Theory I
+%  Lecture 14 : Two-Port Circuits -- slides
+%  M. Mert Ankaralı, METU EEE
+%
+%  Compile:  ./build.sh      (or: pdflatex EE201_Lecture_14_slides.tex, twice)
+%  Same colour code as the handout:
+%      charge = purple, current = blue, voltage = orange, power = green
+%==============================================================
+\documentclass[11pt,aspectratio=169]{beamer}
+
+\usepackage{appendixnumberbeamer}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{colortbl}
+\usepackage{tikz}
+\usepackage[american,siunitx]{circuitikz}
+\usetikzlibrary{matrix,arrows.meta,positioning,calc,decorations.pathreplacing,decorations.pathmorphing,decorations.markings}
+\usetikzlibrary{overlay-beamer-styles}
+
+%-------------------- plain METU-flavoured theme --------------
+\usetheme{default}
+\usecolortheme{default}
+\useinnertheme{rectangles}
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{itemize items}[square]
+\setbeamerfont{frametitle}{size=\large,series=\bfseries}
+\setbeamerfont{title}{size=\LARGE,series=\bfseries}
+
+\definecolor{metured}{RGB}{155,27,48}
+\definecolor{metugray}{RGB}{88,89,91}
+\definecolor{metulight}{RGB}{243,240,241}
+\definecolor{ccur}{RGB}{0,102,170}
+\definecolor{cvolt}{RGB}{214,120,0}
+\definecolor{cpow}{RGB}{23,128,74}
+\definecolor{ccharge}{RGB}{124,60,160}
+\definecolor{cflux}{RGB}{0,138,138}
+\definecolor{copper}{RGB}{184,98,30}
+
+\setbeamercolor{structure}{fg=metured}
+\setbeamercolor{frametitle}{fg=metured,bg=}
+\setbeamercolor{title}{fg=metured}
+\setbeamercolor{normal text}{fg=black!88}
+\setbeamercolor{block title}{fg=white,bg=metured}
+\setbeamercolor{block body}{bg=metulight}
+\setbeamercolor{alerted text}{fg=metured}
+
+\setbeamertemplate{frametitle}{%
+  \vspace{0.55em}%
+  \usebeamerfont{frametitle}\usebeamercolor[fg]{frametitle}\insertframetitle\par
+  \vspace{-0.2em}{\color{metured}\rule{\textwidth}{1pt}}\par\vspace{-0.2em}}
+
+\setbeamertemplate{footline}{%
+  \hbox{\begin{beamercolorbox}[wd=\paperwidth,ht=2.4ex,dp=1.4ex,leftskip=1.2em,rightskip=1.2em]{}%
+  \tiny\color{metugray}\coursecode\ \textbar\ Lecture 14: Two-Port Circuits
+  \hfill \insertframenumber/\inserttotalframenumber
+  \end{beamercolorbox}}}
+
+%-------------------- macros ----------------------------------
+\newcommand{\coursecode}{EE201}
+\newcommand{\term}{Fall 2026--2027}
+\newcommand{\Icol}[1]{\textcolor{ccur}{#1}}
+\newcommand{\Vcol}[1]{\textcolor{cvolt}{#1}}
+\newcommand{\Pcol}[1]{\textcolor{cpow}{#1}}
+\newcommand{\Qcol}[1]{\textcolor{ccharge}{#1}}
+\newcommand{\Fcol}[1]{\textcolor{cflux}{#1}}
+\newcommand{\uni}[1]{\,\mathrm{#1}}
+\newcommand{\A}{\uni{A}} \newcommand{\V}{\uni{V}}
+\newcommand{\W}{\uni{W}} \newcommand{\J}{\uni{J}}
+\newcommand{\Cb}{\uni{C}} \newcommand{\s}{\uni{s}}
+\newcommand{\Wb}{\uni{Wb}} \newcommand{\Hy}{\uni{H}}
+\newcommand{\Sie}{\uni{S}}
+
+
+%  voltage sources: smaller + and - inside the circle, further apart
+\ctikzset{bipoles/vsourceam/inner plus={\tiny$+$},
+          bipoles/vsourceam/inner minus={\tiny$\vphantom{+}-$},
+          bipoles/vsourceam/margin=0.85,
+          bipoles/cvsourceam/inner plus={\tiny$+$},
+          bipoles/cvsourceam/inner minus={\tiny$\vphantom{+}-$},
+          bipoles/cvsourceam/margin=0.85}
+\ctikzset{bipoles/length=0.9cm, label/align=straight,
+          bipoles/generic/height=0.28, bipoles/generic/width=0.62}
+\tikzset{
+  iar/.style={-{Stealth[length=2.2mm]}, ccur, thick},
+  glab/.style={font=\footnotesize, text=metured},
+  ttl/.style={font=\scriptsize\bfseries, text=metugray},
+  capn/.style={font=\scriptsize, text=metugray, align=center},
+  pol/.style={font=\small, text=cvolt},
+  nlab/.style={circle, draw=metured, text=metured, font=\scriptsize, inner sep=0.7pt},
+  blab/.style={font=\footnotesize, text=black!80},
+  gbr/.style={black!75, thick, postaction={decorate, decoration={markings,
+      mark=at position 0.56 with {\arrow{Stealth[length=2.5mm]}}}}},
+  hal/.style={draw=cpow!60, line width=6pt, opacity=0.35, line cap=round, line join=round},
+  halo/.style={circle, fill=metured!16, minimum size=0.95cm},
+  elem/.style={draw=metugray, thick, fill=metulight},
+  bigarr/.style={-{Stealth[length=3mm]}, very thick, metugray},
+}
+
+%-------------------- Lecture 14 circuit macros ---------------
+\newcommand{\ohm}{\,\Omega}
+\newcommand{\yes}{\textcolor{cpow}{\checkmark}}
+\newcommand{\e}[1]{\textcolor{cvolt}{e_{#1}}}
+\newcommand{\nd}[1]{\tikz[baseline=(c.base)]\node[nlab](c){#1};}
+\newcommand{\gnd}[2]{\draw (#1,#2) -- ++(0,-0.2) node[ground] {};}
+\newcommand{\Rin}{R_{\mathrm{in}}}
+%  Port variables in colour
+\newcommand{\vone}{\Vcol{v_1}}  \newcommand{\vtwo}{\Vcol{v_2}}
+\newcommand{\ione}{\Icol{i_1}}  \newcommand{\itwo}{\Icol{i_2}}
+\newcommand{\Rm}{\mathbf{R}}  \newcommand{\Gm}{\mathbf{G}}
+\newcommand{\Hm}{\mathbf{H}}  \newcommand{\Tm}{\mathbf{T}}
+%  Labels beside a vertical element at (#1,#2), a fixed distance to the right (\lR) or left (\lL)
+\newcommand{\lR}[3]{\node[anchor=west, xshift=7pt, font=\small] at (#1,#2) {#3};}
+\newcommand{\lL}[3]{\node[anchor=east, xshift=-7pt, font=\small] at (#1,#2) {#3};}
+\tikzset{tlab/.style={font=\small\bfseries, text=black!80},
+         dotm/.style={circle, fill=black, inner sep=0pt, minimum size=4.2pt},
+         core/.style={line width=1.1pt, metugray}}
+
+%  Port 1 at terminals x = #1 (top y = #2, bottom y = 0): i_1 into the top terminal, + v_1 -
+\newcommand{\pone}[2]{%
+  \draw (#1,#2) node[ocirc] {}; \draw (#1,0) node[ocirc] {};
+  \draw[iar] (#1+0.2,#2+0.28) -- (#1+0.75,#2+0.28); \node[font=\small, text=ccur] at (#1+0.48,#2+0.58) {$i_1$};
+  \node[pol] at (#1+0.3,0.72*#2) {$+$}; \node[pol] at (#1+0.3,0.22*#2) {$-$};
+  \node[font=\small, text=cvolt] at (#1+0.32,0.47*#2) {$v_1$};}
+%  Port 2 at terminals x = #1: i_2 into the top terminal (pointing left), + v_2 -
+\newcommand{\ptwo}[2]{%
+  \draw (#1,#2) node[ocirc] {}; \draw (#1,0) node[ocirc] {};
+  \draw[iar] (#1-0.2,#2+0.28) -- (#1-0.75,#2+0.28); \node[font=\small, text=ccur] at (#1-0.48,#2+0.58) {$i_2$};
+  \node[pol] at (#1-0.3,0.72*#2) {$+$}; \node[pol] at (#1-0.3,0.22*#2) {$-$};
+  \node[font=\small, text=cvolt] at (#1-0.32,0.47*#2) {$v_2$};}
+%  A two-port box (text #1) with both ports
+\newcommand{\tpbox}[1]{%
+  \draw[elem] (1.0,-0.2) rectangle (3.4,2.2);
+  \node[align=center, font=\small] at (2.2,1.0) {#1};
+  \draw (0,1.8) -- (1.0,1.8); \draw (0,0) -- (1.0,0);
+  \draw (3.4,1.8) -- (4.4,1.8); \draw (3.4,0) -- (4.4,0);
+  \pone{0}{1.8} \ptwo{4.4}{1.8}}
+%  A one-port box with a resistor-like port (for the review)
+\newcommand{\opbox}[1]{%
+  \draw[elem] (0,0) rectangle (1.9,2);
+  \node[align=center, font=\small] at (0.95,1) {#1};
+  \draw (1.9,1.7) -- (3.0,1.7) node[ocirc] {}; \draw (1.9,0.3) -- (3.0,0.3) node[ocirc] {};
+  \draw[iar] (2.75,1.95) -- (2.2,1.95); \node[font=\small, text=ccur] at (2.48,2.25) {$i$};
+  \node[pol] at (2.6,1.4) {$+$}; \node[pol] at (2.6,0.6) {$-$};
+  \node[font=\small, text=cvolt] at (2.6,1.0) {$v$};}
+
+%  Example 14.1: R_1 across port 1, R_2 across port 2 (no coupling)
+\newcommand{\exTriv}{%
+  \draw (0,1.8) -- (1.5,1.8); \draw (0,0) -- (1.5,0);
+  \draw (1.5,1.8) to[R] (1.5,0); \lR{1.5}{0.9}{$2\ohm$}
+  \draw (4.1,1.8) to[R] (4.1,0); \lL{4.1}{0.9}{$4\ohm$}
+  \draw (4.1,1.8) -- (5.6,1.8); \draw (4.1,0) -- (5.6,0);
+  \draw[dashed, metugray] (1.0,-0.45) rectangle (4.6,2.45);
+  \pone{0}{1.8} \ptwo{5.6}{1.8}}
+
+%  Example 14.2: R_1 (series), R_2 (shunt), CCVS 2 i_1 (+ on the left).
+%  #1 = 0: both ports;  1: i_2 = 0 (port 2 open);  2: i_1 = 0 (port 1 open);  3: v_2 = 0 (port 2 shorted)
+%  #2, #3: labels of R_1, R_2
+\newcommand{\exTee}[4][2]{%
+  \draw (0,2.2) -- (0.9,2.2) to[R, l=#3] (2.6,2.2) -- (4.3,2.2);
+  \draw (4.3,2.2) to[american controlled voltage source, l=$\Vcol{#1\,i_1}$] (5.9,2.2) -- (6.9,2.2);
+  \draw (2.6,2.2) to[R] (2.6,0); \lR{2.6}{1.1}{#4}
+  \draw (0,0) -- (6.9,0);
+  \fill (2.6,2.2) circle (1.7pt); \fill (2.6,0) circle (1.7pt);
+  \ifcase#2
+    \pone{0}{2.2} \ptwo{6.9}{2.2}
+  \or
+    \pone{0}{2.2}
+    \draw (6.9,2.2) node[ocirc] {}; \draw (6.9,0) node[ocirc] {};
+    \node[pol] at (6.6,1.6) {$+$}; \node[pol] at (6.6,0.5) {$-$};
+    \node[font=\small, text=cvolt] at (6.58,1.05) {$v_2$};
+    \node[font=\small, text=ccur, anchor=west] at (7.05,2.2) {$i_2 = 0$};
+  \or
+    \draw (0,2.2) node[ocirc] {}; \draw (0,0) node[ocirc] {};
+    \node[pol] at (0.3,1.6) {$+$}; \node[pol] at (0.3,0.5) {$-$};
+    \node[font=\small, text=cvolt] at (0.32,1.05) {$v_1$};
+    \node[font=\small, text=ccur, anchor=east] at (-0.15,2.2) {$i_1 = 0$};
+    \ptwo{6.9}{2.2}
+  \or
+    \pone{0}{2.2}
+    \draw (6.9,2.2) -- (6.9,0);
+    \draw[iar] (6.65,2.5) -- (6.1,2.5); \node[font=\small, text=ccur] at (6.38,2.8) {$i_2$};
+    \node[font=\small, text=cvolt, anchor=west] at (7.05,1.1) {$v_2 = 0$};
+  \fi}
+
+%  Ideal transformer N_1 : N_2 as a two-port (coils at x = 1.4 and 3.0, height 1.8)
+\newcommand{\xfmr}[2]{%
+  \begin{scope}[xshift=#1 cm]
+    \ctikzset{bipoles/length=1.2cm}
+    \draw (0,0) to[L] (0,#2);
+    \draw (1.6,#2) to[L] (1.6,0);
+    \draw[core] (0.72,-0.05) -- (0.72,#2+0.05);
+    \draw[core] (0.88,-0.05) -- (0.88,#2+0.05);
+    \node[dotm] at (0.36,#2-0.2) {};
+    \node[dotm] at (1.24,#2-0.2) {};
+  \end{scope}}
+\newcommand{\exXf}{%
+  \draw (0,1.8) -- (1.4,1.8); \draw (0,0) -- (1.4,0);
+  \xfmr{1.4}{1.8}
+  \draw (3.0,1.8) -- (4.4,1.8); \draw (3.0,0) -- (4.4,0);
+  \node[font=\small] at (2.2,2.2) {$N_1 : N_2$};
+  \pone{0}{1.8} \ptwo{4.4}{1.8}}
+\newcommand{\Rth}{R_{\mathrm{th}}}
+
+%  Meters drawn upright: vertical (x, ytop, ybot, letter, label right) and horizontal (xl, xr, y, letter, label above)
+\newcommand{\vmeter}[5]{%
+  \draw (#1,#2) -- (#1,{(#2+#3)/2+0.32}); \draw (#1,{(#2+#3)/2-0.32}) -- (#1,#3);
+  \node[circle, draw, thick, minimum size=0.64cm, inner sep=0pt, font=\small\bfseries] at (#1,{(#2+#3)/2}) {#4};
+  \node[anchor=west, font=\small] at ({#1+0.38},{(#2+#3)/2}) {#5};}
+\newcommand{\hmeter}[5]{%
+  \draw (#1,#3) -- ({(#1+#2)/2-0.32},#3); \draw ({(#1+#2)/2+0.32},#3) -- (#2,#3);
+  \node[circle, draw, thick, minimum size=0.64cm, inner sep=0pt, font=\small\bfseries] at ({(#1+#2)/2},#3) {#4};
+  \node[anchor=south, font=\small] at ({(#1+#2)/2},{#3+0.36}) {#5};}
+%  Test bench for a two-port in a box. #1 = 0: open-circuit test (current source at port 1,
+%  voltmeters at both ports); 1: short-circuit test (voltage source at port 1, ammeters)
+\newcommand{\bench}[1]{%
+  \draw[thick, fill=gray!8] (3.0,-0.2) rectangle (5.0,2.4);
+  \node[font=\large] at (4.0,1.1) {$N$};
+  \draw (3.0,2.0) -- (2.6,2.0); \draw (3.0,0.2) -- (2.6,0.2);
+  \draw (5.0,2.0) -- (5.4,2.0); \draw (5.0,0.2) -- (5.4,0.2);
+  \foreach \p in {(2.6,2.0),(2.6,0.2),(5.4,2.0),(5.4,0.2)} \draw \p node[ocirc] {};
+  \ifcase#1
+    \draw (0,0.2) to[american current source, l=$\Icol{i_1}$] (0,2.0) -- (2.6,2.0);
+    \draw (0,0.2) -- (2.6,0.2);
+    \vmeter{1.5}{2.0}{0.2}{V}{$\Vcol{v_1}$}
+    \fill (1.5,2.0) circle (1.6pt); \fill (1.5,0.2) circle (1.6pt);
+    \draw (5.4,2.0) -- (6.6,2.0); \draw (5.4,0.2) -- (6.6,0.2);
+    \vmeter{6.6}{2.0}{0.2}{V}{$\Vcol{v_2}$}
+    \node[font=\small, text=ccur, anchor=south] at (6.0,2.05) {$i_2 = 0$};
+  \or
+    \draw (0,2.0) to[american voltage source, l_=$\Vcol{v_1}$] (0,0.2);
+    \hmeter{0}{2.6}{2.0}{A}{$\Icol{i_1}$}
+    \draw (0,0.2) -- (2.6,0.2);
+    \draw (5.4,2.0) -- (6.6,2.0); \draw (5.4,0.2) -- (6.6,0.2);
+    \vmeter{6.6}{2.0}{0.2}{A}{$\Icol{i_2}$}
+    \node[font=\small, text=cvolt, anchor=south] at (6.0,2.05) {$v_2 = 0$};
+  \fi}
+%  Reciprocity: a two-port N (LTI resistors) with something at each port.
+%  \rcp{left code}{left label}{right code}{right label}; code 0: voltage source (+ at the top),
+%  1: current source (into the + terminal), 2: short (current shown), 3: open (voltage shown),
+%  4: ammeter (reading shown)
+\newcommand{\rcp}[4]{%
+  \draw[elem] (1.6,-0.2) rectangle (3.8,2.2);
+  \node[align=center, font=\small] at (2.7,1.0) {LTI\\ resistors};
+  \draw (1.1,1.8) -- (1.6,1.8); \draw (1.1,0) -- (1.6,0);
+  \draw (3.8,1.8) -- (4.3,1.8); \draw (3.8,0) -- (4.3,0);
+  \ifcase#1
+    \draw (0,1.8) to[american voltage source, l_=#2] (0,0); \draw (0,1.8) -- (1.1,1.8); \draw (0,0) -- (1.1,0);
+  \or
+    \draw (0,0) to[american current source, l=#2] (0,1.8); \draw (0,1.8) -- (1.1,1.8); \draw (0,0) -- (1.1,0);
+  \or
+    \draw (0,1.8) -- (0,0); \draw (0,1.8) -- (1.1,1.8); \draw (0,0) -- (1.1,0);
+    \draw[iar] (0.25,2.08) -- (0.85,2.08); \node[font=\small, anchor=south] at (0.55,2.12) {#2};
+  \or
+    \node[pol] at (1.05,1.45) {$+$}; \node[pol] at (1.05,0.35) {$-$};
+    \node[font=\small, anchor=east] at (1.0,0.9) {#2};
+  \or
+    \draw (0,1.8) -- (0,1.22); \draw (0,0.58) -- (0,0);
+    \node[circle, draw, thick, minimum size=0.64cm, inner sep=0pt, font=\small\bfseries] at (0,0.9) {A};
+    \node[font=\small, anchor=east] at (-0.38,0.9) {#2};
+    \draw (0,1.8) -- (1.1,1.8); \draw (0,0) -- (1.1,0);
+  \fi
+  \ifcase#3
+    \draw (5.4,1.8) to[american voltage source, l=#4] (5.4,0); \draw (4.3,1.8) -- (5.4,1.8); \draw (4.3,0) -- (5.4,0);
+  \or
+    \draw (5.4,0) to[american current source, l_=#4] (5.4,1.8); \draw (4.3,1.8) -- (5.4,1.8); \draw (4.3,0) -- (5.4,0);
+  \or
+    \draw (5.4,1.8) -- (5.4,0); \draw (4.3,1.8) -- (5.4,1.8); \draw (4.3,0) -- (5.4,0);
+    \draw[iar] (5.15,2.08) -- (4.55,2.08); \node[font=\small, anchor=south] at (4.85,2.12) {#4};
+  \or
+    \node[pol] at (4.35,1.45) {$+$}; \node[pol] at (4.35,0.35) {$-$};
+    \node[font=\small, anchor=west] at (4.4,0.9) {#4};
+  \or
+    \draw (5.4,1.8) -- (5.4,1.22); \draw (5.4,0.58) -- (5.4,0);
+    \node[circle, draw, thick, minimum size=0.64cm, inner sep=0pt, font=\small\bfseries] at (5.4,0.9) {A};
+    \node[font=\small, anchor=west] at (5.78,0.9) {#4};
+    \draw (4.3,1.8) -- (5.4,1.8); \draw (4.3,0) -- (5.4,0);
+  \fi
+  \draw (1.1,1.8) node[ocirc] {}; \draw (1.1,0) node[ocirc] {};
+  \draw (4.3,1.8) node[ocirc] {}; \draw (4.3,0) node[ocirc] {};}
+%  Cascade: two boxes
+\newcommand{\cascade}{%
+  \draw[elem] (1.0,-0.2) rectangle (2.8,2.2); \node[font=\small] at (1.9,1.0) {$\Tm_a$};
+  \draw[elem] (4.2,-0.2) rectangle (6.0,2.2); \node[font=\small] at (5.1,1.0) {$\Tm_b$};
+  \draw (0,1.8) -- (1.0,1.8); \draw (0,0) -- (1.0,0);
+  \draw (2.8,1.8) -- (4.2,1.8); \draw (2.8,0) -- (4.2,0);
+  \draw (6.0,1.8) -- (7.0,1.8); \draw (6.0,0) -- (7.0,0);
+  \fill (3.5,1.8) circle (1.6pt); \fill (3.5,0) circle (1.6pt);
+  \pone{0}{1.8} \ptwo{7.0}{1.8}}
+%  The ladder of the reciprocity example: 1 Ohm series, 2 Ohm shunt, 2 Ohm series
+\newcommand{\ladder}[2]{%  #1: left code, #2: right code (as in \rcp, labels fixed)
+  \draw (1.1,1.8) to[R, l=$1\ohm$] (2.6,1.8) to[R, l=$2\ohm$] (4.3,1.8);
+  \draw (2.6,1.8) to[R, l=$2\ohm$] (2.6,0); \fill (2.6,1.8) circle (1.6pt); \fill (2.6,0) circle (1.6pt);
+  \draw (1.1,0) -- (4.3,0);
+  \ifcase#1 \draw (0,1.8) to[american voltage source, l_=$\Vcol{8\V}$] (0,0); \draw (0,1.8) -- (1.1,1.8); \draw (0,0) -- (1.1,0);
+  \or \draw (0,1.8) -- (0,0); \draw (0,1.8) -- (1.1,1.8); \draw (0,0) -- (1.1,0);
+      \draw[iar] (0.25,2.08) -- (0.85,2.08); \node[font=\small, text=ccur, anchor=south] at (0.55,2.12) {$\hat\imath_1$};
+  \fi
+  \ifcase#2 \draw (5.4,1.8) to[american voltage source, l=$\Vcol{8\V}$] (5.4,0); \draw (4.3,1.8) -- (5.4,1.8); \draw (4.3,0) -- (5.4,0);
+  \or \draw (5.4,1.8) -- (5.4,0); \draw (4.3,1.8) -- (5.4,1.8); \draw (4.3,0) -- (5.4,0);
+      \draw[iar] (5.15,2.08) -- (4.55,2.08); \node[font=\small, text=ccur, anchor=south] at (4.85,2.12) {$i_2$};
+  \fi
+  \draw (1.1,1.8) node[ocirc] {}; \draw (1.1,0) node[ocirc] {};
+  \draw (4.3,1.8) node[ocirc] {}; \draw (4.3,0) node[ocirc] {};}
+
+%  Tellegen, general form: two circuits on one graph (nodes 1, 2 and the bottom node 0).
+%  Branches: 1 = source (node 1 to 0), 2 = node 1 to 2, 3 and 4 = node 2 to 0.
+\tikzset{btag/.style={circle, draw=metugray, text=metugray, inner sep=0.6pt, minimum size=3.6mm, font=\scriptsize\bfseries}}
+\newcommand{\tgCirc}[1]{%
+  \ifcase#1
+    \draw (0,2) to[american voltage source, l_=$\Vcol{6\V}$] (0,0);
+    \draw (0,2) to[R, l=$1\ohm$] (2,2) -- (3.4,2);
+    \draw (2,2) to[R, l_=$4\ohm$] (2,0); \draw (3.4,2) to[R, l=$4\ohm$] (3.4,0);
+  \or
+    \draw (0,0) to[american current source, l=$\Icol{3\A}$] (0,2);
+    \draw (0,2) to[R, l=$1\ohm$] (2,2) -- (3.4,2);
+    \draw (2,2) to[R, l_=$1\ohm$] (2,0); \draw (3.4,2) to[R, l=$2\ohm$] (3.4,0);
+  \fi
+  \draw (0,0) -- (3.4,0);
+  \fill (2,2) circle (1.6pt); \fill (2,0) circle (1.6pt);
+  \node[btag] at (0,-0.45) {1}; \node[btag] at (0.75,1.5) {2};
+  \node[btag] at (2,-0.45) {3};  \node[btag] at (3.4,-0.45) {4};}
+\newcommand{\tgGraph}{%
+  \coordinate (n1) at (0,2); \coordinate (n2) at (2.2,2); \coordinate (n0) at (1.1,0);
+  \draw[-{Stealth[length=2mm]}, thick] (n1) -- node[btag, left=3pt] {1} (n0);
+  \draw[-{Stealth[length=2mm]}, thick] (n1) -- node[btag, above=3pt] {2} (n2);
+  \draw[-{Stealth[length=2mm]}, thick] (n2) to[bend right=25] node[btag, left=2pt] {3} (n0);
+  \draw[-{Stealth[length=2mm]}, thick] (n2) to[bend left=25] node[btag, right=2pt] {4} (n0);
+  \foreach \n/\t/\a in {n1/1/above left, n2/2/above right, n0/0/below} {\fill (\n) circle (2.2pt); \node[\a, font=\small] at (\n) {\t};}}
+%  Why reciprocity holds: a port seen as a branch (left), one resistor in both circuits (right)
+\newcommand{\whyRecip}{%
+  \draw[elem] (1.6,-0.2) rectangle (2.6,2.2); \node[font=\small] at (2.1,1.0) {$N$};
+  \draw (1.1,1.8) -- (1.6,1.8); \draw (1.1,0) -- (1.6,0);
+  \draw[dashed, thick, metugray] (1.1,1.8) -- (0.2,1.8) -- (0.2,0) -- (1.1,0);
+  \draw[iar] (0.2,1.35) -- (0.2,0.45); \node[font=\small, text=ccur, anchor=east] at (0.12,0.9) {$-i_1$};
+  \draw[iar] (1.15,2.1) -- (1.55,2.1); \node[font=\small, text=ccur, anchor=south] at (1.35,2.15) {$i_1$};
+  \node[pol] at (0.85,1.45) {$+$}; \node[pol] at (0.85,0.35) {$-$}; \node[font=\small, text=cvolt] at (0.85,0.9) {$v_1$};
+  \draw (1.1,1.8) node[ocirc] {}; \draw (1.1,0) node[ocirc] {};
+  \node[font=\footnotesize, text=metugray, align=center] at (0.6,-0.65) {port branch};
+  \begin{scope}[xshift=4.6cm]
+    \draw (0,2) to[R, l_=$R_k$] (0,0);
+    \draw[iar] (0.35,1.7) -- (0.35,1.25); \node[font=\small, text=ccur, anchor=west] at (0.4,1.5) {$i_k$};
+    \node[font=\small, text=cvolt, anchor=west] at (0.4,0.6) {$v_k = R_k i_k$};
+    \node[font=\footnotesize, text=metugray] at (0,-0.65) {circuit 1};
+  \end{scope}
+  \begin{scope}[xshift=8.0cm]
+    \draw (0,2) to[R, l_=$R_k$] (0,0);
+    \draw[iar] (0.35,1.7) -- (0.35,1.25); \node[font=\small, text=ccur, anchor=west] at (0.4,1.5) {$\hat\imath_k$};
+    \node[font=\small, text=cvolt, anchor=west] at (0.4,0.6) {$\hat v_k = R_k \hat\imath_k$};
+    \node[font=\footnotesize, text=metugray] at (0,-0.65) {circuit 2};
+  \end{scope}}
+%  The resistance matrix of a reciprocal two-port: a mirror across the diagonal
+\newcommand{\symR}{%
+  \draw[thick] (0.15,0) -- (0,0) -- (0,2.2) -- (0.15,2.2); \draw[thick] (2.85,0) -- (3.0,0) -- (3.0,2.2) -- (2.85,2.2);
+  \draw[dashed, thick, metugray] (0.15,2.1) -- (2.85,0.1);
+  \node[fill=white, inner sep=1pt] at (0.75,1.65) {$r_{11}$}; \node[fill=white, inner sep=1pt] at (2.25,0.55) {$r_{22}$};
+  \node[draw=ccharge, thick, fill=ccharge!8, rounded corners=2pt, inner sep=2pt] at (2.25,1.65) {$r_{12}$};
+  \node[draw=ccharge, thick, fill=ccharge!8, rounded corners=2pt, inner sep=2pt] at (0.75,0.55) {$r_{21}$};
+  \node[font=\footnotesize, text=metugray, anchor=north] at (2.85,0.05) {mirror};
+  \node[anchor=west, font=\small] at (3.6,1.65) {$r_{12} = \dfrac{\Vcol{v_1}}{\Icol{i_2}}\Big|_{\Icol{i_1} = 0}$: \ in at port 2, read at port 1};
+  \node[anchor=west, font=\small] at (3.6,0.55) {$r_{21} = \dfrac{\Vcol{v_2}}{\Icol{i_1}}\Big|_{\Icol{i_2} = 0}$: \ in at port 1, read at port 2};}
+%  Why reciprocity holds: the whole circuit = two port branches (outside) + resistors (inside N)
+\newcommand{\splitRecip}{%
+  \fill[cpow!7, rounded corners=3pt] (1.75,-0.45) rectangle (4.85,2.35);
+  \draw[cpow, dashed, thick, rounded corners=3pt] (1.75,-0.45) rectangle (4.85,2.35);
+  \node[text=cpow, font=\small\bfseries, anchor=south] at (3.3,2.38) {inside $N$: resistors};
+  \draw (1.5,1.8) -- (1.9,1.8) to[R] (3.3,1.8) to[R] (4.7,1.8) -- (5.1,1.8);
+  \draw (3.3,1.8) to[R] (3.3,0); \fill (3.3,1.8) circle (1.6pt); \fill (3.3,0) circle (1.6pt);
+  \draw (1.5,0) -- (5.1,0);
+  \draw[ccharge, very thick] (1.5,1.8) -- (0,1.8) to[generic, color=ccharge] (0,0) -- (1.5,0);
+  \draw[ccharge, very thick] (5.1,1.8) -- (6.6,1.8) to[generic, color=ccharge] (6.6,0) -- (5.1,0);
+  \node[text=ccharge, font=\small\bfseries, align=center] at (-1.0,2.55) {port 1\\[-2pt] branch};
+  \node[text=ccharge, font=\small\bfseries, align=center] at (7.6,2.55) {port 2\\[-2pt] branch};
+  \draw[iar] (0.65,2.1) -- (1.15,2.1); \node[text=ccur, font=\small, anchor=south] at (0.9,2.12) {$i_1$};
+  \draw[iar] (5.95,2.1) -- (5.45,2.1); \node[text=ccur, font=\small, anchor=south] at (5.7,2.12) {$i_2$};
+  \node[pol] at (1.1,1.45) {$+$}; \node[pol] at (1.1,0.35) {$-$}; \node[text=cvolt, font=\small] at (1.1,0.9) {$v_1$};
+  \node[pol] at (5.5,1.45) {$+$}; \node[pol] at (5.5,0.35) {$-$}; \node[text=cvolt, font=\small] at (5.5,0.9) {$v_2$};
+  \draw[iar] (-0.45,1.3) -- (-0.45,0.5); \node[text=ccur, font=\small, anchor=east] at (-0.5,0.9) {$-i_1$};
+  \draw[iar] (7.05,1.3) -- (7.05,0.5); \node[text=ccur, font=\small, anchor=west] at (7.1,0.9) {$-i_2$};
+  \foreach \p in {(1.5,1.8),(1.5,0),(5.1,1.8),(5.1,0)} \draw \p node[ocirc] {};}
+%  A one-way two-port: 2 Ohm across port 1, VCCS 0.5 v_1 across port 2 (pointing down).
+%  \depRecip{left code}{left label}{right code}{right label}; codes: 0 voltage source, 4 ammeter
+\newcommand{\depRecip}[4]{%
+  \draw[elem] (1.5,-0.25) rectangle (6.4,2.25);
+  \draw (1.1,1.8) -- (2.2,1.8) to[R, l_=$2\ohm$] (2.2,0);
+  \node[pol] at (3.15,1.45) {$+$}; \node[pol] at (3.15,0.35) {$-$}; \node[text=cvolt, font=\small] at (3.15,0.9) {$v_1$};
+  \draw (4.2,1.8) to[american controlled current source, l=$0.5\,\Vcol{v_1}$] (4.2,0);
+  \draw (4.2,1.8) -- (6.8,1.8); \draw (1.1,0) -- (6.8,0);
+  \ifcase#1
+    \draw (0,1.8) to[american voltage source, l_=#2] (0,0); \draw (0,1.8) -- (1.1,1.8); \draw (0,0) -- (1.1,0);
+  \or\or\or\or
+    \draw (0,1.8) -- (0,1.22); \draw (0,0.58) -- (0,0);
+    \node[circle, draw, thick, minimum size=0.64cm, inner sep=0pt, font=\small\bfseries] at (0,0.9) {A};
+    \node[font=\small, anchor=east] at (-0.38,0.9) {#2};
+    \draw (0,1.8) -- (1.1,1.8); \draw (0,0) -- (1.1,0);
+  \fi
+  \ifcase#3
+    \draw (7.9,1.8) to[american voltage source, l=#4] (7.9,0); \draw (6.8,1.8) -- (7.9,1.8); \draw (6.8,0) -- (7.9,0);
+  \or\or\or\or
+    \draw (7.9,1.8) -- (7.9,1.22); \draw (7.9,0.58) -- (7.9,0);
+    \node[circle, draw, thick, minimum size=0.64cm, inner sep=0pt, font=\small\bfseries] at (7.9,0.9) {A};
+    \node[font=\small, anchor=west] at (8.28,0.9) {#4};
+    \draw (6.8,1.8) -- (7.9,1.8); \draw (6.8,0) -- (7.9,0);
+  \fi
+  \foreach \p in {(1.1,1.8),(1.1,0),(6.8,1.8),(6.8,0)} \draw \p node[ocirc] {};}
+%  Extra port labels for \rcp: current arrows (into N) and port voltages
+\newcommand{\lcur}[1]{\draw[iar] (0.25,2.08) -- (0.85,2.08); \node[font=\small, anchor=south] at (0.55,2.12) {#1};}
+\newcommand{\rcur}[1]{\draw[iar] (5.15,2.08) -- (4.55,2.08); \node[font=\small, anchor=south] at (4.85,2.12) {#1};}
+\newcommand{\lvolt}[1]{\node[pol] at (1.05,1.45) {$+$}; \node[pol] at (1.05,0.35) {$-$}; \node[font=\small, anchor=east] at (1.0,0.9) {#1};}
+\newcommand{\rvolt}[1]{\node[pol] at (4.35,1.45) {$+$}; \node[pol] at (4.35,0.35) {$-$}; \node[font=\small, anchor=west] at (4.4,0.9) {#1};}
+%  The four matrix tests: \mtest{R|G|H|T}{1|2}
+\newcommand{\mtest}[2]{%
+  \ifnum#2=1
+    \if#1R \rcp{1}{$\Icol{1\A}$}{3}{$\Vcol{r_{21}}$}\fi
+    \if#1G \rcp{0}{$\Vcol{1\V}$}{2}{$\Icol{g_{21}}$}\lcur{$\Icol{g_{11}}$}\fi
+    \if#1H \rcp{1}{$\Icol{1\A}$}{2}{$\Icol{h_{21}}$}\fi
+    \if#1T \rcp{0}{$\Vcol{A}$}{3}{$\Vcol{1\V}$}\lcur{$\Icol{C}$}\fi
+  \else
+    \if#1R \rcp{3}{$\Vcol{r_{12}}$}{1}{$\Icol{1\A}$}\fi
+    \if#1G \rcp{2}{$\Icol{g_{12}}$}{0}{$\Vcol{1\V}$}\rcur{$\Icol{g_{22}}$}\fi
+    \if#1H \rcp{3}{$\Vcol{h_{12}}$}{0}{$\Vcol{1\V}$}\rcur{$\Icol{h_{22}}$}\fi
+    \if#1T \rcp{0}{$\Vcol{B}$}{2}{$\Icol{-1\A}$}\lcur{$\Icol{D}$}\fi
+  \fi}
+\newcommand{\mpair}[1]{%
+  \mtest{#1}{1}
+  \begin{scope}[xshift=7.8cm] \mtest{#1}{2} \end{scope}
+  \node[font=\small, text=metugray] at (2.7,-0.75) {circuit 1};
+  \node[font=\small, text=metugray] at (10.5,-0.75) {circuit 2};}
+\title{Lecture 14: Two-Port Circuits}
+\subtitle{EE201 -- Circuit Theory I}
+\author{M. Mert Ankaral{\i}}
+\institute{\small Department of Electrical and Electronics Engineering\\
+           Middle East Technical University}
+\date{}
+
+%  Roadmap icons (1-6): a two-port box with the letter of its matrix
+\newcommand{\rmicon}[1]{%
+  \draw[thick] (-0.8,-0.7) rectangle (0.8,0.7);
+  \draw (-1.6,0.5) node[ocirc] {} -- (-0.8,0.5); \draw (-1.6,-0.5) node[ocirc] {} -- (-0.8,-0.5);
+  \draw (0.8,0.5) -- (1.6,0.5) node[ocirc] {}; \draw (0.8,-0.5) -- (1.6,-0.5) node[ocirc] {};
+  \node[font=\LARGE\bfseries] at (0,0) {\ifcase#1\or$\mathbf{R}$\or$\mathbf{G}$\or$\mathbf{H}$\or$\mathbf{T}$\or$P$\or$\rightleftarrows$\fi};}
+%  Stops 1-8: station of stop k = \rmst{k}
+\newcommand{\rmst}[1]{\ifcase#1\or1\or1\or2\or3\or3\or4\or5\or6\fi}
+\newcommand{\rmstation}[4]{%
+  \ifnum#1<\rmS\relax
+    \node[circle, fill=cpow, text=white, inner sep=0pt, minimum size=5.4mm, font=\scriptsize\bfseries] at (#2,0) {\checkmark};
+    \node[text=black!40, font=\small\bfseries, align=center, anchor=south, inner sep=1pt] at (#2,0.36) {#3};
+  \else\ifnum#1=\rmS\relax
+    \node[circle, fill=metured, text=white, inner sep=0pt, minimum size=6.2mm, font=\small\bfseries] at (#2,0) {#1};
+    \node[text=metured, font=\small\bfseries, align=center, anchor=south, inner sep=1pt] at (#2,0.36) {#3};
+  \else
+    \node[circle, draw=metugray, fill=white, text=metugray, inner sep=0pt, minimum size=5.4mm, font=\scriptsize\bfseries] at (#2,0) {#1};
+    \node[font=\small\bfseries, align=center, anchor=south, inner sep=1pt] at (#2,0.36) {#3};
+  \fi\fi
+  \begin{scope}[shift={(#2,1.75)}, scale=0.42, transform shape]
+    \ifnum#1>\rmS\relax\begin{scope}[opacity=0.5]\rmicon{#4}\end{scope}\else\rmicon{#4}\fi
+  \end{scope}}
+%  #1 first stop, #2 last stop covered by this item, #3 x, #4 y, #5 text
+\newcommand{\rmsub}[5]{%
+  \ifnum#2<\rmcur\relax
+    \node[text width=2.1cm, align=center, font=\footnotesize, text=black!40] at (#3,#4) {#5\ \textcolor{cpow}{\checkmark}};
+  \else\ifnum#1>\rmcur\relax
+    \node[text width=2.1cm, align=center, font=\footnotesize] at (#3,#4) {#5};
+  \else
+    \node[text width=2.1cm, align=center, font=\footnotesize\bfseries, text=metured,
+          draw=metured, rounded corners=2pt, inner sep=2pt] at (#3,#4) {#5};
+  \fi\fi}
+\newcommand{\roadmapframe}[1]{%
+  \begin{frame}{Roadmap}
+    \def\rmcur{#1}\edef\rmS{\rmst{#1}}%
+    \vfill
+    \centering
+    \begin{tikzpicture}
+      \draw[metugray!45, line width=3pt, -{Stealth[length=2.6mm, width=3.2mm]}] (0,0) -- (13.5,0);
+      \rmstation{1}{1.1}{Resistance\\ matrix}{1}
+      \rmstation{2}{3.35}{Conductance\\ matrix}{2}
+      \rmstation{3}{5.6}{Hybrid\\ matrices}{3}
+      \rmstation{4}{7.85}{Transmission\\ matrix}{4}
+      \rmstation{5}{10.1}{Power}{5}
+      \rmstation{6}{12.35}{Reciprocity}{6}
+      \rmsub{1}{1}{1.1}{-0.8}{$\mathbf{v} = \mathbf{R}\,\mathbf{i}$}
+      \rmsub{2}{2}{1.1}{-1.5}{open-circuit tests}
+      \rmsub{3}{3}{3.35}{-0.8}{$\mathbf{i} = \mathbf{G}\,\mathbf{v}$}
+      \rmsub{3}{3}{3.35}{-1.5}{short-circuit tests}
+      \rmsub{4}{4}{5.6}{-0.8}{$\mathbf{H}$ and $\mathbf{H}'$}
+      \rmsub{4}{4}{5.6}{-1.5}{ideal transformer}
+      \rmsub{6}{6}{7.85}{-0.8}{$\vtwo$ and $-\itwo$}
+      \rmsub{6}{6}{7.85}{-1.5}{cascade, load}
+      \rmsub{7}{7}{10.1}{-0.8}{$\vone\ione + \vtwo\itwo$}
+      \rmsub{7}{7}{10.1}{-1.5}{passive, active}
+      \rmsub{8}{8}{12.35}{-0.8}{Tellegen}
+      \rmsub{8}{8}{12.35}{-1.5}{swap source, meter}
+    \end{tikzpicture}
+    \vfill
+    \mbox{}
+    \vfill
+  \end{frame}}
+\begin{document}
+
+%--------------------------------------------------------------
+\begin{frame}[plain]
+  \titlepage
+  \vspace{-1.2em}
+  \begin{center}\scriptsize\color{metugray}
+    \Icol{$\blacksquare$}~current \quad \Vcol{$\blacksquare$}~voltage, node voltage $e$
+  \end{center}
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{Review: one-ports}
+  \vfill
+  \begin{columns}[c,onlytextwidth]
+    \begin{column}{0.42\textwidth}
+      \centering
+      \begin{tikzpicture}[scale=0.85]
+        \opbox{LTI\\resistive}
+      \end{tikzpicture}
+    \end{column}
+    \begin{column}{0.56\textwidth}
+      \begin{itemize}\itemsep8pt
+        \item No independent sources: \ $\Vcol{v} = \Rin\,\Icol{i}$
+        \item With independent sources: \ $\Vcol{v} = \Rth\,\Icol{i} + \Vcol{v_{\mathrm{th}}}$
+      \end{itemize}
+    \end{column}
+  \end{columns}
+  \vfill
+\end{frame}
+
+%==============================================================
+\roadmapframe{1}
+
+%--------------------------------------------------------------
+\begin{frame}{Motivation: two ports}
+  \vfill
+  \begin{center}
+    \begin{tikzpicture}[scale=0.85]
+      \tpbox{$N$}
+    \end{tikzpicture}
+  \end{center}
+  \vfill
+  \begin{itemize}\itemsep8pt
+    \item $N$: LTI resistive, no independent sources
+    \item An input and an output: an amplifier, a transformer, a filter
+    \item One-port: $\Vcol{v} = R\,\Icol{i}$ with scalars
+    \item Two-port: $\mathbf{v} = \mathbf{R}\,\mathbf{i}$ with vectors in $\mathbb{R}^2$ and a $2 \times 2$ matrix
+  \end{itemize}
+  \vfill
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{The port variables}
+  \begin{columns}[c,onlytextwidth]
+    \begin{column}{0.5\textwidth}
+      \centering
+      \begin{tikzpicture}[scale=0.85]
+        \tpbox{$N$}
+      \end{tikzpicture}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \begin{itemize}\itemsep8pt
+        \item Each port: the current enters at $+$ and leaves at $-$
+        \item Four variables: $\vone$, $\ione$, $\vtwo$, $\itwo$
+        \item Two equations: two variables in terms of the other two
+      \end{itemize}
+    \end{column}
+  \end{columns}
+  \vfill
+  \begin{center}
+    \renewcommand{\arraystretch}{1.3}
+    \begin{tabular}{@{}lll@{}}
+      \toprule
+      given & find & matrix\\
+      \midrule
+      $\ione$, $\itwo$ & $\vone$, $\vtwo$ & resistance $\Rm$\\
+      $\vone$, $\vtwo$ & $\ione$, $\itwo$ & conductance $\Gm$\\
+      $\ione$, $\vtwo$ & $\vone$, $\itwo$ & hybrid $\Hm$\\
+      $\vtwo$, $-\itwo$ & $\vone$, $\ione$ & transmission $\Tm$\\
+      \bottomrule
+    \end{tabular}
+  \end{center}
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{The resistance matrix}
+  \vfill
+  \begin{columns}[c,onlytextwidth]
+    \begin{column}{0.46\textwidth}
+      \centering
+      \begin{tikzpicture}[scale=0.8]
+        \tpbox{$N$}
+      \end{tikzpicture}
+    \end{column}
+    \begin{column}{0.52\textwidth}
+      $\vone = r_{11}\,\ione + r_{12}\,\itwo$\\[6pt]
+      $\vtwo = r_{21}\,\ione + r_{22}\,\itwo$\\[14pt]
+      \begin{tikzpicture}
+        \node[draw=metured, thick, fill=metured!5, rounded corners=3pt, inner sep=6pt]
+          {$\begin{bmatrix} \vone\\ \vtwo \end{bmatrix}
+            = \underbrace{\begin{bmatrix} r_{11} & r_{12}\\ r_{21} & r_{22} \end{bmatrix}}_{\Rm}
+              \begin{bmatrix} \ione\\ \itwo \end{bmatrix}$};
+      \end{tikzpicture}
+    \end{column}
+  \end{columns}
+  \vfill
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{Example 14.1: two separate resistors}
+  \begin{columns}[c,onlytextwidth]
+    \begin{column}{0.52\textwidth}
+      \centering
+      \begin{tikzpicture}[scale=0.85]
+        \exTriv
+      \end{tikzpicture}
+    \end{column}
+    \begin{column}{0.46\textwidth}
+      $\Rm = \ ?$\\[14pt]
+      \onslide<2->{%
+      $\vone = 2\,\ione + 0\cdot\itwo$\\[4pt]
+      $\vtwo = 0\cdot\ione + 4\,\itwo$\\[12pt]
+      $\Rm = \begin{bmatrix} 2 & 0\\ 0 & 4 \end{bmatrix}\Omega$\\[10pt]
+      No coupling: \ $r_{12} = r_{21} = 0$}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{Example 14.2: a dependent source inside}
+  \vfill
+  \begin{center}
+    \begin{tikzpicture}[scale=0.9]
+      \exTee{0}{$2\ohm$}{$1\ohm$}
+    \end{tikzpicture}
+  \end{center}
+  \vfill
+  \begin{center}
+    $\Rm = \ ?$
+  \end{center}
+  \vfill
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{Example 14.2: KVL}
+  \begin{columns}[c,onlytextwidth]
+    \begin{column}{0.5\textwidth}
+      \centering
+      \begin{tikzpicture}[scale=0.72]
+        \exTee{0}{$2\ohm$}{$1\ohm$}
+      \end{tikzpicture}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      $1\ohm$ carries $\ione + \itwo$\\[8pt]
+      $\vone = 2\,\ione + (\ione + \itwo) = 3\,\ione + \itwo$\\[6pt]
+      $\vtwo = -2\,\ione + (\ione + \itwo) = -\ione + \itwo$\\[14pt]
+      \onslide<2->{%
+      \begin{tikzpicture}
+        \node[draw=metured, thick, fill=metured!5, rounded corners=3pt, inner sep=6pt]
+          {$\Rm = \begin{bmatrix} 3 & 1\\ -1 & 1 \end{bmatrix}\Omega$};
+      \end{tikzpicture}\\[8pt]
+      {\small $r_{12} \neq r_{21}$: the dependent source}}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+%==============================================================
+\roadmapframe{2}
+
+%--------------------------------------------------------------
+\begin{frame}{The entries from two tests}
+  \vfill
+  \begin{center}
+    \textbf{Port 2 open:} \ $\itwo = 0$\\[8pt]
+    $\begin{bmatrix} \vone\\ \vtwo \end{bmatrix}
+     = \begin{bmatrix} \alert{r_{11}} & r_{12}\\ \alert{r_{21}} & r_{22} \end{bmatrix}
+       \begin{bmatrix} \ione\\ 0 \end{bmatrix}
+     = \begin{bmatrix} r_{11}\,\ione\\ r_{21}\,\ione \end{bmatrix}$
+    \quad $\Rightarrow$ \quad
+    $\displaystyle r_{11} = \frac{\vone}{\ione}, \quad r_{21} = \frac{\vtwo}{\ione}$\\[4pt]
+    {\small the first column: \ $r_{11}$ input resistance, \ $r_{21}$ transfer resistance}
+  \end{center}
+  \vfill
+  \begin{center}
+    \textbf{Port 1 open:} \ $\ione = 0$\\[8pt]
+    $\begin{bmatrix} \vone\\ \vtwo \end{bmatrix}
+     = \begin{bmatrix} r_{11} & \alert{r_{12}}\\ r_{21} & \alert{r_{22}} \end{bmatrix}
+       \begin{bmatrix} 0\\ \itwo \end{bmatrix}
+     = \begin{bmatrix} r_{12}\,\itwo\\ r_{22}\,\itwo \end{bmatrix}$
+    \quad $\Rightarrow$ \quad
+    $\displaystyle r_{12} = \frac{\vone}{\itwo}, \quad r_{22} = \frac{\vtwo}{\itwo}$\\[4pt]
+    {\small the second column: \ $r_{12}$ transfer resistance, \ $r_{22}$ input resistance}
+  \end{center}
+  \vfill
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{Example 14.2 revisited: the two open-circuit tests}
+  \begin{columns}[t,onlytextwidth]
+    \begin{column}{0.49\textwidth}
+      \centering
+      \textbf{Port 2 open}\\[4pt]
+      \begin{tikzpicture}[scale=0.55]
+        \exTee{1}{$2\ohm$}{$1\ohm$}
+      \end{tikzpicture}\\[6pt]
+      \raggedright
+      No current through the dependent source\\[6pt]
+      $\vone = 3\,\ione$ \ $\Rightarrow$ \ $r_{11} = 3\ohm$\\[4pt]
+      $\vtwo = -2\,\ione + \ione$ \ $\Rightarrow$ \ $r_{21} = -1\ohm$
+    \end{column}
+    \begin{column}{0.49\textwidth}
+      \centering
+      \textbf{Port 1 open}\\[4pt]
+      \begin{tikzpicture}[scale=0.55]
+        \exTee{2}{$2\ohm$}{$1\ohm$}
+      \end{tikzpicture}\\[6pt]
+      \raggedright
+      No current in $2\ohm$; the dependent source is $0$\\[6pt]
+      $\vone = \itwo$ \ $\Rightarrow$ \ $r_{12} = 1\ohm$\\[4pt]
+      $\vtwo = \itwo$ \ $\Rightarrow$ \ $r_{22} = 1\ohm$ \quad The same $\Rm$ \ \yes
+    \end{column}
+  \end{columns}
+\end{frame}
+
+%==============================================================
+\roadmapframe{3}
+
+%--------------------------------------------------------------
+\begin{frame}{The conductance matrix}
+  \vfill
+  \begin{center}
+    \begin{tikzpicture}
+      \node[draw=metured, thick, fill=metured!5, rounded corners=3pt, inner sep=6pt]
+        {$\begin{bmatrix} \ione\\ \itwo \end{bmatrix}
+          = \underbrace{\begin{bmatrix} g_{11} & g_{12}\\ g_{21} & g_{22} \end{bmatrix}}_{\Gm}
+            \begin{bmatrix} \vone\\ \vtwo \end{bmatrix}$};
+    \end{tikzpicture}\\[16pt]
+    When $\Rm^{-1}$ exists: \ $\Gm = \Rm^{-1}$
+  \end{center}
+  \vfill
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{The entries from two short-circuit tests}
+  \vfill
+  \begin{center}
+    \textbf{Port 2 shorted:} \ $\vtwo = 0$\\[8pt]
+    $\begin{bmatrix} \ione\\ \itwo \end{bmatrix}
+     = \begin{bmatrix} \alert{g_{11}} & g_{12}\\ \alert{g_{21}} & g_{22} \end{bmatrix}
+       \begin{bmatrix} \vone\\ 0 \end{bmatrix}
+     = \begin{bmatrix} g_{11}\,\vone\\ g_{21}\,\vone \end{bmatrix}$
+    \quad $\Rightarrow$ \quad
+    $\displaystyle g_{11} = \frac{\ione}{\vone}, \quad g_{21} = \frac{\itwo}{\vone}$\\[4pt]
+    {\small the first column: \ $g_{11}$ input conductance, \ $g_{21}$ transfer conductance}
+  \end{center}
+  \vfill
+  \begin{center}
+    \textbf{Port 1 shorted:} \ $\vone = 0$\\[8pt]
+    $\begin{bmatrix} \ione\\ \itwo \end{bmatrix}
+     = \begin{bmatrix} g_{11} & \alert{g_{12}}\\ g_{21} & \alert{g_{22}} \end{bmatrix}
+       \begin{bmatrix} 0\\ \vtwo \end{bmatrix}
+     = \begin{bmatrix} g_{12}\,\vtwo\\ g_{22}\,\vtwo \end{bmatrix}$
+    \quad $\Rightarrow$ \quad
+    $\displaystyle g_{12} = \frac{\ione}{\vtwo}, \quad g_{22} = \frac{\itwo}{\vtwo}$\\[4pt]
+    {\small the second column: \ $g_{12}$ transfer conductance, \ $g_{22}$ input conductance}
+  \end{center}
+  \vfill
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{Example 14.3: $\Gm$ for Example 14.2}
+  \begin{columns}[c,onlytextwidth]
+    \begin{column}{0.5\textwidth}
+      \centering
+      \begin{tikzpicture}[scale=0.7]
+        \exTee{3}{$2\ohm$}{$1\ohm$}
+      \end{tikzpicture}\\[6pt]
+      {\small Port 2 shorted: \ $\vtwo = 0$}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \textbf{Mesh 1:} \ $-\vone + 2\,\ione + (\ione + \itwo) = 0$\\[6pt]
+      \textbf{Mesh 2:} \ $-2\,\ione + (\ione + \itwo) = 0$\\[12pt]
+      Mesh 2: \ $\itwo = \ione$\\[4pt]
+      Mesh 1: \ $\vone = 4\,\ione$\\[8pt]
+      $g_{11} = \tfrac14\,\mathrm{S}$, \quad $g_{21} = \tfrac14\,\mathrm{S}$
+    \end{column}
+  \end{columns}
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{Example 14.3: the result}
+  \vfill
+  \begin{center}
+    The second test ($\vone = 0$) gives the second column\\[14pt]
+    \begin{tikzpicture}
+      \node[draw=metured, thick, fill=metured!5, rounded corners=3pt, inner sep=6pt]
+        {$\displaystyle \Gm = \Rm^{-1} = \begin{bmatrix} 3 & 1\\ -1 & 1 \end{bmatrix}^{-1}
+          = \begin{bmatrix} \tfrac14 & -\tfrac14\\[2pt] \tfrac14 & \tfrac34 \end{bmatrix} \mathrm{S}$};
+    \end{tikzpicture}
+  \end{center}
+  \vfill
+  \begin{center}
+    \small $\Rm$ or $\Gm$ need not exist
+  \end{center}
+  \vfill
+\end{frame}
+
+%==============================================================
+\roadmapframe{4}
+
+%--------------------------------------------------------------
+\begin{frame}{Hybrid matrices}
+  \vfill
+  \begin{center}
+    \begin{tikzpicture}
+      \node[draw=metured, thick, fill=metured!5, rounded corners=3pt, inner sep=6pt]
+        {$\begin{bmatrix} \vone\\ \itwo \end{bmatrix}
+          = \underbrace{\begin{bmatrix} h_{11} & h_{12}\\ h_{21} & h_{22} \end{bmatrix}}_{\Hm}
+            \begin{bmatrix} \ione\\ \vtwo \end{bmatrix}$};
+    \end{tikzpicture}
+    \qquad
+    \begin{tikzpicture}
+      \node[draw=metugray, thick, fill=metulight, rounded corners=3pt, inner sep=6pt]
+        {$\begin{bmatrix} \ione\\ \vtwo \end{bmatrix}
+          = \Hm' \begin{bmatrix} \vone\\ \itwo \end{bmatrix}$};
+    \end{tikzpicture}
+  \end{center}
+  \vfill
+  \begin{itemize}\itemsep8pt
+    \item $\Hm' = \Hm^{-1}$ \ when the inverse exists
+    \item $h_{11}$, $h_{21}$: \ port 2 shorted, $\vtwo = 0$
+    \item $h_{12}$, $h_{22}$: \ port 1 open, $\ione = 0$
+  \end{itemize}
+  \vfill
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{Example 14.4: $\Hm$ of a circuit}
+  \vfill
+  \begin{center}
+    \begin{tikzpicture}[scale=0.9]
+      \exTee{0}{$2\ohm$}{$1\ohm$}
+    \end{tikzpicture}
+  \end{center}
+  \vfill
+  \begin{center}
+    The circuit of Example 14.2: \ $\Hm = \ ?$
+  \end{center}
+  \vfill
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{Example 14.4: two tests}
+  \begin{columns}[t,onlytextwidth]
+    \begin{column}{0.48\textwidth}
+      \centering
+      \textbf{Port 2 shorted:} \ $\vtwo = 0$\\[6pt]
+      \begin{tikzpicture}[scale=0.68]
+        \exTee{3}{$2\ohm$}{$1\ohm$}
+      \end{tikzpicture}\\[4pt]
+      \raggedright
+      Mesh 2: \ $-2\,\ione + (\ione + \itwo) = 0$\\[2pt]
+      \hspace*{1em}$\Rightarrow$ \ $\itwo = \ione$\\[4pt]
+      Mesh 1: \ $\vone = 2\,\ione + (\ione + \itwo) = 4\,\ione$\\[6pt]
+      $h_{11} = 4\ohm$, \quad $h_{21} = 1$
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \centering
+      \textbf{Port 1 open:} \ $\ione = 0$\\[6pt]
+      \begin{tikzpicture}[scale=0.68]
+        \exTee{2}{$2\ohm$}{$1\ohm$}
+      \end{tikzpicture}\\[4pt]
+      \raggedright
+      The dependent source is $0$: \ $\vtwo = \itwo$\\[2pt]
+      \hspace*{1em}$\Rightarrow$ \ $\itwo = \vtwo$\\[4pt]
+      $\vone = \itwo = \vtwo$\\[6pt]
+      $h_{12} = 1$, \quad $h_{22} = 1\,\mathrm{S}$
+    \end{column}
+  \end{columns}
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{Example 14.4: the result}
+  \vfill
+  \begin{center}
+    \begin{tikzpicture}
+      \node[draw=metured, thick, fill=metured!5, rounded corners=3pt, inner sep=6pt]
+        {$\Hm = \begin{bmatrix} 4 & 1\\ 1 & 1 \end{bmatrix}$};
+    \end{tikzpicture}
+  \end{center}
+  \vfill
+  \begin{itemize}\itemsep8pt
+    \item Units: $h_{11}$ in $\Omega$, $h_{22}$ in S, $h_{12}$ and $h_{21}$ without units
+    \item Check with $\Rm = \begin{bmatrix} 3 & 1\\ -1 & 1 \end{bmatrix}$ from Example 14.2 \ \yes
+  \end{itemize}
+  \vfill
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{Example 14.5: the ideal transformer}
+  \begin{columns}[c,onlytextwidth]
+    \begin{column}{0.48\textwidth}
+      \centering
+      \begin{tikzpicture}[scale=0.85]
+        \exXf
+      \end{tikzpicture}\\[8pt]
+      $\dfrac{\vone}{N_1} = \dfrac{\vtwo}{N_2}$, \quad $N_1\,\ione + N_2\,\itwo = 0$
+    \end{column}
+    \begin{column}{0.5\textwidth}
+      $\Hm = \ ?$ \quad $\Rm = \ ?$\\[12pt]
+      \onslide<2->{%
+      With $n = N_1/N_2$:\\[4pt]
+      $\vone = n\,\vtwo$, \quad $\itwo = -n\,\ione$\\[10pt]
+      \begin{tikzpicture}
+        \node[draw=metured, thick, fill=metured!5, rounded corners=3pt, inner sep=6pt]
+          {$\Hm = \begin{bmatrix} 0 & n\\ -n & 0 \end{bmatrix}$};
+      \end{tikzpicture}\\[10pt]}
+      \onslide<2->{%
+      Ports open: $\ione = \itwo = 0$, but $\vone$, $\vtwo$ are free\\[4pt]
+      No $\Rm$, no $\Gm$}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+%==============================================================
+\roadmapframe{6}
+
+%--------------------------------------------------------------
+\begin{frame}{The transmission matrix}
+  \vfill
+  \begin{center}
+    \begin{tikzpicture}
+      \node[draw=metured, thick, fill=metured!5, rounded corners=3pt, inner sep=6pt]
+        {$\begin{bmatrix} \vone\\ \ione \end{bmatrix}
+          = \underbrace{\begin{bmatrix} A & B\\ C & D \end{bmatrix}}_{\Tm}
+            \begin{bmatrix} \vtwo\\ -\itwo \end{bmatrix}$};
+    \end{tikzpicture}
+  \end{center}
+  \vfill
+  \begin{itemize}\itemsep8pt
+    \item Also called the chain parameters
+    \item Port 1 in terms of port 2
+    \item $-\itwo$: the current that leaves port 2
+  \end{itemize}
+  \vfill
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{Example 14.6: $\Tm$ of the ideal transformer}
+  \begin{columns}[c,onlytextwidth]
+    \begin{column}{0.48\textwidth}
+      \centering
+      \begin{tikzpicture}[scale=0.85]
+        \exXf
+      \end{tikzpicture}
+    \end{column}
+    \begin{column}{0.5\textwidth}
+      $\Tm = \ ?$\\[12pt]
+      \onslide<2->{%
+      $\vone = \dfrac{N_1}{N_2}\,\vtwo$\\[8pt]
+      $\ione = -\dfrac{N_2}{N_1}\,\itwo = \dfrac{N_2}{N_1}\,(-\itwo)$\\[12pt]
+      \begin{tikzpicture}
+        \node[draw=metured, thick, fill=metured!5, rounded corners=3pt, inner sep=6pt]
+          {$\Tm = \begin{bmatrix} N_1/N_2 & 0\\ 0 & N_2/N_1 \end{bmatrix}$};
+      \end{tikzpicture}}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{Cascade and a load}
+  \begin{center}
+    \begin{tikzpicture}[scale=0.85]
+      \cascade
+    \end{tikzpicture}
+  \end{center}
+  \begin{columns}[t,onlytextwidth]
+    \begin{column}{0.5\textwidth}
+      \centering
+      Junction: $\vtwo^{a} = \vone^{b}$, \ $-\itwo^{a} = \ione^{b}$\\[8pt]
+      \begin{tikzpicture}
+        \node[draw=metured, thick, fill=metured!5, rounded corners=3pt, inner sep=6pt] {$\Tm = \Tm_a\,\Tm_b$};
+      \end{tikzpicture}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \centering
+      Load $R_L$ at port 2: $\vtwo = R_L(-\itwo)$\\[8pt]
+      \begin{tikzpicture}
+        \node[draw=metured, thick, fill=metured!5, rounded corners=3pt, inner sep=6pt] {$R_{\mathrm{in}} = \dfrac{A R_L + B}{C R_L + D}$};
+      \end{tikzpicture}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{Example 14.7: a cascade with a load}
+  \begin{columns}[c,onlytextwidth]
+    \begin{column}{0.46\textwidth}
+      \centering
+      \begin{tikzpicture}[scale=0.85]
+        \draw (0,1.8) to[R, l=$1\ohm$] (2.2,1.8) -- (3.4,1.8);
+        \draw (2.8,1.8) to[R, l=$2\ohm$] (2.8,0); \fill (2.8,1.8) circle (1.6pt); \fill (2.8,0) circle (1.6pt);
+        \draw (0,0) -- (3.4,0);
+        \draw (3.4,1.8) -- (4.4,1.8) to[R, l={$2\ohm$}] (4.4,0) -- (3.4,0);
+        \draw[densely dashed, gray] (1.1,-0.5) -- (1.1,2.3); \draw[densely dashed, gray] (3.4,-0.5) -- (3.4,2.3);
+        \node[font=\small, text=gray] at (0.6,-0.6) {$a$}; \node[font=\small, text=gray] at (2.25,-0.6) {$b$};
+        \node[font=\small, text=gray] at (4.0,-0.6) {$R_L$};
+        \pone{0}{1.8}
+      \end{tikzpicture}\\[8pt]
+      $\Tm = \ ?$ \quad $R_{\mathrm{in}} = \ ?$
+    \end{column}
+    \begin{column}{0.52\textwidth}
+      \onslide<2->{%
+      $\Tm_a = \begin{bmatrix} 1 & 1\\ 0 & 1 \end{bmatrix}$, \quad
+      $\Tm_b = \begin{bmatrix} 1 & 0\\ \frac12 & 1 \end{bmatrix}$\\[10pt]
+      $\Tm = \Tm_a\Tm_b = \begin{bmatrix} \frac32 & 1\\ \frac12 & 1 \end{bmatrix}$\\[10pt]
+      $R_{\mathrm{in}} = \dfrac{\frac32 \cdot 2 + 1}{\frac12 \cdot 2 + 1} = 2\ohm$\\[8pt]
+      Check: $1 + 2 \parallel 2 = 2\ohm$ \ \yes}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{Which test? Open or short}
+  \vfill
+  \begin{center}
+  \small
+  \renewcommand{\arraystretch}{1.45}
+  \begin{tabular}{@{}l c c c@{}}
+    \toprule
+    \textbf{Matrix} & \textbf{Inputs} & \textbf{1st column} & \textbf{2nd column}\\
+    \midrule
+    $\Rm$ & $\ione$, $\itwo$ & port 2 \alert{open} & port 1 \alert{open}\\
+    $\Gm$ & $\vone$, $\vtwo$ & port 2 \textbf{shorted} & port 1 \textbf{shorted}\\
+    $\Hm$ & $\ione$, $\vtwo$ & port 2 \textbf{shorted} & port 1 \alert{open}\\
+    $\Hm'$ & $\vone$, $\itwo$ & port 2 \alert{open} & port 1 \textbf{shorted}\\
+    $\Tm$ & $\vtwo$, $-\itwo$ & port 2 \alert{open} & port 2 \textbf{shorted}\\
+    \bottomrule
+  \end{tabular}
+  \end{center}
+  \vfill
+  \begin{center}
+    Zero the other input: \ $\Icol{i} = 0$ \ $\Rightarrow$ \ \alert{open}, \quad
+    $\Vcol{v} = 0$ \ $\Rightarrow$ \ \textbf{short}
+  \end{center}
+  \vfill
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{Measuring a two-port}
+  \begin{columns}[t,onlytextwidth]
+    \begin{column}{0.49\textwidth}
+      \centering
+      \begin{tikzpicture}[scale=0.62]
+        \bench{0}
+      \end{tikzpicture}\\[4pt]
+      \textbf{Open-circuit test}\\[2pt]
+      $r_{11} = \dfrac{\vone}{\ione}$, \quad $r_{21} = \dfrac{\vtwo}{\ione}$
+    \end{column}
+    \begin{column}{0.49\textwidth}
+      \centering
+      \begin{tikzpicture}[scale=0.62]
+        \bench{1}
+      \end{tikzpicture}\\[4pt]
+      \textbf{Short-circuit test}\\[2pt]
+      $g_{11} = \dfrac{\ione}{\vone}$, \quad $g_{21} = \dfrac{\itwo}{\vone}$
+    \end{column}
+  \end{columns}
+  \vfill
+  \begin{itemize}\itemsep6pt
+    \item Ideal voltmeter: \ an \alert{open}; \ ideal ammeter: \ a \textbf{short}
+    \item One meter reading divided by the source value
+  \end{itemize}
+  \vfill
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{Example 14.8: $\Rm$ from two measurements}
+  \begin{columns}[c,onlytextwidth]
+    \begin{column}{0.5\textwidth}
+      \centering
+      \renewcommand{\arraystretch}{1.3}
+      \begin{tabular}{@{}lcccc@{}}
+        \toprule
+         & $\ione$ & $\itwo$ & $\vone$ & $\vtwo$\\
+        \midrule
+        Exp.\ 1 & $1$ & $1$ & $5$ & $5$\\
+        Exp.\ 2 & $1$ & $-1$ & $3$ & $-1$\\
+        \bottomrule
+      \end{tabular}\\[8pt]
+      {\small No port open: \ $\Rm = \ ?$}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \onslide<2->{%
+      $\begin{bmatrix} 5 & 3\\ 5 & -1 \end{bmatrix} = \Rm \begin{bmatrix} 1 & 1\\ 1 & -1 \end{bmatrix}$\\[10pt]}
+      \onslide<2->{%
+      $\Rm = \mathbf{V}\,\mathbf{I}^{-1} = \begin{bmatrix} 4 & 1\\ 2 & 3 \end{bmatrix}$\\[10pt]
+      {\small Any two independent experiments}}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+%==============================================================
+\roadmapframe{7}
+
+%--------------------------------------------------------------
+\begin{frame}{The power of a two-port}
+  \begin{columns}[c,onlytextwidth]
+    \begin{column}{0.46\textwidth}
+      \centering
+      \begin{tikzpicture}[scale=0.8]
+        \tpbox{$N$}
+      \end{tikzpicture}
+    \end{column}
+    \begin{column}{0.52\textwidth}
+      $P_N$: the sum of the powers of all elements inside $N$\\[12pt]
+      \begin{tikzpicture}
+        \node[draw=metured, thick, fill=metured!5, rounded corners=3pt, inner sep=6pt]
+          {$P_N = \vone\,\ione + \vtwo\,\itwo$};
+      \end{tikzpicture}\\[8pt]
+      {\small Proof: Tellegen's theorem (previously)}
+    \end{column}
+  \end{columns}
+  \vfill
+  \begin{itemize}\itemsep8pt
+    \item \textbf{Passive:} $P_N \geq 0$ for all possible port variables
+    \item \textbf{Active:} not passive
+  \end{itemize}
+  \vfill
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{Example 14.9: is the ideal transformer passive?}
+  \begin{columns}[c,onlytextwidth]
+    \begin{column}{0.48\textwidth}
+      \centering
+      \begin{tikzpicture}[scale=0.85]
+        \exXf
+      \end{tikzpicture}
+    \end{column}
+    \begin{column}{0.5\textwidth}
+      $P_N = \vone\,\ione + \vtwo\,\itwo$\\[8pt]
+      \onslide<2->{%
+      Plug $\vone = n\,\vtwo$, \ $\itwo = -n\,\ione$:\\[6pt]
+      $P_N = n\,\vtwo\,\ione - n\,\vtwo\,\ione = 0$\\[12pt]
+      \begin{tikzpicture}
+        \node[draw=metured, thick, fill=metured!5, rounded corners=3pt, inner sep=6pt]
+          {$P_N = 0$: passive};
+      \end{tikzpicture}\\[8pt]
+      It neither absorbs nor delivers power}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+%==============================================================
+\roadmapframe{8}
+
+%--------------------------------------------------------------
+\begin{frame}{Swap the source and the meter}
+  \vfill
+  \begin{center}
+    \begin{tikzpicture}[scale=0.85]
+      \rcp{0}{$\Vcol{v_0}$}{4}{$\Icol{i_2}$}
+      \begin{scope}[xshift=8.0cm] \rcp{4}{$\Icol{\hat\imath_1}$}{0}{$\Vcol{v_0}$} \end{scope}
+    \end{tikzpicture}\\[14pt]
+    Same reading?\\[10pt]
+    \onslide<2->{%
+    \begin{tikzpicture}
+      \node[draw=metured, thick, fill=metured!5, rounded corners=3pt, inner sep=6pt] {Resistors only: \ $\Icol{\hat\imath_1} = \itwo$ \ (reciprocity)};
+    \end{tikzpicture}}
+  \end{center}
+  \vfill
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{Swap the source and the meter: a dependent source}
+  \begin{columns}[c,onlytextwidth]
+    \begin{column}{0.62\textwidth}
+      \centering
+      \begin{tikzpicture}[scale=0.72]
+        \depRecip{0}{$\Vcol{4\V}$}{4}{$\Icol{i_2}$}
+      \end{tikzpicture}
+    \end{column}
+    \begin{column}{0.36\textwidth}
+      $\itwo = \ ?$\\[6pt]
+      \onslide<2->{$\vone = 4\V$: \ source gives $2\A$\\[4pt]
+      $\itwo = 2\A$}
+    \end{column}
+  \end{columns}
+  \vspace{10pt}
+  \begin{columns}[c,onlytextwidth]
+    \begin{column}{0.62\textwidth}
+      \centering
+      \begin{tikzpicture}[scale=0.72]
+        \depRecip{4}{$\Icol{\hat\imath_1}$}{0}{$\Vcol{4\V}$}
+      \end{tikzpicture}
+    \end{column}
+    \begin{column}{0.36\textwidth}
+      $\Icol{\hat\imath_1} = \ ?$\\[6pt]
+      \onslide<2->{$\vone = 0$: \ source gives $0$\\[4pt]
+      $\Icol{\hat\imath_1} = 0$}
+    \end{column}
+  \end{columns}
+  \vspace{10pt}
+  \begin{center}
+    \onslide<2->{%
+    \begin{tikzpicture}
+      \node[draw=metured, thick, fill=metured!5, rounded corners=3pt, inner sep=6pt] {One-way: port 1 drives port 2, not back. \ \alert{Not reciprocal}};
+    \end{tikzpicture}}
+  \end{center}
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{Tellegen's theorem, general form}
+  \vfill
+  \begin{itemize}\itemsep8pt
+    \item Previously: $\sum_k \Vcol{v_k}\Icol{i_k} = 0$ in any circuit
+    \item The proof used KVL for $\mathbf{v}$ and KCL for $\mathbf{i}$, nothing else
+  \end{itemize}
+  \vfill
+  \begin{center}
+    Two circuits, \textbf{same graph}: \ $(\Vcol{v_k}, \Icol{i_k})$ and $(\Vcol{\hat v_k}, \Icol{\hat\imath_k})$\\[10pt]
+    \begin{tikzpicture}
+      \node[draw=ccur, thick, fill=ccur!6, rounded corners=3pt, inner sep=7pt]
+        {$\displaystyle\sum_k \Vcol{v_k}\,\Icol{\hat\imath_k} = 0, \qquad \sum_k \Vcol{\hat v_k}\,\Icol{i_k} = 0$};
+    \end{tikzpicture}\\[10pt]
+    {\small Here: the same two-port, driven in two different ways}
+  \end{center}
+  \vfill
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{Tellegen, general form: a check}
+  \begin{center}
+    \begin{tikzpicture}[scale=0.62, transform shape]
+      \tgCirc{0}
+      \begin{scope}[xshift=5.6cm] \tgGraph \end{scope}
+      \begin{scope}[xshift=10.6cm] \tgCirc{1} \end{scope}
+      \node[text=metugray] at (1.7,-1.15) {circuit 1};
+      \node[text=metugray] at (6.7,-1.15) {same graph};
+      \node[text=metugray] at (12.3,-1.15) {circuit 2};
+    \end{tikzpicture}\\[6pt]
+    \small
+    \renewcommand{\arraystretch}{1.12}
+    \begin{tabular}{@{}c|rr|rr|rr@{}}
+      \toprule
+      $k$ & $\Vcol{v_k}$ & $\Icol{i_k}$ & $\Vcol{\hat v_k}$ & $\Icol{\hat\imath_k}$ & \onslide<2->{$\Vcol{v_k}\Icol{\hat\imath_k}$} & \onslide<2->{$\Vcol{\hat v_k}\Icol{i_k}$}\\
+      \midrule
+      1 & 6 & $-2$ & 5 & $-3$ & \onslide<2->{$-18$} & \onslide<2->{$-10$}\\
+      2 & 2 & 2 & 3 & 3 & \onslide<2->{6} & \onslide<2->{6}\\
+      3 & 4 & 1 & 2 & 2 & \onslide<2->{8} & \onslide<2->{2}\\
+      4 & 4 & 1 & 2 & 1 & \onslide<2->{4} & \onslide<2->{2}\\
+      \midrule
+      sum & & & & & \onslide<2->{$\mathbf{0}$} & \onslide<2->{$\mathbf{0}$}\\
+      \bottomrule
+    \end{tabular}
+  \end{center}
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{Reciprocal two-port}
+  \begin{center}
+    \begin{tikzpicture}[scale=0.75]
+      \tpbox{LTI\\ resistors}
+    \end{tikzpicture}\\[2pt]
+    {\small no independent, no dependent sources}\\[8pt]
+    \begin{tikzpicture}
+      \node[draw=metured, thick, fill=metured!5, rounded corners=3pt, inner sep=6pt]
+        {$\vone\Icol{\hat\imath_1} + \vtwo\Icol{\hat\imath_2} = \Vcol{\hat v_1}\ione + \Vcol{\hat v_2}\itwo$};
+    \end{tikzpicture}\\[4pt]
+    {\small for any two ways of driving it}
+  \end{center}
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{Why (1): split Tellegen's sums}
+  \begin{center}
+    \begin{tikzpicture}[scale=0.72]
+      \splitRecip
+    \end{tikzpicture}\\[2pt]
+    {\small Circuit 1: $(\Vcol{v_k}, \Icol{i_k})$. \ Circuit 2: same two-port, other sources, $(\Vcol{\hat v_k}, \Icol{\hat\imath_k})$}\\[4pt]
+    {\small Outside branch: current from $-$ to $+$, \ so branch current $= -\ione$}
+  \end{center}
+  \vspace{-2pt}
+  \onslide<2->{%
+  \[
+    \underbrace{-\vone\Icol{\hat\imath_1} - \vtwo\Icol{\hat\imath_2}}_{\textcolor{ccharge}{\text{ports}}}
+    + \underbrace{\sum_{\text{inside}} \Vcol{v_k}\Icol{\hat\imath_k}}_{\textcolor{cpow}{\text{resistors}}} = 0
+    \qquad
+    \underbrace{-\Vcol{\hat v_1}\ione - \Vcol{\hat v_2}\itwo}_{\textcolor{ccharge}{\text{ports}}}
+    + \underbrace{\sum_{\text{inside}} \Vcol{\hat v_k}\Icol{i_k}}_{\textcolor{cpow}{\text{resistors}}} = 0
+  \]}
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{Why (2): the resistor parts are equal}
+  \begin{columns}[c,onlytextwidth]
+    \begin{column}{0.42\textwidth}
+      \centering
+      \begin{tikzpicture}[scale=0.85]
+        \draw (0,2) to[R, l_=$R_k$] (0,0);
+        \draw[iar] (0.35,1.7) -- (0.35,1.25); \node[text=ccur, anchor=west] at (0.4,1.5) {$i_k$};
+        \node[text=cvolt, anchor=west] at (0.4,0.55) {$v_k$};
+        \node[font=\small, text=metugray] at (0,-0.6) {circuit 1};
+        \begin{scope}[xshift=2.6cm]
+        \draw (0,2) to[R, l_=$R_k$] (0,0);
+        \draw[iar] (0.35,1.7) -- (0.35,1.25); \node[text=ccur, anchor=west] at (0.4,1.5) {$\hat\imath_k$};
+        \node[text=cvolt, anchor=west] at (0.4,0.55) {$\hat v_k$};
+        \node[font=\small, text=metugray] at (0,-0.6) {circuit 2};
+        \end{scope}
+      \end{tikzpicture}
+    \end{column}
+    \begin{column}{0.56\textwidth}
+      \[
+        \Vcol{v_k}\Icol{\hat\imath_k} = R_k\,\Icol{i_k}\Icol{\hat\imath_k} = \Vcol{\hat v_k}\Icol{i_k}
+      \]
+      {\small every resistor gives the same term to both sums}
+    \end{column}
+  \end{columns}
+  \vfill
+  \onslide<2->{%
+  \begin{center}
+    Both sums $= 0$, resistor parts equal \ $\Rightarrow$ \ port parts equal:\\[6pt]
+    \begin{tikzpicture}
+      \node[draw=metured, thick, fill=metured!5, rounded corners=3pt, inner sep=6pt]
+        {$\vone\Icol{\hat\imath_1} + \vtwo\Icol{\hat\imath_2} = \Vcol{\hat v_1}\ione + \Vcol{\hat v_2}\itwo$};
+    \end{tikzpicture}\\[8pt]
+    {\small Dependent source $v_k = 2\,i_j$: \ $2\Icol{i_j}\Icol{\hat\imath_k} \neq 2\Icol{\hat\imath_j}\Icol{i_k}$, \ the step fails}
+  \end{center}}
+  \vfill
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{Resistance matrix -- Statement 1: $r_{12} = r_{21}$}
+  \begin{columns}[c,onlytextwidth]
+    \begin{column}{0.44\textwidth}
+      \centering
+      \begin{tikzpicture}[scale=0.68]
+        \mtest{R}{1}
+        \node[font=\small, text=metugray] at (2.7,-0.6) {circuit 1};
+        \begin{scope}[yshift=-3.6cm]
+          \mtest{R}{2}
+          \node[font=\small, text=metugray] at (2.7,-0.6) {circuit 2};
+        \end{scope}
+      \end{tikzpicture}
+    \end{column}
+    \begin{column}{0.54\textwidth}
+      \centering
+      $\displaystyle \begin{bmatrix} \vone\\ \vtwo \end{bmatrix} = \begin{bmatrix} r_{11} & r_{12}\\ r_{21} & r_{22} \end{bmatrix} \begin{bmatrix} \ione\\ \itwo \end{bmatrix}$\\[8pt]
+      \raggedright
+      \textcolor{metugray}{1:} $\ione = 1$, $\itwo = 0$ \onslide<2->{$\Rightarrow$ $\vone = r_{11}$, $\vtwo = r_{21}$}\\[4pt]
+      \textcolor{metugray}{2:} $\Icol{\hat\imath_1} = 0$, $\Icol{\hat\imath_2} = 1$ \onslide<2->{$\Rightarrow$ $\Vcol{\hat v_1} = r_{12}$, $\Vcol{\hat v_2} = r_{22}$}\\[10pt]
+      \centering
+      $\vone\Icol{\hat\imath_1} + \vtwo\Icol{\hat\imath_2} = \Vcol{\hat v_1}\ione + \Vcol{\hat v_2}\itwo$\\[4pt]
+      \onslide<2->{%
+      $r_{11} \cdot 0 + r_{21} \cdot 1 = r_{12} \cdot 1 + r_{22} \cdot 0$\\[6pt]
+      \begin{tikzpicture}\node[draw=metured, thick, fill=metured!5, rounded corners=3pt, inner sep=5pt] {$r_{12} = r_{21}$};\end{tikzpicture}\\[6pt]
+      {\small Swap a current source and a voltmeter: same reading}}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{Conductance matrix -- Statement 2: $g_{12} = g_{21}$}
+  \begin{columns}[c,onlytextwidth]
+    \begin{column}{0.44\textwidth}
+      \centering
+      \begin{tikzpicture}[scale=0.68]
+        \mtest{G}{1}
+        \node[font=\small, text=metugray] at (2.7,-0.6) {circuit 1};
+        \begin{scope}[yshift=-3.6cm]
+          \mtest{G}{2}
+          \node[font=\small, text=metugray] at (2.7,-0.6) {circuit 2};
+        \end{scope}
+      \end{tikzpicture}
+    \end{column}
+    \begin{column}{0.54\textwidth}
+      \centering
+      $\displaystyle \begin{bmatrix} \ione\\ \itwo \end{bmatrix} = \begin{bmatrix} g_{11} & g_{12}\\ g_{21} & g_{22} \end{bmatrix} \begin{bmatrix} \vone\\ \vtwo \end{bmatrix}$\\[8pt]
+      \raggedright
+      \textcolor{metugray}{1:} $\vone = 1$, $\vtwo = 0$ \onslide<2->{$\Rightarrow$ $\ione = g_{11}$, $\itwo = g_{21}$}\\[4pt]
+      \textcolor{metugray}{2:} $\Vcol{\hat v_1} = 0$, $\Vcol{\hat v_2} = 1$ \onslide<2->{$\Rightarrow$ $\Icol{\hat\imath_1} = g_{12}$, $\Icol{\hat\imath_2} = g_{22}$}\\[10pt]
+      \centering
+      $\vone\Icol{\hat\imath_1} + \vtwo\Icol{\hat\imath_2} = \Vcol{\hat v_1}\ione + \Vcol{\hat v_2}\itwo$\\[4pt]
+      \onslide<2->{%
+      $1 \cdot g_{12} + 0 \cdot g_{22} = 0 \cdot g_{11} + 1 \cdot g_{21}$\\[6pt]
+      \begin{tikzpicture}\node[draw=metured, thick, fill=metured!5, rounded corners=3pt, inner sep=5pt] {$g_{12} = g_{21}$};\end{tikzpicture}\\[6pt]
+      {\small Swap a voltage source and an ammeter: same reading}}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{Hybrid matrix -- Statement 3: $h_{12} = -h_{21}$}
+  \begin{columns}[c,onlytextwidth]
+    \begin{column}{0.44\textwidth}
+      \centering
+      \begin{tikzpicture}[scale=0.68]
+        \mtest{H}{1}
+        \node[font=\small, text=metugray] at (2.7,-0.6) {circuit 1};
+        \begin{scope}[yshift=-3.6cm]
+          \mtest{H}{2}
+          \node[font=\small, text=metugray] at (2.7,-0.6) {circuit 2};
+        \end{scope}
+      \end{tikzpicture}
+    \end{column}
+    \begin{column}{0.54\textwidth}
+      \centering
+      $\displaystyle \begin{bmatrix} \vone\\ \itwo \end{bmatrix} = \begin{bmatrix} h_{11} & h_{12}\\ h_{21} & h_{22} \end{bmatrix} \begin{bmatrix} \ione\\ \vtwo \end{bmatrix}$\\[8pt]
+      \raggedright
+      \textcolor{metugray}{1:} $\ione = 1$, $\vtwo = 0$ \onslide<2->{$\Rightarrow$ $\vone = h_{11}$, $\itwo = h_{21}$}\\[4pt]
+      \textcolor{metugray}{2:} $\Icol{\hat\imath_1} = 0$, $\Vcol{\hat v_2} = 1$ \onslide<2->{$\Rightarrow$ $\Vcol{\hat v_1} = h_{12}$, $\Icol{\hat\imath_2} = h_{22}$}\\[10pt]
+      \centering
+      $\vone\Icol{\hat\imath_1} + \vtwo\Icol{\hat\imath_2} = \Vcol{\hat v_1}\ione + \Vcol{\hat v_2}\itwo$\\[4pt]
+      \onslide<2->{%
+      $h_{11} \cdot 0 + 0 \cdot h_{22} = h_{12} \cdot 1 + 1 \cdot h_{21}$\\[6pt]
+      \begin{tikzpicture}\node[draw=metured, thick, fill=metured!5, rounded corners=3pt, inner sep=5pt] {$h_{12} = -h_{21}$};\end{tikzpicture}\\[6pt]
+      {\small Short-circuit current $h_{21}$, open-circuit voltage $h_{12}$: same size, opposite sign}}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{Transmission matrix: $AD - BC = 1$}
+  \begin{columns}[c,onlytextwidth]
+    \begin{column}{0.44\textwidth}
+      \centering
+      \begin{tikzpicture}[scale=0.68]
+        \mtest{T}{1}
+        \node[font=\small, text=metugray] at (2.7,-0.6) {circuit 1};
+        \begin{scope}[yshift=-3.6cm]
+          \mtest{T}{2}
+          \node[font=\small, text=metugray] at (2.7,-0.6) {circuit 2};
+        \end{scope}
+      \end{tikzpicture}
+    \end{column}
+    \begin{column}{0.54\textwidth}
+      \centering
+      $\displaystyle \begin{bmatrix} \vone\\ \ione \end{bmatrix} = \begin{bmatrix} A & B\\ C & D \end{bmatrix} \begin{bmatrix} \vtwo\\ -\itwo \end{bmatrix}$\\[2pt]{\small inputs $(1, 0)$: column 1; \ inputs $(0, 1)$: column 2}\\[6pt]
+      \raggedright
+      \textcolor{metugray}{1:} $\vtwo = 1$, $-\itwo = 0$ \onslide<2->{$\Rightarrow$ $\vone = A$, $\ione = C$}\\[4pt]
+      \textcolor{metugray}{2:} $\Vcol{\hat v_2} = 0$, $-\Icol{\hat\imath_2} = 1$ \onslide<2->{$\Rightarrow$ $\Vcol{\hat v_1} = B$, $\Icol{\hat\imath_1} = D$}\\[10pt]
+      \centering
+      $\vone\Icol{\hat\imath_1} + \vtwo\Icol{\hat\imath_2} = \Vcol{\hat v_1}\ione + \Vcol{\hat v_2}\itwo$\\[4pt]
+      \onslide<2->{%
+      $A \cdot D + 1 \cdot (-1) = B \cdot C + 0 \cdot 0$\\[6pt]
+      \begin{tikzpicture}\node[draw=metured, thick, fill=metured!5, rounded corners=3pt, inner sep=5pt] {$AD - BC = 1$};\end{tikzpicture}\\[6pt]
+      {\small The source at port 1 is set to give the inputs}}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{The matrices of a reciprocal two-port}
+  \begin{center}
+    $\mathbf{v} = \Rm\,\mathbf{i}$ in the identity: \ $\Rm = \Rm^T$\\[8pt]
+    \begin{tikzpicture}[scale=0.8]
+      \symR
+    \end{tikzpicture}\\[10pt]
+    \renewcommand{\arraystretch}{1.35}
+    \begin{tabular}{@{}cccc@{}}
+      \toprule
+      $\Rm$ & $\Gm$ & $\Hm$ & $\Tm$\\
+      \midrule
+      $r_{12} = r_{21}$ & $g_{12} = g_{21}$ & $h_{12} = -h_{21}$ & $AD - BC = 1$\\
+      \bottomrule
+    \end{tabular}
+  \end{center}
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{Reciprocal or not?}
+  \vfill
+  \begin{itemize}\itemsep14pt
+    \item $\Rm = \begin{bmatrix} 3 & 1\\ -1 & 1 \end{bmatrix}$ \qquad \onslide<2->{$r_{12} \neq r_{21}$: \ \alert{not reciprocal}}
+    \item $\Hm = \begin{bmatrix} 0 & 2\\ -2 & 0 \end{bmatrix}$ \qquad \onslide<2->{$h_{12} = -h_{21}$: \ reciprocal}
+    \item $\Tm = \dfrac12 \begin{bmatrix} 3 & 2\\ 1 & 2 \end{bmatrix}$ \qquad \onslide<2->{$\det\Tm = \dfrac{6 - 2}{4} = 1$: \ reciprocal}
+  \end{itemize}
+  \vfill
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{Example 14.10: statement 2 on a ladder}
+  \begin{center}
+    \begin{tikzpicture}[scale=0.85]
+      \ladder{0}{1}
+      \begin{scope}[xshift=7.4cm] \ladder{1}{0} \end{scope}
+    \end{tikzpicture}
+  \end{center}
+  \begin{columns}[t,onlytextwidth]
+    \begin{column}{0.48\textwidth}
+      \centering
+      $\itwo = \ ?$\\[8pt]
+      \onslide<2->{%
+      $1 + 2 \parallel 2 = 2\ohm$: \ $4\A$\\[4pt]
+      split equally: \ $\itwo = -2\A$}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \centering
+      $\Icol{\hat\imath_1} = \ ?$\\[8pt]
+      \onslide<2->{%
+      $2 + 2 \parallel 1 = \tfrac83\ohm$: \ $3\A$\\[4pt]
+      divider: $3 \cdot \tfrac23 = 2\A$, \ $\Icol{\hat\imath_1} = -2\A$ \ \yes}
+    \end{column}
+  \end{columns}
+  \vfill
+  \onslide<2->{\centering\small Different source currents, the same short-circuit current\par}
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{Example 14.11: a black box}
+  \begin{columns}[c,onlytextwidth]
+    \begin{column}{0.5\textwidth}
+      \centering
+      \begin{tikzpicture}[scale=0.72]
+        \rcp{0}{$\Vcol{6\V}$}{2}{$\Icol{i_2}$}
+      \end{tikzpicture}\\[4pt]
+      {\small $\ione = 3\A$, \ $\itwo = -1\A$}\\[10pt]
+      \begin{tikzpicture}[scale=0.72]
+        \rcp{2}{$\Icol{\hat\imath_1}$}{0}{$\Vcol{12\V}$}
+      \end{tikzpicture}\\[4pt]
+      {\small $\Icol{\hat\imath_1} = \ ?$}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      Inside: only LTI resistors, not known\\[12pt]
+      \onslide<2->{%
+      Statement 2: $6\V$ at port 2 $\to$ $\Icol{\hat\imath_1} = -1\A$\\[8pt]
+      Linearity: $12\V$ $\to$ twice\\[10pt]
+      \begin{tikzpicture}
+        \node[draw=metured, thick, fill=metured!5, rounded corners=3pt, inner sep=6pt] {$\Icol{\hat\imath_1} = -2\A$};
+      \end{tikzpicture}\\[8pt]
+      {\small No circuit analysis needed}}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{Summary}
+  \vfill
+  \begin{center}
+  \renewcommand{\arraystretch}{1.6}
+  \begin{tabular}{@{}>{\raggedright}p{3.0cm} >{\raggedright}p{4.6cm} >{\raggedright\arraybackslash}p{4.4cm}@{}}
+    \toprule
+    \textbf{Matrix} & \textbf{Equation} & \textbf{Tests}\\
+    \midrule
+    resistance $\Rm$ & $[\vone \ \vtwo]^T = \Rm\,[\ione \ \itwo]^T$ & ports open\\
+    conductance $\Gm$ & $[\ione \ \itwo]^T = \Gm\,[\vone \ \vtwo]^T$ & ports shorted; $\Gm = \Rm^{-1}$\\
+    hybrid $\Hm$ & $[\vone \ \itwo]^T = \Hm\,[\ione \ \vtwo]^T$ & port 2 shorted, port 1 open\\
+    transmission $\Tm$ & $[\vone \ \ione]^T = \Tm\,[\vtwo \ {-\itwo}]^T$ & port 1 from port 2\\
+    cascade & $\Tm = \Tm_a\Tm_b$ & $R_{\mathrm{in}} = \frac{A R_L + B}{C R_L + D}$\\
+    \bottomrule
+  \end{tabular}
+  \end{center}
+  \vfill
+  \begin{center}
+    $P_N = \vone\,\ione + \vtwo\,\itwo$; \ passive if $P_N \geq 0$ always\\[6pt]
+    Reciprocal (LTI resistors, no sources): $r_{12} = r_{21}$, \ $h_{12} = -h_{21}$, \ $\det\Tm = 1$
+  \end{center}
+  \vfill
+\end{frame}
+
+
+\end{document}

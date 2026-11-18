@@ -12,7 +12,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage[english]{babel}
 \usepackage{lmodern}
-\usepackage[margin=2.3cm,top=2.0cm,bottom=1.9cm,headheight=14pt,headsep=9pt]{geometry}
+\usepackage[left=2.2cm,right=4.4cm,top=2.2cm,bottom=2.2cm,headheight=14pt,headsep=9pt,marginparwidth=3.4cm,marginparsep=0.5cm]{geometry}
 \usepackage{amsmath,amssymb}
 \usepackage{array,booktabs,tabularx}
 \usepackage{enumitem}
@@ -68,7 +68,9 @@
 \setlist[itemize]{itemsep=2pt,topsep=3pt,parsep=0pt,leftmargin=1.5em}
 \setlist[enumerate]{itemsep=2pt,topsep=3pt,parsep=0pt,leftmargin=1.7em}
 \setlength{\parindent}{0pt}
-\setlength{\parskip}{0.7ex plus .1ex}
+\setlength{\parskip}{1.2ex plus .2ex}
+\linespread{1.25}
+\AtBeginDocument{\setlength{\abovedisplayskip}{12pt plus 3pt}\setlength{\belowdisplayskip}{12pt plus 3pt}}
 \raggedbottom
 \widowpenalty=10000
 \clubpenalty=10000
@@ -96,7 +98,7 @@
 %  Example solutions: a heading and numbered steps outside the example box
 \newif\ifsolfirst
 \newcommand{\solution}{\par\smallskip\noindent{\color{cpow}\bfseries Solution}\par\nobreak\smallskip\global\solfirsttrue}
-\newcommand{\solstep}[2]{\par\ifsolfirst\global\solfirstfalse\else\medskip\needspace{5\baselineskip}\fi
+\newcommand{\solstep}[2]{\par\ifsolfirst\global\solfirstfalse\else\bigskip\needspace{5\baselineskip}\fi
   \noindent{\color{cpow}\bfseries Step #1.}\ {\bfseries #2}\par\nobreak\smallskip}
 
 \newtcolorbox{cautionbox}[1][Careful]{enhanced,
@@ -217,16 +219,17 @@
 
 %  Example 15.1: v from 0 to 10 V (x = v/2), i from 0 to 0.12 A (y = 20 i)
 \newcommand{\exOnePlot}{%
-  \ivq{5.6}{2.6}
-  \draw[crv, domain=0:1.0, samples=60, smooth] plot (\x,{2.4*\x*\x});
+  \ivq{5.6}{2.8}
+  \draw[crv, domain=0:2.0, samples=60, smooth] plot (\x,{0.625*\x*\x});
   \draw[crv] (-0.2,0) -- (0,0);
-  \node[font=\scriptsize, text=metured] at (1.45,2.35) {$i = \tfrac{3}{100}\,v^2$};
-  \draw[lline] (0,2.0) -- (5.0,0);
-  \node[font=\scriptsize, left] at (0,2.0) {$0.1\A$};
-  \node[font=\scriptsize, below] at (5.0,0) {$10\V$};
-  \node[opt] at (0.833,1.667) {};
-  \draw[dotted, gray] (0.833,0) -- (0.833,1.667);
-  \node[font=\scriptsize, below] at (0.833,0) {$\tfrac53\V$};}
+  \node[font=\scriptsize, text=metured, anchor=west] at (2.05,2.5) {$i = v^2$};
+  \draw[lline] (0,2.4) -- (4.8,0);
+  \node[font=\scriptsize, left] at (0,2.4) {$6\A$};
+  \node[font=\scriptsize, below] at (4.8,0) {$6\V$};
+  \node[opt] at (1.6,1.6) {};
+  \draw[dotted, gray] (1.6,0) -- (1.6,1.6) -- (0,1.6);
+  \node[font=\scriptsize, below] at (1.6,0) {$2\V$};
+  \node[font=\scriptsize, left] at (0,1.6) {$4\A$};}
 
 %  Many or no operating points
 \newcommand{\manypic}{%
@@ -243,7 +246,7 @@
 %  Example 15.2: 7.2 V, 6 Ohm, 12 Ohm (voltage v), 4 Ohm, 8 Ohm, nonlinear resistor at a.
 %  #1 = 0: the circuit;  1: nonlinear resistor removed (port a-b);  2: replaced by 2 V
 \newcommand{\exTwo}[1]{%
-  \draw (0,0) to[american voltage source, invert, l=$\Vcol{7.2\V}$] (0,2.2);
+  \draw (0,0) to[american voltage source, invert, l=$\Vcol{12\V}$] (0,2.2);
   \draw (0,2.2) to[R, l=$6\ohm$] (2.2,2.2) to[R, l=$4\ohm$] (4.4,2.2);
   \draw (0,2.2) -- (0,3.2) to[R, l=$8\ohm$] (4.4,3.2) -- (4.4,2.2);
   \draw (2.2,2.2) to[R] (2.2,0); \lL{2.2}{1.1}{$12\ohm$}
@@ -269,7 +272,7 @@
   \fi}
 %  Example 15.2: the Thevenin equivalent with the nonlinear resistor
 \newcommand{\exTwoTh}{%
-  \draw (0,0) to[american voltage source, invert, l=$\Vcol{6\V}$] (0,2);
+  \draw (0,0) to[american voltage source, invert, l=$\Vcol{10\V}$] (0,2);
   \draw (0,2) to[R, l=$4\ohm$] (2.4,2);
   \draw (2.4,2) to[generic] (2.4,0) -- (0,0);
   \draw[iar] (2.75,1.55) -- (2.75,0.95); \node[font=\small, text=ccur, anchor=west] at (2.8,1.25) {$i_R$};
@@ -278,15 +281,15 @@
 %  Example 15.2 plot: v from 0 to 6 V (x = 0.8 v), i from 0 to 1.5 A (y = 1.5 i)
 \newcommand{\exTwoPlot}{%
   \ivq{5.4}{2.7}
-  \draw[crv, domain=0:1.95, samples=60, smooth] plot (\x,{0.586*\x*\x});
-  \node[font=\scriptsize, text=metured] at (2.55,2.5) {$i_R = \tfrac14\,v_R^2$};
-  \draw[lline] (0,2.25) -- (4.8,0);
-  \node[font=\scriptsize, left] at (0,2.25) {$1.5\A$};
-  \node[font=\scriptsize, below] at (4.8,0) {$6\V$};
-  \node[opt] at (1.6,1.5) {};
-  \draw[dotted, gray] (1.6,0) -- (1.6,1.5) -- (0,1.5);
-  \node[font=\scriptsize, below] at (1.6,0) {$2\V$};
-  \node[font=\scriptsize, left] at (0,1.5) {$1\A$};}
+  \draw[crv, domain=0:1.06, samples=60, smooth] plot (\x,{2.222*\x*\x});
+  \node[font=\scriptsize, text=metured, anchor=west] at (1.15,2.55) {$i_R = \tfrac12\,v_R^2$};
+  \draw[lline] (0,2.25) -- (4.5,0);
+  \node[font=\scriptsize, left] at (0,2.25) {$2.5\A$};
+  \node[font=\scriptsize, below] at (4.5,0) {$10\V$};
+  \node[opt] at (0.9,1.8) {};
+  \draw[dotted, gray] (0.9,0) -- (0.9,1.8);
+  \node[font=\scriptsize, below] at (0.9,0) {$2\V$};
+  \node[font=\scriptsize, anchor=west] at (1.0,1.75) {$(2\V, 2\A)$};}
 
 %-------------------- the ideal diode and piecewise-linear pieces ---------------
 %  A vertical two-terminal branch from (x,#2) down to (x,0) drawn by #3, with i, + v -
@@ -340,25 +343,109 @@
   \node[font=\scriptsize, text=metured, anchor=north west] at (0.75,-0.75) {slope $\tfrac15$};
   \fill (1.6,0) circle (1.8pt);}
 
+%  Example 15.3 (simple): diode, 2 Ohm and 4 V source in series. #1 = 0 circuit; 1 diode ON; 2 diode OFF
+\newcommand{\exS}[2][4]{%
+  \draw (-0.7,4.4) -- (1.0,4.4) -- (1.0,4.0);
+  \ifcase#2
+    \draw (1.0,4.0) to[D*] (1.0,2.8);
+  \or
+    \draw (1.0,4.0) -- (1.0,2.8);
+    \node[font=\scriptsize, text=metured, anchor=west] at (1.15,3.4) {ON};
+  \or
+    \draw (1.0,4.0) -- (1.0,3.75); \draw (1.0,2.8) -- (1.0,3.05);
+    \draw (1.0,3.75) node[ocirc] {}; \draw (1.0,3.05) node[ocirc] {};
+    \node[pol] at (0.75,3.62) {$+$}; \node[pol] at (0.75,3.18) {$-$};
+    \node[font=\small, text=cvolt, anchor=east] at (0.62,3.4) {$v_D$};
+    \node[font=\scriptsize, text=metured, anchor=west] at (1.15,3.4) {OFF};
+  \fi
+  \draw (1.0,2.8) to[R] (1.0,1.5);
+  \node[font=\small, anchor=west] at (1.2,2.15) {$2\ohm$};
+  \draw (1.0,1.5) to[american voltage source, l=$\Vcol{#1\V}$] (1.0,0.3) -- (1.0,0) -- (-0.7,0);
+  \draw (-0.7,4.4) node[ocirc] {}; \draw (-0.7,0) node[ocirc] {};
+  \draw[iar] (-0.6,4.75) -- (0.0,4.75); \node[font=\small, text=ccur] at (-0.3,5.05) {$i$};
+  \node[pol] at (-1.0,4.0) {$+$}; \node[pol] at (-1.0,0.4) {$-$};
+  \node[font=\small, text=cvolt] at (-1.05,2.2) {$v$};}
+%  Example 15.3 result (x = v/4, y = i/2.8)
+\newcommand{\exSPlot}{%
+  \draw[vax] (-1.5,0) -- (2.8,0) node[right=1pt, font=\scriptsize, text=cvolt] {$v$};
+  \draw[vax] (0,-0.6) -- (0,1.4) node[above=1pt, font=\scriptsize, text=ccur] {$i$};
+  \draw[crv] (-1.3,0) -- (1.0,0) -- (2.4,1.0);
+  \fill (1.0,0) circle (1.8pt);
+  \node[font=\scriptsize, anchor=north] at (1.0,-0.05) {$4\V$};
+  \node[font=\scriptsize, text=metured, anchor=north west] at (1.85,0.55) {slope $\tfrac12$};}
+
+%  Example 15.4 (two diodes): 1 Ohm in series with [D1 + 2 V] || 2 Ohm || [reversed D2 + 1 V]
+\newcommand{\exH}{%
+  \draw (-0.7,4.0) to[R, l=$1\ohm$] (1.6,4.0) -- (5.4,4.0);
+  \fill (1.8,4.0) circle (1.6pt); \node[font=\small, text=cvolt, anchor=south] at (1.95,4.05) {$v_1$};
+  \draw (2.4,4.0) to[D*, l_=$D_1$] (2.4,2.4);
+  \draw (2.4,2.4) to[american voltage source, l_=$\Vcol{2\V}$] (2.4,0.8) -- (2.4,0.4);
+  \draw (3.9,4.0) to[R, l=$1\ohm$] (3.9,0.4);
+  \draw (5.4,2.4) to[D*, l_=$D_2$] (5.4,4.0);
+  \draw (5.4,0.8) to[american voltage source, l_=$\Vcol{1\V}$] (5.4,2.4);
+  \draw (5.4,0.8) -- (5.4,0.4) -- (-0.7,0.4);
+  \draw (-0.7,4.0) node[ocirc] {}; \draw (-0.7,0.4) node[ocirc] {};
+  \draw[iar] (-0.6,4.45) -- (0.0,4.45); \node[font=\small, text=ccur] at (-0.3,4.75) {$i$};
+  \node[pol] at (-1.0,3.6) {$+$}; \node[pol] at (-1.0,0.8) {$-$};
+  \node[font=\small, text=cvolt] at (-1.05,2.2) {$v$};}
+%  Example 15.4 result (x = v/2, y = i/1.5): breakpoints (-2 V, -1 A) and (4 V, 2 A)
+\newcommand{\exHPlot}{%
+  \draw[vax] (-2.0,0) -- (3.0,0) node[right=1pt, font=\scriptsize, text=cvolt] {$v$};
+  \draw[vax] (0,-1.9) -- (0,2.3) node[above=1pt, font=\scriptsize, text=ccur] {$i$};
+  \draw[crv] (-1.75,-1.667) -- (-1.0,-0.667) -- (2.0,1.333) -- (2.5,2.0);
+  \fill (-1.0,-0.667) circle (1.8pt); \fill (2.0,1.333) circle (1.8pt);
+  \draw[dotted, gray] (2.0,0) -- (2.0,1.333) -- (0,1.333);
+  \draw[dotted, gray] (-1.0,0) -- (-1.0,-0.667) -- (0,-0.667);
+  \node[font=\scriptsize, anchor=north] at (2.0,-0.02) {$4$};
+  \node[font=\scriptsize, anchor=south] at (-1.0,0.02) {$-2$};
+  \node[font=\scriptsize, anchor=east] at (0,1.333) {$2$};
+  \node[font=\scriptsize, anchor=west] at (0.05,-0.72) {$-1$};
+  \node[font=\scriptsize, text=metured, anchor=west] at (2.35,1.55) {$1\Sie$};
+  \node[font=\scriptsize, text=metured, anchor=south east] at (0.9,0.65) {$\tfrac12\Sie$};
+  \node[font=\scriptsize, text=metured, anchor=north west] at (-1.15,-1.0) {$1\Sie$};}
+
+%  Synthesis, simple target: i = v/2 for v <= 2 V, slope 1 S above (x = v/3, y = i/3)
+\newcommand{\synPlot}{%
+  \draw[vax] (-1.6,0) -- (3.0,0) node[right=1pt, font=\scriptsize, text=cvolt] {$v$};
+  \draw[vax] (0,-0.7) -- (0,2.3) node[above=1pt, font=\scriptsize, text=ccur] {$i$};
+  \draw[crv] (-1.333,-0.667) -- (0.667,0.333) -- (2.333,2.0);
+  \fill (0.667,0.333) circle (1.8pt);
+  \draw[dotted, gray] (0.667,0) -- (0.667,0.333);
+  \node[font=\scriptsize, anchor=north] at (0.667,-0.05) {$2\V$};
+  \node[font=\scriptsize, text=metured, anchor=north west] at (-1.0,-0.55) {$\tfrac12\Sie$};
+  \node[font=\scriptsize, text=metured, anchor=west] at (1.75,1.2) {$1\Sie$};}
+%  Synthesis, simple circuit: 2 Ohm in parallel with [2 Ohm, diode, 2 V]
+\newcommand{\synCkt}{%
+  \draw (0,3.6) node[ocirc] {} -- (3.0,3.6);
+  \draw (0,-0.4) node[ocirc] {} -- (3.0,-0.4);
+  \draw (1.4,3.6) to[R] (1.4,-0.4); \node[font=\small, anchor=west] at (1.55,1.6) {$2\ohm$};
+  \draw (3.0,3.6) to[R] (3.0,2.5); \node[font=\small, anchor=west] at (3.15,3.05) {$2\ohm$};
+  \draw (3.0,2.5) to[D*] (3.0,1.3);
+  \draw (3.0,1.3) to[american voltage source, l=$\Vcol{2\V}$] (3.0,-0.4);
+  \foreach \x in {1.4} {\fill (\x,3.6) circle (1.6pt); \fill (\x,-0.4) circle (1.6pt);}
+  \draw[iar] (0.05,3.95) -- (0.65,3.95); \node[font=\small, text=ccur] at (0.35,4.22) {$i$};
+  \node[pol] at (0.3,2.9) {$+$}; \node[pol] at (0.3,0.3) {$-$};
+  \node[font=\small, text=cvolt] at (0.3,1.6) {$v$};}
+
 %  Synthesis, Example 15.4: target characteristic (general)
 \newcommand{\exFourPlot}{%
   \draw[vax] (-1.8,0) -- (2.4,0) node[right=1pt, font=\scriptsize, text=cvolt] {$v$};
   \draw[vax] (0,-1.4) -- (0,2.3) node[above=1pt, font=\scriptsize, text=ccur] {$i$};
   \draw[crv] (-1.6,-1.2) -- (0,0) -- (0,1.0) -- (2.2,1.9);
-  \node[font=\scriptsize, left] at (0,1.0) {$I$};
-  \node[font=\scriptsize, text=metured, anchor=north west] at (-0.7,-0.75) {$\tfrac{1}{R_1}$};
-  \node[font=\scriptsize, text=metured, anchor=south] at (1.5,1.65) {$\tfrac{1}{R_2}$};}
+  \node[font=\scriptsize, left] at (0,1.0) {$1\A$};
+  \node[font=\scriptsize, text=metured, anchor=north west] at (-0.7,-0.75) {$1\Sie$};
+  \node[font=\scriptsize, text=metured, anchor=south] at (1.5,1.65) {$\tfrac12\Sie$};}
 %  Example 15.4: the synthesized circuit (diode || R_1) in series with (reversed diode || R_2 || I)
 \newcommand{\exFourCkt}{%
   \draw (-0.7,5.0) node[ocirc] {} -- (1.2,5.0) -- (1.2,4.7);
   \draw (0.6,4.7) -- (1.8,4.7);
   \draw (0.6,4.7) to[D*] (0.6,3.5); \draw (1.8,4.7) to[R] (1.8,3.5);
-  \node[font=\small, anchor=west] at (1.95,4.1) {$R_1$};
+  \node[font=\small, anchor=west] at (1.95,4.1) {$1\ohm$};
   \draw (0.6,3.5) -- (1.8,3.5); \draw (1.2,3.5) -- (1.2,3.2);
   \draw (0.2,3.2) -- (2.8,3.2);
   \draw (0.2,2.0) to[D*] (0.2,3.2); \draw (1.2,3.2) to[R] (1.2,2.0);
-  \node[font=\small, anchor=west] at (1.3,2.6) {$R_2$};
-  \draw (2.8,3.2) to[american current source, l=$\Icol{I}$] (2.8,2.0);
+  \node[font=\small, anchor=west] at (1.3,2.6) {$2\ohm$};
+  \draw (2.8,3.2) to[american current source, l=$\Icol{1\A}$] (2.8,2.0);
   \draw (0.2,2.0) -- (2.8,2.0); \draw (1.2,2.0) -- (1.2,0) -- (-0.7,0) node[ocirc] {};
   \draw[iar] (-0.6,5.35) -- (0.0,5.35); \node[font=\small, text=ccur] at (-0.3,5.62) {$i$};
   \node[pol] at (-1.0,4.0) {$+$}; \node[pol] at (-1.0,1.0) {$-$};
@@ -367,16 +454,19 @@
 %  Example 15.5: numeric target (x = v/2.2, y = i/8)
 \newcommand{\exFivePlot}{%
   \draw[vax] (-2.0,0) -- (2.2,0) node[right=1pt, font=\scriptsize, text=cvolt] {$v$};
-  \draw[vax] (0,-1.3) -- (0,2.9) node[above=1pt, font=\scriptsize, text=ccur] {$i$};
-  \draw[crv] (-1.6,-1.14) -- (-0.91,0) -- (0.91,1.5) -- (1.6,2.64);
-  \foreach \x/\l in {-0.91/-2, 0.91/2} {\draw (\x,0.06) -- (\x,-0.06); \node[font=\tiny, below] at (\x,0) {$\l$};}
-  \foreach \y/\l in {0.75/6, 1.5/12} {\draw (0.06,\y) -- (-0.06,\y); \node[font=\tiny, left] at (0,\y) {$\l$};}
-  \draw[dotted, gray] (0.91,0) -- (0.91,1.5) -- (0,1.5);
-  \node[font=\scriptsize, text=metured, anchor=west] at (1.45,2.2) {$6\Sie$};
-  \node[font=\scriptsize, text=metured, anchor=north west] at (0.35,0.6) {$3\Sie$};
-  \node[font=\scriptsize, text=metured, anchor=east] at (-1.4,-0.6) {$6\Sie$};
+  \draw[vax] (0,-2.2) -- (0,2.4) node[above=1pt, font=\scriptsize, text=ccur] {$i$};
+  \draw[crv] (-1.59,-2.0) -- (-0.91,-0.8) -- (0.91,0.8) -- (1.59,2.0);
+  \foreach \x/\l in {-0.91/-2, 0.91/2} {\draw (\x,0.06) -- (\x,-0.06);}
+  \node[font=\tiny, below] at (0.91,0) {$2$}; \node[font=\tiny, above] at (-0.91,0) {$-2$};
+  \foreach \y/\l in {0.8/2, -0.8/-2} {\draw (0.06,\y) -- (-0.06,\y);}
+  \node[font=\tiny, left] at (0,0.8) {$2$}; \node[font=\tiny, right] at (0,-0.8) {$-2$};
+  \draw[dotted, gray] (0.91,0) -- (0.91,0.8) -- (0,0.8);
+  \draw[dotted, gray] (-0.91,0) -- (-0.91,-0.8) -- (0,-0.8);
+  \node[font=\scriptsize, text=metured, anchor=west] at (1.35,1.4) {$2\Sie$};
+  \node[font=\scriptsize, text=metured, anchor=south east] at (-0.08,0.08) {$1\Sie$};
+  \node[font=\scriptsize, text=metured, anchor=east] at (-1.35,-1.4) {$2\Sie$};
 }
-%  A branch: conductance 3 S (1/3 Ohm), diode and 2 V source in series, from (x,3) to (x,0);
+%  A branch: 1 Ohm, diode and 2 V source in series, from (x,3) to (x,0);
 %  #2 = 0: forward (conducts for v > 2 V);  1: reversed (conducts for v < -2 V)
 \newcommand{\vbranch}[2]{%
   \ifnum#2=0
@@ -386,16 +476,14 @@
     \draw (#1,3.0) to[R] (#1,2.1); \draw (#1,1.1) to[D*] (#1,2.1);
     \draw (#1,0) to[american voltage source, l_=$\Vcol{2\V}$] (#1,1.1);
   \fi
-  \node[font=\scriptsize, anchor=east] at (#1-0.15,2.55) {$\tfrac13\ohm$};}
+  \node[font=\scriptsize, anchor=east] at (#1-0.15,2.55) {$1\ohm$};}
 \newcommand{\exFiveCkt}{%
-  \draw (0,3.6) node[ocirc] {} -- (6.3,3.6);
-  \draw (0,-0.4) node[ocirc] {} -- (6.3,-0.4);
-  \draw (1.2,3.6) -- (1.2,3.0); \draw (1.2,-0.4) -- (1.2,0);
-  \draw (1.2,3.0) to[american current source, l=$\Icol{6\A}$] (1.2,0);
-  \draw (3.0,3.6) -- (3.0,3.0); \draw (3.0,0) -- (3.0,-0.4); \vbranch{3.0}{0}
-  \draw (4.8,3.6) -- (4.8,3.0); \draw (4.8,0) -- (4.8,-0.4); \vbranch{4.8}{1}
-  \draw (6.3,3.6) to[R] (6.3,-0.4); \node[font=\scriptsize, anchor=west] at (6.45,1.6) {$\tfrac13\ohm$};
-  \foreach \x in {1.2,3.0,4.8} {\fill (\x,3.6) circle (1.6pt); \fill (\x,-0.4) circle (1.6pt);}
+  \draw (0,3.6) node[ocirc] {} -- (5.4,3.6);
+  \draw (0,-0.4) node[ocirc] {} -- (5.4,-0.4);
+  \draw (1.3,3.6) to[R] (1.3,-0.4); \node[font=\scriptsize, anchor=west] at (1.45,1.6) {$1\ohm$};
+  \draw (3.4,3.6) -- (3.4,3.0); \draw (3.4,0) -- (3.4,-0.4); \vbranch{3.4}{0}
+  \draw (5.4,3.6) -- (5.4,3.0); \draw (5.4,0) -- (5.4,-0.4); \vbranch{5.4}{1}
+  \foreach \x in {1.3,3.4} {\fill (\x,3.6) circle (1.6pt); \fill (\x,-0.4) circle (1.6pt);}
   \draw[iar] (0.05,3.95) -- (0.65,3.95); \node[font=\small, text=ccur] at (0.35,4.22) {$i$};
   \node[pol] at (0.3,2.9) {$+$}; \node[pol] at (0.3,0.3) {$-$};
   \node[font=\small, text=cvolt] at (0.3,1.6) {$v$};}
@@ -475,16 +563,364 @@
 \newcommand{\casecktg}{%
         \draw (0,3.8) -- (0,3.5) -- (0.5,3.5) to[D*] (0.5,1.9);
         \draw (0.5,3.5) -- (1.5,3.5) to[american current source, l=$\Icol{I}$] (1.5,1.9) -- (0.5,1.9);
-        \draw (1.0,1.9) -- (1.0,1.6); \draw (1.0,0.4) to[american voltage source, l_=$\Vcol{E}$] (1.0,1.6);
+        \draw (1.0,1.9) -- (1.0,1.6); \draw (1.0,1.6) to[american voltage source, l=$\Vcol{E}$] (1.0,0.4);   % + at the top
         \draw (1.0,0.4) -- (1.0,0.3) -- (0,0.3) -- (0,0);
         \termtb{3.8}}
 \newcommand{\caseresa}{\draw[crv] (-1.2,0) -- (0,0) -- (1.1,0.88);}
 \newcommand{\caseresb}{\draw[crv] (-1.1,-0.88) -- (0,0) -- (0,1.0);}
-\newcommand{\caseresc}{\draw[crv] (-1.0,-0.8) -- (0,0) -- (1.2,0.45);}
-\newcommand{\caseresd}{\draw[crv] (-1.2,-0.6) -- (0,0) -- (0.75,1.06);}
+\newcommand{\caseresc}{\draw[crv] (-1.0,-0.8) -- (0,0) -- (1.2,0.48);}
+\newcommand{\caseresd}{\draw[crv] (-1.2,-0.6) -- (0,0) -- (1.0,1.0);}
 \newcommand{\caserese}{\draw[crv] (-1.2,0) -- (0.6,0) -- (0.6,1.0); \node[font=\tiny, below] at (0.6,0) {$E$};}
 \newcommand{\caseresf}{\draw[crv] (-1.2,0.5) -- (0,0.5) -- (0,1.05); \node[font=\tiny, anchor=north west] at (0,0.5) {$I$};}
-\newcommand{\caseresg}{\draw[crv] (-1.2,0.5) -- (-0.6,0.5) -- (-0.6,1.05); \node[font=\tiny, below] at (-0.6,0) {$-E$};}
+\newcommand{\caseresg}{\draw[crv] (-1.2,0.5) -- (0.6,0.5) -- (0.6,1.05); \node[font=\tiny, below] at (0.6,0) {$E$};}
+%  Voltage- or current-controlled: test lines (dashed grey) and hit points
+\tikzset{tln/.style={black!55, dashed, thin}, hit/.style={circle, fill=black, inner sep=0pt, minimum size=3.6pt}}
+%  An N-shaped curve i = v^3 - 0.75 v (voltage-controlled, not current-controlled)
+\newcommand{\Ncurve}{\draw[crv, domain=-1.15:1.15, samples=60, smooth] plot (\x,{\x*\x*\x - 0.75*\x});}
+%  #1 = 1: vertical test line (one hit); 2: horizontal test line (three hits)
+\newcommand{\Ntest}[1]{%
+  \pframe{0}{}
+  \ifnum#1=1
+    \draw[tln] (0.6,-1.05) -- (0.6,1.05); \Ncurve \node[hit] at (0.6,-0.234) {};
+  \else
+    \draw[tln] (-1.25,0.12) -- (1.25,0.12); \Ncurve
+    \foreach \x in {0.937,-0.771,-0.166} \node[hit] at (\x,0.12) {};
+  \fi}
+%  Small curves for the classification
+\newcommand{\cR}{\draw[crv] (-1.1,-0.85) -- (1.1,0.85);}
+\newcommand{\cI}{\draw[crv] (-1.2,0.55) -- (1.2,0.55); \node[font=\tiny, anchor=south east] at (0,0.55) {$I$};}
+\newcommand{\cE}{\draw[crv] (0.6,-1.0) -- (0.6,1.0); \node[font=\tiny, anchor=north west] at (0.6,0) {$E$};}
+%  Small sub-circuits above the plots of a graphical composition.
+%  \minic{x}{H}{content}: terminals at the left, bottom at y = 1.7 above the plot frame centred at x
+\newcommand{\minic}[3]{%
+  \begin{scope}[shift={(#1-0.55,1.75)}, scale=\miniscale, transform shape]
+    \draw (0,#2) node[ocirc] {}; \draw (0,0) node[ocirc] {};
+    #3
+  \end{scope}}
+\newcommand{\mlab}[1]{{\Large #1}}
+\newcommand{\miniscale}{0.62}
+%  elements in a vertical column at x = #1, from y = #2 (top) to y = #3 (bottom)
+\newcommand{\mD}[3]{\draw (#1,#2) to[D*] (#1,#3);}
+\newcommand{\mDr}[3]{\draw (#1,#3) to[D*] (#1,#2);}
+\newcommand{\mR}[4]{\draw (#1,#2) to[R, l=\mlab{#4}] (#1,#3);}
+\newcommand{\mE}[4]{\draw (#1,#2) to[american voltage source, l=\mlab{\Vcol{#4}}] (#1,#3);}   % + at the top
+\newcommand{\mEr}[4]{\draw (#1,#3) to[american voltage source, l_=\mlab{\Vcol{#4}}] (#1,#2);} % + at the bottom
+\newcommand{\mI}[4]{\draw (#1,#2) to[american current source, l=\mlab{\Icol{#4}}] (#1,#3);}  % arrow down
+\newcommand{\mW}[2]{\draw (0,#1) -- (#2,#1); \draw (0,0) -- (#2,0);}                             % wires to column #2, top at #1
+%  ready-made sub-circuits (#1 = x position of the plot)
+\newcommand{\miniD}[1]{\minic{#1}{2.2}{\mW{2.2}{0.8} \mD{0.8}{2.2}{0}}}
+\newcommand{\miniDr}[1]{\minic{#1}{2.2}{\mW{2.2}{0.8} \mDr{0.8}{2.2}{0}}}
+\newcommand{\miniR}[2]{\minic{#1}{2.2}{\mW{2.2}{0.8} \mR{0.8}{2.2}{0}{#2}}}
+\newcommand{\miniE}[2]{\minic{#1}{2.2}{\mW{2.2}{0.8} \mE{0.8}{2.2}{0}{#2}}}
+\newcommand{\miniI}[2]{\minic{#1}{2.2}{\mW{2.2}{0.8} \mI{0.8}{2.2}{0}{#2}}}
+%  diode over R (Case I), diode || R (Case II)
+\newcommand{\miniDsR}[2]{\minic{#1}{3.6}{\mW{3.6}{0.8} \mR{0.8}{3.6}{1.8}{#2} \mD{0.8}{1.8}{0}}}
+\newcommand{\miniDpR}[2]{\minic{#1}{2.2}{\mW{2.2}{2.0} \mD{0.8}{2.2}{0} \mR{2.0}{2.2}{0}{#2}}}
+%  Case III: (reversed diode || R1) in series with R2
+\newcommand{\miniIII}[1]{\minic{#1}{3.6}{\draw (0,3.6) -- (2.0,3.6); \draw (0,0) -- (1.4,0);
+    \mDr{0.8}{3.6}{1.8} \mR{2.0}{3.6}{1.8}{$R_1$} \draw (0.8,1.8) -- (2.0,1.8); \mR{1.4}{1.8}{0}{$R_2$}}}
+\newcommand{\miniRrDr}[2]{\minic{#1}{2.2}{\mW{2.2}{2.0} \mDr{0.8}{2.2}{0} \mR{2.0}{2.2}{0}{#2}}}
+%  Case IV: (diode + R1) || R2
+\newcommand{\miniIV}[1]{\minic{#1}{3.6}{\mW{3.6}{2.0} \mD{0.8}{3.6}{1.8} \mR{0.8}{1.8}{0}{$R_1$} \mR{2.0}{3.6}{0}{$R_2$}}}
+%  diode + E (+ at the top), diode || I, (diode || I) + E
+\newcommand{\miniDsE}[2]{\minic{#1}{3.6}{\mW{3.6}{0.8} \mD{0.8}{3.6}{1.8} \mE{0.8}{1.8}{0}{#2}}}
+\newcommand{\miniDpI}[2]{\minic{#1}{2.2}{\mW{2.2}{2.0} \mD{0.8}{2.2}{0} \mI{2.0}{2.2}{0}{#2}}}
+\newcommand{\miniVII}[1]{\minic{#1}{3.6}{\draw (0,3.6) -- (2.0,3.6); \draw (0,0) -- (1.4,0);
+    \mD{0.8}{3.6}{1.8} \mI{2.0}{3.6}{1.8}{$I$} \draw (0.8,1.8) -- (2.0,1.8); \mE{1.4}{1.8}{0}{$E$}}}
+%  Example 15.3: diode, 2 Ohm, 4 V in series
+\newcommand{\miniDRE}[1]{\minic{#1}{5.0}{\mW{5.0}{0.8} \mD{0.8}{5.0}{3.4} \mR{0.8}{3.4}{1.7}{$2\ohm$} \mE{0.8}{1.7}{0}{$4\V$}}}
+%  Example 15.4 pieces
+\newcommand{\miniDtwo}[1]{\minic{#1}{3.6}{\mW{3.6}{0.8} \mD{0.8}{3.6}{1.8} \mE{0.8}{1.8}{0}{$2\V$}}}
+\newcommand{\miniDrone}[1]{\minic{#1}{3.6}{\mW{3.6}{0.8} \mDr{0.8}{3.6}{1.8} \mEr{0.8}{1.8}{0}{$1\V$}}}
+\newcommand{\miniPar}[2][0]{\minic{#2}{3.6}{\mW{3.6}{3.8} \mD{0.8}{3.6}{1.8} \mE{0.8}{1.8}{0}{$2\V$}
+    \mR{2.3}{3.6}{0}{$1\ohm$} \mDr{3.8}{3.6}{1.8} \mEr{3.8}{1.8}{0}{$1\V$}}}
+\newcommand{\miniOnePort}[1]{\minic{#1}{5.4}{\draw (0,5.4) -- (0.8,5.4); \mR{0.8}{5.4}{3.6}{$1\ohm$}
+    \draw (0.8,3.6) -- (3.8,3.6); \draw (0,0) -- (3.8,0); \mD{0.8}{3.6}{1.8} \mE{0.8}{1.8}{0}{$2\V$}
+    \mR{2.3}{3.6}{0}{$1\ohm$} \mDr{3.8}{3.6}{1.8} \mEr{3.8}{1.8}{0}{$1\V$}}}
+%  Example 15.5: branch (2 Ohm, diode, 2 V) and the circuit
+\newcommand{\miniBranch}[1]{\minic{#1}{5.0}{\mW{5.0}{0.8} \mR{0.8}{5.0}{3.4}{$2\ohm$} \mD{0.8}{3.4}{1.7} \mE{0.8}{1.7}{0}{$2\V$}}}
+\newcommand{\miniSyn}[1]{\minic{#1}{5.0}{\mW{5.0}{2.0} \mR{0.8}{5.0}{0}{$2\ohm$} \mR{2.0}{5.0}{3.4}{$2\ohm$} \mD{2.0}{3.4}{1.7} \mE{2.0}{1.7}{0}{$2\V$}}}
+%  Example 15.6: A = diode || 1 Ohm, B = reversed diode || 2 Ohm || 1 A, target = A + B
+\newcommand{\miniA}[1]{\miniDpR{#1}{$1\ohm$}}
+\newcommand{\miniB}[1]{\minic{#1}{2.2}{\mW{2.2}{3.8} \mDr{0.8}{2.2}{0} \mR{2.3}{2.2}{0}{$2\ohm$} \mI{3.8}{2.2}{0}{$1\A$}}}
+\newcommand{\miniAB}[1]{\minic{#1}{4.4}{\draw (0,4.4) -- (2.3,4.4); \mD{0.8}{4.4}{2.2} \mR{2.3}{4.4}{2.2}{$1\ohm$}
+    \draw (0.8,2.2) -- (3.8,2.2); \draw (0,0) -- (3.8,0); \mDr{0.8}{2.2}{0} \mR{2.3}{2.2}{0}{$2\ohm$} \mI{3.8}{2.2}{0}{$1\A$}}}
+%  sub-circuits above the three plots of \threeplots
+\newcommand{\minirow}[3]{#1{0} #2{4.1} #3{8.2}}
+%  More sub-circuits: two resistors in series / parallel, R with a source
+\newcommand{\miniRsR}[3]{\minic{#1}{3.6}{\mW{3.6}{0.8} \mR{0.8}{3.6}{1.8}{#2} \mR{0.8}{1.8}{0}{#3}}}
+\newcommand{\miniRpR}[3]{\minic{#1}{2.2}{\mW{2.2}{2.3} \mR{0.8}{2.2}{0}{#2} \mR{2.3}{2.2}{0}{#3}}}
+\newcommand{\miniRsE}[3]{\minic{#1}{3.6}{\mW{3.6}{0.8} \mR{0.8}{3.6}{1.8}{#2} \mE{0.8}{1.8}{0}{#3}}}
+\newcommand{\miniRpI}[3]{\minic{#1}{2.2}{\mW{2.2}{2.3} \mR{0.8}{2.2}{0}{#2} \mI{2.3}{2.2}{0}{#3}}}
+%  Zener diode built graphically: reversed diode + battery V_Z (+ at the bottom), then || diode
+\newcommand{\miniEr}[2]{\minic{#1}{2.2}{\mW{2.2}{0.8} \mEr{0.8}{2.2}{0}{#2}}}
+\newcommand{\miniDrZ}[1]{\minic{#1}{3.6}{\mW{3.6}{0.8} \mDr{0.8}{3.6}{1.8} \mEr{0.8}{1.8}{0}{$V_Z$}}}
+\newcommand{\miniZeq}[1]{\minic{#1}{3.6}{\mW{3.6}{2.0} \mD{0.8}{3.6}{0} \mDr{2.0}{3.6}{1.8} \mEr{2.0}{1.8}{0}{$V_Z$}}}
+\newcommand{\zcDr}{\draw[crv] (1.2,0) -- (0,0) -- (0,-1.0);}
+\newcommand{\zcD}{\draw[crv] (-1.2,0) -- (0,0) -- (0,1.0);}
+\newcommand{\zcE}{\draw[crv] (-0.7,-1.0) -- (-0.7,1.0); \node[font=\tiny, anchor=north west] at (-0.7,0) {$-V_Z$};}
+\newcommand{\zcBr}{\draw[crv] (1.2,0) -- (-0.7,0) -- (-0.7,-1.0); \node[font=\tiny, anchor=south] at (-0.7,0) {$-V_Z$};}
+\newcommand{\zcZ}{\draw[crv] (-0.7,-1.0) -- (-0.7,0) -- (0,0) -- (0,1.0); \node[font=\tiny, anchor=south] at (-0.7,0) {$-V_Z$};}
+\newcommand{\zenerSer}{%
+  \threeplots{\zcDr}{\zcE}{\zcBr}{\shortstack{$+$\\[1pt]{\tiny add $v$}}}{reversed diode}{battery $V_Z$}{series}
+  \miniDr{0} \miniEr{4.1}{$V_Z$} \miniDrZ{8.2}}
+\newcommand{\zenerPar}{%
+  \threeplots{\zcD}{\zcBr}{\zcZ}{\shortstack{$+$\\[1pt]{\tiny add $i$}}}{diode}{series branch}{parallel: Zener}
+  \miniD{0} \miniDrZ{4.1} \miniZeq{8.2}}
+%  Dead-band examples (graphical synthesis)
+\newcommand{\mIr}[4]{\draw (#1,#3) to[american current source, l_=\mlab{\Icol{#4}}] (#1,#2);} % arrow up
+\newcommand{\miniBrA}[1]{\minic{#1}{5.0}{\mW{5.0}{0.8} \mD{0.8}{5.0}{3.4} \mR{0.8}{3.4}{1.7}{$1\ohm$} \mE{0.8}{1.7}{0}{$1\V$}}}
+\newcommand{\miniBrAr}[1]{\minic{#1}{5.0}{\mW{5.0}{0.8} \mDr{0.8}{5.0}{3.4} \mR{0.8}{3.4}{1.7}{$1\ohm$} \mEr{0.8}{1.7}{0}{$1\V$}}}
+\newcommand{\miniDbA}[1]{\minic{#1}{5.0}{\mW{5.0}{2.6} \mD{0.8}{5.0}{3.4} \mR{0.8}{3.4}{1.7}{$1\ohm$} \mE{0.8}{1.7}{0}{$1\V$}
+    \mDr{2.6}{5.0}{3.4} \mR{2.6}{3.4}{1.7}{$1\ohm$} \mEr{2.6}{1.7}{0}{$1\V$}}}
+\newcommand{\miniPone}[1]{\minic{#1}{2.2}{\mW{2.2}{3.8} \mDr{0.8}{2.2}{0} \mR{2.3}{2.2}{0}{$1\ohm$} \mI{3.8}{2.2}{0}{$1\A$}}}
+\newcommand{\miniPtwo}[1]{\minic{#1}{2.2}{\mW{2.2}{3.8} \mD{0.8}{2.2}{0} \mR{2.3}{2.2}{0}{$1\ohm$} \mIr{3.8}{2.2}{0}{$1\A$}}}
+\newcommand{\miniDbB}[1]{\minic{#1}{4.4}{\draw (0,4.4) -- (3.8,4.4); \draw (0,0) -- (3.8,0);
+    \mDr{0.8}{4.4}{2.2} \mR{2.3}{4.4}{2.2}{$1\ohm$} \mI{3.8}{4.4}{2.2}{$1\A$} \draw (0.8,2.2) -- (3.8,2.2);
+    \mD{0.8}{2.2}{0} \mR{2.3}{2.2}{0}{$1\ohm$} \mIr{3.8}{2.2}{0}{$1\A$}}}
+%  Target plots with ticks at +-1 (1 unit = 0.6)
+\newcommand{\dbAxes}{%
+  \draw[vax] (-1.8,0) -- (1.9,0) node[right=1pt, font=\scriptsize, text=cvolt] {$v$};
+  \draw[vax] (0,-1.6) -- (0,1.7) node[above=1pt, font=\scriptsize, text=ccur] {$i$};
+  \foreach \t in {-0.6,0.6} {\draw (\t,0.05) -- (\t,-0.05); \draw (0.05,\t) -- (-0.05,\t);}}
+\newcommand{\dbAPlot}{\dbAxes
+  \draw[crv] (-1.6,-1.0) -- (-0.6,0) -- (0.6,0) -- (1.6,1.0);
+  \node[font=\tiny, below] at (0.6,0) {$1$}; \node[font=\tiny, above] at (-0.6,0) {$-1$};
+  \node[font=\tiny, anchor=north west] at (1.0,0.4) {$45^\circ$};}
+\newcommand{\dbBPlot}{\dbAxes
+  \draw[crv] (-1.0,-1.6) -- (0,-0.6) -- (0,0.6) -- (1.0,1.6);
+  \node[font=\tiny, left] at (0,0.6) {$1$}; \node[font=\tiny, right] at (0,-0.6) {$-1$};
+  \node[font=\tiny, anchor=north west] at (0.4,1.0) {$45^\circ$};}
+%  Curves in \pframe units (1 V = 1 A = 0.4)
+\newcommand{\cDbCaseI}{\draw[crv] (-1.2,0) -- (0,0) -- (1.0,1.0);}
+\newcommand{\cDbE}{\draw[crv] (0.4,-1.0) -- (0.4,1.0); \node[font=\tiny, anchor=north west] at (0.4,0) {$1$};}
+\newcommand{\cDbBr}{\draw[crv] (-1.2,0) -- (0.4,0) -- (1.2,0.8); \node[font=\tiny, below] at (0.4,0) {$1$};}
+\newcommand{\cDbBrr}{\draw[crv] (-1.2,-0.8) -- (-0.4,0) -- (1.2,0); \node[font=\tiny, above] at (-0.4,0) {$-1$};}
+\newcommand{\cDbA}{\draw[crv] (-1.2,-0.8) -- (-0.4,0) -- (0.4,0) -- (1.2,0.8); \node[font=\tiny, below] at (0.4,0) {$1$}; \node[font=\tiny, above] at (-0.4,0) {$-1$};}
+\newcommand{\cDbRDr}{\draw[crv] (0,-1.0) -- (0,0) -- (1.0,1.0);}
+\newcommand{\cDbI}{\draw[crv] (-1.2,0.4) -- (1.2,0.4); \node[font=\tiny, anchor=south east] at (0,0.4) {$1$};}
+\newcommand{\cDbPone}{\draw[crv] (0,-1.0) -- (0,0.4) -- (0.7,1.1); \node[font=\tiny, left] at (0,0.4) {$1$};}
+\newcommand{\cDbPtwo}{\draw[crv] (0,1.0) -- (0,-0.4) -- (-0.7,-1.1); \node[font=\tiny, right] at (0,-0.4) {$-1$};}
+\newcommand{\cDbB}{\draw[crv] (-0.7,-1.1) -- (0,-0.4) -- (0,0.4) -- (0.7,1.1); \node[font=\tiny, left] at (0,0.4) {$1$}; \node[font=\tiny, right] at (0,-0.4) {$-1$};}
+%  Step-by-step graphical addition: guide lines (dashed), read points (dots), intervals (thick blue)
+\tikzset{gline/.style={black!45, densely dashed, thin}, ival/.style={ccur, line width=2.6pt, opacity=0.6}, gdot/.style={circle, fill=black, inner sep=0pt, minimum size=3.6pt}}
+\newcommand{\addSer}[1]{%
+  \path (-0.2,-1.98) rectangle (12.68,4.072);
+  \draw[vax] (0,0) -- (2.88,0) node[right=0pt, font=\tiny, text=cvolt] {$v$};
+  \draw[vax] (1.08,-1.08) -- (1.08,1.872) node[above=0pt, font=\tiny, text=ccur] {$i$};
+  \draw[gray!60] (1.8,-0.05) -- (1.8,0.05); \node[font=\tiny, text=gray, below] at (1.8,-0.03) {$2$};
+  \draw[gray!60] (2.52,-0.05) -- (2.52,0.05); \node[font=\tiny, text=gray, below] at (2.52,-0.03) {$4$};
+  \draw[gray!60] (1.03,0.72) -- (1.13,0.72); \node[font=\tiny, text=gray, left] at (1.06,0.72) {$1$};
+  \draw[gray!60] (1.03,1.44) -- (1.13,1.44); \node[font=\tiny, text=gray, left] at (1.06,1.44) {$2$};
+  \node[font=\scriptsize, text=metugray] at (1.44,-1.63) {diode};
+  \begin{scope}[yshift=0.372cm]\miniD{1.49}\end{scope}
+  \draw[crv] (0,0) -- (1.08,0) -- (1.08,1.8);
+  \ifnum#1>1 \draw[gline] (0,0.72) -- (2.88,0.72); \node[gdot] at (1.08,0.72) {}; \fi
+  \ifnum#1>2 \draw[gline] (0,1.44) -- (2.88,1.44); \node[gdot] at (1.08,1.44) {}; \fi
+  \ifnum#1>2 \draw[gline] (0,0) -- (2.88,0); \draw[ival] (0,0) -- (1.08,0); \fi
+  \ifnum#1>2 \draw[gline] (0,-0.72) -- (2.88,-0.72); \node[font=\tiny, text=metured, anchor=south west, inner sep=1pt] at (0,-0.72) {none}; \fi
+  \draw[vax] (4.6,0) -- (7.48,0) node[right=0pt, font=\tiny, text=cvolt] {$v$};
+  \draw[vax] (5.68,-1.08) -- (5.68,1.872) node[above=0pt, font=\tiny, text=ccur] {$i$};
+  \draw[gray!60] (6.4,-0.05) -- (6.4,0.05); \node[font=\tiny, text=gray, below] at (6.4,-0.03) {$2$};
+  \draw[gray!60] (7.12,-0.05) -- (7.12,0.05); \node[font=\tiny, text=gray, below] at (7.12,-0.03) {$4$};
+  \draw[gray!60] (5.63,0.72) -- (5.73,0.72); \node[font=\tiny, text=gray, left] at (5.66,0.72) {$1$};
+  \draw[gray!60] (5.63,1.44) -- (5.73,1.44); \node[font=\tiny, text=gray, left] at (5.66,1.44) {$2$};
+  \node[font=\scriptsize, text=metugray] at (6.04,-1.63) {$2\ohm$};
+  \begin{scope}[yshift=0.372cm]\miniR{6.09}{$2\ohm$}\end{scope}
+  \draw[crv] (4.6,-1.08) -- (7.48,1.8);
+  \ifnum#1>1 \draw[gline] (4.6,0.72) -- (7.48,0.72); \node[gdot] at (6.4,0.72) {}; \fi
+  \ifnum#1>2 \draw[gline] (4.6,1.44) -- (7.48,1.44); \node[gdot] at (7.12,1.44) {}; \fi
+  \ifnum#1>2 \draw[gline] (4.6,0) -- (7.48,0); \node[gdot] at (5.68,0) {}; \fi
+  \ifnum#1>2 \draw[gline] (4.6,-0.72) -- (7.48,-0.72); \node[gdot] at (4.96,-0.72) {}; \fi
+  \draw[vax] (9.2,0) -- (12.08,0) node[right=0pt, font=\tiny, text=cvolt] {$v$};
+  \draw[vax] (10.28,-1.08) -- (10.28,1.872) node[above=0pt, font=\tiny, text=ccur] {$i$};
+  \draw[gray!60] (11,-0.05) -- (11,0.05); \node[font=\tiny, text=gray, below] at (11,-0.03) {$2$};
+  \draw[gray!60] (11.72,-0.05) -- (11.72,0.05); \node[font=\tiny, text=gray, below] at (11.72,-0.03) {$4$};
+  \draw[gray!60] (10.23,0.72) -- (10.33,0.72); \node[font=\tiny, text=gray, left] at (10.26,0.72) {$1$};
+  \draw[gray!60] (10.23,1.44) -- (10.33,1.44); \node[font=\tiny, text=gray, left] at (10.26,1.44) {$2$};
+  \node[font=\scriptsize, text=metugray] at (10.64,-1.63) {series};
+  \begin{scope}[yshift=0.372cm]\miniDsR{10.69}{$2\ohm$}\end{scope}
+  \ifnum#1>3 \draw[crv] (9.2,0) -- (10.28,0) -- (12.08,1.8); \fi
+  \ifnum#1>1 \draw[gline] (9.2,0.72) -- (12.08,0.72); \node[gdot] at (11,0.72) {}; \fi
+  \ifnum#1>2 \draw[gline] (9.2,1.44) -- (12.08,1.44); \node[gdot] at (11.72,1.44) {}; \fi
+  \ifnum#1>2 \draw[gline] (9.2,0) -- (12.08,0); \draw[ival] (9.2,0) -- (10.28,0); \fi
+  \ifnum#1>2 \draw[gline] (9.2,-0.72) -- (12.08,-0.72); \node[font=\tiny, text=metured, anchor=south west, inner sep=1pt] at (9.2,-0.72) {none}; \fi
+  \node[font=\large] at (3.86,0.842) {\shortstack{$+$\\[1pt]{\tiny add $v$}}};
+  \node[font=\large] at (8.46,0.842) {$=$};
+}
+\newcommand{\addPar}[1]{%
+  \path (-0.2,-2.388) rectangle (12.53,3.088);
+  \draw[vax] (0,0) -- (2.73,0) node[right=0pt, font=\tiny, text=cvolt] {$v$};
+  \draw[vax] (1.89,-1.488) -- (1.89,1.488) node[above=0pt, font=\tiny, text=ccur] {$i$};
+  \draw[gray!60] (0.21,-0.05) -- (0.21,0.05); \node[font=\tiny, text=gray, below] at (0.21,-0.03) {$-4$};
+  \draw[gray!60] (1.05,-0.05) -- (1.05,0.05); \node[font=\tiny, text=gray, below] at (1.05,-0.03) {$-2$};
+  \draw[gray!60] (1.84,-1.24) -- (1.94,-1.24); \node[font=\tiny, text=gray, left] at (1.87,-1.24) {$-2$};
+  \draw[gray!60] (1.84,-0.62) -- (1.94,-0.62); \node[font=\tiny, text=gray, left] at (1.87,-0.62) {$-1$};
+  \draw[gray!60] (1.84,0.62) -- (1.94,0.62); \node[font=\tiny, text=gray, left] at (1.87,0.62) {$1$};
+  \node[font=\scriptsize, text=metugray] at (1.365,-2.038) {diode};
+  \begin{scope}[yshift=-0.012cm]\miniD{1.415}\end{scope}
+  \draw[crv] (0,0) -- (1.89,0) -- (1.89,1.426);
+  \ifnum#1>1 \draw[gline] (1.05,-1.488) -- (1.05,1.488); \node[gdot] at (1.05,0) {}; \fi
+  \ifnum#1>2 \draw[gline] (0.21,-1.488) -- (0.21,1.488); \node[gdot] at (0.21,0) {}; \fi
+  \ifnum#1>2 \draw[gline] (1.89,-1.488) -- (1.89,1.488); \draw[ival] (1.89,0) -- (1.89,1.426); \fi
+  \ifnum#1>2 \draw[gline] (2.31,-1.488) -- (2.31,1.488); \node[font=\tiny, text=metured, anchor=west, inner sep=1pt] at (2.31,1.395) {none}; \fi
+  \draw[vax] (4.6,0) -- (7.33,0) node[right=0pt, font=\tiny, text=cvolt] {$v$};
+  \draw[vax] (6.49,-1.488) -- (6.49,1.488) node[above=0pt, font=\tiny, text=ccur] {$i$};
+  \draw[gray!60] (4.81,-0.05) -- (4.81,0.05); \node[font=\tiny, text=gray, below] at (4.81,-0.03) {$-4$};
+  \draw[gray!60] (5.65,-0.05) -- (5.65,0.05); \node[font=\tiny, text=gray, below] at (5.65,-0.03) {$-2$};
+  \draw[gray!60] (6.44,-1.24) -- (6.54,-1.24); \node[font=\tiny, text=gray, left] at (6.47,-1.24) {$-2$};
+  \draw[gray!60] (6.44,-0.62) -- (6.54,-0.62); \node[font=\tiny, text=gray, left] at (6.47,-0.62) {$-1$};
+  \draw[gray!60] (6.44,0.62) -- (6.54,0.62); \node[font=\tiny, text=gray, left] at (6.47,0.62) {$1$};
+  \node[font=\scriptsize, text=metugray] at (5.965,-2.038) {$2\ohm$};
+  \begin{scope}[yshift=-0.012cm]\miniR{6.015}{$2\ohm$}\end{scope}
+  \draw[crv] (4.6,-1.395) -- (7.33,0.62);
+  \ifnum#1>1 \draw[gline] (5.65,-1.488) -- (5.65,1.488); \node[gdot] at (5.65,-0.62) {}; \fi
+  \ifnum#1>2 \draw[gline] (4.81,-1.488) -- (4.81,1.488); \node[gdot] at (4.81,-1.24) {}; \fi
+  \ifnum#1>2 \draw[gline] (6.49,-1.488) -- (6.49,1.488); \node[gdot] at (6.49,0) {}; \fi
+  \ifnum#1>2 \draw[gline] (6.91,-1.488) -- (6.91,1.488); \node[gdot] at (6.91,0.31) {}; \fi
+  \draw[vax] (9.2,0) -- (11.93,0) node[right=0pt, font=\tiny, text=cvolt] {$v$};
+  \draw[vax] (11.09,-1.488) -- (11.09,1.488) node[above=0pt, font=\tiny, text=ccur] {$i$};
+  \draw[gray!60] (9.41,-0.05) -- (9.41,0.05); \node[font=\tiny, text=gray, below] at (9.41,-0.03) {$-4$};
+  \draw[gray!60] (10.25,-0.05) -- (10.25,0.05); \node[font=\tiny, text=gray, below] at (10.25,-0.03) {$-2$};
+  \draw[gray!60] (11.04,-1.24) -- (11.14,-1.24); \node[font=\tiny, text=gray, left] at (11.07,-1.24) {$-2$};
+  \draw[gray!60] (11.04,-0.62) -- (11.14,-0.62); \node[font=\tiny, text=gray, left] at (11.07,-0.62) {$-1$};
+  \draw[gray!60] (11.04,0.62) -- (11.14,0.62); \node[font=\tiny, text=gray, left] at (11.07,0.62) {$1$};
+  \node[font=\scriptsize, text=metugray] at (10.565,-2.038) {parallel};
+  \begin{scope}[yshift=-0.012cm]\miniDpR{10.615}{$2\ohm$}\end{scope}
+  \ifnum#1>3 \draw[crv] (9.2,-1.395) -- (11.09,0) -- (11.09,1.426); \fi
+  \ifnum#1>1 \draw[gline] (10.25,-1.488) -- (10.25,1.488); \node[gdot] at (10.25,-0.62) {}; \fi
+  \ifnum#1>2 \draw[gline] (9.41,-1.488) -- (9.41,1.488); \node[gdot] at (9.41,-1.24) {}; \fi
+  \ifnum#1>2 \draw[gline] (11.09,-1.488) -- (11.09,1.488); \draw[ival] (11.09,0) -- (11.09,1.426); \fi
+  \ifnum#1>2 \draw[gline] (11.51,-1.488) -- (11.51,1.488); \node[font=\tiny, text=metured, anchor=west, inner sep=1pt] at (11.51,1.395) {none}; \fi
+  \node[font=\large] at (3.785,0.67) {\shortstack{$+$\\[1pt]{\tiny add $i$}}};
+  \node[font=\large] at (8.385,0.67) {$=$};
+}
+\newcommand{\addEx}[1]{%
+  \path (-0.2,-1.764) rectangle (12.925,4.872);
+  \draw[vax] (0,0) -- (3.125,0) node[right=0pt, font=\tiny, text=cvolt] {$v$};
+  \draw[vax] (0.75,-0.864) -- (0.75,1.872) node[above=0pt, font=\tiny, text=ccur] {$i$};
+  \draw[gray!60] (1.75,-0.05) -- (1.75,0.05); \node[font=\tiny, text=gray, below] at (1.75,-0.03) {$4$};
+  \draw[gray!60] (2.75,-0.05) -- (2.75,0.05); \node[font=\tiny, text=gray, below] at (2.75,-0.03) {$8$};
+  \draw[gray!60] (0.7,0.72) -- (0.8,0.72); \node[font=\tiny, text=gray, left] at (0.73,0.72) {$1$};
+  \draw[gray!60] (0.7,1.44) -- (0.8,1.44); \node[font=\tiny, text=gray, left] at (0.73,1.44) {$2$};
+  \node[font=\scriptsize, text=metugray] at (1.562,-1.414) {Case I, $2\ohm$};
+  \begin{scope}[yshift=0.372cm]\miniDsR{1.613}{$2\ohm$}\end{scope}
+  \draw[crv] (0,0) -- (0.75,0) -- (2,1.8);
+  \ifnum#1>1 \draw[gline] (0,0.72) -- (3.125,0.72); \node[gdot] at (1.25,0.72) {}; \fi
+  \ifnum#1>2 \draw[gline] (0,1.44) -- (3.125,1.44); \node[gdot] at (1.75,1.44) {}; \fi
+  \ifnum#1>2 \draw[gline] (0,0) -- (3.125,0); \draw[ival] (0,0) -- (0.75,0); \fi
+  \draw[vax] (4.6,0) -- (7.725,0) node[right=0pt, font=\tiny, text=cvolt] {$v$};
+  \draw[vax] (5.35,-0.864) -- (5.35,1.872) node[above=0pt, font=\tiny, text=ccur] {$i$};
+  \draw[gray!60] (6.35,-0.05) -- (6.35,0.05); \node[font=\tiny, text=gray, below] at (6.35,-0.03) {$4$};
+  \draw[gray!60] (7.35,-0.05) -- (7.35,0.05); \node[font=\tiny, text=gray, below] at (7.35,-0.03) {$8$};
+  \draw[gray!60] (5.3,0.72) -- (5.4,0.72); \node[font=\tiny, text=gray, left] at (5.33,0.72) {$1$};
+  \draw[gray!60] (5.3,1.44) -- (5.4,1.44); \node[font=\tiny, text=gray, left] at (5.33,1.44) {$2$};
+  \node[font=\scriptsize, text=metugray] at (6.162,-1.414) {$4\V$ source};
+  \begin{scope}[yshift=0.372cm]\miniE{6.212}{$4\V$}\end{scope}
+  \draw[crv] (6.35,-0.864) -- (6.35,1.872);
+  \ifnum#1>1 \draw[gline] (4.6,0.72) -- (7.725,0.72); \node[gdot] at (6.35,0.72) {}; \fi
+  \ifnum#1>2 \draw[gline] (4.6,1.44) -- (7.725,1.44); \node[gdot] at (6.35,1.44) {}; \fi
+  \ifnum#1>2 \draw[gline] (4.6,0) -- (7.725,0); \node[gdot] at (6.35,0) {}; \fi
+  \draw[vax] (9.2,0) -- (12.325,0) node[right=0pt, font=\tiny, text=cvolt] {$v$};
+  \draw[vax] (9.95,-0.864) -- (9.95,1.872) node[above=0pt, font=\tiny, text=ccur] {$i$};
+  \draw[gray!60] (10.95,-0.05) -- (10.95,0.05); \node[font=\tiny, text=gray, below] at (10.95,-0.03) {$4$};
+  \draw[gray!60] (11.95,-0.05) -- (11.95,0.05); \node[font=\tiny, text=gray, below] at (11.95,-0.03) {$8$};
+  \draw[gray!60] (9.9,0.72) -- (10,0.72); \node[font=\tiny, text=gray, left] at (9.93,0.72) {$1$};
+  \draw[gray!60] (9.9,1.44) -- (10,1.44); \node[font=\tiny, text=gray, left] at (9.93,1.44) {$2$};
+  \node[font=\scriptsize, text=metugray] at (10.762,-1.414) {series};
+  \begin{scope}[yshift=0.372cm]\miniDRE{10.812}\end{scope}
+  \ifnum#1>3 \draw[crv] (9.2,0) -- (10.95,0) -- (12.2,1.8); \fi
+  \ifnum#1>1 \draw[gline] (9.2,0.72) -- (12.325,0.72); \node[gdot] at (11.45,0.72) {}; \fi
+  \ifnum#1>2 \draw[gline] (9.2,1.44) -- (12.325,1.44); \node[gdot] at (11.95,1.44) {}; \fi
+  \ifnum#1>2 \draw[gline] (9.2,0) -- (12.325,0); \draw[ival] (9.2,0) -- (10.95,0); \fi
+  \node[font=\large] at (3.982,0.842) {\shortstack{$+$\\[1pt]{\tiny add $v$}}};
+  \node[font=\large] at (8.582,0.842) {$=$};
+}
+\newcommand{\addRR}[1]{%
+  \path (-0.2,-1.83) rectangle (12.2,3.812);
+  \draw[vax] (0,0) -- (2.4,0) node[right=0pt, font=\tiny, text=cvolt] {$v$};
+  \draw[vax] (0.9,-0.93) -- (0.9,1.612) node[above=0pt, font=\tiny, text=ccur] {$i$};
+  \draw[gray!60] (1.5,-0.05) -- (1.5,0.05); \node[font=\tiny, text=gray, below] at (1.5,-0.03) {$3$};
+  \draw[gray!60] (2.1,-0.05) -- (2.1,0.05); \node[font=\tiny, text=gray, below] at (2.1,-0.03) {$6$};
+  \draw[gray!60] (0.85,0.62) -- (0.95,0.62); \node[font=\tiny, text=gray, left] at (0.88,0.62) {$1$};
+  \draw[gray!60] (0.85,1.24) -- (0.95,1.24); \node[font=\tiny, text=gray, left] at (0.88,1.24) {$2$};
+  \node[font=\scriptsize, text=metugray] at (1.2,-1.48) {$1\ohm$};
+  \begin{scope}[yshift=0.112cm]\miniR{1.25}{$1\ohm$}\end{scope}
+  \draw[crv] (0.6,-0.93) -- (1.4,1.55);
+  \ifnum#1>1 \draw[gline] (0,0.62) -- (2.4,0.62); \node[gdot] at (1.1,0.62) {}; \fi
+  \ifnum#1>2 \draw[gline] (0,1.24) -- (2.4,1.24); \node[gdot] at (1.3,1.24) {}; \fi
+  \ifnum#1>2 \draw[gline] (0,-0.62) -- (2.4,-0.62); \node[gdot] at (0.7,-0.62) {}; \fi
+  \draw[vax] (4.6,0) -- (7,0) node[right=0pt, font=\tiny, text=cvolt] {$v$};
+  \draw[vax] (5.5,-0.93) -- (5.5,1.612) node[above=0pt, font=\tiny, text=ccur] {$i$};
+  \draw[gray!60] (6.1,-0.05) -- (6.1,0.05); \node[font=\tiny, text=gray, below] at (6.1,-0.03) {$3$};
+  \draw[gray!60] (6.7,-0.05) -- (6.7,0.05); \node[font=\tiny, text=gray, below] at (6.7,-0.03) {$6$};
+  \draw[gray!60] (5.45,0.62) -- (5.55,0.62); \node[font=\tiny, text=gray, left] at (5.48,0.62) {$1$};
+  \draw[gray!60] (5.45,1.24) -- (5.55,1.24); \node[font=\tiny, text=gray, left] at (5.48,1.24) {$2$};
+  \node[font=\scriptsize, text=metugray] at (5.8,-1.48) {$2\ohm$};
+  \begin{scope}[yshift=0.112cm]\miniR{5.85}{$2\ohm$}\end{scope}
+  \draw[crv] (4.9,-0.93) -- (6.5,1.55);
+  \ifnum#1>1 \draw[gline] (4.6,0.62) -- (7,0.62); \node[gdot] at (5.9,0.62) {}; \fi
+  \ifnum#1>2 \draw[gline] (4.6,1.24) -- (7,1.24); \node[gdot] at (6.3,1.24) {}; \fi
+  \ifnum#1>2 \draw[gline] (4.6,-0.62) -- (7,-0.62); \node[gdot] at (5.1,-0.62) {}; \fi
+  \draw[vax] (9.2,0) -- (11.6,0) node[right=0pt, font=\tiny, text=cvolt] {$v$};
+  \draw[vax] (10.1,-0.93) -- (10.1,1.612) node[above=0pt, font=\tiny, text=ccur] {$i$};
+  \draw[gray!60] (10.7,-0.05) -- (10.7,0.05); \node[font=\tiny, text=gray, below] at (10.7,-0.03) {$3$};
+  \draw[gray!60] (11.3,-0.05) -- (11.3,0.05); \node[font=\tiny, text=gray, below] at (11.3,-0.03) {$6$};
+  \draw[gray!60] (10.05,0.62) -- (10.15,0.62); \node[font=\tiny, text=gray, left] at (10.08,0.62) {$1$};
+  \draw[gray!60] (10.05,1.24) -- (10.15,1.24); \node[font=\tiny, text=gray, left] at (10.08,1.24) {$2$};
+  \node[font=\scriptsize, text=metugray] at (10.4,-1.48) {series: $3\ohm$};
+  \begin{scope}[yshift=0.112cm]\miniRsR{10.45}{$1\ohm$}{$2\ohm$}\end{scope}
+  \ifnum#1>3 \draw[crv] (9.2,-0.93) -- (11.6,1.55); \fi
+  \ifnum#1>1 \draw[gline] (9.2,0.62) -- (11.6,0.62); \node[gdot] at (10.7,0.62) {}; \fi
+  \ifnum#1>2 \draw[gline] (9.2,1.24) -- (11.6,1.24); \node[gdot] at (11.3,1.24) {}; \fi
+  \ifnum#1>2 \draw[gline] (9.2,-0.62) -- (11.6,-0.62); \node[gdot] at (9.5,-0.62) {}; \fi
+  \node[font=\large] at (3.62,0.725) {\shortstack{$+$\\[1pt]{\tiny add $v$}}};
+  \node[font=\large] at (8.22,0.725) {$=$};
+}
+\newcommand{\addRRp}[1]{%
+  \path (-0.2,-2.46) rectangle (12.296,3.16);
+  \draw[vax] (0,0) -- (2.496,0) node[right=0pt, font=\tiny, text=cvolt] {$v$};
+  \draw[vax] (1.248,-1.56) -- (1.248,1.56) node[above=0pt, font=\tiny, text=ccur] {$i$};
+  \draw[gray!60] (0.288,-0.05) -- (0.288,0.05); \node[font=\tiny, text=gray, below] at (0.288,-0.03) {$-2$};
+  \draw[gray!60] (2.208,-0.05) -- (2.208,0.05); \node[font=\tiny, text=gray, below] at (2.208,-0.03) {$2$};
+  \draw[gray!60] (1.198,-1.2) -- (1.298,-1.2); \node[font=\tiny, text=gray, left] at (1.228,-1.2) {$-3$};
+  \draw[gray!60] (1.198,1.2) -- (1.298,1.2); \node[font=\tiny, text=gray, left] at (1.228,1.2) {$3$};
+  \node[font=\scriptsize, text=metugray] at (1.248,-2.11) {$1\ohm$};
+  \begin{scope}[yshift=0.06cm]\miniR{1.298}{$1\ohm$}\end{scope}
+  \draw[crv] (0,-1.04) -- (2.496,1.04);
+  \ifnum#1>1 \draw[gline] (2.208,-1.56) -- (2.208,1.56); \node[gdot] at (2.208,0.8) {}; \fi
+  \ifnum#1>2 \draw[gline] (0.288,-1.56) -- (0.288,1.56); \node[gdot] at (0.288,-0.8) {}; \fi
+  \ifnum#1>2 \draw[gline] (1.728,-1.56) -- (1.728,1.56); \node[gdot] at (1.728,0.4) {}; \fi
+  \draw[vax] (4.6,0) -- (7.096,0) node[right=0pt, font=\tiny, text=cvolt] {$v$};
+  \draw[vax] (5.848,-1.56) -- (5.848,1.56) node[above=0pt, font=\tiny, text=ccur] {$i$};
+  \draw[gray!60] (4.888,-0.05) -- (4.888,0.05); \node[font=\tiny, text=gray, below] at (4.888,-0.03) {$-2$};
+  \draw[gray!60] (6.808,-0.05) -- (6.808,0.05); \node[font=\tiny, text=gray, below] at (6.808,-0.03) {$2$};
+  \draw[gray!60] (5.798,-1.2) -- (5.898,-1.2); \node[font=\tiny, text=gray, left] at (5.828,-1.2) {$-3$};
+  \draw[gray!60] (5.798,1.2) -- (5.898,1.2); \node[font=\tiny, text=gray, left] at (5.828,1.2) {$3$};
+  \node[font=\scriptsize, text=metugray] at (5.848,-2.11) {$2\ohm$};
+  \begin{scope}[yshift=0.06cm]\miniR{5.898}{$2\ohm$}\end{scope}
+  \draw[crv] (4.6,-0.52) -- (7.096,0.52);
+  \ifnum#1>1 \draw[gline] (6.808,-1.56) -- (6.808,1.56); \node[gdot] at (6.808,0.4) {}; \fi
+  \ifnum#1>2 \draw[gline] (4.888,-1.56) -- (4.888,1.56); \node[gdot] at (4.888,-0.4) {}; \fi
+  \ifnum#1>2 \draw[gline] (6.328,-1.56) -- (6.328,1.56); \node[gdot] at (6.328,0.2) {}; \fi
+  \draw[vax] (9.2,0) -- (11.696,0) node[right=0pt, font=\tiny, text=cvolt] {$v$};
+  \draw[vax] (10.448,-1.56) -- (10.448,1.56) node[above=0pt, font=\tiny, text=ccur] {$i$};
+  \draw[gray!60] (9.488,-0.05) -- (9.488,0.05); \node[font=\tiny, text=gray, below] at (9.488,-0.03) {$-2$};
+  \draw[gray!60] (11.408,-0.05) -- (11.408,0.05); \node[font=\tiny, text=gray, below] at (11.408,-0.03) {$2$};
+  \draw[gray!60] (10.398,-1.2) -- (10.498,-1.2); \node[font=\tiny, text=gray, left] at (10.428,-1.2) {$-3$};
+  \draw[gray!60] (10.398,1.2) -- (10.498,1.2); \node[font=\tiny, text=gray, left] at (10.428,1.2) {$3$};
+  \node[font=\scriptsize, text=metugray] at (10.448,-2.11) {parallel: $\frac23\ohm$};
+  \begin{scope}[yshift=0.06cm]\miniRpR{10.498}{$1\ohm$}{$2\ohm$}\end{scope}
+  \ifnum#1>3 \draw[crv] (9.2,-1.56) -- (11.696,1.56); \fi
+  \ifnum#1>1 \draw[gline] (11.408,-1.56) -- (11.408,1.56); \node[gdot] at (11.408,1.2) {}; \fi
+  \ifnum#1>2 \draw[gline] (9.488,-1.56) -- (9.488,1.56); \node[gdot] at (9.488,-1.2) {}; \fi
+  \ifnum#1>2 \draw[gline] (10.928,-1.56) -- (10.928,1.56); \node[gdot] at (10.928,0.6) {}; \fi
+  \node[font=\large] at (3.668,0.702) {\shortstack{$+$\\[1pt]{\tiny add $i$}}};
+  \node[font=\large] at (8.268,0.702) {$=$};
+}
+
+
+
 \begin{document}
 
 %-------------------- title block -----------------------------
@@ -535,7 +971,7 @@ time-varying} circuits.
 \end{minipage}\hfill
 \begin{minipage}[c]{0.54\linewidth}
 A source $E$ and a resistor $R$ drive a nonlinear resistor with the characteristic
-$\Icol{i} = g(\Vcol{v})$ (a voltage-controlled resistor). KVL gives
+$\Icol{i} = g(\Vcol{v})$ (a voltage-controlled resistor, see Section~\ref{sec:control}). KVL gives
 \[
   E = R\,\Icol{i} + \Vcol{v} .
 \]
@@ -574,15 +1010,15 @@ and $\Icol{i} = E/R$.
 \begin{minipage}[c]{0.44\linewidth}
 \centering
 \begin{tikzpicture}[scale=0.9]
-  \nlone{$\Vcol{10\V}$}{$100\ohm$}
+  \nlone{$\Vcol{6\V}$}{$1\ohm$}
 \end{tikzpicture}
 \end{minipage}\hfill
 \begin{minipage}[c]{0.52\linewidth}
 The nonlinear resistor has the characteristic
 \[
-  \Icol{i} = \begin{cases} \frac{3}{100}\,\Vcol{v}^2, & \Vcol{v} \geq 0,\\[2pt] 0, & \Vcol{v} < 0. \end{cases}
+  \Icol{i} = \begin{cases} \Vcol{v}^2, & \Vcol{v} \geq 0,\\[2pt] 0, & \Vcol{v} < 0, \end{cases}
 \]
-Find the operating point.
+with $\Icol{i}$ in A and $\Vcol{v}$ in V. Find the operating point.
 \end{minipage}
 \end{examplebox}
 
@@ -590,24 +1026,23 @@ Find the operating point.
 
 \solstep{1}{KVL}
 \[
-  100\,\Icol{i} + \Vcol{v} - 10 = 0 .
+  \Icol{i} + \Vcol{v} - 6 = 0 \qquad (R = 1\ohm) .
 \]
 
 \solstep{2}{The case $\Vcol{v} < 0$}
-Here $\Icol{i} = 0$, so KVL gives $\Vcol{v} = 10\V$. This contradicts $\Vcol{v} < 0$: there is
+Here $\Icol{i} = 0$, so KVL gives $\Vcol{v} = 6\V$. This contradicts $\Vcol{v} < 0$: there is
 no solution with $\Vcol{v} < 0$.
 
 \solstep{3}{The case $\Vcol{v} \geq 0$}
 \begin{minipage}[c]{0.5\linewidth}
-Plug $\Icol{i} = \frac{3}{100}\,\Vcol{v}^2$ into KVL:
+Plug $\Icol{i} = \Vcol{v}^2$ into KVL:
 \begin{align*}
-  3\,\Vcol{v}^2 + \Vcol{v} - 10 &= 0\\
-  (3\,\Vcol{v} - 5)(\Vcol{v} + 2) &= 0 .
+  \Vcol{v}^2 + \Vcol{v} - 6 &= 0\\
+  (\Vcol{v} - 2)(\Vcol{v} + 3) &= 0 .
 \end{align*}
-Only $\Vcol{v} = \frac53\V$ satisfies $\Vcol{v} \geq 0$. Then
-$\Icol{i} = \frac{3}{100} \cdot \frac{25}{9} = \frac{1}{12}\A$:
+Only $\Vcol{v} = 2\V$ satisfies $\Vcol{v} \geq 0$. Then $\Icol{i} = 2^2 = 4\A$:
 \[
-  (\Vcol{v_o}, \Icol{i_o}) = \big(\tfrac53\V, \ \tfrac{1}{12}\A\big) .
+  (\Vcol{v_o}, \Icol{i_o}) = (2\V, \ 4\A) .
 \]
 \end{minipage}\hfill
 \begin{minipage}[c]{0.46\linewidth}
@@ -663,7 +1098,7 @@ When the rest of the circuit is linear, three steps reduce the problem to the on
 \begin{minipage}[c]{0.4\linewidth}
 The nonlinear resistor has the characteristic
 \[
-  \Icol{i_R} = \begin{cases} \frac14\,\Vcol{v_R}^2, & \Vcol{v_R} \geq 0,\\[2pt] 0, & \Vcol{v_R} < 0. \end{cases}
+  \Icol{i_R} = \begin{cases} \frac12\,\Vcol{v_R}^2, & \Vcol{v_R} \geq 0,\\[2pt] 0, & \Vcol{v_R} < 0. \end{cases}
 \]
 Find $\Vcol{v}$.
 \end{minipage}
@@ -679,20 +1114,21 @@ Find $\Vcol{v}$.
 \end{tikzpicture}
 \end{minipage}\hfill
 \begin{minipage}[c]{0.4\linewidth}
-Remove the nonlinear resistor; its terminals become the port a--b. Killing the $7.2\V$ source
+Remove the nonlinear resistor; its terminals become the port a--b. Killing the $12\V$ source
 (a short):
 \[
-  \Rth = 8 \parallel (4 + 6 \parallel 12) = 8 \parallel 8 = 4\ohm .
+  \begin{aligned}\Rth &= 8 \parallel (4 + 6 \parallel 12)\\ &= 8 \parallel 8 = 4\ohm .\end{aligned}
 \]
 \end{minipage}
 
 \smallskip
 For $\voc$, take b as the ground; with node voltages $\e{1}$ (the top of $12\ohm$) and $\e{a}$:
 \begin{align*}
-  \text{Node 1:}\quad & \frac{\e{1} - 7.2}{6} + \frac{\e{1}}{12} + \frac{\e{1} - \e{a}}{4} = 0\\
-  \text{Node a:}\quad & \frac{\e{a} - 7.2}{8} + \frac{\e{a} - \e{1}}{4} = 0
+  \text{Node 1:}\quad & \frac{\e{1} - 12}{6} + \frac{\e{1}}{12} + \frac{\e{1} - \e{a}}{4} = 0\\
+  \text{Node a:}\quad & \frac{\e{a} - 12}{8} + \frac{\e{a} - \e{1}}{4} = 0
 \end{align*}
-These give $\e{1} = 5.4\V$ and $\vth = \voc = \e{a} = 6\V$.
+Multiply by 12 and by 8: $\ 6\,\e{1} - 3\,\e{a} = 24$ and $\ 3\,\e{a} - 2\,\e{1} = 12$. Adding them
+gives $4\,\e{1} = 36$, so $\e{1} = 9\V$ and $\vth = \voc = \e{a} = 10\V$.
 
 \solstep{2}{The operating point}
 \begin{minipage}[c]{0.5\linewidth}
@@ -700,13 +1136,13 @@ These give $\e{1} = 5.4\V$ and $\vth = \voc = \e{a} = 6\V$.
 \begin{tikzpicture}[scale=0.8]
   \exTwoTh
 \end{tikzpicture}\\[8pt]
-KVL: \ $4\,\Icol{i_R} + \Vcol{v_R} - 6 = 0$. \ Plug
-$\Icol{i_R} = \frac14\,\Vcol{v_R}^2$:
+KVL: \ $4\,\Icol{i_R} + \Vcol{v_R} - 10 = 0$. \ Plug
+$\Icol{i_R} = \frac12\,\Vcol{v_R}^2$:
 \begin{align*}
-  \Vcol{v_R}^2 + \Vcol{v_R} - 6 &= 0\\
-  (\Vcol{v_R} + 3)(\Vcol{v_R} - 2) &= 0 .
+  2\,\Vcol{v_R}^2 + \Vcol{v_R} - 10 &= 0\\
+  (2\,\Vcol{v_R} + 5)(\Vcol{v_R} - 2) &= 0 .
 \end{align*}
-With $\Vcol{v_R} \geq 0$: $\Vcol{v_R} = 2\V$ and $\Icol{i_R} = 1\A$.
+With $\Vcol{v_R} \geq 0$: $\Vcol{v_R} = 2\V$ and $\Icol{i_R} = 2\A$.
 \end{minipage}\hfill
 \begin{minipage}[c]{0.46\linewidth}
 \centering
@@ -725,15 +1161,173 @@ With $\Vcol{v_R} \geq 0$: $\Vcol{v_R} = 2\V$ and $\Icol{i_R} = 1\A$.
 \begin{minipage}[c]{0.4\linewidth}
 Replace the nonlinear resistor by a $2\V$ source. One unknown node voltage $\e{}$ remains:
 \[
-  \frac{\e{} - 7.2}{6} + \frac{\e{}}{12} + \frac{\e{} - 2}{4} = 0 .
+  \frac{\e{} - 12}{6} + \frac{\e{}}{12} + \frac{\e{} - 2}{4} = 0 .
 \]
 \end{minipage}
 
 \smallskip
-Multiply by $12$: $\ 2\,\e{} - 14.4 + \e{} + 3\,\e{} - 6 = 0$, so
+Multiply by $12$: $\ 2\,\e{} - 24 + \e{} + 3\,\e{} - 6 = 0$, so $6\,\e{} = 30$ and
 \[
-  \Vcol{v} = \e{} = 3.4\V .
+  \Vcol{v} = \e{} = 5\V .
 \]
+
+%==============================================================
+\section{Adding voltages, adding currents}\label{sec:add}
+
+\subsection{Why add characteristics?}
+
+An element is a curve in the $\Vcol{v}$--$\Icol{i}$ plane. A one-port made of several elements
+is again one curve: its characteristic at the terminals. Often we can find this curve from the
+curves of the parts, without writing any node or mesh equation.
+
+\begin{itemize}[itemsep=3pt]
+  \item \textbf{Only the terminals matter.} After combining, the inside is gone: the load line
+        and the operating point need only the combined curve.
+  \item \textbf{Curves need no formula.} A diode or a lamp is often given as a measured curve.
+        Adding curves works on the picture itself.
+  \item \textbf{Piece by piece.} Diodes, resistors and sources are simple curves. Adding them
+        builds every piecewise-linear characteristic, and splitting a curve back into pieces
+        gives a circuit for it.
+\end{itemize}
+Two rules do all the work. They are KCL and KVL, read on the curves.
+
+\subsection{Series: the same current, add the voltages}
+
+\begin{minipage}[c]{0.3\linewidth}
+\centering
+\begin{tikzpicture}[scale=0.8]
+  \begin{scope}[shift={(0,-1.6)}, scale=1.4, transform shape]
+    \draw (0,3.6) node[ocirc] {} -- (0.8,3.6); \draw (0,0) node[ocirc] {} -- (0.8,0);
+    \draw (0.8,3.6) to[generic, l=$a$] (0.8,1.8) to[generic, l=$b$] (0.8,0);
+  \end{scope}
+\end{tikzpicture}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.66\linewidth}
+Two elements $a$ and $b$ in series. KCL: they carry the \textbf{same current},
+$\Icol{i_a} = \Icol{i_b} = \Icol{i}$. KVL: the voltages \textbf{add},
+$\Vcol{v} = \Vcol{v_a} + \Vcol{v_b}$.
+
+So, for each value of $\Icol{i}$: read $\Vcol{v_a}$ and $\Vcol{v_b}$ at that same $\Icol{i}$ and add
+them. On the graph this is a \textbf{horizontal} addition, along lines $\Icol{i} = $ const.
+\end{minipage}
+
+\medskip
+\textbf{Example: $1\ohm$ and $2\ohm$ in series.}
+\begin{center}
+\begin{tikzpicture}[scale=0.8]
+  \addRR{4}
+\end{tikzpicture}\\[4pt]
+\small
+\begin{tabular}{@{}cccc@{}}
+\toprule
+$\Icol{i}$ (A) & $1\ohm$: $\Vcol{v}$ & $2\ohm$: $\Vcol{v}$ & series: $\Vcol{v}$ (sum)\\
+\midrule
+$2$ & $2$ & $4$ & $6$\\
+$1$ & $1$ & $2$ & $3$\\
+$-1$ & $-1$ & $-2$ & $-3$\\
+\bottomrule
+\end{tabular}
+\end{center}
+Every sum is $3\,\Icol{i}$: a $3\ohm$ resistor. In series the resistances add, and the combined
+line is \textbf{flatter} than each part.
+
+\needspace{18\baselineskip}
+\subsection{Parallel: the same voltage, add the currents}
+
+\begin{minipage}[c]{0.3\linewidth}
+\centering
+\begin{tikzpicture}[scale=0.8]
+  \begin{scope}[shift={(0,-0.6)}, scale=1.4, transform shape]
+    \draw (0,2.2) node[ocirc] {} -- (2.3,2.2); \draw (0,0) node[ocirc] {} -- (2.3,0);
+    \draw (0.8,2.2) to[generic, l=$a$] (0.8,0); \draw (2.3,2.2) to[generic, l=$b$] (2.3,0);
+  \end{scope}
+\end{tikzpicture}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.66\linewidth}
+Two elements $a$ and $b$ in parallel. KVL: they have the \textbf{same voltage},
+$\Vcol{v_a} = \Vcol{v_b} = \Vcol{v}$. KCL: the currents \textbf{add},
+$\Icol{i} = \Icol{i_a} + \Icol{i_b}$.
+
+So, for each value of $\Vcol{v}$: read $\Icol{i_a}$ and $\Icol{i_b}$ at that same $\Vcol{v}$ and add
+them. On the graph this is a \textbf{vertical} addition, along lines $\Vcol{v} = $ const.
+\end{minipage}
+
+\medskip
+\textbf{Example: $1\ohm$ and $2\ohm$ in parallel.}
+\begin{center}
+\begin{tikzpicture}[scale=0.8]
+  \addRRp{4}
+\end{tikzpicture}\\[4pt]
+\small
+\begin{tabular}{@{}cccc@{}}
+\toprule
+$\Vcol{v}$ (V) & $1\ohm$: $\Icol{i}$ & $2\ohm$: $\Icol{i}$ & parallel: $\Icol{i}$ (sum)\\
+\midrule
+$2$ & $2$ & $1$ & $3$\\
+$1$ & $1$ & $0.5$ & $1.5$\\
+$-2$ & $-2$ & $-1$ & $-3$\\
+\bottomrule
+\end{tabular}
+\end{center}
+Every sum is $1.5\,\Vcol{v}$: a conductance of $1 + \frac12 = \frac32\Sie$, that is $\frac23\ohm$. In
+parallel the conductances add, and the combined line is \textbf{steeper} than each part.
+
+\needspace{16\baselineskip}
+\subsection{Adding a source: a shift}
+
+A source is a straight line parallel to an axis, so adding it moves the other curve without
+changing its shape.
+
+\begin{center}
+\begin{tikzpicture}[scale=0.75]
+  \threeplots{\draw[crv] (-1.2,-0.6) -- (1.2,0.6);}{\draw[crv] (0.6,-1.0) -- (0.6,1.0); \node[font=\tiny, below right] at (0.6,0) {$E$};}{\draw[crv] (-0.6,-0.6) -- (1.2,0.3); \node[font=\tiny, below] at (0.6,0) {$E$};}{\shortstack{$+$\\[1pt]{\tiny add $v$}}}{$R$}{source $E$}{series}
+  \miniR{0}{$R$} \miniE{4.1}{$E$} \miniRsE{8.2}{$R$}{$E$}
+\end{tikzpicture}
+\end{center}
+\textbf{Voltage source in series:} every $\Vcol{v}$ grows by $E$, so the curve shifts
+\textbf{right} by $E$: $\Vcol{v} = R\,\Icol{i} + E$. This is the Th\'evenin form.
+
+\begin{center}
+\begin{tikzpicture}[scale=0.75]
+  \threeplots{\draw[crv] (-1.2,-0.6) -- (1.2,0.6);}{\draw[crv] (-1.2,0.5) -- (1.2,0.5); \node[font=\tiny, above left] at (0,0.5) {$I$};}{\draw[crv] (-1.2,-0.1) -- (1.2,1.1); \node[font=\tiny, left] at (0,0.5) {$I$};}{\shortstack{$+$\\[1pt]{\tiny add $i$}}}{$R$}{source $I$}{parallel}
+  \miniR{0}{$R$} \miniI{4.1}{$I$} \miniRpI{8.2}{$R$}{$I$}
+\end{tikzpicture}
+\end{center}
+\textbf{Current source in parallel:} every $\Icol{i}$ grows by $I$, so the curve shifts
+\textbf{up} by $I$: $\Icol{i} = \Vcol{v}/R + I$. This is the Norton form.
+
+\subsection{The method, and the two rules side by side}
+
+\begin{ideabox}[How to add two curves]
+\begin{enumerate}[itemsep=2pt]
+  \item \textbf{What is shared?} Series: the current $\Icol{i}$. Parallel: the voltage $\Vcol{v}$.
+  \item \textbf{Draw the shared variable as a line.} Series: horizontal lines $\Icol{i} = $ const.
+        Parallel: vertical lines $\Vcol{v} = $ const. Take one line through each breakpoint, one
+        above and one below.
+  \item \textbf{Read and add the other variable.} On each line, read every curve. Series: add
+        the voltages. Parallel: add the currents.
+  \item \textbf{Plot the sums} and join them with straight lines.
+\end{enumerate}
+\end{ideabox}
+
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.35}
+\begin{tabular}{@{}lll@{}}
+\toprule
+ & \textbf{Series} & \textbf{Parallel}\\
+\midrule
+shared (KCL or KVL) & the same $\Icol{i}$ & the same $\Vcol{v}$\\
+added & $\Vcol{v} = \Vcol{v_a} + \Vcol{v_b}$ & $\Icol{i} = \Icol{i_a} + \Icol{i_b}$\\
+guide lines & horizontal, $\Icol{i} = $ const & vertical, $\Vcol{v} = $ const\\
+two resistors & resistances add: flatter & conductances add: steeper\\
+a source & $E$ shifts the curve right & $I$ shifts the curve up\\
+\bottomrule
+\end{tabular}
+\end{center}
+The two columns are \textbf{duals}: swap $\Vcol{v} \leftrightarrow \Icol{i}$, series
+$\leftrightarrow$ parallel, $R \leftrightarrow G$, and one column becomes the other. In the next
+section the same rules are applied to the ideal diode, whose curve has flat and vertical pieces.
 
 %==============================================================
 \section{The ideal diode}
@@ -765,47 +1359,264 @@ The characteristic is made of two straight pieces.
 both $\Vcol{v}$ and $\Icol{i}$ change sign: the characteristic is reflected through the origin.
 A reversed diode conducts for $\Icol{i} \leq 0$ and blocks for $\Vcol{v} \geq 0$.
 
-\textbf{Series and parallel.} In series the elements carry the same current, so the voltages
-add: the curves are added \emph{horizontally}. In parallel the elements share the same voltage,
-so the currents add: the curves are added \emph{vertically}. Combining ideal diodes, LTI
-resistors and constant sources this way always gives a \textbf{piecewise-linear}
-characteristic.
+\textbf{Series and parallel.} Diodes are added to other curves exactly as in
+Section~\ref{sec:add}: series, the same $\Icol{i}$, add $\Vcol{v}$; parallel, the same $\Vcol{v}$,
+add $\Icol{i}$. Combining ideal diodes, LTI resistors and constant sources this way always gives
+a \textbf{piecewise-linear} characteristic.
 
-\subsection{Seven basic connections}
+
+\subsection{Simple series and parallel}
 
 \newcommand{\casecell}[4]{%
-  \begin{minipage}[c]{0.49\linewidth}
-  \begin{minipage}[c]{0.34\linewidth}
+  \begin{minipage}[c]{\linewidth}
+  \begin{minipage}[c]{0.24\linewidth}
   \centering
   \begin{tikzpicture}[scale=0.62] #1 \end{tikzpicture}
   \end{minipage}\hfill
-  \begin{minipage}[c]{0.31\linewidth}
+  \begin{minipage}[c]{0.26\linewidth}
   \centering
   \begin{tikzpicture}[scale=0.66] \pframe{0}{} #2 \end{tikzpicture}
   \end{minipage}\hfill
-  \begin{minipage}[c]{0.32\linewidth}
-  \small\raggedright\textbf{#3}\\ #4
+  \begin{minipage}[c]{0.46\linewidth}
+  \raggedright\textbf{#3}\\[2pt] #4
   \end{minipage}
   \end{minipage}}
 
-\noindent
-\casecell{\caseckta}{\caseresa}{I: $R$ and a diode in series}{$\Icol{i} > 0$: $\Vcol{v} = R\,\Icol{i}$; $\Icol{i} = 0$: $\Vcol{v} \leq 0$}\hfill
+Start with one diode and one resistor $R$. In series, the diode curve is added horizontally to
+the line of $R$; in parallel, vertically.
+
+\medskip\noindent
+\casecell{\caseckta}{\caseresa}{I: $R$ and a diode in series}{$\Icol{i} > 0$: $\Vcol{v} = R\,\Icol{i}$; $\Icol{i} = 0$: $\Vcol{v} \leq 0$}
+
+\medskip\noindent
 \casecell{\casecktb}{\caseresb}{II: $R$ and a diode in parallel}{$\Vcol{v} < 0$: $\Icol{i} = \Vcol{v}/R$; $\Vcol{v} = 0$: $\Icol{i} \geq 0$}
 
-\medskip\noindent
-\casecell{\casecktc}{\caseresc}{III: reversed diode $\parallel R_1$, then $R_2$}{slope $\frac{1}{R_1 + R_2}$ for $\Icol{i} > 0$, $\frac{1}{R_2}$ for $\Icol{i} < 0$}\hfill
-\casecell{\casecktd}{\caseresd}{IV: diode and $R_1$, in parallel with $R_2$}{slope $\frac{1}{R_1} + \frac{1}{R_2}$ for $\Vcol{v} > 0$, $\frac{1}{R_2}$ for $\Vcol{v} < 0$}
+\subsection{Adding a diode curve step by step}
+
+What is new with a diode: its curve has a flat piece and a vertical piece.
+\begin{itemize}[itemsep=2pt]
+  \item A flat or vertical piece meets a guide line in a whole \emph{interval}, not in one point;
+        the sum is an interval too.
+  \item If a guide line misses one of the curves, the sum has no point on that line.
+\end{itemize}
+
+Take $R = 2\ohm$ and follow the four steps.
+
+\needspace{22\baselineskip}
+\textbf{Case I (series): horizontal lines.} The diode and the resistor carry the same current.
+\begin{center}
+\begin{tikzpicture}[scale=0.8]
+  \addSer{4}
+\end{tikzpicture}\\[4pt]
+\small
+\begin{tabular}{@{}cccc@{}}
+\toprule
+$\Icol{i}$ (A) & diode $\Vcol{v}$ & $2\ohm$: $\Vcol{v}$ & series: $\Vcol{v}$ (sum)\\
+\midrule
+$2$ & $0$ & $4$ & $4$\\
+$1$ & $0$ & $2$ & $2$\\
+$0$ & any $\Vcol{v} \leq 0$ & $0$ & any $\Vcol{v} \leq 0$\\
+$-1$ & none & $-2$ & none\\
+\bottomrule
+\end{tabular}
+\end{center}
+At $\Icol{i} = 1\A$ the diode is a short ($\Vcol{v} = 0$) and the resistor has $2\V$: the sum is
+$2\V$. At $\Icol{i} = 0$ the diode allows any $\Vcol{v} \leq 0$: the sum is the whole half-line
+$\Vcol{v} \leq 0$. The line $\Icol{i} = -1\A$ misses the diode curve: no point. Joining the
+points gives Case I.
+
+\needspace{22\baselineskip}
+\textbf{Case II (parallel): vertical lines.} The diode and the resistor have the same voltage.
+\begin{center}
+\begin{tikzpicture}[scale=0.8]
+  \addPar{4}
+\end{tikzpicture}\\[4pt]
+\small
+\begin{tabular}{@{}cccc@{}}
+\toprule
+$\Vcol{v}$ (V) & diode $\Icol{i}$ & $2\ohm$: $\Icol{i}$ & parallel: $\Icol{i}$ (sum)\\
+\midrule
+$1$ & none & $0.5$ & none\\
+$0$ & any $\Icol{i} \geq 0$ & $0$ & any $\Icol{i} \geq 0$\\
+$-2$ & $0$ & $-1$ & $-1$\\
+$-4$ & $0$ & $-2$ & $-2$\\
+\bottomrule
+\end{tabular}
+\end{center}
+At $\Vcol{v} = -2\V$ the diode is an open ($\Icol{i} = 0$) and the resistor carries $-1\A$: the
+sum is $-1\A$. At $\Vcol{v} = 0$ the diode allows any $\Icol{i} \geq 0$: the sum is the whole
+half-line. The line $\Vcol{v} = 1\V$ misses the diode curve: no point.
+
+\subsection{Reminder: voltage-controlled or current-controlled}\label{sec:control}
+
+Recall: a characteristic is a curve in the $\Vcol{v}$--$\Icol{i}$ plane.
+\begin{itemize}[itemsep=3pt]
+  \item \textbf{Voltage-controlled:} $\Icol{i} = g(\Vcol{v})$. Each \emph{vertical} line meets the
+        curve at most once.
+  \item \textbf{Current-controlled:} $\Vcol{v} = r(\Icol{i})$. Each \emph{horizontal} line meets
+        the curve at most once.
+\end{itemize}
+A curve can pass both tests, one of them, or neither:
+\begin{center}
+\small
+\newcommand{\ccell}[3]{\begin{tikzpicture}[scale=0.62] \pframe{0}{} #1 \end{tikzpicture}\\[1pt] #2\\ \textbf{#3}}
+\begin{tabular}{@{}>{\centering}p{3.6cm} >{\centering}p{3.6cm} >{\centering\arraybackslash}p{3.6cm}@{}}
+\shortstack{\ccell{\cR}{resistor}{both}} &
+\shortstack{\ccell{\cI}{current source}{voltage-controlled}} &
+\shortstack{\ccell{\cE}{voltage source}{current-controlled}}\\[12pt]
+\shortstack{\ccell{\pD}{ideal diode}{neither}} &
+\shortstack{\ccell{\caseresa}{Case I: $R$ in series}{voltage-controlled}} &
+\shortstack{\ccell{\caseresb}{Case II: $R$ in parallel}{current-controlled}}
+\end{tabular}
+\end{center}
+The ideal diode alone is neither. A resistor in series removes its vertical piece (Case I); a
+resistor in parallel removes its horizontal piece (Case II).
+
+\needspace{6\baselineskip}\noindent\textbf{Why it matters.}
+\begin{itemize}[itemsep=3pt]
+  \item \textbf{Which analysis.} If $\Icol{i} = g(\Vcol{v})$, the current goes straight into KCL:
+        node analysis fits. If $\Vcol{v} = r(\Icol{i})$, the voltage goes straight into KVL: mesh
+        analysis fits. Example~15.1 uses $\Icol{i} = g(\Vcol{v})$ for this reason.
+  \item \textbf{Series and parallel.} In series, current-controlled elements give
+        $\Vcol{v} = r_1(\Icol{i}) + r_2(\Icol{i})$. In parallel, voltage-controlled elements give
+        $\Icol{i} = g_1(\Vcol{v}) + g_2(\Vcol{v})$. A curve that is neither is added point by point,
+        as in Cases I and II.
+  \item \textbf{The ideal diode.} It is neither, so no single formula describes it. This is why
+        we assume its state (ON or OFF) and check the result.
+  \item \textbf{The operating point.} A curve that never goes down (a resistor, a diode, Cases I
+        and II) meets a load line at most once. Several operating points need a curve that goes
+        down somewhere, as in the figure with many operating points.
+\end{itemize}
+
+\subsection{Assume the state of the diode}
+
+A diode is either ON (a short) or OFF (an open). With a state assumed, the circuit is linear.
+The \textbf{assumed-state method}: assume a state, solve the linear circuit, and keep the result
+only where the assumption holds ($\Icol{i_D} \geq 0$ for ON, $\Vcol{v_D} < 0$ for OFF).
+
+\bigskip
+\begin{examplebox}[Example 15.3 --- a diode, a resistor and a source]
+\begin{minipage}[c]{0.36\linewidth}
+\centering
+\begin{tikzpicture}[scale=0.75]
+  \exS{0}
+\end{tikzpicture}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.6\linewidth}
+The one-port is a diode, a $2\ohm$ resistor and a $4\V$ source in series. Find its $i$--$v$
+characteristic, first by assuming states and then graphically.
+\end{minipage}
+\end{examplebox}
+
+\solution
+
+\solstep{1}{Assume the diode ON}
+\begin{minipage}[c]{0.36\linewidth}
+\centering
+\begin{tikzpicture}[scale=0.75]
+  \exS{1}
+\end{tikzpicture}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.6\linewidth}
+The diode is a short. KVL:
+\[
+  \Vcol{v} = 2\,\Icol{i} + 4 .
+\]
+The diode current is $\Icol{i_D} = \Icol{i} = (\Vcol{v} - 4)/2$. The condition
+$\Icol{i_D} \geq 0$ holds for $\Vcol{v} \geq 4\V$.
+\end{minipage}
+
+\solstep{2}{Assume the diode OFF}
+\begin{minipage}[c]{0.36\linewidth}
+\centering
+\begin{tikzpicture}[scale=0.75]
+  \exS{2}
+\end{tikzpicture}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.6\linewidth}
+The diode is an open, so $\Icol{i} = 0$ and the $2\ohm$ resistor has no voltage. KVL:
+\[
+  \Vcol{v_D} = \Vcol{v} - 4 .
+\]
+The condition $\Vcol{v_D} < 0$ holds for $\Vcol{v} < 4\V$.
+\end{minipage}
+
+\solstep{3}{The characteristic}
+\begin{minipage}[c]{0.46\linewidth}
+\[
+  \Icol{i} = \begin{cases} \dfrac{\Vcol{v} - 4}{2}, & \Vcol{v} \geq 4\V,\\[10pt]
+                           0, & \Vcol{v} < 4\V.\end{cases}
+\]
+The two ranges do not overlap and together cover every $\Vcol{v}$. The breakpoint
+$(4\V, 0)$ is where $\Icol{i_D} = 0$ and $\Vcol{v_D} = 0$ at the same time.
+\end{minipage}\hfill
+\begin{minipage}[c]{0.5\linewidth}
+\centering
+\begin{tikzpicture}[scale=1.0]
+  \exSPlot
+\end{tikzpicture}
+\end{minipage}
+
+\solstep{4}{Graphically}
+The diode and $2\ohm$ are Case I. The source is in series: the same current, so use horizontal
+lines and add the voltages.
+\begin{center}
+\begin{tikzpicture}[scale=0.8]
+  \addEx{4}
+\end{tikzpicture}\\[4pt]
+\small
+\begin{tabular}{@{}cccc@{}}
+\toprule
+$\Icol{i}$ (A) & Case I: $\Vcol{v}$ & source: $\Vcol{v}$ & series: $\Vcol{v}$ (sum)\\
+\midrule
+$2$ & $4$ & $4$ & $8$\\
+$1$ & $2$ & $4$ & $6$\\
+$0$ & any $\Vcol{v} \leq 0$ & $4$ & any $\Vcol{v} \leq 4$\\
+\bottomrule
+\end{tabular}
+\end{center}
+Every sum is $4\V$ larger: the source shifts the curve right by $4\V$. The breakpoint is at
+$(4\V, 0)$ and the slope is $\frac12\Sie$: the same result. \ \yes
+
+\subsection{More connections}
+
+The same reasoning gives the characteristics of the connections below. In each one, find the
+piece with the diode ON, the piece with it OFF, and the breakpoint. For simplicity, Cases III
+and IV use two equal resistors: $R_1 = R_2 = R$.
 
 \medskip\noindent
-\casecell{\caseckte}{\caserese}{V: a diode and a source $E$ in series}{the diode curve shifted right by $E$}\hfill
+\casecell{\casecktc}{\caseresc}{III: reversed diode $\parallel R_1$, then $R_2$}{slope $\frac{1}{2R}$ for $\Icol{i} > 0$, $\frac{1}{R}$ for $\Icol{i} < 0$}
+
+\medskip\noindent
+\casecell{\casecktd}{\caseresd}{IV: diode and $R_1$, in parallel with $R_2$}{slope $\frac{2}{R}$ for $\Vcol{v} > 0$, $\frac{1}{R}$ for $\Vcol{v} < 0$}
+
+\medskip\noindent
+\casecell{\caseckte}{\caserese}{V: a diode and a source $E$ in series}{the diode curve shifted right by $E$}
+
+\medskip\noindent
 \casecell{\casecktf}{\caseresf}{VI: a diode and a source $I$ in parallel}{the diode curve shifted up by $I$}
 
 \medskip\noindent
-\casecell{\casecktg}{\caseresg}{VII: Case VI in series with $E$ ($+$ at the bottom)}{Case VI shifted left by $E$}\hfill
-\begin{minipage}[c]{0.49\linewidth}
-\small Each case is read the same way: find the two straight pieces, one with the diode ON
-and one with it OFF, and the breakpoint where $\Icol{i_D} = 0$ and $\Vcol{v_D} = 0$.
-\end{minipage}
+\casecell{\casecktg}{\caseresg}{VII: Case VI in series with $E$ ($+$ at the top)}{Case VI shifted right by $E$}
+
+\medskip
+A voltage source in series shifts a curve horizontally; a current source in parallel shifts it
+vertically.
+
+\begin{ideabox}[Common mistakes]
+\begin{itemize}[itemsep=2pt]
+  \item \textbf{The wrong direction.} Series: add $\Vcol{v}$ at the same $\Icol{i}$ (horizontal
+        lines). Parallel: add $\Icol{i}$ at the same $\Vcol{v}$ (vertical lines).
+  \item \textbf{One point instead of an interval.} On a flat or vertical piece, a line meets the
+        curve in a whole interval; the sum keeps it.
+  \item \textbf{A missed curve.} If a line misses one curve, the sum has no point there (a
+        diode in series allows no $\Icol{i} < 0$).
+  \item \textbf{Turning around.} A reversed element is reflected through the origin: both
+        $\Vcol{v}$ and $\Icol{i}$ change sign, not only one.
+  \item \textbf{Source signs.} A voltage source with $+$ at the top shifts right; a current
+        source pointing down (into the $+$ terminal) shifts up. Check each sign.
+\end{itemize}
+\end{ideabox}
 
 \subsection{The ideal Zener diode}
 
@@ -833,95 +1644,119 @@ until $\Vcol{v} = -V_Z$, and then holds that voltage. It is equivalent to a diod
 with a reversed diode and a battery $V_Z$ in series.
 \end{minipage}
 
+\medskip
+\textbf{The curve, graphically.} Build it from the equivalent circuit in two steps. First the
+series branch: a reversed diode and the battery $V_Z$ carry the same current, so add their
+voltages. The battery has $+$ at the bottom, so it adds $-V_Z$: the curve of the reversed diode
+shifts left by $V_Z$.
+\begin{center}
+\begin{tikzpicture}[scale=0.72]
+  \zenerSer
+\end{tikzpicture}
+\end{center}
+Then the diode in parallel: both have the same voltage, so add their currents. For
+$-V_Z < \Vcol{v} < 0$ both currents are zero. At $\Vcol{v} = 0$ the diode allows any
+$\Icol{i} \geq 0$; at $\Vcol{v} = -V_Z$ the branch allows any $\Icol{i} \leq 0$. Outside
+$-V_Z \leq \Vcol{v} \leq 0$ one of the two has no point, so the sum has none.
+\begin{center}
+\begin{tikzpicture}[scale=0.72]
+  \zenerPar
+\end{tikzpicture}
+\end{center}
+
 %==============================================================
 \section{Piecewise-linear circuits}
 
 \subsection{The characteristic of a circuit}
 
-With ideal diodes, each combination of ON and OFF states gives a linear circuit. The
-\textbf{assumed-state method}: assume a state for each diode, solve the linear circuit, and keep
-the result only where the assumption holds ($\Icol{i_D} \geq 0$ for ON, $\Vcol{v_D} < 0$ for
-OFF).
+With $n$ diodes there are $2^n$ combinations of states, and each gives a linear circuit. Solve
+each one, keep it where its conditions hold, and drop the impossible ones. Each diode adds at
+most one breakpoint.
 
-\medskip
-\begin{examplebox}[Example 15.3 --- the $i$--$v$ characteristic of a circuit]
-\begin{minipage}[c]{0.36\linewidth}
+\bigskip
+\begin{examplebox}[Example 15.4 --- two diodes]
+\begin{minipage}[c]{0.44\linewidth}
 \centering
-\begin{tikzpicture}[scale=0.75]
-  \exThree{0}
+\begin{tikzpicture}[scale=0.72]
+  \exH
 \end{tikzpicture}
 \end{minipage}\hfill
-\begin{minipage}[c]{0.6\linewidth}
-The one-port is a diode in parallel with $3\ohm$, in series with $2\ohm$ and a $10\V$ source.
-Find its $i$--$v$ characteristic, first by assuming states and then graphically.
+\begin{minipage}[c]{0.52\linewidth}
+A $1\ohm$ resistor is in series with three parallel branches: $D_1$ with a $2\V$ source, a
+$1\ohm$ resistor, and a reversed $D_2$ with a $1\V$ source. $\Vcol{v_1}$ is the voltage of the
+parallel part. Find the $i$--$v$ characteristic of the one-port.
 \end{minipage}
 \end{examplebox}
 
 \solution
 
-\solstep{1}{Assume the diode ON}
-\begin{minipage}[c]{0.36\linewidth}
-\centering
-\begin{tikzpicture}[scale=0.75]
-  \exThree{1}
-\end{tikzpicture}
-\end{minipage}\hfill
-\begin{minipage}[c]{0.6\linewidth}
-The diode is a short and the $3\ohm$ resistor carries no current. KVL:
+\solstep{1}{Both diodes OFF}
+Only the two $1\ohm$ resistors carry current, in series:
 \[
-  \Vcol{v} = 2\,\Icol{i} + 10 .
+  \Vcol{v_1} = \Icol{i}, \qquad \Vcol{v} = 2\,\Icol{i} .
 \]
-The diode carries all the current: $\Icol{i_D} = \Icol{i} = (\Vcol{v} - 10)/2$. The condition
-$\Icol{i_D} \geq 0$ holds for $\Vcol{v} \geq 10\V$.
-\end{minipage}
+The diode voltages are $\Vcol{v_{D_1}} = \Vcol{v_1} - 2$ and $\Vcol{v_{D_2}} = -1 - \Vcol{v_1}$.
+Both are negative for $-1 < \Vcol{v_1} < 2$, that is $-1 < \Icol{i} < 2$, or
+$-2\V < \Vcol{v} < 4\V$.
 
-\solstep{2}{Assume the diode OFF}
-\begin{minipage}[c]{0.36\linewidth}
-\centering
-\begin{tikzpicture}[scale=0.75]
-  \exThree{2}
-\end{tikzpicture}
-\end{minipage}\hfill
-\begin{minipage}[c]{0.6\linewidth}
-The diode is an open; $3\ohm$ and $2\ohm$ are in series:
+\solstep{2}{$D_1$ ON, $D_2$ OFF}
+$D_1$ is a short, so $\Vcol{v_1} = 2\V$ and
 \[
-  \Vcol{v} = 5\,\Icol{i} + 10 .
+  \Vcol{v} = \Icol{i} + 2 .
 \]
-The diode voltage is the voltage of $3\ohm$:
-$\Vcol{v_D} = 3\,\Icol{i} = \frac35(\Vcol{v} - 10)$. The condition $\Vcol{v_D} < 0$ holds for
-$\Vcol{v} < 10\V$.
-\end{minipage}
+The middle $1\ohm$ resistor carries $2\A$, so $\Icol{i_{D_1}} = \Icol{i} - 2$. The condition
+$\Icol{i_{D_1}} \geq 0$ holds for $\Icol{i} \geq 2$, or $\Vcol{v} \geq 4\V$. Check $D_2$:
+$\Vcol{v_{D_2}} = -1 - 2 < 0$. \ \yes
 
-\solstep{3}{The characteristic}
-\begin{minipage}[c]{0.46\linewidth}
+\solstep{3}{$D_2$ ON, $D_1$ OFF}
+$D_2$ is a short, so $\Vcol{v_1} = -1\V$ and
 \[
-  \Icol{i} = \begin{cases} \dfrac{\Vcol{v} - 10}{2}, & \Vcol{v} \geq 10\V,\\[10pt]
-                           \dfrac{\Vcol{v} - 10}{5}, & \Vcol{v} < 10\V.\end{cases}
+  \Vcol{v} = \Icol{i} - 1 .
 \]
-The breakpoint $(10\V, 0)$ is where $\Icol{i_D} = 0$ and $\Vcol{v_D} = 0$ at the same time.
-\end{minipage}\hfill
+The middle $1\ohm$ resistor carries $-1\A$. KCL at the top node gives the forward current of
+$D_2$ (upward): $\Icol{i_{D_2}} = -1 - \Icol{i}$. The condition $\Icol{i_{D_2}} \geq 0$ holds for
+$\Icol{i} \leq -1$, or $\Vcol{v} \leq -2\V$. Check $D_1$: $\Vcol{v_{D_1}} = -1 - 2 < 0$. \ \yes
+
+\solstep{4}{Both diodes ON}
+This would need $\Vcol{v_1} = 2$ and $\Vcol{v_1} = -1$ at the same time: impossible.
+
+\solstep{5}{The characteristic}
 \begin{minipage}[c]{0.5\linewidth}
+\[
+  \Icol{i} = \begin{cases} \Vcol{v} - 2, & \Vcol{v} \geq 4\V,\\[4pt]
+                           \Vcol{v}/2, & -2\V \leq \Vcol{v} \leq 4\V,\\[4pt]
+                           \Vcol{v} + 1, & \Vcol{v} \leq -2\V.\end{cases}
+\]
+{\raggedright Two diodes give two breakpoints:\\ $(-2\V, -1\A)$ and $(4\V, 2\A)$.\par}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.46\linewidth}
 \centering
 \begin{tikzpicture}[scale=0.95]
-  \exThreePlot
+  \exHPlot
 \end{tikzpicture}
 \end{minipage}
 
-\solstep{4}{Graphically}
+\solstep{6}{Graphically}
 \begin{center}
-\begin{tikzpicture}[scale=0.62]
-  \begin{scope}\pframe{0}{diode $\parallel 3\ohm$} \draw[crv] (-1.1,-0.5) -- (0,0) -- (0,1.0); \end{scope}
-  \node at (2.05,0) {\shortstack{$+$\\[1pt]{\tiny add $v$}}};
-  \begin{scope}[xshift=4.1cm]\pframe{0}{$2\ohm$} \draw[crv] (-0.6,-1.0) -- (0.6,1.0); \end{scope}
-  \node at (6.15,0) {$=$};
-  \begin{scope}[xshift=8.2cm]\pframe{0}{} \draw[crv] (-1.2,-0.4) -- (0,0) -- (0.5,1.0); \end{scope}
-  \node at (10.25,0) {\shortstack{$+$\\[1pt]{\tiny add $v$}}};
-  \begin{scope}[xshift=12.3cm]\pframe{0}{$10\V$} \draw[crv] (0.7,-1.0) -- (0.7,1.0); \end{scope}
+\begin{tikzpicture}[scale=0.76]
+  \begin{scope}\pframe{0}{$D_1$, $2\V$} \draw[crv] (-1.2,0) -- (0.8,0) -- (0.8,1.05); \end{scope}
+  \node at (1.9,0) {\shortstack{$+$\\[1pt]{\tiny add $i$}}};
+  \begin{scope}[xshift=3.8cm]\pframe{0}{$1\ohm$} \draw[crv] (-0.9,-0.9) -- (0.9,0.9); \end{scope}
+  \node at (5.7,0) {\shortstack{$+$\\[1pt]{\tiny add $i$}}};
+  \begin{scope}[xshift=7.6cm]\pframe{0}{$D_2$, $1\V$} \draw[crv] (-0.4,-1.0) -- (-0.4,0) -- (1.2,0); \end{scope}
+  \node at (9.5,0) {$=$};
+  \begin{scope}[xshift=11.4cm]\pframe{0}{parallel part} \draw[crv] (-0.4,-1.0) -- (-0.4,-0.4) -- (0.8,0.8) -- (0.8,1.05); \end{scope}
+  \miniDtwo{0} \miniR{3.8}{$1\ohm$} \miniDrone{7.6} \miniPar{11.4}
+\end{tikzpicture}\\[10pt]
+\begin{tikzpicture}[scale=0.85]
+  \threeplots{\draw[crv] (-0.4,-1.0) -- (-0.4,-0.4) -- (0.8,0.8) -- (0.8,1.05);}{\pR{1.0}}{\draw[crv] (-1.2,-0.8) -- (-0.8,-0.4) -- (0.8,0.4) -- (1.2,0.8);}{\shortstack{$+$\\[1pt]{\tiny add $v$}}}{parallel part}{$1\ohm$}{the one-port}
+  \miniPar{0} \miniR{4.1}{$1\ohm$} \miniOnePort{8.2}
 \end{tikzpicture}
 \end{center}
-The parallel pair is Case II with $R = 3\ohm$. Adding the $2\ohm$ horizontally gives slope
-$\frac{1}{3 + 2} = \frac15$ for $\Icol{i} < 0$ and $\frac12$ for $\Icol{i} > 0$. The $10\V$ source
-shifts the curve right by $10\V$: the same result. \ \yes
+The first branch is Case V: vertical at $\Vcol{v_1} = 2\V$. The third is Case V turned around:
+vertical at $\Vcol{v_1} = -1\V$. Adding the three currents gives the parallel part: slope
+$1$ between the two vertical pieces. Adding the $1\ohm$ horizontally turns the slopes
+into $\frac{1}{1 + 1} = \frac12$ in the middle and $1$ outside. \ \yes
 
 \subsection{A circuit from a characteristic}
 
@@ -930,8 +1765,56 @@ into pieces whose circuits are known (the basic connections above), using horizo
 (series) or vertical addition (parallel), and connect the pieces. Each breakpoint needs a
 diode. The answer is \textbf{not unique}: different circuits can have the same characteristic.
 
-\medskip
-\begin{examplebox}[Example 15.4 --- a circuit with two breakpoints]
+\bigskip
+\begin{examplebox}[Example 15.5 --- one breakpoint]
+\begin{minipage}[c]{0.44\linewidth}
+\centering
+\begin{tikzpicture}[scale=0.95]
+  \synPlot
+\end{tikzpicture}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.52\linewidth}
+The characteristic is $\Icol{i} = \Vcol{v}/2$ for $\Vcol{v} \leq 2\V$ and has slope
+$1\Sie$ for $\Vcol{v} \geq 2\V$. Find a circuit with this characteristic.
+\end{minipage}
+\end{examplebox}
+
+\solution
+
+\solstep{1}{Count the breakpoints}
+There is one breakpoint, at $(2\V, 1\A)$, so one diode is enough. Below it the curve is a line
+through the origin with slope $\frac12\Sie$: a $2\ohm$ resistor.
+
+\solstep{2}{Split it in parallel (add currents)}
+\begin{center}
+\begin{tikzpicture}[scale=0.85]
+  \threeplots{\draw[crv] (-1.2,-0.6) -- (1.2,0.6);}{\draw[crv] (-1.2,0) -- (0.4,0) -- (1.2,0.4); \node[font=\tiny, below] at (0.4,0) {$2\V$};}{\draw[crv] (-1.2,-0.6) -- (0.4,0.2) -- (1.2,1.0);}{\shortstack{$+$\\[1pt]{\tiny add $i$}}}{$2\ohm$}{slope $\frac12$ after $2\V$}{target}
+  \miniR{0}{$2\ohm$} \miniBranch{4.1} \miniSyn{8.2}
+\end{tikzpicture}
+\end{center}
+Keep the $2\ohm$ resistor for all $\Vcol{v}$. Above $2\V$ the slope must grow by
+$1 - \frac12 = \frac12\Sie$. A branch with zero current below $2\V$ and slope $\frac12\Sie$
+above is Case I with $R = 2\ohm$, shifted right by a $2\V$ source in series. Since the currents
+add, this branch goes in parallel with the first $2\ohm$ resistor.
+
+\solstep{3}{The circuit}
+\begin{minipage}[c]{0.36\linewidth}
+\centering
+\begin{tikzpicture}[scale=0.7]
+  \synCkt
+\end{tikzpicture}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.6\linewidth}
+A $2\ohm$ resistor in parallel with a branch of $2\ohm$, a diode and a $2\V$ source. Check at
+$\Vcol{v} = 4\V$: the resistor carries $2\A$ and the branch $(4 - 2)/2 = 1\A$, so
+$\Icol{i} = 3\A$; the target gives $1 + 1 \cdot 2 = 3\A$. \ \yes \ The elements of the
+branch can be put in any order: the circuit is not unique.
+\end{minipage}
+
+The next example needs two diodes and both kinds of addition.
+
+\bigskip
+\begin{examplebox}[Example 15.6 --- a circuit with two breakpoints]
 \begin{minipage}[c]{0.44\linewidth}
 \centering
 \begin{tikzpicture}[scale=0.95]
@@ -939,8 +1822,9 @@ diode. The answer is \textbf{not unique}: different circuits can have the same c
 \end{tikzpicture}
 \end{minipage}\hfill
 \begin{minipage}[c]{0.52\linewidth}
-The characteristic has slope $1/R_1$ for $\Vcol{v} < 0$, a vertical piece from $0$ to $I$ at
-$\Vcol{v} = 0$, and slope $1/R_2$ above $I$. Find a circuit with this characteristic.
+The characteristic has slope $1\Sie$ for $\Vcol{v} < 0$, a vertical piece from $0$ to $1\A$
+at $\Vcol{v} = 0$, and slope $\frac12\Sie$ above $1\A$. Find a circuit with this
+characteristic.
 \end{minipage}
 \end{examplebox}
 
@@ -949,29 +1833,32 @@ $\Vcol{v} = 0$, and slope $1/R_2$ above $I$. Find a circuit with this characteri
 
 \solstep{1}{Split it in series (add voltages)}
 \begin{center}
-\begin{tikzpicture}[scale=0.62]
+\begin{tikzpicture}[scale=0.85]
   \begin{scope}\pframe{0}{target} \draw[crv] (-1.2,-0.8) -- (0,0) -- (0,0.5) -- (1.2,1.0); \end{scope}
   \node at (2.05,0) {$=$};
-  \begin{scope}[xshift=4.1cm]\pframe{0}{A: diode $\parallel R_1$} \draw[crv] (-1.2,-0.8) -- (0,0) -- (0,1.0); \end{scope}
+  \begin{scope}[xshift=4.1cm]\pframe{0}{A: diode $\parallel 1\ohm$} \draw[crv] (-1.2,-0.8) -- (0,0) -- (0,1.0); \end{scope}
   \node at (6.15,0) {\shortstack{$+$\\[1pt]{\tiny add $v$}}};
   \begin{scope}[xshift=8.2cm]\pframe{0}{B} \draw[crv] (0,-1.0) -- (0,0.5) -- (1.2,1.0); \end{scope}
+  \miniAB{0} \miniA{4.1} \miniB{8.2}
 \end{tikzpicture}
 \end{center}
-Piece A is Case II with $R = R_1$: it gives the slope for $\Vcol{v} < 0$ and is a short for
-$\Icol{i} \geq 0$. Piece B is a short for $\Icol{i} \leq I$ and has slope $1/R_2$ above $I$.
+Piece A is Case II with $R = 1\ohm$: it gives the slope $1\Sie$ for $\Vcol{v} < 0$ and is a
+short for $\Icol{i} \geq 0$. Piece B is a short for $\Icol{i} \leq 1\A$ and has slope
+$\frac12\Sie$ above $1\A$.
 
 \solstep{2}{Split B in parallel (add currents)}
 \begin{center}
-\begin{tikzpicture}[scale=0.62]
+\begin{tikzpicture}[scale=0.85]
   \begin{scope}\pframe{0}{B} \draw[crv] (0,-1.0) -- (0,0.5) -- (1.2,1.0); \end{scope}
   \node at (2.05,0) {$=$};
-  \begin{scope}[xshift=4.1cm]\pframe{0}{reversed diode $\parallel R_2$} \draw[crv] (0,-1.0) -- (0,0) -- (1.2,0.5); \end{scope}
+  \begin{scope}[xshift=4.1cm]\pframe{0}{reversed diode $\parallel 2\ohm$} \draw[crv] (0,-1.0) -- (0,0) -- (1.2,0.5); \end{scope}
   \node at (6.15,0) {\shortstack{$+$\\[1pt]{\tiny add $i$}}};
-  \begin{scope}[xshift=8.2cm]\pframe{0}{source $I$} \draw[crv] (-1.2,0.5) -- (1.2,0.5); \end{scope}
+  \begin{scope}[xshift=8.2cm]\pframe{0}{source $1\A$} \draw[crv] (-1.2,0.5) -- (1.2,0.5); \end{scope}
+  \miniB{0} \miniRrDr{4.1}{$2\ohm$} \miniI{8.2}{$1\A$}
 \end{tikzpicture}
 \end{center}
-A reversed diode in parallel with $R_2$ is Case II reflected through the origin. A current
-source $I$ in parallel lifts it by $I$.
+A reversed diode in parallel with $2\ohm$ is Case II reflected through the origin. A $1\A$
+current source in parallel lifts it by $1\A$ (Case VI).
 
 \solstep{3}{The circuit}
 \begin{minipage}[c]{0.36\linewidth}
@@ -981,13 +1868,13 @@ source $I$ in parallel lifts it by $I$.
 \end{tikzpicture}
 \end{minipage}\hfill
 \begin{minipage}[c]{0.6\linewidth}
-Piece A (a diode in parallel with $R_1$) in series with piece B (a reversed diode, $R_2$ and
-the source $I$, all in parallel). Check one point: for $\Vcol{v} > 0$ the top diode is ON (a
-short), the bottom diode is OFF, and $\Icol{i} = I + \Vcol{v}/R_2$. \ \yes
+Piece A (a diode in parallel with $1\ohm$) in series with piece B (a reversed diode, $2\ohm$
+and the $1\A$ source, all in parallel). Check at $\Vcol{v} = 2\V$: the top diode is ON (a
+short), the bottom diode is OFF, and $\Icol{i} = 1 + 2/2 = 2\A$. \ \yes
 \end{minipage}
 
 \bigskip
-\begin{examplebox}[Example 15.5 --- a numerical characteristic]
+\begin{examplebox}[Example 15.7 --- a numerical characteristic]
 \begin{minipage}[c]{0.44\linewidth}
 \centering
 \begin{tikzpicture}[scale=0.95]
@@ -995,8 +1882,8 @@ short), the bottom diode is OFF, and $\Icol{i} = I + \Vcol{v}/R_2$. \ \yes
 \end{tikzpicture}
 \end{minipage}\hfill
 \begin{minipage}[c]{0.52\linewidth}
-The characteristic passes through $(0, 6\A)$ with slope $3\Sie$ for
-$-2\V < \Vcol{v} < 2\V$ and slope $6\Sie$ outside this interval. Find a circuit.
+The characteristic passes through the origin with slope $1\Sie$ for
+$-2\V < \Vcol{v} < 2\V$ and slope $2\Sie$ outside this interval. Find a circuit.
 \end{minipage}
 \end{examplebox}
 
@@ -1005,16 +1892,16 @@ $-2\V < \Vcol{v} < 2\V$ and slope $6\Sie$ outside this interval. Find a circuit.
 \solstep{1}{Split it in parallel (add currents)}
 All pieces share the voltage $\Vcol{v}$, so write the current as a sum:
 \begin{itemize}
-  \item a $6\A$ current source: the value at $\Vcol{v} = 0$;
-  \item a $3\Sie$ resistor ($\frac13\ohm$): the slope in the middle;
-  \item a branch with current $3(\Vcol{v} - 2)$ for $\Vcol{v} > 2\V$ and zero otherwise;
-  \item a branch with current $3(\Vcol{v} + 2)$ for $\Vcol{v} < -2\V$ and zero otherwise.
+  \item a $1\ohm$ resistor: the slope $1\Sie$ in the middle;
+  \item a branch with current $\Vcol{v} - 2$ for $\Vcol{v} > 2\V$ and zero otherwise;
+  \item a branch with current $\Vcol{v} + 2$ for $\Vcol{v} < -2\V$ and zero otherwise.
 \end{itemize}
+Outside $\pm 2\V$ one branch adds $1\Sie$, so the slope becomes $2\Sie$.
 
 \solstep{2}{The two branches}
-The third piece is a $\frac13\ohm$ resistor, a diode and a $2\V$ source in series: it conducts
-only when $\Vcol{v} > 2\V$ (Cases I and V). The fourth piece is its reflection through the origin:
-the same branch turned around.
+The second piece is like the branch of Example 15.5, now with $1\ohm$: a resistor, a diode and a
+$2\V$ source in series, conducting only when $\Vcol{v} > 2\V$. The third piece is its
+reflection through the origin: the same branch turned around.
 
 \solstep{3}{The circuit}
 \begin{minipage}[c]{0.56\linewidth}
@@ -1024,9 +1911,99 @@ the same branch turned around.
 \end{tikzpicture}
 \end{minipage}\hfill
 \begin{minipage}[c]{0.4\linewidth}
-Check at $\Vcol{v} = 3\V$: the source gives $6\A$, the resistor $9\A$, the second branch
-$3(3 - 2) = 3\A$ and the reversed branch $0$; in total $18\A$. \ \yes
+Check at $\Vcol{v} = 3\V$: the resistor carries $3\A$, the middle branch $3 - 2 = 1\A$ and
+the reversed branch $0$; in total $4\A$. The target gives $2 + 2 \cdot 1 = 4\A$. \ \yes
 \end{minipage}
+
+\bigskip
+\begin{examplebox}[Example 15.8 --- a dead band in the current]
+\begin{minipage}[c]{0.4\linewidth}
+\centering
+\begin{tikzpicture}[scale=1.0]
+  \dbAPlot
+\end{tikzpicture}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.56\linewidth}
+The current is zero for $-1\V < \Vcol{v} < 1\V$ (a dead band). Outside it the curve rises at
+$45^\circ$: slope $1\Sie$. Find a circuit with this characteristic, graphically.
+\end{minipage}
+\end{examplebox}
+
+\solution
+
+\solstep{1}{Split it}
+Two breakpoints: two diodes. Read the curve as a sum of currents at the same $\Vcol{v}$: a piece
+that is nonzero only for $\Vcol{v} > 1\V$, and a piece that is nonzero only for
+$\Vcol{v} < -1\V$. Currents add, so the two pieces are in \textbf{parallel}.
+
+\solstep{2}{The right piece}
+Case I with $1\ohm$ (a diode and $1\ohm$ in series) has slope $1\Sie$ from the origin. A $1\V$
+source in series adds $1\V$ to every voltage: the curve shifts right by $1\V$.
+\begin{center}
+\begin{tikzpicture}[scale=0.72]
+  \threeplots{\cDbCaseI}{\cDbE}{\cDbBr}{\shortstack{$+$\\[1pt]{\tiny add $v$}}}{diode $+ 1\ohm$}{source $1\V$}{right piece}
+  \miniDsR{0}{$1\ohm$} \miniE{4.1}{$1\V$} \miniBrA{8.2}
+\end{tikzpicture}
+\end{center}
+
+\solstep{3}{The left piece, and the sum}
+The left piece is the right piece reflected through the origin: the same branch turned
+around. Put the two branches in parallel and add their currents.
+\begin{center}
+\begin{tikzpicture}[scale=0.72]
+  \threeplots{\cDbBr}{\cDbBrr}{\cDbA}{\shortstack{$+$\\[1pt]{\tiny add $i$}}}{right piece}{left piece}{target}
+  \miniBrA{0} \miniBrAr{4.1} \miniDbA{8.2}
+\end{tikzpicture}
+\end{center}
+For $-1\V < \Vcol{v} < 1\V$ both branches carry zero. For $\Vcol{v} > 1\V$ only the right branch
+conducts. Check at $\Vcol{v} = 2\V$: $\Icol{i} = \frac{2 - 1}{1} + 0 = 1\A$. \ \yes
+
+\bigskip
+\begin{examplebox}[Example 15.9 --- a dead band in the voltage]
+\begin{minipage}[c]{0.4\linewidth}
+\centering
+\begin{tikzpicture}[scale=1.0]
+  \dbBPlot
+\end{tikzpicture}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.56\linewidth}
+The voltage is zero for $-1\A < \Icol{i} < 1\A$ (a dead band in the voltage). Outside it the
+curve rises at $45^\circ$: slope $1\Sie$. Find a circuit with this characteristic, graphically.
+\end{minipage}
+\end{examplebox}
+
+\solution
+
+\solstep{1}{Split it}
+This is Example 15.8 with $\Vcol{v}$ and $\Icol{i}$ swapped. Read the curve as a sum of voltages at
+the same $\Icol{i}$: a piece that is nonzero only for $\Icol{i} > 1\A$, and a piece that is nonzero
+only for $\Icol{i} < -1\A$. Voltages add, so the two pieces are in \textbf{series}.
+
+\solstep{2}{The upper piece}
+A reversed diode in parallel with $1\ohm$ gives $\Vcol{v} = 0$ for $\Icol{i} \leq 0$ and slope $1\Sie$
+for $\Icol{i} > 0$. A $1\A$ source in parallel adds $1\A$ to every current: the curve shifts up
+by $1\A$.
+\begin{center}
+\begin{tikzpicture}[scale=0.72]
+  \threeplots{\cDbRDr}{\cDbI}{\cDbPone}{\shortstack{$+$\\[1pt]{\tiny add $i$}}}{reversed diode $\parallel 1\ohm$}{source $1\A$}{upper piece}
+  \miniRrDr{0}{$1\ohm$} \miniI{4.1}{$1\A$} \miniPone{8.2}
+\end{tikzpicture}
+\end{center}
+
+\solstep{3}{The lower piece, and the sum}
+The lower piece is the upper piece turned around. Put the two in series and add their voltages.
+\begin{center}
+\begin{tikzpicture}[scale=0.72]
+  \threeplots{\cDbPone}{\cDbPtwo}{\cDbB}{\shortstack{$+$\\[1pt]{\tiny add $v$}}}{upper piece}{lower piece}{target}
+  \miniPone{0} \miniPtwo{4.1} \miniDbB{8.2}
+\end{tikzpicture}
+\end{center}
+For $-1\A < \Icol{i} < 1\A$ both pieces have zero voltage. For $\Icol{i} > 1\A$ only the upper piece
+has a voltage. Check at $\Icol{i} = 2\A$: $\Vcol{v} = (2 - 1) \cdot 1 + 0 = 1\V$. \ \yes
+
+The two circuits are \textbf{duals}: $\Vcol{v} \leftrightarrow \Icol{i}$, series $\leftrightarrow$
+parallel, voltage source $\leftrightarrow$ current source, diode $+$ resistor in series
+$\leftrightarrow$ diode $\parallel$ resistor.
 
 %==============================================================
 \section{Linear time-varying circuits}
@@ -1036,7 +2013,7 @@ instant a line through the origin, but its slope changes with time. Such circuit
 nonlinear, and at each instant they are solved like LTI circuits.
 
 \medskip
-\begin{examplebox}[Example 15.6 --- a linear time-varying circuit]
+\begin{examplebox}[Example 15.10 --- a linear time-varying circuit]
 \begin{minipage}[c]{0.52\linewidth}
 \centering
 \begin{tikzpicture}[scale=0.85]
@@ -1078,7 +2055,7 @@ coefficients $k_1$, $k_2$ now depend on time.
 \begin{center}
 \small
 \renewcommand{\arraystretch}{1.3}
-\begin{tabular}{@{}>{\raggedright}p{4.4cm} >{\raggedright\arraybackslash}p{11.3cm}@{}}
+\begin{tabular}{@{}>{\raggedright}p{4.0cm} >{\raggedright\arraybackslash}p{9.9cm}@{}}
 \toprule
 \textbf{In the circuit} & \textbf{What to do}\\
 \midrule
@@ -1086,6 +2063,7 @@ one nonlinear resistor & solve $E = R\,g(\Vcol{v}) + \Vcol{v}$, or intersect the
 a linear rest & Th\'evenin equivalent, operating point, then the substitution theorem\\
 ideal diodes & assume ON ($\Vcol{v_D} = 0$, $\Icol{i_D} \geq 0$) or OFF ($\Icol{i_D} = 0$, $\Vcol{v_D} < 0$), solve, check\\
 series, parallel connections & add the curves horizontally (voltages) or vertically (currents)\\
+voltage- or current-controlled & vertical line test: $\Icol{i} = g(\Vcol{v})$, into KCL; horizontal line test: $\Vcol{v} = r(\Icol{i})$, into KVL\\
 a given characteristic & split it into known pieces; each breakpoint needs a diode; not unique\\
 linear time-varying resistors & $\Vcol{v} = \mathbf{k}(t)\,\mathbf{u}$: superposition still holds\\
 \bottomrule

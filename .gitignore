@@ -253,3 +253,6 @@ TSWLatexianTemp*
 
 # MATLAB
 *.m~
+
+# Claude outputs (local working copies, not part of the repo)
+Claude outputs/

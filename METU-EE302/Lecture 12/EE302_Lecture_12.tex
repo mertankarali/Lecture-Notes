@@ -94,7 +94,6 @@
 
 % Lecture Details
 \lecture{12}{Asst. Prof. M. Mert Ankarali}
-....
 
 \section{Root Locus}
 
@@ -130,7 +129,7 @@ the roots of the characteristic equation
 1 + K \frac{n(s)}{d(s)} = 0 
 \end{align*}
 %
-The goal is deriving the qualitative and quantitive behavior of
+The goal is deriving the qualitative and quantitative behavior of
 closed-loop pole ``paths'' for \textbf{positive} gain $K$ that 
 solves the equation $1 + K G_{OL}(s) = 0$ (or $1 + K \frac{n(s)}{d(s)} = 0$).
 
@@ -161,22 +160,22 @@ Now let's derive the \textbf{angle condition} given that $K > 0$,
 \angle [n(s)] - \angle [d(s)] = \pi (2 k + 1) 
 \\
 \quad , &\mathrm{or} \quad 
-\angle [s - z_1] \cdots \angle [s - z_M] - \left( \angle [s - p_1] \cdots \angle [s - p_N] \right)
+\sum_{i=1}^{M} \angle [s - z_i] - \sum_{j=1}^{N} \angle [s - p_j]
 = \pi (2 k + 1), 
 \ \ k \in \mathbb{Z} 
 \end{align*}
 %
 For a given $K$, s values that satisfy both magnitude and angle
-conditions are located on the root loci. These constitutes the most
+conditions are located on the root loci. These constitute the most
 fundamental knowledge regarding the root locus analysis.
 
-How we can check whether a candidate $s^*$ is in the root -locus or not.
+How can we check whether a candidate $s^*$ is on the root-locus or not?
 If we analyze the angle condition, we can see that it is independent 
-from the parameter $K$. However, If we focus on the magnitude condition, 
+from the parameter $K$. However, if we focus on the magnitude condition, 
 we can see that 
 %
 \begin{align*}
-K = \frac{1}{| G_{OL}(s^*) |} = \left| \frac{d(s^*)}{d(s^*)} \right| = 
+K = \frac{1}{| G_{OL}(s^*) |} = \left| \frac{d(s^*)}{n(s^*)} \right| = 
 \frac{|s^* - p_1| \cdots |s^* - p_N|}{|s^* - z_1| \cdots |s^* - z_M|} 
 \end{align*}
 %
@@ -185,7 +184,7 @@ we can indeed compute a gain $K$ value.
 
 In conclusion, only angle condition is used for testing 
 whether a point is in the root-locus or not. On the other hand, 
-will use the magnitude condition to compute the 
+we will use the magnitude condition to compute the 
 value of gain $K$, if we find that a candidate $s^*$
 is in the root locus based on the angle condition.
 
@@ -196,7 +195,7 @@ Determine if the following pole candidates are on the
 root-locus or not
 %
 \begin{align*}
-	p_1^* &= -2  \ , \  p_2^* = 2 \,\ p_3^* = -2 + 2 j
+	p_1^* &= -2  \ , \  p_2^* = 2 \ , \ p_3^* = -2 + 2 j
 \end{align*}
  
  \textbf{Solution:}  We only test the angle
@@ -215,21 +214,21 @@ provided below
 
 \begin{enumerate} 
 
-\item Compute the zeros poles of the open-loop 
-transfer function and write the characteristic eqiation
+\item Compute the zeros and poles of the open-loop 
+transfer function and write the characteristic equation
 of closed-loop system.
 %
 \begin{align*}
 1 + K G_{OL}(s)  &= 0 \\
 1 + K \frac{n(s)}{d(s)} &= 0 \\
-1 + K \frac{(zs- z_1) \cdots (zs- z_M)}{(s - p_1) \cdots (s - p_N)} &= 0 \\
+1 + K \frac{(s - z_1) \cdots (s - z_M)}{(s - p_1) \cdots (s - p_N)} &= 0 \\
 \end{align*}
 %
 
 \item Root loci has $N$ separate branches. Since,
 %
 \begin{align*}
-\left[ (s - p_1) \cdots (s - p_N) \right] + K \left[ (zs- z_1) \cdots (zs- z_M) \right]  &= 0 \\
+\left[ (s - p_1) \cdots (s - p_N) \right] + K \left[ (s - z_1) \cdots (s - z_M) \right]  &= 0 \\
 d(s) + K n(s) = 0
 \end{align*}
 %
@@ -238,8 +237,8 @@ has $N$ number of roots for all $K$.
 \item Root loci starts from poles of $G_{OL}(s)$ and 
 %
 \begin{enumerate} 
-   \item $M$ branches terminates at the zeros of $G_{OL}(s)$
-   \item $N-M$ branches terminates at $\infty$ (implicit zeros of $G_{OL}(s)$)
+   \item $M$ branches terminate at the zeros of $G_{OL}(s)$
+   \item $N-M$ branches terminate at $\infty$ (implicit zeros of $G_{OL}(s)$)
 \end{enumerate}
 
 It is relatively easy to understand this 
@@ -247,12 +246,12 @@ It is relatively easy to understand this
 \begin{align*}
 d(s) + K n(s) = 0 
 \\
-K \to 0 \ \Rightarrow \ [d(s) + K n(s) = 0 \ \to \ [d(s) = 0]
+K \to 0 \ \Rightarrow \ [d(s) + K n(s) = 0] \ \to \ [d(s) = 0]
 \\
-K \to \infty \ \Rightarrow \ [d(s) + K n(s) = 0 \ \to  \ [n(s) = 0]
+K \to \infty \ \Rightarrow \ [d(s) + K n(s) = 0] \ \to  \ [n(s) = 0]
 \end{align*}
 
-\item Root loci on the real axis determined by open-loop zeros and
+\item Root loci on the real axis are determined by open-loop zeros and
   poles. $s = \sigma \in \mathbb{R}$ then, based on the angle condition
   we have
 %
@@ -261,14 +260,14 @@ K \to \infty \ \Rightarrow \ [d(s) + K n(s) = 0 \ \to  \ [n(s) = 0]
 \end{align*}
 %
 Let's first analyze the effect of complex conjugate pole/zero (and double pole/zero on real axis)
-pairs on the equation above. Let $\sigma^* \in \mathbb{R}$  is the candidate location and complex
-conjugate poles has the following form $p_{1,2} = \sigma \pm j \omega$
+pairs on the equation above. Let $\sigma^* \in \mathbb{R}$ be the candidate location and complex
+conjugate poles have the following form $p_{1,2} = \sigma \pm j \omega$
 \begin{align*}
-\mathrm{Sign} [ ( \sigma^* + \sigma - j \omega) (\sigma^* + \sigma + j \omega) ] &= \mathrm{Sign} [ (\sigma^* + \sigma)^2 + \omega^2 ] 
+\mathrm{Sign} [ ( \sigma^* - \sigma - j \omega) (\sigma^* - \sigma + j \omega) ] &= \mathrm{Sign} [ (\sigma^* - \sigma)^2 + \omega^2 ] 
 = 1 
 \end{align*}
 %
-We can see that complex conjugate zero/pole pairs have not effect 
+We can see that complex conjugate zero/pole pairs have no effect 
 on angle condition for the roots on the real axis. Then for
 the remaining ones we can derive the following condition
 %
@@ -282,8 +281,8 @@ $\mathrm{Sign} [\sigma - p_i ]$ and $\mathrm{Sign} [\sigma - z_i] $
 must be negative for satisfying this condition for that particular $\sigma$
 to be on the root-locus. We can summarize the rule as
 
-\textbf{If the test point $\sigma$ on real axis has ODD numbers of 
-poles and zeros in its right, then this point is located 
+\textbf{If the test point $\sigma$ on real axis has an ODD total number of 
+poles and zeros to its right, then this point is located 
 on the root-locus.}
 
 \newpage
@@ -302,7 +301,7 @@ of three different transfer functions.
 \item Asymptotes
 
 \begin{itemize}
-  \item $N-M$ branches goes to infinity. Thus, there exist $N-M$ many
+  \item $N-M$ branches go to infinity. Thus, there exist $N-M$ many
     asymptotes
   \item For large $s$ we can have the following approximation
  \begin{align*}
@@ -311,7 +310,7 @@ of three different transfer functions.
 \\
 &\angle \left[ \frac{K}{s^{N-M}} \right] = -(N-M) \angle [ s ] = \pi (2 k + 1), \ k \in \mathbb{Z} 
 \\
-&\phi_{a} = \frac{\pm \pi (2 k + 1)}{N-M}, \ k \in \lbrace 1, \cdots, N-M \rbrace
+&\phi_{a} = \frac{\pi (2 k + 1)}{N-M}, \ k \in \lbrace 0, \cdots, N-M-1 \rbrace
  \end{align*}
 %
   \item Real axis intercept $\sigma_c$ can be computed as
@@ -342,7 +341,7 @@ $s = \sigma, \ \sigma \in \mathbb{R}$, we have
 1 + K G_{OL} (\sigma) &= 0 
 \end{align*}
 %
-Note that break-in and breakaway points corresponds to 
+Note that break-in and breakaway points correspond to 
 double roots. Thus, if $\sigma_{b}$ is a break-away or break-in 
 point we have 
 %
@@ -359,7 +358,7 @@ the following conditions
 \begin{align*}
 \left[ \frac{d G_{OL}(\sigma)}{d \sigma} \right]_{\sigma = \sigma_b} = 0
 \quad ,
-K(\sigma_B) = \frac{-1}{G_{OL} (\sigma_b) }
+K(\sigma_b) = \frac{-1}{G_{OL} (\sigma_b) }
 \quad ,
 K(\sigma_b) > 0
 \end{align*}
@@ -423,23 +422,22 @@ equation we get
 %
 \begin{align*}
 1 + K G_{OL} (j \omega) &= 0 \\
-D(j \omega) + K N(j \omega) &= 0 \\ ,
-\\
+D(j \omega) + K N(j \omega) &= 0 \\
 \mathrm{Re} \lbrace D(j \omega) + K N(j \omega) \rbrace &= 0 \\
 \mathrm{Im} \lbrace D(j \omega) + K N(j \omega) \rbrace &= 0 
 \end{align*}
 %
 Note that depending on the order of the system, 
 solving the above equation can be 
-most computationally very heavy.
+computationally heavy.
 
 \textbf{Second way} of finding the imaginary axis crossing is to
-apply the Routh-Hurwitz criteria. Note that at these crossings the 
+apply the Routh-Hurwitz criterion. Note that at these crossings the 
 system becomes unstable. Using this fact, we can first construct a 
 Routh table for the closed-loop characteristic equation and then 
 derive the $K$ values where a change of stability occurs. After that, we can
 use the computed critical $K$ values to derive the pole locations
-on the imaginary axis..
+on the imaginary axis.
 
 \vspace{6pt}
 
@@ -465,7 +463,7 @@ compute the break-away point and imaginary axis crossings
 	\end{align*}
 	Imaginary axis crossing
 	\begin{align*}
-	& D(j \omega) + K (j \omega) = 0 \\ 	 
+	& D(j \omega) + K = 0 \\ 	 
 	& (j \omega)^3 + 5 (j \omega)^2 + 6 (j \omega) + K = 0 \\ 
 	& (K - 5 \omega^2) + (6 \omega - \omega^3) j  = 0
 	\\ & \Rightarrow \omega = \sqrt{6}  \quad , \ K = 30
@@ -496,7 +494,7 @@ $s^0$ & K & 0 &
 \end{minipage}
 \vspace{6pt}
 
-We know that in order for the system to stable $K \in (0 , 30)$,
+We know that in order for the system to be stable $K \in (0 , 30)$,
 since we only consider positive $K$ values, when $K = 30$
 system stability changes (from stable to unstable). Let $K=30$
 and re-form the Routh table. 
@@ -521,7 +519,7 @@ $s^0$ & 30 & 0 &
 
 Based on the Routh table, we conclude that when $K = 30$, system
 becomes unstable, the unstable poles are located on the imaginary
-axis, and their locations can be find using the Auxiliary polynomial 
+axis, and their locations can be found using the Auxiliary polynomial 
 as
 %
 \begin{align*}
@@ -574,7 +572,7 @@ If we divide the characteristic equation by $(s^3 + 4 s^2)$ we obtain
 Now if we consider $\bar{G}_{OL}(s)$ as the open-loop transfer
 function and draw the root-locus, 
 then we would derive the dependence 
-of the roots to the parameter A. 
+of the roots on the parameter $A$. 
 
 Root-locus of the system w.r.t parameter $A > 0$ is given below.
 

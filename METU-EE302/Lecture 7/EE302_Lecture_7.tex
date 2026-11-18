@@ -118,7 +118,7 @@
       \begin{align*}
       	Y(s) &= G(s) U(s)
 	\\
-	y(t) &= \mathcal{L} \lbrace G(s) U(s) \rbrace^{-1}
+	y(t) &= \mathcal{L}^{-1} \lbrace G(s) U(s) \rbrace
       \end{align*}
     \end{center}
   \end{minipage}
@@ -214,7 +214,7 @@ y(t) &= \mathcal{L}^{-1} \left\lbrace \frac{1}{s} - \frac{1}{s+K} \right\rbrace
       \begin{align*}
 	\lim_{t \to \infty} y(t) &= 1
 	\\
-	\lim_{t \to \infty} e(t) &= \lim_{t \to \infty} (y(t) - u(t)) = 0
+	\lim_{t \to \infty} e(t) &= \lim_{t \to \infty} (u(t) - y(t)) = 0
       \end{align*}
       Zero steady-state error $\forall K > 0$
       
@@ -222,7 +222,7 @@ y(t) &= \mathcal{L}^{-1} \left\lbrace \frac{1}{s} - \frac{1}{s+K} \right\rbrace
           \end{center}
   \end{minipage}
 
-\textbf{Ex 2:} Find the unit-ramp response for the same system
+\textbf{Ex 3:} Find the unit-ramp response for the same system
 %
 \begin{align*}
 	Y(s) &= \frac{K}{s^2 (s+K)} 
@@ -248,7 +248,7 @@ Then, we can compute $y(t)$ as
   \begin{align*}
 y(t) &= \frac{-1}{K} + t + \frac{1}{K} e^{-K t} \ ,  \ \mathrm{for} \ t \geq 0
 \\
-y(t) &= t + \frac{-1}{K} \left[ 1 -  \frac{1}{K} e^{-K t} \right] \ ,  \ \mathrm{for} \ t \geq 0
+y(t) &= t - \frac{1}{K} \left[ 1 - e^{-K t} \right] \ ,  \ \mathrm{for} \ t \geq 0
 \end{align*}
 %
 Note that $r(t) = t \ , \ \mathrm{for} \ t \geq 0$.
@@ -265,7 +265,7 @@ Note that $r(t) = t \ , \ \mathrm{for} \ t \geq 0$.
           Proportional Controller
           %
       \begin{align*}
-	&e(t) = r(t) - y(t) = \frac{1}{K} \left[ 1 -  \frac{1}{K} e^{-K t} \right]
+	&e(t) = r(t) - y(t) = \frac{1}{K} \left[ 1 - e^{-K t} \right]
 	\\
 	&\lim_{t \to \infty} e(t) = \frac{1}{K}
       \end{align*}

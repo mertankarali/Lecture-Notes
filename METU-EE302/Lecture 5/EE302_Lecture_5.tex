@@ -108,7 +108,7 @@
 
 \section{DC Motor Modeling}
 
-A generel ``ideal'' DC motor can be moddled as in the Figure below.
+A general ``ideal'' DC motor can be modeled as in the Figure below.
 
   \begin{minipage}[h]{1\linewidth}
     \begin{center}
@@ -231,7 +231,7 @@ where $K_a \equiv K_{\tau}^a$. Now let's build a block-diagram topology
     \end{center}
   \end{minipage} 
   
-  Then the transfer function can ne derived using block-diagram simplification methods as given in the next page
+  Then the transfer function can be derived using block-diagram simplification methods as given in the next page
   
       \begin{minipage}[h]{1\linewidth}
     \begin{center}
@@ -267,9 +267,9 @@ and given that $y(t) = \omega(t)$ and $u(t) = V_f(t)$.
     \end{center}
   \end{minipage}
 
-where $K_f \equiv K_{tau}^f$. Finally transfer function can be computed as
+where $K_f \equiv K_{\tau}^f$. Finally transfer function can be computed as
 \begin{align*}
-            G(s) &= \frac{K_f}{ J L_f s^2 +  (J R_f + \beta L_f) s + ( \beta R_f + K_f)}
+            G(s) &= \frac{K_f}{ J L_f s^2 +  (J R_f + \beta L_f) s + \beta R_f}
 \end{align*}
     %
      \textbf{Example 2:} Consider the following closed-loop field controlled electro-mechanical circuit. It is given that $\theta^*(t)$, i.e.
@@ -284,12 +284,12 @@ where $K_f \equiv K_{tau}^f$. Finally transfer function can be computed as
     \end{center}
   \end{minipage} 
   
-    \textbf{Solution:} A block diagram topology can be constructed by modifying the previous block diagram (armature controlled DC motor without torsional spring).
+    \textbf{Solution:} A block diagram topology can be constructed by modifying the previous block diagram (field controlled DC motor).
     
     Let's first find a transfer function from $\tau$ to $\omega_2$ and $\theta_2$. The easiest way of computing this is using the concept of reflected inertia, damping, and torque. 
     %
     \begin{align*}
-            \Omega_2(s) &= \frac{\bar{\mathcal{T}}(s)}{J_T s + \beta_T } = \frac{n}{\left( n^2 J_R + n^2 J_1 + J2 \right) s + n^2 \beta } 	\mathcal{T}(s) 
+            \Omega_2(s) &= \frac{\bar{\mathcal{T}}(s)}{J_T s + \beta_T } = \frac{n}{\left( n^2 J_R + n^2 J_1 + J_2 \right) s + n^2 \beta } 	\mathcal{T}(s) 
             \\
             \Theta_2(s) &= \frac{n \mathcal{T}(s)}{J_T s^2 + \beta_T s} 
     \end{align*}

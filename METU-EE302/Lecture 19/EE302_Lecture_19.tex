@@ -88,7 +88,7 @@ first-order high-pass filter
   \quad \alpha \in (0,1)
 \end{align*}
 %
-In general, we first design $K_{c}$ based on the setady-state
+In general, we first design $K_{c}$ based on the steady-state
 requirements of the system, and then design $T$ and $\alpha$
 based on the phase-margin requirement.  First let's illustrate the bode-plots of a unity gain lead-compensator
 to understand how we can utilize its properties for the 
@@ -138,7 +138,7 @@ design phase
 \end{align*}
 %
 As expected when $\alpha = 1$, $\phi_{max} = 0$ since numerator 
-and denominator time constants becomes equal in this
+and denominator time constants become equal in this
 case. Accordingly, we can see that 
 %
 \begin{align*}
@@ -153,7 +153,7 @@ the lead-compensator at the cut-off frequency
 %
 \begin{align*}
   M_{dB}(j \omega_c) = -10 \mathrm{log}_{10} \alpha \quad \& \quad
-  | G(j \omega_c) | = \frac{1}{\sqrt{\alpha}}
+  | G_c(j \omega_c) | = \frac{1}{\sqrt{\alpha}}
 \end{align*}
 %
 
@@ -164,7 +164,7 @@ We will illustrate the design process on an example
 \textbf{Ex:} Consider the following feedback system illustrated below.
 It is given that $G(s) = \frac{1}{s (s+1)}$ and we want to
 design a lead-compensator, $G_c(s) = K_c \frac{T s + 1}{T \alpha s +
-  1}$, such that unit-ramp steady-state error satisfies, $e_{ss} = 0.1$ and phase-margin of the compensated system satisfies $\phi_m^* =
+  1}$, such that unit-ramp steady-state error satisfies, $e_{ss} = 0.1$ and phase-margin of the compensated system satisfies $\phi_m^* \in
 \left[ 45^0 , 55^0 \right]$. 
 
 \vspace{6pt}
@@ -185,7 +185,7 @@ design a lead-compensator, $G_c(s) = K_c \frac{T s + 1}{T \alpha s +
 requirement on the unit-ramp error.  
 %
 \begin{align}
-   e_{ss} = \frac{1}{K_v} = \frac{1}{K_c} = 1 \ \rightarrow \ K_c = 10
+   e_{ss} = \frac{1}{K_v} = \frac{1}{K_c} = 0.1 \ \rightarrow \ K_c = 10
 \end{align}
 
 \textbf{Step 2:} Embed $K_c$ into $G(s)$, i.e. 
@@ -194,7 +194,7 @@ requirement on the unit-ramp error.
   \bar{G}(s) = K_c G(s) = \frac{10}{s (s+1)} ,
 \end{align*} 
 %
-draw the bode-plot for $\bar{G}(s)$, and compute the gain-crosover
+draw the bode-plot for $\bar{G}(s)$, and compute the gain-crossover
 frequency, $\omega_{gc}$, and the phase margin, $\phi_M$, for the
 uncompensated $\bar{G}(s)$. The bode plot of $\bar{G}(s)$ and its
 approximation is illustrated in the Figure below. 
@@ -208,7 +208,7 @@ approximation is illustrated in the Figure below.
      \end{center}
 
 If we concentrate on the approximate bode-plots, we can estimate
-the gain-crosover frequency and the phase-margin as
+the gain-crossover frequency and the phase-margin as
 %
 \begin{align*}
   \omega_{gc} &\approx \sqrt{10} \ rad/s = 3.16 \ rad/s
@@ -225,7 +225,7 @@ If we compute the actual values from the actual Bode plot, we obtain
 \end{align*}
 %
 We can see that approximation is pretty good for the
-$\omega_c$, however a little crude for $\phi_m$. 
+$\omega_{gc}$, however a little crude for $\phi_m$. 
 So let's compute $\angle [ G(j \omega_{gc}) ] $ for 
 $\omega_{gc} \approx \sqrt{10}$ and estimate the 
 phase-margin based on this frequency
@@ -262,7 +262,7 @@ at this estimated $\hat{\omega}_{gc}$.
 We already know that, lead-compensator at its
 center/cutoff frequency shifts the bode magnitude 
 by $-10 \mathrm{log}_{10} \alpha$ (or increases the gain 
-by $\frac{1}{\sqrt{6}}$) and this causes a shift in
+by $\frac{1}{\sqrt{\alpha}}$) and this causes a shift in
 gain-crossover frequency. 
 For this reason, we can estimate the new gain-crossover
 frequency as the point where the bode magnitude of 
@@ -296,7 +296,7 @@ the new-gain crossover frequency graphically
      \end{center}
 
 where $\hat{\omega}_{gc} \approx 4.5 \ rad/s$.
-We can also estimate the new-gain crosover frequency
+We can also estimate the new-gain crossover frequency
 numerically 
 %
 \begin{align*}
@@ -333,7 +333,7 @@ In our example
 %
 The Figure below illustrates the bode plots of both 
 compensated and uncompensated ($\bar{G}(s) = K_c G(s)$) systems.
-Compensated systems has a phase margin of $\phi_m = 49.7^o$
+Compensated system has a phase margin of $\phi_m = 49.7^o$
 which meets the requirements.
 %
      \begin{center}
@@ -348,11 +348,11 @@ Now let's compute new phase margin directly using the
 new gain-crossover frequency  
 %
 \begin{align*}
-	\phi_{M} &= -180^o + \angle [ G_c(j 4.45 \ rad/s) \bar{G}( j 4.45 \ rad/s) ]
-		= -180^o + 37^o + \angle [ \bar{G} ( j 4.45 \ rad/s) ]
+	\phi_{M} &= 180^o + \angle [ G_c(j 4.45 \ rad/s) \bar{G}( j 4.45 \ rad/s) ]
+		= 180^o + 37^o + \angle [ \bar{G} ( j 4.45 \ rad/s) ]
 		\\
-		&= -180^o + 37^o - 90^o - \angle [ j 4.45 + 1 ]	
-	= -180^o + 37^o - 90^o - 77^0
+		&= 180^o + 37^o - 90^o - \angle [ j 4.45 + 1 ]	
+	= 180^o + 37^o - 90^o - 77^0
 		\\
 		&= 50^o 
 \end{align*}
@@ -376,7 +376,7 @@ and over-shoot performance.
 \begin{enumerate}
 	\item Design/compute $K_c$ based on the steady-state requirements 
 	%
-	\item Embed $K_c$ into $G(s)$, i.e. $ \bar{G(s)} = K_c G(s)$, then 
+	\item Embed $K_c$ into $G(s)$, i.e. $ \bar{G}(s) = K_c G(s)$, then 
 	draw the bode-plots for $\bar{G}(s)$, and compute the gain-crossover
 	frequency, $\omega_{gc}$, and the phase margin, $\phi_M$, for the
 	uncompensated $\bar{G}(s)$. 
@@ -424,17 +424,17 @@ In lag-compensator design, we basically use the negative-gain shift of
 the compensator in the high-frequency region and we try to push the
 low and mid frequency region to the left (in frequency axis) such that 
 they don't interfere with the gain-crossover frequency. For this
-reason, design process easier compared to the lead-compensator. 
+reason, the design process is easier compared to the lead-compensator. 
 
-We will illustrate the lag-compensator design process on an the same example 
+We will illustrate the lag-compensator design process on the same example 
 
 \vspace{6pt}
 
 \textbf{Ex:} Consider the feedback system that we analyzed
-previously in lead compensatory case. Plant is same, 
+previously in the lead compensator case. Plant is same, 
 $G(s) = \frac{1}{s (s+1)}$. However now we want to
 design a lag-compensator, $G_c(s) = K_c \frac{T s + 1}{T \alpha s + 1}
-, \ a \in (1,\infty))$, such that unit-ramp steady-state error satisfies, $e_{ss}
+, \ \alpha \in (1,\infty)$, such that unit-ramp steady-state error satisfies, $e_{ss} =
 0.1$ and phase-margin of the compensated system satisfies $\phi_m^*
 > 40^o$. 
 
@@ -444,13 +444,13 @@ design a lag-compensator, $G_c(s) = K_c \frac{T s + 1}{T \alpha s + 1}
 requirement on the unit-ramp error.  
 %
 \begin{align}
-   e_{ss} = \frac{1}{K_v} = \frac{1}{K_c} = 1 \ \rightarrow \ K_c = 10
+   e_{ss} = \frac{1}{K_v} = \frac{1}{K_c} = 0.1 \ \rightarrow \ K_c = 10
 \end{align}
 
 \textbf{Step 2:} Embed $K_c$ into $G(s)$, i.e. 
 %
 \begin{align*}
-  \bar{G(s)} = K_c G(s) = \frac{10}{s (s+1)} ,
+  \bar{G}(s) = K_c G(s) = \frac{10}{s (s+1)} ,
 \end{align*} 
 %
 draw the bode-plot for $\bar{G}(s)$. 
@@ -459,7 +459,7 @@ draw the bode-plot for $\bar{G}(s)$.
 frequency, $\omega_{gc}^*$, based on
 the required phase-margin, $\phi^*_M$, and compute/find 
 the magnitude of $G(s)$ at $\omega_{gc}^*$, i.e. 
-$| \bar{G}(j  \omega_{gc}^*) | $ or $20 \mathrm{log}_20 | \bar{G}(j  \omega_{gc}^*) |$.
+$| \bar{G}(j  \omega_{gc}^*) | $ or $20 \mathrm{log}_{10} | \bar{G}(j  \omega_{gc}^*) |$.
 %
 \begin{align*}
   \angle [ \bar{G}(j  \omega_{gc}^*) ] &= -180^o + \phi_M^* + \epsilon
@@ -482,9 +482,9 @@ For our example, compensated gain-crossover frequency can be computed as
   \quad \Rightarrow \quad \omega_{gc}^* \approx 1 \ rad/s
 \end{align*}
 %
-The bode plot of $\bar{G(s)}$,
+The bode plot of $\bar{G}(s)$,
 required gain-crossover frequency, and  
-the magnitude of $\bar{G(s)}$ at the desired 
+the magnitude of $\bar{G}(s)$ at the desired 
 gain-crossover frequency are 
 illustrated in the Figure below. 
 
@@ -508,7 +508,7 @@ next Step.
 the magnitude at the new-gain crossover frequency
 %
 \begin{align*} 
-  20 log_{10} \alpha =  20 \mathrm{log}_{10} |\bar{G}(j  \omega_{gc}^*) |
+  20 \mathrm{log}_{10} \alpha =  20 \mathrm{log}_{10} |\bar{G}(j  \omega_{gc}^*) |
   	\quad \mathrm{or} \quad
      \alpha = | \bar{G}(j  \omega_{gc}^*) |
 \end{align*}
@@ -516,15 +516,15 @@ the magnitude at the new-gain crossover frequency
 In our example, $\alpha$, can be computed as
 %
 \begin{align*} 
-	20 log_{10} \alpha \approx 20 \ dB
+	20 \mathrm{log}_{10} \alpha \approx 20 \ dB
 	\ \Rightarrow \ \alpha \approx 10
 \end{align*}
 %
 
-\textbf{Step 4:} Choose $T$ such that ``$10/T \leq \omega_{gc}^*$''.
+\textbf{Step 5:} Choose $T$ such that ``$10/T \leq \omega_{gc}^*$''.
 Note that $10/T$ is the frequency where the phase of the compensator
 approximately re-approaches to zero.
-This is required in order the
+This is required in order that the
           negative phase bump of the compensator does not affect the
           phase-margin. 
 %
@@ -538,7 +538,7 @@ G_c(s) = 10 \frac{10 s + 1}{100 s + 1} = \frac{s + 0.1}{s + 0.01}
 The Figure below illustrates the bode plots of 
 the uncompensated ($\bar{G}(s) = K_c G(s)$) system,
 designed lag-compensator, and the compensated system. 
-Compensated systems has a phase margin of $\phi_m = 45^o$
+Compensated system has a phase margin of $\phi_m = 45^o$
 which meets the requirements.
 
      \begin{center}
@@ -551,10 +551,10 @@ which meets the requirements.
 
 In Figure below, we compare the closed-loop step responses
 of both uncompensated and compensated closed-loop
-transfer functions. We can see that, similar to the the lead-compensator,
+transfer functions. We can see that, similar to the lead-compensator,
 lag-compensator improves the over-shoot performance. 
 However, the settling-time of the compensated system is approximately
-two times of the original system. This is major the drawback of the lag-compensator. 
+two times of the original system. This is the major drawback of the lag-compensator. 
 
      \begin{center}
  \begin{minipage}[h]{0.65\linewidth}
@@ -567,7 +567,7 @@ two times of the original system. This is major the drawback of the lag-compensa
 The reason behind the reduced convergence speed performance is that
 new gain-crossover frequency is less than the original gain-crossover frequency.
 PM is closely related with over-shoot performance. On the other hand
-gain-crossover frequency determines the band-with of the system 
+gain-crossover frequency determines the bandwidth of the system 
 which is closely related with the rise and settling times. 
 
 \paragraph{Phase-Lag Design Guideline:} 
@@ -582,7 +582,7 @@ which is closely related with the rise and settling times.
 	\item Compute $\alpha$ to compensate the 
 	the magnitude at the new-gain crossover frequency
 	%
-	\item Chose $T$ at such that ``$10/T \leq \omega_{gc}^*$''. This is required in order the
+	\item Choose $T$ such that ``$10/T \leq \omega_{gc}^*$''. This is required in order that the
           negative phase bump of the compensator does not affect the
           phase-margin. Note that $10/T$ is the frequency where the phase of the compensator
           approximately re-approaches to zero.

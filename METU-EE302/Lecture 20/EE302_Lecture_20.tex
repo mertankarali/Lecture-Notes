@@ -100,7 +100,7 @@ u         \setlength{\labelwidth}{1.6truecm}}}
 Let's first re-visit the conversion from a state-space representation to 
 the transfer function representations for LTI systems. 
 
-Note that a SS representation of an $n^{th}$ order LTI system has the from below.
+Note that a SS representation of an $n^{th}$ order LTI system has the form below.
 %
 \begin{align*}
   \mathrm{Let} \ x(t) &\in \mathbb{R}^n \ , \ y(t) \in \mathbb{R} \ ,\  u(t) \in
@@ -121,7 +121,7 @@ s X(s) &= A X(s) + B U(s)
 \\
 s X(s) - A X(s) &=  B U(s)
 \\
-\left( s I - A) X(s) \right) &=  B U(s)
+\left( s I - A \right) X(s) &=  B U(s)
 \\
 X(s) &= \left( s I - A \right)^{-1} B U(s)
 \end{align*}
@@ -148,16 +148,16 @@ $p$ is also an eigenvalue of $A$.
 \end{align*}
 %
 If $p$ is a pole of $G(s)$, then $d(s)|_{p} = 0$. Now let's analyze
-the dependence of $G(s)$ to the state-space form. 
+the dependence of $G(s)$ on the state-space form. 
 %
 \begin{align*}
   G(s) &= \left[ C \left(s I - A \right)^{-1} B + D \right]
 \\
-  \left(s I - G \right)^{-1} &= 
+  \left(s I - A \right)^{-1} &= 
 \frac{\mathrm{Adj} \left(s I - A \right) }{\mathrm{det} \left(s I - A
                                \right) }
 \\
- G(s) &= \frac{C \mathrm{Adj} \left(s I - G \right) B + D \mathrm{det}
+ G(s) &= \frac{C \mathrm{Adj} \left(s I - A \right) B + D \mathrm{det}
         \left(s I - A
                                \right)}{\mathrm{det} \left(s I - A
                                \right) }
@@ -197,7 +197,7 @@ The ``new'' state-space representation is obtained as
 \begin{align*}
   \dot{\hat{x}}(t)  &= \hat{A} \hat{x}(t) + \hat{B} u(t)
     \\
-  y(t) &= \hat{C} x(t) + \hat{D} u(t)
+  y(t) &= \hat{C} \hat{x}(t) + \hat{D} u(t)
 \\
 \hat{A} &= P  A P^{-1} \ , \ \hat{B} = P  B \ , \ \hat{C} = C P^{-1} \ ,
   \ \hat{D} = D
@@ -245,7 +245,7 @@ where they are related with the following similarity transformation
 %
 \begin{align*}
 P x(t) = \hat{x}(t) \ , \
-\hat{G} &= P  A P^{-1} \ , \ \hat{B} = P  B \ , \ \hat{C} = C P^{-1} \ ,
+\hat{A} &= P  A P^{-1} \ , \ \hat{B} = P  B \ , \ \hat{C} = C P^{-1} \ ,
   \ \hat{D} = D
 \end{align*}
 %
@@ -281,7 +281,7 @@ For the sake of clarity, derivations are given for a general $3^{rd}$ order LTI 
 
 \subsection{Controllable Canonical Form}
 
-In this method of realization, we use the fact the system is
+In this method of realization, we use the fact that the system is
 LTI. Let's consider the transfer function of the system and let's 
 perform some LTI operations.
 %
@@ -295,7 +295,7 @@ Y(s) &= \frac{ b_3 s^3 + b_2 s^2  + b_1 s + b_0 }{ s^3 + a_2 s^2 + a_1 s + a_0} 
 \\
 G_1(s) &= \frac{H(s)}{U(s)} = \frac{1}{ s^3 + a_2 s^2 + a_1 s + a_0 } 
 \\
-G_2(s) &= \frac{Y(z)}{H(z)} = b_3 s^3 + b_2 s^2  + b_1 s + b_0
+G_2(s) &= \frac{Y(s)}{H(s)} = b_3 s^3 + b_2 s^2  + b_1 s + b_0
 \end{align*}
 %
 As you can see we introduced an intermediate variable $h(t)$ or with a
@@ -323,7 +323,7 @@ individual state equations take the form
 \dot{x_3} &= -a_2 x_3 - a_1 x_2 - a_0 x_1 + u
 \end{align*}
 %
-and the output equation take the form
+and the output equation takes the form
 %
 \begin{align*}
 y &= b_3\left( -a_2 x_3 - a_1 x_2 - a_0 x_1 + u \right) + b_2 x_3 +
@@ -366,10 +366,10 @@ D = b_n
 
 \subsection{Observable Canonical Form}
 
-In this method will obtain a different minimal state-space realization,
+In this method we will obtain a different minimal state-space realization,
 the form is called observable canonical form.
 The process is different and state-space structure will have a
-different topology. Let's start with a $3^{rd}$ transfer function 
+different topology. Let's start with a $3^{rd}$ order transfer function 
 and perform some grouping based on the $s$ elements.
 %
 \begin{align*}
@@ -406,7 +406,7 @@ X_3(s) &= \frac{1}{s} \left[ \left( -a_2 Y(s) + b_2 U(s) \right) + \frac{1}{s}  
 In this context output equation in $s$ and time domains simply takes the form
 %
 \begin{align*}
-	Y(s) = X_3(s) + b_3 U(S) \quad \rightarrow \quad y(t) = x_3(t) + b_3 u(t)
+	Y(s) = X_3(s) + b_3 U(s) \quad \rightarrow \quad y(t) = x_3(t) + b_3 u(t)
 \end{align*}
 % 
 Dependently the state equations (in $s$ and time domains) take the form
@@ -435,7 +435,7 @@ will be in \textit{observable canonical form}. Thus we can call this representat
 \textit{observable canonical realization}. This form and
 representation is the dual of the previous representation. 
 
-For a general $n^{th}$ order system controllable
+For a general $n^{th}$ order system observable
 canonical form has the following $A \ ,  B \ ,  C \ , \& \ D$
 matrices
 
@@ -467,7 +467,7 @@ Y(s) &= \left[ b_3 + \frac{c_1}{s - p_1} + \frac{c_2}{s - p_2}
 \end{align*}
 %
 Now let's concentrate on the candidate ``state variables''
-and try to write state evaluation equations
+and try to write state evolution equations
 %
 \begin{align*}
 X_1(s) &= \frac{1}{s - p_1} U(s) \quad \rightarrow \quad \dot{x}_1 =  p_1 x_1+ u
@@ -517,7 +517,7 @@ D = b_3
 
 The form obtained with this approach is called
 diagonal canonical form. Obviously, this form is
-not applicable for ``some'' systems that has repeated roots.
+not applicable for ``some'' systems that have repeated roots.
 
 For a general $n^{th}$ order system with distinct
 roots diagonal canonical form has the following 
@@ -630,7 +630,7 @@ state-space representation
 \end{align*}
 %
 Show that these two state-space representations 
-results in same transfer function form
+result in the same transfer function form
 
 \vspace{6pt}
 
@@ -704,7 +704,7 @@ if  $p$ is a pole of $G(s)$, then it is also an
 eigenvalue of $A$, since we can write $G(s)$ as 
 %
 \begin{align*}
- G(s) &= \frac{C \mathrm{Adj} \left(s I - G \right) B + D \mathrm{det}
+ G(s) &= \frac{C \mathrm{Adj} \left(s I - A \right) B + D \mathrm{det}
         \left(s I - A
                                \right)}{\mathrm{det} \left(s I - A
                                \right) }
@@ -714,7 +714,7 @@ If the state-space representation is asymptotically stable then
 we know that for each pole, $p_i$ of $G(s)$ we have $\mathrm{Re} \lbrace p_i  \rbrace < 0$
 which makes the input--output dynamics BIBO stable. In conclusion,
 
-Asymptoticly stable $\Rightarrow$ BIBO stable
+Asymptotically stable $\Rightarrow$ BIBO stable
 %
 
 \textbf{Example:} Consider the following state-space form of a
