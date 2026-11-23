@@ -279,18 +279,28 @@
   \draw (q) -- ++(-1.0,0) coordinate (g) to[R, l_=#3] ++(0,-1.6) node[ground] {};
   \draw (A.out) -- ++(0.8,0) node[ocirc] {} node[right, font=\small, text=cvolt] {$v_o$};
   \fill (n) circle (1.6pt); \fill (q) circle (1.6pt); \fill (A.out) circle (1.6pt);}
-%  numerical positive-feedback circuit (Example 17.4)
+%  numerical positive-feedback circuit (Example 16.9)
 \newcommand{\numPF}{%
-  \node[oa] (A) at (0,0) {};
-  \draw (A.-) -- ++(-2.8,0) coordinate (a);
-  \draw (a) -- ++(0,1.3) coordinate (f) to[R, l=$2\kohm$] (f -| A.out) -- (A.out);
-  \draw (a) |- ($(A.+)+(-2.8,0)$) to[R, l_=$1\kohm$] ($(A.+)+(-0.5,0)$) coordinate (q) -- (A.+);
-  \draw (q) -- ++(0,-0.9) coordinate (r) to[R, l_=$2\kohm$] (r -| A.out) -- (A.out);
-  \draw (r) to[R, l_=$2\kohm$] ++(0,-1.7) to[american voltage source, l_=$4\V$] ++(0,-1.6) node[ground] {};
-  \draw (a) -- ++(-1.0,0) coordinate (s) to[american voltage source, l_=$\Vcol{v_{\mathrm{in}}}$] ($(s)+(0,-2.0)$) node[ground] {};
-  \draw[iar] ($(s)+(0.2,0.28)$) -- ++(0.5,0); \node[font=\small, text=ccur, above] at ($(s)+(0.45,0.28)$) {$i$};
+  \node[oa, noinv input up] (A) at (0,0) {};
+  \draw (A.+) -- ++(-0.5,0) coordinate (q) to[R, l_=$1\kohm$] ++(-2.4,0) coordinate (s);
+  \draw (s) to[american voltage source, l_=$\Vcol{v_{\mathrm{in}}}$] ($(s)+(0,-2.4)$) node[ground] {};
+  \draw[iar] ($(s)+(0.25,-0.25)$) -- ++(0.5,0); \node[font=\small, text=ccur, anchor=east] at ($(s)+(0.25,-0.3)$) {$i$};
+  \draw (q) -- ++(0,1.2) coordinate (f) to[R, l=$2\kohm$] (f -| A.out) -- (A.out);
+  \draw (A.-) -- ++(-0.6,0) coordinate (m) to[american voltage source, l_=$2\V$] ++(0,-1.4) node[ground] {};
   \draw (A.out) -- ++(0.8,0) node[ocirc] {} node[right, font=\small, text=cvolt] {$v_o$};
-  \fill (a) circle (1.6pt); \fill (q) circle (1.6pt); \fill (r) circle (1.6pt); \fill (A.out) circle (1.6pt);}
+  \fill (q) circle (1.6pt); \fill (A.out) circle (1.6pt);}
+%  diode in the feedback path (Example 16.10)
+\newcommand{\diodeFb}{%
+  \node[oa] (A) at (0,0) {};
+  \draw (A.-) -- ++(-0.5,0) coordinate (n) to[R, l_=$1\kohm$] ++(-2.4,0) coordinate (s);
+  \draw (s) to[american voltage source, l_=$\Vcol{v_{\mathrm{in}}}$] ($(s)+(0,-2.0)$) node[ground] {};
+  \draw (n) -- ++(0,1.2) coordinate (f) to[R, l=$1\kohm$] (f -| A.out) -- (A.out);
+  \draw (f) -- ++(0,1.4) coordinate (g);
+  \draw (g -| A.out) to[D, i_=$\Icol{i_D}$] (g);
+  \draw (g -| A.out) -- (f -| A.out);
+  \draw (A.+) -- ++(-0.4,0) node[ground] {};
+  \draw (A.out) -- ++(0.8,0) node[ocirc] {} node[right, font=\small, text=cvolt] {$v_o$};
+  \fill (n) circle (1.6pt); \fill (f) circle (1.6pt); \fill (f -| A.out) circle (1.6pt); \fill (A.out) circle (1.6pt);}
 %  follower with the dependent-source model (finite gain)
 \newcommand{\fgFollower}{%
   \draw (-1.4,1.6) to[american voltage source, l_=$\Vcol{v_s}$] (-1.4,0); \draw (-1.4,1.6) to[R, l=$R_s$] (1.2,1.6) coordinate (P);
@@ -463,9 +473,20 @@
     \node[op amp, fill=metulight, thick] (I) at (0,0.2) {};
     \draw (I.-) -- ++(-0.3,0) -- ++(0,0.8) to[C] ++(2.4,0) -- ++(0,-0.8) -- (I.out);
     \draw (I.-) ++(-0.3,0) to[R] ++(-1.3,0);
+  \or
+    \node[op amp, fill=metulight, thick] (I) at (0,0) {};
+    \draw (I.-) -- ++(-0.3,0) -- ++(0,0.8) to[R] ++(2.4,0) -- ++(0,-0.8) -- (I.out);
+    \draw (I.+) -- ++(-0.3,0) -- ++(0,-0.8) to[R] ++(2.4,0) -- ++(0,0.8);
+  \or
+    \node[op amp, fill=metulight, thick] (I) at (0,0.2) {};
+    \draw (I.-) -- ++(-0.3,0) -- ++(0,0.8) to[D, invert] ++(2.4,0) -- ++(0,-0.8) -- (I.out);
+  \or
+    \draw[-{Stealth[length=2mm]}] (-1.6,0) -- (1.7,0); \draw[-{Stealth[length=2mm]}] (0,-1.0) -- (0,1.1);
+    \draw[metured, very thick] (-1.5,-0.7) -- (-0.45,-0.7) -- (0.45,0.7) -- (1.5,0.7);
+    \node[font=\Large] at (1.0,0.15) {$A$};
   \fi}
-%  Stops 1-13: station of stop k = \rmst{k}
-\newcommand{\rmst}[1]{\ifcase#1\or1\or1\or2\or2\or3\or3\or4\or4\or5\or5\or5\or5\or6\fi}
+%  Stops 1-19: station of stop k = \rmst{k}
+\newcommand{\rmst}[1]{\ifcase#1\or1\or1\or2\or2\or3\or3\or4\or4\or5\or5\or5\or5\or5\or6\or6\or6\or7\or8\or8\fi}
 \newcommand{\rmstation}[4]{%
   \ifnum#1<\rmS\relax
     \node[circle, fill=cpow, text=white, inner sep=0pt, minimum size=5.4mm, font=\scriptsize\bfseries] at (#2,0) {\checkmark};
@@ -483,11 +504,11 @@
 %  #1 first stop, #2 last stop covered by this item, #3 x, #4 y, #5 text
 \newcommand{\rmsub}[5]{%
   \ifnum#2<\rmcur\relax
-    \node[text width=1.66cm, align=center, font=\scriptsize, text=black!40] at (#3,#4) {#5\ \textcolor{cpow}{\checkmark}};
+    \node[text width=1.68cm, align=center, font=\scriptsize, text=black!40] at (#3,#4) {#5\ \textcolor{cpow}{\checkmark}};
   \else\ifnum#1>\rmcur\relax
-    \node[text width=1.66cm, align=center, font=\scriptsize] at (#3,#4) {#5};
+    \node[text width=1.68cm, align=center, font=\scriptsize] at (#3,#4) {#5};
   \else
-    \node[text width=1.66cm, align=center, font=\scriptsize\bfseries, text=metured,
+    \node[text width=1.68cm, align=center, font=\scriptsize\bfseries, text=metured,
           draw=metured, rounded corners=2pt, inner sep=2pt] at (#3,#4) {#5};
   \fi\fi}
 \newcommand{\roadmapframe}[1]{%
@@ -497,25 +518,33 @@
     \centering
     \begin{tikzpicture}
       \draw[metugray!45, line width=3pt, -{Stealth[length=2.6mm, width=3.2mm]}] (0,0) -- (13.4,0);
-      \rmstation{1}{1.20}{The\\ op-amp}{1}
-      \rmstation{2}{3.40}{Feedback}{2}
-      \rmstation{3}{5.60}{Ideal\\ model}{3}
-      \rmstation{4}{7.80}{Voltage\\ follower}{4}
-      \rmstation{5}{10.00}{Amplifiers}{5}
-      \rmstation{6}{12.20}{Integrator}{6}
-      \rmsub{1}{1}{1.20}{-0.8}{terminals, regions}
-      \rmsub{2}{2}{1.20}{-1.5}{models}
-      \rmsub{3}{3}{3.40}{-0.8}{follower, finite $A$}
-      \rmsub{4}{4}{3.40}{-1.5}{$v_+ \approx v_-$}
-      \rmsub{5}{5}{5.60}{-0.8}{$A \to \infty$}
-      \rmsub{6}{6}{5.60}{-1.5}{the method}
-      \rmsub{7}{7}{7.80}{-0.8}{buffer}
-      \rmsub{8}{8}{7.80}{-1.5}{positive feedback}
-      \rmsub{9}{9}{10.00}{-0.8}{inverting}
-      \rmsub{10}{10}{10.00}{-1.5}{non-inverting}
-      \rmsub{11}{11}{10.00}{-2.1}{summing}
-      \rmsub{12}{12}{10.00}{-2.7}{difference}
-      \rmsub{13}{13}{12.20}{-0.8}{integrator,\\ differentiator}
+      \rmstation{1}{0.90}{The\\ op-amp}{1}
+      \rmstation{2}{2.60}{Feedback}{2}
+      \rmstation{3}{4.30}{Ideal\\ model}{3}
+      \rmstation{4}{6.00}{Voltage\\ follower}{4}
+      \rmstation{5}{7.70}{Amplifiers}{5}
+      \rmstation{6}{9.40}{Two\\ feedbacks}{7}
+      \rmstation{7}{11.10}{Diode in\\ feedback}{8}
+      \rmstation{8}{12.80}{Finite\\ gain}{9}
+      \rmsub{1}{1}{0.90}{-0.8}{terminals, regions}
+      \rmsub{2}{2}{0.90}{-1.5}{models}
+      \rmsub{3}{3}{2.60}{-0.8}{follower, finite $A$}
+      \rmsub{4}{4}{2.60}{-1.5}{$v_+ \approx v_-$}
+      \rmsub{5}{5}{4.30}{-0.8}{$A \to \infty$}
+      \rmsub{6}{6}{4.30}{-1.5}{the method}
+      \rmsub{7}{7}{6.00}{-0.8}{buffer}
+      \rmsub{8}{8}{6.00}{-1.5}{positive feedback}
+      \rmsub{9}{9}{7.70}{-0.8}{inverting}
+      \rmsub{10}{10}{7.70}{-1.35}{non-inverting}
+      \rmsub{11}{11}{7.70}{-1.9}{summing}
+      \rmsub{12}{12}{7.70}{-2.45}{difference}
+      \rmsub{13}{13}{7.70}{-3.0}{integrator}
+      \rmsub{14}{14}{9.40}{-0.8}{$\beta$, $\gamma$}
+      \rmsub{15}{15}{9.40}{-1.35}{which wins?}
+      \rmsub{16}{16}{9.40}{-1.9}{driving point}
+      \rmsub{17}{17}{11.10}{-0.8}{$3 \times 2$ cases}
+      \rmsub{18}{18}{12.80}{-0.8}{inverting}
+      \rmsub{19}{19}{12.80}{-1.35}{full model}
     \end{tikzpicture}
     \vfill
     \mbox{}
@@ -1242,6 +1271,336 @@
   \end{columns}
 \end{frame}
 
+%==============================================================
+\roadmapframe{14}
+
+%--------------------------------------------------------------
+\begin{frame}{Motivation: beyond a single feedback path}
+  \vfill
+  \begin{columns}[c,onlytextwidth]
+    \begin{column}{0.46\textwidth}
+      \centering
+      \begin{tikzpicture}[scale=0.8]
+        \twoFb{$R_1$}{$R_2$}{$R_3$}{$R_4$}
+      \end{tikzpicture}
+    \end{column}
+    \begin{column}{0.52\textwidth}
+      \begin{itemize}\itemsep8pt
+        \item Output fed back to \emph{both} inputs
+        \item Which feedback wins: negative or positive?
+        \item A diode in the loop shapes the characteristic
+        \item Is $A = \infty$ a good model?
+      \end{itemize}
+    \end{column}
+  \end{columns}
+  \vfill
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{Two feedback paths}
+  \begin{columns}[c,onlytextwidth]
+    \begin{column}{0.46\textwidth}
+      \centering
+      \begin{tikzpicture}[scale=0.9]
+        \twoFb{$R_1$}{$R_2$}{$R_3$}{$R_4$}
+      \end{tikzpicture}\\[8pt]
+      $\beta = \dfrac{R_3}{R_3 + R_4}$, \quad $\gamma = \dfrac{R_1}{R_1 + R_2}$\\[2pt]
+      {\small $\beta$: positive feedback, \ $\gamma$: negative feedback}
+    \end{column}
+    \begin{column}{0.52\textwidth}
+      Every region:\\[4pt]
+      $\vp = \beta\,\vo$\\[4pt]
+      $\vm = (1 - \gamma)\,\vin + \gamma\,\vo$\\[4pt]
+      $\Icol{i} = \dfrac{\vin - \vo}{R_1 + R_2}$\\[10pt]
+      \onslide<2->{%
+      \qbox{$\vp - \vm = (\beta - \gamma)\,\vo - (1 - \gamma)\,\vin$}}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{The three regions}
+  \vfill
+  \begin{columns}[c,onlytextwidth]
+    \begin{column}{0.52\textwidth}
+      \textbf{Linear}, $\vp = \vm$:\\[2pt]
+      $\vo = \dfrac{1 - \gamma}{\beta - \gamma}\,\vin$, \ \
+      $|\vin| \leq \dfrac{|\beta - \gamma|}{1 - \gamma}\Es$\\[8pt]
+      \textbf{$+$sat}: \ $\vin < \dfrac{\beta - \gamma}{1 - \gamma}\Es$\\[6pt]
+      \textbf{$-$sat}: \ $\vin > -\dfrac{\beta - \gamma}{1 - \gamma}\Es$
+    \end{column}
+    \begin{column}{0.46\textwidth}
+      The sign of $\beta - \gamma$ decides:\\[8pt]
+      \onslide<2->{%
+      \begin{itemize}\itemsep6pt
+        \item $\beta < \gamma$: negative wins, one solution
+        \item $\beta > \gamma$: positive wins, three solutions
+        \item $\beta = \gamma$: a comparator
+      \end{itemize}}
+    \end{column}
+  \end{columns}
+  \vfill
+\end{frame}
+
+%==============================================================
+\roadmapframe{15}
+
+%--------------------------------------------------------------
+\begin{frame}{Example 16.7: negative feedback wins}
+  \begin{columns}[c,onlytextwidth]
+    \begin{column}{0.38\textwidth}
+      \centering
+      \begin{tikzpicture}[scale=0.58]
+        \twoFb{$R_1$}{$R_2$}{$R_3$}{$R_4$}
+      \end{tikzpicture}\\[6pt]
+      {\small $R_1 = R_2 = R_3 = 1\kohm$, $R_4 = 3\kohm$}\\[2pt]
+      Supplies $\pm 12\V$\\[2pt]
+      $\vo$, $\Icol{i}$ versus $\vin$?
+    \end{column}
+    \begin{column}{0.6\textwidth}
+      \centering\small
+      \onslide<2->{%
+      $\gamma = \frac12$, $\beta = \frac14$: \ threshold $\frac{1/4}{1/2}\cdot 12 = 6\V$\\[4pt]
+      {\small Linear: $\vo = -2\vin$, \ $\Icol{i} = 1.5\,\vin$ mA}\\[4pt]
+      \begin{tikzpicture}[x=0.11cm, y=0.075cm]
+        \tax{-11}{12}{-15}{15}{$\vin$}{$\vo$}
+        \draw[gdash] (6,0) -- (6,-12); \draw[gdash] (-6,0) -- (-6,12);
+        \draw[crv] (-10,12) -- (-6,12) -- (6,-12) -- (10,-12);
+        \xtu{6}{$6$} \xt{-6}{$-6$} \yt{12}{$12$}
+      \end{tikzpicture}\hspace{4pt}
+      \begin{tikzpicture}[x=0.11cm, y=0.075cm]
+        \tax{-11}{12}{-14}{14}{$\vin$}{$\Icol{i}$}
+        \draw[gdash] (6,0) -- (6,9); \draw[gdash] (-6,0) -- (-6,-9);
+        \draw[crv] (-10,-11) -- (-6,-9) -- (6,9) -- (10,11);
+        \xt{6}{$6$} \xtu{-6}{$-6$} \yt{9}{$9$}
+      \end{tikzpicture}\\[4pt]
+      {\small Saturation: $\Icol{i} = (\vin \mp 12)/2$ mA}\\[2pt]
+      One solution for every input}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{Example 16.8: positive feedback wins}
+  \begin{columns}[c,onlytextwidth]
+    \begin{column}{0.38\textwidth}
+      \centering
+      \begin{tikzpicture}[scale=0.58]
+        \twoFb{$R_1$}{$R_2$}{$R_3$}{$R_4$}
+      \end{tikzpicture}\\[6pt]
+      {\small $R_1 = R_2 = R_4 = 1\kohm$, $R_3 = 3\kohm$}\\[2pt]
+      $R_3$ and $R_4$ swapped\\[2pt]
+      $\vo$, $\Icol{i}$ versus $\vin$?
+    \end{column}
+    \begin{column}{0.6\textwidth}
+      \centering\small
+      \onslide<2->{%
+      $\beta = \frac34 > \gamma$: \ linear $\vo = 2\vin$, \ $\Icol{i} = -\vin/2$\\[4pt]
+      \begin{tikzpicture}[x=0.11cm, y=0.075cm]
+        \tax{-11}{12}{-15}{15}{$\vin$}{$\vo$}
+        \draw[crv] (-10,12) -- (6,12); \draw[crv] (-6,-12) -- (10,-12);
+        \draw[crvu] (-6,-12) -- (6,12);
+        \xt{6}{$6$} \xtu{-6}{$-6$}
+      \end{tikzpicture}\hspace{4pt}
+      \begin{tikzpicture}[x=0.11cm, y=0.075cm]
+        \tax{-11}{12}{-14}{14}{$\vin$}{$\Icol{i}$}
+        \draw[crv] (-10,-11) -- (6,-3); \draw[crv] (-6,3) -- (10,11);
+        \draw[crvu] (-6,3) -- (6,-3);
+        \xtu{6}{$6$} \xt{-6}{$-6$}
+      \end{tikzpicture}\\[4pt]
+      \raggedright
+      \begin{itemize}\itemsep3pt
+        \item $|\vin| < 6\V$: three solutions, linear one unstable
+        \item Output stays at $\pm 12\V$: \textbf{hysteresis}
+        \item Linear branch: $\vin/\Icol{i} = -2\kohm$, a negative resistance
+      \end{itemize}}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{$\beta = \gamma$: a comparator}
+  \vfill
+  \begin{columns}[c,onlytextwidth]
+    \begin{column}{0.5\textwidth}
+      $R_3/R_4 = R_1/R_2$: \ $\vp - \vm = -(1 - \gamma)\,\vin$\\[10pt]
+      \onslide<2->{%
+      Linear only at $\vin = 0$\\[6pt]
+      $\vo = \begin{cases} +\Es, & \vin < 0\\ -\Es, & \vin > 0 \end{cases}$\\[10pt]
+      Reports only the sign of the input}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \centering
+      \onslide<2->{%
+      \begin{tikzpicture}[x=0.5cm, y=0.5cm]
+        \tax{-4}{4.3}{-3}{3.2}{$\vin$}{$\vo$}
+        \draw[crv] (-3.8,2) -- (0,2) -- (0,-2) -- (3.8,-2);
+        \yt{2}{$\Es$} \ytr{-2}{$-\Es$}
+      \end{tikzpicture}\\[6pt]
+      {\small No feedback at all: also a comparator}}
+    \end{column}
+  \end{columns}
+  \vfill
+\end{frame}
+
+%==============================================================
+\roadmapframe{16}
+
+%--------------------------------------------------------------
+\begin{frame}{Example 16.9: a source with positive feedback}
+  \begin{columns}[c,onlytextwidth]
+    \begin{column}{0.5\textwidth}
+      \centering
+      \begin{tikzpicture}[scale=0.75]
+        \numPF
+      \end{tikzpicture}\\[4pt]
+      Supplies $\pm 12\V$; \ mA, k$\Omega$\\[2pt]
+      $\vo$ and $\Icol{i}$ versus $\vin$?
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \onslide<2->{%
+      Every region: \ $\vm = 2$\\[6pt]
+      KCL at $\vp$: \ $\vp = \dfrac{2\vin + \vo}{3}$\\[8pt]
+      $\Icol{i} = \vin - \vp = \dfrac{\vin - \vo}{3}$\\[10pt]}
+      \onslide<3->{%
+      \small
+      Linear: \ $\vo = 6 - 2\vin$, \ $\Icol{i} = \vin - 2$, \ $-3 \leq \vin \leq 9$\\[4pt]
+      $+$sat: \ $\vin > -3$, \ $\Icol{i} = (\vin - 12)/3$\\[4pt]
+      $-$sat: \ $\vin < 9$, \ $\Icol{i} = (\vin + 12)/3$}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{Example 16.9: the characteristics}
+  \centering
+  \begin{tikzpicture}[x=0.17cm, y=0.08cm]
+    \tax{-9}{15}{-15}{15}{$\vin$}{$\vo$}
+  \draw[crv] (-3,12) -- (13,12); \draw[crv] (-8,-12) -- (9,-12);
+  \draw[crvu] (-3,12) -- (9,-12);
+  \draw[gdash] (9,0) -- (9,-12); \draw[gdash] (-3,0) -- (-3,12);
+  \xtu{9}{$9$} \xt{-3}{$-3$} \node[font=\scriptsize, anchor=west] at (13,12) {$12$}; \node[font=\scriptsize, anchor=east] at (-8,-12) {$-12$};
+  \end{tikzpicture}\qquad\qquad
+  \onslide<2->{%
+  \begin{tikzpicture}[x=0.17cm, y=0.16cm]
+    \tax{-9}{15}{-7}{9}{$\vin$}{$\Icol{i}$ (mA)}
+  \draw[crv] (-3,-5) -- (13,0.33); \draw[crv] (-8,1.33) -- (9,7);
+  \draw[crvu] (-3,-5) -- (9,7);
+  \draw[gdash] (9,0) -- (9,7); \draw[gdash] (-3,0) -- (-3,-5);
+  \xt{9}{$9$} \xtu{-3}{$-3$} \yt{7}{$7$} \ytr{-5}{$-5$}
+    \node[reg, anchor=north] at (5.5,-3.2) {$+$sat}; \node[reg, anchor=east] at (-8,1.33) {$-$sat};
+  \end{tikzpicture}}\\[6pt]
+  $\beta = \frac13 > \gamma = 0$: positive feedback wins; window $-3 < \vin < 9$\\[4pt]
+  \onslide<2->{\alert{Multivalued driving-point characteristic $\Icol{i}$--$\vin$}}
+\end{frame}
+
+%==============================================================
+\roadmapframe{17}
+
+%--------------------------------------------------------------
+\begin{frame}{Example 16.10: a diode in the feedback path}
+  \begin{columns}[c,onlytextwidth]
+    \begin{column}{0.5\textwidth}
+      \centering
+      \begin{tikzpicture}[scale=0.75]
+        \diodeFb
+      \end{tikzpicture}\\[4pt]
+      Ideal diode, supplies $\pm 10\V$; \ mA, k$\Omega$
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \onslide<2->{%
+      Every case: \ $\vp = 0$\\[4pt]
+      KCL at $\vm$: \ $(\vm - \vin) + (\vm - \vo) = \Icol{i_D}$\\[10pt]
+      ON: \ $\vo = \vm$, \ $\Icol{i_D} \geq 0$\\[4pt]
+      OFF: \ $\Icol{i_D} = 0$, \ $\vo \leq \vm$\\[8pt]
+      $3 \times 2$ cases: check \emph{all} conditions}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{Example 16.10: the valid cases}
+  \begin{columns}[c,onlytextwidth]
+    \begin{column}{0.5\textwidth}
+      \small
+      \renewcommand{\arraystretch}{1.4}
+      \begin{tabular}{@{}lll@{}}
+        \toprule
+        case & $\vo$ & range\\
+        \midrule
+        lin, OFF & $-\vin$ & $0 \leq \vin \leq 10$\\
+        lin, ON & $0$ & $\vin \leq 0$\\
+        $-$sat, OFF & $-10$ & $\vin > 10$\\
+        $+$sat & \multicolumn{2}{l}{never}\\
+        \bottomrule
+      \end{tabular}\\[8pt]
+      e.g.\ lin, ON: $\Icol{i_D} = -\vin \geq 0$
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \centering
+      $\vo$ versus $\vin$?\\[4pt]
+      \onslide<2->{%
+      \begin{tikzpicture}[x=0.15cm, y=0.13cm]
+        \tax{-13}{17}{-12.5}{4}{$\vin$}{$\vo$}
+        \draw[gdash] (10,0) -- (10,-10) -- (0,-10);
+        \draw[crv] (-12,0) -- (0,0) -- (10,-10) -- (15,-10);
+        \xtu{10}{$10$} \yt{-10}{$-10$}
+      \end{tikzpicture}\\[6pt]
+      Gain $0$, then $-1$ after $\vin = 0$\\[2pt]
+      \alert{Diodes shape the characteristic}}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+%==============================================================
+\roadmapframe{18}
+
+%--------------------------------------------------------------
+\begin{frame}{Finite gain: is $A = \infty$ justified?}
+  \begin{columns}[t,onlytextwidth]
+    \begin{column}{0.46\textwidth}
+      \textbf{Follower}\\[4pt]
+      $\vo = A(\vin - \vo)$\\[6pt]
+      \onslide<2->{%
+      $\dfrac{\vo}{\vin} = \dfrac{A}{1 + A} = 0.99999$ \ ($A = 10^5$)\\[8pt]
+      $\vp - \vm = \vo/A \leq 120\,\mu\mathrm{V}$}
+    \end{column}
+    \begin{column}{0.52\textwidth}
+      \textbf{Inverting amplifier}\\[4pt]
+      $\vo = -A\,\vm$, \ $\vm = \dfrac{R_f\vin + R_1\vo}{R_1 + R_f}$\\[6pt]
+      \onslide<2->{%
+      $\dfrac{\vo}{\vin} = -\dfrac{R_f}{R_1}\cdot\dfrac{1}{1 + (1 + R_f/R_1)/A}$\\[8pt]
+      $1\kohm$, $4\kohm$: \ $-3.9998$ instead of $-4$\\[4pt]
+      {\small Resistor tolerances matter more}}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{Example 16.11: the follower with the full model}
+  \begin{center}
+    \begin{tikzpicture}[scale=0.72]
+      \fgFollower
+    \end{tikzpicture}\\[4pt]
+    {\small $A = 10^5$, $R_s = 1\kohm$, $R_{\mathrm{in}} = 100\kohm$, $R_o = 100\ohm$,
+    $R_L = 10\kohm$, $\Vcol{v_s} = 10\V$: \ $\vo$, $\Vcol{v_d}$, $\ip$?}
+  \end{center}
+  \onslide<2->{%
+  \begin{columns}[t,onlytextwidth]
+    \begin{column}{0.5\textwidth}
+      \small
+      Guess $\vo \approx 10\V$: load $1\mA$\\[2pt]
+      $A\Vcol{v_d} \approx 10 + 0.1 = 10.1\V$\\[2pt]
+      $\Vcol{v_d} \approx 0.101\,\mathrm{mV}$, \ $\ip \approx 1.01\,\mathrm{nA}$
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \small
+      $\vo = \Vcol{v_s} - R_s\ip - \Vcol{v_d} \approx 9.999898\V$\\[4pt]
+      \qbox{$\vo / \Vcol{v_s} \approx 0.99999$}
+    \end{column}
+  \end{columns}}
+\end{frame}
+
 %--------------------------------------------------------------
 \begin{frame}{Summary}
   \footnotesize
@@ -1256,6 +1615,9 @@
     summing, difference & $\vo = -\sum_k (R_f/R_k)\,\Vcol{v_k}$; \ $\vo = (R_f/R_1)(\Vcol{v_2} - \Vcol{v_1})$\\
     integrator, differentiator & $\vo = \vo(0) - \frac{1}{RC}\int_0^t \vin\,d\tau$; \ $\vo = -RC\,d\vin/dt$\\
     positive feedback & linear solution unstable: avoid in amplifiers\\
+    two feedback paths & $\vp - \vm = (\beta - \gamma)\vo - (1 - \gamma)\vin$: $\beta < \gamma$ one solution; $\beta > \gamma$ hysteresis\\
+    driving point, diode & multivalued $i$--$v$; \ $3 \times 2$ cases, the diode shapes the characteristic\\
+    finite gain & inverting gain error $\approx (1 + R_f/R_1)/A$\\
     \bottomrule
   \end{tabular}
 \end{frame}

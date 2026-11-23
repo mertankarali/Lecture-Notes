@@ -313,18 +313,28 @@
   \draw (q) -- ++(-1.0,0) coordinate (g) to[R, l_=#3] ++(0,-1.6) node[ground] {};
   \draw (A.out) -- ++(0.8,0) node[ocirc] {} node[right, font=\small, text=cvolt] {$v_o$};
   \fill (n) circle (1.6pt); \fill (q) circle (1.6pt); \fill (A.out) circle (1.6pt);}
-%  numerical positive-feedback circuit (Example 17.4)
+%  numerical positive-feedback circuit (Example 16.9)
 \newcommand{\numPF}{%
-  \node[oa] (A) at (0,0) {};
-  \draw (A.-) -- ++(-2.8,0) coordinate (a);
-  \draw (a) -- ++(0,1.3) coordinate (f) to[R, l=$2\kohm$] (f -| A.out) -- (A.out);
-  \draw (a) |- ($(A.+)+(-2.8,0)$) to[R, l_=$1\kohm$] ($(A.+)+(-0.5,0)$) coordinate (q) -- (A.+);
-  \draw (q) -- ++(0,-0.9) coordinate (r) to[R, l_=$2\kohm$] (r -| A.out) -- (A.out);
-  \draw (r) to[R, l_=$2\kohm$] ++(0,-1.7) to[american voltage source, l_=$4\V$] ++(0,-1.6) node[ground] {};
-  \draw (a) -- ++(-1.0,0) coordinate (s) to[american voltage source, l_=$\Vcol{v_{\mathrm{in}}}$] ($(s)+(0,-2.0)$) node[ground] {};
-  \draw[iar] ($(s)+(0.2,0.28)$) -- ++(0.5,0); \node[font=\small, text=ccur, above] at ($(s)+(0.45,0.28)$) {$i$};
+  \node[oa, noinv input up] (A) at (0,0) {};
+  \draw (A.+) -- ++(-0.5,0) coordinate (q) to[R, l_=$1\kohm$] ++(-2.4,0) coordinate (s);
+  \draw (s) to[american voltage source, l_=$\Vcol{v_{\mathrm{in}}}$] ($(s)+(0,-2.4)$) node[ground] {};
+  \draw[iar] ($(s)+(0.25,-0.25)$) -- ++(0.5,0); \node[font=\small, text=ccur, anchor=east] at ($(s)+(0.25,-0.3)$) {$i$};
+  \draw (q) -- ++(0,1.2) coordinate (f) to[R, l=$2\kohm$] (f -| A.out) -- (A.out);
+  \draw (A.-) -- ++(-0.6,0) coordinate (m) to[american voltage source, l_=$2\V$] ++(0,-1.4) node[ground] {};
   \draw (A.out) -- ++(0.8,0) node[ocirc] {} node[right, font=\small, text=cvolt] {$v_o$};
-  \fill (a) circle (1.6pt); \fill (q) circle (1.6pt); \fill (r) circle (1.6pt); \fill (A.out) circle (1.6pt);}
+  \fill (q) circle (1.6pt); \fill (A.out) circle (1.6pt);}
+%  diode in the feedback path (Example 16.10)
+\newcommand{\diodeFb}{%
+  \node[oa] (A) at (0,0) {};
+  \draw (A.-) -- ++(-0.5,0) coordinate (n) to[R, l_=$1\kohm$] ++(-2.4,0) coordinate (s);
+  \draw (s) to[american voltage source, l_=$\Vcol{v_{\mathrm{in}}}$] ($(s)+(0,-2.0)$) node[ground] {};
+  \draw (n) -- ++(0,1.2) coordinate (f) to[R, l=$1\kohm$] (f -| A.out) -- (A.out);
+  \draw (f) -- ++(0,1.4) coordinate (g);
+  \draw (g -| A.out) to[D, i_=$\Icol{i_D}$] (g);
+  \draw (g -| A.out) -- (f -| A.out);
+  \draw (A.+) -- ++(-0.4,0) node[ground] {};
+  \draw (A.out) -- ++(0.8,0) node[ocirc] {} node[right, font=\small, text=cvolt] {$v_o$};
+  \fill (n) circle (1.6pt); \fill (f) circle (1.6pt); \fill (f -| A.out) circle (1.6pt); \fill (A.out) circle (1.6pt);}
 %  follower with the dependent-source model (finite gain)
 \newcommand{\fgFollower}{%
   \draw (-1.4,1.6) to[american voltage source, l_=$\Vcol{v_s}$] (-1.4,0); \draw (-1.4,1.6) to[R, l=$R_s$] (1.2,1.6) coordinate (P);
@@ -459,6 +469,15 @@
     \node[font=\scriptsize, text=swup, anchor=south] at (-3.0,2.8) {$\vin$ increasing};
     \node[font=\scriptsize, text=swdn, anchor=north] at (3.0,-2.8) {$\vin$ decreasing};
   \fi}
+%  positive feedback pieces drawn one at a time: #1 = 1 linear, 2 + (+sat), 3 + (-sat), 4 all with linear marked unstable
+\newcommand{\pfPieces}[1]{%
+  \tax{-4.4}{4.8}{-3.0}{3.3}{$\vin$}{$\vo$}
+  \xt{2}{$\Es$} \xtu{-2}{$-\Es$}
+  \ifnum#1<4 \draw[crv] (-2,-2) -- (2,2); \node[reg, anchor=east] at (-0.3,1.2) {linear};
+  \else \draw[crvu] (-2,-2) -- (2,2); \node[reg, anchor=east] at (-0.3,1.2) {linear: unstable}; \fi
+  \draw[gdash] (2,0) -- (2,2); \draw[gdash] (-2,0) -- (-2,-2);
+  \ifnum#1>1 \draw[crv] (-4.2,2) -- (2,2); \node[reg, above] at (-2.6,2) {$+$sat: $\vin < \Es$}; \fi
+  \ifnum#1>2 \draw[crv] (-2,-2) -- (4.2,-2); \node[reg, below] at (2.6,-2) {$-$sat: $\vin > -\Es$}; \fi}
 \begin{document}
 
 %-------------------- title block -----------------------------
@@ -493,8 +512,8 @@
 the \emph{difference} of two voltages by a very large factor. Alone it is of little use: almost
 any input drives it to its limits. When its output is fed back to its inputs through other
 elements (\textbf{feedback}), it becomes an amplifier with a fine-tuned gain, an adder, a subtractor or an integrator. This lecture introduces the device, its
-three operating regions and its ideal model, and analyses the basic op-amp circuits. At the end
-it checks the ideal model against a finite gain.
+three operating regions and its ideal model, and analyses the basic op-amp circuits. Then it analyses circuits with feedback to both inputs and
+a diode in the feedback path, and checks the ideal model against a finite gain.
 
 %==============================================================
 \section{The operational amplifier}
@@ -1334,48 +1353,324 @@ For example, with $RC = 1\s$ and the ramp $\vin = 3t$ V, the output is the const
 $\vo = -3\V$.
 
 %==============================================================
-\section{Limits of the ideal model: finite gain}
+\section{Two feedback paths}
 
-Earlier we saw that the follower has gain $A/(1 + A)$, which is $0.99999$ for $A = 10^5$. One
-more check, on the inverting amplifier, shows how small the error of the ideal model is.
-
-\begin{examplebox}[Example 16.7 --- inverting amplifier with finite gain]
 \begin{minipage}[c]{0.46\linewidth}
 \centering
-\begin{tikzpicture}[scale=0.8]
-  \invAmp{$1\kohm$}{$4\kohm$}{$\Vcol{v_{\mathrm{in}}}$}
+\begin{tikzpicture}[scale=0.85]
+  \twoFb{$R_1$}{$R_2$}{$R_3$}{$R_4$}
 \end{tikzpicture}
 \end{minipage}\hfill
 \begin{minipage}[c]{0.5\linewidth}
-Use the finite-gain model with $A = 10^5$ (linear region). Find the gain $\vo/\vin$ and compare
-it with the ideal value $-4$.
+The output feeds back to the inverting input through $R_2$ and to the non-inverting input through
+$R_4$. Define the two divider ratios
+\[
+  \beta = \frac{R_3}{R_3 + R_4}, \qquad \gamma = \frac{R_1}{R_1 + R_2}.
+\]
+$\beta$ measures the positive feedback, $\gamma$ the negative feedback. We want $\vo$ and the
+current $\Icol{i}$ drawn from the source.
+\end{minipage}
+
+\subsection{Equations valid in every region}
+$\ip = 0$, so $R_3$ and $R_4$ form a divider; $\im = 0$, so $R_1$ and $R_2$ carry the same current:
+\[
+  \vp = \beta\,\vo, \qquad
+  \vm = (1 - \gamma)\,\vin + \gamma\,\vo, \qquad
+  \Icol{i} = \frac{\vin - \vo}{R_1 + R_2}.
+\]
+The input difference is therefore
+\[
+  \vp - \vm = (\beta - \gamma)\,\vo - (1 - \gamma)\,\vin .
+\]
+
+\subsection{The three regions}
+\begin{itemize}
+  \item \textbf{Linear:} $\vp = \vm$ gives
+        \[
+          \vo = \frac{1 - \gamma}{\beta - \gamma}\,\vin ,
+          \qquad \text{valid for } |\vin| \leq \frac{|\beta - \gamma|}{1 - \gamma}\,\Es .
+        \]
+  \item \textbf{$+$sat:} $\vo = \Es$ needs $(\beta - \gamma)\Es > (1 - \gamma)\vin$, that is
+        $\vin < \dfrac{\beta - \gamma}{1 - \gamma}\Es$.
+  \item \textbf{$-$sat:} $\vo = -\Es$ needs $-(\beta - \gamma)\Es < (1 - \gamma)\vin$, that is
+        $\vin > -\dfrac{\beta - \gamma}{1 - \gamma}\Es$.
+\end{itemize}
+
+The sign of $\beta - \gamma$ decides everything:
+\begin{itemize}
+  \item $\beta < \gamma$: negative feedback wins. The three regions cover the $\vin$ axis
+        without overlap: one solution for every input.
+  \item $\beta > \gamma$: positive feedback wins. For
+        $|\vin| < \frac{\beta - \gamma}{1 - \gamma}\Es$ all three regions give a solution. As
+        for the follower with positive feedback seen earlier, the linear one is unstable.
+  \item $\beta = \gamma$: the linear region needs $\vin = 0$; the circuit is a comparator
+        (below).
+\end{itemize}
+
+\begin{examplebox}[Example 16.7 --- negative feedback wins]
+$R_1 = R_2 = 1\kohm$, $R_3 = 1\kohm$, $R_4 = 3\kohm$, supplies $\pm 12\V$. Find $\vo$ and
+$\Icol{i}$ as functions of $\vin$.
+\end{examplebox}
+
+\solution
+
+\solstep{1}{Ratios}
+$\gamma = \frac12$, $\beta = \frac14$: $\beta < \gamma$. The threshold is
+$\frac{|\beta - \gamma|}{1 - \gamma}\Es = \frac{1/4}{1/2}\cdot 12 = 6\V$.
+
+\solstep{2}{Regions}
+\begin{itemize}
+  \item Linear, $|\vin| \leq 6\V$: $\vo = \frac{1/2}{-1/4}\vin = -2\,\vin$, and
+        $\Icol{i} = (\vin + 2\vin)/2 = 1.5\,\vin$ mA.
+  \item $+$sat, $\vin < -6\V$: $\vo = 12\V$, $\Icol{i} = (\vin - 12)/2$ mA.
+  \item $-$sat, $\vin > 6\V$: $\vo = -12\V$, $\Icol{i} = (\vin + 12)/2$ mA.
+\end{itemize}
+
+\begin{center}
+\begin{tikzpicture}[x=0.24cm, y=0.11cm]
+  \tax{-11}{12}{-15}{15}{$\vin$}{$\vo$}
+  \draw[gdash] (6,0) -- (6,-12) -- (0,-12); \draw[gdash] (-6,0) -- (-6,12) -- (0,12);
+  \draw[crv] (-10,12) -- (-6,12) -- (6,-12) -- (10,-12);
+  \xtu{6}{$6$} \xt{-6}{$-6$} \yt{12}{$12$} \ytr{-12}{$-12$}
+\end{tikzpicture}\qquad\qquad
+\begin{tikzpicture}[x=0.24cm, y=0.11cm]
+  \tax{-11}{12}{-14}{14}{$\vin$}{$\Icol{i}$ (mA)}
+  \draw[gdash] (6,0) -- (6,9) -- (0,9); \draw[gdash] (-6,0) -- (-6,-9) -- (0,-9);
+  \draw[crv] (-10,-11) -- (-6,-9) -- (6,9) -- (10,11);
+  \xt{6}{$6$} \xtu{-6}{$-6$} \yt{9}{$9$} \ytr{-9}{$-9$}
+\end{tikzpicture}
+\end{center}
+The source sees a resistance $\vin/\Icol{i} = \frac23\kohm$ for small inputs and $2\kohm$ beyond
+$6\V$ (slope $\frac12$).
+
+\begin{examplebox}[Example 16.8 --- positive feedback wins]
+The same circuit with $R_3 = 3\kohm$, $R_4 = 1\kohm$. Find $\vo$ and $\Icol{i}$.
+\end{examplebox}
+
+\solution
+
+\solstep{1}{Ratios}
+$\gamma = \frac12$, $\beta = \frac34$: $\beta > \gamma$. Threshold again $\frac{1/4}{1/2}\cdot 12 = 6\V$.
+
+\solstep{2}{Regions}
+\begin{itemize}
+  \item Linear, $|\vin| \leq 6\V$: $\vo = \frac{1/2}{1/4}\vin = 2\,\vin$, and
+        $\Icol{i} = (\vin - 2\vin)/2 = -\vin/2$ mA.
+  \item $+$sat, now for $\vin < 6\V$: $\vo = 12\V$, $\Icol{i} = (\vin - 12)/2$ mA.
+  \item $-$sat, now for $\vin > -6\V$: $\vo = -12\V$, $\Icol{i} = (\vin + 12)/2$ mA.
+\end{itemize}
+
+\begin{center}
+\begin{tikzpicture}[x=0.24cm, y=0.11cm]
+  \tax{-11}{12}{-15}{15}{$\vin$}{$\vo$}
+  \draw[gdash] (6,0) -- (6,12); \draw[gdash] (-6,0) -- (-6,-12);
+  \draw[crv] (-10,12) -- (6,12); \draw[crv] (-6,-12) -- (10,-12);
+  \draw[crvu] (-6,-12) -- (6,12);
+  \xt{6}{$6$} \xtu{-6}{$-6$} \yt{12}{$12$} \ytr{-12}{$-12$}
+\end{tikzpicture}\qquad\qquad
+\begin{tikzpicture}[x=0.24cm, y=0.11cm]
+  \tax{-11}{12}{-14}{14}{$\vin$}{$\Icol{i}$ (mA)}
+  \draw[crv] (-10,-11) -- (6,-3); \draw[crv] (-6,3) -- (10,11);
+  \draw[crvu] (-6,3) -- (6,-3);
+  \draw[gdash] (6,0) -- (6,-3); \draw[gdash] (-6,0) -- (-6,3);
+  \xtu{6}{$6$} \xt{-6}{$-6$}
+\end{tikzpicture}
+\end{center}
+For $|\vin| < 6\V$ there are three solutions. The linear one (dashed) is unstable, so the output
+sits at $+12\V$ or $-12\V$ and remembers where it was: the circuit has \textbf{hysteresis}.
+On the linear branch the source would see $\vin/\Icol{i} = -2\kohm$: a \emph{negative}
+resistance, which an ideal op-amp can create because it is an active element.
+
+\begin{cautionbox}[$\beta = \gamma$: a comparator]
+If $R_3/R_4 = R_1/R_2$ then $\beta = \gamma$ and $\vp - \vm = -(1 - \gamma)\vin$. Linear needs
+$\vin = 0$; $+$sat holds for $\vin < 0$ and $-$sat for $\vin > 0$:
+\[
+  \vo = \begin{cases} +\Es, & \vin < 0\\ -\Es, & \vin > 0 \end{cases}
+\]
+The circuit only reports the sign of the input. The same happens with no feedback at all: an
+op-amp with $\vp$ and $\vm$ driven by two signals \emph{compares} them.
+\end{cautionbox}
+
+%==============================================================
+\section{A positive-feedback circuit with a source}
+
+\begin{examplebox}[Example 16.9 --- driving-point characteristic]
+\begin{minipage}[c]{0.5\linewidth}
+\centering
+\begin{tikzpicture}[scale=0.8]
+  \numPF
+\end{tikzpicture}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.46\linewidth}
+The supplies are $\pm 12\V$. Find $\vo$ and the current $\Icol{i}$ drawn from the source as
+functions of $\vin$. (Currents in mA, resistances in k$\Omega$.)
 \end{minipage}
 \end{examplebox}
 
 \solution
 
-\solstep{1}{Equations}
-$\vp = 0$, so the op-amp gives $\vo = A(0 - \vm) = -A\,\vm$. KCL at $\vm$ ($\im = 0$):
+\solstep{1}{Every region}
+$\vm = 2$. KCL at $\vp$ ($\ip = 0$):
 \[
-  \frac{\vm - \vin}{1} + \frac{\vm - \vo}{4} = 0
+  \frac{\vp - \vin}{1} + \frac{\vp - \vo}{2} = 0
   \quad\Rightarrow\quad
-  \vm = \frac{4\,\vin + \vo}{5} .
+  \vp = \frac{2\,\vin + \vo}{3} .
+\]
+The source current flows through the $1\kohm$ resistor:
+\[
+  \Icol{i} = \vin - \vp = \frac{\vin - \vo}{3} .
 \]
 
-\solstep{2}{Gain}
-Substitute $\vm = -\vo/A$:
+\solstep{2}{Linear}
+$\vp = \vm = 2$: $\ 2\vin + \vo = 6$, so
 \[
-  -\frac{\vo}{A} = \frac{4\,\vin + \vo}{5}
-  \quad\Rightarrow\quad
-  \frac{\vo}{\vin} = -\frac{4}{1 + 5/A} = -\frac{4}{1.00005} = -3.9998 .
+  \vo = 6 - 2\,\vin, \qquad -3 \leq \vin \leq 9, \qquad \Icol{i} = \vin - 2 .
+\]
+(The limits come from $\vo \leq 12$ and $\vo \geq -12$.)
+
+\solstep{3}{Saturation}
+$+$sat: $\vo = 12$ and $\vp = (2\vin + 12)/3 > 2$ for $\vin > -3$; then
+$\Icol{i} = (\vin - 12)/3$.\\
+$-$sat: $\vo = -12$ and $\vp = (2\vin - 12)/3 < 2$ for $\vin < 9$; then
+$\Icol{i} = (\vin + 12)/3$.
+
+\begin{center}
+\begin{tikzpicture}[x=0.2cm, y=0.1cm]
+  \tax{-9}{15}{-15}{15}{$\vin$}{$\vo$}
+  \draw[crv] (-3,12) -- (13,12); \draw[crv] (-8,-12) -- (9,-12);
+  \draw[crvu] (-3,12) -- (9,-12);
+  \draw[gdash] (9,0) -- (9,-12); \draw[gdash] (-3,0) -- (-3,12);
+  \xtu{9}{$9$} \xt{-3}{$-3$} \node[font=\scriptsize, anchor=west] at (13,12) {$12$}; \node[font=\scriptsize, anchor=east] at (-8,-12) {$-12$};
+\end{tikzpicture}\qquad\qquad
+\begin{tikzpicture}[x=0.2cm, y=0.2cm]
+  \tax{-9}{15}{-7}{9}{$\vin$}{$\Icol{i}$ (mA)}
+  \draw[crv] (-3,-5) -- (13,0.33); \draw[crv] (-8,1.33) -- (9,7);
+  \draw[crvu] (-3,-5) -- (9,7);
+  \draw[gdash] (9,0) -- (9,7); \draw[gdash] (-3,0) -- (-3,-5);
+  \xt{9}{$9$} \xtu{-3}{$-3$} \yt{7}{$7$} \ytr{-5}{$-5$}
+\end{tikzpicture}
+\end{center}
+Here $\gamma = 0$ ($\vm$ does not depend on $\vo$) and $\beta = \frac13$, so positive feedback
+wins: three solutions for $-3 < \vin < 9$, with an unstable linear branch (dashed). The $2\V$
+source on the $-$ input shifts the window: it is no longer centred at $\vin = 0$. The
+$\Icol{i}$--$\vin$ curve is the \textbf{driving-point characteristic} seen by the source: it is
+multivalued, unlike that of any resistive circuit without op-amps.
+
+%==============================================================
+\section{A diode in the feedback path}
+
+With an ideal diode in the circuit there are $3 \times 2$ combinations of op-amp region and
+diode state. Each one is analysed with the same idea: assume, solve, check \emph{all} the
+conditions.
+
+\begin{examplebox}[Example 16.10 --- gain that changes with the input]
+\begin{minipage}[c]{0.5\linewidth}
+\centering
+\begin{tikzpicture}[scale=0.8]
+  \diodeFb
+\end{tikzpicture}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.46\linewidth}
+Ideal diode, supplies $\pm 10\V$. Find the transfer characteristic $\vo$ versus $\vin$.
+(Currents in mA, resistances in k$\Omega$.)
+\end{minipage}
+\end{examplebox}
+
+\solution
+
+\solstep{1}{Every case}
+$\vp = 0$. The diode current $\Icol{i_D}$ flows from $\vo$ into node $\vm$. KCL at $\vm$
+($\im = 0$):
+\[
+  (\vm - \vin) + (\vm - \vo) = \Icol{i_D} .
+\]
+Diode ON: $\vo = \vm$, $\Icol{i_D} \geq 0$. \quad Diode OFF: $\Icol{i_D} = 0$, $\vo \leq \vm$.
+
+\solstep{2}{Linear, diode OFF}
+$\vm = 0$, so $\vo = -\vin$: the inverting amplifier. Diode: $\vo \leq 0$ gives $\vin \geq 0$.
+Linear: $\vo \geq -10$ gives $\vin \leq 10$.
+\[
+  \vo = -\vin, \qquad 0 \leq \vin \leq 10 .
 \]
 
-\solstep{3}{Compare}
-The error is $5/A = 0.005\%$. Resistor tolerances ($1\%$ or more) matter far more. In general,
+\solstep{3}{Linear, diode ON}
+$\vm = 0$ and $\vo = \vm = 0$. Diode: $\Icol{i_D} = -\vin \geq 0$ gives $\vin \leq 0$.
 \[
-  \frac{\vo}{\vin} = -\frac{R_f}{R_1}\cdot\frac{1}{1 + (1 + R_f/R_1)/A} ,
+  \vo = 0, \qquad \vin \leq 0 .
 \]
-which tends to $-R_f/R_1$ as $A \to \infty$.
+
+\solstep{4}{Saturation}
+$+$sat ($\vo = 10$) needs $\vm < 0$. Diode ON gives $\vm = 10$; diode OFF needs
+$\vm \geq \vo = 10$. Both fail: $+$sat never happens.\\
+$-$sat ($\vo = -10$) needs $\vm > 0$. Diode ON gives $\vm = -10$: fails. Diode OFF:
+$\vm = (\vin - 10)/2 > 0$ for $\vin > 10$, and $\vo = -10 \leq \vm$ \yes.
+\[
+  \vo = -10, \qquad \vin > 10 .
+\]
+
+\begin{minipage}[c]{0.5\linewidth}
+\centering
+\begin{tikzpicture}[x=0.17cm, y=0.13cm]
+  \tax{-13}{17}{-12.5}{4}{$\vin$}{$\vo$}
+  \draw[gdash] (10,0) -- (10,-10) -- (0,-10);
+  \draw[crv] (-12,0) -- (0,0) -- (10,-10) -- (15,-10);
+  \xtu{10}{$10$} \yt{-10}{$-10$}
+  \node[font=\scriptsize, anchor=south] at (-7,0.4) {diode ON};
+  \node[font=\scriptsize, anchor=east] at (4,-6) {slope $-1$};
+\end{tikzpicture}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.46\linewidth}
+The three pieces join into one continuous curve. The diode switches the gain from $0$ to $-1$ at
+$\vin = 0$: the circuit passes only positive inputs (inverted). Diodes in the feedback path
+\emph{shape} the transfer characteristic.
+\end{minipage}
+
+%==============================================================
+\section{Limits of the ideal model: finite gain}
+
+The infinite-gain model sets $A = \infty$. Real op-amps have $A$ between $10^5$ and $10^8$. How
+much does this change the answers? For the follower we already found the gain $A/(1 + A)$,
+which is $0.99999$ for $A = 10^5$.
+
+\subsection{The inverting amplifier with finite gain}
+Now $\vo = -A\,\vm$ and, from KCL, $\vm = (R_f\,\vin + R_1\,\vo)/(R_1 + R_f)$. Eliminating $\vm$:
+\[
+  \frac{\vo}{\vin} = -\frac{R_f}{R_1}\cdot\frac{1}{1 + \dfrac{1 + R_f/R_1}{A}} .
+\]
+The relative error is about $(1 + R_f/R_1)/A$. For $R_1 = 1\kohm$, $R_f = 4\kohm$,
+$A = 10^5$: the gain is $-3.9998$ instead of $-4$, an error of $0.005\%$. Resistor tolerances
+($1\%$ or more) matter far more.
+
+\begin{examplebox}[Example 16.11 --- the follower with the full model]
+\begin{center}
+\begin{tikzpicture}[scale=0.8]
+  \fgFollower
+\end{tikzpicture}
+\end{center}
+$A = 10^5$, $R_s = 1\kohm$, $R_{\mathrm{in}} = 100\kohm$, $R_o = 100\ohm$, $R_L = 10\kohm$,
+$\Vcol{v_s} = 10\V$. Estimate $\vo$, $\Vcol{v_d} = \vp - \vm$ and $\ip$.
+\end{examplebox}
+
+\solution
+
+\solstep{1}{First guess}
+The ideal model gives $\vo = \Vcol{v_s} = 10\V$, so the load current is $10\V / 10\kohm = 1\mA$.
+
+\solstep{2}{Output loop}
+The source $A\,\Vcol{v_d}$ pushes $1\mA$ through $R_o$:
+$A\,\Vcol{v_d} \approx \vo + R_o \cdot 1\mA = 10 + 0.1 = 10.1\V$, so
+$\Vcol{v_d} \approx 0.101\,\mathrm{mV}$.
+
+\solstep{3}{Input}
+$\ip = \Vcol{v_d}/R_{\mathrm{in}} \approx 1.01\,\mathrm{nA}$. The drop on $R_s$ is about
+$1\,\mu\mathrm{V}$. Hence
+\[
+  \vo = \Vcol{v_s} - R_s\,\ip - \Vcol{v_d} \approx 10 - 0.000001 - 0.000101 = 9.999898\V,
+  \qquad \frac{\vo}{\Vcol{v_s}} \approx 0.99999 .
+\]
+Exact solution of the two KCL equations gives the same digits. The ideal model is off by
+$0.001\%$.
+
 
 %==============================================================
 \section*{Summary}
@@ -1397,6 +1692,13 @@ summing amplifier & $\vo = -\sum_k (R_f/R_k)\,\Vcol{v_k}$\\
 difference amplifier & $\vo = (R_f/R_1)(\Vcol{v_2} - \Vcol{v_1})$ if $R_f/R_1 = R_3/R_2$\\
 integrator, differentiator & $\vo = \vo(0) - \frac{1}{RC}\int_0^t \vin\,d\tau$; \quad $\vo = -RC\,d\vin/dt$\\
 positive feedback & output to the non-inverting input: the linear solution is unstable; avoid it in amplifiers\\
+two feedback paths & $\vp - \vm = (\beta - \gamma)\vo - (1 - \gamma)\vin$; linear
+  $\vo = \frac{1 - \gamma}{\beta - \gamma}\vin$\\
+$\beta < \gamma$ & negative feedback wins: one solution for every input\\
+$\beta > \gamma$ & positive feedback wins: three solutions, hysteresis, negative resistance\\
+$\beta = \gamma$ & comparator: $\vo = \pm\Es$ by the sign of the input\\
+driving-point characteristic & with positive feedback it can be multivalued\\
+diode in feedback & $3 \times 2$ cases; check op-amp and diode conditions; shapes the characteristic\\
 finite gain & follower $A/(1 + A)$; inverting gain error $\approx (1 + R_f/R_1)/A$\\
 \bottomrule
 \end{tabular}

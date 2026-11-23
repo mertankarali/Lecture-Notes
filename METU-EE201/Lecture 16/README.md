@@ -4,8 +4,8 @@ Lecture notes and slides for the op-amp lecture of EE201 (Section 2, Fall 2026/2
 
 | File | What it is |
 |---|---|
-| `EE201_Lecture_16.tex` | Handout / lecture notes (article, 16 pages): the op-amp, its terminals, supplies and transfer characteristic; the dependent-source and finite-gain models; negative feedback and why it keeps v₊ ≈ v₋; the infinite-gain ideal model and the region-by-region method; voltage follower and positive feedback; inverting and non-inverting amplifiers; summing and difference amplifiers; integrator and differentiator; the finite-gain check on the inverting amplifier; a summary. Seven worked examples. |
-| `EE201_Lecture_16_slides.tex` | Beamer deck (35 slides, 57 PDF pages) for the lecture itself — visual, low text. |
+| `EE201_Lecture_16.tex` | Handout / lecture notes (article, 21 pages): the op-amp, its terminals, supplies and transfer characteristic; the dependent-source and finite-gain models; negative feedback and why it keeps v₊ ≈ v₋; the infinite-gain ideal model and the region-by-region method; voltage follower and positive feedback; inverting and non-inverting amplifiers; summing and difference amplifiers; integrator and differentiator; feedback to both inputs (β and γ, which feedback wins, hysteresis, the comparator); a multivalued driving-point characteristic; a diode in the feedback path; the finite-gain checks (inverting amplifier, full dependent-source model of the follower); a summary. Eleven worked examples. |
+| `EE201_Lecture_16_slides.tex` | Beamer deck (52 slides, 86 PDF pages) for the lecture itself — visual, low text. |
 | `build.sh` | Compiles both, removes auxiliary files, opens the PDFs. |
 
 ## Compiling
@@ -24,6 +24,4 @@ Uses `latexmk` when available, otherwise two `pdflatex` passes. All figures are 
 ## Contents
 
 Following the operational-amplifier pages of Prof. Emre Tuna's notes, with the examples reworked
-using simple numbers; the finite-gain follower uses his model parameters. Following the
-department's revised EE201 content, common-mode rejection ratio, piecewise-linear/nonlinear
-elements in the feedback path and multistage op-amp circuits are not covered.
+using simple numbers; the finite-gain follower uses his model parameters. Covers Tuna's recorded lectures 27–30; common-mode rejection ratio (CMRR) is not covered.
