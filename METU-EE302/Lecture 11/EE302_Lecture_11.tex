@@ -26,7 +26,11 @@
 % ADD PACKAGES here:
 %
 
-\usepackage{amsmath,amsfonts,graphicx}
+\usepackage{amsmath,amsfonts,amssymb,graphicx,array}
+\usepackage[table]{xcolor}
+\usepackage{tikz}
+\usepackage[most]{tcolorbox}
+\usepackage{needspace}
 
 %
 % The following commands set up the lecnum (lecture number)
@@ -98,6 +102,20 @@
 \newenvironment{proof}{{\bf Proof:}}{\hfill\rule{2mm}{2mm}}
 
 % **** IF YOU WANT TO DEFINE ADDITIONAL MACROS FOR YOURSELF, PUT THEM HERE:
+% ---- Routh-table colours and helpers (Okabe-Ito, colour-blind safe) ----
+\definecolor{rgiv}{RGB}{0,114,178}    % given coefficients (blue)
+\definecolor{rcmp}{RGB}{213,94,0}     % computed entries (vermillion)
+\definecolor{rpiv}{RGB}{0,158,115}    % pivot / denominator (bluish green)
+\definecolor{rsel}{RGB}{204,121,167}  % 2x2 matrix of the determinant (reddish purple)
+\definecolor{rfirst}{RGB}{230,240,250}% first-column shading
+\newcommand{\RA}[1]{\textcolor{rgiv}{#1}}
+\newcommand{\RC}[1]{\textcolor{rcmp}{#1}}
+\newtcolorbox{rulebox}[1]{colback=rpiv!5,colframe=rpiv!70!black,fonttitle=\bfseries,title={#1},arc=2pt,boxrule=0.7pt}
+\newcounter{exno}
+\newcommand{\ex}{\refstepcounter{exno}\textbf{Example \thelecnum.\theexno:}\ }
+\newcommand{\sol}{\textbf{Solution:}\ }
+\newcolumntype{F}{>{\columncolor{rfirst}}c}
+\renewcommand{\arraystretch}{1.35}
 
 \begin{document}
 
@@ -139,9 +157,9 @@ In this context, a rational transfer function representation is BIBO stable if a
  the poles of $G(s)$ (or roots of $D(s)$ ) are strictly located  in
  the open left half $s-$plane.
 
-\textbf{Ex:} Show that $G(s) = \frac{1}{s}$ is not BIBO stable
+\ex Show that $G(s) = \frac{1}{s}$ is not BIBO stable
 
-\textbf{Solution:} Let's first check the impulse response condition
+\sol Let's first check the impulse response condition
 %
 \begin{align*}
   g(t) &= 1 , \ t \geq 0
@@ -161,12 +179,12 @@ Let $u(t)$ be the unit-step input then
  \lim_{t \to \infty} | y(t) | &= \infty
 \end{align*}
 %
-Obviously, we obtained an un-bounded output.
+We obtained an unbounded output for a bounded input.
 
-\textbf{Ex:} Let $G(s) = \frac{1}{s^2 + 1}$. Find a
+\ex Let $G(s) = \frac{1}{s^2 + 1}$. Find a
 bounded input, such that output is unbounded.
 %
-\textbf{Solution:} Let $u(t) = \cos t \ , t \geq 0$, then
+\sol Let $u(t) = \cos t \ , t \geq 0$, then
 %
 \begin{align*}
   Y(s) &= G(s) U(s) = \frac{s}{(s^2+1)^2}
@@ -174,7 +192,7 @@ bounded input, such that output is unbounded.
   y(t) &= t \sin t \ , t \geq 0
 \end{align*}
 %
-Now we obtain an un-bounded output due to the resonance effect. 
+The output grows without bound because the input frequency equals the frequency of the poles at $\pm j$ (resonance). 
 
 \subsection{Stability of First \& Second Order Systems}
 
@@ -186,7 +204,7 @@ The transfer function of a first order system has the form
 %
 \begin{align*}
   D(s) &= a_0 s + a_1 \\
- a_0 &> 0 , \ \mathrm{w.l.g}
+ a_0 &> 0 , \ \text{(w.l.o.g.)}
 \end{align*}
 %
 The single pole of the system and associated stability condition 
@@ -203,18 +221,17 @@ of a second order system has the following form
 %
 \begin{align*}
   D(s) &= a_0 s^2 + a_1 s + a_2\\
- a_0 &> 0 , \ \mathrm{w.l.g}
+ a_0 &> 0 , \ \text{(w.l.o.g.)}
 \end{align*}
 %
-If we carefully analyze $\mathrm{Sign} [ D(0) ]$, 
-we can see that
+Since $a_0 > 0$, $D(s) \to +\infty$ as $s \to \pm\infty$ on the real axis. Now look at
+$D(0) = a_2$:
 %
 \begin{itemize}
-     \item $\mathrm{Sign} [ D(0) ] < 0$, one pole is located in the
-       open-left half plane, where as the other one is located in the
-       open- right half plane.
-     \item $\mathrm{Sign} [ D(0) ] = 0$, there exist at least one pole 
-     at the origin.
+     \item If $D(0) = a_2 < 0$, $D(s)$ changes sign on both the negative and the positive real
+       axis: one pole is in the open left half-plane and the other one is in the open right
+       half-plane.
+     \item If $D(0) = a_2 = 0$, there is a pole at the origin.
 \end{itemize}
 %
 In this context, we can derive the first condition (necessary but not
@@ -255,16 +272,16 @@ As a result, we can derive a necessary and sufficient condition on
 BIBO stability. 
 
 A second order system with $D(s) = a_0 s^2 + a_1 s + a_2$ (with $a_0 >
-0$), is BIBO stable if and only if $a_i > 0, \ \forall i \in \lbrace 1
-, 2 \rbrace$.
+0$), is BIBO stable if and only if $a_1 > 0$ and $a_2 > 0$. For first and second order
+systems, all coefficients positive is necessary \emph{and} sufficient. From third order on it
+is only necessary; the Routh test below gives the full answer.
 
 \subsection{Routh's Stability Criterion} 
 
-Routh's Stability Criterion (a.k.a  Routh–Hurwitz stability criterion)
-is a mathematical test that is a necessary and sufficient condition 
-for the stability of an LTI system. The Routh test is a very 
-computationally efficient algorithm for the test of absolute
-LTI system stability. 
+Routh's stability criterion (also called the Routh--Hurwitz criterion) is a necessary and
+sufficient test for the stability of an LTI system. It decides whether all roots of $D(s)$ are
+in the open left half-plane \emph{without} computing the roots: it uses only the coefficients,
+with a few multiplications and divisions.
 
 In this test, one first constructs the Routh table for a given characteristic polynomial
 %
@@ -273,35 +290,76 @@ D(s) = a_0 s^n + a_1 s^{n-1} + a_2 s^{n-2} + \cdots + a_{n-2} s^{2}
 + a_{n-1} s^{1} + a_n 
 \end{align*}  
 %
-which has $n+1$ rows. 
+which has $n+1$ rows. As before we take $a_0 > 0$. The first two rows hold the coefficients
+(\RA{blue}), alternately; each further row is computed from the two rows above it (\RC{orange}).
+Missing entries are taken as $0$. The first column (shaded) is the one used in the test.
 %
-\begin{table}[h]
 \begin{center}
-\begin{tabular}{|c || c || c c c c |}
+\renewcommand{\arraystretch}{1.25}
+\begin{tabular}{|c || F || c c c c |}
 \hline
-$s^n$ & $a_0$ & $a_2$ & $a_4$ & $a_6$ & $\cdots$ 
+$s^n$ & $\RA{a_0}$ & $\RA{a_2}$ & $\RA{a_4}$ & $\RA{a_6}$ & $\cdots$
 \\ \hline
-$s^{n-1}$ & $a_1$ & $a_3$ & $a_5$ & $a_7$ & $\cdots$ 
+$s^{n-1}$ & $\RA{a_1}$ & $\RA{a_3}$ & $\RA{a_5}$ & $\RA{a_7}$ & $\cdots$
 \\ \hline
-$s^{n-2}$ & $b_1$ & $b_2$ & $b_3$ & $b_4$ & $\cdots$ 
+$s^{n-2}$ & $\RC{b_1}$ & $\RC{b_2}$ & $\RC{b_3}$ & $\RC{b_4}$ & $\cdots$
 \\ \hline
-$s^{n-3}$ & $c_1$ & $c_2$ & $c_3$ & $c_4$ & $\cdots$ 
+$s^{n-3}$ & $\RC{c_1}$ & $\RC{c_2}$ & $\RC{c_3}$ & $\RC{c_4}$ & $\cdots$
 \\ \hline
-$s^{n-4}$ & $d_1$ & $d_2$ & $d_3$ & $d_4$ & $\cdots$ 
+$s^{n-4}$ & $\RC{d_1}$ & $\RC{d_2}$ & $\RC{d_3}$ & $\RC{d_4}$ & $\cdots$
 \\ \hline
-$\vdots$ & $\vdots$ & $\vdots$ &  & & 
+$\vdots$ & $\vdots$ & $\vdots$ & & &
 \\ \hline
-$s^{2}$ & $e_1$ & $e_2$ & $0$ & $\cdots$  & 
+$s^{2}$ & $\RC{\ast}$ & $\RC{\ast}$ & & &
 \\ \hline
-$s^{1}$ & $f_1$ & $0$ & $0$ & $\cdots$  & 
+$s^{1}$ & $\RC{\ast}$ & & & &
 \\ \hline
-$s^{0}$ & $g_0$ & $0$ & $0$ & $\cdots$  & 
+$s^{0}$ & $\RC{\ast}$ & & & &
 \\ \hline
 \end{tabular}
 \end{center}
-\end{table}
 
-where the coefficients $b_i$ are computed with
+All computed entries follow one rule:
+
+\noindent\begin{minipage}[c]{0.44\linewidth}
+\centering
+\begin{tikzpicture}[x=1.1cm,y=0.75cm,font=\small]
+  \node[anchor=east] at (-0.5,0) {row $k-2$};
+  \node[anchor=east] at (-0.5,-1) {row $k-1$};
+  \node[anchor=east] at (-0.5,-2) {row $k$};
+  \foreach \c/\t/\b in {0/r_1/q_1,1/r_2/q_2,2/r_3/q_3}{\node at (\c,0) {$\t$}; \node at (\c,-1) {$\b$};}
+  \node at (3,0) {$\cdots$}; \node at (3,-1) {$\cdots$};
+  \draw[rsel,thick,rounded corners=2pt] (-0.3,0.35) rectangle (0.3,-1.35);
+  \draw[rsel,thick,rounded corners=2pt] (1.7,0.35) rectangle (2.3,-1.35);
+  \node[draw=rpiv,fill=rpiv!15,rounded corners=2pt,inner sep=2pt] at (0,-1) {$q_1$};
+  \node[text=rcmp] at (1,-2) {$x_j$};
+  \node[font=\scriptsize,text=rsel] at (2,0.75) {column $j{+}1$};
+  \node[font=\scriptsize,text=rsel] at (0,0.75) {column 1};
+\end{tikzpicture}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.52\linewidth}
+\begin{rulebox}{Entry $j$ of row $k$}
+\[
+  x_j \;=\; \frac{-\,\begin{vmatrix} \textcolor{rsel}{r_1} & \textcolor{rsel}{r_{j+1}}\\ \textcolor{rsel}{q_1} & \textcolor{rsel}{q_{j+1}}\end{vmatrix}}{\textcolor{rpiv}{q_1}}
+  \;=\; \frac{q_1\,r_{j+1} - r_1\,q_{j+1}}{q_1}
+\]
+\end{rulebox}
+\end{minipage}
+
+\smallskip
+\begin{itemize}\itemsep1pt
+  \item \textbf{Determinant (numerator):} take the two rows just above. Use their
+        \textcolor{rsel}{first column} together with \textcolor{rsel}{column $j+1$}. This gives a
+        $2 \times 2$ matrix; put a minus sign in front of its determinant.
+  \item \textbf{Denominator:} the \textcolor{rpiv}{pivot}, the first entry of the row just above.
+        It is the same for the whole row.
+  \item A missing entry is taken as $0$.
+\end{itemize}
+
+Applied to the first rows, the rule gives
+
+
+the coefficients $b_i$ (pivot $a_1$):
 %
 \begin{align*}
  b_1 = - \mathrm{det}\left( \left[ \begin{array}{cc} a_0 & a_2 \\ a_1
@@ -331,7 +389,7 @@ b_3 = - \mathrm{det}\left( \left[ \begin{array}{cc} a_0 & a_6 \\ a_1
 \vdots
 \end{align*}  
 %
-coefficients $c_i$ are computed with
+the coefficients $c_i$ (pivot $b_1$):
 %
 %
 \begin{align*}
@@ -362,7 +420,7 @@ coefficients $c_i$ are computed with
 &\vdots
 \end{align*}  
 
-Coefficients $d_i$ are computed with
+and the coefficients $d_i$ (pivot $c_1$):
 %
 \begin{align*}
 & d_1 = - \mathrm{det}\left( \left[ \begin{array}{cc} b_1 & b_2 \\ 
@@ -391,65 +449,539 @@ Coefficients $d_i$ are computed with
 &\vdots
 \end{align*}  
 %
-Other coefficients are computed with the same structure with the
-computation flow of $d_i$'s. 
+The remaining rows are computed in the same way, always from the two rows just above.
 
-\textbf{Result 1:} The system is NOT BIBO stable if $\exists \, i , \ s.t ,\
-a_i \leq 0 $. In other words, since we assumed $a_0 > 0$, all other
-coefficients have to be strictly positive. This is a necessary, but
-not sufficient condition. 
+\needspace{12\baselineskip}
+\ex \textbf{A general 8th-order polynomial.} Build the Routh table of
+\[
+  D(s) = \RA{a_0}\,s^8 + \RA{a_1}\,s^7 + \RA{a_2}\,s^6 + \RA{a_3}\,s^5 + \RA{a_4}\,s^4
+        + \RA{a_5}\,s^3 + \RA{a_6}\,s^2 + \RA{a_7}\,s + \RA{a_8}
+\]
+and write every entry in terms of the entries above it.
 
-\textbf{Result 2:} The system is BIBO stable, if and only if all the 
-coefficients in the first column are strictly positive. Routh test provides
-a necessary and sufficient condition.  
-
-\textbf{Result 3:} The $\#$ of roots of D(s) with positive real parts 
-is equal to the $\#$ of sign changes in the first column (shown in
-table below) of the Routh array. 
-%
-\begin{table}[h]
+\sol The table has $9$ rows:
 \begin{center}
-\begin{tabular}{|| c || }
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{>{$}c<{$}|>{\columncolor{rfirst}$}c<{$}>{$}c<{$}>{$}c<{$}>{$}c<{$}>{$}c<{$}}
 \hline
-$a_0$ 
-\\ \hline
-$a_1$ 
-\\ \hline
-$b_1$ 
-\\ \hline
-$c_1$ 
-\\ \hline
-$d_1$ 
-\\ \hline
-$\vdots$ 
-\\ \hline
-$e_1$ 
-\\ \hline
-$f_1$ 
-\\ \hline
-$g_0$ 
-\\ \hline
+s^8 & \RA{a_0} & \RA{a_2} & \RA{a_4} & \RA{a_6} & \RA{a_8}\\
+s^7 & \RA{a_1} & \RA{a_3} & \RA{a_5} & \RA{a_7} & 0\\
+\hline
+s^6 & \RC{b_1} & \RC{b_2} & \RC{b_3} & \RC{b_4} & \\
+s^5 & \RC{c_1} & \RC{c_2} & \RC{c_3} & 0 & \\
+s^4 & \RC{d_1} & \RC{d_2} & \RC{d_3} & & \\
+s^3 & \RC{e_1} & \RC{e_2} & 0 & & \\
+s^2 & \RC{f_1} & \RC{f_2} & & & \\
+s^1 & \RC{g_1} & 0 & & & \\
+s^0 & \RC{h_1} & & & & \\
+\hline
 \end{tabular}
 \end{center}
-\end{table}
 
-\textbf{Ex:} Let $D(s) = s^4 + 2 s^3 + 3 s^2 + 4 s + 5$, is this
+In each step below the two rows above are shown. The boxes mark the $2 \times 2$ matrix of the
+determinant; the shaded entry is the pivot in the denominator.
+
+\needspace{9\baselineskip}
+\textbf{Row $s^{6}$} \quad {\small from rows $s^{8}$ and $s^{7}$; denominator (pivot) $\textcolor{rpiv}{a_1}$}\par
+\noindent\begin{minipage}[c]{0.46\linewidth}
+\centering
+\begin{tikzpicture}[x=0.95cm,y=0.68cm,baseline=(current bounding box.center)]
+\node[anchor=east,text=black!60] at (-0.35,0) {$s^8$};
+\node at (0,0) {$\RA{a_0}$};
+\node at (1,0) {$\RA{a_2}$};
+\node at (2,0) {$\RA{a_4}$};
+\node at (3,0) {$\RA{a_6}$};
+\node at (4,0) {$\RA{a_8}$};
+\node[anchor=east,text=black!60] at (-0.35,-1) {$s^7$};
+\node[draw=rpiv,fill=rpiv!15,rounded corners=2pt,inner sep=2pt] at (0,-1) {$\RA{a_1}$};
+\node at (1,-1) {$\RA{a_3}$};
+\node at (2,-1) {$\RA{a_5}$};
+\node at (3,-1) {$\RA{a_7}$};
+\node at (4,-1) {$0$};
+\node[anchor=east,text=black!60] at (-0.35,-2) {$s^6$};
+\node[draw=rcmp,rounded corners=2pt,inner sep=2pt,text=rcmp] at (0,-2) {$b_1$};
+\draw[black!30] (-0.3,-1.5) -- (4.40,-1.5);
+\draw[rsel,thick,rounded corners=2pt] (-0.38,0.38) rectangle (0.38,-1.38);
+\draw[rsel,thick,rounded corners=2pt] (0.62,0.38) rectangle (1.38,-1.38);
+\end{tikzpicture}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.52\linewidth}
+\[
+b_1 = \dfrac{\textcolor{rsel}{-\begin{vmatrix} a_0 & a_2\\ a_1 & a_3 \end{vmatrix}}}{\textcolor{rpiv}{a_1}} = \dfrac{a_1\,a_2 - a_0\,a_3}{a_1}
+\]
+\end{minipage}
+\par\smallskip
+\noindent\begin{minipage}[c]{0.46\linewidth}
+\centering
+\begin{tikzpicture}[x=0.95cm,y=0.68cm,baseline=(current bounding box.center)]
+\node[anchor=east,text=black!60] at (-0.35,0) {$s^8$};
+\node at (0,0) {$\RA{a_0}$};
+\node at (1,0) {$\RA{a_2}$};
+\node at (2,0) {$\RA{a_4}$};
+\node at (3,0) {$\RA{a_6}$};
+\node at (4,0) {$\RA{a_8}$};
+\node[anchor=east,text=black!60] at (-0.35,-1) {$s^7$};
+\node[draw=rpiv,fill=rpiv!15,rounded corners=2pt,inner sep=2pt] at (0,-1) {$\RA{a_1}$};
+\node at (1,-1) {$\RA{a_3}$};
+\node at (2,-1) {$\RA{a_5}$};
+\node at (3,-1) {$\RA{a_7}$};
+\node at (4,-1) {$0$};
+\node[anchor=east,text=black!60] at (-0.35,-2) {$s^6$};
+\node[text=black!45] at (0,-2) {$b_1$};
+\node[draw=rcmp,rounded corners=2pt,inner sep=2pt,text=rcmp] at (1,-2) {$b_2$};
+\draw[black!30] (-0.3,-1.5) -- (4.40,-1.5);
+\draw[rsel,thick,rounded corners=2pt] (-0.38,0.38) rectangle (0.38,-1.38);
+\draw[rsel,thick,rounded corners=2pt] (1.62,0.38) rectangle (2.38,-1.38);
+\end{tikzpicture}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.52\linewidth}
+\[
+b_2 = \dfrac{\textcolor{rsel}{-\begin{vmatrix} a_0 & a_4\\ a_1 & a_5 \end{vmatrix}}}{\textcolor{rpiv}{a_1}} = \dfrac{a_1\,a_4 - a_0\,a_5}{a_1}
+\]
+\end{minipage}
+\par\smallskip
+\noindent\begin{minipage}[c]{0.46\linewidth}
+\centering
+\begin{tikzpicture}[x=0.95cm,y=0.68cm,baseline=(current bounding box.center)]
+\node[anchor=east,text=black!60] at (-0.35,0) {$s^8$};
+\node at (0,0) {$\RA{a_0}$};
+\node at (1,0) {$\RA{a_2}$};
+\node at (2,0) {$\RA{a_4}$};
+\node at (3,0) {$\RA{a_6}$};
+\node at (4,0) {$\RA{a_8}$};
+\node[anchor=east,text=black!60] at (-0.35,-1) {$s^7$};
+\node[draw=rpiv,fill=rpiv!15,rounded corners=2pt,inner sep=2pt] at (0,-1) {$\RA{a_1}$};
+\node at (1,-1) {$\RA{a_3}$};
+\node at (2,-1) {$\RA{a_5}$};
+\node at (3,-1) {$\RA{a_7}$};
+\node at (4,-1) {$0$};
+\node[anchor=east,text=black!60] at (-0.35,-2) {$s^6$};
+\node[text=black!45] at (0,-2) {$b_1$};
+\node[text=black!45] at (1,-2) {$b_2$};
+\node[draw=rcmp,rounded corners=2pt,inner sep=2pt,text=rcmp] at (2,-2) {$b_3$};
+\draw[black!30] (-0.3,-1.5) -- (4.40,-1.5);
+\draw[rsel,thick,rounded corners=2pt] (-0.38,0.38) rectangle (0.38,-1.38);
+\draw[rsel,thick,rounded corners=2pt] (2.62,0.38) rectangle (3.38,-1.38);
+\end{tikzpicture}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.52\linewidth}
+\[
+b_3 = \dfrac{\textcolor{rsel}{-\begin{vmatrix} a_0 & a_6\\ a_1 & a_7 \end{vmatrix}}}{\textcolor{rpiv}{a_1}} = \dfrac{a_1\,a_6 - a_0\,a_7}{a_1}
+\]
+\end{minipage}
+\par\smallskip
+\noindent\begin{minipage}[c]{0.46\linewidth}
+\centering
+\begin{tikzpicture}[x=0.95cm,y=0.68cm,baseline=(current bounding box.center)]
+\node[anchor=east,text=black!60] at (-0.35,0) {$s^8$};
+\node at (0,0) {$\RA{a_0}$};
+\node at (1,0) {$\RA{a_2}$};
+\node at (2,0) {$\RA{a_4}$};
+\node at (3,0) {$\RA{a_6}$};
+\node at (4,0) {$\RA{a_8}$};
+\node[anchor=east,text=black!60] at (-0.35,-1) {$s^7$};
+\node[draw=rpiv,fill=rpiv!15,rounded corners=2pt,inner sep=2pt] at (0,-1) {$\RA{a_1}$};
+\node at (1,-1) {$\RA{a_3}$};
+\node at (2,-1) {$\RA{a_5}$};
+\node at (3,-1) {$\RA{a_7}$};
+\node at (4,-1) {$0$};
+\node[anchor=east,text=black!60] at (-0.35,-2) {$s^6$};
+\node[text=black!45] at (0,-2) {$b_1$};
+\node[text=black!45] at (1,-2) {$b_2$};
+\node[text=black!45] at (2,-2) {$b_3$};
+\node[draw=rcmp,rounded corners=2pt,inner sep=2pt,text=rcmp] at (3,-2) {$b_4$};
+\draw[black!30] (-0.3,-1.5) -- (4.40,-1.5);
+\draw[rsel,thick,rounded corners=2pt] (-0.38,0.38) rectangle (0.38,-1.38);
+\draw[rsel,thick,rounded corners=2pt] (3.62,0.38) rectangle (4.38,-1.38);
+\end{tikzpicture}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.52\linewidth}
+\[
+b_4 = \dfrac{\textcolor{rsel}{-\begin{vmatrix} a_0 & a_8\\ a_1 & 0 \end{vmatrix}}}{\textcolor{rpiv}{a_1}} = \dfrac{a_1\,a_8 - a_0 \cdot 0}{a_1} = a_8
+\]
+\end{minipage}
+\par\smallskip
+\needspace{9\baselineskip}
+\textbf{Row $s^{5}$} \quad {\small from rows $s^{7}$ and $s^{6}$; denominator (pivot) $\textcolor{rpiv}{b_1}$}\par
+\noindent\begin{minipage}[c]{0.46\linewidth}
+\centering
+\begin{tikzpicture}[x=0.95cm,y=0.68cm,baseline=(current bounding box.center)]
+\node[anchor=east,text=black!60] at (-0.35,0) {$s^7$};
+\node at (0,0) {$\RA{a_1}$};
+\node at (1,0) {$\RA{a_3}$};
+\node at (2,0) {$\RA{a_5}$};
+\node at (3,0) {$\RA{a_7}$};
+\node at (4,0) {$0$};
+\node[anchor=east,text=black!60] at (-0.35,-1) {$s^6$};
+\node[draw=rpiv,fill=rpiv!15,rounded corners=2pt,inner sep=2pt] at (0,-1) {$\RC{b_1}$};
+\node at (1,-1) {$\RC{b_2}$};
+\node at (2,-1) {$\RC{b_3}$};
+\node at (3,-1) {$\RC{b_4}$};
+\node at (4,-1) {$0$};
+\node[anchor=east,text=black!60] at (-0.35,-2) {$s^5$};
+\node[draw=rcmp,rounded corners=2pt,inner sep=2pt,text=rcmp] at (0,-2) {$c_1$};
+\draw[black!30] (-0.3,-1.5) -- (4.40,-1.5);
+\draw[rsel,thick,rounded corners=2pt] (-0.38,0.38) rectangle (0.38,-1.38);
+\draw[rsel,thick,rounded corners=2pt] (0.62,0.38) rectangle (1.38,-1.38);
+\end{tikzpicture}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.52\linewidth}
+\[
+c_1 = \dfrac{\textcolor{rsel}{-\begin{vmatrix} a_1 & a_3\\ b_1 & b_2 \end{vmatrix}}}{\textcolor{rpiv}{b_1}} = \dfrac{b_1\,a_3 - a_1\,b_2}{b_1}
+\]
+\end{minipage}
+\par\smallskip
+\noindent\begin{minipage}[c]{0.46\linewidth}
+\centering
+\begin{tikzpicture}[x=0.95cm,y=0.68cm,baseline=(current bounding box.center)]
+\node[anchor=east,text=black!60] at (-0.35,0) {$s^7$};
+\node at (0,0) {$\RA{a_1}$};
+\node at (1,0) {$\RA{a_3}$};
+\node at (2,0) {$\RA{a_5}$};
+\node at (3,0) {$\RA{a_7}$};
+\node at (4,0) {$0$};
+\node[anchor=east,text=black!60] at (-0.35,-1) {$s^6$};
+\node[draw=rpiv,fill=rpiv!15,rounded corners=2pt,inner sep=2pt] at (0,-1) {$\RC{b_1}$};
+\node at (1,-1) {$\RC{b_2}$};
+\node at (2,-1) {$\RC{b_3}$};
+\node at (3,-1) {$\RC{b_4}$};
+\node at (4,-1) {$0$};
+\node[anchor=east,text=black!60] at (-0.35,-2) {$s^5$};
+\node[text=black!45] at (0,-2) {$c_1$};
+\node[draw=rcmp,rounded corners=2pt,inner sep=2pt,text=rcmp] at (1,-2) {$c_2$};
+\draw[black!30] (-0.3,-1.5) -- (4.40,-1.5);
+\draw[rsel,thick,rounded corners=2pt] (-0.38,0.38) rectangle (0.38,-1.38);
+\draw[rsel,thick,rounded corners=2pt] (1.62,0.38) rectangle (2.38,-1.38);
+\end{tikzpicture}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.52\linewidth}
+\[
+c_2 = \dfrac{\textcolor{rsel}{-\begin{vmatrix} a_1 & a_5\\ b_1 & b_3 \end{vmatrix}}}{\textcolor{rpiv}{b_1}} = \dfrac{b_1\,a_5 - a_1\,b_3}{b_1}
+\]
+\end{minipage}
+\par\smallskip
+\noindent\begin{minipage}[c]{0.46\linewidth}
+\centering
+\begin{tikzpicture}[x=0.95cm,y=0.68cm,baseline=(current bounding box.center)]
+\node[anchor=east,text=black!60] at (-0.35,0) {$s^7$};
+\node at (0,0) {$\RA{a_1}$};
+\node at (1,0) {$\RA{a_3}$};
+\node at (2,0) {$\RA{a_5}$};
+\node at (3,0) {$\RA{a_7}$};
+\node at (4,0) {$0$};
+\node[anchor=east,text=black!60] at (-0.35,-1) {$s^6$};
+\node[draw=rpiv,fill=rpiv!15,rounded corners=2pt,inner sep=2pt] at (0,-1) {$\RC{b_1}$};
+\node at (1,-1) {$\RC{b_2}$};
+\node at (2,-1) {$\RC{b_3}$};
+\node at (3,-1) {$\RC{b_4}$};
+\node at (4,-1) {$0$};
+\node[anchor=east,text=black!60] at (-0.35,-2) {$s^5$};
+\node[text=black!45] at (0,-2) {$c_1$};
+\node[text=black!45] at (1,-2) {$c_2$};
+\node[draw=rcmp,rounded corners=2pt,inner sep=2pt,text=rcmp] at (2,-2) {$c_3$};
+\draw[black!30] (-0.3,-1.5) -- (4.40,-1.5);
+\draw[rsel,thick,rounded corners=2pt] (-0.38,0.38) rectangle (0.38,-1.38);
+\draw[rsel,thick,rounded corners=2pt] (2.62,0.38) rectangle (3.38,-1.38);
+\end{tikzpicture}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.52\linewidth}
+\[
+c_3 = \dfrac{\textcolor{rsel}{-\begin{vmatrix} a_1 & a_7\\ b_1 & b_4 \end{vmatrix}}}{\textcolor{rpiv}{b_1}} = \dfrac{b_1\,a_7 - a_1\,b_4}{b_1}
+\]
+\end{minipage}
+\par\smallskip
+\needspace{9\baselineskip}
+\textbf{Row $s^{4}$} \quad {\small from rows $s^{6}$ and $s^{5}$; denominator (pivot) $\textcolor{rpiv}{c_1}$}\par
+\noindent\begin{minipage}[c]{0.46\linewidth}
+\centering
+\begin{tikzpicture}[x=0.95cm,y=0.68cm,baseline=(current bounding box.center)]
+\node[anchor=east,text=black!60] at (-0.35,0) {$s^6$};
+\node at (0,0) {$\RC{b_1}$};
+\node at (1,0) {$\RC{b_2}$};
+\node at (2,0) {$\RC{b_3}$};
+\node at (3,0) {$\RC{b_4}$};
+\node[anchor=east,text=black!60] at (-0.35,-1) {$s^5$};
+\node[draw=rpiv,fill=rpiv!15,rounded corners=2pt,inner sep=2pt] at (0,-1) {$\RC{c_1}$};
+\node at (1,-1) {$\RC{c_2}$};
+\node at (2,-1) {$\RC{c_3}$};
+\node at (3,-1) {$0$};
+\node[anchor=east,text=black!60] at (-0.35,-2) {$s^4$};
+\node[draw=rcmp,rounded corners=2pt,inner sep=2pt,text=rcmp] at (0,-2) {$d_1$};
+\draw[black!30] (-0.3,-1.5) -- (3.40,-1.5);
+\draw[rsel,thick,rounded corners=2pt] (-0.38,0.38) rectangle (0.38,-1.38);
+\draw[rsel,thick,rounded corners=2pt] (0.62,0.38) rectangle (1.38,-1.38);
+\end{tikzpicture}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.52\linewidth}
+\[
+d_1 = \dfrac{\textcolor{rsel}{-\begin{vmatrix} b_1 & b_2\\ c_1 & c_2 \end{vmatrix}}}{\textcolor{rpiv}{c_1}} = \dfrac{c_1\,b_2 - b_1\,c_2}{c_1}
+\]
+\end{minipage}
+\par\smallskip
+\noindent\begin{minipage}[c]{0.46\linewidth}
+\centering
+\begin{tikzpicture}[x=0.95cm,y=0.68cm,baseline=(current bounding box.center)]
+\node[anchor=east,text=black!60] at (-0.35,0) {$s^6$};
+\node at (0,0) {$\RC{b_1}$};
+\node at (1,0) {$\RC{b_2}$};
+\node at (2,0) {$\RC{b_3}$};
+\node at (3,0) {$\RC{b_4}$};
+\node[anchor=east,text=black!60] at (-0.35,-1) {$s^5$};
+\node[draw=rpiv,fill=rpiv!15,rounded corners=2pt,inner sep=2pt] at (0,-1) {$\RC{c_1}$};
+\node at (1,-1) {$\RC{c_2}$};
+\node at (2,-1) {$\RC{c_3}$};
+\node at (3,-1) {$0$};
+\node[anchor=east,text=black!60] at (-0.35,-2) {$s^4$};
+\node[text=black!45] at (0,-2) {$d_1$};
+\node[draw=rcmp,rounded corners=2pt,inner sep=2pt,text=rcmp] at (1,-2) {$d_2$};
+\draw[black!30] (-0.3,-1.5) -- (3.40,-1.5);
+\draw[rsel,thick,rounded corners=2pt] (-0.38,0.38) rectangle (0.38,-1.38);
+\draw[rsel,thick,rounded corners=2pt] (1.62,0.38) rectangle (2.38,-1.38);
+\end{tikzpicture}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.52\linewidth}
+\[
+d_2 = \dfrac{\textcolor{rsel}{-\begin{vmatrix} b_1 & b_3\\ c_1 & c_3 \end{vmatrix}}}{\textcolor{rpiv}{c_1}} = \dfrac{c_1\,b_3 - b_1\,c_3}{c_1}
+\]
+\end{minipage}
+\par\smallskip
+\noindent\begin{minipage}[c]{0.46\linewidth}
+\centering
+\begin{tikzpicture}[x=0.95cm,y=0.68cm,baseline=(current bounding box.center)]
+\node[anchor=east,text=black!60] at (-0.35,0) {$s^6$};
+\node at (0,0) {$\RC{b_1}$};
+\node at (1,0) {$\RC{b_2}$};
+\node at (2,0) {$\RC{b_3}$};
+\node at (3,0) {$\RC{b_4}$};
+\node[anchor=east,text=black!60] at (-0.35,-1) {$s^5$};
+\node[draw=rpiv,fill=rpiv!15,rounded corners=2pt,inner sep=2pt] at (0,-1) {$\RC{c_1}$};
+\node at (1,-1) {$\RC{c_2}$};
+\node at (2,-1) {$\RC{c_3}$};
+\node at (3,-1) {$0$};
+\node[anchor=east,text=black!60] at (-0.35,-2) {$s^4$};
+\node[text=black!45] at (0,-2) {$d_1$};
+\node[text=black!45] at (1,-2) {$d_2$};
+\node[draw=rcmp,rounded corners=2pt,inner sep=2pt,text=rcmp] at (2,-2) {$d_3$};
+\draw[black!30] (-0.3,-1.5) -- (3.40,-1.5);
+\draw[rsel,thick,rounded corners=2pt] (-0.38,0.38) rectangle (0.38,-1.38);
+\draw[rsel,thick,rounded corners=2pt] (2.62,0.38) rectangle (3.38,-1.38);
+\end{tikzpicture}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.52\linewidth}
+\[
+d_3 = \dfrac{\textcolor{rsel}{-\begin{vmatrix} b_1 & b_4\\ c_1 & 0 \end{vmatrix}}}{\textcolor{rpiv}{c_1}} = \dfrac{c_1\,b_4 - b_1 \cdot 0}{c_1} = b_4 = a_8
+\]
+\end{minipage}
+\par\smallskip
+\needspace{9\baselineskip}
+\textbf{Row $s^{3}$} \quad {\small from rows $s^{5}$ and $s^{4}$; denominator (pivot) $\textcolor{rpiv}{d_1}$}\par
+\noindent\begin{minipage}[c]{0.46\linewidth}
+\centering
+\begin{tikzpicture}[x=0.95cm,y=0.68cm,baseline=(current bounding box.center)]
+\node[anchor=east,text=black!60] at (-0.35,0) {$s^5$};
+\node at (0,0) {$\RC{c_1}$};
+\node at (1,0) {$\RC{c_2}$};
+\node at (2,0) {$\RC{c_3}$};
+\node[anchor=east,text=black!60] at (-0.35,-1) {$s^4$};
+\node[draw=rpiv,fill=rpiv!15,rounded corners=2pt,inner sep=2pt] at (0,-1) {$\RC{d_1}$};
+\node at (1,-1) {$\RC{d_2}$};
+\node at (2,-1) {$\RC{d_3}$};
+\node[anchor=east,text=black!60] at (-0.35,-2) {$s^3$};
+\node[draw=rcmp,rounded corners=2pt,inner sep=2pt,text=rcmp] at (0,-2) {$e_1$};
+\draw[black!30] (-0.3,-1.5) -- (2.40,-1.5);
+\draw[rsel,thick,rounded corners=2pt] (-0.38,0.38) rectangle (0.38,-1.38);
+\draw[rsel,thick,rounded corners=2pt] (0.62,0.38) rectangle (1.38,-1.38);
+\end{tikzpicture}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.52\linewidth}
+\[
+e_1 = \dfrac{\textcolor{rsel}{-\begin{vmatrix} c_1 & c_2\\ d_1 & d_2 \end{vmatrix}}}{\textcolor{rpiv}{d_1}} = \dfrac{d_1\,c_2 - c_1\,d_2}{d_1}
+\]
+\end{minipage}
+\par\smallskip
+\noindent\begin{minipage}[c]{0.46\linewidth}
+\centering
+\begin{tikzpicture}[x=0.95cm,y=0.68cm,baseline=(current bounding box.center)]
+\node[anchor=east,text=black!60] at (-0.35,0) {$s^5$};
+\node at (0,0) {$\RC{c_1}$};
+\node at (1,0) {$\RC{c_2}$};
+\node at (2,0) {$\RC{c_3}$};
+\node[anchor=east,text=black!60] at (-0.35,-1) {$s^4$};
+\node[draw=rpiv,fill=rpiv!15,rounded corners=2pt,inner sep=2pt] at (0,-1) {$\RC{d_1}$};
+\node at (1,-1) {$\RC{d_2}$};
+\node at (2,-1) {$\RC{d_3}$};
+\node[anchor=east,text=black!60] at (-0.35,-2) {$s^3$};
+\node[text=black!45] at (0,-2) {$e_1$};
+\node[draw=rcmp,rounded corners=2pt,inner sep=2pt,text=rcmp] at (1,-2) {$e_2$};
+\draw[black!30] (-0.3,-1.5) -- (2.40,-1.5);
+\draw[rsel,thick,rounded corners=2pt] (-0.38,0.38) rectangle (0.38,-1.38);
+\draw[rsel,thick,rounded corners=2pt] (1.62,0.38) rectangle (2.38,-1.38);
+\end{tikzpicture}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.52\linewidth}
+\[
+e_2 = \dfrac{\textcolor{rsel}{-\begin{vmatrix} c_1 & c_3\\ d_1 & d_3 \end{vmatrix}}}{\textcolor{rpiv}{d_1}} = \dfrac{d_1\,c_3 - c_1\,d_3}{d_1}
+\]
+\end{minipage}
+\par\smallskip
+\needspace{9\baselineskip}
+\textbf{Row $s^{2}$} \quad {\small from rows $s^{4}$ and $s^{3}$; denominator (pivot) $\textcolor{rpiv}{e_1}$}\par
+\noindent\begin{minipage}[c]{0.46\linewidth}
+\centering
+\begin{tikzpicture}[x=0.95cm,y=0.68cm,baseline=(current bounding box.center)]
+\node[anchor=east,text=black!60] at (-0.35,0) {$s^4$};
+\node at (0,0) {$\RC{d_1}$};
+\node at (1,0) {$\RC{d_2}$};
+\node at (2,0) {$\RC{d_3}$};
+\node[anchor=east,text=black!60] at (-0.35,-1) {$s^3$};
+\node[draw=rpiv,fill=rpiv!15,rounded corners=2pt,inner sep=2pt] at (0,-1) {$\RC{e_1}$};
+\node at (1,-1) {$\RC{e_2}$};
+\node at (2,-1) {$0$};
+\node[anchor=east,text=black!60] at (-0.35,-2) {$s^2$};
+\node[draw=rcmp,rounded corners=2pt,inner sep=2pt,text=rcmp] at (0,-2) {$f_1$};
+\draw[black!30] (-0.3,-1.5) -- (2.40,-1.5);
+\draw[rsel,thick,rounded corners=2pt] (-0.38,0.38) rectangle (0.38,-1.38);
+\draw[rsel,thick,rounded corners=2pt] (0.62,0.38) rectangle (1.38,-1.38);
+\end{tikzpicture}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.52\linewidth}
+\[
+f_1 = \dfrac{\textcolor{rsel}{-\begin{vmatrix} d_1 & d_2\\ e_1 & e_2 \end{vmatrix}}}{\textcolor{rpiv}{e_1}} = \dfrac{e_1\,d_2 - d_1\,e_2}{e_1}
+\]
+\end{minipage}
+\par\smallskip
+\noindent\begin{minipage}[c]{0.46\linewidth}
+\centering
+\begin{tikzpicture}[x=0.95cm,y=0.68cm,baseline=(current bounding box.center)]
+\node[anchor=east,text=black!60] at (-0.35,0) {$s^4$};
+\node at (0,0) {$\RC{d_1}$};
+\node at (1,0) {$\RC{d_2}$};
+\node at (2,0) {$\RC{d_3}$};
+\node[anchor=east,text=black!60] at (-0.35,-1) {$s^3$};
+\node[draw=rpiv,fill=rpiv!15,rounded corners=2pt,inner sep=2pt] at (0,-1) {$\RC{e_1}$};
+\node at (1,-1) {$\RC{e_2}$};
+\node at (2,-1) {$0$};
+\node[anchor=east,text=black!60] at (-0.35,-2) {$s^2$};
+\node[text=black!45] at (0,-2) {$f_1$};
+\node[draw=rcmp,rounded corners=2pt,inner sep=2pt,text=rcmp] at (1,-2) {$f_2$};
+\draw[black!30] (-0.3,-1.5) -- (2.40,-1.5);
+\draw[rsel,thick,rounded corners=2pt] (-0.38,0.38) rectangle (0.38,-1.38);
+\draw[rsel,thick,rounded corners=2pt] (1.62,0.38) rectangle (2.38,-1.38);
+\end{tikzpicture}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.52\linewidth}
+\[
+f_2 = \dfrac{\textcolor{rsel}{-\begin{vmatrix} d_1 & d_3\\ e_1 & 0 \end{vmatrix}}}{\textcolor{rpiv}{e_1}} = \dfrac{e_1\,d_3 - d_1 \cdot 0}{e_1} = d_3 = a_8
+\]
+\end{minipage}
+\par\smallskip
+\needspace{9\baselineskip}
+\textbf{Row $s^{1}$} \quad {\small from rows $s^{3}$ and $s^{2}$; denominator (pivot) $\textcolor{rpiv}{f_1}$}\par
+\noindent\begin{minipage}[c]{0.46\linewidth}
+\centering
+\begin{tikzpicture}[x=0.95cm,y=0.68cm,baseline=(current bounding box.center)]
+\node[anchor=east,text=black!60] at (-0.35,0) {$s^3$};
+\node at (0,0) {$\RC{e_1}$};
+\node at (1,0) {$\RC{e_2}$};
+\node[anchor=east,text=black!60] at (-0.35,-1) {$s^2$};
+\node[draw=rpiv,fill=rpiv!15,rounded corners=2pt,inner sep=2pt] at (0,-1) {$\RC{f_1}$};
+\node at (1,-1) {$\RC{f_2}$};
+\node[anchor=east,text=black!60] at (-0.35,-2) {$s^1$};
+\node[draw=rcmp,rounded corners=2pt,inner sep=2pt,text=rcmp] at (0,-2) {$g_1$};
+\draw[black!30] (-0.3,-1.5) -- (1.40,-1.5);
+\draw[rsel,thick,rounded corners=2pt] (-0.38,0.38) rectangle (0.38,-1.38);
+\draw[rsel,thick,rounded corners=2pt] (0.62,0.38) rectangle (1.38,-1.38);
+\end{tikzpicture}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.52\linewidth}
+\[
+g_1 = \dfrac{\textcolor{rsel}{-\begin{vmatrix} e_1 & e_2\\ f_1 & f_2 \end{vmatrix}}}{\textcolor{rpiv}{f_1}} = \dfrac{f_1\,e_2 - e_1\,f_2}{f_1}
+\]
+\end{minipage}
+\par\smallskip
+\needspace{9\baselineskip}
+\textbf{Row $s^{0}$} \quad {\small from rows $s^{2}$ and $s^{1}$; denominator (pivot) $\textcolor{rpiv}{g_1}$}\par
+\noindent\begin{minipage}[c]{0.46\linewidth}
+\centering
+\begin{tikzpicture}[x=0.95cm,y=0.68cm,baseline=(current bounding box.center)]
+\node[anchor=east,text=black!60] at (-0.35,0) {$s^2$};
+\node at (0,0) {$\RC{f_1}$};
+\node at (1,0) {$\RC{f_2}$};
+\node[anchor=east,text=black!60] at (-0.35,-1) {$s^1$};
+\node[draw=rpiv,fill=rpiv!15,rounded corners=2pt,inner sep=2pt] at (0,-1) {$\RC{g_1}$};
+\node at (1,-1) {$0$};
+\node[anchor=east,text=black!60] at (-0.35,-2) {$s^0$};
+\node[draw=rcmp,rounded corners=2pt,inner sep=2pt,text=rcmp] at (0,-2) {$h_1$};
+\draw[black!30] (-0.3,-1.5) -- (1.40,-1.5);
+\draw[rsel,thick,rounded corners=2pt] (-0.38,0.38) rectangle (0.38,-1.38);
+\draw[rsel,thick,rounded corners=2pt] (0.62,0.38) rectangle (1.38,-1.38);
+\end{tikzpicture}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.52\linewidth}
+\[
+h_1 = \dfrac{\textcolor{rsel}{-\begin{vmatrix} f_1 & f_2\\ g_1 & 0 \end{vmatrix}}}{\textcolor{rpiv}{g_1}} = \dfrac{g_1\,f_2 - f_1 \cdot 0}{g_1} = f_2 = a_8
+\]
+\end{minipage}
+\par\smallskip
+
+\needspace{10\baselineskip}
+The completed table is
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{>{$}c<{$}|>{\columncolor{rfirst}$}c<{$}>{$}c<{$}>{$}c<{$}>{$}c<{$}>{$}c<{$}}
+\hline
+s^8 & \RA{a_0} & \RA{a_2} & \RA{a_4} & \RA{a_6} & \RA{a_8}\\
+s^7 & \RA{a_1} & \RA{a_3} & \RA{a_5} & \RA{a_7} & \\
+s^6 & \RC{b_1} & \RC{b_2} & \RC{b_3} & \RA{a_8} & \\
+s^5 & \RC{c_1} & \RC{c_2} & \RC{c_3} & & \\
+s^4 & \RC{d_1} & \RC{d_2} & \RA{a_8} & & \\
+s^3 & \RC{e_1} & \RC{e_2} & & & \\
+s^2 & \RC{f_1} & \RA{a_8} & & & \\
+s^1 & \RC{g_1} & & & & \\
+s^0 & \RA{a_8} & & & & \\
+\hline
+\end{tabular}
+\end{center}
+
+The last entry of every even row ($s^6, s^4, s^2, s^0$) is $a_8$. Only the first column
+$a_0, a_1, b_1, c_1, d_1, e_1, f_1, g_1, a_8$ is used in the test; the other entries are needed
+only to compute it.
+
+\vspace{6pt}
+
+\needspace{10\baselineskip}
+\begin{rulebox}{Reading the Routh table ($a_0 > 0$)}
+\begin{itemize}\itemsep2pt
+  \item \textbf{Result 1 (necessary condition):} if any coefficient $a_i \leq 0$, the system is
+        not BIBO stable. All coefficients must be strictly positive; this alone is not
+        sufficient.
+  \item \textbf{Result 2 (necessary and sufficient):} the system is BIBO stable if and only if
+        all entries in the first column are strictly positive.
+  \item \textbf{Result 3:} the number of roots of $D(s)$ with positive real part equals the
+        number of sign changes in the first column $a_0, a_1, b_1, c_1, d_1, \dots$
+\end{itemize}
+\end{rulebox}
+
+\textbf{Procedure.} (1) Check the signs of the coefficients. (2) Build the table row by row.
+(3) Count the sign changes in the first column.
+
+\ex Let $D(s) = s^4 + 2 s^3 + 3 s^2 + 4 s + 5$, is this
 system stable? If not, what is the number of poles with positive 
 real parts. 
 
-\textbf{Solution:} Let's build the Routh table
+\sol Let's build the Routh table
 
 \begin{minipage}[h]{1\linewidth}
 \begin{center}
-\begin{tabular}{|c || c || c c c |}
+\begin{tabular}{|c || F || c c c |}
 \hline
 $s^4$ & 1 & 3 & 5 & 0 
 \\ \hline
 $s^3$ & 2 & 4 & 0 & 0 
 \\ \hline
-$s^2$ & $\frac{2 \cdot 3 - 1 \cdot 4}{2} = 1$ & $\frac{2 \cdot 5 - 1 \cdot 0}{2} = 5$  & 0 & 0
+$s^2$ & $\dfrac{2 \cdot 3 - 1 \cdot 4}{2} = 1$ & $\dfrac{2 \cdot 5 - 1 \cdot 0}{2} = 5$  & 0 & 0
 \\ \hline
-$s^1$ &  $\frac{1 \cdot 4 - 2 \cdot 5}{1} = -6$ & 0 & 0 & 0 
+$s^1$ &  $\dfrac{1 \cdot 4 - 2 \cdot 5}{1} = -6$ & 0 & 0 & 0 
 \\ \hline
 $s^0$ & 5 & 0 & 0 & 0 
 \\ \hline
@@ -467,7 +999,7 @@ we can find that $p_{1,2} =   -1.29 \pm 0.86 j$ and  $p_{3,4} = 0.29
  
 \vspace{12pt}
 
-\textbf{Ex:} Consider the following closed-loop system, find 
+\ex Consider the following closed-loop system, find 
 the set of $K_P$ and $K_D$ gains such that closed-loop system is stable
 
   \begin{minipage}[h]{1\linewidth}
@@ -476,13 +1008,13 @@ the set of $K_P$ and $K_D$ gains such that closed-loop system is stable
     \end{center}
   \end{minipage}
 
-\textbf{Solution:} Denominator of the closed-loop transfer function 
+\sol Denominator of the closed-loop transfer function 
 of the system has the following form
 $D(s) = s^2 + K_D s + K_P$. Now, let's construct the Routh table for the $D(s)$
 %
-\begin{table}[h]
+
 \begin{center}
-\begin{tabular}{|c || c || c  |}
+\begin{tabular}{|c || F || c  |}
 \hline
 $s^2$ & 1 & $K_P$ 
 \\ \hline
@@ -492,7 +1024,7 @@ $s^0$ & $K_P$ & 0
 \\ \hline
 \end{tabular}
 \end{center}
-\end{table}
+
 
 In order the closed-loop system to be stable, $\#$ sign changes in the
 first column must
@@ -501,7 +1033,7 @@ if and only if $K_P > 0$ and $K_D > 0$.
 
 \vspace{6pt} 
 
-\textbf{Ex:} Consider the following closed-loop system, find 
+\ex Consider the following closed-loop system, find 
 the set of $K_I$ gains such that closed-loop system is stable
 
   \begin{minipage}[h]{1\linewidth}
@@ -510,7 +1042,7 @@ the set of $K_I$ gains such that closed-loop system is stable
     \end{center}
   \end{minipage}
 
-\textbf{Solution:} Denominator of the closed-loop transfer function 
+\sol Denominator of the closed-loop transfer function 
 of the system has the following form
 %
 \begin{align*}
@@ -521,13 +1053,13 @@ Now, let's construct the Routh table for the $D(s)$
 
  \begin{minipage}[h]{1\linewidth}
 \begin{center}
-\begin{tabular}{|c || c || c  |}
+\begin{tabular}{|c || F || c  |}
 \hline
 $s^3$ & 1 & $2$ 
 \\ \hline
 $s^2$ & 3 & $K_I$ 
 \\ \hline
-$s^1$ & $\frac{6 - K_I}{3}$ & 0 
+$s^1$ & $\dfrac{6 - K_I}{3}$ & 0 
 \\ \hline
 $s^0$ & $K_I$ & 0 
 \\ \hline
@@ -539,9 +1071,9 @@ In order the closed-loop system to be stable, $\#$ sign changes in the
 first column must be equal to zero, thus the closed-loop system is BIBO stable
 if and only if $K_I \in (0 , 6)$.
 
-\subsubsection{Routh Hurwitz Stability Test: Special Cases}
+\subsubsection{Routh--Hurwitz Test: Special Cases}
 
-\paragraph{Case I:}
+\paragraph{Case I: a zero in the first column.}
 
 Let's analyze the stability of ``$D(s) = s^3 - 3 s + 2$''. 
 Since $a_1 = 0$ and $a_2 = -3$, we know that the system
@@ -549,7 +1081,7 @@ is not BIBO stable. Let's construct the Routh table to verify this result.
 
  \begin{minipage}[h]{1\linewidth}
 \begin{center}
-\begin{tabular}{|c || c || c  |}
+\begin{tabular}{|c || F || c  |}
 \hline
 $s^3$ & 1 & $-3$ 
 \\ \hline
@@ -564,10 +1096,9 @@ $s^0$  & ? &
   \end{minipage}
 
 We can see that one of the coefficients in the Routh array is zero,
-and we can not complete the Routh table. If a coefficient in the Routh
-array is zero, we know from the Routh Hurwitz test that the system is
-BIBO unstable. However, what can we do, if we want to compute the 
-$\#$ poles with positive real parts. 
+and we cannot continue: the next row would divide by $0$. A zero in the first column already
+tells us that the system is not BIBO stable. To find the number of poles with positive real
+part, we have three options.
 
 \vspace{12pt}
 
@@ -579,9 +1110,9 @@ table for $\bar{D}(s)$ to seek an answer.
 Let $\bar{D}(s) = (s + 2) ( s^3 - 3 s + 2) = s^4 + 2 s^3 - 3 s^2 - 4 s+ 4$, the Routh table takes the form
 
 %
-\begin{table}[h]
+
 \begin{center}
-\begin{tabular}{|c || c || c c |}
+\begin{tabular}{|c || F || c c |}
 \hline
 $s^4$ & 1 & -3 & 4 
 \\ \hline
@@ -595,7 +1126,7 @@ $s^0$ & 4 & 0 &
 \\ \hline
 \end{tabular}
 \end{center}
-\end{table}
+
 %
 $\#$ sign changes in the Routh array of $\bar{D}(s)$ is equal to 2, so
 we can conclude that $D(s)$ has 2 poles with positive real parts. If
@@ -607,26 +1138,24 @@ which verifies our finding.
 \textbf{Solution Type 2:} Replace 0 element with an infinitesimal but
 non-zero element $\epsilon >0$.
 %
-\begin{table}[h]
+
 \begin{center}
-\begin{tabular}{|c || c || c  |}
+\begin{tabular}{|c || F || c  |}
 \hline
 $s^3$ & 1 & $-3$ 
 \\ \hline
 $s^2$ & $\epsilon$ & 2
 \\ \hline
-$s^1$  & $- \frac{3 \epsilon + 2}{\epsilon}$ & 0 
+$s^1$  & $- \dfrac{3 \epsilon + 2}{\epsilon}$ & 0 
 \\ \hline
 $s^0$  & 2 & 
 \\ \hline
 \end{tabular}
 \end{center}
-\end{table}
+
 
 $\#$ sign changes in the perturbed Routh array of $D(s)$ is equal to 2, so
 we can conclude that $D(s)$ has 2 poles with positive real parts.
-
-\newpage
 
 \textbf{Solution Type 3:} Replace $s$ with $1/q$
 %
@@ -657,9 +1186,9 @@ We can see that $D(s)$ and $\bar{D}(q)$ have same number of stable
 and unstable poles. Thus, we can perform a Routh Hurwitz test on
 $\bar{D}(q)$
 %
-\begin{table}[h]
+
 \begin{center}
-\begin{tabular}{|c || c || c  |}
+\begin{tabular}{|c || F || c  |}
 \hline
 $q^3$ & 2 & 0 
 \\ \hline
@@ -667,22 +1196,22 @@ $q^2$ & -3 & 1
 \\ \hline
 $q^1$  & 2/3 & 0 
 \\ \hline
-$s^0$  & 1 & 
+$q^0$  & 1 & 
 \\ \hline
 \end{tabular}
 \end{center}
-\end{table}
+
 
 $\#$ sign changes in the Routh array of $\bar{D}(q)$ is equal to 2, so
 we can conclude that $D(s)$ has 2 poles with positive real parts.
 
-\paragraph{Case II:}
+\paragraph{Case II: a whole row of zeros.}
 
-\paragraph{Ex:} Analyze the stability of $D(s) = s^4 + 2 s^3 + 2 s^2 + 2 s + 1$ using Routh table
+\ex Analyze the stability of $D(s) = s^4 + 2 s^3 + 2 s^2 + 2 s + 1$ using Routh table
 
 \begin{minipage}[h]{1\linewidth}
 \begin{center}
-\begin{tabular}{|c || c || c c |}
+\begin{tabular}{|c || F || c c |}
 \hline
 $s^4$ & 1 & 2 & 1 
 \\ \hline
@@ -715,16 +1244,16 @@ w.r.t. origin. These cases are illustrated in the figure below.
 
 \vspace{6pt}
 
-This case happens always after an even row, in this example right after $s^2$ row. In such 
-cases, we compute the Auxiliary polynomial, $A(s) = s^2 + 1$ in this
-example. After that, we compute its derivative, $A'(s) = 2 s$ in this example,
+The row above the zero row (here the $s^2$ row) gives the \emph{auxiliary polynomial}; its
+entries are the coefficients of every second power of $s$. Here $A(s) = s^2 + 1$ in this
+example. Then we compute its derivative, $A'(s) = 2 s$ in this example,
 and use the coefficient of $A'(s)$ in replacement of the zero row and compute
 the Routh array accordingly. This process is illustrated below
 
 \vspace{6pt}
 \begin{minipage}[h]{1\linewidth}
 \begin{center}
-\begin{tabular}{|c || c || c c | l |}
+\begin{tabular}{|c || F || c c | l |}
 \hline
 $s^4$ & 1 & 2 & 1 &
 \\ \hline
@@ -750,11 +1279,11 @@ we can see that problematic roots are the roots of $A(s)$.
 
 \vspace{6pt}
 
-\textbf{Ex:} Compute $\#$ unstable poles of $D(s) = s^3 + 2 s^2 - s - 2 $ using Routh table
+\ex Compute $\#$ unstable poles of $D(s) = s^3 + 2 s^2 - s - 2 $ using Routh table
 %
-\begin{table}[h]
+
 \begin{center}
-\begin{tabular}{|c || c || c | l |}
+\begin{tabular}{|c || F || c | l |}
 \hline
 $s^3$ & 1 & -1 & 
 \\ \hline
@@ -766,7 +1295,7 @@ $s^0$ & -2 & 0 &
 \\ \hline
 \end{tabular}
 \end{center}
-\end{table}
+
 
 $\#$ sign changes in the Routh array of $D(s)$ with Auxiliary polynomial
 is equal to 1, so we can conclude that $D(s)$ has 1 pole with
@@ -774,18 +1303,12 @@ positive real part. If we compute the poles numerically we find that
 $p_{1} = -1$, $p_2 = -2$ and $p_{3} = 1$ which verifies our finding. Indeed,
 we can see that the problematic root is one of the roots of $A(s)$.
 
-This case occurs when there are roots of equal magnitude lying
-radially opposite in the s-plane. 
 
-\newpage
 
-\subsubsection{Routh Hurwitz Stability Test: Relative Stability}
+\subsubsection{Routh--Hurwitz Test: Relative Stability}
 
-Let's assume that we are not only interested in the absolute stability of
-a system, but also we would like to test whether all poles are located 
-in a region where the real parts of all poles have an upper bound
-of $-4$. Similarly we can think that, we define a performance region
-based on a settling time requirement. 
+Sometimes absolute stability is not enough. We may want all poles to satisfy
+$\mathrm{Re}\{s\} < -4$, for example to meet a settling-time requirement (the gray region below).
 
   \begin{minipage}[h]{1\linewidth}
     \begin{center}
@@ -793,9 +1316,8 @@ based on a settling time requirement.
     \end{center}
   \end{minipage}
 
-We can still use Routh Hurwitz test to compute the 
-$\#$ poles for which real parts are lower than $-4$.
-However, we need to perform a change of variables.
+The Routh test still works after a change of variables that shifts the line
+$\mathrm{Re}\{s\} = -4$ to the imaginary axis.
 
 Replace $s$ with $z - 4$
 %
@@ -816,18 +1338,18 @@ where $z_i$ and $s_i$ are poles in associated planes.
 
 \vspace{12pt}
 
-\textbf{Ex:} Let $D(s) = s^3 + 8 s^2 + 19 s + 12$, first test if the
+\ex Let $D(s) = s^3 + 8 s^2 + 19 s + 12$, first test if the
 system is BIBO stable using Routh Hurwitz test. If the system is BIBO 
 stable, then check if the real parts of all the poles are located in the
 region $\sigma \in (-\infty , -2)$.
 
-\textbf{Solution:} First test the absolute stability using Routh test
+\sol First test the absolute stability using Routh test
 on $D(s)$
 
 \vspace{6pt}
 \begin{minipage}[h]{1\linewidth}
 \begin{center}
-\begin{tabular}{|c || c || c  |}
+\begin{tabular}{|c || F || c  |}
 \hline
 $s^3$ & 1 & 19
 \\ \hline
@@ -842,22 +1364,21 @@ $s^0$ & 12 & 0
 \end{minipage}
 \vspace{6pt}
 
-Since all of the coefficients of the Routh table are positive, the
-system is BIBO stable. Now check the relative stability by applying
+Since all entries in the first column are positive, the system is BIBO stable. Now check the relative stability by applying
 Routh test on  ``$D(z) = D(s)|_{s = z - 2} =  z^3 + 2 z^2 - z - 2$'',
 
 \vspace{6pt}
 \begin{minipage}[h]{1\linewidth}
 \begin{center}
-\begin{tabular}{|c || c || c | l |}
+\begin{tabular}{|c || F || c | l |}
 \hline
-$s^3$ & 1 & -1 & 
+$z^3$ & 1 & -1 & 
 \\ \hline
-$s^2$ & 2 & -2 & $\rightarrow A(z) = 2 z^2 - 2$
+$z^2$ & 2 & -2 & $\rightarrow A(z) = 2 z^2 - 2$
 \\ \hline
-$s^1$ & 4 & 0 & $\leftarrow A'(z) = 4 z $
+$z^1$ & 4 & 0 & $\leftarrow A'(z) = 4 z $
 \\ \hline
-$s^0$ & -2 & 0 &
+$z^0$ & -2 & 0 &
 \\ \hline
 \end{tabular}
 \end{center}
@@ -874,7 +1395,7 @@ $p_1 = -4$, $p_2 = -3$, and $p_3 = -1$. This verifies that
 the system is BIBO stable but, only two of the poles are located
 in the $\sigma \in (-\infty , -2)$ region.  
 
-\textbf{Ex:} Consider the closed-loop system that we analyzed
+\ex Consider the closed-loop system that we analyzed
 previously in terms of absolute stability. 
 
   \begin{minipage}[h]{1\linewidth}
@@ -893,7 +1414,7 @@ are located in the desired (gray) region illustrated below.
     \end{center}
   \end{minipage}
 
-\textbf{Solution:}
+\sol
 
 We can use Routh Hurwitz test on 
 %
@@ -905,19 +1426,19 @@ We can use Routh Hurwitz test on
 %
 in order to solve this problem. 
 %
-\begin{table}[h]
+
 \begin{center}
-\begin{tabular}{|c || c || c  |}
+\begin{tabular}{|c || F || c  |}
 \hline
-$s^2$ & 1 & $36- 4 K_D$ 
+$z^2$ & 1 & $36- 4 K_D$ 
 \\ \hline
-$s^1$ & $K_D - 8$ & 0 
+$z^1$ & $K_D - 8$ & 0 
 \\ \hline
-$s^0$ & $36- 4 K_D$ & 0 
+$z^0$ & $36- 4 K_D$ & 0 
 \\ \hline
 \end{tabular}
 \end{center}
-\end{table}
+
 %
 In order to achieve the desired pole locations, $D(z)$
 can not have any poles with positive real parts, thus
