@@ -398,6 +398,67 @@
 \newcommand{\bufEquiv}{%
   \draw (0,1.8) to[american voltage source, l_=$\Vcol{v_s}$] (0,0) node[ground] {};
   \draw (0,1.8) -- (1.6,1.8) to[R, l=$R_L$] (1.6,0) -- (0,0);}
+%  KCL at the inverting input of an inverting amplifier: node v_- and its three currents
+\newcommand{\kclFig}{%
+  \node[oa] (A) at (0,0) {};
+  \draw (A.-) -- ++(-1.3,0) coordinate (n) to[R, l_=$R_1$] ++(-2.3,0) coordinate (s);
+  \draw (s) to[american voltage source, l_=$\Vcol{v_{\mathrm{in}}}$] ($(s)+(0,-1.9)$) node[ground] {};
+  \draw (n) -- ++(0,1.8) coordinate (f) to[R, l=$R_f$] (f -| A.out) -- (A.out);
+  \draw (A.+) -- ++(-0.5,0) -- ++(0,-0.45) node[ground] {};
+  \draw (A.out) -- ++(0.8,0) node[ocirc] {} node[right, font=\small, text=cvolt] {$v_o$};
+  \fill (A.out) circle (1.6pt);
+  \draw[cvolt, thick, fill=cvolt!15] (n) circle (0.16);
+  \node[font=\small, text=cvolt, anchor=north] at ($(n)+(0,-0.22)$) {$v_-$};
+  \draw[iar] ($(n)+(-1.6,-0.35)$) -- ++(0.7,0); \node[font=\small, text=ccur, below] at ($(n)+(-1.25,-0.35)$) {$i_1$};
+  \draw[iar] ($(f)+(0.6,-0.35)$) -- ++(0.7,0); \node[font=\small, text=ccur, below] at ($(f)+(0.95,-0.35)$) {$i_f$};
+  \draw[iar] ($(n)+(0.4,0.25)$) -- ++(0.6,0); \node[font=\small, text=ccur, above] at ($(n)+(0.8,0.25)$) {$i_- = 0$};
+  \node[font=\small, text=cvolt, anchor=west] at ($(A.+)+(-0.4,-0.75)$) {$v_+ = 0$};}
+%  positive-feedback block diagram: v_in enters with a minus sign, the output returns with a plus sign
+\newcommand{\fbBlockPos}[1]{%
+  \begin{tikzpicture}[font=\small, >={Stealth[length=2.2mm]}]
+    \node[draw, circle, thick, minimum size=6.5mm, inner sep=0pt] (s) at (1.2,0) {};
+    \node[font=\scriptsize] at ($(s)+(-0.45,0.22)$) {$-$};
+    \node[font=\scriptsize] at ($(s)+(0.22,-0.48)$) {$+$};
+    \node[draw, thick, fill=metulight, minimum width=1.2cm, minimum height=0.85cm] (b) at (3.4,0) {$A$};
+    \node[font=\scriptsize, text=metugray, above] at (b.north) {op-amp};
+    \draw[->, thick] (0,0) node[left, text=cvolt] {$v_{\mathrm{in}}$} -- (s.west);
+    \draw[->, thick] (s.east) -- (b.west) node[midway, above, text=cvolt] {$v_d$};
+    \draw[->, thick] (b.east) -- (5.6,0) node[right, text=cvolt] {$v_o$};
+    \fill (4.8,0) circle (1.6pt);
+    \draw[->, thick, metured] (4.8,0) -- (4.8,-1.3) -- (1.2,-1.3) -- (s.south);
+    \node[font=\small, text=cvolt, anchor=east] at (1.12,-0.85) {$v_+$};
+    \ifnum#1=1
+      \node[cn] at (5.1,0.33) {1};
+      \node[cn] at (1.5,-0.9) {2};
+      \node[cn] at (2.4,-0.33) {3};
+      \node[cn] at (4.25,0.62) {4};
+    \fi
+  \end{tikzpicture}}
+%  positive feedback: pieces of the three regions (#1=0), plus the two sweeps (#1=1)
+\definecolor{swup}{RGB}{0,114,178}
+\definecolor{swdn}{RGB}{213,94,0}
+\newcommand{\pfPlot}[1]{%
+  \tax{-4.4}{4.8}{-3.0}{3.3}{$\vin$}{$\vo$}
+  \draw[gdash] (2,0) -- (2,2); \draw[gdash] (-2,0) -- (-2,-2);
+  \draw[crv] (-4.2,2) -- (2,2); \draw[crv] (-2,-2) -- (4.2,-2);
+  \draw[crvu] (-2,-2) -- (2,2);
+  \xt{2}{$\Es$} \xtu{-2}{$-\Es$}
+  \ifnum#1=0
+    \node[reg, above] at (-2.6,2) {$+$sat: $\vin < \Es$};
+    \node[reg, below] at (2.6,-2) {$-$sat: $\vin > -\Es$};
+    \node[reg, anchor=east] at (-0.3,1.2) {linear};
+  \else
+    \draw[swup, very thick, -{Stealth[length=2.6mm]}] (-4.0,2.35) -- (-0.6,2.35);
+    \draw[swup, very thick, -{Stealth[length=2.6mm]}] (-0.4,2.35) -- (1.9,2.35);
+    \draw[swup, very thick, -{Stealth[length=2.6mm]}] (2.3,2.0) -- (2.3,-1.85);
+    \draw[swup, very thick, -{Stealth[length=2.6mm]}] (2.3,-2.35) -- (4.1,-2.35);
+    \draw[swdn, very thick, densely dashed, -{Stealth[length=2.6mm]}] (4.0,-2.6) -- (0.6,-2.6);
+    \draw[swdn, very thick, densely dashed, -{Stealth[length=2.6mm]}] (0.4,-2.6) -- (-1.9,-2.6);
+    \draw[swdn, very thick, densely dashed, -{Stealth[length=2.6mm]}] (-2.6,-2.0) -- (-2.6,1.85);
+    \draw[swdn, very thick, densely dashed, -{Stealth[length=2.6mm]}] (-2.6,2.6) -- (-4.1,2.6);
+    \node[font=\scriptsize, text=swup, anchor=south] at (-3.0,2.8) {$\vin$ increasing};
+    \node[font=\scriptsize, text=swdn, anchor=north] at (3.0,-2.8) {$\vin$ decreasing};
+  \fi}
 \begin{document}
 
 %-------------------- title block -----------------------------
@@ -431,7 +492,7 @@
 \textbf{Motivation.} The operational amplifier (op-amp) is an integrated circuit that amplifies
 the \emph{difference} of two voltages by a very large factor. Alone it is of little use: almost
 any input drives it to its limits. When its output is fed back to its inputs through other
-elements (\textbf{feedback}), it becomes an amplifier with an exact gain, an adder, a subtractor or an integrator. This lecture introduces the device, its
+elements (\textbf{feedback}), it becomes an amplifier with a fine-tuned gain, an adder, a subtractor or an integrator. This lecture introduces the device, its
 three operating regions and its ideal model, and analyses the basic op-amp circuits. At the end
 it checks the ideal model against a finite gain.
 
@@ -681,52 +742,132 @@ Read the linear row correctly:
         unknown there.
 \end{itemize}
 
+%==============================================================
+\section{Analysing an op-amp circuit}
+
+The method is the one used for the ideal diode: assume a region, use the equation of that
+region, then check the condition of that region. For the diode it was ``ON: $v = 0$, check
+$i \geq 0$''. For the ideal op-amp there are three regions:
+
+\begin{center}
+\renewcommand{\arraystretch}{1.35}
+\begin{tabular}{@{}lll@{}}
+\toprule
+region & assume (use this equation) & check (this must hold)\\
+\midrule
+linear & $\vp = \vm$ & $-\Es \leq \vo \leq \Es$\\
+$+$sat & $\vo = \Es$ & $\vp > \vm$\\
+$-$sat & $\vo = -\Es$ & $\vp < \vm$\\
+\bottomrule
+\end{tabular}
+\end{center}
+In all three regions $\ip = \im = 0$, so KCL at the input nodes can be written before choosing a
+region. We do not know in advance which region an input puts the op-amp in. So we try all three,
+and each region holds for the inputs that pass its check. Together the three pieces give the
+transfer characteristic.
+
 \begin{ideabox}[Analysing an op-amp circuit]
 \begin{enumerate}[itemsep=2pt]
-  \item Write the equations that hold in every region: KCL at the input nodes (with
-        $\ip = \im = 0$) gives $\vp$ and $\vm$ in terms of the inputs and $\vo$.
-  \item \textbf{Linear:} set $\vp = \vm$ and solve for $\vo$. Keep the inputs for which
-        $-\Es \leq \vo \leq \Es$.
-  \item \textbf{$+$sat:} set $\vo = \Es$. Keep the inputs for which $\vp > \vm$.
-  \item \textbf{$-$sat:} set $\vo = -\Es$. Keep the inputs for which $\vp < \vm$.
-  \item Join the three pieces into the transfer characteristic.
+  \item \textbf{Every region:} KCL at the input nodes ($\ip = \im = 0$) gives $\vp$ and $\vm$ in
+        terms of the inputs and $\vo$.
+  \item \textbf{Linear:} set $\vp = \vm$, solve for $\vo$, keep the inputs with $|\vo| \leq \Es$.
+  \item \textbf{$+$sat:} set $\vo = \Es$, keep the inputs with $\vp > \vm$.
+  \item \textbf{$-$sat:} set $\vo = -\Es$, keep the inputs with $\vp < \vm$.
+  \item \textbf{Join} the three pieces: the transfer characteristic.
 \end{enumerate}
 \end{ideabox}
 
-%==============================================================
-\section{The voltage follower with the ideal model}
+\subsection{Step 1: KCL at the inputs}
 
-\begin{minipage}[c]{0.42\linewidth}
+The op-amp draws no current at its inputs ($\ip = \im = 0$). So at an input node only the
+external elements carry current, and KCL there is an ordinary node equation: the op-amp does not
+appear in it. Take the circuit below (the inverting amplifier, analysed later).
+
+\begin{minipage}[c]{0.5\linewidth}
+\centering
+\begin{tikzpicture}[scale=0.85]
+  \kclFig
+\end{tikzpicture}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.46\linewidth}
+\textbf{$+$ input:} it is grounded, so $\vp = 0$.
+
+\smallskip
+\textbf{$-$ input:} KCL at node $\vm$,
+\[
+  \Icol{i_1} = \Icol{i_f} + \underbrace{\im}_{0}
+  \;\Rightarrow\;
+  \frac{\vin - \vm}{R_1} = \frac{\vm - \vo}{R_f} .
+\]
+\end{minipage}
+
+\smallskip
+Solving for $\vm$:
+\[
+  \vm = \frac{R_f\,\vin + R_1\,\vo}{R_1 + R_f} .
+\]
+\begin{itemize}
+  \item These relations hold in \textbf{every} region, because $\ip = \im = 0$ in every region.
+  \item $\vo$ is still unknown and stays as a symbol. Each region supplies the missing equation:
+        $\vp = \vm$ (linear) or $\vo = \pm\Es$ (saturation).
+  \item Do \textbf{not} write KCL at the output node. The op-amp output current $\Icol{i_o}$ is
+        unknown, so that equation only adds a new unknown.
+\end{itemize}
+In the follower below, step 1 needs no KCL at all: the $+$ input is the input node and the $-$
+input is wired to the output.
+
+
+
+\subsection{The method on the voltage follower}
+
+\begin{minipage}[c]{0.38\linewidth}
 \centering
 \begin{tikzpicture}[scale=0.95]
   \follower{0}
 \end{tikzpicture}
 \end{minipage}\hfill
-\begin{minipage}[c]{0.54\linewidth}
-Now analyse the follower with the infinite-gain model, in all three regions. In every
-region
+\begin{minipage}[c]{0.58\linewidth}
+Find $\vo$ as a function of $\vin$ with the infinite-gain model.
+\end{minipage}
+
+\solstep{1}{Every region}
+No KCL is needed here: the $+$ input is the input node and the $-$ input is wired to the output:
 \[
   \vp = \vin, \qquad \vm = \vo .
 \]
-\end{minipage}
 
-\begin{minipage}[c]{0.54\linewidth}
-\begin{itemize}
-  \item \textbf{Linear:} $\vp = \vm$ gives $\vo = \vin$, valid for $-\Es \leq \vin \leq \Es$.
-  \item \textbf{$+$sat:} $\vo = \Es$ and $\vp > \vm$ give $\vin > \Es$.
-  \item \textbf{$-$sat:} $\vo = -\Es$ and $\vp < \vm$ give $\vin < -\Es$.
-\end{itemize}
-The output follows the input with gain 1, up to the supply limits.
+\solstep{2}{Linear}
+Assume $\vp = \vm$: \ $\vo = \vin$. \
+Check $|\vo| \leq \Es$: \ $|\vin| \leq \Es$.
+
+\solstep{3}{$+$sat}
+Assume $\vo = \Es$, so $\vm = \Es$. \
+Check $\vp > \vm$: \ $\vin > \Es$.
+
+\solstep{4}{$-$sat}
+Assume $\vo = -\Es$, so $\vm = -\Es$. \
+Check $\vp < \vm$: \ $\vin < -\Es$.
+
+\solstep{5}{Join}
+\begin{minipage}[c]{0.5\linewidth}
+The three ranges cover the whole $\vin$ axis without overlap, so every input has exactly one
+solution. The output follows the input with gain 1, up to the supply limits.
 \end{minipage}\hfill
-\begin{minipage}[c]{0.42\linewidth}
+\begin{minipage}[c]{0.46\linewidth}
 \centering
 \begin{tikzpicture}[x=0.55cm, y=0.55cm]
-  \tax{-4.2}{4.5}{-3.2}{3.4}{$\vin$}{$\vo$}
+  \tax{-4.4}{4.6}{-3.0}{3.2}{$\vin$}{$\vo$}
   \draw[gdash] (2,0) -- (2,2) -- (0,2); \draw[gdash] (-2,0) -- (-2,-2) -- (0,-2);
   \draw[crv] (-4,-2) -- (-2,-2) -- (2,2) -- (4,2);
-  \xt{2}{$\Es$} \xtu{-2}{$-\Es$} \yt{2}{$\Es$} \ytr{-2}{$-\Es$}
+  \xt{2}{$\Es$} \draw ([yshift=2pt]-2,0) -- ([yshift=-2pt]-2,0); \node[font=\scriptsize, anchor=north east] at (-2.05,0) {$-\Es$}; \yt{2}{$\Es$} \ytr{-2}{$-\Es$}
+  \node[reg, below] at (-3.1,-2.05) {$-$sat};
+  \node[reg, above] at (3.1,2.05) {$+$sat};
+  \node[reg, anchor=south east] at (-0.3,0.3) {linear};
 \end{tikzpicture}
 \end{minipage}
+
+%==============================================================
+\section{The voltage follower in use}
 
 \subsection{The follower as a buffer}
 
@@ -802,37 +943,100 @@ from the divider.
 \end{tikzpicture}
 \end{minipage}\hfill
 \begin{minipage}[c]{0.54\linewidth}
-Swap the inputs: the output now goes back to the non-inverting input. This is
-\textbf{positive feedback}. Now $\vm = \vin$ and $\vp = \vo$.
+Swap the two inputs. The output now goes back to the \emph{non-inverting} input:
+\[
+  \vm = \vin, \qquad \vp = \vo .
+\]
+This is \textbf{positive feedback}.
 \end{minipage}
 
-\begin{minipage}[c]{0.54\linewidth}
-\begin{itemize}
-  \item \textbf{Linear:} $\vo = \vin$ for $-\Es \leq \vin \leq \Es$, as before.
-  \item \textbf{$+$sat:} $\vo = \Es$ needs $\vp > \vm$, that is $\vin < \Es$.
-  \item \textbf{$-$sat:} $\vo = -\Es$ needs $\vp < \vm$, that is $\vin > -\Es$.
-\end{itemize}
-For $-\Es < \vin < \Es$ all three regions give a solution.
+\paragraph{The loop.} Draw the feedback diagram as for the follower. The only change is the
+sign at the difference: the fed-back signal $\vp = \vo$ now enters with a $+$ sign, and $\vin$
+with a $-$ sign.
+
+\begin{minipage}[c]{0.5\linewidth}
+\centering
+\fbBlockPos{1}
 \end{minipage}\hfill
-\begin{minipage}[c]{0.42\linewidth}
+\begin{minipage}[c]{0.46\linewidth}
+\begin{enumerate}[label=\protect\cnum{\arabic*}, itemsep=2pt, leftmargin=*]
+  \item Suppose $\vo$ is a little too high.
+  \item The feedback path carries it back: $\vp = \vo$ rises.
+  \item $\vm = \vin$ is fixed, so $\Vcol{v_d} = \vp - \vm$ \emph{rises}.
+  \item The op-amp amplifies this: $\vo$ goes \emph{further up}.
+\end{enumerate}
+\end{minipage}
+
+\smallskip
+With negative feedback, step 3 was ``$\Vcol{v_d}$ falls'' and the loop pulled $\vo$ back. Here
+every pass around the loop makes the deviation larger, until $\vo$ reaches $\Es$ (or $-\Es$ if
+the first deviation was downwards).
+
+\paragraph{The equations still have a linear solution.} With finite gain,
+\[
+  \vo = A\,(\vp - \vm) = A\,(\vo - \vin)
+  \quad\Rightarrow\quad
+  \vo = \frac{A}{A - 1}\,\vin \approx \vin ,
+\]
+the same answer as the follower. But the circuit does not stay there: the smallest disturbance
+grows around the loop. A solution of the equations is not enough; it must also be
+\textbf{stable}. Our models have no time behaviour, so they cannot show this directly; the full
+treatment needs dynamic models (later courses).
+
+\needspace{12\baselineskip}
+\textbf{Step 1: the three regions.} With the ideal model, $\vm = \vin$ and $\vp = \vo$. In
+saturation $\vo$ is known, so $\vp$ is known too; the check compares it with $\vm = \vin$:\par\smallskip
+
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{@{}lll@{}}
+\toprule
+region & assume & check $\Rightarrow$ valid for\\
+\midrule
+linear & $\vo = \vin$ & $|\vo| \leq \Es \Rightarrow |\vin| \leq \Es$\\
+$+$sat & $\vo = \Es$ & $\underbrace{\Es}_{\vp} > \underbrace{\vin}_{\vm} \Rightarrow \vin < \Es$\\
+$-$sat & $\vo = -\Es$ & $\underbrace{-\Es}_{\vp} < \underbrace{\vin}_{\vm} \Rightarrow \vin > -\Es$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{minipage}[c]{0.5\linewidth}
+Draw each piece only over its valid range. Unlike the follower, the ranges \emph{overlap}: for
+$-\Es < \vin < \Es$ all three pieces are present.
+\end{minipage}\hfill
+\begin{minipage}[c]{0.46\linewidth}
 \centering
 \begin{tikzpicture}[x=0.55cm, y=0.55cm]
-  \tax{-4.2}{4.5}{-3.2}{3.4}{$\vin$}{$\vo$}
-  \draw[crv] (-4,2) -- (2,2); \draw[crv] (-2,-2) -- (4,-2);
-  \draw[crvu] (-2,-2) -- (2,2);
-  \xt{2}{$\Es$} \xtu{-2}{$-\Es$}
-  \node[reg, above] at (-2.6,2) {stable}; \node[reg, below] at (2.6,-2) {stable};
-  \node[reg, anchor=west] at (0.9,0.6) {unstable};
+  \pfPlot{0}
 \end{tikzpicture}
 \end{minipage}
 
-The middle (linear) solution is \textbf{unstable}. Suppose $\vo$ is a little too high. Now
-$\vp = \vo$ rises, $\vp - \vm$ grows, and the op-amp pushes $\vo$ even higher, until it reaches
-$\Es$. The feedback moves the output \emph{away} from the linear solution, and it stays at
-$+\Es$ or $-\Es$. The ideal model cannot show this, because it has no
-time behaviour; the full reason needs dynamic models (later courses). For linear operation the
-feedback must go to the \textbf{inverting} input. So, when we want an amplifier, in design or in the
-laboratory, we do not connect the output to the non-inverting input.
+\textbf{Step 2: drop the unstable piece.} The linear piece (dashed) is unstable, as the loop
+showed. Only the two saturated pieces remain.
+
+\needspace{8\baselineskip}
+\textbf{Step 3: follow the output as $\vin$ changes slowly.}
+\begin{itemize}\itemsep2pt
+  \item \textcolor{swup}{\textbf{Increasing $\vin$}} (solid arrows). Start with $\vin < -\Es$:
+        only $+$sat is valid, so $\vo = \Es$. As $\vin$ increases, $+$sat stays valid while
+        $\vin < \Es$, so $\vo$ stays at $\Es$, even after $-$sat also becomes possible.
+  \item At $\vin = \Es$ the $+$sat condition $\vp = \Es > \vm = \vin$ fails. The only valid
+        stable piece left is $-$sat: $\vo$ \textbf{jumps} to $-\Es$.
+  \item \textcolor{swdn}{\textbf{Decreasing $\vin$}} (dashed arrows). By the same argument $\vo$
+        stays at $-\Es$ until $\vin = -\Es$, then jumps to $+\Es$.
+\end{itemize}
+\begin{center}
+\begin{tikzpicture}[x=0.6cm, y=0.6cm]
+  \pfPlot{1}
+\end{tikzpicture}
+\end{center}
+For $-\Es < \vin < \Es$ the output depends on where it came from: the circuit \emph{remembers}
+its past. The two paths form a loop; this behaviour is called \textbf{hysteresis}. The circuit
+does not follow the input; it \emph{switches} between $+\Es$ and $-\Es$.
+
+\paragraph{Conclusion.} For an amplifier the feedback must go to the \textbf{inverting} input. In
+design and in the laboratory we do not connect the output to the non-inverting input when we want
+linear operation.
 
 Positive feedback is not useless, though. Some circuits use it on purpose: circuits whose output
 jumps between two values (switching circuits), and circuits that produce a signal by themselves

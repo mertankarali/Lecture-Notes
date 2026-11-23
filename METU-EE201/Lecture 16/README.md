@@ -4,8 +4,8 @@ Lecture notes and slides for the op-amp lecture of EE201 (Section 2, Fall 2026/2
 
 | File | What it is |
 |---|---|
-| `EE201_Lecture_16.tex` | Handout / lecture notes (article, 13 pages): the op-amp, its terminals, supplies and transfer characteristic; the dependent-source and finite-gain models; negative feedback and why it keeps v₊ ≈ v₋; the infinite-gain ideal model and the region-by-region method; voltage follower and positive feedback; inverting and non-inverting amplifiers; summing and difference amplifiers; integrator and differentiator; the finite-gain check on the inverting amplifier; a summary. Seven worked examples. |
-| `EE201_Lecture_16_slides.tex` | Beamer deck (37 slides, 57 PDF pages) for the lecture itself — visual, low text. |
+| `EE201_Lecture_16.tex` | Handout / lecture notes (article, 16 pages): the op-amp, its terminals, supplies and transfer characteristic; the dependent-source and finite-gain models; negative feedback and why it keeps v₊ ≈ v₋; the infinite-gain ideal model and the region-by-region method; voltage follower and positive feedback; inverting and non-inverting amplifiers; summing and difference amplifiers; integrator and differentiator; the finite-gain check on the inverting amplifier; a summary. Seven worked examples. |
+| `EE201_Lecture_16_slides.tex` | Beamer deck (35 slides, 57 PDF pages) for the lecture itself — visual, low text. |
 | `build.sh` | Compiles both, removes auxiliary files, opens the PDFs. |
 
 ## Compiling

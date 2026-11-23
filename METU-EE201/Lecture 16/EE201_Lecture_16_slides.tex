@@ -364,6 +364,76 @@
 \newcommand{\bufEquiv}{%
   \draw (0,1.8) to[american voltage source, l_=$\Vcol{v_s}$] (0,0) node[ground] {};
   \draw (0,1.8) -- (1.6,1.8) to[R, l=$R_L$] (1.6,0) -- (0,0);}
+%  KCL at the inverting input of an inverting amplifier: node v_- and its three currents
+\newcommand{\kclFig}{%
+  \node[oa] (A) at (0,0) {};
+  \draw (A.-) -- ++(-1.3,0) coordinate (n) to[R, l_=$R_1$] ++(-2.3,0) coordinate (s);
+  \draw (s) to[american voltage source, l_=$\Vcol{v_{\mathrm{in}}}$] ($(s)+(0,-1.9)$) node[ground] {};
+  \draw (n) -- ++(0,1.8) coordinate (f) to[R, l=$R_f$] (f -| A.out) -- (A.out);
+  \draw (A.+) -- ++(-0.5,0) -- ++(0,-0.45) node[ground] {};
+  \draw (A.out) -- ++(0.8,0) node[ocirc] {} node[right, font=\small, text=cvolt] {$v_o$};
+  \fill (A.out) circle (1.6pt);
+  \draw[cvolt, thick, fill=cvolt!15] (n) circle (0.16);
+  \node[font=\small, text=cvolt, anchor=north] at ($(n)+(0,-0.22)$) {$v_-$};
+  \draw[iar] ($(n)+(-1.6,-0.35)$) -- ++(0.7,0); \node[font=\small, text=ccur, below] at ($(n)+(-1.25,-0.35)$) {$i_1$};
+  \draw[iar] ($(f)+(0.6,-0.35)$) -- ++(0.7,0); \node[font=\small, text=ccur, below] at ($(f)+(0.95,-0.35)$) {$i_f$};
+  \draw[iar] ($(n)+(0.4,0.25)$) -- ++(0.6,0); \node[font=\small, text=ccur, above] at ($(n)+(0.8,0.25)$) {$i_- = 0$};
+  \node[font=\small, text=cvolt, anchor=west] at ($(A.+)+(-0.4,-0.75)$) {$v_+ = 0$};}
+%  positive-feedback block diagram: v_in enters with a minus sign, the output returns with a plus sign
+\newcommand{\fbBlockPos}[1]{%
+  \begin{tikzpicture}[font=\small, >={Stealth[length=2.2mm]}]
+    \node[draw, circle, thick, minimum size=6.5mm, inner sep=0pt] (s) at (1.2,0) {};
+    \node[font=\scriptsize] at ($(s)+(-0.45,0.22)$) {$-$};
+    \node[font=\scriptsize] at ($(s)+(0.22,-0.48)$) {$+$};
+    \node[draw, thick, fill=metulight, minimum width=1.2cm, minimum height=0.85cm] (b) at (3.4,0) {$A$};
+    \node[font=\scriptsize, text=metugray, above] at (b.north) {op-amp};
+    \draw[->, thick] (0,0) node[left, text=cvolt] {$v_{\mathrm{in}}$} -- (s.west);
+    \draw[->, thick] (s.east) -- (b.west) node[midway, above, text=cvolt] {$v_d$};
+    \draw[->, thick] (b.east) -- (5.6,0) node[right, text=cvolt] {$v_o$};
+    \fill (4.8,0) circle (1.6pt);
+    \draw[->, thick, metured] (4.8,0) -- (4.8,-1.3) -- (1.2,-1.3) -- (s.south);
+    \node[font=\small, text=cvolt, anchor=east] at (1.12,-0.85) {$v_+$};
+    \ifnum#1=1
+      \node[cn] at (5.1,0.33) {1};
+      \node[cn] at (1.5,-0.9) {2};
+      \node[cn] at (2.4,-0.33) {3};
+      \node[cn] at (4.25,0.62) {4};
+    \fi
+  \end{tikzpicture}}
+%  positive feedback: pieces of the three regions (#1=0), plus the two sweeps (#1=1)
+\definecolor{swup}{RGB}{0,114,178}
+\definecolor{swdn}{RGB}{213,94,0}
+\newcommand{\pfPlot}[1]{%
+  \tax{-4.4}{4.8}{-3.0}{3.3}{$\vin$}{$\vo$}
+  \draw[gdash] (2,0) -- (2,2); \draw[gdash] (-2,0) -- (-2,-2);
+  \draw[crv] (-4.2,2) -- (2,2); \draw[crv] (-2,-2) -- (4.2,-2);
+  \draw[crvu] (-2,-2) -- (2,2);
+  \xt{2}{$\Es$} \xtu{-2}{$-\Es$}
+  \ifnum#1=0
+    \node[reg, above] at (-2.6,2) {$+$sat: $\vin < \Es$};
+    \node[reg, below] at (2.6,-2) {$-$sat: $\vin > -\Es$};
+    \node[reg, anchor=east] at (-0.3,1.2) {linear};
+  \else
+    \draw[swup, very thick, -{Stealth[length=2.6mm]}] (-4.0,2.35) -- (-0.6,2.35);
+    \draw[swup, very thick, -{Stealth[length=2.6mm]}] (-0.4,2.35) -- (1.9,2.35);
+    \draw[swup, very thick, -{Stealth[length=2.6mm]}] (2.3,2.0) -- (2.3,-1.85);
+    \draw[swup, very thick, -{Stealth[length=2.6mm]}] (2.3,-2.35) -- (4.1,-2.35);
+    \draw[swdn, very thick, densely dashed, -{Stealth[length=2.6mm]}] (4.0,-2.6) -- (0.6,-2.6);
+    \draw[swdn, very thick, densely dashed, -{Stealth[length=2.6mm]}] (0.4,-2.6) -- (-1.9,-2.6);
+    \draw[swdn, very thick, densely dashed, -{Stealth[length=2.6mm]}] (-2.6,-2.0) -- (-2.6,1.85);
+    \draw[swdn, very thick, densely dashed, -{Stealth[length=2.6mm]}] (-2.6,2.6) -- (-4.1,2.6);
+    \node[font=\scriptsize, text=swup, anchor=south] at (-3.0,2.8) {$\vin$ increasing};
+    \node[font=\scriptsize, text=swdn, anchor=north] at (3.0,-2.8) {$\vin$ decreasing};
+  \fi}
+%  positive feedback pieces drawn one at a time: #1 = 1 linear, 2 + (+sat), 3 + (-sat), 4 all with linear marked unstable
+\newcommand{\pfPieces}[1]{%
+  \tax{-4.4}{4.8}{-3.0}{3.3}{$\vin$}{$\vo$}
+  \xt{2}{$\Es$} \xtu{-2}{$-\Es$}
+  \ifnum#1<4 \draw[crv] (-2,-2) -- (2,2); \node[reg, anchor=east] at (-0.3,1.2) {linear};
+  \else \draw[crvu] (-2,-2) -- (2,2); \node[reg, anchor=east] at (-0.3,1.2) {linear: unstable}; \fi
+  \draw[gdash] (2,0) -- (2,2); \draw[gdash] (-2,0) -- (-2,-2);
+  \ifnum#1>1 \draw[crv] (-4.2,2) -- (2,2); \node[reg, above] at (-2.6,2) {$+$sat: $\vin < \Es$}; \fi
+  \ifnum#1>2 \draw[crv] (-2,-2) -- (4.2,-2); \node[reg, below] at (2.6,-2) {$-$sat: $\vin > -\Es$}; \fi}
 \title{Lecture 16: Operational Amplifiers}
 \subtitle{EE201 -- Circuit Theory I}
 \author{M. Mert Ankaral{\i}}
@@ -393,13 +463,9 @@
     \node[op amp, fill=metulight, thick] (I) at (0,0.2) {};
     \draw (I.-) -- ++(-0.3,0) -- ++(0,0.8) to[C] ++(2.4,0) -- ++(0,-0.8) -- (I.out);
     \draw (I.-) ++(-0.3,0) to[R] ++(-1.3,0);
-  \or
-    \draw[-{Stealth[length=2mm]}] (-1.6,0) -- (1.7,0); \draw[-{Stealth[length=2mm]}] (0,-1.0) -- (0,1.1);
-    \draw[metured, very thick] (-1.5,-0.7) -- (-0.45,-0.7) -- (0.45,0.7) -- (1.5,0.7);
-    \node[font=\Large] at (1.0,0.15) {$A$};
   \fi}
-%  Stops 1-14: station of stop k = \rmst{k}
-\newcommand{\rmst}[1]{\ifcase#1\or1\or1\or2\or2\or3\or3\or4\or4\or5\or5\or5\or5\or6\or7\fi}
+%  Stops 1-13: station of stop k = \rmst{k}
+\newcommand{\rmst}[1]{\ifcase#1\or1\or1\or2\or2\or3\or3\or4\or4\or5\or5\or5\or5\or6\fi}
 \newcommand{\rmstation}[4]{%
   \ifnum#1<\rmS\relax
     \node[circle, fill=cpow, text=white, inner sep=0pt, minimum size=5.4mm, font=\scriptsize\bfseries] at (#2,0) {\checkmark};
@@ -431,27 +497,25 @@
     \centering
     \begin{tikzpicture}
       \draw[metugray!45, line width=3pt, -{Stealth[length=2.6mm, width=3.2mm]}] (0,0) -- (13.4,0);
-      \rmstation{1}{1.00}{The\\ op-amp}{1}
-      \rmstation{2}{2.90}{Feedback}{2}
-      \rmstation{3}{4.80}{Ideal\\ model}{3}
-      \rmstation{4}{6.70}{Voltage\\ follower}{4}
-      \rmstation{5}{8.60}{Amplifiers}{5}
-      \rmstation{6}{10.50}{Integrator}{6}
-      \rmstation{7}{12.40}{Finite\\ gain}{7}
-      \rmsub{1}{1}{1.00}{-0.8}{terminals, regions}
-      \rmsub{2}{2}{1.00}{-1.5}{models}
-      \rmsub{3}{3}{2.90}{-0.8}{follower, finite $A$}
-      \rmsub{4}{4}{2.90}{-1.5}{$v_+ \approx v_-$}
-      \rmsub{5}{5}{4.80}{-0.8}{$A \to \infty$}
-      \rmsub{6}{6}{4.80}{-1.5}{the method}
-      \rmsub{7}{7}{6.70}{-0.8}{buffer}
-      \rmsub{8}{8}{6.70}{-1.5}{positive feedback}
-      \rmsub{9}{9}{8.60}{-0.8}{inverting}
-      \rmsub{10}{10}{8.60}{-1.5}{non-inverting}
-      \rmsub{11}{11}{8.60}{-2.1}{summing}
-      \rmsub{12}{12}{8.60}{-2.7}{difference}
-      \rmsub{13}{13}{10.50}{-0.8}{integrator,\\ differentiator}
-      \rmsub{14}{14}{12.40}{-0.8}{inverting amplifier}
+      \rmstation{1}{1.20}{The\\ op-amp}{1}
+      \rmstation{2}{3.40}{Feedback}{2}
+      \rmstation{3}{5.60}{Ideal\\ model}{3}
+      \rmstation{4}{7.80}{Voltage\\ follower}{4}
+      \rmstation{5}{10.00}{Amplifiers}{5}
+      \rmstation{6}{12.20}{Integrator}{6}
+      \rmsub{1}{1}{1.20}{-0.8}{terminals, regions}
+      \rmsub{2}{2}{1.20}{-1.5}{models}
+      \rmsub{3}{3}{3.40}{-0.8}{follower, finite $A$}
+      \rmsub{4}{4}{3.40}{-1.5}{$v_+ \approx v_-$}
+      \rmsub{5}{5}{5.60}{-0.8}{$A \to \infty$}
+      \rmsub{6}{6}{5.60}{-1.5}{the method}
+      \rmsub{7}{7}{7.80}{-0.8}{buffer}
+      \rmsub{8}{8}{7.80}{-1.5}{positive feedback}
+      \rmsub{9}{9}{10.00}{-0.8}{inverting}
+      \rmsub{10}{10}{10.00}{-1.5}{non-inverting}
+      \rmsub{11}{11}{10.00}{-2.1}{summing}
+      \rmsub{12}{12}{10.00}{-2.7}{difference}
+      \rmsub{13}{13}{12.20}{-0.8}{integrator,\\ differentiator}
     \end{tikzpicture}
     \vfill
     \mbox{}
@@ -469,31 +533,6 @@
     \Icol{$\blacksquare$}~current \quad \Vcol{$\blacksquare$}~voltage \quad
     \textcolor{metured}{$\blacksquare$}~characteristic
   \end{center}
-\end{frame}
-
-%--------------------------------------------------------------
-\begin{frame}{Review: elements with regions}
-  \vfill
-  \begin{columns}[c,onlytextwidth]
-    \begin{column}{0.44\textwidth}
-      \centering
-      \begin{tikzpicture}[scale=0.9]
-        \draw (0,2.0) node[ocirc] {} -- (0,1.7); \draw (0,1.7) to[D*] (0,0.3); \draw (0,0.3) -- (0,0) node[ocirc] {};
-        \begin{scope}[xshift=2.4cm]
-          \draw (0,2.0) to[american controlled voltage source, l=$\mu\,\Vcol{v_x}$] (0,0);
-        \end{scope}
-      \end{tikzpicture}
-    \end{column}
-    \begin{column}{0.54\textwidth}
-      \begin{itemize}\itemsep8pt
-        \item Ideal diode: two regions, ON and OFF
-        \item Method: assume a region, solve, check its condition
-        \item Dependent source: a voltage set by another voltage
-        \item Today: an element with three regions, built on a dependent source
-      \end{itemize}
-    \end{column}
-  \end{columns}
-  \vfill
 \end{frame}
 
 %==============================================================
@@ -518,7 +557,7 @@
         \item An integrated circuit: the operational amplifier (op-amp)
         \item A high-gain amplifier of the input difference
         \item Alone: almost any input drives it to its limits
-        \item With feedback: exact gains, adders, subtractors, integrators
+        \item With feedback: fine-tuned gains, adders, subtractors, integrators
       \end{itemize}
     \end{column}
   \end{columns}
@@ -634,12 +673,12 @@
         \follower{0}
       \end{tikzpicture}\\[10pt]
       Output back to the $-$ input\\[4pt]
-      $\vp = \vin$, \ $\vm = \vo$\\[4pt]
       Finite gain $A$: \ $\vo = \ ?$
     \end{column}
     \begin{column}{0.54\textwidth}
       \onslide<2->{%
-      $\vo = A\,(\vin - \vo)$\\[6pt]
+      $\vp = \vin$, \ $\vm = \vo$\\[4pt]
+      $\vo = A\,(\vp - \vm) = A\,(\vin - \vo)$\\[6pt]
       \qbox{$\vo = \dfrac{A}{1 + A}\,\vin$, \quad $\vp - \vm = \dfrac{\vo}{A}$}\\[10pt]
       \small
       $\vin = 1\V$:\\[4pt]
@@ -759,47 +798,87 @@
 %--------------------------------------------------------------
 \begin{frame}{Analysing an op-amp circuit}
   \vfill
-  \begin{enumerate}\itemsep8pt
-    \item In every region: KCL at the inputs with $\ip = \im = 0$
-    \item \textbf{Linear:} \ $\vp = \vm$, solve for $\vo$, keep $|\vo| \leq \Es$
-    \item \textbf{$+$sat:} \ $\vo = \Es$, keep $\vp > \vm$
-    \item \textbf{$-$sat:} \ $\vo = -\Es$, keep $\vp < \vm$
-    \item Join the pieces: the transfer characteristic
+  \begin{center}
+    \renewcommand{\arraystretch}{1.35}
+    \begin{tabular}{@{}lll@{}}
+      \toprule
+      region & assume & check\\
+      \midrule
+      linear & $\vp = \vm$ & $|\vo| \leq \Es$\\
+      $+$sat & $\vo = \Es$ & $\vp > \vm$\\
+      $-$sat & $\vo = -\Es$ & $\vp < \vm$\\
+      \bottomrule
+    \end{tabular}
+  \end{center}
+  \vspace{10pt}
+  \begin{enumerate}\itemsep5pt
+    \item Every region: KCL at the inputs, $\ip = \im = 0$
+    \item Each region: assume its equation, solve, keep the inputs that pass its check
+    \item Join the three pieces: the transfer characteristic
   \end{enumerate}
   \vfill
-  \begin{center}
-    {\small Like the ideal diode: assume a region, solve, check its condition}
-  \end{center}
-  \vfill
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{Step 1: KCL at the inputs}
+  \begin{columns}[c,onlytextwidth]
+    \begin{column}{0.52\textwidth}
+      \centering
+      \begin{tikzpicture}[scale=0.85]
+        \kclFig
+      \end{tikzpicture}\\[6pt]
+      {\small $\ip = \im = 0$: the op-amp is not in the KCL}
+    \end{column}
+    \begin{column}{0.46\textwidth}
+      $\vp = 0$, \quad $\vm = \ ?$\\[8pt]
+      \onslide<2->{%
+      KCL at $\vm$: \ $\Icol{i_1} = \Icol{i_f} + \underbrace{\im}_{0}$\\[6pt]
+      $\dfrac{\vin - \vm}{R_1} = \dfrac{\vm - \vo}{R_f}$\\[8pt]
+      \qbox{$\vm = \dfrac{R_f\,\vin + R_1\,\vo}{R_1 + R_f}$}\\[8pt]
+      \small
+      Every region; $\vo$ still unknown\\[2pt]
+      Region adds: \ $\vp = \vm$ \ or \ $\vo = \pm\Es$\\[2pt]
+      \alert{No KCL at the output: $\Icol{i_o}$ unknown}}
+    \end{column}
+  \end{columns}
 \end{frame}
 
 %==============================================================
 \roadmapframe{7}
 
 %--------------------------------------------------------------
-\begin{frame}{The follower with the ideal model}
+\begin{frame}{The method on the follower}
   \begin{columns}[c,onlytextwidth]
-    \begin{column}{0.44\textwidth}
+    \begin{column}{0.4\textwidth}
       \centering
-      \begin{tikzpicture}[scale=1.1]
+      \begin{tikzpicture}[scale=0.95]
         \follower{0}
       \end{tikzpicture}\\[10pt]
-      All three regions\\[8pt]
-      Every region: \ $\vp = \vin$, \ $\vm = \vo$
+      Ideal model: \ $\vo$ versus $\vin$?
     \end{column}
-    \begin{column}{0.54\textwidth}
-      $\vo = \ ?$\\[6pt]
+    \begin{column}{0.58\textwidth}
       \onslide<2->{%
       \small
-      Linear: \ $\vo = \vin$, \ $|\vin| \leq \Es$\\[2pt]
-      $+$sat: \ $\vp > \vm$: \ $\vin > \Es$\\[2pt]
-      $-$sat: \ $\vin < -\Es$\\[4pt]
+      Every region (wires, no KCL): \ $\vp = \vin$, \ $\vm = \vo$\\[4pt]
+      \renewcommand{\arraystretch}{1.3}
+      \begin{tabular}{@{}lll@{}}
+        \toprule
+        region & assume & check $\Rightarrow$ valid for\\
+        \midrule
+        linear & $\vo = \vin$ & $|\vo| \leq \Es \Rightarrow |\vin| \leq \Es$\\
+        $+$sat & $\vo = \Es$ & $\underbrace{\vin}_{\vp} > \underbrace{\Es}_{\vm} \Rightarrow \vin > \Es$\\
+        $-$sat & $\vo = -\Es$ & $\underbrace{\vin}_{\vp} < \underbrace{-\Es}_{\vm} \Rightarrow \vin < -\Es$\\
+        \bottomrule
+      \end{tabular}\\[6pt]
       \centering
-      \begin{tikzpicture}[x=0.5cm, y=0.5cm]
-        \tax{-4.2}{4.5}{-3.0}{3.2}{$\vin$}{$\vo$}
+      \begin{tikzpicture}[x=0.42cm, y=0.36cm]
+        \tax{-4.4}{4.6}{-3.0}{3.2}{$\vin$}{$\vo$}
         \draw[gdash] (2,0) -- (2,2) -- (0,2); \draw[gdash] (-2,0) -- (-2,-2) -- (0,-2);
         \draw[crv] (-4,-2) -- (-2,-2) -- (2,2) -- (4,2);
-        \xt{2}{$\Es$} \xtu{-2}{$-\Es$}
+        \xt{2}{$\Es$} \draw ([yshift=2pt]-2,0) -- ([yshift=-2pt]-2,0); \node[font=\scriptsize, anchor=north east] at (-2.05,0) {$-\Es$};
+        \node[reg, below] at (-3.1,-2.05) {$-$sat};
+        \node[reg, above] at (3.1,2.05) {$+$sat};
+        \node[reg, anchor=south east] at (-0.3,0.3) {linear};
       \end{tikzpicture}}
     \end{column}
   \end{columns}
@@ -860,45 +939,90 @@
 \end{frame}
 
 %--------------------------------------------------------------
-\begin{frame}{Positive feedback}
+\begin{frame}{Positive feedback: the loop}
   \begin{columns}[c,onlytextwidth]
-    \begin{column}{0.4\textwidth}
+    \begin{column}{0.36\textwidth}
       \centering
-      \begin{tikzpicture}[scale=1.0]
+      \begin{tikzpicture}[scale=0.85]
         \follower{1}
       \end{tikzpicture}\\[8pt]
-      $\vm = \vin$, \ $\vp = \vo$: \ $\vo = \ ?$
+      Inputs swapped:\\[2pt]
+      $\vm = \vin$, \ $\vp = \vo$
     \end{column}
-    \begin{column}{0.58\textwidth}
-      \onslide<2->{%
-      \small
-      Linear: $\vo = \vin$, \ $|\vin| \leq \Es$\\
-      $+$sat: $\vin < \Es$; \quad $-$sat: $\vin > -\Es$\\[2pt]
+    \begin{column}{0.62\textwidth}
       \centering
-      \begin{tikzpicture}[x=0.45cm, y=0.4cm]
-        \tax{-4.2}{4.5}{-3.0}{3.2}{$\vin$}{$\vo$}
-        \draw[crv] (-4,2) -- (2,2); \draw[crv] (-2,-2) -- (4,-2);
-        \draw[crvu] (-2,-2) -- (2,2);
-        \xt{2}{$\Es$} \xtu{-2}{$-\Es$}
-        \node[reg, above] at (-2.6,2) {stable}; \node[reg, below] at (2.6,-2) {stable};
-        \node[reg, anchor=west] at (0.9,0.6) {unstable};
-      \end{tikzpicture}}
+      \scalebox{0.92}{\fbBlockPos{1}}\\[6pt]
+      \raggedright
+      \onslide<2->{%
+      \begin{itemize}\itemsep2pt
+        \item[\cnum{1}] $\vo$ a little too high
+        \item[\cnum{2}] $\vp = \vo$ rises
+        \item[\cnum{3}] $\vm = \vin$ fixed: $\Vcol{v_d}$ \textbf{rises}
+        \item[\cnum{4}] $\vo$ goes \textbf{further up}, until $\Es$
+      \end{itemize}
+      \vspace{2pt}
+      {\small Negative feedback: $\Vcol{v_d}$ falls, error corrected}\\
+      {\small Positive feedback: $\Vcol{v_d}$ rises, error grows}}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{Positive feedback: three solutions}
+  \begin{columns}[c,onlytextwidth]
+    \begin{column}{0.5\textwidth}
+      \small
+      Finite gain: \ $\vo = A(\vo - \vin)$\\[4pt]
+      $\vo = \dfrac{A}{A - 1}\,\vin \approx \vin$ \ \ {\scriptsize (as the follower)}\\[8pt]
+      Ideal model, \ $\vm = \vin$, \ $\vp = \vo$:\\[2pt]
+      \renewcommand{\arraystretch}{1.3}
+      \begin{tabular}{@{}lll@{}}
+        \toprule
+        region & assume & check $\Rightarrow$ valid for\\
+        \midrule
+        linear & $\vo = \vin$ & $|\vo| \leq \Es \Rightarrow |\vin| \leq \Es$\\
+        \onslide<2->{$+$sat & $\vo = \Es$ & $\underbrace{\Es}_{\vp} > \underbrace{\vin}_{\vm} \Rightarrow \vin < \Es$}\\
+        \onslide<3->{$-$sat & $\vo = -\Es$ & $\underbrace{-\Es}_{\vp} < \underbrace{\vin}_{\vm} \Rightarrow \vin > -\Es$}\\
+        \bottomrule
+      \end{tabular}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \centering
+      \only<1>{\begin{tikzpicture}[x=0.5cm, y=0.48cm]\pfPieces{1}\end{tikzpicture}}%
+      \only<2>{\begin{tikzpicture}[x=0.5cm, y=0.48cm]\pfPieces{2}\end{tikzpicture}}%
+      \only<3>{\begin{tikzpicture}[x=0.5cm, y=0.48cm]\pfPieces{3}\end{tikzpicture}}%
+      \only<4>{\begin{tikzpicture}[x=0.5cm, y=0.48cm]\pfPieces{4}\end{tikzpicture}}\\[4pt]
+      \small
+      \onslide<3->{Ranges overlap: three solutions}\\
+      \onslide<4->{Linear piece unstable: drop it}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+%--------------------------------------------------------------
+\begin{frame}{Positive feedback: hysteresis}
+  \begin{columns}[c,onlytextwidth]
+    \begin{column}{0.46\textwidth}
+      \small
+      $\vin$ slowly increased from $-\infty$, then decreased: \ $\vo = \ ?$\\[8pt]
+      \onslide<2->{%
+      \textcolor{swup}{\textbf{Increasing:}} start in $+$sat (only one valid)\\[2pt]
+      stay while $\vin < \Es$\\[2pt]
+      at $\vin = \Es$: $+$sat fails, \textbf{jump} to $-\Es$\\[8pt]
+      \textcolor{swdn}{\textbf{Decreasing:}} stay at $-\Es$ until $\vin = -\Es$, then jump up\\[8pt]
+      Output depends on its past: \alert{hysteresis}}
+    \end{column}
+    \begin{column}{0.52\textwidth}
+      \centering
+      \only<1>{\begin{tikzpicture}[x=0.55cm, y=0.55cm]\pfPlot{0}\end{tikzpicture}}%
+      \only<2>{\begin{tikzpicture}[x=0.55cm, y=0.55cm]\pfPlot{1}\end{tikzpicture}}
     \end{column}
   \end{columns}
   \vspace{6pt}
   \onslide<2->{%
-  \begin{columns}[t,onlytextwidth]
-    \begin{column}{0.48\textwidth}
-      \small
-      Three solutions; the middle one is unstable\\[2pt]
-      $\vo$ up $\to$ $\vp$ up $\to$ $\vo$ further up
-    \end{column}
-    \begin{column}{0.47\textwidth}
-      \small
-      \alert{Amplifier: feedback to the $-$ input only}\\[2pt]
-      Positive feedback is used on purpose in switching circuits and oscillators (later courses)
-    \end{column}
-  \end{columns}}
+  \small
+  \alert{Amplifier: feedback to the $-$ input only.} \ Positive feedback is used on purpose in
+  switching circuits and oscillators (later courses).}
 \end{frame}
 
 %==============================================================
@@ -1027,31 +1151,6 @@
 \end{frame}
 
 %--------------------------------------------------------------
-\begin{frame}{Example 16.4: design an adder}
-  \vfill
-  \begin{columns}[c,onlytextwidth]
-    \begin{column}{0.48\textwidth}
-      \centering
-      Target: \ $\vo = -(2\,\Vcol{v_1} + \Vcol{v_2})$\\[12pt]
-      \onslide<2->{%
-      \begin{tikzpicture}[scale=0.9]
-        \summing{$1\kohm$}{$2\kohm$}{$2\kohm$}
-      \end{tikzpicture}}
-    \end{column}
-    \begin{column}{0.5\textwidth}
-      $R_1, R_2, R_f = \ ?$\\[10pt]
-      \onslide<2->{%
-      $R_f = 2\kohm$\\[4pt]
-      $R_f/R_1 = 2$: \ $R_1 = 1\kohm$\\[4pt]
-      $R_f/R_2 = 1$: \ $R_2 = 2\kohm$\\[10pt]
-      Check $\Vcol{v_1} = 1\V$, $\Vcol{v_2} = 2\V$:\\[2pt]
-      $\vo = -(2 + 2) = -4\V$ \ \yes}
-    \end{column}
-  \end{columns}
-  \vfill
-\end{frame}
-
-%--------------------------------------------------------------
 \begin{frame}{The difference amplifier}
   \begin{columns}[c,onlytextwidth]
     \begin{column}{0.42\textwidth}
@@ -1071,29 +1170,6 @@
       Choose $\dfrac{R_f}{R_1} = \dfrac{R_3}{R_2}$: \ \qbox{$\vo = \dfrac{R_f}{R_1}(\Vcol{v_2} - \Vcol{v_1})$}}
     \end{column}
   \end{columns}
-\end{frame}
-
-%--------------------------------------------------------------
-\begin{frame}{Example 16.5: a difference amplifier}
-  \vfill
-  \begin{columns}[c,onlytextwidth]
-    \begin{column}{0.48\textwidth}
-      \centering
-      \begin{tikzpicture}[scale=0.9]
-        \difference{$1\kohm$}{$1\kohm$}{$3\kohm$}{$3\kohm$}
-      \end{tikzpicture}
-    \end{column}
-    \begin{column}{0.5\textwidth}
-      $\vo$ for $\Vcol{v_1} = 2\V$, $\Vcol{v_2} = 3\V$?\\[2pt]
-      $\vo$ for $\Vcol{v_1} = \Vcol{v_2} = 5\V$?\\[12pt]
-      \onslide<2->{%
-      $R_f/R_1 = 3 = R_3/R_2$: \ $\vo = 3\,(\Vcol{v_2} - \Vcol{v_1})$\\[6pt]
-      $\vo = 3\,(3 - 2) = 3\V$\\[4pt]
-      Equal inputs: \ $\vo = 0$\\[2pt]
-      {\small A common voltage is rejected}}
-    \end{column}
-  \end{columns}
-  \vfill
 \end{frame}
 
 %==============================================================
@@ -1166,33 +1242,6 @@
   \end{columns}
 \end{frame}
 
-%==============================================================
-\roadmapframe{14}
-
-%--------------------------------------------------------------
-\begin{frame}{Example 16.7: inverting amplifier with finite gain}
-  \vfill
-  \begin{columns}[c,onlytextwidth]
-    \begin{column}{0.46\textwidth}
-      \centering
-      \begin{tikzpicture}[scale=0.9]
-        \invAmp{$1\kohm$}{$4\kohm$}{$\Vcol{v_{\mathrm{in}}}$}
-      \end{tikzpicture}\\[6pt]
-      Finite gain $A = 10^5$: \ $\vo/\vin = \ ?$\\[2pt]
-      {\small Ideal: $-4$}
-    \end{column}
-    \begin{column}{0.52\textwidth}
-      \onslide<2->{%
-      $\vo = -A\,\vm$\\[4pt]
-      KCL: \ $\vm = \dfrac{4\,\vin + \vo}{5}$\\[8pt]
-      $\dfrac{\vo}{\vin} = -\dfrac{4}{1 + 5/A} = -3.9998$\\[8pt]
-      Error $5/A = 0.005\%$\\[2pt]
-      {\small Resistor tolerances matter more}}
-    \end{column}
-  \end{columns}
-  \vfill
-\end{frame}
-
 %--------------------------------------------------------------
 \begin{frame}{Summary}
   \footnotesize
@@ -1207,7 +1256,6 @@
     summing, difference & $\vo = -\sum_k (R_f/R_k)\,\Vcol{v_k}$; \ $\vo = (R_f/R_1)(\Vcol{v_2} - \Vcol{v_1})$\\
     integrator, differentiator & $\vo = \vo(0) - \frac{1}{RC}\int_0^t \vin\,d\tau$; \ $\vo = -RC\,d\vin/dt$\\
     positive feedback & linear solution unstable: avoid in amplifiers\\
-    finite gain & inverting gain error $\approx (1 + R_f/R_1)/A$\\
     \bottomrule
   \end{tabular}
 \end{frame}
